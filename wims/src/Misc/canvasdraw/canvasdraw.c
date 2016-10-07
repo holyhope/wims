@@ -80,6 +80,7 @@ int main(int argc, char *argv[]){
     int use_safe_eval = FALSE; /* if true, add just once : js function to evaluate userinput values for plotting etc */
     int use_js_math = FALSE; /* if true add js-function to convert math_function --> javascript math_function */
     int use_js_plot = FALSE; /* if true , let js-engine plot the curve */
+    int jsplot_cnt = 0; /* keepint track on the curve identity */
     int print_drag_params_only_once = FALSE;/* avoid multiple useless identical lines about javascript precision and use_dragdrop */
     int line_width = 1;
     int decimals = 2;
@@ -100,6 +101,7 @@ int main(int argc, char *argv[]){
     char *flytext = "";
     char *affine_matrix = "[1,0,0,1,0,0]";
     char *function_label = "f(x)=";
+    int canvas_type = DRAG_CANVAS; /* to use a specific canvas  for filling etc */
     int pixelsize = 1;
     int reply_format = 0;
     int input_cnt = 0;
@@ -174,7 +176,7 @@ int main(int argc, char *argv[]){
 	@ will try use the same syntax as flydraw or svgdraw to paint a html5 bitmap image<br />by generating a tailor-made javascript include file: providing only the js-functionality needed to perform the job.<br />thus ensuring a minimal strain on the client browser <br />(unlike some popular 'canvas-do-it-all' libraries, who have proven to be not suitable for low-end computers found in schools...)
 	@ general syntax <ul><li>The transparency of all objects can be controlled by command <a href="#opacity">'opacity [0-255],[0,255]'</a></il><li>line width of any object can be controlled by command <a href="#linewidth">'linewidth int'</a></li><li>any may be dashed by using keyword <a href="#dashed">'dashed'</a> before the object command.<br />the dashing type can be controled by command <a href="#dashtype">'dashtype int,int'</a></li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword <a href="#filled">'filled'</a> before the object command.<br />The fill colour of 'non_userdraw' objects will be the stroke colour...(flydraw harmonization 19/10/2013)</li><li>all draggable objects may have a <a href="#slider">slider</a> for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command <a href="#drag">'drag x/y/xy'</a><br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on <a href="#zoom">zoom</a> and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword <a href="#onclick">'onclick'</a><br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (instead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li><li>almost every <a href="#userdraw">"userdraw object,color"</a>  or <a href="#multidraw">"multidraw"</a> command 'family' may be combined with keywords <a href="#snaptogrid">"snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction</a> or command "snaptopoints x1,y1,x2,y2,..."  </li><li>every draggable | onclick object may be combined with keywords <a href="#snaptogrid">snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction</a> or command "snaptopoints x1,y1,x2,y2,..."  </li><li>almost every command for a single object has a multiple objects counterpart:<br /><ul>general syntaxrule:<li><em>single_object</em> x1,y1,...,color</li><li><em>multi_object</em> color,x1,y1,...</li></ul><li>All inputfields or textareas generated, can be styled individually using command <a href="#inputstyle">'inputstyle some_css'</a><br/>the fontsize used for labeling these elements can be controlled by command <a href="fontsize">'fontsize int'</a> <br />command 'fontfamily' is <b>not</b> active for these elements </li></ul>
 	@ If needed multiple interactive scripts may be used in a single webpage.<br />A function 'read_canvas()' and / or 'read_dragdrop()' can read all interactive userdata from these images.<br />The global array 'canvas_scripts' will contain all unique random "canvas_root_id" of the included scripts.<br />The included local javascript "read" functions "read_canvas%d()" and "read_dragdrop%d()" will have this "%d = canvas_root_id"<br />e.g. canvas_scripts[0] will be the random id of the first script in the page and will thus provide a function<br />fun = eval("read_canvas"+canvas_scripts[0]) to read user based drawings / inputfield in this first image.<br />The read_dragdrop is analogue.<br />If the default reply formatting is not suitable, use command <a href='#replyformat'>'replyformat'</a> to format the replies for an individual canvas script,<br />To read all user interactions from all included canvas scripts , use something like:<br /><em>function read_all_canvas_images(){<br />&nbsp;var script_len = canvas_scripts.length;<br />&nbsp;var draw_reply = "";<br />&nbsp;var found_result = false;<br />&nbsp;for(var p = 0 ; p < script_len ; p++){<br />&nbsp;&nbsp;var fun = eval("read_canvas"+canvas_scripts[p]);<br />&nbsp;&nbsp;if( typeof fun === 'function'){<br />&nbsp;&nbsp;&nbsp;var result = fun();<br />&nbsp;&nbsp;&nbsp;if( result&nbsp;&nbsp;&& result.length != 0){<br />&nbsp;&nbsp;&nbsp;&nbsp;if(script_len == 1 ){ return result;};<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found_result = true;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;draw_reply = draw_reply + result + "\\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;};<br />&nbsp;if( found_result ){return draw_reply;}else{return null;};<br />};</em>
-	@ you can check the javascript reply format in the wims tool <a href="http://wims.math.leidenuniv.nl/wims/wims.cgi?lang=en&module=tool/directexec">direct exec</a>
+	@ you can check the javascript reply format in the wims tool <a href="http://localhost/wims/wims.cgi?lang=en&module=tool/directexec">direct exec</a>
 	@ for usage within OEF (without anstype "draw"), something like this (a popup function plotter) will work:<br /><small>\\text{popup_grapher=wims(exec canvasdraw <br />popup<br />size 400,400<br />xrange -10,10<br />yrange -10,10<br />axis<br />axisnumbering<br />opacity 100,100<br />grid 2,2,grey,2,2,6,black<br />snaptogrid<br />linewidth 2<br />jsplot red,5*sin(1/x)<br />strokecolor green<br />functionlabel f(x)=<br />userinput function<br />mouse blue,22<br />)<br />}<br />\\statement{<br />\\popup_grapher<br />}</small>
 	@ be aware that older browsers will probably not work correctly<br />no effort has been undertaken to add glue code for older browsers !! <br />in any case it's not wise to use older browsers...not just for canvasdraw
 	@ if you find flaws, errors or other incompatibilities -not those mentioned in this document- send <a href='mailto:jm.evers-at-schaersvoorde.nl'>me</a> an email with screenshots and the generated javascript include file.
@@ -224,7 +226,7 @@ canvas_scripts.push(\"%d\");\n/*]]>*/\n</script>\n\
 /* style=\"display:block;position:relative;margin-left:auto;margin-right:auto;margin-bottom:4px;\" */
 if( use_tooltip != 2){
  fprintf(stdout,"<!-- canvasdraw div  -->\n\
-<div tabindex=\"0\" id=\"canvas_div%d\" style=\"position:relative;width:%dpx;height:%dpx;margin-left:auto;margin-right:auto;\" ></div>\n\
+<div tabindex=\"0\" id=\"canvas_div%d\" style=\"position:relative;width:%dpx;height:%dpx;margin-left:auto;margin-right:auto;\" oncontextmenu=\"return false;\"></div>\n\
 <!-- tooltip and input placeholder  -->\n\
 <div id=\"tooltip_placeholder_div%d\" style=\"text-align:center\"><span id=\"tooltip_placeholder%d\" style=\"display:none;\"></span></div>\
 <!-- include actual object code via include file -->\n\
@@ -1860,7 +1862,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ userdraw object_type,color
 	@ only a single object_type is allowed.
 	@ for multiple object user drawings use command <a href="#multidraw">'multidraw'</a>
-	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>demiline</li><li>demilines</li><li>segment</li><li>segments</li><li>polyline | brokenline </li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9] (e.g poly3 ... poly7...poly9 </li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline | path</li><li>freehandlines | paths</li><li>clickfill : fill the clicked area with a color<br />only one area can be selected</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
+	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>demiline</li><li>demilines</li><li>segment</li><li>segments</li><li>polyline | brokenline </li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9] (e.g poly3 ... poly7...poly9 </li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline | path</li><li>freehandlines | paths</li><li>clickfill : fill the clicked area with a color<br />the click may be set <a href="#snaptogrid">snapped...</a></ br>only one area can be selected <br />use command <a href="#canvastype">'canvastype'</a> to fill another canvas (default should be fine: DRAG_CANVAS = 5)</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
 	@ <b>note</b>: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
 	@ <b>note</b>: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />while typing the background of every typed char will be lightblue..."backspace / delete / esc" will remove typed text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt()" : lightblue background will disappear<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" , a confirm will popup asking to delete the selected text.This text will be removed from the "userdraw_txt()" answer array.<br />Use commands 'fontsize' and 'fontfamily' to control the text appearance
 	@ <b>note</b>: object_type polygone: Will be finished (the object is closed) when clicked on the first point of the polygone again.
@@ -1882,11 +1884,11 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    var context_userdraw = canvas_userdraw.getContext(\"2d\");var use_dashed = %d;\
 	    if(use_dashed == 1){if( context_userdraw.setLineDash ){context_userdraw.setLineDash([%d,%d]);}else{if(context_userdraw.mozDash){context_userdraw.mozDash = [%d,%d];};};};\
 	    if(wims_status != \"done\"){\
-	    canvas_div.addEventListener(\"mousedown\",user_draw,false);\
-	    canvas_div.addEventListener(\"mousemove\",user_drag,false);\
-	    canvas_div.addEventListener(\"touchstart\", function(e){ e.preventDefault();user_draw(e.changedTouches[0]);},false);\
-	    canvas_div.addEventListener(\"touchmove\", function(e){ e.preventDefault();user_drag(e.changedTouches[0]);},false);\
-	    canvas_div.addEventListener(\"touchend\", function(e){ e.preventDefault();user_draw(e.changedTouches[0]);},false);\
+	    canvas_div.addEventListener(\"mousedown\" ,user_draw,false);\
+	    canvas_div.addEventListener(\"mousemove\" ,user_drag,false);\
+	    canvas_div.addEventListener(\"touchstart\",function(e){ e.preventDefault();user_draw(e.changedTouches[0]);},false);\
+	    canvas_div.addEventListener(\"touchmove\" ,function(e){ e.preventDefault();user_drag(e.changedTouches[0]);},false);\
+	    canvas_div.addEventListener(\"touchend\"  ,function(e){ e.preventDefault();user_draw(e.changedTouches[0]);},false);\
 	    }\n<!-- end userdraw mouse & touch events -->",canvas_root_id,DRAW_CANVAS,use_dashed,dashtype[0],dashtype[1],dashtype[0],dashtype[1]);
 	    draw_type = get_string_argument(infile,0);
 	    stroke_color = get_color(infile,1);
@@ -2259,7 +2261,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		add_js_clickfill(js_include_file,canvas_root_id,stroke_color,(int) (fill_opacity/0.0039215));
 		if(js_function[DRAW_FILLTOBORDER] != 1 ){/* use only once */
 		 js_function[DRAW_FILLTOBORDER] = 1;
-		 add_js_filltoborder(js_include_file,canvas_root_id);
+		 add_js_filltoborder(js_include_file,canvas_root_id,canvas_type);
 	        }
 	    }
 	    else
@@ -2544,11 +2546,12 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		add_jsplot(js_include_file,canvas_root_id); /* this plots the function on JSPLOT_CANVAS */
 	    }
 	    temp = get_string_argument(infile,1);
-	    string_length = snprintf(NULL,0,  "jsplot(%d,\"%s\",%d,\"%s\",%.2f,%d,%d,%d); ",JSPLOT_CANVAS+use_js_plot,temp,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+	    string_length = snprintf(NULL,0,  "jsplot(%d,\"%s\",%d,\"%s\",%.2f,%d,%d,%d); ",JSPLOT_CANVAS+jsplot_cnt,temp,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
 	    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-	    snprintf(tmp_buffer,string_length,"jsplot(%d,\"%s\",%d,\"%s\",%.2f,%d,%d,%d); ",JSPLOT_CANVAS+use_js_plot,temp,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+	    snprintf(tmp_buffer,string_length,"jsplot(%d,\"%s\",%d,\"%s\",%.2f,%d,%d,%d); ",JSPLOT_CANVAS+jsplot_cnt,temp,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
 	    add_to_buffer(tmp_buffer);
-	    use_js_plot++; /* we need to create multiple canvasses, so we may zoom and pan ?? */
+	    jsplot_cnt++;
+	     /* we need to create multiple canvasses, so we may zoom and pan ?? */
 	break;
 
 	case CURVE:
@@ -4085,13 +4088,23 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	    }
 	    reset();
 	break;
+	case CANVASTYPE:
+	 canvas_type = (int) (get_real(infile,1));
+	/*
+	@ canvastype TYPE
+	@ for now only usefull before commands  filltoborder / floodfill / clickfill etc operations<br />Only the images of this TYPE will be scanned and filled
+	@ default value of TYPE is DRAG_CANVAS e.g. 5 
+	@ use another TYPE if you know what you are doing...
+	@ other possible canvasses (transparent PNG pictures xsize x ysize on top of eachother)<ul><li>EXTERNAL_IMAGE_CANVAS = 0</li><li>BG_CANVAS = 1</li><li> STATIC_CANVAS = 2</li><li> MOUSE_CANVAS = 3 : used for command "mouse"</li><li> GRID_CANVAS = 4 :used for command "grid"</li><li> DRAG_CANVAS = 5 :default</li><li> DRAW_CANVAS = 6 :used for some static drawings</li><li> TEXT_CANVAS = 7 : used for text-strings</li><li> CLOCK_CANVAS = 8 : used for command "clock"</li><li> ANIMATE_CANVAS = 9 : not used for now</li><li> TRACE_CANVAS = 10 : used for command "trace_jscurve"</li><li> JSPLOT_CANVAS = 111 : will be increased with every new command "jscurve"</li> <li> FILL_CANVAS = 12 : this will be filled...so do not use ! </li><li> USERDRAW_JSPLOT 13 : will be increased with every new command "userinput function"</li></ul>	
+	*/
+	break;
 	case FILLTOBORDER:
 	/*
 	@ filltoborder x,y,bordercolor,color
-	@ WILL NOT WORK CORRECTLY, YET !!!
-	@ fill the region  of point (x:y) bounded by 'bordercolor' with color 'color'
+	@ fill the region  of point (x:y)  with color 'color'
 	@ any other color will not act as border to the bucket fill
 	@ use this command  after all boundary objects are declared.
+	@ use command <a href="#canvastype">canvastype </a> to fill another canvas (default should be fine: DRAG_CANVAS = 5)
 	@ <b>note</b>: filltoborder is a very (client) cpu intensive operation!<br />filling is done pixel by pixel<br/>e.g. image size of 400x400 uses 160000 pixels : each pixel contains 4 data (R,G,B,Opacity) = 640000 data.<br />on every data a few operations / comparisons are done...<br />So have pity on your students CPU..
 	*/
 	    for(i=0 ;i < 4 ; i++){
@@ -4102,7 +4115,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 		    case 3:fill_color = get_color(infile,1);
 			   if(js_function[DRAW_FILLTOBORDER] != 1 ){/* use only once */
 				js_function[DRAW_FILLTOBORDER] = 1;
-				add_js_filltoborder(js_include_file,canvas_root_id);
+				add_js_filltoborder(js_include_file,canvas_root_id,canvas_type);
 			   }
 			   decimals = find_number_of_digits(precision);
 			   /* we need to set a timeout: the canvas is not yet draw in memory? when floodfill is called directly... */
@@ -4123,8 +4136,8 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ fill the region of point (x:y) with color 'color'
 	@ any other color or size of picture (borders of picture) will act as border to the bucket fill
 	@ use this command  after all boundary objects are declared.
-	@ Use command 'clickfill,color' for user click driven flood fill.
-	@ <b>note</b>: recognised colour boundaries are in the "drag canvas" e.g. only for objects that can be set draggable / clickable
+	@ Use command 'userdraw clickfill,color' for user click driven flood fill.
+	@ use command <a href="#canvastype">canvastype </a> to fill another canvas (default should be fine: DRAG_CANVAS = 5)
 	@ <b>note</b>: floodfill is a very (client) cpu intensive operation!<br />filling is done pixel by pixel<br/>e.g. image size of 400x400 uses 160000 pixels : each pixel contains 4 data (R,G,B,Opacity) = 640000 data.<br />on every data a few operations / comparisons are done...<br />So have pity on your students CPU..
 	*/
 	    for(i=0 ;i < 4 ; i++){
@@ -4134,18 +4147,8 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 		    case 2:fill_color = get_color(infile,1);
 			   if(js_function[DRAW_FILLTOBORDER] != 1 ){/* use only once */
 				js_function[DRAW_FILLTOBORDER] = 1;
-				add_js_filltoborder(js_include_file,canvas_root_id);
+				add_js_filltoborder(js_include_file,canvas_root_id,canvas_type);
 			   }
-
-			   /* we need to set a timeout: the canvas is not yet draw in memory? when floodfill is called directly... */
-/*
-			   decimals = find_number_of_digits(precision);
-			    string_length = snprintf(NULL,0,  "setTimeout(function(){floodfill(0,%.*f,%.*f,[%s,%d]);},1000);\n",decimals,double_data[0],decimals,double_data[1],fill_color,(int) (fill_opacity/0.0039215));
-			   check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-			   snprintf(tmp_buffer,string_length,"setTimeout(function(){floodfill(0,%.*f,%.*f,[%s,%d]);},1000);\n",decimals,double_data[0],decimals,double_data[1],fill_color,(int) (fill_opacity/0.0039215));
-			   add_to_buffer(tmp_buffer);
-*/
-
 			   decimals = find_number_of_digits(precision);
 			   /* we need to set a timeout: the canvas is not yet draw in memory? when floodfill is called directly... */
 			   string_length = snprintf(NULL,0,  "setTimeout(function(){filltoborder(%.*f,%.*f,[%s,%d],[%s,%d]);},1000);\n",decimals,double_data[0],decimals,double_data[1],fill_color,(int) (fill_opacity/0.0039215),fill_color,(int) (fill_opacity/0.0039215));
@@ -8562,7 +8565,8 @@ int get_token(FILE *infile){
 	*cursor="cursor",
 	*pointer="pointer",
 	*yerrorbars="yerrorbars",
-	*xerrorbars="xerrorbars";
+	*xerrorbars="xerrorbars",
+	*canvastype="canvastype";
 
 	while(((c = getc(infile)) != EOF)&&(c!='\n')&&(c!=',')&&(c!='=')&&(c!='\r')&&(c!='\t')){
 	 if( i == 0 && (c == ' ') ){ continue; /* white spaces or tabs allowed before first command identifier */
@@ -9435,6 +9439,10 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, xerrorbars) == 0  ){
 	free(input_type);
 	return XERRORBARS;
+	}
+	if( strcmp(input_type, canvastype) == 0  ){
+	free(input_type);
+	return CANVASTYPE;
 	}
 	free(input_type);
 	ungetc(c,infile);

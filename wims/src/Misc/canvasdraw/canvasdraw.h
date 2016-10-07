@@ -194,6 +194,7 @@
 #define USERBOXPLOTDATA	198
 #define ROTATION_CENTER 199
 #define KILLROTATE	200
+#define CANVASTYPE	201
 /* the draw_function collection */
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1
@@ -250,9 +251,9 @@
 #define CLOCK_CANVAS	8
 #define ANIMATE_CANVAS	9
 #define TRACE_CANVAS	10
-#define JSPLOT_CANVAS	11
+#define JSPLOT_CANVAS	111 /* JSPLOT_canvas will be increased with every added inputfield... 13,14,14... should not conflict with other images*/
 #define FILL_CANVAS	12
-#define USERDRAW_JSPLOT 112 /* USERDRAW_JSPLOT will be increased with every added inputfield... 13,14,14... SHOULD ALWAYS HAVE HIGHEST NUMBER*/
+#define USERDRAW_JSPLOT 13 /* USERDRAW_JSPLOT will be increased with every added inputfield... 13,14,14... should not conflict with other images*/
 
 #ifndef STD_H
 #define STD_H
@@ -306,7 +307,7 @@ void add_js_paths(FILE *js_include_file,int num,char *draw_type,int line_width, 
 void add_js_poly(FILE *js_include_file,int num,char *draw_type,int line_width,char *stroke_color,double stroke_opacity,int use_filled,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_rect(FILE *js_include_file,int num,int roundrect,char *draw_type,int line_width,char *stroke_color,double stroke_opacity,int use_filled,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_clickfill(FILE *js_include_file,int canvas_root_id,char *clickcolor,int opacity);
-void add_js_filltoborder(FILE *js_include_file,int canvas_root_id);
+void add_js_filltoborder(FILE *js_include_file,int canvas_root_id,int canvas_type);
 void add_js_arc(FILE *js_include_file,int canvas_root_id,int num,int line_width,char *stroke_color,double stroke_opacity,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_text(FILE *js_include_file,int canvas_root_id,int font_size,char *font_family,char *font_color,double stroke_opacity);
 void add_js_multidraw(FILE *js_include_file,int canvas_root_id,char *draw_types,char *button_style);

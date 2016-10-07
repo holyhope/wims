@@ -1098,6 +1098,7 @@ function canvas_remove(x,y){\
     userdraw_x.splice(p,1);userdraw_y.splice(p,1);\
     context_userdraw = null;context_userdraw = canvas_userdraw.getContext(\"2d\");context_userdraw.clearRect(0,0,xsize,ysize);\
     draw_circles(context_userdraw,userdraw_x,userdraw_y,userdraw_radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1);\
+    xy_cnt--;\
     return;\
    };\
   };\
@@ -1276,7 +1277,8 @@ function canvas_remove(x,y){\
   if(userdraw_x[p] < x + marge && userdraw_x[p] > x - marge ){\
    if(userdraw_y[p] < y + marge && userdraw_y[p] > y - marge ){\
     userdraw_x.splice(p,1);userdraw_y.splice(p,1);\
-    context_userdraw = null;context_userdraw = canvas_userdraw.getContext(\"2d\");context_userdraw.clearRect(0,0,xsize,ysize);xy_cnt--;\
+    context_userdraw = null;context_userdraw = canvas_userdraw.getContext(\"2d\");context_userdraw.clearRect(0,0,xsize,ysize);\
+    xy_cnt--;\
     draw_crosshairs(context_userdraw,userdraw_x,userdraw_y,line_width,crosshair_size,stroke_color,stroke_opacity,0,0,0,[0,0]);\
     return;\
    }\
@@ -1401,7 +1403,7 @@ function canvas_remove(x,y){\
      {\
       userdraw_x.splice(p-1,2);userdraw_y.splice(p-1,2);\
      }\
-     xy_cnt--;\
+     xy_cnt = xy_cnt - 2;\
      context_userdraw.clearRect(0,0,xsize,ysize);\
      if(xy_cnt < 2){xy_cnt = 0;click_cnt = 0;userdraw_x = [];userdraw_y = [];return;};\
      if( roundrect == 0 ){\
@@ -1629,6 +1631,7 @@ function canvas_remove(x,y){\
  if( confirm(\"remove line ?\" )){\
   context_userdraw.clearRect(0,0,xsize,ysize);\
   userdraw_x = [];userdraw_y = [];cnt = 1;\
+  xy_cnt=0;\
   return;\
  }\
 };",draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);
@@ -1740,6 +1743,7 @@ function canvas_remove(x,y){\
       userdraw_x.splice(p-1,2);userdraw_y.splice(p-1,2);\
      }\
      if(userdraw_x.length < 2){ userdraw_x = [];userdraw_y = [];return;};\
+     xy_cnt = xy_cnt - 2;\
      draw_segments(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
     }\
     return;\
@@ -1854,6 +1858,7 @@ function canvas_remove(x,y){\
      {\
       userdraw_x.splice(p-1,2);userdraw_y.splice(p-1,2);\
      }\
+     xy_cnt = xy_cnt - 2;\
      if(userdraw_x.length < 2){ userdraw_x = [];userdraw_y = [];return;};\
      draw_demilines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
     }\
@@ -2031,6 +2036,7 @@ function canvas_remove(x,y){\
      {\
       userdraw_x.splice(p-1,2);userdraw_y.splice(p-1,2);\
      }\
+     xy_cnt--;\
      if(userdraw_x.length < 2){ userdraw_x = [];userdraw_y = [];return;};\
      draw_lines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
     }\
@@ -2150,6 +2156,7 @@ function canvas_remove(x,y){\
      {\
       userdraw_x.splice(p-1,2);userdraw_y.splice(p-1,2);\
      }\
+     xy_cnt = xy_cnt - 2;\
      if(userdraw_x.length < 2){ userdraw_x = [];userdraw_y = [];return;};\
      draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,0,[1,0,0,1,0,0],type,use_rotate,angle,0,[1,0,0,1,0,0]);\
     }\
@@ -2627,20 +2634,14 @@ void add_js_mouse(FILE *js_include_file,int canvas_cnt,int canvas_root_id,int pr
 fprintf(js_include_file,"\n<!-- begin command mouse on mouse canvas -->\n\
 function use_mouse_coordinates(){\
  var type = %d;\
- var mouse_canvas;var canvas_type = %d;\
- if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
-   mouse_canvas = document.getElementById(\"wims_canvas%d\"+canvas_type);\
- }\
- else\
- {\
-  mouse_canvas = create_canvas%d(canvas_type,xsize,ysize);\
- };\
+ var canvas_type = %d;\
+ var mouse_canvas = create_canvas%d(canvas_type,xsize,ysize);\
  var mouse_context = mouse_canvas.getContext(\"2d\");\
  mouse_canvas.addEventListener(\"mousemove\",show_coordinate%d,false);\
  mouse_canvas.addEventListener(\"touchmove\", function(e){ e.preventDefault();show_coordinate%d(e.changedTouches[0]);},false);\
  var prec = Math.log(%d)/(Math.log(10));\
  function show_coordinate%d(evt){\
-  var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
+  var mouse = dragstuff.getMouse(evt,canvas_div);\
   var x = mouse.x;\
   var y = mouse.y;\
   var m_data = \"\";var l = userdraw_x.length;\
@@ -2658,7 +2659,7 @@ function use_mouse_coordinates(){\
   mouse_context.clearRect(0,0,s,1.2*%d);\
   mouse_context.fillText(m_data,0,%d);\
  };\
-};",type,MOUSE_CANVAS,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,precision,canvas_root_id,font_size,font_size,stroke_color,stroke_opacity,font_size,font_size);
+};",type,MOUSE_CANVAS,canvas_root_id,canvas_root_id,canvas_root_id,precision,canvas_root_id,font_size,font_size,stroke_color,stroke_opacity,font_size,font_size);
 }
 /* to avoid easy js-code injection...but is it a real problem ? */
 void add_safe_eval(FILE *js_include_file){
@@ -3468,14 +3469,7 @@ function user_redraw(t){\
 void add_jsplot(FILE *js_include_file,int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin jsplot() -->\n\
 var jsplot = function(canvas_type,f,linewidth,color,opacity,use_dashed,dashtype0,dashtype1){\
- var obj;\
- if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
-  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
- }\
- else\
- {\
-  obj = create_canvas%d(canvas_type,xsize,ysize);\
- };\
+ var obj = create_canvas%d(canvas_type,xsize,ysize);\
  var ctx = obj.getContext(\"2d\");\
  ctx.clearRect(0,0,xsize,ysize);\
  function eval_jsmath(x){return parseFloat(eval(fun));};\
@@ -3498,7 +3492,7 @@ var jsplot = function(canvas_type,f,linewidth,color,opacity,use_dashed,dashtype0
  };\
  ctx.closePath();\
  ctx.stroke();\
-};",canvas_root_id,canvas_root_id,canvas_root_id);
+};",canvas_root_id);
 }
 
 void add_to_js_math(FILE *js_include_file){
@@ -4322,15 +4316,37 @@ void add_js_clickfill(FILE *js_include_file,int canvas_root_id,char *clickcolor,
 fprintf(js_include_file,"\n<!-- begin command clickfill -->\n\
 function user_drag(evt){return;};\
 function user_draw(evt){\
-  var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
-  userdraw_x[0] = mouse.x;\
-  userdraw_y[0] = mouse.y;\
-  setTimeout(function(){filltoborder( px2x(mouse.x),px2y(mouse.y),[%s,%d],[%s,%d]);},1000);\
+ var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
+ var x = mouse.x;\
+ var y = mouse.y;\
+ if( use_snap_to_points != 0 ){\
+  var xy = new Array(2);\
+  if( use_snap_to_points == 1 ){\
+   xy = snap_to_points(x,y);\
+  }\
+  else\
+  {\
+   xy = snap_to_fun(x,y);\
+  };\
+  x = xy[0];y = xy[1];\
+ }\
+ else\
+ {\
+  if( x_use_snap_to_grid == 1 ){\
+    x = snap_to_x(x);\
+  };\
+  if( y_use_snap_to_grid == 1 ){\
+   y = snap_to_y(y);\
+  };\
+ };\
+ userdraw_x[0] = x;\
+ userdraw_y[0] = y;\
+ filltoborder( px2x(mouse.x),px2y(mouse.y),[%s,%d],[%s,%d]);\
 };",clickcolor,opacity,clickcolor,opacity);
 }
 
 /* 10/2016 does not react to border color !! just any border will stop the filling */
-void add_js_filltoborder(FILE *js_include_file,int canvas_root_id){
+void add_js_filltoborder(FILE *js_include_file,int canvas_root_id,int canvas_type){
 fprintf(js_include_file,"\n<!-- begin command filltoborder -->\n\
 var filltoborder = function(xs,ys,bordercolor,color){\
  var canvas = document.getElementById(\"wims_canvas%d%d\");\
@@ -4414,19 +4430,11 @@ var filltoborder = function(xs,ys,bordercolor,color){\
    pixelPos += xsize * 4;\
   }\
  };\
- var fill_canvas;var fill_canvas_ctx;\
- if( document.getElementById(\"wims_canvas%d%d\")){\
-  fill_canvas =  document.getElementById(\"wims_canvas%d%d\");\
- }\
- else\
- {\
-  fill_canvas = create_canvas%d(%d,xsize,ysize);\
- };\
- fill_canvas_ctx = fill_canvas.getContext(\"2d\");\
+ var fill_canvas = create_canvas%d(%d,xsize,ysize);\
+ var fill_canvas_ctx = fill_canvas.getContext(\"2d\");\
  fill_canvas_ctx.clearRect(0,0,xsize,ysize);\
  fill_canvas_ctx.putImageData(image, 0, 0);\
- fill_canvas_ctx.restore();\
-};",canvas_root_id,DRAG_CANVAS,canvas_root_id,FILL_CANVAS,canvas_root_id,FILL_CANVAS,canvas_root_id,FILL_CANVAS);
+};",canvas_root_id,canvas_type,canvas_root_id,FILL_CANVAS);
 }
 
 void add_js_ruler(FILE *js_include_file,
