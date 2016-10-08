@@ -7,8 +7,9 @@
  a:hover {color:#dd6300;}
  a:visited {color:#004077;}
 </style>
+
 <input type='text' size='10' value='' id='search'  onkeydown='javascripts:if(event.keyCode == 13){look();}'/><input type='button' onclick='javascript:look();' value='search' />
-<center><h3>Implemented canvasdraw commands (07-10-2016)</h3></center>
+<center><h3>Implemented canvasdraw commands (08-10-2016)</h3></center>
 <table style='color:blue;font-size:0.8em;'><tr>
 
 <td><a name='canvasdraw top' href='#canvasdraw'>canvasdraw</a></td>
@@ -790,14 +791,14 @@
 <li><span style="color:blue;font-size:0.8em"> <em>technical: all 8 'draw primitives' + 'text' will have their own -transparent- PNG bitmap canvas. <br />So for example there can be a points_canvas entirely separated from a line_canvas.<br />This to avoid the need for a complete redraw when something is drawn to the canvas...(eg only the object_type_canvas is redrawn)<br />This in contrast to many very slow do-it-all HTML5 canvas javascript libraries.<br />The mouselisteners are attached to the canvas-div element.</em>
 </span></li>
 </ul>
-<li><a name='ruler' href='#ruler top'>  ruler x,y,x-width ,y-height,passive_mode</a><ul>
+<li><a name='ruler' href='#ruler top'>  ruler x,y,x-width ,y-height,mode</a><ul>
 <li><span style="color:blue;font-size:0.8em"> x,y are the initial location
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> x-width , y-height are the ruler dimensions width &amp; height in xy-coordinate system
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> the ruler scale is by definition the x-scale, set by command 'xrange'<br />for example: a ruler x-width of 6 will have a scale ranging from 0 to 6
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> passive_mode : use -1 to set the ruler interactive (eg mouse movement of ruler; drag &amp; rotate)<br />use passive_mode = '0&deg; - 360&deg;' to set the ruler with a static angle of some value
+<li><span style="color:blue;font-size:0.8em"> mode : use -1 to set the ruler interactive (eg mouse movement of ruler; drag &amp; rotate)<br />use mode = '0&deg; - 360&deg;' to set the ruler with a static angle of some value
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> if combined with a protractor, use replyformat = 32
 </span></li>
@@ -808,16 +809,16 @@
 <li><span style="color:blue;font-size:0.8em"> usage: first left click on the ruler will activate dragging;<br />a second left click will activate rotating (just move mouse around)<br />a third click will freeze this position and the x/y-coordinate and angle in radians will be stored in reply(3)<br />a next click will restart this sequence...
 </span></li>
 </ul>
-<li><a name='protractor' href='#protractor top'>  protractor x,y,x-width,type,passive_mode,value_display,use_scale</a><ul>
+<li><a name='protractor' href='#protractor top'>  protractor x,y,x_width,type,mode,use_a_scale</a><ul>
 <li><span style="color:blue;font-size:0.8em"> x,y are the initial location
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> x-width : give the width in x-coordinate system
+<li><span style="color:blue;font-size:0.8em"> x_width : give the width in x-coordinate system (e.g. not in pixels !)
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> type = 1 : a triangle range 0 - 180<br />type = 2 : a circle shape 0 - 360<br />to do: degree scale optional
+<li><span style="color:blue;font-size:0.8em"> type = 1 : a triangle range 0 - 180<br />type = 2 : a circle shape 0 - 360
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> passive_mode : use -1 to set the protractor interactive (mouse movement of protractor)<br />use passive_mode = '0&deg; - 360&deg;' to set the protractor with a static angle of some value
+<li><span style="color:blue;font-size:0.8em"> mode : use -1 to set the protractor interactive (mouse movement of protractor)<br />use mode = '0&deg; - 360&deg;' to set the protractor with a static angle of some value
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> value_display = 0 : no display of the angle value<br />value_display = 1 : value display in degrees<br />value_display = 2 : value display in radians<br />the display of the angle may cause some hickups in the smooth rotation of the protractor...
+<li><span style="color:blue;font-size:0.8em"> if the value of the user_rotation angle is to be shown...use command <a href='#display'>display degree,color,fontsize</a><a href='#display'>display radian,color,fontsize</a>
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use_scale = 1 : the protractor will have some scale values printed; use_scale=0 to disable
 </span></li>
@@ -1691,10 +1692,12 @@
 <li><span style="color:blue;font-size:0.8em"> wims will not check the validity of your cursor declaration
 </span></li>
 </ul>
-<li><a name='display' href='#display top'>  display x|y|xy|degree|radius,color,fontsize</a><ul>
-<li><span style="color:blue;font-size:0.8em"> will display the mouse cursor coordinates as x-only,y-only,(x:y),<br />the radius of a circle (this only in case 'userdraw circle(s),color' !!<br />or the angle in degrees ( rhe angle between x-axis;(0:0);(x:y)
+<li><a name='display' href='#display top'>  display TYPE,color,fontsize</a><ul>
+<li><span style="color:blue;font-size:0.8em"> TYPE may be x | y | xy | degree | radian | radius
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> use commands 'xunit' and / or 'yunit' to add the units to the mouse values
+<li><span style="color:blue;font-size:0.8em"> will display the mouse cursor coordinates as x-only,y-only,(x:y),<br />the radius of a circle (this only in case 'userdraw circle(s),color')<br />or the angle in degrees or radians for commands "userdraw arc,color" or protractor , ruler (if set dynamic)
+</span></li>
+<li><span style="color:blue;font-size:0.8em"> use commands 'xunit' and / or 'yunit' to add the units to the mouse values.<br />The "degree | radian" will always have the appropriate symbol)
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> just like commands 'mouse','mousex','mousey','mouse_degree'...only other name)
 </span></li>
@@ -2209,5 +2212,6 @@
   return;
  };
 </script>
+
 </body>
 </html>

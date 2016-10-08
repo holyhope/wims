@@ -2465,35 +2465,10 @@ var draw_userarc = function(ctx,xc,yc,x1,y1,x2,y2,line_width,stroke_color,stroke
  ctx.lineWidth = line_width;\
  ctx.strokeStyle =  \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  ctx.fillStyle = \"rgba(\"+fill_color+\",\"+fill_opacity+\")\";\
- var alpha = find_angle(xc,yc,x1,y1,x2,y2);\
+ var alpha = find_angle(xc,yc,x2,y2);\
  if( %d == 1 ){userdraw_radius[0] = alpha;ctx.clearRect(0,0,xsize,ysize);}else{userdraw_radius.push(alpha);};\
  var r = Math.sqrt(Math.pow(xc-x2,2)+Math.pow(yc-y2,2));\
- var start;var tmp;var beta;\
- if( x1 > x2 ){\
-  tmp = x2; x2 = x1 ; x1 = tmp;\
-  tmp = y2; y2 = y1 ; y1 = tmp;\
- };\
- if( y1 < yc ){\
-  beta = find_angle(xc,yc,x1,yc,x1,y1);\
-   if( x1 < xc ){\
-    start = Math.PI + beta;\
-   }\
-   else\
-   {\
-    start = 2*Math.PI - beta;\
-   }\
- }\
- else\
- {\
-  beta = find_angle(xc,yc,x2,yc,x2,y2);\
-  if(x2 > xc){\
-   start = beta;\
-  }\
-  else\
-  {\
-   start = Math.PI - beta;\
-  }\
- };\
+ var start = find_angle(xc,yc,x1,y1);\
  ctx.translate(xc,yc);\
  ctx.rotate(start);\
  ctx.beginPath();\
@@ -2503,12 +2478,6 @@ var draw_userarc = function(ctx,xc,yc,x1,y1,x2,y2,line_width,stroke_color,stroke
  ctx.fill();\
  ctx.stroke();\
  ctx.restore();\
-};\
-function find_angle(xc,yc,x1,y1,x2,y2){\
- var a = Math.sqrt(Math.pow(xc-x1,2)+Math.pow(yc-y1,2));\
- var b = Math.sqrt(Math.pow(xc-x2,2)+Math.pow(yc-y2,2));\
- var c = Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2));\
- return Math.acos((b*b+a*a-c*c)/(2*b*a));\
 };",num,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,num);
 }
 
@@ -2628,7 +2597,9 @@ function user_text(evt){\
 type = 0 : x-values only [command mousex]
 type = 1 : y-values only [command mousey]
 type = 2 : (x:y) 	 [command mouse]
-type = 3 : degrees	 [command mouse_degree]
+type = 3 : degree	 [command mouse_degree]
+type = 4 : radian
+type = 5 : radius
 */
 void add_js_mouse(FILE *js_include_file,int canvas_cnt,int canvas_root_id,int precision,char *stroke_color,int font_size,double stroke_opacity,int type){
 fprintf(js_include_file,"\n<!-- begin command mouse on mouse canvas -->\n\
@@ -2649,8 +2620,9 @@ function use_mouse_coordinates(){\
    case 0: m_data = \" \"+(px2x(x)).toFixed(prec)+\" \"+unit_x;break;\
    case 1: m_data = \" \"+(px2y(y)).toFixed(prec)+\" \"+unit_y;break;\
    case 2: m_data = \"(\"+(px2x(x)).toFixed(prec)+\":\"+(px2y(y)).toFixed(prec)+\")\";break;\
-   case 3: m_data = \" \"+( ( Math.atan( ((xmax - xmin)*(px2y(y))) / ((ymax - ymin)*(px2x(x))) ) )/(Math.PI/180) ).toFixed(prec)+\" \\u00B0 \";break;\
-   case 4: if( l > 0 ){ m_data = \" R = \"+((xmax - xmin)*(distance(x,y,userdraw_x[l-1],userdraw_y[l-1]))/xsize).toFixed(prec)+\" \"+unit_x;};break;\
+   case 3: if(userdraw_radius[0]){ m_data = \" \"+( ( userdraw_radius[0])/(Math.PI/180) ).toFixed(prec)+\" \\u00B0 \";};break;\
+   case 4: if(userdraw_radius[0]){ m_data = \" \"+(userdraw_radius[0]).toFixed(prec)+\" rad \";};break;\
+   case 5: if( l > 0 ){ m_data = \" R = \"+((xmax - xmin)*(distance(x,y,userdraw_x[l-1],userdraw_y[l-1]))/xsize).toFixed(prec)+\" \"+unit_x;};break;\
    default:break;\
   };\
   var s = parseInt(0.8*%d*(m_data.toString()).length);\
@@ -4567,10 +4539,7 @@ int line_width,int dynamic){
       ctx.restore();\
       break;\
      case 2:\
-      var mouse_y = mouse.y;\
-      var mouse_x = mouse.x;\
-      angle = find_angle(ruler_x,ruler_y,mouse_x,mouse_y);\
-      if(angle > full){angle = angle - full;};\
+      angle = find_angle(ruler_x,ruler_y,mouse.x,mouse.y);\
       ctx.clearRect(0,0,xsize,ysize);\
       ctx.save();\
       ctx.translate(ruler_x,ruler_y);\
@@ -4578,19 +4547,11 @@ int line_width,int dynamic){
       ctx.translate( -1*xcenter, -1*ycenter );\
       ctx.drawImage( canvas_temp,0,0 );\
       ctx.restore();\
+      userdraw_radius[0] = 2*Math.PI - angle;\
       break;\
      case 3:ruler_click_cnt = 0;break;\
      default:ruler_stop(evt);break;\
     };\
-   };\
-   function find_angle(xc,yc,x1,y1){\
-    var dx = Math.abs(x1 - xc);\
-    var dy = yc - y1 ;\
-    if( x1 >= xc ){\
-     return -1*Math.atan(dy/dx);\
-    };\
-    if(x1 <= xc && y1 <= yc){return Math.PI - Math.atan(-1*dy/dx);};\
-    if(x1 <= xc && y1 >= yc){return Math.PI + Math.atan(dy/dx);};\
    };\
   };\
   ruler%d();\n",canvas_root_id);
@@ -4610,7 +4571,7 @@ int line_width,int dynamic){
  }
 }
 
-void add_js_protractor(FILE *js_include_file,int canvas_root_id,int type,double xcenter,double ycenter,int size,char *font,char *stroke_color,double stroke_opacity,char *fill_color,double fill_opacity,int line_width,int display_type,int use_scale,int dynamic){
+void add_js_protractor(FILE *js_include_file,int canvas_root_id,int type,double xcenter,double ycenter,int size,char *font,char *stroke_color,double stroke_opacity,char *fill_color,double fill_opacity,int line_width,int use_scale,int dynamic){
 
 /*
 use_slider_display = 2 : angle in degrees
@@ -4644,7 +4605,6 @@ if( type == 1 ){ /* geodriehoek */
   ctx_temp.strokeStyle = \"rgba(%s,%f)\";\
   ctx_temp.fillStyle = \"rgba(%s,%f)\";\
   ctx_temp.lineWidth =%d;\
-  var display_type = %d;\
   var use_scale = %d;\
   if( once ){\
    ctx_temp.clearRect(0,0,canvas_temp.width,canvas_temp.height);\
@@ -4693,107 +4653,8 @@ if( type == 1 ){ /* geodriehoek */
    ctx_temp.save();\
    once = false;\
   };\
-  ",canvas_root_id,canvas_root_id,size,type,xcenter,ycenter,font,stroke_color,stroke_opacity,fill_color,fill_opacity,line_width,display_type,use_scale);
-
-if(dynamic == -1 ){
- fprintf(js_include_file,"\
-  var protractor_x = xcenter;\
-  var protractor_y = ycenter;\
-  ctx.drawImage(canvas_temp,0,0);\
-  if(wims_status != \"done\"){\
-   canvas_div.addEventListener( 'mouseup'   , protractor_stop,false);\
-   canvas_div.addEventListener( 'mousedown' , protractor_start,false);\
-   canvas_div.addEventListener( 'mousemove' , protractor_move,false);\
-   canvas_div.addEventListener( 'touchstart', function(e){ e.preventDefault();protractor_start(e.changedTouches[0]);},false);\
-   canvas_div.addEventListener( 'touchmove', function(e){ e.preventDefault();protractor_move(e.changedTouches[0]);},false);\
-   canvas_div.addEventListener( 'touchend', function(e){ e.preventDefault();protractor_stop(e.changedTouches[0]);},false);\
-  };\
-  function protractor_stop(evt){\
-   if(display_type > 1 ){show_slider_value([0,angle],display_type);};\
-   protractor_data[0] = protractor_x;\
-   protractor_data[1] = protractor_y;\
-   protractor_data[2] = angle;\
-   return;\
-  };\
-  var protractor_click_cnt = 0;\
-  function protractor_start(evt){\
-   var mouse = dragstuff.getMouse(evt,canvas);\
-   var mouse_y = mouse.y;\
-   if( mouse_y > ysize - 20 ){return;};\
-   var mouse_x = mouse.x;\
-   if( mouse_x > protractor_x - 50 && mouse_x < protractor_x + size ){\
-    if( mouse_y > protractor_y - 50 && mouse_y < protractor_y + size ){\
-     protractor_click_cnt++;\
-     protractor_move(evt);\
-     return;\
-    };\
-   }else{protractor_click_cnt = 0; return;};\
-  };\
-  var angle = 0;\
-  function protractor_move(evt){\
-   var mouse = dragstuff.getMouse(evt,canvas);\
-   switch(protractor_click_cnt){\
-    case 1:\
-      angle = 0;\
-      protractor_y = mouse.y;\
-      if( protractor_y > ysize - 20 ){protractor_y = 0.5*ysize;protractor_x = 0.5*xsize;return;};\
-      protractor_x = mouse.x;\
-      if( x_use_snap_to_grid == 1 ){\
-       protractor_x = snap_to_x(protractor_x);\
-      };\
-      if( y_use_snap_to_grid == 1 ){\
-       protractor_y = snap_to_y(protractor_y);\
-      };\
-      ctx.clearRect(0,0,xsize,ysize);\
-      ctx.save();\
-      ctx.translate(protractor_x - xcenter,protractor_y - ycenter);\
-      ctx.drawImage(canvas_temp,0,0);\
-      ctx.restore();\
-    break;\
-    case 2:\
-      var mouse_y = mouse.x;\
-      var mouse_x = mouse.y;\
-      angle = find_angle(protractor_x,protractor_y,mouse_x,mouse_y);\
-      ctx.clearRect(0,0,xsize,ysize);\
-      ctx.save();\
-      ctx.translate(protractor_x,protractor_y);\
-      ctx.rotate(angle);\
-      ctx.translate( -1*xcenter, -1*ycenter );\
-      ctx.drawImage( canvas_temp,0,0 );\
-      ctx.restore();\
-      break;\
-    case 3:protractor_click_cnt = 0;break;\
-    default:protractor_stop(evt);\
-   };\
-  };\
-  function find_angle(xc,yc,x1,y1){\
-   var dx = Math.abs(x1 - xc);\
-   var dy = yc - y1 ;\
-   if( x1 >= xc ){\
-    return -1*Math.atan(dy/dx);\
-   };\
-   if(x1 <= xc && y1 <= yc){return Math.PI - Math.atan(-1*dy/dx);};\
-   if(x1 <= xc && y1 >= yc){return Math.PI + Math.atan(dy/dx);};\
-  };\
- };\
- protractor%d();\n\
-",canvas_root_id);
+  ",canvas_root_id,canvas_root_id,size,type,xcenter,ycenter,font,stroke_color,stroke_opacity,fill_color,fill_opacity,line_width,use_scale);
 }
-else
-{
- fprintf(js_include_file,"\
-  ctx.save();\
-  ctx.translate(xcenter,ycenter);\
-  ctx.rotate(%d*Math.PI/180);\
-  ctx.translate( -1*xcenter, -1*ycenter );\
-  ctx.drawImage( canvas_temp,0,0 );\
-  ctx.restore();\
- };\
- protractor%d();\n\
- ",dynamic,canvas_root_id);
-}
-} /* end type == 1 */
-
 
 if( type != 1 ){
  fprintf(js_include_file,"\n<!-- begin command protractor type 0 -->\n\
@@ -4819,7 +4680,6 @@ if( type != 1 ){
   ctx_temp.strokeStyle = \"rgba(%s,%f)\";\
   ctx_temp.fillStyle = \"rgba(%s,%f)\";\
   ctx_temp.lineWidth =%d;\
-  var display_type = %d;\
   var use_scale = %d;\
   if( once ){\
    ctx_temp.clearRect(0,0,xsize,ysize);\
@@ -4863,13 +4723,14 @@ if( type != 1 ){
    ctx_temp.drawImage(canvas,0,0);\
    ctx_temp.save();\
    once = false;\
-  };\n",canvas_root_id,canvas_root_id,size,type,xcenter,ycenter,font,stroke_color,stroke_opacity,fill_color,fill_opacity,line_width,display_type,use_scale);
-
-if( dynamic == -1 ){
+  };\n",canvas_root_id,canvas_root_id,size,type,xcenter,ycenter,font,stroke_color,stroke_opacity,fill_color,fill_opacity,line_width,use_scale);
+}
+if( dynamic == -1 ){ /* rotate the protractors */
  fprintf(js_include_file,"\
   var protractor_x = xcenter;\
   var protractor_y = ycenter;\
   ctx.drawImage(canvas_temp,0,0);\
+  var angle = 0;\
   if(wims_status != \"done\"){\
    canvas_div.addEventListener( 'mouseup'   , protractor_stop,false);\
    canvas_div.addEventListener( 'mousedown' , protractor_start,false);\
@@ -4879,7 +4740,6 @@ if( dynamic == -1 ){
    canvas_div.addEventListener( 'touchend', function(e){ e.preventDefault();protractor_stop(e.changedTouches[0]);},false);\
   };\
   function protractor_stop(evt){\
-   if(display_type > 1 ){show_slider_value([0,angle],display_type);};\
    protractor_data[0] = protractor_x;\
    protractor_data[1] = protractor_y;\
    protractor_data[2] = angle;\
@@ -4899,7 +4759,6 @@ if( dynamic == -1 ){
     };\
    }else{protractor_click_cnt = 0; return;};\
   };\
-  var angle = 0;\
   function protractor_move(evt){\
    var mouse = dragstuff.getMouse(evt,canvas);\
    switch(protractor_click_cnt){\
@@ -4921,10 +4780,7 @@ if( dynamic == -1 ){
       ctx.restore();\
       break;\
     case 2:\
-     var mouse_y = mouse.y;\
-     var mouse_x = mouse.x;\
-     angle = find_angle(protractor_x,protractor_y,mouse_x,mouse_y);\
-     if(angle > full){angle = angle - full;};\
+     angle = find_angle(protractor_x,protractor_y,mouse.x,mouse.y);\
      ctx.clearRect(0,0,xsize,ysize);\
      ctx.save();\
      ctx.translate(protractor_x,protractor_y);\
@@ -4932,19 +4788,11 @@ if( dynamic == -1 ){
      ctx.translate( -1*xcenter, -1*ycenter );\
      ctx.drawImage( canvas_temp,0,0 );\
      ctx.restore();\
+     userdraw_radius[0] =2*Math.PI- angle;\
      break;\
     case 3:protractor_click_cnt = 0;break;\
     default:protractor_stop(evt);\
    };\
-  };\
-  function find_angle(xc,yc,x1,y1){\
-   var dx = Math.abs(x1 - xc);\
-   var dy = yc - y1 ;\
-   if( x1 >= xc ){\
-    return -1*Math.atan(dy/dx);\
-   };\
-   if(x1 <= xc && y1 <= yc){return Math.PI - Math.atan(-1*dy/dx);};\
-   if(x1 <= xc && y1 >= yc){return Math.PI + Math.atan(dy/dx);};\
   };\
  };\
  protractor%d();\n\
@@ -4963,9 +4811,6 @@ else
  protractor%d();\
 ",dynamic,canvas_root_id);
 } /* end dynamic == -1*/
-
-} /* end type == 0 */
-
 
 }
 

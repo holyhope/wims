@@ -15,7 +15,7 @@
 ******************************************************************************/
 void	add_to_buffer(char *tmp); /* add tmp_buffer to the buffer */
 void	sync_input(FILE *infile);/* proceed with inputfile */
-void 	add_javascript_functions(int js_functions[], int canvas_root_id);
+void 	add_javascript_functions(int js_function[], int canvas_root_id);
 void	reset();/* reset some global variables like "use_filled" , "use_dashed" */
 int	get_token(FILE *infile); /* read next char until EOL*/
 /*
@@ -1781,11 +1781,11 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    break;
 	case RULER:
 	/*
-	@ ruler x,y,x-width ,y-height,passive_mode
+	@ ruler x,y,x-width ,y-height,mode
 	@ x,y are the initial location
 	@ x-width , y-height are the ruler dimensions width &amp; height in xy-coordinate system
 	@ the ruler scale is by definition the x-scale, set by command 'xrange'<br />for example: a ruler x-width of 6 will have a scale ranging from 0 to 6
-	@ passive_mode : use -1 to set the ruler interactive (eg mouse movement of ruler; drag &amp; rotate)<br />use passive_mode = '0&deg; - 360&deg;' to set the ruler with a static angle of some value
+	@ mode : use -1 to set the ruler interactive (eg mouse movement of ruler; drag &amp; rotate)<br />use mode = '0&deg; - 360&deg;' to set the ruler with a static angle of some value
 	@ if combined with a protractor, use replyformat = 32
 	@ only one ruler allowed (for the time being)
 	@ when using command 'zoom' , pay <b>attention</b> to the size and symmetry of your canvas<br />...to avoid a partial image, locate the start position near the center of the visual canvas<br /><em>technical:<br /> the actual 'ruler' is just a static generated image in a new canvas-memory<br />This image is only generated once, and a copy of its bitmap is translated & rotated onto the visible canvas.<br />That is the reason for the 'high-speed dragging and rotating'.<br />I've limited its size to xsize &times; ysize e.g. the same size as the visual canvas... </em>
@@ -1799,10 +1799,13 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		    case 3: double_data[3] = get_real(infile,0);break; /* y-width */
 		    case 4: int_data[0] = (int)(get_real(infile,1)); /* passive mode */
 		    decimals = find_number_of_digits(precision);
+		    if( int_data[0] < 0 ){
+		      if( js_function[JS_FIND_ANGLE] != 1 ){  js_function[JS_FIND_ANGLE] = 1; }
+		    }
 	            add_js_ruler(js_include_file,canvas_root_id,double_data[0],double_data[1],double_data[2],double_data[3],font_family,stroke_color,stroke_opacity,fill_color,fill_opacity,line_width,int_data[0]);
-	            string_length = snprintf(NULL,0,";ruler%d();",canvas_root_id);
+	            string_length = snprintf(NULL,0,";ruler%d(); ",canvas_root_id);
 		    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-		    snprintf(tmp_buffer,string_length,";ruler%d();",canvas_root_id);
+		    snprintf(tmp_buffer,string_length,";ruler%d(); ",canvas_root_id);
 		    add_to_buffer(tmp_buffer);
 		    reply_precision = precision;
 		    /* no reply from ruler if non-interactive */
@@ -1814,12 +1817,12 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    break;
 	case PROTRACTOR:
 	/*
-	 @ protractor x,y,x-width,type,passive_mode,value_display,use_scale
+	 @ protractor x,y,x_width,type,mode,use_a_scale
 	 @ x,y are the initial location
-	 @ x-width : give the width in x-coordinate system
-	 @ type = 1 : a triangle range  0 - 180<br />type = 2 : a circle shape 0 - 360<br />to do: degree scale optional
-	 @ passive_mode : use -1 to set the protractor interactive (mouse movement of protractor)<br />use passive_mode = '0&deg; - 360&deg;' to set the protractor with a static angle of some value
-	 @ value_display = 0 : no display of the angle value<br />value_display = 1 : value display in degrees<br />value_display = 2 : value display in radians<br />the display of the angle may cause some hickups in the smooth rotation of the protractor...
+	 @ x_width : give the width in x-coordinate system (e.g. not in pixels !)
+	 @ type = 1 : a triangle range  0 - 180<br />type = 2 : a circle shape 0 - 360
+	 @ mode : use -1 to set the protractor interactive (mouse movement of protractor)<br />use mode = '0&deg; - 360&deg;' to set the protractor with a static angle of some value
+	 @ if the value of the user_rotation angle is to be shown...use command <a href='#display'>display degree,color,fontsize</a><a href='#display'>display radian,color,fontsize</a>
 	 @ use_scale = 1 : the protractor will have some scale values printed; use_scale=0 to disable
 	 @ the rotating direction of the mouse around the protractor determines the clockwise/ counter clockwise rotation of the protractor...
 	 @ commands <em>stroke_color | fill_color | linewidth | opacity | font_family</em> will determine the looks of the protractor.
@@ -1830,20 +1833,21 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ only one protractor allowed (for the time being)
 	 @ usage: first left click on the protractor will activate dragging;<br />a second left click will activate rotating (just move mouse around)<br />a third click will freeze this position and the x/y-coordinate and angle in radians will be stored in reply(3)<br />a next click will restart this sequence...
 	*/
-	    for( i = 0;i < 7; i++ ){
+	    for( i = 0;i < 6; i++ ){
 		switch(i){
 		    case 0: double_data[0] = get_real(infile,0);break; /* x-center */
 		    case 1: double_data[1] = get_real(infile,0);break; /* y-center */
 		    case 2: double_data[2] = get_real(infile,0);break; /* x-width */
-		    case 3: int_data[0] = (int)(get_real(infile,0));break; /* type */
-		    case 4: int_data[1] = (int)(get_real(infile,0));break; /* passive mode */
-		    case 5: int_data[2] = (int)(get_real(infile,0));break; /* value display */
-		    case 6: int_data[3] = (int)(get_real(infile,1)); /* use scale */
+		    case 3: int_data[0] = (int)(get_real(infile,0));break; /* type: 1==triangle 2 == circle */
+		    case 4: int_data[1] = (int)(get_real(infile,0));break; /* passive mode == 0; active mode == -1 */
+		    case 5: int_data[2] = (int)(get_real(infile,1)); /* use scale */
 		    decimals = find_number_of_digits(precision);
-		    if( int_data[2] > 0 ){
-	             add_slider_display(js_include_file,canvas_root_id,precision,font_size,font_color,stroke_opacity);
-	            }
-	            add_js_protractor(js_include_file,canvas_root_id,int_data[0],double_data[0],double_data[1],double_data[2],font_family,stroke_color,stroke_opacity,fill_color,fill_opacity,line_width,int_data[2]+1,int_data[3],int_data[1]);
+		    if( int_data[2] < 0 ){
+		     if( js_function[JS_FIND_ANGLE] != 1 ){ /* add je function for calculating angle */
+		        js_function[JS_FIND_ANGLE] = 1;
+	             }
+	    	    } 
+	            add_js_protractor(js_include_file,canvas_root_id,int_data[0],double_data[0],double_data[1],double_data[2],font_family,stroke_color,stroke_opacity,fill_color,fill_opacity,line_width,int_data[2],int_data[1]);
 
 	            string_length = snprintf(NULL,0,";protractor%d(); ",canvas_root_id);
 		    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
@@ -2225,6 +2229,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    else
 	    if( strcmp(draw_type,"arc") == 0){
 		if( js_function[DRAW_SEGMENTS] != 1 ){ js_function[DRAW_SEGMENTS] = 1;}
+		if( js_function[JS_FIND_ANGLE] != 1 ){ js_function[JS_FIND_ANGLE] = 1;}
 		if(reply_format == 0){reply_format = 25;}
 		add_js_arc(js_include_file,canvas_root_id,1,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
@@ -3785,9 +3790,10 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	    break;
 	case MOUSE_DISPLAY:
 	/*
-	 @ display x|y|xy|degree|radius,color,fontsize
-	 @ will display the mouse cursor coordinates as x-only,y-only,(x:y),<br />the radius of a circle (this only in case 'userdraw circle(s),color' !!<br />or the angle in degrees ( rhe angle between x-axis;(0:0);(x:y)
-	 @ use commands 'xunit' and / or 'yunit' to add the units to the mouse values
+	 @ display TYPE,color,fontsize
+	 @ TYPE may be x | y | xy | degree | radian | radius
+	 @ will display the mouse cursor coordinates as x-only,y-only,(x:y),<br />the radius of a circle (this only in case 'userdraw circle(s),color')<br />or the angle in degrees or radians for commands "userdraw arc,color" or protractor , ruler (if set dynamic) 
+	 @ use commands 'xunit' and / or 'yunit' to add the units to the mouse values.<br />The "degree | radian" will always have the appropriate symbol)
 	 @ just like commands 'mouse','mousex','mousey','mouse_degree'...only other name)
 	*/
 	temp = get_string_argument(infile,0);
@@ -3802,11 +3808,17 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 		}else{
 		    if(strstr(temp,"degree") != NULL){
 			int_data[0] = 3;
+			js_function[JS_FIND_ANGLE] = 1;
 		    }else{
-			if(strstr(temp,"radius") != NULL){
+			if(strstr(temp,"radian") != NULL){
 			    int_data[0] = 4;
-		        }else{
-			    int_data[0] = 2;
+			    js_function[JS_FIND_ANGLE] = 1;
+			}else{
+			    if(strstr(temp,"radius") != NULL){
+				int_data[0] = 5;
+		    	    }else{
+				int_data[0] = 2;
+			    }
 			}
 		    }
 		}
@@ -3831,6 +3843,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	    tmp_buffer = my_newmem(26);
 	    snprintf(tmp_buffer,25,"use_mouse_coordinates();\n");add_to_buffer(tmp_buffer);
 	    add_js_mouse(js_include_file,MOUSE_CANVAS,canvas_root_id,precision,stroke_color,font_size,stroke_opacity,3);
+	    js_function[JS_FIND_ANGLE] = 1;
 	    break;
 	case MOUSEX:
 	/*
@@ -6170,11 +6183,21 @@ read_canvas%d = function(){\
  - is printed directly into 'js_include_file'
 */
 
-void add_javascript_functions(int js_functions[],int canvas_root_id){
+void add_javascript_functions(int js_function[],int canvas_root_id){
 int i;
 for(i = 0 ; i < MAX_JS_FUNCTIONS; i++){
- if( js_functions[i] == 1){
+ if( js_function[i] == 1){
     switch(i){
+    case JS_FIND_ANGLE: 
+    fprintf(js_include_file,"\n<!-- function find_angle() -->\n\
+function find_angle(xc,yc,x1,y1){\n\
+ var dx = x1 - xc;\n\
+ var dy = yc - y1;\n\
+ if( dx > 0 && dy < 0){ return Math.atan(-1*dy/dx);};\n\
+ if( dx < 0 && dy < 0){ return Math.PI + Math.atan(-1*dy/dx);};\n\
+ if( dx < 0 && dy > 0){ return Math.PI + Math.atan(-1*dy/dx);};\n\
+ if( dx > 0 && dy > 0){ return 2*Math.PI + Math.atan(-1*dy/dx);};\n}\n;");
+    break;
     case DRAW_EXTERNAL_IMAGE:
 /* the external_canvas is already created: it needs to be FIRST in order to do some drawing onto it
  draw_external_image(URL,int_data[2],int_data[3],int_data[6],int_data[7],int_data[0],int_data[1],int_data[6],int_data[7],ext_img_cnt,int_data[8],int_data[9]);
