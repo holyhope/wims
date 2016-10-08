@@ -1,7 +1,7 @@
 !!don't translate, this should be generated from src/Misc/canvasdraw
 
 <input type='text' size='10' value='' id='search'  onkeydown='javascripts:if(event.keyCode == 13){look();}'/><input type='button' onclick='javascript:look();' value='search' />
-<center><h3>Implemented canvasdraw commands (26-09-2016)</h3></center>
+<center><h3>Implemented canvasdraw commands (07-10-2016)</h3></center>
 <table style='color:blue;font-size:0.8em;'><tr>
 
 <td><a name='canvasdraw top' href='#canvasdraw'>canvasdraw</a></td>
@@ -194,17 +194,16 @@
 <td><a name='dotfill top' href='#dotfill'>dotfill</a></td>
 <td><a name='imagefill top' href='#imagefill'>imagefill</a></td>
 </tr><tr>
+<td><a name='canvastype top' href='#canvastype'>canvastype</a></td>
 <td><a name='filltoborder top' href='#filltoborder'>filltoborder</a></td>
 <td><a name='floodfill top' href='#floodfill'>floodfill</a></td>
 <td><a name='fill top' href='#floodfill'>fill</a></td>
-<td><a name='clickfillmarge top' href='#clickfillmarge'>clickfillmarge</a></td>
-<td><a name='clickfill top' href='#clickfill'>clickfill</a></td>
 <td><a name='setpixel top' href='#setpixel'>setpixel</a></td>
 <td><a name='pixelsize top' href='#pixelsize'>pixelsize</a></td>
 <td><a name='pixels top' href='#pixels'>pixels</a></td>
 <td><a name='replyformat top' href='#replyformat'>replyformat</a></td>
-</tr><tr>
 <td><a name='legendcolors top' href='#legendcolors'>legendcolors</a></td>
+</tr><tr>
 <td><a name='legend top' href='#legend'>legend</a></td>
 <td><a name='xlabel top' href='#xlabel'>xlabel</a></td>
 <td><a name='ylabel top' href='#ylabel'>ylabel</a></td>
@@ -213,8 +212,8 @@
 <td><a name='clock top' href='#clock'>clock</a></td>
 <td><a name='piechart top' href='#piechart'>piechart</a></td>
 <td><a name='userboxplotdata top' href='#userboxplotdata'>userboxplotdata</a></td>
-</tr><tr>
 <td><a name='userboxplot top' href='#userboxplot'>userboxplot</a></td>
+</tr><tr>
 <td><a name='boxplotdata top' href='#boxplotdata'>boxplotdata</a></td>
 <td><a name='boxplot top' href='#boxplot'>boxplot</a></td>
 <td><a name='status top' href='#status'>status</a></td>
@@ -232,13 +231,15 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> If needed multiple interactive scripts may be used in a single webpage.<br />A function 'read_canvas()' and / or 'read_dragdrop()' can read all interactive userdata from these images.<br />The global array 'canvas_scripts' will contain all unique random "canvas_root_id" of the included scripts.<br />The included local javascript "read" functions "read_canvas%d()" and "read_dragdrop%d()" will have this "%d = canvas_root_id"<br />e.g. canvas_scripts[0] will be the random id of the first script in the page and will thus provide a function<br />fun = eval("read_canvas"+canvas_scripts[0]) to read user based drawings / inputfield in this first image.<br />The read_dragdrop is analogue.<br />If the default reply formatting is not suitable, use command <a href='#replyformat'>'replyformat'</a> to format the replies for an individual canvas script,<br />To read all user interactions from all included canvas scripts , use something like:<br /><em>function read_all_canvas_images(){<br />&nbsp;var script_len = canvas_scripts.length;<br />&nbsp;var draw_reply = "";<br />&nbsp;var found_result = false;<br />&nbsp;for(var p = 0 ; p < script_len ; p++){<br />&nbsp;&nbsp;var fun = eval("read_canvas"+canvas_scripts[p]);<br />&nbsp;&nbsp;if( typeof fun === 'function'){<br />&nbsp;&nbsp;&nbsp;var result = fun();<br />&nbsp;&nbsp;&nbsp;if( result&nbsp;&nbsp;&& result.length != 0){<br />&nbsp;&nbsp;&nbsp;&nbsp;if(script_len == 1 ){ return result;};<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found_result = true;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;draw_reply = draw_reply + result + "\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;};<br />&nbsp;if( found_result ){return draw_reply;}else{return null;};<br />};</em>
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> you can check the javascript reply format in the wims tool <a href="http://wims.math.leidenuniv.nl/wims/wims.cgi?lang=en&module=tool/directexec">direct exec</a>
+<li><span style="color:blue;font-size:0.8em"> you can check the javascript reply format in the wims tool <a href="http://localhost/wims/wims.cgi?lang=en&module=tool/directexec">direct exec</a>
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> for usage within OEF (without anstype "draw"), something like this (a popup function plotter) will work:<br /><small>\text{popup_grapher=wims(exec canvasdraw <br />popup<br />size 400,400<br />xrange -10,10<br />yrange -10,10<br />axis<br />axisnumbering<br />opacity 100,100<br />grid 2,2,grey,2,2,6,black<br />snaptogrid<br />linewidth 2<br />jsplot red,5*sin(1/x)<br />strokecolor green<br />functionlabel f(x)=<br />userinput function<br />mouse blue,22<br />)<br />}<br />\statement{<br />\popup_grapher<br />}</small>
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> be aware that older browsers will probably not work correctly<br />no effort has been undertaken to add glue code for older browsers !! <br />in any case it's not wise to use older browsers...not just for canvasdraw
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> if you find flaws, errors or other incompatibilities -not those mentioned in this document- send <a href='mailto:jm.evers-at-schaersvoorde.nl'>me</a> an email with screenshots and the generated javascript include file.
+</span></li>
+<li><span style="color:blue;font-size:0.8em"> there is limited support for touch devices : touchstart, touchmove and touchend in commands <a href="#userdraw">userdraw primitives </a>, <a href="#protractor">protractor</a> and <a href="#ruler">ruler</a><br />only single finger gestures are supported (for now)<br />for more accurate user-interaction with canvasdraw on touch devices: use the command family <a href="userinput_xy">userinput</a>
 </span></li>
 </ul>
 <li><a name='size' href='#size top'>  size width,height</a><ul>
@@ -834,7 +835,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> for multiple object user drawings use command <a href="#multidraw">'multidraw'</a>
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>demiline</li><li>demilines</li><li>segment</li><li>segments</li><li>polyline | brokenline </li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9] (e.g poly3 ... poly7...poly9 </li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline | path</li><li>freehandlines | paths</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
+<li><span style="color:blue;font-size:0.8em"> implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>demiline</li><li>demilines</li><li>segment</li><li>segments</li><li>polyline | brokenline </li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9] (e.g poly3 ... poly7...poly9 </li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline | path</li><li>freehandlines | paths</li><li>clickfill : fill the clicked area with a color<br />the click may be set <a href="#snaptogrid">snapped...</a></ br>only one area can be selected <br />use command <a href="#canvastype">'canvastype'</a> to fill another canvas (default should be fine: DRAG_CANVAS = 5)</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> <b>note</b>: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
 </span></li>
@@ -1818,14 +1819,24 @@
 <li><span style="color:blue;font-size:0.8em"> if dx,dy is larger than the image, the whole image will be background to the next object.
 </span></li>
 </ul>
-<li><a name='filltoborder' href='#filltoborder top'>  filltoborder x,y,bordercolor,color</a><ul>
-<li><span style="color:blue;font-size:0.8em"> WILL NOT WORK CORRECTLY, YET !!!
+<li><a name='canvastype' href='#canvastype top'>  canvastype TYPE</a><ul>
+<li><span style="color:blue;font-size:0.8em"> for now only usefull before commands filltoborder / floodfill / clickfill etc operations<br />Only the images of this TYPE will be scanned and filled
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> fill the region of point (x:y) bounded by 'bordercolor' with color 'color'
+<li><span style="color:blue;font-size:0.8em"> default value of TYPE is DRAG_CANVAS e.g. 5
+</span></li>
+<li><span style="color:blue;font-size:0.8em"> use another TYPE if you know what you are doing...
+</span></li>
+<li><span style="color:blue;font-size:0.8em"> other possible canvasses (transparent PNG pictures xsize x ysize on top of eachother)<ul><li>EXTERNAL_IMAGE_CANVAS = 0</li><li>BG_CANVAS = 1</li><li> STATIC_CANVAS = 2</li><li> MOUSE_CANVAS = 3 : used for command "mouse"</li><li> GRID_CANVAS = 4 :used for command "grid"</li><li> DRAG_CANVAS = 5 :default</li><li> DRAW_CANVAS = 6 :used for some static drawings</li><li> TEXT_CANVAS = 7 : used for text-strings</li><li> CLOCK_CANVAS = 8 : used for command "clock"</li><li> ANIMATE_CANVAS = 9 : not used for now</li><li> TRACE_CANVAS = 10 : used for command "trace_jscurve"</li><li> JSPLOT_CANVAS = 111 : will be increased with every new command "jscurve"</li> <li> FILL_CANVAS = 12 : this will be filled...so do not use ! </li><li> USERDRAW_JSPLOT 13 : will be increased with every new command "userinput function"</li></ul>
+</span></li>
+</ul>
+<li><a name='filltoborder' href='#filltoborder top'>  filltoborder x,y,bordercolor,color</a><ul>
+<li><span style="color:blue;font-size:0.8em"> fill the region of point (x:y) with color 'color'
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> any other color will not act as border to the bucket fill
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use this command after all boundary objects are declared.
+</span></li>
+<li><span style="color:blue;font-size:0.8em"> use command <a href="#canvastype">canvastype </a> to fill another canvas (default should be fine: DRAG_CANVAS = 5)
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> <b>note</b>: filltoborder is a very (client) cpu intensive operation!<br />filling is done pixel by pixel<br/>e.g. image size of 400x400 uses 160000 pixels : each pixel contains 4 data (R,G,B,Opacity) = 640000 data.<br />on every data a few operations / comparisons are done...<br />So have pity on your students CPU..
 </span></li>
@@ -1838,33 +1849,11 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use this command after all boundary objects are declared.
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> Use command 'clickfill,color' for user click driven flood fill.
+<li><span style="color:blue;font-size:0.8em"> Use command 'userdraw clickfill,color' for user click driven flood fill.
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: recognised colour boundaries are in the "drag canvas" e.g. only for objects that can be set draggable / clickable
+<li><span style="color:blue;font-size:0.8em"> use command <a href="#canvastype">canvastype </a> to fill another canvas (default should be fine: DRAG_CANVAS = 5)
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> <b>note</b>: floodfill is a very (client) cpu intensive operation!<br />filling is done pixel by pixel<br/>e.g. image size of 400x400 uses 160000 pixels : each pixel contains 4 data (R,G,B,Opacity) = 640000 data.<br />on every data a few operations / comparisons are done...<br />So have pity on your students CPU..
-</span></li>
-</ul>
-<li><a name='clickfillmarge' href='#clickfillmarge top'>  clickfillmarge int</a><ul>
-<li><span style="color:blue;font-size:0.8em"> default 20 (pixels)
-</span></li>
-<li><span style="color:blue;font-size:0.8em"> when using command "clickfill fillcolor" a coloured area may be reverted ("undo") <br />back to backgrounbld colour with a middle mouse click<br />when the click is in a 40x40 rectangle around a stored m mouseclick (userdraw_x[] and userdraw_y[])
-</span></li>
-</ul>
-<li><a name='clickfill' href='#clickfill top'>  clickfill fillcolor</a><ul>
-<li><span style="color:blue;font-size:0.8em"> user left mouse click will floodfill the area with fillcolor
-</span></li>
-<li><span style="color:blue;font-size:0.8em"> multiple areas may be coloured
-</span></li>
-<li><span style="color:blue;font-size:0.8em"> the coloured areas can be removed (changed to "bgcolor") by middle / right mouse click <br />(if the click is in an 40x40 pixel area of the click coordinate that "painted" the area)
-</span></li>
-<li><span style="color:blue;font-size:0.8em"> the answer will be read as the (x:y) click coordinates per coloured area
-</span></li>
-<li><span style="color:blue;font-size:0.8em"> background color of main div may be set by using command "bgcolor color"
-</span></li>
-<li><span style="color:blue;font-size:0.8em"> may <b>not</b> be combined with command "userdraw". <br />However <a href="#multidraw">"multidraw"</a> is possi (since it has a button 'stop drawing'...but in any case it is not a good idea...)
-</span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: recognised colour boundaries are in the "drag canvas" e.g. only for objects that can be set draggable / clickable
 </span></li>
 </ul>
 <li><a name='setpixel' href='#setpixel top'>  setpixel x,y,color</a><ul>
@@ -2163,7 +2152,7 @@
 </li>
 </ul>
 <script type='text/javascript'>
- var keys = ['canvasdraw' ,'canvasdraw','size','xrange','rangex','yrange','rangey','trange','ranget','linewidth','crosshairsize','crosshair','crosshairs','point','points','yerrorbars','xerrorbars','circle','circles','disks','segment','seg','segments','segs','line','lines','demiline','halfline','demilines','halflines','hline','horizontalline','hlines','horizontallines','vline','verticalline','vlines','verticallines','square','rect','rects','roundrect','roundrects','polyline','poly','arc','angle','ellipse','dashtype','rays','arrowhead','arrow','vector','arrows','vectors','arrow2','arrows2','parallel','triangle','triangles','lattice','multistrokeopacity','multifillopacity','multilabel','multilinewidth','multidash','multisnaptogrid','multifill','multistrokecolors','multifillcolors','multiuserinput','multidraw','ruler','protractor','userdraw','snaptofunction','snaptofun','snaptopoints','snaptogrid','xsnaptogrid','ysnaptogrid','userinput','userinput_function','userinput_textarea','userinput_xy','usertextarea_xy','userinput_xy','functionlabel','userinput_function','plotsteps','fontsize','fontcolor','jscurve','jsplot','curve','levelcurve','bezier','trace_jscurve','jsmath','text','textup','fontfamily','stringup','string','centerstring','mathml','http','html','xaxis','xaxistext','xaxisup','xaxistextup','yaxis','axisnumbering','axis','killslider','sliderfunction_x','sliderfunction_y','slider','sgraph','grid','opacity','transparent','rotationcenter','rotate','killrotate','killaffine','affine','killtranslation','killtranslate','translation','translate','animate','dashed','filled','highlight','fillcolor','strokecolor','bgimage','bgcolor','copy','copyresized','clearbutton','delete','erase','inputstyle','input','textarea','precision','setlimits','zoom','onclick','drag','blink','xunit','yunit','cursor','pointer','display','mouse_degree','mousex','mousey','mouse','intooltip','popup','audio','video','hatchfill','diamondfill','gridfill','dotfill','imagefill','filltoborder','floodfill','fill','clickfillmarge','clickfill','setpixel','pixelsize','pixels','replyformat','legendcolors','legend','xlabel','ylabel','linegraph','barchart','clock','piechart','userboxplotdata','userboxplot','boxplotdata','boxplot','status','xlogbase','ylogbase','xlogscale','ylogscale','xylogscale'];
+ var keys = ['canvasdraw' ,'canvasdraw','size','xrange','rangex','yrange','rangey','trange','ranget','linewidth','crosshairsize','crosshair','crosshairs','point','points','yerrorbars','xerrorbars','circle','circles','disks','segment','seg','segments','segs','line','lines','demiline','halfline','demilines','halflines','hline','horizontalline','hlines','horizontallines','vline','verticalline','vlines','verticallines','square','rect','rects','roundrect','roundrects','polyline','poly','arc','angle','ellipse','dashtype','rays','arrowhead','arrow','vector','arrows','vectors','arrow2','arrows2','parallel','triangle','triangles','lattice','multistrokeopacity','multifillopacity','multilabel','multilinewidth','multidash','multisnaptogrid','multifill','multistrokecolors','multifillcolors','multiuserinput','multidraw','ruler','protractor','userdraw','snaptofunction','snaptofun','snaptopoints','snaptogrid','xsnaptogrid','ysnaptogrid','userinput','userinput_function','userinput_textarea','userinput_xy','usertextarea_xy','userinput_xy','functionlabel','userinput_function','plotsteps','fontsize','fontcolor','jscurve','jsplot','curve','levelcurve','bezier','trace_jscurve','jsmath','text','textup','fontfamily','stringup','string','centerstring','mathml','http','html','xaxis','xaxistext','xaxisup','xaxistextup','yaxis','axisnumbering','axis','killslider','sliderfunction_x','sliderfunction_y','slider','sgraph','grid','opacity','transparent','rotationcenter','rotate','killrotate','killaffine','affine','killtranslation','killtranslate','translation','translate','animate','dashed','filled','highlight','fillcolor','strokecolor','bgimage','bgcolor','copy','copyresized','clearbutton','delete','erase','inputstyle','input','textarea','precision','setlimits','zoom','onclick','drag','blink','xunit','yunit','cursor','pointer','display','mouse_degree','mousex','mousey','mouse','intooltip','popup','audio','video','hatchfill','diamondfill','gridfill','dotfill','imagefill','canvastype','filltoborder','floodfill','fill','setpixel','pixelsize','pixels','replyformat','legendcolors','legend','xlabel','ylabel','linegraph','barchart','clock','piechart','userboxplotdata','userboxplot','boxplotdata','boxplot','status','xlogbase','ylogbase','xlogscale','ylogscale','xylogscale'];
  var keys_len = keys.length;
  function match(s1,s2){
   var n1 = s1.length;
