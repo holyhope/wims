@@ -3,11 +3,14 @@
 # just to generate simple canvasdraw usage html-page 
 
 
-in=canvasdraw.c
-out=canvasdraw.html
-tmp=canvas_index
-keys=keywords
-datum=`date +%d-%m-%Y` 
+helpdir="../../../public_html/scripts/help/en"
+in="canvasdraw.c"
+phtml="canvasdraw.phtml"
+html="canvasdraw.html"
+tmp="canvas_index"
+keys="keywords"
+datum=`date +%d-%m-%Y`
+ 
 echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN\" \"http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd\"> 
 <html>
 <head><meta charset=\"UTF-8\"></head>
@@ -16,11 +19,13 @@ echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN\" \"http
  a:link {color:#004077;text-decoration:none;cursor:pointer;}
  a:hover {color:#dd6300;}
  a:visited {color:#004077;}
-</style>
+</style>"> $html
+
+echo "
 <input type='text' size='10' value='' id='search'  onkeydown='javascripts:if(event.keyCode == 13){look();}'/><input type='button' onclick='javascript:look();' value='search' />
 <center><h3>Implemented canvasdraw commands ($datum)</h3></center>
 <table style='color:blue;font-size:0.8em;'><tr>
-" > $out
+" > $phtml
         
 p=0
 echo "<ul>" > $tmp
@@ -35,11 +40,11 @@ while read line ; do
    idx=`echo $string | awk '{ print $1 }'`
    echo ",'$idx'" >> $keys
    if [ $cnt -gt $br ]; then
-    echo "</tr><tr>" >> $out
+    echo "</tr><tr>" >> $phtml
     cnt=0
    fi
    cnt=$(($cnt+1))
-   echo "<td><a name='$idx top' href='#$idx'>$idx</a></td>" >> $out
+   echo "<td><a name='$idx top' href='#$idx'>$idx</a></td>" >> $phtml
    echo "<li><a name='$idx' href='#$idx top'>$string</a><ul>"  >> $tmp
    p=1
   else
@@ -47,12 +52,12 @@ while read line ; do
    alt=`echo $line | grep "@ alternative :" | awk '{ print $4 }' | tr -d '[:blank:]'`
    if [ ! -z $alt ] ; then
     if [ $cnt -gt $br ]; then
-     echo "</tr><tr>" >> $out
+     echo "</tr><tr>" >> $phtml
      cnt=0
     fi
     cnt=$(($cnt+1))
     echo ",'$alt'" >> $keys
-    echo "<td><a name='$alt top' href='#$idx'>$alt</a></td>" >> $out
+    echo "<td><a name='$alt top' href='#$idx'>$alt</a></td>" >> $phtml
     echo "<li><span style=\"color:blue;font-size:0.8em\">alternative command:<a name='$alt' href='#$alt top'>$alt</a></span></li>"  >> $tmp
    else
     echo $line | sed 's/@/<li><span style="color:blue;font-size:0.8em">/g'  >> $tmp
@@ -66,12 +71,15 @@ while read line ; do
   p=0
  fi
 done < $in
+
 while [ $cnt -le $br ] ; do
  cnt=$(($cnt+1))
- echo "<td>&nbsp;</td>" >> $out
+ echo "<td>&nbsp;</td>" >> $phtml
 done
-echo "</tr></table>" >> $out
-cat $tmp >> $out
+echo "</tr></table>" >> $phtml
+
+cat $tmp >> $phtml
+
 keywords=`cat $keys | tr -d '\n'`
 echo "
 </li>
@@ -125,9 +133,13 @@ echo "
   };
   return;
  };
-</script>
+</script>" >> $phtml
+
+cat $phtml >> $html
+echo "
 </body>
-</html>" >> $out
+</html>" >> $html
+mv $phtml $helpdir
 rm $tmp
 rm $keys
 
