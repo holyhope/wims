@@ -169,9 +169,9 @@ $type green, $option$(glist[$v;1..$type_cnt2]) to $parm3
 !endif
 !if split iswordof $(replyoption$i) or partialscore iswordof $(replyoption$i) or eqweight iswordof $(replyoption$i)
   !if eqweight iswordof $(replyoption$i)
-    coeff=1
+    coeff=0.5
   !else
-    coeff=2
+    coeff=1
   !endif
 !else
   coeff=0
@@ -183,13 +183,13 @@ $type green, $option$(glist[$v;1..$type_cnt2]) to $parm3
       score=0
    !endif
 !else
-  score=$[max(0,min(1,($goodr_cnt-$coeff*($badr_cnt+$missing_r_cnt))/$g_cnt))]
+  score=$[max(0,min(1,($goodr_cnt-$coeff*(max($badr_cnt,$missing_r_cnt)))/$g_cnt2))]
 !endif
 !if $score=1
   diareply$i=good
   !increase freegot
 !else
-  !if $score>0.2
+  !if $score>0.1
     partialgood$i=yes
     diareply$i=good
     freegot=$[$freegot+$score]
