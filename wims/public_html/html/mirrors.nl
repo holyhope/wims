@@ -46,7 +46,7 @@ France
 en fr cn es it nl
 Eric Reyssat
 reyssat@math.unicaen.fr
-:http://insbaixpenedes.xtec.cat/wims/wims.cgi?lang=nl
+:http://insbaixpenedes.dyndns.org/wims/wims.cgi?lang=nl
 Institut Baix Penedès. El Vendrell
 Spain
 ca en fr es it nl
