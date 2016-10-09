@@ -3535,13 +3535,14 @@ function add_clear_button(){\
  var tooltip_placeholder_div = document.getElementById(\"tooltip_placeholder_div%d\");\
  var button = document.createElement('input');\
  button.setAttribute(\"type\" , \"button\");\
+ button.setAttribute(\"id\" , \"clearbutton%d\");\
  button.setAttribute(\"style\" , \"%s\");\
  button.setAttribute(\"value\" , \"%s\");\
  button.setAttribute(\"onclick\",\"clear_draw_area%d()\");\
  tooltip_placeholder_div.appendChild(button);\
 };\
 add_clear_button();\
-",canvas_root_id,canvas_root_id,DRAW_CANVAS,canvas_root_id,input_style,button_text,canvas_root_id);
+",canvas_root_id,canvas_root_id,DRAW_CANVAS,canvas_root_id,canvas_root_id,input_style,button_text,canvas_root_id);
 }
 
 

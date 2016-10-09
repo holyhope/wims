@@ -3590,6 +3590,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ normally <a href="#userdraw">userdraw</a> primitives have the option to use middle/right mouse button on<br /> a point of the object to remove this specific object...this clear button will remove all drawings
 	 @ uses the tooltip placeholder div element: may not be used with command 'intooltip'
 	 @ use command <a href="#inputstyle">'inputstyle'</a> to style the button...
+	 @ the clearbutton will have id="canvas_scripts[%d]" ; starting with %d=0 for the first script<br />to change the style of all "clearbutton" of all included canvasdraw scripts, use something like<br /><em>if(document.getElementById("clearbutton"+canvas_scripts[0])){<br />&nbsp;while(document.getElementById("clearbutton"+canvas_scripts[p])){<br />&nbsp;&nbsp;document.getElementById("clearbutton"+canvas_scripts[p]).className="some_class_name";<br />&nbsp;&nbsp;&lt;!&minus;&minus; or document.getElementById("clearbutton"+canvas_scripts[p]).setAttribute("style","some_style"); &minus;&minus;&gt;<br />&nbsp;&nbsp;p++;<br />&nbsp;};<br />};<br />
 	*/
 	if(reply_format == 29){/* eg multidraw is selected */
 	 canvas_error("command clearbutton incompatible with multidraw...only suitable for userdraw");
