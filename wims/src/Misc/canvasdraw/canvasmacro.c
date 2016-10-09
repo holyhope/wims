@@ -4345,10 +4345,8 @@ var filltoborder = function(xs,ys,bordercolor,color){\
   imageData[pixelPos+3] = color.a;\
  };\
  function _comparePixel(px2){\
-  return (px2.r === px1.r && px2.g === px1.g && px2.b === px1.b );\
- };\
- function _compareBorder(px2){\
-  return (bordercolor.r !== px2.r && bordercolor.g !== px2.g && bordercolor.b !== px2.b );\
+  if(px2.r === px1.r && px2.g === px1.g && px2.b === px1.b ){ return true;};\
+  return false;\
  };\
  px1 = _getPixel(((ys * xsize) + xs) * 4);\
  color = {\
@@ -4368,21 +4366,23 @@ var filltoborder = function(xs,ys,bordercolor,color){\
   newPos = pixelStack.pop();\
   xs = newPos[0];ys = newPos[1];\
   pixelPos = (ys*xsize + xs) * 4;\
-  while(ys-- >= 0 && _comparePixel(_getPixel(pixelPos))){\
+  while(ys >= 0 && _comparePixel(_getPixel(pixelPos))){\
+   ys -= 1;\
    pixelPos -= xsize * 4;\
   }\
   pixelPos += xsize * 4;\
-  ++ys;\
+  ys += 1;\
   found_left_border = false;\
   found_right_border = false;\
-  while( ys++ < ysize-1 && _comparePixel(_getPixel(pixelPos))  ){\
+  while( ys <= ysize-1 && _comparePixel(_getPixel(pixelPos))  ){\
+   ys += 1;\
    _setPixel(pixelPos);\
    if( xs > 1 ){\
     if( _comparePixel(_getPixel(pixelPos - 4)) ){\
     if( !found_left_border ){\
      pixelStack.push( [xs - 1, ys] );\
      found_left_border = true;\
-    }\
+    };\
    }\
    else if( found_left_border ){\
      found_left_border = false;\
