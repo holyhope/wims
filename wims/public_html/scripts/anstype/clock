@@ -1,0 +1,60 @@
+!set xysize=!line 1 of $oef_applet_option
+!set replygood$i=!lines2rows $(replygood$i)
+rep$i=!replace internal : by , in $(reply$i)
+!distribute items $(rep$i) into hour,min,sec
+!set parm3=!line 1 to -1 of $oef_applet_option
+!set line=!line -1 of $parm3
+!set parm3=!replace internal line number -1 by clock 0,0,100,$hour,$min,$sec,$line in $parm3
+
+!if $wims_read_parm=nocompare
+ !read oef/canvasdraw.phtml $parm3
+  reply_$i=$canvasdraw_out
+ !exit
+!endif
+good=!replace internal : by , in $(replygood$i)
+score=0
+!for j=1 to 3
+  l_=!item $j of $(rep$i)
+  !if $(good[$j])=$l_
+    sc_reply=!append item 1 to $sc
+    score=$[$score+1]
+  !else
+    sc_reply=!append item 0 to $sc
+  !endif
+!next
+sc=!positionof item 0 in $sc
+
+!if $score=3
+  score=1
+!else
+  score=$[min(1,floor(10*$score/3)/10)]
+!endif
+
+!if $score=1
+  diareply$i=good
+  !increase freegot
+  anscol=green
+!else
+  !if $score>0.3 and split iswordof $(replyoption$i)
+    partialgood$i=yes
+    diareply$i=good
+    freegot=$[$freegot+$score]
+    anscol=orange
+  !else
+    diareply$i=bad
+    anscol=red
+  !endif
+!endif
+
+!read oef/canvasdraw.phtml $xysize\
+$parm3
+
+!if $canvasdraw_idclass!=$empty
+  reply_$i=<style type="text/css">\
+#$canvasdraw_idclass {border: 1px solid $anscol;}\
+</style>\
+$canvasdraw_out
+!else
+  reply_$i=$(reply_$i)\
+!endif
+reply__$i=&nbsp;
