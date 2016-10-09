@@ -15,7 +15,7 @@
 ******************************************************************************/
 void	add_to_buffer(char *tmp); /* add tmp_buffer to the buffer */
 void	sync_input(FILE *infile);/* proceed with inputfile */
-void 	add_javascript_functions(int js_function[], int canvas_root_id);
+void 	add_javascript_function(int js_function[], int canvas_root_id);
 void	reset();/* reset some global variables like "use_filled" , "use_dashed" */
 int	get_token(FILE *infile); /* read next char until EOL*/
 /*
@@ -4692,7 +4692,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
   }
 
   /* if needed, add generic draw functions (grid / xml etc) to buffer : these are no draggable/clickable shapes / objects  ! */
-  add_javascript_functions(js_function,canvas_root_id);
+  add_javascript_function(js_function,canvas_root_id);
    /* add read_canvas() etc functions if needed */
   if( reply_format > 0 ){ add_read_canvas(canvas_root_id,reply_format,reply_precision);}
   if( use_pan_and_zoom == TRUE ){
@@ -6183,13 +6183,13 @@ read_canvas%d = function(){\
  - is printed directly into 'js_include_file'
 */
 
-void add_javascript_functions(int js_function[],int canvas_root_id){
+void add_javascript_function(int js_function[],int canvas_root_id){
 int i;
 for(i = 0 ; i < MAX_JS_FUNCTIONS; i++){
  if( js_function[i] == 1){
     switch(i){
     case JS_FIND_ANGLE: 
-    fprintf(js_include_file,"\n<!-- function find_angle() -->\
+    fprintf(js_include_file,"\n<!-- function find_angle() -->\n\
 function find_angle(xc,yc,x1,y1){\
  var dx = x1 - xc;\
  var dy = yc - y1;\
