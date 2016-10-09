@@ -7975,8 +7975,8 @@ var clock = function(xc,yc,radius,H,M,S,type,interaction,h_color,m_color,s_color
  clock_ctx.rotate(angle);\
  clock_ctx.beginPath();\
  clock_ctx.moveTo(0,0);\
- clock_ctx.lineTo(this.radius  * 0.95, 0);\
- clock_ctx.lineTo(this.radius  * 0.9, -1);\
+ clock_ctx.lineTo(this.radius  * 0.95, 1);\
+ clock_ctx.lineTo(this.radius  * 0.95, -1);\
  clock_ctx.strokeStyle = this.S_color;\
  clock_ctx.stroke();\
  clock_ctx.restore();\
