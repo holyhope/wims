@@ -4410,7 +4410,9 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 			}
 			temp = get_string(infile,3);/* optional colors, like: ,,red,,blue*/
 			if( strstr( temp,",") != 0 ){ temp = str_replace(temp,",","\",\""); }
-			if( strlen(temp) < 1 ){temp = ",\"\",\"\",\"\",\"\",\"\"";}
+			else{
+			/* h_color,m_color,s_color,bg_color,fg_color */
+			temp = ",black\",\"black\",\"red\",\"white\",\"black";}
 			string_length = snprintf(NULL,0,"clocks%d = new clock(%d,%d,%d,%d,%d,%d,%d,%d,\"%s\");\n",clock_cnt,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],temp);
 	    		check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
 			snprintf(tmp_buffer,string_length,"clocks%d = new clock(%d,%d,%d,%d,%d,%d,%d,%d,\"%s\");\n",clock_cnt,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],temp);
@@ -4883,12 +4885,9 @@ char *get_string(FILE *infile,int last){ /* last = 0 : more arguments ; last=1 f
     }
     if( ( c == '\n' ||  c == '\t'  || c == EOF ) && last == 0){canvas_error("expecting more arguments in command");}
     if( c == '\n' ||  c == '\t') { done = TRUE; line_number++; }
-    if( c == EOF ) {
-	finished = 1;
-	if( last != 1 ){ canvas_error("expected more arguments");}
-    }
+    if( c == EOF ) {finished = 1;}
     temp[i]='\0';
-    if( strlen(temp) == 0 ){ canvas_error("expected a word or string, but found nothing !!");}
+    if( strlen(temp) == 0 && last != 3 ){ canvas_error("expected a word or string, but found nothing !!");}
     string=(char *)my_newmem(strlen(temp));
     snprintf(string,sizeof(temp),"%s",temp);
     return string;
