@@ -6189,14 +6189,14 @@ for(i = 0 ; i < MAX_JS_FUNCTIONS; i++){
  if( js_function[i] == 1){
     switch(i){
     case JS_FIND_ANGLE: 
-    fprintf(js_include_file,"\n<!-- function find_angle() -->\n\
-function find_angle(xc,yc,x1,y1){\n\
- var dx = x1 - xc;\n\
- var dy = yc - y1;\n\
- if( dx > 0 && dy < 0){ return Math.atan(-1*dy/dx);};\n\
- if( dx < 0 && dy < 0){ return Math.PI + Math.atan(-1*dy/dx);};\n\
- if( dx < 0 && dy > 0){ return Math.PI + Math.atan(-1*dy/dx);};\n\
- if( dx > 0 && dy > 0){ return 2*Math.PI + Math.atan(-1*dy/dx);};\n}\n;");
+    fprintf(js_include_file,"\n<!-- function find_angle() -->\
+function find_angle(xc,yc,x1,y1){\
+ var dx = x1 - xc;\
+ var dy = yc - y1;\
+ if( dx > 0 && dy < 0){ return Math.atan(-1*dy/dx);};\
+ if( dx < 0 && dy < 0){ return Math.PI + Math.atan(-1*dy/dx);};\
+ if( dx < 0 && dy > 0){ return Math.PI + Math.atan(-1*dy/dx);};\
+ if( dx > 0 && dy > 0){ return 2*Math.PI + Math.atan(-1*dy/dx);};};");
     break;
     case DRAW_EXTERNAL_IMAGE:
 /* the external_canvas is already created: it needs to be FIRST in order to do some drawing onto it
@@ -7956,8 +7956,8 @@ var clock = function(xc,yc,radius,H,M,S,type,interaction,h_color,m_color,s_color
  clock_ctx.beginPath();\
  clock_ctx.moveTo(-3, -2);\
  clock_ctx.lineTo(-3, 2);\
- clock_ctx.lineTo(this.radius * 0.7, 1);\
- clock_ctx.lineTo(this.radius  * 0.7, -1);\
+ clock_ctx.lineTo(this.radius * 0.65, 1);\
+ clock_ctx.lineTo(this.radius  * 0.65, -1);\
  clock_ctx.fillStyle = this.H_color;\
  clock_ctx.fill();\
  clock_ctx.rotate(-angle);\
