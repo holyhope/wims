@@ -1846,7 +1846,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		     if( js_function[JS_FIND_ANGLE] != 1 ){ /* add je function for calculating angle */
 		        js_function[JS_FIND_ANGLE] = 1;
 	             }
-	    	    } 
+	    	    }
 	            add_js_protractor(js_include_file,canvas_root_id,int_data[0],double_data[0],double_data[1],double_data[2],font_family,stroke_color,stroke_opacity,fill_color,fill_opacity,line_width,int_data[2],int_data[1]);
 
 	            string_length = snprintf(NULL,0,";protractor%d(); ",canvas_root_id);
@@ -3793,7 +3793,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	/*
 	 @ display TYPE,color,fontsize
 	 @ TYPE may be x | y | xy | degree | radian | radius
-	 @ will display the mouse cursor coordinates as x-only,y-only,(x:y),<br />the radius of a circle (this only in case 'userdraw circle(s),color')<br />or the angle in degrees or radians for commands "userdraw arc,color" or protractor , ruler (if set dynamic) 
+	 @ will display the mouse cursor coordinates as x-only,y-only,(x:y),<br />the radius of a circle (this only in case 'userdraw circle(s),color')<br />or the angle in degrees or radians for commands "userdraw arc,color" or protractor , ruler (if set dynamic)
 	 @ use commands 'xunit' and / or 'yunit' to add the units to the mouse values.<br />The "degree | radian" will always have the appropriate symbol)
 	 @ just like commands 'mouse','mousex','mousey','mouse_degree'...only other name)
 	*/
@@ -4107,9 +4107,9 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	/*
 	@ canvastype TYPE
 	@ for now only usefull before commands  filltoborder / floodfill / clickfill etc operations<br />Only the images of this TYPE will be scanned and filled
-	@ default value of TYPE is DRAG_CANVAS e.g. 5 
+	@ default value of TYPE is DRAG_CANVAS e.g. 5
 	@ use another TYPE if you know what you are doing...
-	@ other possible canvasses (transparent PNG pictures xsize x ysize on top of eachother)<ul><li>EXTERNAL_IMAGE_CANVAS = 0</li><li>BG_CANVAS = 1</li><li> STATIC_CANVAS = 2</li><li> MOUSE_CANVAS = 3 : used for command "mouse"</li><li> GRID_CANVAS = 4 :used for command "grid"</li><li> DRAG_CANVAS = 5 :default</li><li> DRAW_CANVAS = 6 :used for some static drawings</li><li> TEXT_CANVAS = 7 : used for text-strings</li><li> CLOCK_CANVAS = 8 : used for command "clock"</li><li> ANIMATE_CANVAS = 9 : not used for now</li><li> TRACE_CANVAS = 10 : used for command "trace_jscurve"</li><li> JSPLOT_CANVAS = 111 : will be increased with every new command "jscurve"</li> <li> FILL_CANVAS = 12 : this will be filled...so do not use ! </li><li> USERDRAW_JSPLOT 13 : will be increased with every new command "userinput function"</li></ul>	
+	@ other possible canvasses (transparent PNG pictures xsize x ysize on top of eachother)<ul><li>EXTERNAL_IMAGE_CANVAS = 0</li><li>BG_CANVAS = 1</li><li> STATIC_CANVAS = 2</li><li> MOUSE_CANVAS = 3 : used for command "mouse"</li><li> GRID_CANVAS = 4 :used for command "grid"</li><li> DRAG_CANVAS = 5 :default</li><li> DRAW_CANVAS = 6 :used for some static drawings</li><li> TEXT_CANVAS = 7 : used for text-strings</li><li> CLOCK_CANVAS = 8 : used for command "clock"</li><li> ANIMATE_CANVAS = 9 : not used for now</li><li> TRACE_CANVAS = 10 : used for command "trace_jscurve"</li><li> JSPLOT_CANVAS = 111 : will be increased with every new command "jscurve"</li> <li> FILL_CANVAS = 12 : this will be filled...so do not use ! </li><li> USERDRAW_JSPLOT 13 : will be increased with every new command "userinput function"</li></ul>
 	*/
 	break;
 	case FILLTOBORDER:
@@ -6188,7 +6188,7 @@ int i;
 for(i = 0 ; i < MAX_JS_FUNCTIONS; i++){
  if( js_function[i] == 1){
     switch(i){
-    case JS_FIND_ANGLE: 
+    case JS_FIND_ANGLE:
     fprintf(js_include_file,"\n\
 <!-- function find_angle() -->\n\
  function find_angle(xc,yc,x1,y1){\
@@ -7957,8 +7957,8 @@ var clock = function(xc,yc,radius,H,M,S,type,interaction,h_color,m_color,s_color
  clock_ctx.beginPath();\
  clock_ctx.moveTo(-3, -2);\
  clock_ctx.lineTo(-3, 2);\
- clock_ctx.lineTo(this.radius * 0.65, 1);\
- clock_ctx.lineTo(this.radius  * 0.65, -1);\
+ clock_ctx.lineTo(this.radius * 0.6, 1);\
+ clock_ctx.lineTo(this.radius  * 0.6, -1);\
  clock_ctx.fillStyle = this.H_color;\
  clock_ctx.fill();\
  clock_ctx.rotate(-angle);\
@@ -7976,8 +7976,8 @@ var clock = function(xc,yc,radius,H,M,S,type,interaction,h_color,m_color,s_color
  clock_ctx.rotate(angle);\
  clock_ctx.beginPath();\
  clock_ctx.moveTo(0,0);\
- clock_ctx.lineTo(this.radius  * 0.95, 1);\
- clock_ctx.lineTo(this.radius  * 0.95, -1);\
+ clock_ctx.lineTo(this.radius  * 0.9, 1);\
+ clock_ctx.lineTo(this.radius  * 0.9, -1);\
  clock_ctx.strokeStyle = this.S_color;\
  clock_ctx.stroke();\
  clock_ctx.restore();\
