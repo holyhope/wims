@@ -2609,26 +2609,25 @@ type = 5 : radius
 void add_js_mouse(FILE *js_include_file,int canvas_cnt,int canvas_root_id,int precision,char *stroke_color,int font_size,double stroke_opacity,int type){
 fprintf(js_include_file,"\n<!-- begin command mouse on mouse canvas -->\n\
 function use_mouse_coordinates(){\
- var type = %d;\
+ var display_type = %d;\
  var canvas_type = %d;\
  var mouse_canvas = create_canvas%d(canvas_type,xsize,ysize);\
  var mouse_context = mouse_canvas.getContext(\"2d\");\
  mouse_canvas.addEventListener(\"mousemove\",show_coordinate%d,false);\
  mouse_canvas.addEventListener(\"touchmove\", function(e){ e.preventDefault();show_coordinate%d(e.changedTouches[0]);},false);\
  var prec = Math.log(%d)/(Math.log(10));\
- var mouse_canvas_rect = (mouse_canvas).getBoundingClientRect();\
  function show_coordinate%d(evt){\
   var mouse = dragstuff.getMouse(evt,mouse_canvas);\
   var x = mouse.x;\
   var y = mouse.y;\
-  var m_data = \"\";var l = userdraw_x.length;\
-  switch(type){\
+  var m_data = \"\";\
+  switch(display_type){\
    case 0: m_data = \" \"+(px2x(x)).toFixed(prec)+\" \"+unit_x;break;\
    case 1: m_data = \" \"+(px2y(y)).toFixed(prec)+\" \"+unit_y;break;\
    case 2: m_data = \"(\"+(px2x(x)).toFixed(prec)+\":\"+(px2y(y)).toFixed(prec)+\")\";break;\
    case 3: if(userdraw_radius[0]){ m_data = \" \"+( ( userdraw_radius[0])/(Math.PI/180) ).toFixed(prec)+\" \\u00B0 \";};break;\
    case 4: if(userdraw_radius[0]){ m_data = \" \"+(userdraw_radius[0]).toFixed(prec)+\" rad \";};break;\
-   case 5: if( l > 0 ){ m_data = \" R = \"+((xmax - xmin)*(distance(x,y,userdraw_x[l-1],userdraw_y[l-1]))/xsize).toFixed(prec)+\" \"+unit_x;};break;\
+   case 5: if( userdraw_x.length > 0 ){ m_data = \" R = \"+((xmax - xmin)*(distance(x,y,userdraw_x[l-1],userdraw_y[l-1]))/xsize).toFixed(prec)+\" \"+unit_x;};break;\
    default:break;\
   };\
   var s = parseInt(0.8*%d*(m_data.toString()).length);\
@@ -4248,7 +4247,7 @@ CanvasState.prototype.Zoom = function(xmin,xmax,ymin,ymax){\
  };\
 };\
 CanvasState.prototype.getMouse = function(e,element){\
- var offsetX = 0,offsetY = 0,mx,my;\
+ var mx,my;var offsetX = 0,offsetY = 0;\
   while( ( element = element.offsetParent) ){\
    offsetX += element.offsetLeft;\
    offsetY += element.offsetTop;\

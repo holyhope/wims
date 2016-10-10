@@ -1883,8 +1883,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    }
 	    reply_precision = precision;
 	    use_userdraw = TRUE;
-	    fprintf(js_include_file,"\n<!-- begin userdraw mouse events -->\nuserdraw_x = [];userdraw_y = [];\
-	    userdraw_radius = [];var xy_cnt=0;var canvas_userdraw = create_canvas%d(%d,xsize,ysize);\
+	    fprintf(js_include_file,"\n<!-- begin userdraw mouse events -->\nuserdraw_x = new Array();userdraw_y = new Array();\
+	    userdraw_radius = new Array();var xy_cnt=0;var canvas_userdraw = create_canvas%d(%d,xsize,ysize);\
 	    var context_userdraw = canvas_userdraw.getContext(\"2d\");var use_dashed = %d;\
 	    if(use_dashed == 1){if( context_userdraw.setLineDash ){context_userdraw.setLineDash([%d,%d]);}else{if(context_userdraw.mozDash){context_userdraw.mozDash = [%d,%d];};};};\
 	    if(wims_status != \"done\"){\
