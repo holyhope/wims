@@ -71,7 +71,7 @@
   <b>Avant de continuer, demandez au moins aux enseignants de vos classes voisines de
   sauvegarder leurs classes&nbsp;!</b> Si des désordres apparaissent, même
   au bout de plusieurs mois, vous serez obligé de revenir en l'état AVANT la
-  désactivation, perdant tout ce qui se passe APR&Egrave;S, et ce pour toutes les classes
+  désactivation, perdant tout ce qui se passe APRÈS, et ce pour toutes les classes
   partageant la feuille ! On espère vous avoir suffisamment averti.
  </p>
  !exit
@@ -147,7 +147,7 @@
 !if prep_expire=$error
  Cette feuille numéro $sheet ($title) expire normalement le $expday
  !item $expmon of $months
- $expyear. Voulez-vous la rendre périmée maintenant?
+ $expyear. Voulez-vous la périmer maintenant?
  <p class="wimscenter">
   !href cmd=reply&job=expire $wims_name_yes ; $(wims_name_actionlist[2])
 .&nbsp;&nbsp;
@@ -196,7 +196,9 @@ to $wims_menu_items
 !endif
 
 !if $error=toolate
- <p>$name_expiration1 ($l_date). $name_expiration2 </p>
+!read adm/lang/date.phtml.$moduclass_lang $class_expiration
+ <p>$name_expiration1 ($l_date_out). $name_expiration2 </p>
+ !set wims_ref_class=wims_button
  !href cmd=resume $wims_name_back2
  ($wims_name_sheetmanagement)
  !exit
