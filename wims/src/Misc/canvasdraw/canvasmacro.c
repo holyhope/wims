@@ -2600,6 +2600,11 @@ type = 2 : (x:y) 	 [command mouse]
 type = 3 : degree	 [command mouse_degree]
 type = 4 : radian
 type = 5 : radius
+
+  var mouse = dragstuff.getMouse(evt,canvas_div);\
+  var x = evt.clientX - mouse_canvas_rect.left;\
+  var y = evt.clientY - mouse_canvas_rect.top;\
+
 */
 void add_js_mouse(FILE *js_include_file,int canvas_cnt,int canvas_root_id,int precision,char *stroke_color,int font_size,double stroke_opacity,int type){
 fprintf(js_include_file,"\n<!-- begin command mouse on mouse canvas -->\n\
@@ -2611,8 +2616,9 @@ function use_mouse_coordinates(){\
  mouse_canvas.addEventListener(\"mousemove\",show_coordinate%d,false);\
  mouse_canvas.addEventListener(\"touchmove\", function(e){ e.preventDefault();show_coordinate%d(e.changedTouches[0]);},false);\
  var prec = Math.log(%d)/(Math.log(10));\
+ var mouse_canvas_rect = (mouse_canvas).getBoundingClientRect();\
  function show_coordinate%d(evt){\
-  var mouse = dragstuff.getMouse(evt,canvas_div);\
+  var mouse = dragstuff.getMouse(evt,mouse_canvas);\
   var x = mouse.x;\
   var y = mouse.y;\
   var m_data = \"\";var l = userdraw_x.length;\
