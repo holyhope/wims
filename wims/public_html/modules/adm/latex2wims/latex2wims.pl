@@ -279,10 +279,10 @@ my $SEC_MIN_GLOBAL = 10; # = \infty
 #$SEC_MIN_GLOBAL = 3 ;
 my @cnt = (0) x ($#SECTIONS + 1);
 my ($secpattern) = join('|', @SECTIONS);
-$TEXT =~ s/\\begin\s*{($secpattern)\s*}/cnt_section($1,\@cnt)/eg;
+$TEXT =~ s/\\begin\s*\{($secpattern)\s*\}/cnt_section($1,\@cnt)/eg;
 $TEXT =~ s/\[fragile\]//g;
-$TEXT =~ s/\\end\s*{\s*($secpattern)\s*}/<\/$1>/g;
-$TEXT =~ s/\\wimsentre{($secpattern)}/\\wimsentre$1/g;
+$TEXT =~ s/\\end\s*\{\s*($secpattern)\s*\}/<\/$1>/g;
+$TEXT =~ s/\\wimsentre\{($secpattern)\}/\\wimsentre$1/g;
 $TEXT =~ s/\\(wimsentre)?($secpattern)\b\*?/open_close($2,\@cnt,$1)/eg;
 $TEXT =~ s|</document>.*||s;
 $TEXT =~ s|.*<document>||s;
@@ -310,8 +310,8 @@ my $toc = analyse_texte ($TEXT, \%hash, 'main', $NIVEAU, $NIVEAU_max, '');
 # PASSE 5
 for my $tag (keys %{$hash{text}}) {
   my $T = $hash{text}{$tag};
-  $T =~ s/\\label\s*\{([^}]+)\}/store_label($1, $tag, \%hash_bloc)/eg;
-  $T =~ s/\\index\s*\{([^}]+)\}/store_index($1, $tag, \%hash_index)/eg;
+  $T =~ s/\\label\s*\{([^\}]+)\}/store_label($1, $tag, \%hash_bloc)/eg;
+  $T =~ s/\\index\s*\{([^\}]+)\}/store_index($1, $tag, \%hash_index)/eg;
   $hash{text}{$tag} = $T;
   my $tagupbl = $hash{upbl}{$tag};
   #plus utilise, mais j'hesite !
@@ -324,11 +324,11 @@ for my $tag (keys %{$hash{text}}) {
   my $macro = '\\\\ref|\\\\cite|\\\\eqref';
   my $T = $hash{text}{$tag};
   my $cle = 'prev|next|upbl|titb|keyw|datm';
-  $T =~ s/($macro)\{([^}]+)\}\{([^}]+)\}/store_ref($2, $3, $2, \%hash_bloc)/eg;
+  $T =~ s/($macro)\{([^\}]+)\}\{([^\}]+)\}/store_ref($2, $3, $2, \%hash_bloc)/eg;
 # repere toto~\cite{}
-  $T =~ s/([^\s]+)\~($macro)\s*([.*])?\s*\{([^}]+)\}/store_ref($4, $1 .
+  $T =~ s/([^\s]+)\~($macro)\s*([.*])?\s*\{([^\}]+)\}/store_ref($4, $1 .
     ($3||''), $4, \%hash_bloc)/eg;
-  $T =~ s/($macro)\s*([.*])?\{([^}]+)\}/store_ref($3, ($2 ? "$3: $2" : $3), $3, \%hash_bloc)/eg;
+  $T =~ s/($macro)\s*([.*])?\{([^\}]+)\}/store_ref($3, ($2 ? "$3: $2" : $3), $3, \%hash_bloc)/eg;
   $T =~ s/\\($cle)\s*\{(\w*)\}/store_tag($1, $2, $tag, \%hash, \%hash_bloc)/eg;
   $hash{text}{$tag} = $T;
 }
@@ -500,7 +500,7 @@ sub TraiteText {my ($TEXT, $ref, $ref_env, $Id) = @_;
   $TEXT =~ s/\s*$//; # strip trailing whitespace
  #0 ul et li sans rien
  #1 avec style
- $TEXT =~ s/\\(begin|end)\s*{wimsonly}//g;
+ $TEXT =~ s/\\(begin|end)\s*\{wimsonly\}//g;
  for my $rubrique (keys %{$ref_env->{list}}) {
      $TEXT = traite_list ($TEXT, $ref, $ref_env, $Id, $rubrique,1);
  }
@@ -510,26 +510,26 @@ sub TraiteText {my ($TEXT, $ref, $ref_env, $Id) = @_;
  }
 
 for my $rubrique (keys %{$ref_env->{tabular}}) {
-     if ($TEXT =~ /\\begin{$rubrique}/) {
+     if ($TEXT =~ /\\begin\{$rubrique\}/) {
        $TEXT = traite_environ ($TEXT, $ref, $ref_env, $Id, $rubrique,0);
      }
  }
 
 for my $rubrique (@liste_env_tabular) {
-   if ($TEXT =~ /\\begin{$rubrique}/) {
+   if ($TEXT =~ /\\begin\{$rubrique\}/) {
      $TEXT = traite_environ ($TEXT, $ref, $ref_env, $Id, $rubrique,0);
    }
 }
 
  for my $rubrique (@liste_env_spec) {
-    if ($TEXT =~ /\\begin{$rubrique(\*)?}/) {
+    if ($TEXT =~ /\\begin\{$rubrique(\*)?\}/) {
       $TEXT = traite_environ ($TEXT, $ref, $ref_env, $Id, $rubrique, 1);
     }
   }
 #le 1 et 0 servent a initialiser le compteur dans le cas ou on doit creer de nouveaux blocs dans la même page
 
   for my $rubrique (keys %{$ref_env->{titre}}) {
-    if ($TEXT =~ /\\begin{$rubrique}/) {
+    if ($TEXT =~ /\\begin\{$rubrique\}/) {
       $TEXT = traite_environ ($TEXT, $ref, $ref_env, $Id, $rubrique,1);
     }
   }
@@ -578,8 +578,8 @@ sub traite_list {my ($TEXT, $ref, $ref_env, $Id, $environ, $option) = @_;
                $e_class= "\/ul" ;
         }
       };
-  $TEXT =~ s/\\begin{$environ(\*)?}/<$environ>/g;
-  $TEXT =~ s|\\end{$environ(\*)?}|<\/$environ>|g;
+  $TEXT =~ s/\\begin\{$environ(\*)?\}/<$environ>/g;
+  $TEXT =~ s|\\end\{$environ(\*)?\}|<\/$environ>|g;
 
   my @decoup = split ("<$environ>", $TEXT);
 
@@ -597,8 +597,8 @@ sub traite_list {my ($TEXT, $ref, $ref_env, $Id, $environ, $option) = @_;
 }
 
 sub traite_environ {my ($TEXT, $ref, $ref_env, $Id, $environ, $cnt) = @_;
-  $TEXT =~ s/\\begin{$environ\*?}/<$environ>/g;
-  $TEXT =~ s|\\end{$environ\*?}|</$environ>|g;
+  $TEXT =~ s/\\begin\{$environ\*?\}/<$environ>/g;
+  $TEXT =~ s|\\end\{$environ\*?\}|</$environ>|g;
 
   my @decoup = split ("<$environ>", $TEXT);
 
@@ -797,19 +797,19 @@ sub multline { my ( $b) = @_;
 
 sub equation { my ( $b) = @_;
   $b = "\\( $b \\)";
-  if ($b =~ s/\\label{([^\}]+)}//) { $b = "\\label{$1}" . $b };
+  if ($b =~ s/\\label\{([^\}]+)\}//) { $b = "\\label\{$1\}" . $b };
   $b =~ s/\n{2,}/\n/;
   '<div class="math">' . $b . '</div>' ;
 }
 
 sub align1 { my ( $b) = @_;
-  $b = "\\(\\begin{matrix} $b \\end{matrix} \\)";
-  if ($b =~ s/\\label{([^\}])}//) { $b = "\\label{$1}" . $b };
+  $b = "\\(\\begin\{matrix\} $b \\end\{matrix\} \\)";
+  if ($b =~ s/\\label\{([^\}])\}//) { $b = "\\label\{$1\}" . $b };
   '<div class="math">' . $b . '</div>' ;
 }
 sub align { my ( $b) = @_;
   $b = '<table class="wimscenter wimsnoborder tableau" style="width:100%"><tr><td>\\(' . $b . '\\\\</table>';
-  if ($b =~ s/\\label{([^\}])}//) { $b = "\\label{$1}" . $b };
+  if ($b =~ s/\\label\{([^\}])\}//) { $b = "\\label\{$1\}" . $b };
   $b =~ s|\&|\\)&nbsp;</td><td>&nbsp;\\(|g;
   $b =~ s|\\\\\s*</table>|\\)</td></tr></table>|g;
   $b =~ s|\\\\|\\)</td></tr><tr><td>\\(|g;
@@ -845,18 +845,18 @@ sub gather { my ($b) = @_;
   $b;
 }
 
-sub displaymath {"<div class=\"math\">\\(\\displaystyle{ " . $_[0]. "}\\)</div>"; }
+sub displaymath {"<div class=\"math\">\\(\\displaystyle\{ " . $_[0]. "\}\\)</div>"; }
 sub math {" \\( " . $_[0]. "\\) "; }
 
 sub figure { my $caption=''; my $c =$_[0];
   $c =~ s /^\[([^\]]+)//; print $c;
-  if ( $c =~ s/\\caption\{([^}]+)}//) {$caption=$1 };
+  if ( $c =~ s/\\caption\{([^\}]+)\}//) {$caption=$1 };
   "<div class=\"figure\"> " .
   (($caption) ? "<div class=\"caption\">". $caption . "</div>":"")
     . $c . "</div>" ;}
 
 sub thebibliography { my ( $b ) = @_;
-  $b =~ s/\\bibitem{([^}]+)}/<\/li>\n<li>\[$1\]\\label{$1} /g;
+  $b =~ s/\\bibitem\{([^\}]+)\}/<\/li>\n<li>\[$1\]\\label\{$1\} /g;
   $b =~ s/\{\d+\}\s*<\/li>//;
   '<h2 class="thebibliography">' . $hash{titb}{ref}
   . "</h2>\n<ul class=\"thebibliography\">$b </li></ul>\n";
@@ -868,8 +868,8 @@ sub picture { '<p>dessin à faire dans wims</p>' ; }
 # même pour verbatim, lstlisting
 sub traite_special { my ( $TEXT, $ref_spec, $ref, $environ ) = @_;
   $TEXT = recup_embed($TEXT, $ref) ;
-  $TEXT =~ s/\\begin{$environ}/<$environ>/g;
-  $TEXT =~ s/\\end{$environ}/<\/$environ>/g;
+  $TEXT =~ s/\\begin\{$environ\}/<$environ>/g;
+  $TEXT =~ s/\\end\{$environ\}/<\/$environ>/g;
   $TEXT =~ s/\r\n/\n/gs ;
   my @decoup = split ("<$environ>", $TEXT);
   my $cnt = 1;
@@ -1006,7 +1006,7 @@ sub subst { my ($TEXT, $cnt_arg, $com, $environ, $ref_env ) = @_;
 sub Traite_command { my ($TEXT, $command, $ref_command) = @_;
   my $cnt_arg = $ref_command->{cnt_arg}{$command};
   if ($cnt_arg) {
-    my @decoup = split ("\\\\$command\{", $TEXT );
+    my @decoup = split ("\\\\$command\\\{", $TEXT );
     my $cnt = 1;
     $TEXT = $decoup[0];
     while ($cnt <= $#decoup) {
@@ -1046,10 +1046,10 @@ sub find_expand { my ($file) = @_;
   if (!open(IN, $DIR . $file)) { warn "$DIR$file n'existe pas"; return; }
   dbg("... lecture de $file");
   my $text = <IN>; close(IN);
-  $text =~ s/([^%]\s*\\end{document})[[:print:][:space:]]+/$1/;
+  $text =~ s/([^%]\s*\\end\{document\})[[:print:][:space:]]+/$1/;
   $text =~ s/([^%])\s*\\endinput[[:print:][:space:]]+/$1/;
   $text =~ s/\%\\(input|include|wimsinclude)([^\n]+)?//g;
-  $text =~ s/\\(input|include|wimsinclude)\s*{?([a-zA-Z0-9\-_\/]+)\.(sty|tex)\s*}?/find_expand("$2.$3")/eg;
+  $text =~ s/\\(input|include|wimsinclude)\s*\{?([a-zA-Z0-9\-_\/]+)\.(sty|tex)\s*\}?/find_expand("$2.$3")/eg;
   $text =~ s/\\lstinputlisting\s*\{([a-zA-Z0-9\-_\/\.]+)\s*\}/"\\begin\{lstlisting\}\n" . find_expand($1) . "\n\\end\{lstlisting\}"/eg;
 
   $text;
@@ -1097,7 +1097,7 @@ sub store_include { my ($A) = @_ ; $A = join(' ' , split(',', $A)) ;
          if ($MACRO) {$MACRO .= ",$1.$2" } else {$MACRO = "$1.$2" }
     };
     if ($A =~ s/(\w*\.css)\b//) { if ($STYLE) {$STYLE .= ",$1" } else {$STYLE = $1 } };
-    if ($A =~ s/embed\s*=\s*([^}]+)//) { $EMBED = $1 ; }
+    if ($A =~ s/embed\s*=\s*([^\}]+)//) { $EMBED = $1 ; }
    '' ;
  }
 
@@ -1166,21 +1166,21 @@ sub traitement_initial { my ($TEXT) = @_;
   $TEXT =~ s,\\\],\\)</p>,g;
   $TEXT =~ s/\$([^\$]+)\$/\\( $1 \\)/g;
 
-  $TEXT =~ s/\\`\s*{a}/à/g;
-  $TEXT =~ s/\\\^\s*{a}/â/g;
-  $TEXT =~ s/\\'\s*{a}/á/g;
-  $TEXT =~ s/\\'\s*{e}/é/g;
-  $TEXT =~ s/\\`\s*{e}/è/g;
-  $TEXT =~ s/\\\^\s*{e}/ê/g;
-  $TEXT =~ s/\\\^\s*{i}/î/g;
-  $TEXT =~ s/\\\`\s*{i}/ì/g;
-  $TEXT =~ s/\\\"\s*{i}/ï/g;
-  $TEXT =~ s/\\\"\s*{\\i}/ï/g;
-  $TEXT =~ s/\\\^\s*{o}/ô/g;
-  $TEXT =~ s/\\\"\s*{o}/ö/g;
-  $TEXT =~ s/\\\`\s*{o}/ò/g;
-  $TEXT =~ s/\\\^\s*{u}/û/g;
-  $TEXT =~ s/\\`\s*{u}/ù/g;
+  $TEXT =~ s/\\`\s*\{a\}/à/g;
+  $TEXT =~ s/\\\^\s*\{a\}/â/g;
+  $TEXT =~ s/\\'\s*\{a\}/á/g;
+  $TEXT =~ s/\\'\s*\{e\}/é/g;
+  $TEXT =~ s/\\`\s*\{e\}/è/g;
+  $TEXT =~ s/\\\^\s*\{e\}/ê/g;
+  $TEXT =~ s/\\\^\s*\{i\}/î/g;
+  $TEXT =~ s/\\\`\s*\{i\}/ì/g;
+  $TEXT =~ s/\\\"\s*\{i\}/ï/g;
+  $TEXT =~ s/\\\"\s*\{\\i\}/ï/g;
+  $TEXT =~ s/\\\^\s*\{o\}/ô/g;
+  $TEXT =~ s/\\\"\s*\{o\}/ö/g;
+  $TEXT =~ s/\\\`\s*\{o\}/ò/g;
+  $TEXT =~ s/\\\^\s*\{u\}/û/g;
+  $TEXT =~ s/\\`\s*\{u\}/ù/g;
   $TEXT =~ s/\\c\s*\{c\}/ç/g;
 
   $TEXT =~ s/\\`\s*a/à/g;
@@ -1202,23 +1202,23 @@ sub traitement_initial { my ($TEXT) = @_;
   $TEXT =~ s/\\`\s*u/ù/g;
   $TEXT =~ s/\\c \s*c/ç/g;
 
-  $TEXT =~ s/{\s*\\`\s*a\s*}/à/g;
-  $TEXT =~ s/{\s*\\\^\s*a\s*}/â/g;
-  $TEXT =~ s/{\s*\\'\s*a\s*}/á/g;
-  $TEXT =~ s/{\s*\\'\s*e\s*}/é/g;
-  $TEXT =~ s/{\s*\\`\s*e\s*}/è/g;
-  $TEXT =~ s/{\s*\\\^\s*e\s*}/ê/g;
-  $TEXT =~ s/{\s*\\\^\s*i\s*}/î/g;
-  $TEXT =~ s/{\s*\\\`\s*i\s*}/ì/g;
-  $TEXT =~ s/{\s*\\\"\s*i\s*}/ï/g;
-  $TEXT =~ s/{\s*\\\^\s*o\s*}/ô/g;
-  $TEXT =~ s/{\s*\\\"\s*o\s*}/ö/g;
-  $TEXT =~ s/{\s*\\\`\s*o\s*}/ò/g;
-  $TEXT =~ s/{\s*\\\^\s*u\s*}/û/g;
-  $TEXT =~ s/{\s*\\`\s*u\s*}/ù/g;
-  $TEXT =~ s/{\s*\\c \s*c\s*}/ç/g;
+  $TEXT =~ s/\{\s*\\`\s*a\s*\}/à/g;
+  $TEXT =~ s/\{\s*\\\^\s*a\s*\}/â/g;
+  $TEXT =~ s/\{\s*\\'\s*a\s*\}/á/g;
+  $TEXT =~ s/\{\s*\\'\s*e\s*\}/é/g;
+  $TEXT =~ s/\{\s*\\`\s*e\s*\}/è/g;
+  $TEXT =~ s/\{\s*\\\^\s*e\s*\}/ê/g;
+  $TEXT =~ s/\{\s*\\\^\s*i\s*\}/î/g;
+  $TEXT =~ s/\{\s*\\\`\s*i\s*\}/ì/g;
+  $TEXT =~ s/\{\s*\\\"\s*i\s*\}/ï/g;
+  $TEXT =~ s/\{\s*\\\^\s*o\s*\}/ô/g;
+  $TEXT =~ s/\{\s*\\\"\s*o\s*\}/ö/g;
+  $TEXT =~ s/\{\s*\\\`\s*o\s*\}/ò/g;
+  $TEXT =~ s/\{\s*\\\^\s*u\s*\}/û/g;
+  $TEXT =~ s/\{\s*\\`\s*u\s*\}/ù/g;
+  $TEXT =~ s/\{\s*\\c \s*c\s*\}/ç/g;
   $TEXT =~ s/\\maketitle//g;
-  $TEXT =~ s/{\\textquotesingle}/'/g;
+  $TEXT =~ s/\{\\textquotesingle\}/'/g;
   $TEXT =~ s/\\textquotesingle/'/g;
   $TEXT =~ s/\\guillemotleft/<</g;
   $TEXT =~ s/\\guillemotright/>>/g;
@@ -1234,8 +1234,8 @@ sub traitement_initial { my ($TEXT) = @_;
   $TEXT =~ s/\[<\+->\]//g;
 
 # MODIF YVES NOEL 19/09/2011 (fin)
-  $TEXT =~ s/{}//g;
-  $TEXT =~ s/\\selectlanguage{french}\\sffamily//g;
+  $TEXT =~ s/\{\}//g;
+  $TEXT =~ s/\\selectlanguage\{french\}\\sffamily//g;
 
  #$TEXT =~ s/([^\\])\%+/$1/g;
   $TEXT =~ s/([^\\])\%.*/$1/g;
@@ -1250,18 +1250,18 @@ sub traitement_initial { my ($TEXT) = @_;
   $TEXT =~ s/~(:|;|\?|\!)/&nbsp;$1/g;
  #utiliser verb uniquement dans le cas d'un mot
 #FIXME: $TEXT =~ s/\verb"([^"]+)"/<tt class=verb>$1<\/tt>/g;
-  $TEXT =~ s/\\includegraphics\s*\[(.*)\]\s*{(.*)}/includegraphics($2,$1)/eg;
-  $TEXT =~ s/\\includegraphics\s*{([^}]+)}/includegraphics($1)/eg;
+  $TEXT =~ s/\\includegraphics\s*\[(.*)\]\s*\{(.*)\}/includegraphics($2,$1)/eg;
+  $TEXT =~ s/\\includegraphics\s*\{([^\}]+)\}/includegraphics($1)/eg;
   $TEXT =~ s/\\(begin|end){document}/\\document /g;
-  $TEXT =~ s/\\exercise{module=([^\&]+)\&([^}]+)}{([^}]+)}/store_sheet($1,$2,$3,$worksheet)/eg ;
+  $TEXT =~ s/\\exercise\{module=([^\&]+)\&([^\}]+)\}\{([^\}]+)\}/store_sheet($1,$2,$3,$worksheet)/eg ;
   $TEXT =~ s/\\xspace//g;
   $TEXT = traite_beamer($TEXT) ;
   $TEXT;
 }
 
 sub traite_beamer { my ($TEXT) = @_;
-   $TEXT =~ s/\\uncover\s*(<([^>]+)>)?\s*{(.*)}/\\fold{.}{-->}{$3}/g ;
-   $TEXT =~ s/\s*\\frametitle{([^}]+)}/store_frametitle($1)/ge;
+   $TEXT =~ s/\\uncover\s*(<([^>]+)>)?\s*\{(.*)\}/\\fold\{.\}\{-->\}\{$3\}/g ;
+   $TEXT =~ s/\s*\\frametitle\{([^\}]+)\}/store_frametitle($1)/ge;
    $TEXT =~ s/\\pause//g;
    $TEXT ;
 }
@@ -1272,7 +1272,7 @@ sub store_frametitle{ my ($TEXT)= @_ ;
 sub linewidth { my ($line,$w)= @_ ;
   $line =~ s/1\.[0]\s*\\(line|text)width/100\%/g;
   $line =~ s/0?\.([0-9])\s*\\(line|text)width/$1 0\%/g;
-  $line =~ s/0?\.([0-9]{2})[0-9]?\s*\\(line|text)width/$1\%/g;
+  $line =~ s/0?\.([0-9]\{2\})[0-9]?\s*\\(line|text)width/$1\%/g;
   $line =~ s/ //g;
   $line = "$w=\"$line\"" if ($w);
   $line ;
@@ -1306,11 +1306,11 @@ sub traite_preambule { my ($TEXT, $ref_env, $ref_command, $ref) = @_;
 sub store_embed { my ($id, $titre, $ref) = @_ ;
      $ref->{titb}{$id} = $titre ; $ref->{text}{$id} = `cat $EMBED/$id` ;
      $ref->{upbl}{$id}='main'; $ref->{type}{$id}='embed';
-     "\\embed{$id}{$titre}" ;
+     "\\embed\{$id\}\{$titre\}" ;
 }
 
 sub recup_embed { my ($TEXT, $ref) = @_ ;
-     $TEXT =~ s /\\embed\s*{([^}]+)}\s*{(.*)}/store_embed ($1, $2, $ref)/eg ;
+     $TEXT =~ s /\\embed\s*\{([^\}]+)\}\s*\{(.*)\}/store_embed ($1, $2, $ref)/eg ;
      $TEXT ;
  }
 
@@ -1331,8 +1331,8 @@ sub def { my ($ref, @style) = @_;
   }
   close IN;
   $header .= "\t<script type=\"text/javascript\">"
-   . "jQuery(function() {jQuery( \"#left_toc\" ).menu();});"
-   . "jQuery(function() {jQuery( \"#right_toc\" ).menu();});"
+   . "jQuery\(function\(\) \{jQuery\( \"#left_toc\" \).menu\(\);\}\);"
+   . "jQuery\(function\(\) \{jQuery\( \"#right_toc\" \).menu\(\);\}\);"
    . "</script>" if ($TOOLTIP==1);
 
 "copyright=gnu
@@ -1354,8 +1354,8 @@ sub store_ref { my ($link, $titre, $anchor, $ref_bloc) = @_;
   dbg("... référence fichier: \"$l\" titre \"$l\"");
   my $page = $ref_bloc->{fichier}{$l} ;
   warn "label $link n'existe pas" if !($page) ;
-  $txt .= ($#list) ? " \\link{$page}{$l}{$anchor}":
-             " \\link{$page}{$titre}{$anchor}";
+  $txt .= ($#list) ? " \\link\{$page\}\{$l\}\{$anchor\}":
+             " \\link\{$page\}\{$titre\}\{$anchor\}";
  }
  $txt ;
 };
@@ -1394,7 +1394,7 @@ sub store_algo { my ($txt, $acc, $cmd, $comment, $indent) = @_ ;
   {
    $txt = "\n" . indent($indent) . $txt if ( !($cmd =~ /END/) || $algo_noend == 0);
   }
-  $txt .= indent('3') . "{<i>$comment</i>}" if ($comment) ;
+  $txt .= indent('3') . "\{<i>$comment</i>\}" if ($comment) ;
   $txt .= "\n" ;
   $txt =~ s/\n+/\n/ ;
   $indent += $hash_algo{apres}{$cmd} ;
@@ -1487,7 +1487,7 @@ sub chemin { my ($tag, $ref) = @_;
     $niv++;
     $tagsup = $ref->{upbl}{$tagsup};
     $ch = "$tagsup,$ch"; if (!$ref->{tittoc}{$tagsup}) { $ref->{tittoc}{$tagsup}=$tagsup};
-    $txt = "\\link{$tagsup}{$ref->{tittoc}{$tagsup}} $FLECHE $txt" if ($tagsup) ; #if ($tagsup !~ /^main\b/);
+    $txt = "\\link\{$tagsup\}\{$ref->{tittoc}{$tagsup}\} $FLECHE $txt" if ($tagsup) ; #if ($tagsup !~ /^main\b/);
   }
   $ref->{chemin}{$tag} = $ch;
   $ref->{niveau}{$tag} = $niv;
