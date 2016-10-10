@@ -54,18 +54,20 @@ reset class_lvl
 mul_userdir=wimshome/log/classes/$supclass/.users
 mul_userdir2=$wims_home/log/classes/$supclass/.users
 
-## On range la liste des utilisateurs par paquets de 1000 (userlist_0, userlist_1, etc...)
+pack_size = 500
+
+## On range la liste des utilisateurs par paquets de $pack_size (userlist_0, userlist_1, etc...)
 start=0
-userlist_$start=!sh cd $mul_userdir2; ls 2>/dev/null | head -1000
+userlist_$start=!sh cd $mul_userdir2; ls 2>/dev/null | head -$pack_size
 userlist_$start=!words2items $(userlist_$start)
 
 userlist_lastcnt=!itemcnt $(userlist_$start)
 
-!while $userlist_lastcnt>999
- !advance start
- userlist_$start=!sh cd $mul_userdir2; ls 2>/dev/null | tail -n +$(start)001 | head -1000
- userlist_$start=!words2items $(userlist_$start)
- userlist_lastcnt=!itemcnt $(userlist_$start)
+!while $userlist_lastcnt>($pack_size-1)
+  !advance start
+  userlist_$start=!sh cd $mul_userdir2; ls 2>/dev/null | tail -n +$(start)001 | head -$pack_size
+  userlist_$start=!words2items $(userlist_$start)
+  userlist_lastcnt=!itemcnt $(userlist_$start)
 !endwhile
 
 ## On supprime une eventuelle liste temporaire "userlist*.raw" dans chaque classe
@@ -75,7 +77,7 @@ userlist_lastcnt=!itemcnt $(userlist_$start)
  rm -f $wims_home/log/classes/$c/.userlist_external.raw 2>/dev/null
 !next
 
-## On parcourt nos paquets de 1000 users
+## On parcourt nos paquets de $pack_size users
 !for N=0 to $start
  !for u in $(userlist_$N)
   !reset user_firstname, user_lastname, user_supervisable,\
