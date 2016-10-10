@@ -5,6 +5,8 @@ rep$i=!replace internal : by , in $(reply$i)
 !set parm3=!line 1 to -1 of $oef_applet_option
 !set line=!line -1 of $parm3
 !set parm3=!replace internal line number -1 by clock 0,0,100,$hour,$min,$sec,$line in $parm3
+!set parmjs=!getopt button in $(replyoption$i)
+!set parmjs=!declosing $parmjs
 
 !if $wims_read_parm=nocompare
  !read oef/canvasdraw.phtml $parm3
@@ -13,21 +15,28 @@ rep$i=!replace internal : by , in $(reply$i)
 !endif
 good=!replace internal : by , in $(replygood$i)
 score=0
+number=0
 !for j=1 to 3
-  l_=!item $j of $(rep$i)
-  !if $(good[$j])=$l_
-    sc_reply=!append item 1 to $sc
-    score=$[$score+1]
+  !if $(parmjs[$j])!=0
+    l_=!item $j of $(rep$i)
+    !increase number
+    !if $(good[$j])=$l_
+      sc=!append item 1 to $sc
+      score=$[$score+1]
+    !else
+      sc=!append item 0 to $sc
+    !endif
   !else
-    sc_reply=!append item 0 to $sc
+     sc=!append item x to $sc
   !endif
 !next
+m_result$i=$sc
 sc=!positionof item 0 in $sc
 
-!if $score=3
+!if $score=$number
   score=1
 !else
-  score=$[min(1,floor(10*$score/3)/10)]
+  score=$[min(1,ceil(10*$score/$number)/10)]
 !endif
 
 !if $score=1
@@ -35,7 +44,7 @@ sc=!positionof item 0 in $sc
   !increase freegot
   anscol=green
 !else
-  !if $score>0.3 and split iswordof $(replyoption$i)
+  !if $score>=1/$number and split iswordof $(replyoption$i)
     partialgood$i=yes
     diareply$i=good
     freegot=$[$freegot+$score]
