@@ -4,16 +4,17 @@ rep$i=!replace internal : by , in $(reply$i)
 !distribute items $(rep$i) into hour,min,sec
 !set parm3=!line 1 to -1 of $oef_applet_option
 !set line=!line -1 of $parm3
-!set parm3=!replace internal line number -1 by clock 0,0,100,$hour,$min,$sec,$line in $parm3
+!set parm4=!replace internal line number -1 by clock 0,0,100,$hour,$min,$sec,$line in $parm3
 !set parmjs=!getopt button in $(replyoption$i)
 !set parmjs=!declosing $parmjs
 
 !if $wims_read_parm=nocompare
- !read oef/canvasdraw.phtml $parm3
+ !read oef/canvasdraw.phtml $parm4
   reply_$i=$canvasdraw_out
  !exit
 !endif
 good=!replace internal : by , in $(replygood$i)
+!set parm2=!replace internal line number -1 by clock 0,0,100,$good,$line in $parm3
 score=0
 number=0
 !for j=1 to 3
@@ -56,7 +57,7 @@ sc=!positionof item 0 in $sc
 !endif
 
 !read oef/canvasdraw.phtml $xysize\
-$parm3
+$parm4
 
 !if $canvasdraw_idclass!=$empty
   reply_$i=<style type="text/css">\
@@ -67,3 +68,11 @@ $canvasdraw_out
   reply_$i=$canvasdraw_out
 !endif
 reply__$i=&nbsp;
+!if $score <1
+  !read oef/canvasdraw.phtml $xysize\
+$parm2
+  replyGood$i=$canvasdraw_out
+!else
+  replyGood$i=&nbsp;
+!endif
+noshow$i=yes
