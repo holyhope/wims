@@ -40,11 +40,11 @@ slib_cnt=0
      !if $(slib_square[4])!=$empty
          !for slib_i=0 to $(slib_square[3])-1
            !for slib_j = 0 to $(slib_square[4])-1
-             slib_list=!append line $[$(slib_square[1])+$slib_i],$[$(slib_square[2])+$slib_j] to $slib_list
+             slib_rect=$[$(slib_square[1])+$slib_i],$[$(slib_square[2])+$slib_j],$[$(slib_square[1])+$slib_i+1],$[$(slib_square[2])+$slib_j+1]
              !if $(slib_color[2])!=$empty
-               slib_out=!append line frectangle $[$(slib_square[1])+$slib_i],$[$(slib_square[2])+$slib_j],$[$(slib_square[1])+$slib_i]+1,$[$(slib_square[2])+$slib_j]+1,$(slib_color[2]) to $slib_out
+               slib_out=!append line frectangle $slib_rect,$(slib_color[2]) to $slib_out
              !endif
-             slib_out=!append line rectangle $[$(slib_square[1])+$slib_i],$[$(slib_square[2])+$slib_j],$[$(slib_square[1])+$slib_i]+1,$[$(slib_square[2])+$slib_j]+1,$(slib_color[1]) to $slib_out
+             slib_out=!append line rectangle $slib_rect,$(slib_color[1]) to $slib_out
            !next
           !next
           slib_maxx=$[max($(slib_square[1])+$(slib_square[3])+1,$slib_maxx)]
@@ -72,12 +72,12 @@ to $slib_out
            slib_out=!append line triangle $slib_tmp,$(slib_color[1]) \
 to $slib_out
          !else
+           slib_rect=$[$(slib_square[1])],$[$(slib_square[2])],$[$(slib_square[1])+1],$[$(slib_square[2])+1]
            !if $(slib_color[2])!=$empty
-             slib_out=!append line frectangle $[$(slib_square[1])],$[$(slib_square[2])],$[$(slib_square[1])+1],$[$(slib_square[2])+1],$(slib_color[2]) \
+             slib_out=!append line frectangle $slib_rect,$(slib_color[2]) \
 to $slib_out
            !endif
-          slib_out=!append line rectangle $[$(slib_square[1])],$[$(slib_square[2])],$[$(slib_square[1])+1],$[$(slib_square[2])+1],$(slib_color[1]) \
-to $slib_out
+          slib_out=!append line rectangle $slib_rect,$(slib_color[1]) to $slib_out
         !endif
         slib_maxx=$[max($(slib_square[1])+1,$slib_maxx)]
         slib_maxy=$[max($(slib_square[2])+1,$slib_maxy)]
@@ -85,9 +85,6 @@ to $slib_out
         slib_miny=$[min($(slib_square[2]),$slib_miny)]
      !endif
 !next
-slib_min=$[min($slib_minx,$slib_miny)-1]
-slib_max=$[max($slib_maxx,$slib_maxy)+1]
-
 !if $slib_sizey=$empty
   slib_sizey=$[round($slib_sizex*(2+$slib_maxy-($slib_miny))/(2+$slib_maxx-($slib_minx)))]
 !else
