@@ -15,7 +15,7 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-/* http dawmon for WIMS */
+/* http daemon for WIMS */
 
 #include <netdb.h>
 #include <sys/socket.h>
