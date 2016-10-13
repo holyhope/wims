@@ -195,6 +195,9 @@
 #define ROTATION_CENTER 199
 #define KILLROTATE	200
 #define CANVASTYPE	201
+#define NOXAXIS		202
+#define NOYAXIS		203
+
 /* the draw_function collection */
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1

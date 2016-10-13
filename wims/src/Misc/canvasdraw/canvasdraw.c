@@ -2949,14 +2949,39 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ can be set onclick <br />(however dragging not supported)
 	*/
 	    break;
+	case NOXAXIS:
+	/*
+	@ noaxis 
+	@ keyword
+	@ if set, the automatic x-axis numbering will be ignored
+	@ use command <a href="#axis">axis</a> to have a visual x/y-axis lines (see command <a href="grid">grid</a>
+	@ to be used before command grid (see <a href="#grid">command grid</a>)
+	*/
+	    fprintf(js_include_file,"x_strings = [0,\" \"];\n");
+	    use_axis_numbering = 1;
+	    break;
+	case NOYAXIS:
+	/*
+	@ noayis 
+	@ keyword
+	@ if set, the automatic y-axis numbering will be ignored
+	@ use command <a href="#axis">axis</a> to have a visual x/y-axis lines (see command <a href="grid">grid</a>
+	@ to be used before command grid (see <a href="#grid">command grid</a>)
+	*/
+	    fprintf(js_include_file,"y_strings = [0,\" \"];\n");
+	    use_axis_numbering = 1;
+	    break;
 	case X_AXIS_STRINGS:
 	/*
 	 @ xaxis num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
 	 @ alternative : xaxistext num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
 	 @ use these x-axis num1...num_n values instead of default xmin...xmax
+	 @ no need to use keyword <a href="#axisnumbering">axisnumbering</a>
+	 @ use command <a href="#axis">axis</a> to have visual x/y-axis lines (see command <a href="grid">grid</a>
 	 @ use command "fontcolor", "fontfamily" to adjust font <br />defaults: black,12,Ariel<br /><b>note</b>: command "fontsize" is not active for this command.("fontsize" can be used for the <a href="#legend">"legend"</a> in a <a href="#grid">grid</a>)
 	 @ a javascript error message will flag non-matching value:name pairs
 	 @ if the 'x-axis words' are too big and will overlap, a simple alternating offset will be applied
+	 @ to be used before command grid (see <a href="#grid">command grid</a>)
 	 @ example:<br />size 400,400<br />xrange 0,13<br />yrange -100,500<br />axis<br />xaxis 1:january:2:february:3:march:5:may:6:june:7:july:8:august:9:september:10:october:11:november:12:december<br />#'xmajor' steps should be synchronised with numbers eg. "1" in this example<br />grid 1,100,grey,1,4,6,grey
 	*/
 	    temp = get_string(infile,1);
@@ -2970,10 +2995,13 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ xaxisup num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
 	 @ alternative : xaxistextup num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
 	 @ the text will be rotated 90&deg; up
+	 @ no need to use keyword <a href="#axisnumbering">axisnumbering</a>
+	 @ use command <a href="#axis">axis</a> to have visual x/y-axis lines (see command <a href="grid">grid</a>
 	 @ use these x-axis num1...num_n values instead of default xmin...xmax
 	 @ use command "fontcolor","fontfamily" to adjust font <br />defaults: black,12,Ariel<br /><b>note</b>: command "fontsize" is not active for this command.("fontsize" can be used for the <a href="#legend">"legend"</a> in a <a href="#grid">grid</a>)
 	 @ a javascript error message will flag non-matching value:name pairs
 	 @ if the 'x-axis words' are too big, they will overlap the graph<br /> (in this case the text will start from ysize upwards)
+	 @ to be used before command grid (see <a href="#grid">command grid</a>)
 	 @ example:<br />size 400,400<br />xrange 0,13<br />yrange -100,500<br />axis<br />xaxisup 1:january:2:february:3:march:5:may:6:june:7:july:8:august:9:september:10:october:11:november:12:december<br />#'xmajor' steps should be synchronised with numbers eg. "1" in this example<br />grid 1,100,grey,1,4,6,grey
 	*/
 	    temp = get_string(infile,1);
@@ -2987,8 +3015,11 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ yaxis num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
 	 @ alternativ : yaxistext num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
 	 @ use command "fontcolor", "fontfamily" to adjust font <br />defaults: black,12,Ariel<br /> <b>note</b>: command "fontsize" is not active for this command.("fontsize" can be used for the <a href="#legend">"legend"</a> in a <a href="#grid">grid</a>)
+	 @ no need to use keyword <a href="#axisnumbering">axisnumbering</a>
+	 @ use command <a href="#axis">axis</a> to have visual x/y-axis lines (see command <a href="grid">grid</a>
 	 @ use these y-axis num1...num_n  values instead of default ymin...ymax
 	 @ a javascript error message will flag non-matching value:name pairs
+	 @ to be used before command grid (see <a href="#grid">command grid</a>)
 	 @ example:<br />size 400,400<br />yrange 0,13<br />xrange -100,500<br />axis<br />yaxis 1:january:2:february:3:march:5:may:6:june:7:july:8:august:9:september:10:october:11:november:12:december<br />#'ymajor' steps should be synchronised with numbers eg. "1" in this example<br />grid 100,1,grey,4,1,6,grey
 	*/
 	    temp = get_string(infile,1);
@@ -3002,6 +3033,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	    @ axisnumbering
 	    @ keyword (no arguments required)
+	    @ for special numbering of x-axis or y-axis see grid related commands <a href="#axis">axis</a>  <a href="#xaxis">xaxis</a> , <a href="#xaxisup">xaxisup</a>, <a href="#noxaxis">noxaxis</a> ,<a href="#yaxis">yaxis</a> , <a href="#yaxisup">yaxisup</a>, <a href="#noyaxis">noyaxis</a>
 	    @ to be used before command grid (see <a href="#grid">command grid</a>)
 	*/
 	    use_axis_numbering = 1;
@@ -8590,6 +8622,8 @@ int get_token(FILE *infile){
 	*pointer="pointer",
 	*yerrorbars="yerrorbars",
 	*xerrorbars="xerrorbars",
+	*noxaxis="noxaxis",
+	*noyaxis="noyaxis",
 	*canvastype="canvastype";
 
 	while(((c = getc(infile)) != EOF)&&(c!='\n')&&(c!=',')&&(c!='=')&&(c!='\r')&&(c!='\t')){
@@ -9467,6 +9501,14 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, canvastype) == 0  ){
 	free(input_type);
 	return CANVASTYPE;
+	}
+	if( strcmp(input_type, noyaxis) == 0  ){
+	free(input_type);
+	return NOYAXIS;
+	}
+	if( strcmp(input_type, noxaxis) == 0  ){
+	free(input_type);
+	return NOXAXIS;
 	}
 	free(input_type);
 	ungetc(c,infile);
