@@ -193,9 +193,6 @@ int main(int argc, char *argv[]){
 	case COMMENT:
 	    sync_input(infile);
 	    break;
-	case EMPTY:
-	    sync_input(infile);
-	    break;
 	case SIZE:
 	    /*
 	    @ size width,height
@@ -8640,7 +8637,6 @@ int get_token(FILE *infile){
 	 if(temp[0] == '#'){ break; }
 	}
 	if (c == '\n' || c == '\r' || c == '\t' ){  line_number++; }
-	if (i == 0) { return EMPTY; }
 	if (c == EOF) {finished=1;return 0;}
 
 	temp[i]='\0';

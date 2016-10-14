@@ -33,7 +33,6 @@
 #define CIRCLE 		27
 #define GETPIXEL 	28
 #define SQUARE 		29
-#define EMPTY 		30
 #define ELLIPSE 	31
 #define ROTATE 		32
 #define TYPE 		33
