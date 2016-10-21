@@ -68,7 +68,6 @@ userlist_lastcnt=!itemcnt $(userlist_$start)
 
 !while $userlist_lastcnt>$[$pack_size-1]
   !advance start
-
   userlist_$start=!sh cd $mul_userdir2; ls 2>/dev/null | tail -n +$[$start*$pack_size+1] | head -$pack_size
   userlist_$start=!words2items $(userlist_$start)
   userlist_lastcnt=!itemcnt $(userlist_$start)
@@ -78,7 +77,7 @@ userlist_lastcnt=!itemcnt $(userlist_$start)
 ## just junk
 !for c in $clist
   !sh rm -f $wims_home/log/classes/$c/.userlist.raw 2>/dev/null\
-  rm -f $wims_home/log/classes/$c/.userlist_external.raw 2>/dev/null
+      rm -f $wims_home/log/classes/$c/.userlist_external.raw 2>/dev/null
 !next
 
 ## On parcourt nos paquets de $pack_size users
@@ -146,27 +145,43 @@ basedir2=wimshome/log/classes
 ## do now the .usernextlist and .userprevlist only in the class $uclass
 ## in fact, there is only one class in $uclass. Leave the loop for the moment
 !for c in $uclass
-  rm -f $basedir/$c/.usernextlist.raw 2>/dev/null\
-  rm -f $basedir/$c/.userprevlist.raw 2>/dev/null
+  !sh rm -f $basedir/$c/.usernextlist.raw 2>/dev/null\
+      rm -f $basedir/$c/.userprevlist.raw 2>/dev/null
   !set nbuser_=!recordcnt $basedir2/$c/.userlist
   !if $nbuser_=0
     !break
   !endif
-  !set list_1=!record 1 to -1 of $basedir2/$c/.userlist
-  !set list_1=!column 3 of $list_1
-  !set nextuser=!makelist $$(list_1[x]), $$(list_1[x+1]); for x=1 to $nbuser_-1
-  !set nextuser=!nospace $nextuser$(list_1[$nbuser_]),$(list_1[1])
-  !set nextuser=!replace internal ;, by ; in $nextuser
-  !set prevuser=!nospace $(nextuser[;2,1])
-  !set prevuser=!rows2lines $prevuser
-  !set prevuser=!replace internal , by : in $prevuser
-  !set nextuser=!rows2lines $nextuser
-  !set nextuser=!replace internal , by : in $nextuser
-  !writefile $basedir2/$c/.usernextlist.raw $nextuser
-  !writefile $basedir2/$c/.userprevlist.raw $prevuser
-  !sh mv $basedir/$c/.usernextlist.raw $basedir/$c/.usernextlist\
-    mv $basedir/$c/.userprevlist.raw $basedir/$c/.userprevlist
-!next c
 
-!exit
-!read adm/class/stat
+  record_start = 1
+  remaining = $nbuser_ - 1
+  ## On parcourt nos users par paquets de $pack_size
+  !while $remaining > 0
+    nb_processing = $[min($remaining, $pack_size)]
+    record_end = $[$record_start+$nb_processing]
+    list_n=!record $record_start to $record_end of $basedir2/$c/.userlist
+    list_n=!column 3 of $list_n
+    nextuser=!makelist $$(list_n[x]), $$(list_n[x+1]); for x=1 to $nb_processing
+    nextuser=!nospace $nextuser
+    nextuser=!replace internal ;, by ; in $nextuser
+
+    prevuser=!nospace $(nextuser[;2,1])
+
+    prevuser=!rows2lines $prevuser
+    prevuser=!replace internal , by : in $prevuser
+    nextuser=!rows2lines $nextuser
+    nextuser=!replace internal , by : in $nextuser
+
+    !appendfile $basedir2/$c/.usernextlist.raw $nextuser
+    !appendfile $basedir2/$c/.userprevlist.raw $prevuser
+    record_start = $record_start + $nb_processing
+    remaining = $remaining - $nb_processing
+  !endwhile
+  first_user = !record 1 of $basedir2/$c/.userlist
+  first_user = !item 3 of $first_user
+  last_user = !record -1 of $basedir2/$c/.userlist
+  last_user = !item 3 of $last_user
+  !appendfile $basedir2/$c/.usernextlist.raw $last_user:$first_user
+  !appendfile $basedir2/$c/.userprevlist.raw $first_user:$last_user
+  !sh mv $basedir/$c/.usernextlist.raw $basedir/$c/.usernextlist\
+      mv $basedir/$c/.userprevlist.raw $basedir/$c/.userprevlist
+!next c
