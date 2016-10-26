@@ -3,21 +3,21 @@
 !if $wims_read_parm=def
  !exit
 !endif
-
 !set color=!getopt color in $(replyoption$i)
 !default color=!declosing $color
 !set color=!words2items $color
-
 !set type=!getopt clocktype in $(replyoption$i)
 !default type=2
-
 !set init=!getopt init in $(replyoption$i)
 !set init=!declosing $init
+!set init=!singlespace $init
+!set init=!words2items $init
 !set init=!replace internal : by , in $init
 !default init=0,0,0
 
 !set parmjs=!getopt button in $(replyoption$i)
 !set parmjs=!declosing $parmjs
+!set parmjs=!singlespace $parmjs
 !set parmjs=!words2items $parmjs
 !distribute item $parmjs into parm_h,parm_m,parm_s
 !set parm_h=!text select 0123456789 in $parm_h
