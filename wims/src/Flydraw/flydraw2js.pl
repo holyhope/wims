@@ -1,10 +1,10 @@
-#!/usr/local/bin/perl
+#!/usr/bin/perl
 
 open(IN, "commands") ;
 
-my $L='' ; my $t=0 ;	
-while (<IN>) {my $l=$_ ; 
-  if (/^:/) { $t=1 ; $l =~ s/^:(\w+)(\s.*)?\n/$1/g ; $L .=$l ; } 
+my $L='' ; my $t=0 ;
+while (<IN>) {my $l=$_ ;
+  if (/^:/) { $t=1 ; $l =~ s/^:(\w+)(\s.*)?\n/$1/g ; $L .=$l ; }
     else {
     if ($t==1) { $L .=$l ;} ; $t=0 ;
   }

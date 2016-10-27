@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl
+#!/usr/bin/perl
 
 while(chomp($essai = <STDIN>)){
     if(length($essai) != 0){
@@ -18,6 +18,6 @@ while(chomp($essai = <STDIN>)){
 	    print "***ERREUR***\n $essai ---> $result\n on attendait $reponse\n";
 	}
     }
-    
+
 }
 
