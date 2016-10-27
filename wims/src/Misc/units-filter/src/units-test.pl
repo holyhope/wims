@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/local/bin/perl
 
 while(chomp($essai = <STDIN>)){
     if(length($essai) != 0){

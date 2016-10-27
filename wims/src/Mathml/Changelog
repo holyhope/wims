@@ -250,3 +250,12 @@ to recognizable chars in input
 30/04/2016: in MathJaX V2.6 the issue with the inputfield in mathml seems to be resolved. 
 Switching back from "textarea" to "inputfield"
 Note+todo: latest html5 options for "input" are not yet implemented.
+
+27/10/2016 : revert to textarea , because of some bug in Safari. 
+	     Mathjax can not cure this browser error:
+	     https://github.com/mathjax/MathJax/issues/1644
+	     the textarea will ignore an "enter" (keycode 13)  and will be in everyday usage similar to an input-field
+	     revert to inputfield when Safari (and possibly other Webkit browsers) have better support
+	     (but this willnot happen in the near future, I'm afraid...)
+	     At the same time "exec.c" is modified: it will activate Mathjax for all non-real-gecko-browsers.
+	     
