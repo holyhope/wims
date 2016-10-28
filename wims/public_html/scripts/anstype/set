@@ -7,7 +7,7 @@ dd=!declosing $(reply$i)
 !if , notin $dd
  dd=!words2items $dd
 !endif
-!if repeat iswordof $(replyoption$i)
+!if repeat iswordof $(replyoption$i) or distinct_inputs iswordof $(replyoption$i)
 dd1=!sort items $dd
 !endif
 dd=!listuniq $dd
@@ -23,7 +23,7 @@ good=!declosing $(replygood$i)
 !if , notin $good
  good=!words2items $good
 !endif
-!if repeat iswordof $(replyoption$i)
+!if repeat iswordof $(replyoption$i) or distinct_inputs iswordof $(replyoption$i)
  good1=!sort items $good
 !endif
 good=!listuniq $good
@@ -39,7 +39,7 @@ n3=!itemcnt $dt
 !else
   test_rep_=0
 !endif
-!if $n1!=$n2 and repeat notwordof $(replyoption$i)
+!if $n1!=$n2 and (repeat notwordof $(replyoption$i) and distinct_inputs notwordof $(replyoption$i))
  badsize$i=true
 !endif
 
