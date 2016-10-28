@@ -2483,21 +2483,22 @@ var draw_userarc = function(ctx,xc,yc,x1,y1,x2,y2,line_width,stroke_color,stroke
 
 void add_js_text(FILE *js_include_file,int canvas_root_id,int font_size,char *font_family,char *font_color,double stroke_opacity){
 fprintf(js_include_file,"\n<!-- begin command userdraw text -->\n\
-canvas_div.addEventListener(\"keydown\",user_text,false);\
-var context_userdraw = canvas_userdraw.getContext(\"2d\");\
+canvas_div.addEventListener(\"keydown\",function(e){ e.preventDefault();user_text(e);},false);\
+context_userdraw = canvas_userdraw.getContext(\"2d\");\
 var font_color = \"%s\";\
 var font_opacity = %f;\
+var mask_opacity = 0.5*font_opacity;\
 var font_size = %d;\
 var font_family = \"%s\";\
 context_userdraw.fillStyle = \"rgba(\"+font_color+\",\"+font_opacity+\")\";\
 context_userdraw.font = font_family;\
+context_userdraw.save();\
+var tmp_font_size = context_userdraw.measureText(\"m\").width;\
+if( tmp_font_size > font_size ){ font_size = tmp_font_size;};\
 var userdraw_text = new Array();\
-var txt_cnt = 0;\
-var txt=\"\";\
+var temp_userdraw_txt=\"\";\
 var x_txt = 0;\
 var y_txt = 0;\
-var w_txt = 0;\
-var typing = 0;\
 function user_draw(evt){\
  var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
  x_txt = mouse.x;\
@@ -2524,34 +2525,30 @@ function user_draw(evt){\
  };\
  return;\
 };\
-function user_drag(evt){\
-return;\
+function user_drag(evt){return;};\
+function redraw_all_user_text(){\
+ var len = userdraw_x.length;\
+ context_userdraw.clearRect(0,0,xsize,ysize);\
+ for(var p = 0 ; p < len ; p++){\
+  context_userdraw.fillText(userdraw_text[p],userdraw_x[p],userdraw_y[p]);\
+ };\
 };\
 function user_text(evt){\
- var kc = evt.keyCode;var w;\
+ var kc = evt.keyCode;\
  if( kc== 8 || kc == 27 || kc == 46 ){\
-  if( typing == 1 ){\
-   w = context_userdraw.measureText(txt).width;\
-   context_userdraw.clearRect(x_txt-2,y_txt-font_size-2,w+2,font_size+2);\
-   txt = \"\";\
-  }\
-  else\
-  {\
-   for( var p=0 ; p < txt_cnt; p++){\
-    var tmp = (userdraw_text[p]).split(\":\");\
-    w = context_userdraw.measureText(tmp[0]).width;\
-    var y1 = y_txt - font_size;\
-    var y2 = y_txt + font_size;\
-    if( tmp[1] < y2 && tmp[1] > y1){\
-     var x1 = x_txt - font_size;\
-     var x2 = x_txt + w;\
-     if( tmp[0] < x2 && tmp[0] > x1){\
-      if (confirm(\"delete this text : \"+tmp[2]+\"?\")){\
-       context_userdraw.clearRect(x1,y1,x2,y2);\
-       userdraw_text.splice(p,1);\
-       txt_cnt--;\
-       return;\
-      };\
+  var len = userdraw_x.length;\
+  for( var p=0 ; p < len ; p++){\
+   var tmp = userdraw_text[p];\
+   var w = context_userdraw.measureText(tmp).width;\
+   if( y_txt <= userdraw_y[p] && y_txt > userdraw_y[p] - font_size){\
+    if( x_txt < userdraw_x[p] + w && x_txt > userdraw_x[p] ){\
+     if (confirm(\"delete : \"+tmp+\"?\")){\
+      userdraw_text.splice(p,1);\
+      userdraw_x.splice(p,1);\
+      userdraw_y.splice(p,1);\
+      temp_userdraw_txt = \"\";\
+      redraw_all_user_text();\
+      return;\
      };\
     };\
    };\
@@ -2560,30 +2557,22 @@ function user_text(evt){\
  else\
  {\
   if( kc < 126 && kc > 40 ){\
-   typing = 1;\
-   txt=txt+String.fromCharCode(kc);\
-   w = context_userdraw.measureText(txt).width;\
+   temp_userdraw_txt=temp_userdraw_txt+String.fromCharCode(kc);\
    context_userdraw.save();\
-   context_userdraw.fillStyle = \"lightblue\";\
-   context_userdraw.beginPath();\
-   context_userdraw.rect(x_txt,y_txt-font_size,w,font_size);\
-   context_userdraw.closePath();\
-   context_userdraw.fill();\
+   context_userdraw.fillStyle = \"rgba(\"+font_color+\",\"+mask_opacity+\")\";\
+   context_userdraw.fillText(temp_userdraw_txt,x_txt,y_txt);\
    context_userdraw.restore();\
-   context_userdraw.fillText(txt,x_txt,y_txt);\
   }\
   else\
   {\
    if(kc == 13 ){\
-    w = context_userdraw.measureText(txt).width;\
-    if(w < 1){alert(\"nothing typed...try again\");return;};\
-    context_userdraw.clearRect(x_txt,y_txt-font_size,w,font_size);\
-    context_userdraw.fillText(txt,x_txt,y_txt);\
-    userdraw_text[txt_cnt] = Math.round(x_txt)+\":\"+Math.round(y_txt)+\":\"+txt;\
-    txt=\"\";\
-    w = 0;\
-    txt_cnt++;\
-    typing = 0;\
+    w = context_userdraw.measureText(temp_userdraw_txt).width;\
+    if(w < 1){ return;};\
+    userdraw_x.push(x_txt);\
+    userdraw_y.push(y_txt);\
+    userdraw_text.push(temp_userdraw_txt);\
+    redraw_all_user_text();\
+    temp_userdraw_txt=\"\";\
     return;\
    };\
   };\
@@ -3523,18 +3512,29 @@ all members will be set to 0 eg reply[0] = 0 , reply[1] = 0 ...
 hope this does not interfere with existing work... 
 */
 /*
-12/2016 changed  to 'setAttribute()' because of trouble on Chromium/Safari/IE 
+5/2016 changed  to 'setAttribute()' because of trouble on Chromium/Safari/IE 
+10/2016 corrected contex-reset-flaw when using "userdraw text,color" and added inputs to the things we can remove
 */
 fprintf(js_include_file,"<!-- add clear button -->\n\
 clear_draw_area%d = function(){\
-  var canvas_userdraw = create_canvas%d(%d,xsize,ysize);\
-  var context_userdraw = canvas_userdraw.getContext(\"2d\");\
+ if( typeof context_userdraw === 'object' ){\
   context_userdraw.clearRect(0,0,xsize,ysize);\
+  if( typeof userdraw_text != 'undefined'){ userdraw_text = []; };\
+  if( document.getElementById(\"canvas_input0\") ){\
+   var p = 0;var inp;\
+   while( document.getElementById(\"canvas_input\"+p) ){\
+    inp = document.getElementById(\"canvas_input\"+p);\
+    canvas_div.removeChild(inp);\
+    p++;\
+   };\
+   input_cnt = 0;start_input_cnt = 0; \
+  };\
   userdraw_x = [];userdraw_y = [];userdraw_radius = [];xy_cnt = 0;\
   for(var p = 0;p < reply.length; p++){\
    reply[p] = 0;\
   };\
-  return;\
+ };\
+ return;\
 };\
 function add_clear_button(){\
  var tooltip_placeholder_div = document.getElementById(\"tooltip_placeholder_div%d\");\
@@ -3547,7 +3547,7 @@ function add_clear_button(){\
  tooltip_placeholder_div.appendChild(button);\
 };\
 add_clear_button();\
-",canvas_root_id,canvas_root_id,DRAW_CANVAS,canvas_root_id,canvas_root_id,input_style,button_text,canvas_root_id);
+",canvas_root_id,canvas_root_id,canvas_root_id,input_style,button_text,canvas_root_id);
 }
 
 

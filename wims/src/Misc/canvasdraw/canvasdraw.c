@@ -1865,7 +1865,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ for multiple object user drawings use command <a href="#multidraw">'multidraw'</a>
 	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>demiline</li><li>demilines</li><li>segment</li><li>segments</li><li>polyline | brokenline </li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9] (e.g poly3 ... poly7...poly9 </li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline | path</li><li>freehandlines | paths</li><li>clickfill : fill the clicked area with a color<br />the click may be set <a href="#snaptogrid">snapped...</a></ br>only one area can be selected <br />use command <a href="#canvastype">'canvastype'</a> to fill another canvas (default should be fine: DRAG_CANVAS = 5)</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
 	@ <b>note</b>: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
-	@ <b>note</b>: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />while typing the background of every typed char will be lightblue..."backspace / delete / esc" will remove typed text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt()" : lightblue background will disappear<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" , a confirm will popup asking to delete the selected text.This text will be removed from the "userdraw_txt()" answer array.<br />Use commands 'fontsize' and 'fontfamily' to control the text appearance
+	@ <b>note</b>: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />"backspace / delete / esc" will remove typed text if the mouse is clicked non the text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt"<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" , 
+	a confirm will popup asking to delete the selected text. This text will be removed from the "userdraw_txt()" answer array.<br />Use commands 'fontsize' and 'fontfamily' to control the text appearance
 	@ <b>note</b>: object_type polygone: Will be finished (the object is closed) when clicked on the first point of the polygone again.
 	@ <b>note</b>: all objects will be removed -after a javascript confirm box- when clicked on an object point with middle or right mouse button (e.g. event.which != 1 : all buttons but left)
 	@ use command "filled", "opacity int,int"  and "fillcolor color" to trigger coloured filling of fillable objects
@@ -2234,7 +2235,6 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    }
 	    else
 	    if( strcmp(draw_type,"text") == 0){
-		if( js_function[DRAW_TEXTS] != 1 ){ js_function[DRAW_TEXTS] = 1;}
 		if(reply_format == 0){reply_format = 17;}
 		add_js_text(js_include_file,canvas_root_id,font_size,font_family,font_color,stroke_opacity);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
@@ -4275,8 +4275,8 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ default values should be fine !
 	@ use command 'precision [0,1,10,100,1000,10000...]' before command 'replyformat' to set the desired number of decimals in the student reply / drawing
 	@ the last value for 'precision int' will be used to calculate  the reply coordinates, if needed (read_canvas();)
-	@ choose<ul><li>1 = x1,x2,x3,x4....x_n<br />y1,y2,y3,y4....y_n<br /><br />x/y in pixels</li><li>2 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br /> x/y in xrange / yrange coordinate system<br /></li><li>3 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  r1,r2,r3,r4....r_n<br />  x/y in pixels <br />  r in pixels</li><li>4 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  r1,r2,r3,r4....r_n<br />  x/y in xrange / yrange coordinate system<br />  r in pixels</li><li>5 = Ax1,Ax2,Ax3,Ax4....Ax_n<br />  Ay1,Ay2,Ay3,Ay4....Ay_n<br />  Bx1,Bx2,Bx3,Bx4....Bx_n<br />  By1,By2,By3,By4....By_n<br />  Cx1,Cx2,Cx3,Cx4....Cx_n<br />  Cy1,Cy2,Cy3,Cy4....Cy_n<br />  ....<br />  Zx1,Zx2,Zx3,Zx4....Zx_n<br />  Zy1,Zy2,Zy3,Zy4....Zy_n<br />  x/y in pixels<br /></li><li>6 = Ax1,Ax2,Ax3,Ax4....Ax_n<br />  Ay1,Ay2,Ay3,Ay4....Ay_n<br />  Bx1,Bx2,Bx3,Bx4....Bx_n<br />  By1,By2,By3,By4....By_n<br />  Cx1,Cx2,Cx3,Cx4....Cx_n<br />  Cy1,Cy2,Cy3,Cy4....Cy_n<br />  ....<br />  Zx1,Zx2,Zx3,Zx4....Zx_n<br />  Zy1,Zy2,Zy3,Zy4....Zy_n<br />  x/y in xrange / yrange coordinate system<br /></li><li>7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br />  x/y in pixels</li><li>8 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br />  x/y in xrange / yrange coordinate system</li><li>9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br />  x/y in pixels</li><li>10 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br />  x/y in xrange / yrange coordinate system</li><li>11 = Ax1,Ay1,Ax2,Ay2<br />   Bx1,By1,Bx2,By2<br />   Cx1,Cy1,Cx2,Cy2<br />   Dx1,Dy1,Dx2,Dy2<br />   ......<br />   Zx1,Zy1,Zx2,Zy2<br />  x/y in xrange / yrange coordinate system</li><li>12 = Ax1,Ay1,Ax2,Ay2<br />   Bx1,By1,Bx2,By2<br />Cx1,Cy1,Cx2,Cy2<br />   Dx1,Dy1,Dx2,Dy2<br />   ......<br />   Zx1,Zy1,Zx2,Zy2<br />  x/y in pixels</li><li>13 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2,Cx1:Cy1:Cx2:Cy2,Dx1:Dy1:Dx2:Dy2, ... ,Zx1:Zy1:Zx2:Zy2<br />  x/y in xrange / yrange coordinate system</li><li>14 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2....Zx1:Zy1:Zx2:Zy2<br />  x/y in pixels</li><li>15 = reply from inputfields,textareas<br />  reply1,reply2,reply3,...,reply_n</li><li>16 = mathml input fields </li><li>17 = read "userdraw text,color" only (x1:y1:text1,x2:y2:text2...x_n:y_n:text_n</li><li>18 = read_canvas() will read all interactive clocks in H1:M1:S1,H2:M2:S2...Hn:Mn:Sn</li><li>19 = read_canvas() will return the object number of marked / clicked object (clock)<br />analogue to (shape library) onclick command </li><li>20 = read_canvas() will reply "object_number:x:y" of external images : object_number of the first draggable external image in the fly-script starts with 0 <br />e.g. expect something like 0:-5:4,1:6:2,2:-2:-5 <br /> the first image position is (-5:4) , the second image position is (6:2) and the third image position is (-2:-5) 	<li>21 = (x1:y1) (x2:y2) ... (x_n:y_n)<br />verbatim coordinate return</li><li>22 = returns an array .... reply[0]=x1 reply[1]=y1 reply[2]=x2 reply[3]=y2 ... reply[n-1]=x_n reply[n]=y_n<br />  x/y in xrange / yrange coordinate system</li><li>23 : can only be used for drawtype 'polyline'<br />a typical click sequence in drawtype polyline is x1,y1,x2,y2,x2,y2,x3,y3,x3,y3.....,x(n-1),y(n-1),x(n-1),y(n-1),xn,yn --replyformat 23--> x1,y1,x2,y2,x3,y3,.....x(n-1),y(n-1),xn,yn multiple occurences will be filtered out.The reply will be in x-y-range (xreply \\n yreply)</li><li>24 = read all inputfield values: even those set 'readonly'</li><li>25 = angle1,angle2...angle_n : will return the radius (one or many) of the user drawn circle segment in degrees </li><li>26 = rad1,rad2...rad_n : will return the radius (one or many) of the user drawn circle segment in radians </li><li>27 = return (only) userdraw inputfields array: x1:y1:text1,x2:y2:text2...</li><li>28 = x1,y1,r1,x2,y2,r2...x_n,y_n,r_n <br />x / y / r in  xrange / yrange coordinate system: may be used to reinput into command 'circles color,x1,y1,r1,x2,y2,r2...x_n,y_n,r_n'<br /> will not return anything else (e.g. no inputfields , text etc)</li></ul>
-	@ note to 'userdraw text,color' : the x / y-values are in pixels ! (this to avoid too lengthy calculations in javascript...)
+	@ choose<ul><li>1 = x1,x2,x3,x4....x_n<br />y1,y2,y3,y4....y_n<br /><br />x/y in pixels</li><li>2 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br /> x/y in xrange / yrange coordinate system<br /></li><li>3 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  r1,r2,r3,r4....r_n<br />  x/y in pixels <br />  r in pixels</li><li>4 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  r1,r2,r3,r4....r_n<br />  x/y in xrange / yrange coordinate system<br />  r in pixels</li><li>5 = Ax1,Ax2,Ax3,Ax4....Ax_n<br />  Ay1,Ay2,Ay3,Ay4....Ay_n<br />  Bx1,Bx2,Bx3,Bx4....Bx_n<br />  By1,By2,By3,By4....By_n<br />  Cx1,Cx2,Cx3,Cx4....Cx_n<br />  Cy1,Cy2,Cy3,Cy4....Cy_n<br />  ....<br />  Zx1,Zx2,Zx3,Zx4....Zx_n<br />  Zy1,Zy2,Zy3,Zy4....Zy_n<br />  x/y in pixels<br /></li><li>6 = Ax1,Ax2,Ax3,Ax4....Ax_n<br />  Ay1,Ay2,Ay3,Ay4....Ay_n<br />  Bx1,Bx2,Bx3,Bx4....Bx_n<br />  By1,By2,By3,By4....By_n<br />  Cx1,Cx2,Cx3,Cx4....Cx_n<br />  Cy1,Cy2,Cy3,Cy4....Cy_n<br />  ....<br />  Zx1,Zx2,Zx3,Zx4....Zx_n<br />  Zy1,Zy2,Zy3,Zy4....Zy_n<br />  x/y in xrange / yrange coordinate system<br /></li><li>7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br />  x/y in pixels</li><li>8 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br />  x/y in xrange / yrange coordinate system</li><li>9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br />  x/y in pixels</li><li>10 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br />  x/y in xrange / yrange coordinate system</li><li>11 = Ax1,Ay1,Ax2,Ay2<br />   Bx1,By1,Bx2,By2<br />   Cx1,Cy1,Cx2,Cy2<br />   Dx1,Dy1,Dx2,Dy2<br />   ......<br />   Zx1,Zy1,Zx2,Zy2<br />  x/y in xrange / yrange coordinate system</li><li>12 = Ax1,Ay1,Ax2,Ay2<br />   Bx1,By1,Bx2,By2<br />Cx1,Cy1,Cx2,Cy2<br />   Dx1,Dy1,Dx2,Dy2<br />   ......<br />   Zx1,Zy1,Zx2,Zy2<br />  x/y in pixels</li><li>13 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2,Cx1:Cy1:Cx2:Cy2,Dx1:Dy1:Dx2:Dy2, ... ,Zx1:Zy1:Zx2:Zy2<br />  x/y in xrange / yrange coordinate system</li><li>14 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2....Zx1:Zy1:Zx2:Zy2<br />  x/y in pixels</li><li>15 = reply from inputfields,textareas<br />  reply1,reply2,reply3,...,reply_n</li><li>16 = mathml input fields </li><li>17 = read "userdraw text,color" only (x1,y1,text1 \\n x2,y2,text2...\\n...x_n,y_n,text_n <br /> x/y-values are in xrang/yrange</li><li>18 = read_canvas() will read all interactive clocks in H1:M1:S1,H2:M2:S2...Hn:Mn:Sn</li><li>19 = read_canvas() will return the object number of marked / clicked object (clock)<br />analogue to (shape library) onclick command </li><li>20 = read_canvas() will reply "object_number:x:y" of external images : object_number of the first draggable external image in the fly-script starts with 0 <br />e.g. expect something like 0:-5:4,1:6:2,2:-2:-5 <br /> the first image position is (-5:4) , the second image position is (6:2) and the third image position is (-2:-5) 	<li>21 = (x1:y1) (x2:y2) ... (x_n:y_n)<br />verbatim coordinate return</li><li>22 = returns an array .... reply[0]=x1 reply[1]=y1 reply[2]=x2 reply[3]=y2 ... reply[n-1]=x_n reply[n]=y_n<br />  x/y in xrange / yrange coordinate system</li><li>23 : can only be used for drawtype 'polyline'<br />a typical click sequence in drawtype polyline is x1,y1,x2,y2,x2,y2,x3,y3,x3,y3.....,x(n-1),y(n-1),x(n-1),y(n-1),xn,yn --replyformat 23--> x1,y1,x2,y2,x3,y3,.....x(n-1),y(n-1),xn,yn multiple occurences will be filtered out.The reply will be in x-y-range (xreply \\n yreply)</li><li>24 = read all inputfield values: even those set 'readonly'</li><li>25 = angle1,angle2...angle_n : will return the radius (one or many) of the user drawn circle segment in degrees </li><li>26 = rad1,rad2...rad_n : will return the radius (one or many) of the user drawn circle segment in radians </li><li>27 = return (only) userdraw inputfields  x1,y1,text1 \\n x2,y2,text2...\\n...x_n,y_n,text_n</li><li>28 = x1,y1,r1,x2,y2,r2...x_n,y_n,r_n <br />x / y / r in  xrange / yrange coordinate system: may be used to reinput into command 'circles color,x1,y1,r1,x2,y2,r2...x_n,y_n,r_n'<br /> will not return anything else (e.g. no inputfields , text etc)</li></ul>
+
 	*/
 	 reply_format = (int) get_real(infile,1);
 	 reply_precision = precision;
@@ -5135,7 +5135,7 @@ note:if userdraw is combined with inputfields...every "userdraw" based answer wi
 
 16 = read mathml inputfields only
 
-17 = read userdraw text only (x1:y1:text1,x2:y2:text2...x_n:y_n:text_n
+17 = read userdraw text only (x1,y1,text1\nx2,y2,text2..\n.x_n,y_n,text_n
  when ready : calculate size_t of string via snprintf(NULL,0,"blah blah...");
 
 18 = read clock(s) : H1:M1:S1,H2:M2:S2,...H_n:M_n:S_n
@@ -5148,7 +5148,7 @@ note:if userdraw is combined with inputfields...every "userdraw" based answer wi
 24 = read all inputfield values: even those set 'readonly'
 25 = return all userdrawn arcs in degrees:
 26 = return all userdrawn arcs in radians:
-27 = return (only) userdraw inputfields array: x1:y1:text1,x2:y2:text2...
+27 = return (only) userdraw inputfields array: x1,y1,text1 \n x2,y2,text2...
 28 = x1,y1,r1,x2,y2,r2...x_n,y_n,r_n
     x/y/r in  xrange / yrange coordinate system: may be used to reinput into command
     'circles color,x1,y1,r1,x2,y2,r2...x_n,y_n,r_n'
@@ -5853,8 +5853,13 @@ this.read_mathml = read_mathml;\n\
     case 17:  fprintf(js_include_file,"\
 \n<!-- begin function 17 read_canvas%d() -->\n\
 read_canvas%d = function(){\
- if( userdraw_text.length == 0){alert(\"no text typed...\");return;}\
- return userdraw_text;\
+ var len = userdraw_x.length;\
+ if( len == 0){alert(\"no text typed...\");return;}\
+ var rep = px2x(userdraw_x[0])+\",\"+px2y(userdraw_y[0])+\",\"+userdraw_text[0];\
+ for(var p = 1 ; p < len ; p++){\
+  rep = rep + \"\\n\" + px2x(userdraw_x[p]) + \",\" + px2y(userdraw_y[p]) + \",\" + userdraw_text[p];\
+ };\
+ return rep;\
 };\n\
 <!-- end function 17 read_canvas%d() -->",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
@@ -6095,10 +6100,11 @@ read_canvas%d = function(){\
  if( lu < 1){alert(\"nothing drawn...\");return;}\
  set_reply_precision();\
  var prec = %d;\
+ var rep = (Math.round(prec*(px2x(userdraw_x[p]))))/prec+\",\"+(Math.round(prec*(px2y(userdraw_y[p]))))/prec+\",\"+ document.getElementById(\"canvas_input\"+p).value;\
  for(var p = 0 ; p < lu ; p++){\
-   reply[p] = (Math.round(prec*(px2x(userdraw_x[p]))))/prec+\":\"+(Math.round(prec*(px2y(userdraw_y[p]))))/prec+\":\"+ document.getElementById(\"canvas_input\"+p).value;\
+   rep = rep = \"\\n\" + (Math.round(prec*(px2x(userdraw_x[p]))))/prec+\":\"+(Math.round(prec*(px2y(userdraw_y[p]))))/prec+\":\"+ document.getElementById(\"canvas_input\"+p).value;\
  };\
- return reply;\
+ return rep;\
 };\n\
 <!-- end function 27 read_canvas%d() -->",canvas_root_id,canvas_root_id,reply_precision,canvas_root_id);
     break;
