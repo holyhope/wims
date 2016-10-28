@@ -11,7 +11,11 @@
   !if , notin $good
    !set r_=!words2items $r_
   !endif
-  !default reply$i=!listuniq $r_
+  !if repeat notwordof $(replyoption$i)
+   !default reply$i=!listuniq $r_
+  !else
+   !default reply$i=$r_
+  !endif
  !endif
 !endif
 !if $wims_read_parm!=noprompt
@@ -22,8 +26,33 @@
 
 !bound inputsize between integer 1 and 100 default 30
 !set rr_=!declosing $(reply$i)
-{<input id="reply$i" size="$inputsize" name="reply$i" value="$rr_" $inputoption />}
+!set rg_cnt=!declosing $(replygood$i)
+!set rg_cnt=!itemcnt $rg_cnt
+{
+!if distinct_inputs iswordof $(replyoption$i)
+<input type="hidden" name="reply$i" id="reply$i" value="" />
+!for l_ = 1 to $rg_cnt
+  <input id="oefvar$(i)_$l_" size="$inputsize" name="oefvar$(i)_$l_" value="$(rr_[$l_])" $inputoption />
+  !if $l_<$rg_cnt
+,
+  !endif
+!next
+<script type="text/javascript">
+/*<![CDATA[*/
+  function show_set$i(){
+   document.getElementById('reply$i').value=document.getElementById('oefvar$(i)_1').value;
+   for(var p = 2 ; p <= $rg_cnt ; p++){
+    document.getElementById('reply$i').value += ',' + document.getElementById('oefvar$(i)_' + p).value;
+   }
+  }
+/*]]>*/
+</script>
+!set oef_js_submit=$oef_js_submit show_set$i();
+!else
+<input id="reply$(i)" size="$inputsize" name="reply$(i)" value="$rr_" $inputoption />
+!endif
+}
 !if $wims_read_parm!=noprompt
  </td></tr>
 !endif
-!reset inputsize
+!reset inputsize inputoption option
