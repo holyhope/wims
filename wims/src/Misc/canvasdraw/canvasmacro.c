@@ -2493,8 +2493,8 @@ var font_family = \"%s\";\
 context_userdraw.fillStyle = \"rgba(\"+font_color+\",\"+font_opacity+\")\";\
 context_userdraw.font = font_family;\
 context_userdraw.save();\
-var tmp_font_size = context_userdraw.measureText(\"m\").width;\
-if( tmp_font_size > font_size ){ font_size = tmp_font_size;};\
+var tmp_font_size = parseInt(context_userdraw.measureText(\"m\").width);\
+if( font_size > tmp_font_size ){context_userdraw.font = font_size+\"px Ariel\";};\
 var userdraw_text = new Array();\
 var temp_userdraw_txt=\"\";\
 var x_txt = 0;\

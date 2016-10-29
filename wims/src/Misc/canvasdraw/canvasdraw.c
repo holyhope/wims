@@ -2236,7 +2236,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    else
 	    if( strcmp(draw_type,"text") == 0){
 		if(reply_format == 0){reply_format = 17;}
-		add_js_text(js_include_file,canvas_root_id,font_size,font_family,font_color,stroke_opacity);
+		add_js_text(js_include_file,canvas_root_id,font_size,font_family,stroke_color,stroke_opacity);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }

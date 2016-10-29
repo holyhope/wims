@@ -620,4 +620,16 @@ replyformat 32
       (in both cases a right | middle button click will always remove the drawings
       changed the default replyformat for 'userdraw text,color' and 'userdraw input(s),color' to the type:
       x1,y1,text1 \n x2,y2,text2 \n etc
-       
+29/10 corrected "userdraw text,color" : 
+      color was taken from fontcolor... and not from userdraw command... which is color --> strokecolor
+      corrected cludge of fontsize versus fontfamily :
+      ###
+      var tmp_font_size = parseInt(context_userdraw.measureText(\"m\").width);\
+      if( font_size > tmp_font_size ){context_userdraw.font = font_size+\"px Ariel\";};
+      ###
+      if command "fontsize int" is given and it's size is larger than the default fontfamily "12px Ariel" 
+      the context will use this fontsize in Ariel...
+      if command "fontfamily 'size px Family'" was given and the size of "m" is larger then a set/default fontsize 
+      then this family&size will be used.
+      But it's still a vary ugly cludge caused by the "Flydraw backwards compatibility" 
+      
