@@ -529,7 +529,7 @@ if(math.getAttribute(\"mathsize\") == \"100%\"){\
   math.setAttribute(\"mathsize\",\"100%\");};\
 };\
 var ua = navigator.userAgent.toLowerCase();\
-var gecko = ua.indexOf(\"Gecko\") > -1 && ua.indexOf(\"KHTML\") === -1 && ua.indexOf(\"Trident\") === -1;\
+var gecko = ua.indexOf(\"gecko\") > -1 && ua.indexOf(\"khtml\") === -1 && ua.indexOf(\"trident\") === -1;\
 if(! gecko ){\
  var script = document.createElement(\"script\");\
  script.type = \"text/javascript\";\
