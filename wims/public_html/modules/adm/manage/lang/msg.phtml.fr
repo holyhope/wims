@@ -27,8 +27,11 @@ Vous avez oublié de sélectionner les destinataires.
 !endif
 
 !if $error iswordof noclass
-  Vous n'avez pas sélectionné de classes.
+  Vous n'avez pas sélectionné de classe ou son numéro n'est pas valide.
   !exit
 !endif
-
+!if $error iswordof classnotexists
+  La classe à restaurer n'existe pas.
+  !exit
+!endif
 !msg $error

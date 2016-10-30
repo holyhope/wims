@@ -1,4 +1,4 @@
-
+limit_class=300
 !if $stepcl=$empty
   listyear=!listfile -t $wims_home/backup/oldclasses
   listyear=!lines2items $listyear
@@ -9,12 +9,18 @@
   !endif
   !set cnt=0
   !for j in $listyear
-    listclass$j=!listfile -t $wims_home/backup/oldclasses/$j/*.tgz
-    listclass$j=!replace internal .tgz by in $(listclass$j)
-    listclass$j=!replace internal $wims_home/backup/oldclasses/$j/ by in $(listclass$j)
-    listclass$j=!words2items $(listclass$j)
-    cnt_=!itemcnt $(listclass$j)
-    cnt=$[$cnt_+$cnt]
+    cnt_=!sh cd $wims_home/backup/oldclasses/$j; find . -maxdepth 1 -type f | wc -l | awk '{print $1}'
+    !if $cnt_ < $limit_class
+     listclass$j=!listfile -t $wims_home/backup/oldclasses/$j/*.tgz
+     listclass$j=!replace internal .tgz by in $(listclass$j)
+     listclass$j=!replace internal $wims_home/backup/oldclasses/$j/ by in $(listclass$j)
+     listclass$j=!words2items $(listclass$j)
+     listclass$j=!sort numeric items $(listclass$j)
+     cnt_=!itemcnt $(listclass$j)
+    !else
+      listclass$j=toomuch
+    !endif
+      cnt=$[$cnt_+$cnt]
   !next
 !else
   !if $clrestore=$empty
@@ -33,6 +39,24 @@
     class=!replace internal _ by , in $clrestore
     !distribute item $class into year,class
     class=!nospace $class
+    !if $class=$empty
+      !if $clrestore1=$empty
+        error=noclass
+        !exit
+      !else
+        class=$clrestore1
+        class=!text select 1234567890 in $class
+        !if $class=$empty
+          error=noclass
+          !exit
+        !endif
+      !endif
+    !endif
+    test=!sh cd $wims_home/backup/oldclasses/$year; ls $class.tgz
+    !if $test!=$class.tgz
+      error=classnotexists
+      !exit
+    !endif
     test=!sh cd $wims_home\
     cp backup/oldclasses/$year/$class.tgz log/classes/\
     cd $wims_home/log/classes/\

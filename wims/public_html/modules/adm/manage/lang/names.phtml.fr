@@ -398,7 +398,6 @@ into name_current,name_sub,name_symbolic,name_add,name_files,name_file
 !endif
 
 !if $job=restore
-
    !set name_warning1=Mauvaise archive : le contenu n'est pas compatible.
    !set name_warning2=Les données des dossiers suivants ont été restaurées/installées avec succès
  !exit
@@ -457,10 +456,11 @@ into name_subject,name_message
 !endif
 
 !if $job=classrestore
-  !distribute lines Choisir la classe à restaurer dans la liste suivante\
+  !distribute lines Classe à restaurer.\
   Il n'y a pas de classes à restaurer.\
-into name_restore_choose, name_restore_noclass
-!set name_restore_done=!nosubst La classe $clrestore a été restaurée. L'indexation des classes\
+  Il y a beaucoup de classes archivées. Entrez l'identifiant de la classe à restaurer.\
+into name_restore_choose, name_restore_noclass,name_toomuchbackup
+!set name_restore_done=!nosubst La classe $year/$class a été restaurée. L'indexation des classes\
 se fera lors du ménage quotidien. Nous vous déconseillons de le refaire trop souvent pendant\
 la période d'utilisation du serveur. Veuillez prévenir alors\
 l'enseignant que la nouvelle date d'expiration est le $date. Il est déconseillé de refaire\

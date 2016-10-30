@@ -22,8 +22,11 @@ Forget to select the recipients ?
 !endif
 
 !if $error iswordof noclass
-  No class has been selected.
+  No class has been selected or its identifier is not valid.
   !exit
 !endif
-
+!if $error iswordof classnotexists
+  The class to restore does not exist.
+  !exit
+!endif
 !msg $error

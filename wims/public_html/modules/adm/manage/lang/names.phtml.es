@@ -464,7 +464,8 @@ into name_subject,name_message
 !if $job=classrestore
   !distribute lines Choose the class to restore in the following list\
   There is no class to restore.\
-into name_restore_choose, name_restore_noclass
+  There are many archived classes. You must enter the identifier of the class to restore.\
+into name_restore_choose, name_restore_noclass,name_toomuchbackup
 !set name_restore_done=!nosubst La classe $clrestore a été restaurée. Veuillez prévenir\
 l'enseignant que la nouvelle date d'expiration est le $date. Il est déconseillé de refaire\
 cette opération une seconde fois.
