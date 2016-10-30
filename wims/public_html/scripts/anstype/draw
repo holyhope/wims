@@ -104,8 +104,9 @@ r_cnt=!linecnt $rlist
 
 rlist=!lines2rows $rlist
 glist=!lines2rows $glist
+glist=!exec pari [$glist]
 !reset goodrg goodrr
- !for u=1 to $r_cnt
+!for u=1 to $r_cnt
    !for v=1 to $g_cnt1
      !if $type iswordof $listtype1 $listtype3
         ecart1= $[sqrt(($(glist[$v;1]) - ($(rlist[$u;1])))^2 + ($(glist[$v;2]) - ($(rlist[$u;2])))^2)]
@@ -115,19 +116,20 @@ glist=!lines2rows $glist
           !else
              ecart1 = $[sqrt(($(glist[$v;1]) - ($(rlist[$u;3])))^2 + ($(glist[$v;2]) - ($(rlist[$u;4])))^2)]
              ecart2 = $[sqrt(($(glist[$v;3]) - ($(rlist[$u;1])))^2 + ($(glist[$v;4]) - ($(rlist[$u;2])))^2)]
+          !endif
         !endif
         !if $type_cnt2=3
-           ecart2 = $[abs($(rlist[$u;3]) - $(glist[$v;3]))]
+           ecart2 = $[abs($(rlist[$u;3]) - ($(glist[$v;3])))]
         !endif
         !if $type_cnt2=2
           ecart2=0
         !endif
          mean=$[max($ecart1,$ecart2)]
       !else (type is lines demilines)
-         vectg=$[$(glist[$v;3])-$(glist[$v;1])],$[$(glist[$v;4])-$(glist[$v;2])]
-         vectr=$[$(rlist[$u;3])-$(rlist[$u;1])],$[$(rlist[$u;4])-$(rlist[$u;2])]
-         mean=$[abs($(vectg[1])*$(vectr[2]) - $(vectg[2])*$(vectr[1]))]
-         sens=$[$(vectg[1])*$(vectr[1]) + $(vectg[2])*$(vectr[2])]
+         vectg=$[$(glist[$v;3])-($(glist[$v;1]))],$[$(glist[$v;4])-($(glist[$v;2]))]
+         vectr=$[$(rlist[$u;3])-($(rlist[$u;1]))],$[$(rlist[$u;4])-($(rlist[$u;2]))]
+         mean=$[abs(($(vectg[1]))*$(vectr[2]) - ($(vectg[2]))*$(vectr[1]))]
+         sens=$[$(vectg[1])*($(vectr[1])) + ($(vectg[2]))*($(vectr[2]))]
       !endif
 
       !if NaN isin $mean or Inf isin $mean
@@ -164,7 +166,7 @@ missing_r_cnt=!itemcnt $missing_r
 !if $missing_r_cnt!=0
  !for v in $missing_r
   parm3=!append line dashed\
-$type green, $option$(glist[$v;1..$type_cnt2]) to $parm3
+$type blue, $option$(glist[$v;1..$type_cnt2]) to $parm3
  !next
 !endif
 !if split iswordof $(replyoption$i) or partialscore iswordof $(replyoption$i) or eqweight iswordof $(replyoption$i)
