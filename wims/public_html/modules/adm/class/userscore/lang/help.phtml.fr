@@ -18,10 +18,9 @@ de points requis sur un exercice est \(10n\) où \(n\) est un entier et que
 l'élève a fait cet exercice \(p\) fois avec les scores \(x_1, x_2, x_3, ..., x_p\)
 (nombres entre 0 et 10).
 </p>
-<ul>
-<li>
-L'indicateur de cumul \((i_0)) est la somme des scores plafonnée à \(10n\)
-que l'on divise par \(10n\) : \(i0=min(x_1+...+x_p, 10*n)/(10*n)).
+<ul><li>
+L'indicateur de cumul \((i_0)) est la somme des scores plafonnée à \(10 n\)
+que l'on divise par \(10n\) : \(i_0=min(x_1+...+x_p, 10*n)/(10*n)).
 Il est affiché dans les résultats de l'élève comme un pourcentage.
 </li><li>
 Notons \(y_1\geq y_2\geq ... \geq y_p\) les scores ordonnés par ordre
@@ -40,15 +39,17 @@ divisé par 10 :
 \(i_2 = 0) si le nombre \(p\) de scores obtenus est inférieur à \(n\)
 et \(i_2= y_n/10\) si \(p\geq n\).
 </li></ul>
-
 <p>
 Par exemple, si \(n=2\) et si les scores sont 7, 5 et 3 alors \(i_0 = 0.75\) (75%),
 \(i_1=0.6\) (60%) et \(i_2=0.5) (50%).
-</p>
-<p>La note de qualité est la moyenne pondérée et incrémentale des
+</p><p>
+La note de qualité est la moyenne pondérée et incrémentale des
 scores (c'est-à-dire que le poids des derniers scores obtenus est plus important que
 celui des premiers). Cet indicateur est corrigé en sanctionnant les essais sans
-réponse.
+réponse de la manière suivante :
+si le nombre d'essais non terminés \(s_n\), est strictement supérieur à \(5+2*s_t\),
+où \(s_t\) est le nombre d'essais terminés (avec une note),
+la note de qualité est multipliée par \(\frac{2 s_t}{s_n-4} < 1\).
 </p><p>
 Pour chaque feuille, le serveur calcule ensuite
 </p>
@@ -132,7 +133,9 @@ décroissant :
 <li>
 la qualité \(q\) des points obtenus sur les exercices qui est
 une moyenne pondérée, les derniers scores ayant un poids plus important que
-les premiers.
+les premiers. Attention, si vous renouvelez l'exercice sans le terminer un nombre trop
+important de fois par rapport au nombre de fois où vous avez terminé l'exercice,
+la note de qualité diminuera.
 </li>
 !endif
 </ul>
