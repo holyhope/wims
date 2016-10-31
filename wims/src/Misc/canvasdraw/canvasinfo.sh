@@ -1,6 +1,6 @@
 #!/bin/sh
 # do not run compile time !
-# just to generate simple canvasdraw usage html-page 
+# just to generate simple canvasdraw usage html-page
 
 
 helpdir="../../../public_html/scripts/help/en"
@@ -10,8 +10,8 @@ html="canvasdraw.html"
 tmp="canvas_index"
 keys="keywords"
 datum=`date +%d-%m-%Y`
- 
-echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN\" \"http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd\"> 
+
+echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN\" \"http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd\">
 <html>
 <head><meta charset=\"UTF-8\"></head>
 <body xmlns=\"http://www.w3.org/1999/xhtml\" class=\"main_body\" dir=\"ltr\">
@@ -23,10 +23,10 @@ echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN\" \"http
 
 echo "
 <input type='text' size='10' value='' id='search'  onkeydown='javascripts:if(event.keyCode == 13){look();}'/><input type='button' onclick='javascript:look();' value='search' />
-<center><h3>Implemented canvasdraw commands ($datum)</h3></center>
+<h3 style="text-align:center">Implemented canvasdraw commands ($datum)</h3>
 <table style='color:blue;font-size:0.8em;'><tr>
 " > $phtml
-        
+
 p=0
 echo "<ul>" > $tmp
 cnt=0
