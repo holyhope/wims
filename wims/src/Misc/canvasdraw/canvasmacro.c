@@ -114,7 +114,7 @@ var button_style = \"%s\";\
 var id_x;\
 var id_y;\
 var id_r;\
-if( typeof multilabel[multilabel.length - 1 ] === 'undefined' ){multilabel[multilabel.length - 1] = 'stop drawing';};\
+if( typeof(multilabel[multilabel.length - 1 ]) === 'undefined' ){multilabel[multilabel.length - 1] = 'stop drawing';};\
 for(var p = 0;p < draw_things.length;p++){\
  var desc;\
  id_r = 0;\
@@ -2870,8 +2870,8 @@ function add_calc_y(){\
  calc_div.id = \"calc_div\";\
  tooltip_div.appendChild(calc_div);\
  var label_x = \"x\";var label_y = \"y\";\
- if( typeof xaxislabel !== 'undefined' ){label_x = xaxislabel;}\
- if( typeof yaxislabel !== 'undefined' ){label_y = yaxislabel;}\
+ if( typeof(xaxislabel) !== 'undefined' ){label_x = xaxislabel;}\
+ if( typeof(yaxislabel) !== 'undefined' ){label_y = yaxislabel;}\
  calc_div.innerHTML=\"<br /><span style='font-style:italic;font-size:%dpx'>\"+label_x+\" : <input type='text' size='4' value='' id='calc_input_x' style='%s' />&nbsp;\"+ label_y+\" : <input type='text' size='5' value='' id='calc_output_y' style='%s' readonly /><input id='calc_button' type='button' value='OK' onclick=''  style='color:red;background-color:lightblue;' /></span> \";\
  var calc_button = document.getElementById(\"calc_button\");\
  calc_button.addEventListener(\"mousedown\",show_it,false);\
@@ -2899,8 +2899,8 @@ use_jsmath=1;\
 function use_trace_jsmath(){\
 if( wims_status == \"done\" ){return;};\
  var label_x = \"x\";var label_y = \"y\";\
- if( typeof xaxislabel !== 'undefined' ){label_x = xaxislabel;}\
- if( typeof yaxislabel !== 'undefined' ){label_y = yaxislabel;}\
+ if( typeof(xaxislabel) !== 'undefined' ){label_x = xaxislabel;}\
+ if( typeof(yaxislabel) !== 'undefined' ){label_y = yaxislabel;}\
  var trace_canvas = create_canvas%d(%d,xsize,ysize);\
  var trace_context = trace_canvas.getContext(\"2d\");\
  var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
@@ -2941,8 +2941,8 @@ var textarea_div = document.createElement('div');\
 textarea_div.id = \"textarea_div\";\
 tooltip_div.appendChild(textarea_div);\
 var label_x = \"x\";var label_y = \"y\";\
-if( typeof xaxislabel !== 'undefined' ){label_x = xaxislabel;}\
-if( typeof yaxislabel !== 'undefined' ){label_y = yaxislabel;}\
+if( typeof(xaxislabel) !== 'undefined' ){label_x = xaxislabel;}\
+if( typeof(yaxislabel) !== 'undefined' ){label_y = yaxislabel;}\
 textarea_div.innerHTML=\"\
 <table style=\'border:1px solid black;background-color:#ffffa0\' >\
 <tr>\
@@ -2975,8 +2975,8 @@ use_pan_and_zoom = 1;\
 function use_setlimits(){\
 if( wims_status == \"done\" ){return;};\
 var label_x = \"x\";var label_y = \"y\";\
-if( typeof xaxislabel !== 'undefined' ){label_x = xaxislabel;}\
-if( typeof yaxislabel !== 'undefined' ){label_y = yaxislabel;}\
+if( typeof(xaxislabel) !== 'undefined' ){label_x = xaxislabel;}\
+if( typeof(yaxislabel) !== 'undefined' ){label_y = yaxislabel;}\
 var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
 var setlim_div = document.createElement('div');\
 setlim_div.id = \"setlim_div\";\
@@ -3064,7 +3064,7 @@ function add_input_jsfunction(input_cnt,input_style,input_label,line_width,strok
  input_jsfunction_div.innerHTML=\"<br /><br /><span style='font-style:italic;font-size:%dpx;color:rgb(\"+stroke_color+\")'><b>\"+input_label+\" <input type='text' size='16' value='' id='\"+input_field+\"' style='\"+input_style+\"' /></b><input id='\"+update_button_id+\"' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/><input id='\"+delete_button_id+\"' type='button' value='NOK' onclick='' style='color:blue;background-color:red;'/></span> \";\
  var update_button = document.getElementById(update_button_id);\
  var delete_button = document.getElementById(delete_button_id);\
- update_button.addEventListener(\"mousedown\",function(e){jsplot(canvas_plot_id,rawmath(document.getElementById(input_field).value),line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);return;},false);\
+ update_button.addEventListener(\"mousedown\",function(e){jsplot(canvas_plot_id,[rawmath(document.getElementById(input_field).value)],[line_width],[stroke_color],[stroke_opacity],[use_dashed],dashtype0,dashtype1);return;},false);\
  delete_button.addEventListener(\"mousedown\",function(e){clear_jsfunction(canvas_plot_id,input_field);return;},false);\
 };\
 add_input_jsfunction(%d,\"%s\",\"%s\",%d,\"%s\",%.2f,%d,%d,%d);\n",canvas_root_id,USERDRAW_JSPLOT,canvas_root_id,font_size,input_cnt,input_style,input_label,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);
@@ -3434,30 +3434,40 @@ function user_redraw(t){\
 
 void add_jsplot(FILE *js_include_file,int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin jsplot() -->\n\
-var jsplot = function(canvas_type,f,linewidth,color,opacity,use_dashed,dashtype0,dashtype1){\
- var obj = create_canvas%d(canvas_type,xsize,ysize);\
- var ctx = obj.getContext(\"2d\");\
- ctx.clearRect(0,0,xsize,ysize);\
- function eval_jsmath(x){return parseFloat(eval(fun));};\
- var fun = to_js_math(f);if(fun == null){alert(\"Syntax Error...\\nAttention : try use very precise notation !\\nlike :\\n6*(0.25)^(1.23)\\n1/(sin(5*x))\\n(3*x+4)/(x^(2*pi)) \");return;};\
- try{ parseFloat( eval_jsmath( px2x(0) ) );}catch(e){alert(\"\\nSyntax Error...\\nAttention : try use very precise notation !\\nlike :\\n6*(0.25)^(1.23)\\n1/(sin(5*x))\\n(3*x+4)/(x^(2*pi))\");return;};\
- ctx.lineWidth = linewidth;\
- ctx.strokeStyle=\"rgba(\"+color+\",\"+opacity+\")\";\
- if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash =[dashtype0,dashtype1];}};\
- var y1;var x1;var y2;var x2;\
- ctx.beginPath();\
- for(var p=0 ; p<xsize;p++){\
-  x1 = px2x(p);\
-  y1 = y2px(parseFloat(eval_jsmath(x1)));\
-  x2 = px2x(p+1);\
-  y2 = y2px(parseFloat(eval_jsmath(x2)));\
-  if(Math.abs(y2-y1) < ysize ){\
-    ctx.moveTo(p,y1);\
-    ctx.lineTo(p+1,y2);\
-  };\
- };\
- ctx.closePath();\
- ctx.stroke();\
+var jsplot = function(canvas_type,funs,linewidth,color,opacity,use_dashed,dashtype0,dashtype1){\n\
+ var obj = create_canvas%d(canvas_type,xsize,ysize);\n\
+ var ctx = obj.getContext(\"2d\");\n\
+ ctx.clearRect(0,0,xsize,ysize);\n\
+ var len = funs.length;\n\
+ function eval_jsmath(x,func){return parseFloat(eval(func));};\n\
+ if( typeof(multilinewidth) != 'undefined' && multilinewidth != null ){ linewidth = multilinewidth;};\n\
+ if( typeof(multistrokecolors) != 'undefined' && multistrokecolors != null){ color = multistrokecolors;};\n\
+ if( typeof(multistrokeopacity) != 'undefined' && multistrokeopacity != null ){ opacity = multistrokeopacity;};\n\
+ if( typeof(multidash) != 'undefined' && multidash != null ){use_dashed = multidash;};\n\
+ for(var i = 0 ; i < len; i++){\n\
+  var fun = to_js_math(funs[i]);\n\
+  if(fun == null){alert(\"Syntax Error...\\nAttention : try use very precise notation !\\nlike :\\n6*(0.25)^(1.23)\\n1/(sin(5*x))\\n(3*x+4)/(x^(2*pi)) \");return;};\n\
+  try{ parseFloat( eval_jsmath( px2x(0),fun ) );}catch(e){alert(\"\\nSyntax Error...\\nAttention : try use very precise notation !\\nlike :\\n6*(0.25)^(1.23)\\n1/(sin(5*x))\\n(3*x+4)/(x^(2*pi))\");return;};\n\
+  ctx.lineWidth = linewidth[i];\n\
+  ctx.strokeStyle=\"rgba(\"+color[i]+\",\"+opacity[i]+\")\";\n\
+  if(use_dashed[i] == \"1\"){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash =[dashtype0,dashtype1];}};\n\
+  ctx.save();\
+  var y1;var x1;var y2;var x2;\n\
+  ctx.beginPath();\n\
+  for(var p = 0 ; p<xsize;p++){\n\
+   x1 = px2x(p);\n\
+   y1 = y2px(parseFloat(eval_jsmath(x1,fun)));\n\
+   x2 = px2x(p+1);\n\
+   y2 = y2px(parseFloat(eval_jsmath(x2,fun)));\n\
+   if(Math.abs(y2-y1) < ysize ){\
+    ctx.moveTo(p,y1);\n\
+    ctx.lineTo(p+1,y2);\n\
+   };\n\
+  };\n\
+  ctx.closePath();\n\
+  ctx.stroke();\n\
+  ctx.restore();\
+ };\n\
 };",canvas_root_id);
 }
 
@@ -3517,9 +3527,9 @@ hope this does not interfere with existing work...
 */
 fprintf(js_include_file,"<!-- add clear button -->\n\
 clear_draw_area%d = function(){\
- if( typeof context_userdraw === 'object' ){\
+ if( typeof(context_userdraw) === 'object' ){\
   context_userdraw.clearRect(0,0,xsize,ysize);\
-  if( typeof userdraw_text != 'undefined'){ userdraw_text = []; };\
+  if( typeof(userdraw_text) != 'undefined'){ userdraw_text = []; };\
   if( document.getElementById(\"canvas_input0\") ){\
    var p = 0;var inp;\
    while( document.getElementById(\"canvas_input\"+p) ){\
@@ -3932,7 +3942,7 @@ h[1] = end_angle = double_data[3]
 
 */
 fprintf(js_include_file,"\n<!-- begin drag_drop_onclick shape library -->\n\
-if( typeof dragdrop_precision == 'undefined' ){var dragdrop_precision = 100;};\
+if( typeof(dragdrop_precision) == 'undefined' ){var dragdrop_precision = 100;};\
 function Shape(click_cnt,onclick,direction,type,x,y,w,h,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype0,dashtype1,use_rotate,angle,text,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt,rotation_center){\
  this.slider = slider || 0;\
  this.slider_cnt = slider_cnt || 0;\

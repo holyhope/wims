@@ -9,7 +9,7 @@
 </style>
 
 <input type='text' size='10' value='' id='search'  onkeydown='javascripts:if(event.keyCode == 13){look();}'/><input type='button' onclick='javascript:look();' value='search' />
-<center><h3>Implemented canvasdraw commands (28-10-2016)</h3></center>
+<center><h3>Implemented canvasdraw commands (31-10-2016)</h3></center>
 <table style='color:blue;font-size:0.8em;'><tr>
 
 <td><a name='canvasdraw top' href='#canvasdraw'>canvasdraw</a></td>
@@ -94,7 +94,7 @@
 </tr><tr>
 <td><a name='protractor top' href='#protractor'>protractor</a></td>
 <td><a name='userdraw top' href='#userdraw'>userdraw</a></td>
-<td><a name='<b>note</b>: top' href='#<b>note</b>:'><b>note</b>:</a></td>
+<td><a name='note: top' href='#note:'>note:</a></td>
 <td><a name='snaptofunction top' href='#snaptofunction'>snaptofunction</a></td>
 <td><a name='snaptofun top' href='#snaptofunction'>snaptofun</a></td>
 <td><a name='snaptopoints top' href='#snaptopoints'>snaptopoints</a></td>
@@ -266,7 +266,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> mandatory first command (can only be preceded by keyword <a href="#popup">'popup'</a>)
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> if xrange and/or yrange is not given the range will be set to pixels :<br />xrange 0,xsize yrange 0,ysize<br /><b>note</b>: lower left corner is Origin (0:0) !!! this in contrast to flydraw
+<li><span style="color:blue;font-size:0.8em"> if xrange and/or yrange is not given the range will be set to pixels :<br />xrange 0,xsize yrange 0,ysize<br />note: lower left corner is Origin (0:0) !!! this in contrast to flydraw
 </span></li>
 </ul>
 <li><a name='xrange' href='#xrange top'>  xrange xmin,xmax</a><ul>
@@ -662,7 +662,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> the 'stop drawing' button text <b>must</b> be the last item on the 'multilabel' -list <br />for example:<br /><em>multilabel punten,lijnen,Stop met Tekenen<br />multidraw points,lines</em>
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> all buttons can be 'styled' by using commant 'inputstyle'<br /><b><b>note</b>:</b><em>If you want to add some CSS style to the buttons...<br />the id's of the 'draw buttons' are their english command argument<br />(e.g. id="canvasdraw_points" for the draw points button).<br />the id of the 'stop drawing' button is "canvasdraw_stop_drawing".<br />the id of the "OK" button is"canvasdraw_ok_button"</em>
+<li><span style="color:blue;font-size:0.8em"> all buttons can be 'styled' by using commant 'inputstyle'<br /><b>note:</b><em>If you want to add some CSS style to the buttons...<br />the id's of the 'draw buttons' are their english command argument<br />(e.g. id="canvasdraw_points" for the draw points button).<br />the id of the 'stop drawing' button is "canvasdraw_stop_drawing".<br />the id of the "OK" button is"canvasdraw_ok_button"</em>
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> wims will not check the amount or validity of your input
 </span></li>
@@ -756,7 +756,7 @@
 <li><a name='multiuserinput' href='#multiuserinput top'>  multiuserinput 0,1,1,0</a><ul>
 <li><span style="color:blue;font-size:0.8em"> meaning, when the command 'multidraw' is used <br />multidraw circles,points,lines,triangles<br />objects 'points' and 'lines' may additionally be 'drawn' by direct input (inputfields)<br/>all other objects must be drawn with a mouse
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> in case of circle | circles a third inputfield for Radius (R) is added.<br />the radius must be in the x/y coordinate system (x-range) and <b>not</b> in pixels...students don't think in pixels.<br /><b>note</b>: R-values will not snap-to-grid
+<li><span style="color:blue;font-size:0.8em"> in case of circle | circles a third inputfield for Radius (R) is added.<br />the radius must be in the x/y coordinate system (x-range) and <b>not</b> in pixels...students don't think in pixels.<br />note: R-values will not snap-to-grid
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> in case of line(s) | segment(s) | arrow(s) the user should write <b>x1:y1</b> in the first inputfield and <b/>x2:y2</b> in the second.<br />These 'hints' are pre-filled into the input field.<br />other coordinate delimiters are ";" and "," e.g. <b>x1;y1</b> or <b>x1,y1</b>.<br />An error message (alert box) will popup when things are not correctly...
 </span></li>
@@ -778,11 +778,11 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> implemented obj_types:<ul><li>point | points </li><li>circle | circles </li><li>line | lines </li><li>segment | segments </li><li>arrow | arrows <br />use command 'arrowhead int' for size (default value 8 pixels)</li><li>rect | rects </li><li>closedpoly<br />only one closedpolygon may be drawn.The number of 'corner points' is not preset (e.g. not limited,freestyle)<br />the polygone is closed when clicking on the first point again..(+/- 10px) </li><li>triangle | triangles<br />poly3, poly4, ... poly9 | polys3, polys4, ... polys9 <br />(<em>only 3 inputfields for poly*</em>)<br />parallelogram | parallelograms <br />(<em>no inputfields: parallelogram can be used for vector "contructions"</em>)</li></ul>
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> additionally objects may be user labelled, using obj_type 'text'...<br >in this case allways a text input field and a (x:y) inputfield will be added to the page.<br />use commands 'fontfamily' and 'fontcolor' to adjust. (command 'multistrokeopacity' may be set to adjust text opacity)<br /><b>note</b>: no keyboard listeners are used
+<li><span style="color:blue;font-size:0.8em"> additionally objects may be user labelled, using obj_type 'text'...<br >in this case allways a text input field and a (x:y) inputfield will be added to the page.<br />use commands 'fontfamily' and 'fontcolor' to adjust. (command 'multistrokeopacity' may be set to adjust text opacity)<br />note: no keyboard listeners are used
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> it makes no sense using something like "multidraw point,points" ...
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
+<li><span style="color:blue;font-size:0.8em"> note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> buttons for changing the obj_type (and incase of 'multiuserinput' , some inputfields and buttons) <br />will be present in the reserved div 'tooltip_div' and can be styled using command 'inputstyle some_css'
 </span></li>
@@ -856,13 +856,13 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>demiline</li><li>demilines</li><li>segment</li><li>segments</li><li>polyline | brokenline </li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9] (e.g poly3 ... poly7...poly9 </li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline | path</li><li>freehandlines | paths</li><li>clickfill : fill the clicked area with a color<br />the click may be set <a href="#snaptogrid">snapped...</a></ br>only one area can be selected <br />use command <a href="#canvastype">'canvastype'</a> to fill another canvas (default should be fine: DRAG_CANVAS = 5)</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
+<li><span style="color:blue;font-size:0.8em"> note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />"backspace / delete / esc" will remove typed text if the mouse is clicked non the text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt"<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" ,
+<li><span style="color:blue;font-size:0.8em"> note: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />"backspace / delete / esc" will remove typed text if the mouse is clicked non the text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt"<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" ,
 </span></li>
 </ul>
-<li><a name='<b>note</b>:' href='#<b>note</b>: top'>  <b>note</b>: object_type polygone: Will be finished (the object is closed) when clicked on the first point of the polygone again.</a><ul>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: all objects will be removed -after a javascript confirm box- when clicked on an object point with middle or right mouse button (e.g. event.which != 1 : all buttons but left)
+<li><a name='note:' href='#note: top'>  note: object_type polygone: Will be finished (the object is closed) when clicked on the first point of the polygone again.</a><ul>
+<li><span style="color:blue;font-size:0.8em"> note: all objects will be removed -after a javascript confirm box- when clicked on an object point with middle or right mouse button (e.g. event.which != 1 : all buttons but left)
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use command "filled", "opacity int,int" and "fillcolor color" to trigger coloured filling of fillable objects
 </span></li>
@@ -874,7 +874,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> may be combined with keyword 'userinput_xy'
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: when zooming / panning after a drawing, the drawing will NOT be zoomed / panned...this is a "design" flaw and not a feature <br />To avoid trouble do not use zooming / panning together width userdraw.!<br />use command <a href="#multidraw">multidraw</a> is this is a problem for you...
+<li><span style="color:blue;font-size:0.8em"> note: when zooming / panning after a drawing, the drawing will NOT be zoomed / panned...this is a "design" flaw and not a feature <br />To avoid trouble do not use zooming / panning together width userdraw.!<br />use command <a href="#multidraw">multidraw</a> is this is a problem for you...
 </span></li>
 </ul>
 <li><a name='snaptofunction' href='#snaptofunction top'>  snaptofunction some_function_in_x,some_funtion_in_y</a><ul>
@@ -887,7 +887,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> for now only one instance of 'snaptofunction' is allowed
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> use rwamath on your functions: no validity checking is done by wims !
+<li><span style="color:blue;font-size:0.8em"> use rawmath on your functions: no validity checking is done by wims !
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> example:<br />....<br />snaptofunction 5*(cos(x),4*sin(y)<br />linewidth 3<br />userdraw points,blue<br />....<br />
 </span></li>
@@ -994,7 +994,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> math input is allowed (e.g something like: 1+3,2*6,1/3,sqrt(3), sin(pi/4),10^-2,log(2)...)<br />eval function is 'protected' against code injection.
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> can <b>not</b> be combined with command "intooltip tiptext" <br /><b>note</b>: the 'tooltip div element' is used for placing inputfields
+<li><span style="color:blue;font-size:0.8em"> can <b>not</b> be combined with command "intooltip tiptext" <br />note: the 'tooltip div element' is used for placing inputfields
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> user drawings will not zoom on zooming (or pan on panning)
 </span></li>
@@ -1044,7 +1044,7 @@
 <li><a name='fontsize' href='#fontsize top'>  fontsize font_size</a><ul>
 <li><span style="color:blue;font-size:0.8em"> default value 12
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>:for some macro's (like grid | legend | xaxistext | xlabel etc) sometimes command <a href="#fontfamily">"fontfamily"</a> can be used for some specific font-setting<br />this is however not always very straight forward...so just try and see what happens
+<li><span style="color:blue;font-size:0.8em"> note:for some macro's (like grid | legend | xaxistext | xlabel etc) sometimes command <a href="#fontfamily">"fontfamily"</a> can be used for some specific font-setting<br />this is however not always very straight forward...so just try and see what happens
 </span></li>
 </ul>
 <li><a name='fontcolor' href='#fontcolor top'>  fontcolor color</a><ul>
@@ -1069,6 +1069,8 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> zooming & panning are implemented :<br />use command 'zoom color' for mouse driven zooming<br />or use keyword 'setlimits' for inputfields setting xmin/xmax, ymin/ymax
 </span></li>
+<li><span style="color:blue;font-size:0.8em"> zooming & panning is better than for curves produced by command <a href="#curve">curve color,formula</a> because for avery change in x/y-range the curve is recalculated in javascript
+</span></li>
 <li><span style="color:blue;font-size:0.8em"> use command 'trace_jscurve formula(x)` for tracing
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use command 'jsmath formula(x)` for calculating and displaying indiviual points on the curve
@@ -1076,6 +1078,10 @@
 <li><span style="color:blue;font-size:0.8em"> can <b>not</b> be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> (yet)
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> commands plotjump / plotstep are not active for 'jscurve'
+</span></li>
+<li><span style="color:blue;font-size:0.8em"> every command jscurve will produce a new canvas (canvastype 111,112,113...) for this one curve.
+</span></li>
+<li><span style="color:blue;font-size:0.8em"> plotting multiple js-curves on the same canvas <br/>(for example if you want to use 'userdraw clickfill,color' on <a href="#canvastype">canvastype</a> number 111 ,use :<br/> jscurve red,fun1(x),fun2(x)...fun_n(x)<br /> you want to specify individual colors | opacity | linewidth for these multiple js-curves.<br />use commands like: <a href="#multistrokecolors">multistrokecolors</a>,<a href="#multilinewidth">multilinewidth</a>, <a href="#multidash">multidash</a><br />, <a href="multistrokeopacity">multistroke</a><br />the <b>color</b> given for the command "jscurve <b>color</b>,formulas(x)" will not be used in that case...<br />but the color argument must still be given in any case (otherwise syntax error...)
 </span></li>
 </ul>
 <li><a name='curve' href='#curve top'>  curve color,formula(x)</a><ul>
@@ -1262,7 +1268,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use command <a href="#axis">axis</a> to have visual x/y-axis lines (see command <a href="grid">grid</a>
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> use command "fontcolor", "fontfamily" to adjust font <br />defaults: black,12,Ariel<br /><b>note</b>: command "fontsize" is not active for this command.("fontsize" can be used for the <a href="#legend">"legend"</a> in a <a href="#grid">grid</a>)
+<li><span style="color:blue;font-size:0.8em"> use command "fontcolor", "fontfamily" to adjust font <br />defaults: black,12,Ariel<br />note: command "fontsize" is not active for this command.("fontsize" can be used for the <a href="#legend">"legend"</a> in a <a href="#grid">grid</a>)
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> a javascript error message will flag non-matching value:name pairs
 </span></li>
@@ -1283,7 +1289,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use these x-axis num1...num_n values instead of default xmin...xmax
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> use command "fontcolor","fontfamily" to adjust font <br />defaults: black,12,Ariel<br /><b>note</b>: command "fontsize" is not active for this command.("fontsize" can be used for the <a href="#legend">"legend"</a> in a <a href="#grid">grid</a>)
+<li><span style="color:blue;font-size:0.8em"> use command "fontcolor","fontfamily" to adjust font <br />defaults: black,12,Ariel<br />note: command "fontsize" is not active for this command.("fontsize" can be used for the <a href="#legend">"legend"</a> in a <a href="#grid">grid</a>)
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> a javascript error message will flag non-matching value:name pairs
 </span></li>
@@ -1297,7 +1303,7 @@
 <li><a name='yaxis' href='#yaxis top'>  yaxis num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n</a><ul>
 <li><span style="color:blue;font-size:0.8em"> alternativ : yaxistext num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> use command "fontcolor", "fontfamily" to adjust font <br />defaults: black,12,Ariel<br /> <b>note</b>: command "fontsize" is not active for this command.("fontsize" can be used for the <a href="#legend">"legend"</a> in a <a href="#grid">grid</a>)
+<li><span style="color:blue;font-size:0.8em"> use command "fontcolor", "fontfamily" to adjust font <br />defaults: black,12,Ariel<br /> note: command "fontsize" is not active for this command.("fontsize" can be used for the <a href="#legend">"legend"</a> in a <a href="#grid">grid</a>)
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> no need to use keyword <a href="#axisnumbering">axisnumbering</a>
 </span></li>
@@ -1658,7 +1664,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use commands <a href="#xlabel">xlabel / ylabel</a> to change text from xmin to 'xlabel' etc
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>:the input value will not be checked on validity
+<li><span style="color:blue;font-size:0.8em"> note:the input value will not be checked on validity
 </span></li>
 </ul>
 <li><a name='zoom' href='#zoom top'>  zoom button_color</a><ul>
@@ -1672,11 +1678,11 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> command 'opacity' may be used to set stroke_opacity of 'buttons
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: use command 'zoom' at the end of your script code (the same is true for command 'mouse')
+<li><span style="color:blue;font-size:0.8em"> note: use command 'zoom' at the end of your script code (the same is true for command 'mouse')
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: only objects that may be set draggable / clickable will be zoomed / panned
+<li><span style="color:blue;font-size:0.8em"> note: only objects that may be set draggable / clickable will be zoomed / panned
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: when an object is dragged, zooming / panning will cause the coordinates to be reset to the original position :( <br />e.g. dragging / panning will get lost. (array with 'drag data' is erased)<br />This is a design flaw and not a feature !!
+<li><span style="color:blue;font-size:0.8em"> note: when an object is dragged, zooming / panning will cause the coordinates to be reset to the original position :( <br />e.g. dragging / panning will get lost. (array with 'drag data' is erased)<br />This is a design flaw and not a feature !!
 </span></li>
 </ul>
 <li><a name='onclick' href='#onclick top'>  onclick</a><ul>
@@ -1692,7 +1698,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> onclick and <a href="#drag">drag x|y|xy</a> may be combined in a single flyscript <br />(although a single object can <b>not</b> be onclick and draggable at the same time...)
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: not all objects may be set onclick
+<li><span style="color:blue;font-size:0.8em"> note: not all objects may be set onclick
 </span></li>
 </ul>
 <li><a name='drag' href='#drag top'>  drag [x][y][xy]</a><ul>
@@ -1714,7 +1720,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> in case of external images (commands copy / copyresized) the external image can be set draggable ; always xy. <br />The function javascript;read_canvas() will return the xy-coordinates of all images.
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: in case an object is dragged , zooming or panning will cause the coordinates to be reset to the original position :( <br />e.g. dragging / panning will get lost. (array with 'drag data' is erased)<br />This is a design flaw and not a feature !!
+<li><span style="color:blue;font-size:0.8em"> note: in case an object is dragged , zooming or panning will cause the coordinates to be reset to the original position :( <br />e.g. dragging / panning will get lost. (array with 'drag data' is erased)<br />This is a design flaw and not a feature !!
 </span></li>
 </ul>
 <li><a name='blink' href='#blink top'>  blink time(seconds)</a><ul>
@@ -1759,25 +1765,25 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> The angle is positive in QI and QIII and the angle value is negative in QII and QIV
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
+<li><span style="color:blue;font-size:0.8em"> note: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
 </span></li>
 </ul>
 <li><a name='mousex' href='#mousex top'>  mousex color,fontsize</a><ul>
 <li><span style="color:blue;font-size:0.8em"> will display the cursor x-coordinate in 'color' and 'font size'<br /> using the fontfamily Ariel
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
+<li><span style="color:blue;font-size:0.8em"> note: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
 </span></li>
 </ul>
 <li><a name='mousey' href='#mousey top'>  mousey color,fontsize</a><ul>
 <li><span style="color:blue;font-size:0.8em"> will display the cursor y-coordinate in 'color' and 'font size'<br /> using default fontfamily Ariel
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
+<li><span style="color:blue;font-size:0.8em"> note: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
 </span></li>
 </ul>
 <li><a name='mouse' href='#mouse top'>  mouse color,fontsize</a><ul>
 <li><span style="color:blue;font-size:0.8em"> will display the cursor (x:y) coordinates in 'color' and 'font size'<br /> using default fontfamily Ariel
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
+<li><span style="color:blue;font-size:0.8em"> note: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
 </span></li>
 </ul>
 <li><a name='intooltip' href='#intooltip top'>  intooltip link_text</a><ul>
@@ -1901,7 +1907,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use command <a href="#canvastype">canvastype </a> to fill another canvas (default should be fine: DRAG_CANVAS = 5)
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: filltoborder is a very (client) cpu intensive operation!<br />filling is done pixel by pixel<br/>e.g. image size of 400x400 uses 160000 pixels : each pixel contains 4 data (R,G,B,Opacity) = 640000 data.<br />on every data a few operations / comparisons are done...<br />So have pity on your students CPU..
+<li><span style="color:blue;font-size:0.8em"> note: filltoborder is a very (client) cpu intensive operation!<br />filling is done pixel by pixel<br/>e.g. image size of 400x400 uses 160000 pixels : each pixel contains 4 data (R,G,B,Opacity) = 640000 data.<br />on every data a few operations / comparisons are done...<br />So have pity on your students CPU..
 </span></li>
 </ul>
 <li><a name='floodfill' href='#floodfill top'>  floodfill x,y,color</a><ul>
@@ -1916,7 +1922,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use command <a href="#canvastype">canvastype </a> to fill another canvas (default should be fine: DRAG_CANVAS = 5)
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: floodfill is a very (client) cpu intensive operation!<br />filling is done pixel by pixel<br/>e.g. image size of 400x400 uses 160000 pixels : each pixel contains 4 data (R,G,B,Opacity) = 640000 data.<br />on every data a few operations / comparisons are done...<br />So have pity on your students CPU..
+<li><span style="color:blue;font-size:0.8em"> note: floodfill is a very (client) cpu intensive operation!<br />filling is done pixel by pixel<br/>e.g. image size of 400x400 uses 160000 pixels : each pixel contains 4 data (R,G,B,Opacity) = 640000 data.<br />on every data a few operations / comparisons are done...<br />So have pity on your students CPU..
 </span></li>
 </ul>
 <li><a name='setpixel' href='#setpixel top'>  setpixel x,y,color</a><ul>
@@ -1952,7 +1958,7 @@
 </span></li>
 </ul>
 <li><a name='legendcolors' href='#legendcolors top'>  legendcolors color1:color2:color3:...:color_n</a><ul>
-<li><span style="color:blue;font-size:0.8em"> will be used to colour a legend: use this command after the legend command ! e.g.<br />legend test1:test2:test3<br />legendcolors blue:red:orange<br />
+<li><span style="color:blue;font-size:0.8em"> will be used to colour a legend: use this command after the legend command ! e.g.<br />legend test1:test2:test3<br />legendcolors blue:red:orange
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> make sure the number of colours match the number of legend items
 </span></li>
@@ -1998,7 +2004,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> multiple linegraphs may be used in a single plot
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: your arguments are not checked by canvasdraw : use your javascript console in case of trouble...
+<li><span style="color:blue;font-size:0.8em"> note: your arguments are not checked by canvasdraw : use your javascript console in case of trouble...
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> <ul><li>use command <a href='#strokecolor'>'strokecolor'</a> before a command 'linegraph' to set the color of this graph</li><li>use command <a href='#linewidth'>'linewidth'</a> before command 'linegraph' to set linewidth of this graph</li><li>use keyword <a href='#dashed'>'dashed'</a> before command 'linegraph' to set dashing of the graph</li><li>if dashing is set, use command <a href='#dashtype'>'dashtype'</a> before command 'linegraph' to set the type of dashing of the (individual) graph</li></ul>
 </span></li>
@@ -2014,7 +2020,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> also see command <a href='#piechart'>'piechart'</a>
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: your arguments are not checked by canvasdraw : use your javascript console in case of trouble...
+<li><span style="color:blue;font-size:0.8em"> note: your arguments are not checked by canvasdraw : use your javascript console in case of trouble...
 </span></li>
 </ul>
 <li><a name='clock' href='#clock top'>  clock x,y,r(px),H,M,S,type hourglass,interactive [ ,H_color,M_color,S_color,background_color,foreground_color ]</a><ul>
@@ -2034,9 +2040,9 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> if interactive is set to '1', 6 buttons per clock will be displayed for adjusting a clock (H+ M+ S+ H- M- S-)<br /> set_clock(clock_id,type,incr) <br />first clock has clock_id=0 ; type : H=1,M=2,S=3 ; incr : increment integer
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: if you need multiple -interactive- clocks on a webpage, use multiple 'clock' commands in a single script !<br />and <i>not multiple canvas scripts</i> in a single page
+<li><span style="color:blue;font-size:0.8em"> note: if you need multiple -interactive- clocks on a webpage, use multiple 'clock' commands in a single script !<br />and <i>not multiple canvas scripts</i> in a single page
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: clocks will not zoom or pan, when using command <a href='#zoom'>'zoom'</a>
+<li><span style="color:blue;font-size:0.8em"> note: clocks will not zoom or pan, when using command <a href='#zoom'>'zoom'</a>
 </span></li>
 </ul>
 <li><a name='piechart' href='#piechart top'>  piechart xc,yc,radius,'data+colorlist'</a><ul>
@@ -2084,7 +2090,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> xrange 0,100<br />yrange 0,10<br />boxplotdata 11,22,13,15,23,43,12,12,14,2,45,32,44,13,21,24,13,19,35,21,24,23<br />boxplot x,4,5
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: wims will not check your data input | format. use js-error console to debug any problems.
+<li><span style="color:blue;font-size:0.8em"> note: wims will not check your data input | format. use js-error console to debug any problems.
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> a javascript function 'statistics()' will parse the data and calculate the values [min,Q1,median,Q3,max] and hand them to the boxplot draw function.
 </span></li>
@@ -2152,13 +2158,13 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use command 'precision' before 'xlogscale' command to set the precision (decimals) of the axis numbering</li><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li><li>use command'fontcolor' to set the colour</li></ul>
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: the complete canvas will be used for the 'log paper'
+<li><span style="color:blue;font-size:0.8em"> note: the complete canvas will be used for the 'log paper'
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
+<li><span style="color:blue;font-size:0.8em"> note: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: command 'mouse color,fontsize' will show the real values in the logpaper.<br /> <li><span style="color:blue;font-size:0.8em"> <b>note</b>: when using something like 'xrange 0.0001,0.01'...combined with commands <a href='#mouse'>'mouse'</a> and/or <a href='#userdraw'>'userdraw</a>...<br /> make sure the <a href='#precision'>precision</a> is set accordingly
+<li><span style="color:blue;font-size:0.8em"> note: command 'mouse color,fontsize' will show the real values in the logpaper.<br /> <li><span style="color:blue;font-size:0.8em"> note: when using something like 'xrange 0.0001,0.01'...combined with commands <a href='#mouse'>'mouse'</a> and/or <a href='#userdraw'>'userdraw</a>...<br /> make sure the <a href='#precision'>precision</a> is set accordingly
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: in case of userdraw , the use of keyword <a href='#userinput_xy'>'userinput_xy'</a> may be handy !
+<li><span style="color:blue;font-size:0.8em"> note: in case of userdraw , the use of keyword <a href='#userinput_xy'>'userinput_xy'</a> may be handy !
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> <b>attention</b>: keyword 'snaptogrid' may not lead to the desired result...
 </span></li>
@@ -2176,13 +2182,13 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use command 'precision' before 'ylogscale' command to set the precision (decimals) of the axis numbering</li><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li><li>use command'fontcolor' to set the colour</li></ul>
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: the complete canvas will be used for the 'log paper'
+<li><span style="color:blue;font-size:0.8em"> note: the complete canvas will be used for the 'log paper'
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
+<li><span style="color:blue;font-size:0.8em"> note: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: command 'mouse color,fontsize' will show the real values in the logpaper.<br /> <li><span style="color:blue;font-size:0.8em"> <b>note</b>: when using something like 'yrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')
+<li><span style="color:blue;font-size:0.8em"> note: command 'mouse color,fontsize' will show the real values in the logpaper.<br /> <li><span style="color:blue;font-size:0.8em"> note: when using something like 'yrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: in case of userdraw , the use of keyword 'userinput_xy' may be handy !
+<li><span style="color:blue;font-size:0.8em"> note: in case of userdraw , the use of keyword 'userinput_xy' may be handy !
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> <b>attention</b>: keyword 'snaptogrid' may not lead to the desired result...
 </span></li>
@@ -2198,13 +2204,13 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li><li>use command'fontcolor' to set the colour</li></ul>
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: the complete canvas will be used for the 'log paper'
+<li><span style="color:blue;font-size:0.8em"> note: the complete canvas will be used for the 'log paper'
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
+<li><span style="color:blue;font-size:0.8em"> note: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: command 'mouse color,fontsize' will show the real values in the logpaper.<br /> <li><span style="color:blue;font-size:0.8em"> <b>note</b>: when using something like 'yrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')
+<li><span style="color:blue;font-size:0.8em"> note: command 'mouse color,fontsize' will show the real values in the logpaper.<br /> <li><span style="color:blue;font-size:0.8em"> note: when using something like 'yrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: in case of userdraw , the use of keyword 'userinput_xy' may be handy !
+<li><span style="color:blue;font-size:0.8em"> note: in case of userdraw , the use of keyword 'userinput_xy' may be handy !
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> <b>attention</b>: keyword 'snaptogrid' may not lead to the desired result...
 </span></li>
@@ -2213,7 +2219,7 @@
 </li>
 </ul>
 <script type='text/javascript'>
- var keys = ['canvasdraw' ,'canvasdraw','size','xrange','rangex','yrange','rangey','trange','ranget','linewidth','crosshairsize','crosshair','crosshairs','point','points','yerrorbars','xerrorbars','circle','circles','disks','segment','seg','segments','segs','line','lines','demiline','halfline','demilines','halflines','hline','horizontalline','hlines','horizontallines','vline','verticalline','vlines','verticallines','square','rect','rects','roundrect','roundrects','polyline','poly','arc','angle','ellipse','dashtype','rays','arrowhead','arrow','vector','arrows','vectors','arrow2','arrows2','parallel','triangle','triangles','lattice','multistrokeopacity','multifillopacity','multilabel','multilinewidth','multidash','multisnaptogrid','multifill','multistrokecolors','multifillcolors','multiuserinput','multidraw','ruler','protractor','userdraw','<b>note</b>:','snaptofunction','snaptofun','snaptopoints','snaptogrid','xsnaptogrid','ysnaptogrid','userinput','userinput_function','userinput_textarea','userinput_xy','usertextarea_xy','userinput_xy','functionlabel','userinput_function','plotsteps','fontsize','fontcolor','jscurve','jsplot','curve','levelcurve','bezier','trace_jscurve','jsmath','text','textup','fontfamily','stringup','string','centerstring','mathml','http','html','noaxis','noayis','xaxis','xaxistext','xaxisup','xaxistextup','yaxis','axisnumbering','axis','killslider','sliderfunction_x','sliderfunction_y','slider','sgraph','grid','opacity','transparent','rotationcenter','rotate','killrotate','killaffine','affine','killtranslation','killtranslate','translation','translate','animate','dashed','filled','highlight','fillcolor','strokecolor','bgimage','bgcolor','copy','copyresized','clearbutton','delete','erase','inputstyle','input','textarea','precision','setlimits','zoom','onclick','drag','blink','xunit','yunit','cursor','pointer','display','mouse_degree','mousex','mousey','mouse','intooltip','popup','audio','video','hatchfill','diamondfill','gridfill','dotfill','imagefill','canvastype','filltoborder','floodfill','fill','setpixel','pixelsize','pixels','replyformat','legendcolors','legend','xlabel','ylabel','linegraph','barchart','clock','piechart','userboxplotdata','userboxplot','boxplotdata','boxplot','status','xlogbase','ylogbase','xlogscale','ylogscale','xylogscale'];
+ var keys = ['canvasdraw' ,'canvasdraw','size','xrange','rangex','yrange','rangey','trange','ranget','linewidth','crosshairsize','crosshair','crosshairs','point','points','yerrorbars','xerrorbars','circle','circles','disks','segment','seg','segments','segs','line','lines','demiline','halfline','demilines','halflines','hline','horizontalline','hlines','horizontallines','vline','verticalline','vlines','verticallines','square','rect','rects','roundrect','roundrects','polyline','poly','arc','angle','ellipse','dashtype','rays','arrowhead','arrow','vector','arrows','vectors','arrow2','arrows2','parallel','triangle','triangles','lattice','multistrokeopacity','multifillopacity','multilabel','multilinewidth','multidash','multisnaptogrid','multifill','multistrokecolors','multifillcolors','multiuserinput','multidraw','ruler','protractor','userdraw','note:','snaptofunction','snaptofun','snaptopoints','snaptogrid','xsnaptogrid','ysnaptogrid','userinput','userinput_function','userinput_textarea','userinput_xy','usertextarea_xy','userinput_xy','functionlabel','userinput_function','plotsteps','fontsize','fontcolor','jscurve','jsplot','curve','levelcurve','bezier','trace_jscurve','jsmath','text','textup','fontfamily','stringup','string','centerstring','mathml','http','html','noaxis','noayis','xaxis','xaxistext','xaxisup','xaxistextup','yaxis','axisnumbering','axis','killslider','sliderfunction_x','sliderfunction_y','slider','sgraph','grid','opacity','transparent','rotationcenter','rotate','killrotate','killaffine','affine','killtranslation','killtranslate','translation','translate','animate','dashed','filled','highlight','fillcolor','strokecolor','bgimage','bgcolor','copy','copyresized','clearbutton','delete','erase','inputstyle','input','textarea','precision','setlimits','zoom','onclick','drag','blink','xunit','yunit','cursor','pointer','display','mouse_degree','mousex','mousey','mouse','intooltip','popup','audio','video','hatchfill','diamondfill','gridfill','dotfill','imagefill','canvastype','filltoborder','floodfill','fill','setpixel','pixelsize','pixels','replyformat','legendcolors','legend','xlabel','ylabel','linegraph','barchart','clock','piechart','userboxplotdata','userboxplot','boxplotdata','boxplot','status','xlogbase','ylogbase','xlogscale','ylogscale','xylogscale'];
  var keys_len = keys.length;
  function match(s1,s2){
   var n1 = s1.length;

@@ -198,7 +198,7 @@ int main(int argc, char *argv[]){
 	    @ size width,height
 	    @ set canvas size in pixels
 	    @ mandatory first command (can only be preceded by keyword <a href="#popup">'popup'</a>)
-	    @ if xrange and/or yrange is not given the range will be set to pixels :<br />xrange 0,xsize yrange 0,ysize<br /><b>note</b>: lower left  corner is Origin (0:0) !!! this in contrast to flydraw
+	    @ if xrange and/or yrange is not given the range will be set to pixels :<br />xrange 0,xsize yrange 0,ysize<br />note: lower left  corner is Origin (0:0) !!! this in contrast to flydraw
 	    */
 	    found_size_command = 1;
 	    /* using fabs : however "xsize == int" : so "xsize = abs( (int) get_real(infile,0))" would be the idea... */
@@ -214,9 +214,9 @@ int main(int argc, char *argv[]){
 fprintf(stdout,"\n\
 <script type=\"text/javascript\">\n\
 /*<![CDATA[*/\n\
-if( typeof wims_status === 'undefined' ){ var wims_status = \"$status\";};\
-if( typeof use_dragdrop_reply === 'undefined' ){ var use_dragdrop_reply = false;};\
-if( typeof canvas_scripts === 'undefined' ){ var canvas_scripts = new Array();};\
+if( typeof(wims_status) === 'undefined' ){ var wims_status = \"$status\";};\
+if( typeof(use_dragdrop_reply) === 'undefined' ){ var use_dragdrop_reply = false;};\
+if( typeof(canvas_scripts) === 'undefined' ){ var canvas_scripts = new Array();};\
 canvas_scripts.push(\"%d\");\n/*]]>*/\n</script>\n\
 ",canvas_root_id);
 
@@ -1595,7 +1595,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ use before command <a href='#multidraw'>'multidraw'</a>
 	 @ if not set all labels (e.g. the value='' of input type 'button') will be set by the english names for the draw_primitives (like 'point','circle'...)
 	 @ the 'stop drawing' button text <b>must</b> be the last item on the 'multilabel' -list <br />for example:<br /><em>multilabel punten,lijnen,Stop met Tekenen<br />multidraw points,lines</em>
-	 @ all buttons can be 'styled' by using commant 'inputstyle'<br /><b><b>note</b>:</b><em>If you want to add some CSS style to the buttons...<br />the id's of the 'draw buttons' are their english command argument<br />(e.g. id="canvasdraw_points" for the draw points button).<br />the id of the 'stop drawing' button is "canvasdraw_stop_drawing".<br />the id of the "OK" button is"canvasdraw_ok_button"</em>
+	 @ all buttons can be 'styled' by using commant 'inputstyle'<br /><b>note:</b><em>If you want to add some CSS style to the buttons...<br />the id's of the 'draw buttons' are their english command argument<br />(e.g. id="canvasdraw_points" for the draw points button).<br />the id of the 'stop drawing' button is "canvasdraw_stop_drawing".<br />the id of the "OK" button is"canvasdraw_ok_button"</em>
 	 @ wims will not check the amount or validity of your input
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
@@ -1706,7 +1706,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	@ multiuserinput 0,1,1,0
 	@ meaning, when the command 'multidraw' is used <br />multidraw circles,points,lines,triangles<br />objects 'points' and 'lines' may additionally be 'drawn' by direct input (inputfields)<br/>all other objects must be drawn with a mouse
-	@ in case of circle | circles a third inputfield for Radius (R) is added.<br />the radius must be in the x/y coordinate system (x-range) and <b>not</b> in pixels...students don't think in pixels.<br /><b>note</b>: R-values will not snap-to-grid
+	@ in case of circle | circles a third inputfield for Radius (R) is added.<br />the radius must be in the x/y coordinate system (x-range) and <b>not</b> in pixels...students don't think in pixels.<br />note: R-values will not snap-to-grid
 	@ in case of line(s) | segment(s) | arrow(s) the user should write <b>x1:y1</b> in the first inputfield and <b/>x2:y2</b> in the second.<br />These 'hints' are pre-filled into the input field.<br />other coordinate delimiters are ";" and "," e.g. <b>x1;y1</b> or <b>x1,y1</b>.<br />An error message (alert box) will popup when things are not correctly...
 	@ in case of a triangle | poly3, three inputfields are provided.
 	@ may be styled using command <a href="#inputstyle">"inputstyle"</a>
@@ -1726,9 +1726,9 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ multidraw obj_type_1,obj_type_2...obj_type_8
 	 @ for single object user drawings you may also use command <a href="#userdraw">'userdraw'</a>
 	 @ implemented obj_types:<ul><li>point | points </li><li>circle | circles </li><li>line | lines </li><li>segment | segments </li><li>arrow | arrows <br />use command 'arrowhead int' for size (default value 8 pixels)</li><li>rect | rects </li><li>closedpoly<br />only one closedpolygon may be drawn.The number of 'corner points' is not preset (e.g. not limited,freestyle)<br />the polygone is closed when clicking on the first point again..(+/- 10px) </li><li>triangle | triangles<br />poly3, poly4, ... poly9 | polys3, polys4, ... polys9 <br />(<em>only 3 inputfields for poly*</em>)<br />parallelogram | parallelograms <br />(<em>no inputfields: parallelogram can be used for vector "contructions"</em>)</li></ul>
-	 @ additionally objects may be user labelled, using obj_type 'text'...<br >in this case allways a text input field and a (x:y) inputfield will be added to the page.<br />use commands 'fontfamily' and 'fontcolor' to adjust. (command 'multistrokeopacity' may be set to adjust text opacity)<br /><b>note</b>: no keyboard listeners are used
+	 @ additionally objects may be user labelled, using obj_type 'text'...<br >in this case allways a text input field and a (x:y) inputfield will be added to the page.<br />use commands 'fontfamily' and 'fontcolor' to adjust. (command 'multistrokeopacity' may be set to adjust text opacity)<br />note: no keyboard listeners are used
 	 @ it makes no sense using something like "multidraw point,points" ...
-	 @ <b>note</b>: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
+	 @ note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
 	 @ buttons for changing the obj_type (and incase of 'multiuserinput' , some inputfields and buttons) <br />will be present in the reserved div 'tooltip_div' and can be styled using command 'inputstyle some_css'
 	 @ the button label will be default the 'object primitive name' (like 'point', 'circles').<br />If you want a different label (e.g. an other language) ,use command 'multilabel'<br />for example in dutch: <br /><em>multilabel cirkel,lijnstuk,punten,STOP<br />multidraw circle,segment,points</em><br />(see command <a href='#multilabel'>'multilabel'</a> for more details)
 	 @ multidraw is incompatible with command 'tooltip'
@@ -1746,16 +1746,16 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    temp = str_replace(temp,",","\",\"");
 	    /* if these are not set, set the default values for the 6 (!!!)  draw_primitives + draw_text */
 	    fprintf(js_include_file,"\
-	    if( typeof multistrokecolors === 'undefined' ){ var multistrokecolors = ['%s','%s','%s','%s','%s','%s','%s','%s','%s'];};\
-	    if( typeof multifillcolors === 'undefined' ){ var multifillcolors = ['%s','%s','%s','%s','%s','%s','%s','%s','%s'];};\
-	    if( typeof multistrokeopacity === 'undefined' ){ var multistrokeopacity = ['%.2f','%.2f','%.2f','%.2f','%.2f','%.2f','%2.f','%2.f','%2.f'];};\
-	    if( typeof multifillopacity === 'undefined' ){ var multifillopacity = ['%.2f','%.2f','%.2f','%.2f','%.2f','%.2f','%2.f','%2.f','%2.f'];};\
-	    if( typeof multilinewidth === 'undefined' ){ var multilinewidth = ['%d','%d','%d','%d','%d','%d','%d','%d','%d'];};\
-	    if( typeof multifill === 'undefined' ){ var multifill = ['%d','%d','%d','%d','%d','%d','%d','%d','%d'];};\
-	    if( typeof multidash === 'undefined' ){ var multidash = ['%d','%d','%d','%d','%d','%d','%d','%d','%d'];};\
-	    if( typeof multilabel === 'undefined' ){ var multilabel = [\"%s\",\"stop drawing\"];};\
-	    if( typeof multiuserinput === 'undefined' ){ var multiuserinput= ['0','0','0','0','0','0','0','1'];};\
-	    if( typeof multisnaptogrid == 'undefined'){var multisnaptogrid;if( x_use_snap_to_grid == 1 && y_use_snap_to_grid == 1){ multisnaptogrid = [1,1,1,1,1,1,1];}else{if( x_use_snap_to_grid == 1 ){ multisnaptogrid = [2,2,2,2,2,2,2];}else{if( y_use_snap_to_grid == 1 ){ multisnaptogrid = [3,3,3,3,3,3,3];}else{ multisnaptogrid = [0,0,0,0,0,0,0];};};};};\
+	    if( typeof(multistrokecolors) === 'undefined' && multistrokecolors == null  ){ var multistrokecolors = ['%s','%s','%s','%s','%s','%s','%s','%s','%s'];};\
+	    if( typeof(multifillcolors) === 'undefined' && multifillcolors == null ){ var multifillcolors = ['%s','%s','%s','%s','%s','%s','%s','%s','%s'];};\
+	    if( typeof(multistrokeopacity) === 'undefined' && multistrokeopacity == null ){ var multistrokeopacity = ['%.2f','%.2f','%.2f','%.2f','%.2f','%.2f','%2.f','%2.f','%2.f'];};\
+	    if( typeof(multifillopacity) === 'undefined' &&  multifillopacity == null ){ var multifillopacity = ['%.2f','%.2f','%.2f','%.2f','%.2f','%.2f','%2.f','%2.f','%2.f'];};\
+	    if( typeof(multilinewidth) === 'undefined' && multilinewidth == null ){ var multilinewidth = ['%d','%d','%d','%d','%d','%d','%d','%d','%d'];};\
+	    if( typeof(multifill) === 'undefined' && multifill == null ){ var multifill = ['%d','%d','%d','%d','%d','%d','%d','%d','%d'];};\
+	    if( typeof(multidash) === 'undefined' && multidash == null ){ var multidash = ['%d','%d','%d','%d','%d','%d','%d','%d','%d'];};\
+	    if( typeof(multilabel) === 'undefined' && multilabel == null ){ var multilabel = [\"%s\",\"stop drawing\"];};\
+	    if( typeof(multiuserinput) === 'undefined' && multiuserinput == null ){ var multiuserinput= ['0','0','0','0','0','0','0','1'];};\
+	    if( typeof(multisnaptogrid) == 'undefined' && multisnaptogrid == null){var multisnaptogrid;if( x_use_snap_to_grid == 1 && y_use_snap_to_grid == 1){ multisnaptogrid = [1,1,1,1,1,1,1];}else{if( x_use_snap_to_grid == 1 ){ multisnaptogrid = [2,2,2,2,2,2,2];}else{if( y_use_snap_to_grid == 1 ){ multisnaptogrid = [3,3,3,3,3,3,3];}else{ multisnaptogrid = [0,0,0,0,0,0,0];};};};};\
 	    var arrow_head = %d;var multifont_color = '%s';var multifont_family = '%s';",
 	    stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,
 	    fill_color,fill_color,fill_color,fill_color,fill_color,fill_color,fill_color,fill_color,fill_color,
@@ -1864,17 +1864,17 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ only a single object_type is allowed.
 	@ for multiple object user drawings use command <a href="#multidraw">'multidraw'</a>
 	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>demiline</li><li>demilines</li><li>segment</li><li>segments</li><li>polyline | brokenline </li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9] (e.g poly3 ... poly7...poly9 </li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline | path</li><li>freehandlines | paths</li><li>clickfill : fill the clicked area with a color<br />the click may be set <a href="#snaptogrid">snapped...</a></ br>only one area can be selected <br />use command <a href="#canvastype">'canvastype'</a> to fill another canvas (default should be fine: DRAG_CANVAS = 5)</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
-	@ <b>note</b>: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
-	@ <b>note</b>: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />"backspace / delete / esc" will remove typed text if the mouse is clicked non the text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt"<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" , 
+	@ note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
+	@ note: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />"backspace / delete / esc" will remove typed text if the mouse is clicked non the text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt"<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" , 
 	a confirm will popup asking to delete the selected text. This text will be removed from the "userdraw_txt()" answer array.<br />Use commands 'fontsize' and 'fontfamily' to control the text appearance
-	@ <b>note</b>: object_type polygone: Will be finished (the object is closed) when clicked on the first point of the polygone again.
-	@ <b>note</b>: all objects will be removed -after a javascript confirm box- when clicked on an object point with middle or right mouse button (e.g. event.which != 1 : all buttons but left)
+	@ note: object_type polygone: Will be finished (the object is closed) when clicked on the first point of the polygone again.
+	@ note: all objects will be removed -after a javascript confirm box- when clicked on an object point with middle or right mouse button (e.g. event.which != 1 : all buttons but left)
 	@ use command "filled", "opacity int,int"  and "fillcolor color" to trigger coloured filling of fillable objects
 	@ use command "dashed" and/or "dashtype int,int" to trigger dashing
 	@ use command "replyformat int" to control / adjust output formatting of javascript function read_canvas();
 	@ may be combined with onclick or drag xy  of other components of flyscript objects (although not very usefull...)
 	@ may be combined with keyword 'userinput_xy'
-	@ <b>note</b>: when zooming / panning after a drawing, the drawing will NOT be zoomed / panned...this is a "design" flaw and not a feature <br />To avoid trouble do not use zooming / panning together width userdraw.!<br />use command <a href="#multidraw">multidraw</a> is this is a problem for you...
+	@ note: when zooming / panning after a drawing, the drawing will NOT be zoomed / panned...this is a "design" flaw and not a feature <br />To avoid trouble do not use zooming / panning together width userdraw.!<br />use command <a href="#multidraw">multidraw</a> is this is a problem for you...
 	*/
 	    if( use_userdraw == TRUE ){ /* only one object type may be drawn*/
 		canvas_error("Only one userdraw primitive may be used in command 'userdraw' use command 'multidraw' for this...");
@@ -2280,7 +2280,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ if you want only modification of y-values,just use: snaptofunction x,5*sin(1/y)
 	@ if you want only modification of x-values,just use: snaptofunction 5*sin(1/x),y
 	@ for now only one instance of 'snaptofunction' is allowed
-	@ use rwamath on your functions: no validity checking is done by wims !
+	@ use rawmath on your functions: no validity checking is done by wims !
 	@ example:<br />....<br />snaptofunction 5*(cos(x),4*sin(y)<br />linewidth 3<br />userdraw points,blue<br />....<br />
 	@ example : switching x and y coordinates?<br />snaptofunction y,x
 	*/
@@ -2439,7 +2439,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ if set two (or three) input fields are added to the document<br />(one for x-values , one for y-values and in case of drawing circle one for radius-values)
 	@ the student may use this as correction for (x:y) on a drawing (or to draw without mouse, using just the coordinates)
 	@ math input is allowed (e.g something like: 1+3,2*6,1/3,sqrt(3), sin(pi/4),10^-2,log(2)...)<br />eval function is 'protected' against code injection.
-	@ can <b>not</b> be combined with command "intooltip tiptext" <br /><b>note</b>: the 'tooltip div element' is used for placing inputfields
+	@ can <b>not</b> be combined with command "intooltip tiptext" <br />note: the 'tooltip div element' is used for placing inputfields
 	@ user drawings will not zoom on zooming (or pan on panning)
 	@ use command 'inputstyle some_css' to adjust the inputarea.
 	@ use command 'fontsize int' to adjust the text labels (if needed)
@@ -2510,7 +2510,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	 @ fontsize font_size
 	 @ default value 12
-	 @ <b>note</b>:for some macro's (like grid | legend | xaxistext | xlabel etc) sometimes command <a href="#fontfamily">"fontfamily"</a> can be used for some specific font-setting<br />this is however not always very straight forward...so just try and see what happens
+	 @ note:for some macro's (like grid | legend | xaxistext | xlabel etc) sometimes command <a href="#fontfamily">"fontfamily"</a> can be used for some specific font-setting<br />this is however not always very straight forward...so just try and see what happens
 	*/
 	    font_size = (int) (get_real(infile,1));
 	    break;
@@ -2523,6 +2523,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	*/
 	    font_color = get_color(infile,1);
 	    break;
+	
 	case JSCURVE:
 	/*
 	 @ jscurve color,formula(x)
@@ -2533,10 +2534,13 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ <b>attention</b> : last "precision" command in the canvasdraw script determines the calculation precision of the javascript curve plot !
 	 @ no validity check is done by wims.
 	 @ zooming & panning are implemented :<br />use command 'zoom color' for mouse driven zooming<br />or use keyword 'setlimits' for inputfields setting xmin/xmax, ymin/ymax
+	 @ zooming & panning is better than for curves produced by command <a href="#curve">curve color,formula</a> because for avery change in x/y-range the curve is recalculated in javascript
 	 @ use command 'trace_jscurve formula(x)` for tracing
 	 @ use command 'jsmath  formula(x)` for calculating and displaying indiviual points on the curve
 	 @ can <b>not</b> be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> (yet)
 	 @ commands plotjump / plotstep are not active for 'jscurve'
+	 @ every command jscurve will produce a new canvas (canvastype 111,112,113...) for this one curve.
+	 @ plotting multiple js-curves on the same canvas <br/>(for example if you want to use 'userdraw clickfill,color' on <a href="#canvastype">canvastype</a> number 111 ,use :<br/> jscurve red,fun1(x),fun2(x)...fun_n(x)<br />  you want to specify individual colors | opacity | linewidth for these multiple js-curves.<br />use commands like: <a href="#multistrokecolors">multistrokecolors</a>,<a href="#multilinewidth">multilinewidth</a>, <a href="#multidash">multidash</a><br />, <a href="multistrokeopacity">multistroke</a><br />the <b>color</b> given for the command "jscurve <b>color</b>,formulas(x)" will not be used in that case...<br />but the color argument must still be given in any case (otherwise syntax error...)
 	*/
 	    stroke_color = get_color(infile,0);
 	    if( use_js_math == FALSE){/* add this stuff only once...*/
@@ -2547,10 +2551,11 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		use_js_plot = TRUE;
 		add_jsplot(js_include_file,canvas_root_id); /* this plots the function on JSPLOT_CANVAS */
 	    }
-	    temp = get_string_argument(infile,1);
-	    string_length = snprintf(NULL,0,  "jsplot(%d,\"%s\",%d,\"%s\",%.2f,%d,%d,%d); ",JSPLOT_CANVAS+jsplot_cnt,temp,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+	    temp = get_string(infile,1);
+	    temp = str_replace(temp,",","\",\"");
+	    string_length = snprintf(NULL,0,  "jsplot(%d,[\"%s\"],[%d],[\"%s\"],[%.2f],[%d],%d,%d); ",JSPLOT_CANVAS+jsplot_cnt,temp,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
 	    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-	    snprintf(tmp_buffer,string_length,"jsplot(%d,\"%s\",%d,\"%s\",%.2f,%d,%d,%d); ",JSPLOT_CANVAS+jsplot_cnt,temp,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+	    snprintf(tmp_buffer,string_length,"jsplot(%d,[\"%s\"],[%d],[\"%s\"],[%.2f],[%d],%d,%d); ",JSPLOT_CANVAS+jsplot_cnt,temp,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
 	    add_to_buffer(tmp_buffer);
 	    jsplot_cnt++;
 	     /* we need to create multiple canvasses, so we may zoom and pan ?? */
@@ -2975,7 +2980,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ use these x-axis num1...num_n values instead of default xmin...xmax
 	 @ no need to use keyword <a href="#axisnumbering">axisnumbering</a>
 	 @ use command <a href="#axis">axis</a> to have visual x/y-axis lines (see command <a href="grid">grid</a>
-	 @ use command "fontcolor", "fontfamily" to adjust font <br />defaults: black,12,Ariel<br /><b>note</b>: command "fontsize" is not active for this command.("fontsize" can be used for the <a href="#legend">"legend"</a> in a <a href="#grid">grid</a>)
+	 @ use command "fontcolor", "fontfamily" to adjust font <br />defaults: black,12,Ariel<br />note: command "fontsize" is not active for this command.("fontsize" can be used for the <a href="#legend">"legend"</a> in a <a href="#grid">grid</a>)
 	 @ a javascript error message will flag non-matching value:name pairs
 	 @ if the 'x-axis words' are too big and will overlap, a simple alternating offset will be applied
 	 @ to be used before command grid (see <a href="#grid">command grid</a>)
@@ -2995,7 +3000,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ no need to use keyword <a href="#axisnumbering">axisnumbering</a>
 	 @ use command <a href="#axis">axis</a> to have visual x/y-axis lines (see command <a href="grid">grid</a>
 	 @ use these x-axis num1...num_n values instead of default xmin...xmax
-	 @ use command "fontcolor","fontfamily" to adjust font <br />defaults: black,12,Ariel<br /><b>note</b>: command "fontsize" is not active for this command.("fontsize" can be used for the <a href="#legend">"legend"</a> in a <a href="#grid">grid</a>)
+	 @ use command "fontcolor","fontfamily" to adjust font <br />defaults: black,12,Ariel<br />note: command "fontsize" is not active for this command.("fontsize" can be used for the <a href="#legend">"legend"</a> in a <a href="#grid">grid</a>)
 	 @ a javascript error message will flag non-matching value:name pairs
 	 @ if the 'x-axis words' are too big, they will overlap the graph<br /> (in this case the text will start from ysize upwards)
 	 @ to be used before command grid (see <a href="#grid">command grid</a>)
@@ -3011,7 +3016,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	 @ yaxis num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
 	 @ alternativ : yaxistext num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
-	 @ use command "fontcolor", "fontfamily" to adjust font <br />defaults: black,12,Ariel<br /> <b>note</b>: command "fontsize" is not active for this command.("fontsize" can be used for the <a href="#legend">"legend"</a> in a <a href="#grid">grid</a>)
+	 @ use command "fontcolor", "fontfamily" to adjust font <br />defaults: black,12,Ariel<br /> note: command "fontsize" is not active for this command.("fontsize" can be used for the <a href="#legend">"legend"</a> in a <a href="#grid">grid</a>)
 	 @ no need to use keyword <a href="#axisnumbering">axisnumbering</a>
 	 @ use command <a href="#axis">axis</a> to have visual x/y-axis lines (see command <a href="grid">grid</a>
 	 @ use these y-axis num1...num_n  values instead of default ymin...ymax
@@ -3707,7 +3712,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	    @ may be used for inputfield based zooming / panning
 	    @ may be styled using command <a href="#inputstyle">inputstyle</a>
 	    @ use commands <a href="#xlabel">xlabel / ylabel</a> to change text from xmin to 'xlabel' etc
-	    @ <b>note</b>:the input value will not be checked on validity
+	    @ note:the input value will not be checked on validity
 	*/
 	    if( use_safe_eval == FALSE){use_safe_eval = TRUE;add_safe_eval(js_include_file);} /* just once */
 	    add_setlimits(js_include_file,canvas_root_id,font_size,input_style);
@@ -3723,9 +3728,9 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ the 'x' symbol will do a 'location.reload' of the page, and thus reset all canvas drawings.
 	 @ choose an appropriate colour, so the small 'x,arrows,-,+' are clearly visible
 	 @ command 'opacity' may be used to set stroke_opacity of 'buttons
-	 @ <b>note</b>: use command 'zoom' at the end of your script code (the same is true for command 'mouse')
-	 @ <b>note</b>: only objects that may be set draggable / clickable will be zoomed / panned
-	 @ <b>note</b>: when an object is dragged, zooming / panning will cause the coordinates to be reset to the original position :( <br />e.g. dragging / panning will get lost. (array with 'drag data' is erased)<br />This is a design flaw and not a feature !!
+	 @ note: use command 'zoom' at the end of your script code (the same is true for command 'mouse')
+	 @ note: only objects that may be set draggable / clickable will be zoomed / panned
+	 @ note: when an object is dragged, zooming / panning will cause the coordinates to be reset to the original position :( <br />e.g. dragging / panning will get lost. (array with 'drag data' is erased)<br />This is a design flaw and not a feature !!
 	*/
 	    fprintf(js_include_file,"use_pan_and_zoom = 1;");
 	    use_pan_and_zoom = TRUE;
@@ -3743,7 +3748,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ line based objects will show an increase in line width<br />font based objects will show the text in 'bold' when clicked.
 	 @ the click zone (accuracy) is determined by 2&times; the line width of the object
 	 @ onclick and <a href="#drag">drag x|y|xy</a> may be combined in a single flyscript <br />(although a single object can <b>not</b> be onclick and draggable at the same time...)
-	 @ <b>note</b>: not all objects may be set onclick
+	 @ note: not all objects may be set onclick
 	*/
 	    fprintf(js_include_file,"use_dragdrop_reply = true;");
 	    onclick = 1;
@@ -3761,7 +3766,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ the answer is  : drag_or_onclick_object_number : Xorg : Yorg : Xnew : Ynew<br />wherein object_number is the sequence number of the draggable &amp; onclick objects in your script.<br />Only draggable & onclick objects will have an object_number (e.g things like point,crosshair,line,segment,circle,rect,triangle...etc)
 	 @ use keyword 'snaptogrid' , 'xsnaptogrid' , 'ysnaptogrid' or command 'snaptopoints x1,y1,x2,y2,...' to switch from free to discrete movement
 	 @ in case of external images (commands copy / copyresized) the external image can be set draggable ; always xy. <br />The function javascript;read_canvas() will return the xy-coordinates of all images.
-	 @ <b>note</b>: in case an object is dragged , zooming or panning will cause the coordinates to be reset to the original position :( <br />e.g. dragging / panning will get lost. (array with 'drag data' is erased)<br />This is a design flaw and not a feature !!
+	 @ note: in case an object is dragged , zooming or panning will cause the coordinates to be reset to the original position :( <br />e.g. dragging / panning will get lost. (array with 'drag data' is erased)<br />This is a design flaw and not a feature !!
 	*/
 	    temp = get_string(infile,1);
 	    if(strstr(temp,"xy") != NULL ){
@@ -3865,7 +3870,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ mouse_degree color,fontsize
 	 @ will display the angle in degrees between x-axis, (0:0) and the cursor (x:y) in 'color' and 'font size'<br /> using a fontfamily Ariel
 	 @ The angle is positive in QI and QIII and the angle value is negative in QII and QIV
-	 @ <b>note</b>: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
+	 @ note: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
 
 	*/
 	    stroke_color = get_color(infile,0);
@@ -3879,7 +3884,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	/*
 	 @ mousex color,fontsize
 	 @ will display the cursor x-coordinate in 'color' and 'font size'<br /> using the fontfamily Ariel
-	 @ <b>note</b>: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
+	 @ note: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
 
 	*/
 	    stroke_color = get_color(infile,0);
@@ -3892,7 +3897,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	/*
 	 @ mousey color,fontsize
 	 @ will display the cursor y-coordinate in 'color' and 'font size'<br /> using default fontfamily Ariel
-	 @ <b>note</b>: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
+	 @ note: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
 
 	*/
 	    stroke_color = get_color(infile,0);
@@ -3905,7 +3910,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	/*
 	 @ mouse color,fontsize
 	 @ will display the cursor (x:y) coordinates  in 'color' and 'font size'<br /> using default fontfamily Ariel
-	 @ <b>note</b>: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
+	 @ note: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
 
 	*/
 	    stroke_color = get_color(infile,0);
@@ -4148,7 +4153,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ any other color will not act as border to the bucket fill
 	@ use this command  after all boundary objects are declared.
 	@ use command <a href="#canvastype">canvastype </a> to fill another canvas (default should be fine: DRAG_CANVAS = 5)
-	@ <b>note</b>: filltoborder is a very (client) cpu intensive operation!<br />filling is done pixel by pixel<br/>e.g. image size of 400x400 uses 160000 pixels : each pixel contains 4 data (R,G,B,Opacity) = 640000 data.<br />on every data a few operations / comparisons are done...<br />So have pity on your students CPU..
+	@ note: filltoborder is a very (client) cpu intensive operation!<br />filling is done pixel by pixel<br/>e.g. image size of 400x400 uses 160000 pixels : each pixel contains 4 data (R,G,B,Opacity) = 640000 data.<br />on every data a few operations / comparisons are done...<br />So have pity on your students CPU..
 	*/
 	    for(i=0 ;i < 4 ; i++){
 		switch(i){
@@ -4181,7 +4186,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ use this command  after all boundary objects are declared.
 	@ Use command 'userdraw clickfill,color' for user click driven flood fill.
 	@ use command <a href="#canvastype">canvastype </a> to fill another canvas (default should be fine: DRAG_CANVAS = 5)
-	@ <b>note</b>: floodfill is a very (client) cpu intensive operation!<br />filling is done pixel by pixel<br/>e.g. image size of 400x400 uses 160000 pixels : each pixel contains 4 data (R,G,B,Opacity) = 640000 data.<br />on every data a few operations / comparisons are done...<br />So have pity on your students CPU..
+	@ note: floodfill is a very (client) cpu intensive operation!<br />filling is done pixel by pixel<br/>e.g. image size of 400x400 uses 160000 pixels : each pixel contains 4 data (R,G,B,Opacity) = 640000 data.<br />on every data a few operations / comparisons are done...<br />So have pity on your students CPU..
 	*/
 	    for(i=0 ;i < 4 ; i++){
 		switch(i){
@@ -4284,7 +4289,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	case LEGENDCOLORS:
 	/*
 	@ legendcolors color1:color2:color3:...:color_n
-	@ will be used to colour a legend: use this command after the legend command ! e.g.<br />legend test1:test2:test3<br />legendcolors blue:red:orange<br />
+	@ will be used to colour a legend: use this command after the legend command ! e.g.<br />legend test1:test2:test3<br />legendcolors blue:red:orange
 	@ make sure the number of colours match the number of legend items
 	@ command 'legend' in case of 'piechart' and 'barchart' will use these colours per default (no need to specify 'legendcolors'
 	*/
@@ -4335,7 +4340,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ use command <a href='#legend'>'legend'</a> to provide an optional legend in right-top-corner
 	@ also see command <a href='#piechart'>'piechart'</a>
 	@ multiple linegraphs may be used in a single plot
-	@ <b>note</b>: your arguments are not checked by canvasdraw : use your javascript console in case of trouble...
+	@ note: your arguments are not checked by canvasdraw : use your javascript console in case of trouble...
 	@ <ul><li>use command <a href='#strokecolor'>'strokecolor'</a> before a command 'linegraph' to set the color of this graph</li><li>use command <a href='#linewidth'>'linewidth'</a> before command 'linegraph' to set linewidth of this graph</li><li>use keyword <a href='#dashed'>'dashed'</a> before command 'linegraph' to set dashing of the graph</li><li>if dashing is set, use command <a href='#dashtype'>'dashtype'</a> before command 'linegraph' to set the type of dashing of the (individual) graph</li></ul>
 	*/
 	    temp = get_string(infile,1);
@@ -4352,7 +4357,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ use command <a href='#legend'>'legend'</a> to provide an optional legend in right-top-corner
 	@ multiple barchart command may be used in a single script
 	@ also see command <a href='#piechart'>'piechart'</a>
-	@ <b>note</b>: your arguments are not checked by canvasdraw : use your javascript console in case of trouble...
+	@ note: your arguments are not checked by canvasdraw : use your javascript console in case of trouble...
 	*/
 	    temp = get_string(infile,1);
 	    if( strstr( temp,":" ) != 0 ){ temp = str_replace(temp,":","\",\""); }
@@ -4371,8 +4376,8 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ canvasdraw will not check validity of colornames...the javascript console is your best friend
 	@ no combinations with other reply_types allowed, for now
 	@ if interactive is set to '1', 6 buttons per clock will be displayed for adjusting a clock (H+ M+ S+ H- M- S-)<br /> set_clock(clock_id,type,incr) <br />first clock has clock_id=0 ; type : H=1,M=2,S=3 ; incr : increment integer
-	@ <b>note</b>: if you need multiple -interactive- clocks on a webpage, use multiple 'clock' commands in a single script !<br />and <i>not multiple canvas scripts</i> in a single page
-	@ <b>note</b>: clocks will not zoom or pan, when using command <a href='#zoom'>'zoom'</a>
+	@ note: if you need multiple -interactive- clocks on a webpage, use multiple 'clock' commands in a single script !<br />and <i>not multiple canvas scripts</i> in a single page
+	@ note: clocks will not zoom or pan, when using command <a href='#zoom'>'zoom'</a>
 	*/
 	    if( js_function[DRAW_CLOCK] != 1 ){ js_function[DRAW_CLOCK] = 1;}
 
@@ -4515,7 +4520,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ 'some_data' are a list of numbers separated by a comma "," (items)
 	@ only be used before command 'boxplot': the command <a href="#boxplot">'boxplot'</a> will provide the boxplot drawing of the data.
 	@ xrange 0,100<br />yrange 0,10<br />boxplotdata 11,22,13,15,23,43,12,12,14,2,45,32,44,13,21,24,13,19,35,21,24,23<br />boxplot x,4,5
-	@ <b>note</b>: wims will not check your data input | format. use js-error console to debug any problems.
+	@ note: wims will not check your data input | format. use js-error console to debug any problems.
 	@ a javascript function 'statistics()' will parse the data and calculate the values [min,Q1,median,Q3,max] and hand them to the boxplot draw function.
 	*/
 	    if( js_function[DRAW_JSBOXPLOT] != 1 ){ js_function[DRAW_JSBOXPLOT] = 1;}
@@ -4617,11 +4622,11 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ the opacity of major / minor grid lines is set by command <a href='#opacity'>'opacity</a>'
 	 @ default logbase number = 10 ... when needed , set the logbase number with command 'xlogbase number'
 	 @ the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use command 'precision' before 'xlogscale' command to set the precision (decimals) of the axis numbering</li><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li><li>use command'fontcolor' to set the colour</li></ul>
-	 @ <b>note</b>: the complete canvas will be used for the 'log paper'
-	 @ <b>note</b>: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
-	 @ <b>note</b>: command 'mouse color,fontsize' will show the real values in the logpaper.<br />\
-	 @ <b>note</b>: when using something like 'xrange 0.0001,0.01'...combined with commands <a href='#mouse'>'mouse'</a> and/or <a href='#userdraw'>'userdraw</a>...<br /> make sure the <a href='#precision'>precision</a> is set accordingly
-	 @ <b>note</b>: in case of userdraw , the use of keyword <a href='#userinput_xy'>'userinput_xy'</a> may be handy !
+	 @ note: the complete canvas will be used for the 'log paper'
+	 @ note: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
+	 @ note: command 'mouse color,fontsize' will show the real values in the logpaper.<br />\
+	 @ note: when using something like 'xrange 0.0001,0.01'...combined with commands <a href='#mouse'>'mouse'</a> and/or <a href='#userdraw'>'userdraw</a>...<br /> make sure the <a href='#precision'>precision</a> is set accordingly
+	 @ note: in case of userdraw , the use of keyword <a href='#userinput_xy'>'userinput_xy'</a> may be handy !
 	 @ <b>attention</b>: keyword 'snaptogrid' may not lead to the desired result...
 	*/
 	    if( js_function[DRAW_GRID] == 1 ){canvas_error("only one type of grid is allowed...");}
@@ -4651,11 +4656,11 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ the opacity of major / minor grid lines is set by command 'opacity [0-255],[0-255]'
 	 @ default logbase number = 10 ... when needed , set the logbase number with command 'ylogbase number'
 	 @ the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use command 'precision' before 'ylogscale' command to set the precision (decimals) of the axis numbering</li><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li><li>use command'fontcolor' to set the colour</li></ul>
-	 @ <b>note</b>: the complete canvas will be used for the 'log paper'
-	 @ <b>note</b>: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
-	 @ <b>note</b>: command 'mouse color,fontsize' will show the real values in the logpaper.<br />\
-	 @ <b>note</b>: when using something like 'yrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')
-	 @ <b>note</b>: in case of userdraw , the use of keyword 'userinput_xy' may be handy !
+	 @ note: the complete canvas will be used for the 'log paper'
+	 @ note: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
+	 @ note: command 'mouse color,fontsize' will show the real values in the logpaper.<br />\
+	 @ note: when using something like 'yrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')
+	 @ note: in case of userdraw , the use of keyword 'userinput_xy' may be handy !
 	 @ <b>attention</b>: keyword 'snaptogrid' may not lead to the desired result...
 	*/
 	    if( js_function[DRAW_GRID] == 1 ){canvas_error("only one type of grid is allowed...");}
@@ -4684,11 +4689,11 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ the opacity of major / minor grid lines is set by command 'opacity [0-255],[0-255]'
 	 @ default logbase number = 10 ... when needed , set the logbase number with command 'xlogbase number' and/or 'ylogbase number'
 	 @ the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li><li>use command'fontcolor' to set the colour</li></ul>
-	 @ <b>note</b>: the complete canvas will be used for the 'log paper'
-	 @ <b>note</b>: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
-	 @ <b>note</b>: command 'mouse color,fontsize' will show the real values in the logpaper.<br />\
-	 @ <b>note</b>: when using something like 'yrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')
-	 @ <b>note</b>: in case of userdraw , the use of keyword 'userinput_xy' may be handy !
+	 @ note: the complete canvas will be used for the 'log paper'
+	 @ note: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
+	 @ note: command 'mouse color,fontsize' will show the real values in the logpaper.<br />\
+	 @ note: when using something like 'yrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')
+	 @ note: in case of userdraw , the use of keyword 'userinput_xy' may be handy !
 	 @ <b>attention</b>: keyword 'snaptogrid' may not lead to the desired result...
 	*/
 	    if( js_function[DRAW_GRID] == 1 ){canvas_error("only one type of grid is allowed...");}
@@ -4756,7 +4761,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
    if(xmax<=xmin){xmin=xmin_start;xmax=xmax_start;};\
    if(ymax<=ymin){ymin=ymin_start;ymax=ymax_start;};\
    try{dragstuff.Zoom(xmin,xmax,ymin,ymax);}catch(e){};\
-   if(typeof redraw_all%d === 'function' ){redraw_all%d(zoom_xy);}\
+   if(typeof(redraw_all%d) === 'function' ){redraw_all%d(zoom_xy);}\
    %s ;\
   };\
   start_canvas%d(333);\
@@ -5199,7 +5204,7 @@ read_canvas%d = function(){\
     t++;\
    };\
   };\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return userdraw_x+\"\\n\"+userdraw_y+\"\\n\"+input_reply + \"\\n\"+userdraw_text;\
   }\
   else\
@@ -5209,7 +5214,7 @@ read_canvas%d = function(){\
  }\
  else\
  {\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return userdraw_x+\"\\n\"+userdraw_y+\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5245,7 +5250,7 @@ read_canvas%d = function(){\
     t++;\
    };\
   };\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply_x+\"\\n\"+reply_y+\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5255,7 +5260,7 @@ read_canvas%d = function(){\
  }\
  else\
  {\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply_x+\"\\n\"+reply_y+\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5283,7 +5288,7 @@ read_canvas%d = function(){\
     t++;\
    };\
   };\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return userdraw_x+\"\\n\"+userdraw_y+\"\\n\"+userdraw_radius+\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5293,7 +5298,7 @@ read_canvas%d = function(){\
  }\
  else\
  {\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return userdraw_x+\"\\n\"+userdraw_y+\"\\n\"+userdraw_radius+\"\\n\"+userdrawW_text;\
   }\
   else\
@@ -5327,7 +5332,7 @@ read_canvas%d = function(){\
     t++;\
    };\
   };\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply_x+\"\\n\"+reply_y +\"\\n\"+userdraw_radius+\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5337,7 +5342,7 @@ read_canvas%d = function(){\
  }\
  else\
  {\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply_x+\"\\n\"+reply_y+\"\\n\"+userdraw_radius+\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5377,7 +5382,7 @@ read_canvas%d = function(){\
     t++;\
    };\
   };\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply +\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5387,7 +5392,7 @@ read_canvas%d = function(){\
  }\
  else\
  {\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply+\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5435,7 +5440,7 @@ read_canvas%d = function(){\
     t++;\
    };\
   };\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply +\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5445,7 +5450,7 @@ read_canvas%d = function(){\
  }\
  else\
  {\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply +\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5479,7 +5484,7 @@ read_canvas%d = function(){\
     t++;\
    };\
   };\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply+\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5489,7 +5494,7 @@ read_canvas%d = function(){\
  }\
  else\
  {\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply+\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5523,7 +5528,7 @@ read_canvas%d = function(){\
     t++;\
    };\
   };\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply +\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5533,7 +5538,7 @@ read_canvas%d = function(){\
  }\
  else\
  {\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply +\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5567,7 +5572,7 @@ read_canvas%d = function(){\
     t++;\
    };\
   };\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply +\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5577,7 +5582,7 @@ read_canvas%d = function(){\
  }\
  else\
  {\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply +\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5611,7 +5616,7 @@ read_canvas%d = function(){\
     t++;\
    };\
   };\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply +\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5621,7 +5626,7 @@ read_canvas%d = function(){\
  }\
  else\
  {\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply +\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5655,7 +5660,7 @@ read_canvas%d = function(){\
     t++;\
    };\
   };\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply +\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5665,7 +5670,7 @@ read_canvas%d = function(){\
  }\
  else\
  {\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply +\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5700,7 +5705,7 @@ read_canvas%d = function(){\
     t++;\
    };\
   };\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply +\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5710,7 +5715,7 @@ read_canvas%d = function(){\
  }\
  else\
  {\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply +\"\\n\"+userdraw_text\
   }\
   else\
@@ -5744,7 +5749,7 @@ read_canvas%d = function(){\
     t++;\
    };\
   };\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply +\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5754,7 +5759,7 @@ read_canvas%d = function(){\
  }\
  else\
  {\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply +\"\\n\"+userdraw_text\
   }\
   else\
@@ -5788,7 +5793,7 @@ read_canvas%d = function(){\
     t++;\
    };\
   };\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply +\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5798,7 +5803,7 @@ read_canvas%d = function(){\
  }\
  else\
  {\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply +\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5824,7 +5829,7 @@ read_canvas%d = function(){\
    t++;\
   };\
  };\
- if( typeof userdraw_text != 'undefined' ){\
+ if( typeof(userdraw_text) !== 'undefined' ){\
    return input_reply +\"\\n\"+userdraw_text;\
  }\
  else\
@@ -5934,7 +5939,7 @@ read_canvas%d = function(){\
     t++;\
    };\
   };\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply_coord+\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5944,7 +5949,7 @@ read_canvas%d = function(){\
  }\
  else\
  {\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply_coord+\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5979,7 +5984,7 @@ read_canvas%d = function(){\
     t++;\
    };\
   };\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply +\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
   }\
   else\
@@ -5989,7 +5994,7 @@ read_canvas%d = function(){\
  }\
  else\
  {\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply +\"\\n\"+userdraw_text;\
   }\
   else\
@@ -6029,7 +6034,7 @@ read_canvas%d = function(){\
     t++;\
    };\
   };\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply_x+\"\\n\"+reply_y+\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
   }\
   else\
@@ -6039,7 +6044,7 @@ read_canvas%d = function(){\
  }\
  else\
  {\
-  if( typeof userdraw_text != 'undefined' ){\
+  if( typeof(userdraw_text) !== 'undefined' ){\
    return reply_x+\"\\n\"+reply_y+\"\\n\"+userdraw_text;\
   }\
   else\
@@ -6368,7 +6373,7 @@ var draw_bezier = function(canvas_type,linewidth,xy_points,fill_color,fill_opaci
  ctx.save();\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  ctx.lineWidth = linewidth;\
- if(linewidth%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
+ if(linewidth%%2 == 1 && typeof(zoom_x_increment) === 'undefined'){ctx.translate(0.5,0.5)};\
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);};\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);};\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
@@ -6396,7 +6401,7 @@ var draw_gridfill = function(canvas_type,x0,y0,dx,dy,linewidth,color,opacity,xsi
  snap_x = dx;snap_y = dy;\
  ctx.save();\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof(zoom_x_increment) === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.strokeStyle=\"rgba(\"+color+\",\"+opacity+\")\";\
  for( x = x0 ; x < xsize+dx ; x = x + dx ){\
     ctx.moveTo(x,y0);\
@@ -6497,7 +6502,7 @@ var draw_diamondfill = function(canvas_type,x0,y0,dx,dy,linewidth,stroke_color,s
  var y;\
  ctx.save();\
  ctx.lineWidth = linewidth;\
- if(linewidth%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
+ if(linewidth%%2 == 1 && typeof(zoom_x_increment) === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  y = ysize;\
  for( x = x0 ; x < xsize ; x = x + dx ){\
@@ -6545,7 +6550,7 @@ var draw_hatchfill = function(canvas_type,x0,y0,dx,dy,linewidth,stroke_color,str
  var y;\
  ctx.save();\
  ctx.lineWidth = linewidth;\
- if(linewidth%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
+ if(linewidth%%2 == 1 && typeof(zoom_x_increment) === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  y = ysize;\
  for( x = x0 ; x < xsize ; x = x + dx ){\
@@ -6571,7 +6576,7 @@ var draw_circles = function(ctx,x_points,y_points,radius,line_width,stroke_color
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof(zoom_x_increment) === 'undefined'){ctx.translate(0.5,0.5)};\
  for(var p = 0 ; p < x_points.length ; p++ ){\
   ctx.beginPath();\
   ctx.arc(x_points[p],y_points[p],radius[p],0,2*Math.PI,false);\
@@ -6592,7 +6597,7 @@ var draw_polyline = function(ctx,x_points,y_points,line_width,stroke_color,strok
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof(zoom_x_increment) === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
  ctx.clearRect(0,0,xsize,ysize);\
@@ -6621,7 +6626,7 @@ var draw_segments = function(ctx,x_points,y_points,line_width,stroke_color,strok
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof(zoom_x_increment) === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
  for(var p = 0 ; p < x_points.length ; p = p+2 ){\
@@ -6656,7 +6661,7 @@ var draw_lines = function(ctx,x_points,y_points,line_width,stroke_color,stroke_o
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof(zoom_x_increment) === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
  for(var p = 0 ; p < x_points.length ; p = p+2 ){\
@@ -6684,7 +6689,7 @@ var draw_demilines = function(ctx,x_points,y_points,line_width,stroke_color,stro
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof(zoom_x_increment) === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
  var pair = new Array(4);\
@@ -6707,7 +6712,7 @@ var draw_crosshairs = function(ctx,x_points,y_points,line_width,crosshair_size,s
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof(zoom_x_increment) === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  var x1,x2,y1,y2;\
  for(var p = 0 ; p < x_points.length ; p++ ){\
@@ -6738,7 +6743,7 @@ var draw_rects = function(ctx,x_points,y_points,line_width,stroke_color,stroke_o
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof(zoom_x_increment) === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.strokeStyle = 'rgba('+stroke_color+','+stroke_opacity+')';\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];}};\
  for(var p = 0 ; p < x_points.length ; p = p + 2){\
@@ -6761,7 +6766,7 @@ var draw_roundrects = function(ctx,x_points,y_points,line_width,stroke_color,str
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof(zoom_x_increment) === 'undefined'){ctx.translate(0.5,0.5)};\
  var x,y,w,h,r;\
  for(var p = 0; p < x_points.length; p = p+2){\
   x = x_points[p];y = y_points[p];w = x_points[p+1] - x;h = y_points[p+1] - y;r = parseInt(0.1*w);\
@@ -6800,7 +6805,7 @@ var draw_ellipses = function(canvas_type,x_points,y_points,line_width,stroke_col
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  var cx,cy,ry,rx;\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof(zoom_x_increment) === 'undefined'){ctx.translate(0.5,0.5)};\
  if( use_filled == 1 ){ctx.fillStyle =\"rgba(\"+fill_color+\",\"+fill_opacity+\")\";};\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
@@ -6824,7 +6829,7 @@ var draw_paths = function(ctx,x_points,y_points,line_width,closed_path,stroke_co
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof(zoom_x_increment) === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.lineJoin = \"round\";\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  ctx.beginPath();\
@@ -6848,7 +6853,7 @@ var draw_arrows = function(ctx,x_points,y_points,arrow_head,line_width,stroke_co
  ctx.strokeStyle = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  ctx.fillStyle = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof(zoom_x_increment) === 'undefined'){ctx.translate(0.5,0.5)};\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
  ctx.lineCap = \"round\";\
  var x1,y1,x2,y2,dx,dy,len;\
@@ -7149,13 +7154,13 @@ var draw_sgraph = function(canvas_type,precision,xmajor,ymajor,xminor,yminor,maj
   ctx.closePath();\
  };\
  ymin = ystart - (ymajor*(ysize - zero_y + snor_y)/step_y);\
- if( typeof legend%d  !== 'undefined' ){\
+ if( typeof(legend%d)  !== 'undefined' ){\
   ctx.globalAlpha = 1.0;\
   var y_offset = 2*font_size;\
   var txt;var txt_size;\
   var x_offset = xsize - 2*font_size;\
   var l_length = legend%d.length;var barcolor = new Array();\
-  if( typeof legendcolors%d !== 'undefined' ){\
+  if( typeof(legendcolors%d) !== 'undefined' ){\
    for(var p = 0 ; p < l_length ; p++){\
     barcolor[p] = legendcolors%d[p];\
    };\
@@ -7174,12 +7179,12 @@ var draw_sgraph = function(canvas_type,precision,xmajor,ymajor,xminor,yminor,maj
    y_offset = parseInt(y_offset + 1.5*font_size);\
   };\
  };\
- if( typeof xaxislabel !== 'undefined' ){\
+ if( typeof(xaxislabel) !== 'undefined' ){\
    ctx.fillStyle = \'#000000\';\
    var txt_size = ctx.measureText(xaxislabel).width + 4 ;\
    ctx.fillText(xaxislabel,xsize - txt_size, zero_y - 7);\
  };\
- if( typeof yaxislabel !== 'undefined'){\
+ if( typeof(yaxislabel) !== 'undefined'){\
    ctx.save();\
    ctx.fillStyle = \'#000000\';\
    var txt_size = ctx.measureText(yaxislabel).width;\
@@ -7212,7 +7217,7 @@ var y2step = ystep / yminor;\
 var zero_x = x2px(0);;var zero_y = y2px(0);var f_x;var f_y;\
 if(xmin < 0 ){ f_x = -1;}else{ f_x = 1;}\
 if(ymin < 0 ){ f_y = -1;}else{ f_y = 1;}\
- if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof(zoom_x_increment) === 'undefined'){ctx.translate(0.5,0.5)};\
 ctx.beginPath();\
 ctx.lineWidth = line_width;\
 ctx.strokeStyle = stroke_color;\
@@ -7232,14 +7237,14 @@ for(var p = zero_y ; p > 0; p = p - ystep){\
  ctx.moveTo(0,p);\
  ctx.lineTo(xsize,p);\
 };\
-if( typeof xaxislabel !== 'undefined' ){\
+if( typeof(xaxislabel) !== 'undefined' ){\
  ctx.save();\
  ctx.font = \"italic \"+font_size+\"px Ariel\";\
  var corr =  ctx.measureText(xaxislabel).width;\
  ctx.fillText(xaxislabel,xsize - 1.5*corr,zero_y - tics_length - 0.4*font_size);\
  ctx.restore();\
 };\
-if( typeof yaxislabel !== 'undefined' ){\
+if( typeof(yaxislabel) !== 'undefined' ){\
  ctx.save();\
  ctx.font = \"italic \"+font_size+\"px Ariel\";\
  var corr =  ctx.measureText(yaxislabel).width;\
@@ -7444,7 +7449,7 @@ if( use_axis_numbering == 1 ){\
  ctx.stroke();\
  ctx.restore();\
 };\
-if( typeof legend0  !== 'undefined' ){\
+if( typeof(legend0)  !== 'undefined' ){\
  ctx.save();\
  ctx.globalAlpha = 1.0;\
  ctx.font = \"bold \"+font_size+\"px Ariel\";\
@@ -7452,7 +7457,7 @@ if( typeof legend0  !== 'undefined' ){\
  var txt;var txt_size;\
  var x_offset = xsize - 2*font_size;\
  var l_length = legend0.length;\
- if( typeof legendcolors0 !== 'undefined' ){\
+ if( typeof(legendcolors0) !== 'undefined' ){\
   for(var p = 0 ; p < l_length ; p++){\
     barcolor[p] = legendcolors0[p];\
   };\
@@ -7474,11 +7479,11 @@ if( typeof legend0  !== 'undefined' ){\
  };\
  ctx.restore();\
 };\
-if( typeof barchart_0  !== 'undefined' ){\
+if( typeof(barchart_0)  !== 'undefined' ){\
  ctx.save();\
  var num_barcharts = 0;\
  var bar_name = eval('barchart_0');\
- while( typeof bar_name !== 'undefined' ){\
+ while( typeof(bar_name) !== 'undefined' ){\
     try{ bar_name = eval('barchart_'+num_barcharts);num_barcharts++;}catch(e){break;};\
  };\
  var bar_width = parseInt(0.8*x2step/(num_barcharts));\
@@ -7508,12 +7513,12 @@ if( typeof barchart_0  !== 'undefined' ){\
  };\
  ctx.restore();\
 };\
-if( typeof linegraph_0 !== 'undefined' ){\
+if( typeof(linegraph_0) !== 'undefined' ){\
  ctx.save();\
  ctx.globalAlpha = 1.0;\
  var i = 0;\
  var line_name = eval('linegraph_'+i);\
- while ( typeof line_name !== 'undefined' ){\
+ while ( typeof(line_name) !== 'undefined' ){\
   ctx.strokeStyle = 'rgba('+line_name[0]+','+stroke_opacity+')';\
   ctx.lineWidth = parseInt(line_name[1]);\
   if(line_name[2] == \"1\"){\
@@ -7590,7 +7595,7 @@ function draw_piechart(canvas_type,x_center,y_center,radius, data_color_list,fil
   ctx.closePath();\
   angle_end  = angle_end + angle;\
  };\
- if(typeof legend0 !== 'undefined'){\
+ if(typeof(legend0) !== 'undefined'){\
   var legenda = eval(\"legend\"+legend_cnt);\
   ctx.globalAlpha = 1.0;\
   ctx.font = font_family;\
@@ -7664,15 +7669,15 @@ draw_boxplot = function(canvas_type,xy,hw,cxy,data,line_width,stroke_color,strok
  ctx.clearRect(0,0,xsize,ysize);\
  ctx.save();\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof(zoom_x_increment) === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.strokeStyle =  \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  ctx.fillStyle = \"rgba(\"+fill_color+\",\"+fill_opacity+\")\";\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{if(ctx.mozDash){ ctx.mozDash = [dashtype0,dashtype1];};};};\
  var hh = 0.25*hw;\
  switch(boxplot_source){\
-  case 1: if( typeof jsboxplot_data === 'undefined'){return;};data = statistics(jsboxplot_data);break;\
-  case 2: if( typeof student_boxplot_data === 'undefined'){return;};data = statistics(student_boxplot_data);break;\
-  case 3: if( typeof student_boxplot === 'undefined'){return;};data = student_boxplot;break;\
+  case 1: if( typeof(jsboxplot_data) === 'undefined'){return;};data = statistics(jsboxplot_data);break;\
+  case 2: if( typeof(student_boxplot_data) === 'undefined'){return;};data = statistics(student_boxplot_data);break;\
+  case 3: if( typeof(student_boxplot) === 'undefined'){return;};data = student_boxplot;break;\
   default: break;\
  };\
  var min,Q1,median,Q3,max;\
@@ -7754,7 +7759,7 @@ var draw_arc = function(ctx,xc,yc,r,start,end,line_width,stroke_color,stroke_opa
  start = 360 - start;\
  end = 360 - end;\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof(zoom_x_increment) === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.strokeStyle =  \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  ctx.fillStyle = \"rgba(\"+fill_color+\",\"+fill_opacity+\")\";\
  ctx.beginPath();\
@@ -7845,7 +7850,7 @@ var draw_curve = function(canvas_type,type,x_points,y_points,line_width,stroke_c
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.beginPath();ctx.lineWidth = line_width;\
- if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof(zoom_x_increment) === 'undefined'){ctx.translate(0.5,0.5)};\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
  ctx.strokeStyle = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  ctx.moveTo(x2px(x_points[0]),y2px(y_points[0]));\
@@ -8090,7 +8095,7 @@ var draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_
   ctx.fill();\
   ctx.restore();\
  }else{xmarge = 0;ymarge = 0;};\
- if( typeof xaxislabel !== 'undefined' ){\
+ if( typeof(xaxislabel) !== 'undefined' ){\
   ctx.save();\
   ctx.font = \"italic \"+font_size+\"px Ariel\";\
   ctx.fillStyle = \"rgba(\"+font_color+\",\"+major_opacity+\")\";\
@@ -8098,7 +8103,7 @@ var draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_
   ctx.fillText(xaxislabel,xsize - 1.5*corr,ysize - 2*font_size);\
   ctx.restore();\
  };\
- if( typeof yaxislabel !== 'undefined' ){\
+ if( typeof(yaxislabel) !== 'undefined' ){\
   ctx.save();\
   ctx.font = \"italic \"+font_size+\"px Ariel\";\
   ctx.fillStyle = \"rgba(\"+font_color+\",\"+major_opacity+\")\";\
@@ -8191,7 +8196,7 @@ var draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_
   ctx.fill();\
   ctx.restore();\
  }else{xmarge = 0;ymarge = 0;};\
- if( typeof xaxislabel !== 'undefined' ){\
+ if( typeof(xaxislabel) !== 'undefined' ){\
   ctx.save();\
   ctx.font = \"italic \"+font_size+\"px Ariel\";\
   ctx.fillStyle = \"rgba(\"+font_color+\",\"+major_opacity+\")\";\
@@ -8199,7 +8204,7 @@ var draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_
   ctx.fillText(xaxislabel,xsize - 1.5*corr,ysize - 2*font_size);\
   ctx.restore();\
  };\
- if( typeof yaxislabel !== 'undefined' ){\
+ if( typeof(yaxislabel) !== 'undefined' ){\
   ctx.save();\
   ctx.font = \"italic \"+font_size+\"px Ariel\";\
   ctx.fillStyle = \"rgba(\"+font_color+\",\"+major_opacity+\")\";\
@@ -8292,7 +8297,7 @@ var draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_
   ctx.fill();\
   ctx.restore();\
  }else{xmarge = 0;ymarge = 0;};\
- if( typeof xaxislabel !== 'undefined' ){\
+ if( typeof(xaxislabel) !== 'undefined' ){\
   ctx.save();\
   ctx.font = \"italic \"+font_size+\"px Ariel\";\
   ctx.fillStyle = \"rgba(\"+font_color+\",\"+major_opacity+\")\";\
@@ -8300,7 +8305,7 @@ var draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_
   ctx.fillText(xaxislabel,xsize - 1.5*corr,ysize - 2*font_size);\
   ctx.restore();\
  };\
- if( typeof yaxislabel !== 'undefined' ){\
+ if( typeof(yaxislabel) !== 'undefined' ){\
   ctx.save();\
   ctx.font = \"italic \"+font_size+\"px Ariel\";\
   ctx.fillStyle = \"rgba(\"+font_color+\",\"+major_opacity+\")\";\
