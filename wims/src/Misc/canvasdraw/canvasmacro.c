@@ -3434,40 +3434,38 @@ function user_redraw(t){\
 
 void add_jsplot(FILE *js_include_file,int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin jsplot() -->\n\
-var jsplot = function(canvas_type,funs,linewidth,color,opacity,use_dashed,dashtype0,dashtype1){\n\
- var obj = create_canvas%d(canvas_type,xsize,ysize);\n\
- var ctx = obj.getContext(\"2d\");\n\
- ctx.clearRect(0,0,xsize,ysize);\n\
- var len = funs.length;\n\
- function eval_jsmath(x,func){return parseFloat(eval(func));};\n\
- if( typeof(multilinewidth) != 'undefined' && multilinewidth != null ){ linewidth = multilinewidth;};\n\
- if( typeof(multistrokecolors) != 'undefined' && multistrokecolors != null){ color = multistrokecolors;};\n\
- if( typeof(multistrokeopacity) != 'undefined' && multistrokeopacity != null ){ opacity = multistrokeopacity;};\n\
- if( typeof(multidash) != 'undefined' && multidash != null ){use_dashed = multidash;};\n\
- for(var i = 0 ; i < len; i++){\n\
-  var fun = to_js_math(funs[i]);\n\
-  if(fun == null){alert(\"Syntax Error...\\nAttention : try use very precise notation !\\nlike :\\n6*(0.25)^(1.23)\\n1/(sin(5*x))\\n(3*x+4)/(x^(2*pi)) \");return;};\n\
-  try{ parseFloat( eval_jsmath( px2x(0),fun ) );}catch(e){alert(\"\\nSyntax Error...\\nAttention : try use very precise notation !\\nlike :\\n6*(0.25)^(1.23)\\n1/(sin(5*x))\\n(3*x+4)/(x^(2*pi))\");return;};\n\
-  ctx.lineWidth = linewidth[i];\n\
-  ctx.strokeStyle=\"rgba(\"+color[i]+\",\"+opacity[i]+\")\";\n\
-  if(use_dashed[i] == \"1\"){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash =[dashtype0,dashtype1];}};\n\
-  ctx.save();\
-  var y1;var x1;var y2;var x2;\n\
-  ctx.beginPath();\n\
-  for(var p = 0 ; p<xsize;p++){\n\
-   x1 = px2x(p);\n\
-   y1 = y2px(parseFloat(eval_jsmath(x1,fun)));\n\
-   x2 = px2x(p+1);\n\
-   y2 = y2px(parseFloat(eval_jsmath(x2,fun)));\n\
+var jsplot = function(canvas_type,funs,linewidth,color,opacity,use_dashed,dashtype0,dashtype1){\
+ var obj = create_canvas%d(canvas_type,xsize,ysize);\
+ var ctx = obj.getContext(\"2d\");\
+ ctx.clearRect(0,0,xsize,ysize);\
+ var len = funs.length;\
+ function eval_jsmath(x,func){return parseFloat(eval(func));};\
+ if( typeof(multilinewidth) !== 'undefined' && multilinewidth != null ){ linewidth = multilinewidth;};\
+ if( typeof(multistrokecolors) !== 'undefined' && multistrokecolors != null){ color = multistrokecolors;};\
+ if( typeof(multistrokeopacity) !== 'undefined' && multistrokeopacity != null ){ opacity = multistrokeopacity;};\
+ if( typeof(multidash) !== 'undefined' && multidash != null ){use_dashed = multidash;};\
+ for(var i = 0 ; i < len; i++){\
+  var fun = to_js_math(funs[i]);\
+  if(fun == null){alert(\"Syntax Error...\\nAttention : try use very precise notation !\\nlike :\\n6*(0.25)^(1.23)\\n1/(sin(5*x))\\n(3*x+4)/(x^(2*pi)) \");return;};\
+  try{ parseFloat( eval_jsmath( px2x(0),fun ) );}catch(e){alert(\"\\nSyntax Error...\\nAttention : try use very precise notation !\\nlike :\\n6*(0.25)^(1.23)\\n1/(sin(5*x))\\n(3*x+4)/(x^(2*pi))\");return;};\
+  ctx.lineWidth = linewidth[i];\
+  ctx.strokeStyle=\"rgba(\"+color[i]+\",\"+opacity[i]+\")\";\
+  if(use_dashed[i] == \"1\"){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash =[dashtype0,dashtype1];}};\
+  var y1;var x1;var y2;var x2;\
+  ctx.beginPath();\
+  for(var p = 0 ; p<xsize;p++){\
+   x1 = px2x(p);\
+   y1 = y2px(parseFloat(eval_jsmath(x1,fun)));\
+   x2 = px2x(p+1);\
+   y2 = y2px(parseFloat(eval_jsmath(x2,fun)));\
    if(Math.abs(y2-y1) < ysize ){\
-    ctx.moveTo(p,y1);\n\
-    ctx.lineTo(p+1,y2);\n\
-   };\n\
-  };\n\
-  ctx.closePath();\n\
-  ctx.stroke();\n\
-  ctx.restore();\
- };\n\
+    ctx.moveTo(p,y1);\
+    ctx.lineTo(p+1,y2);\
+   };\
+  };\
+  ctx.closePath();\
+  ctx.stroke();\
+ };\
 };",canvas_root_id);
 }
 
