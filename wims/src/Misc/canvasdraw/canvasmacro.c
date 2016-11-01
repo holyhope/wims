@@ -2725,7 +2725,7 @@ function add_slider_%d(){\
  var slider_width = %d;\
  var slider_height = %d;\
  var slider_center = %d;\
- var slider_radius = 4*slider_linewidth;\
+ var slider_radius = 2*slider_linewidth;\
  var slider_opacity = %f;\
  slider_canvas.width = slider_width;\
  slider_canvas.height = slider_height;\
@@ -2744,13 +2744,12 @@ function add_slider_%d(){\
  slider_ctx.stroke();\
  slider_canvas.addEventListener(\"mousemove\",slider_%d,false);\
  slider_canvas.addEventListener(\"touchmove\", function(e){ e.preventDefault();slider_%d(e.changedTouches[0]);},false);\
-alert('OK');\
 function slider_%d(evt){\
  var value_1 = %f;\
  var value_2 = %f;\
+ var canvas_rect = (slider_canvas).getBoundingClientRect();\
  slider_ctx.clearRect(0,0,slider_width,slider_height);\
- var mouse = dragstuff.getMouse(evt,slider_canvas);\
- var x_px = mouse.x;\
+ var x_px = evt.clientX - canvas_rect.left;\
  var x;var y;\
  if( slider_type == 1 ){\
   x = x_px*(value_2 - value_1)/slider_width + value_1;\
@@ -2824,14 +2823,16 @@ function add_slider_%d(){\
  slider_canvas.addEventListener(\"mousedown\",sliderclick_%d,false);\
  slider_canvas.addEventListener(\"touchmove\",function(e){ e.preventDefault();sliderdrag_%d(e.changedTouches[0]);},false);\
  slider_canvas.addEventListener(\"touchstart\", function(e){ e.preventDefault();sliderclick_%d(e.changedTouches[0]);},false);\
+ var canvas_rect = (slider_canvas).getBoundingClientRect();\
 function sliderdrag_%d(evt){\
  if(slider_click == 1){\
   var value_1 = %f;\
   var value_2 = %f;\
-  var mouse = dragstuff.getMouse(evt,slider_canvas);\
+  var canvas_rect = (slider_canvas).getBoundingClientRect();\
   slider_ctx.clearRect(0,0,slider_width,slider_height);\
-  var x_px = mouse.x;\
-  var y_px = mouse.y;\
+  var x_px = evt.clientX - canvas_rect.left;\
+  var y_px = evt.clientY - canvas_rect.top;\
+  slider_ctx.clearRect(0,0,slider_width,slider_height);\
   var x = x_px*(value_2 - value_1)/slider_width + value_1;\
   var y = y_px*(value_2 - value_1)/slider_height + value_1;\
   x = parseFloat(eval(slider_function%d.x));\
