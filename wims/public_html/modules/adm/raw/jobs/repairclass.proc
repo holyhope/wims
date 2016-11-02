@@ -1,0 +1,148 @@
+!!RepairClass
+!! permet de detecter et corriger d'eventuels probleme dans la classe
+
+!read scripts/check.class
+!if $error!=$empty
+  !exit
+!endif
+
+# Ther is only 2 options : "checkonly" and "checkandrepair"
+!if $option notsametext checkandrepair
+  option=checkonly
+  action=must be corrected
+!else
+  action=corrected
+!endif
+
+backup_file = $wims_home/backup/$qclass-$wims_now.tgz
+
+log = !sh cd $wims_home/log/classes\
+  tar -czf $backup_file $qclass
+
+## attention : ceci ne marchera surement pas si repairclass est appelé
+#     directement sur une sous-classe !
+userfiles=!sh cd $wims_home/log/classes/$qclass/.users; ls | sort
+userfiles=!singlespace $userfiles
+userfiles=!words2items $userfiles
+userfiles_cnt=!itemcnt $userfiles
+
+# On commence par vérifier que le userlist est cohérent avec le dossier .users
+userlist_cnt_before=!recordcnt wimshome/log/classes/$qclass/.userlist
+!if $userfiles_cnt!=$userlist_cnt_before
+  # Si le nombre d'utilisateurs ne coincide pas, on réindexe les utilisateurs.
+  !read adm/class/mkuserlist $qclass
+  userlist_cnt_after=!recordcnt wimshome/log/classes/$c/.userlist
+
+  !if $userfiles_cnt!=$userlist_cnt_after
+    error = malgré la reindexation, l'index des utilisateurs de la classe $qclass est incohérent. \
+     Vérifiez manuellement. ($userfiles_cnt != $userlist_cnt_after)
+  !else
+    difference = $[$userlist_cnt_after-$userlist_cnt_before]
+    !if $difference>0
+      difference=+$difference
+    !endif
+    mess_list = L'index des utilisateurs était incorrect dans la classe $qclass mais il a bien été corrigé. ($difference utilisateurs)
+  !endif
+  !exit
+!endif
+
+
+!readdef $classdeffile
+#Cas du groupement de classes
+!if $class_type==2
+
+  # Remove temp files
+  !sh cd $wims_home/log/classes/$qclass\
+      rm *.tmp
+
+  # On construit la liste des sous-classes
+  subclasses_cnt=!recordcnt wimshome/log/classes/$qclass/.subclasses
+  !for id=1 to $subclasses_cnt
+    subclass=!record $id of wimshome/log/classes/$qclass/.subclasses
+    subclass=!item 1 of $subclass
+    subclass_list=!append item $subclass to $subclass_list
+  !next id
+
+  # TODO : ici il faudrait vérifier que toutes les subclass_list existent,
+  #    et qu'il n'en manque pas !
+
+  # On parcourt ensuite la liste de tous les utilisateurs
+  #   pour recréer les .userlist de chaque sous-classe
+  userdir=wimshome/log/classes/$qclass/.users
+  deleted_users=0
+  corrected_users=0
+  !reset sub_list_participate
+
+  !for u in $userfiles
+    !reset user_firstname, user_lastname, user_supervisable,\
+      user_class, user_participate, user_exists, user_external_auth
+    !readdef $userdir/$u
+    userline=:$user_lastname,$user_firstname,$u
+    !reset new_participate
+    !for participate in $user_participate
+      !if $participate isitemof $subclass_list
+        particip_file=!replace internal / by _ in $participate
+        !if $participate notitemof $sub_list_participate
+          sub_list_participate = !append item $participate to $sub_list_participate
+        !endif
+        !appendfile wimshome/log/classes/$qclass/$particip_file.tmp $userline
+        new_participate=!append item $participate to $new_participate
+      !endif
+    !next participate
+    !if $new_participate=$empty
+      # L'utilisateur ne participe a aucune sous-classe : on le met a la corbeille.
+      !if $option notsametext checkonly
+        !sh cd $wims_home/log/classes/$qclass/.users\
+            mv $u ../trash_OB/$u
+      !endif
+      !increase deleted_users
+    !else
+      !if $new_participate notsametext $user_participate
+        # L'utilisateur participait a au moins une sous-classe qui n'existe plus.
+        # on met a jour sa liste de classes
+        !if $option notsametext checkonly
+          !setdef !set user_participate=$new_participate in $userdir/$u
+        !endif
+        !increase corrected_users
+      !endif
+    !endif
+  !next u
+  !if $deleted_users>0
+    mess_list = !append item $deleted_users users are no more participating in any class to $mess_list
+  !endif
+  !if $corrected_users>0
+    mess_list = !append item $corrected_users users are participating in deleted classes to $mess_list
+  !endif
+
+  # On parcourt maintenant l'ensemble des userlist temporaires
+  #   pour les comparer avec les userlist existants dans les sous-classes
+  !for subclass in $sub_list_participate
+    old_cnt = !recordcnt wimshome/log/classes/$subclass/.userlist
+    temp_file=!replace internal / by _ in $subclass
+    new_cnt = !recordcnt wimshome/log/classes/$qclass/$temp_file.tmp
+
+    !if $old_cnt != $new_cnt
+      difference = $[$new_cnt-$old_cnt]
+      !if $difference>0
+       difference=+$difference
+      !endif
+      mess_list = !append item $subclass : userlist $action. (before=$old_cnt | after=$new_cnt | $difference users) to $mess_list
+      !sh cd $wims_home/log/classes/$qclass\
+          sort -f ./$temp_file.tmp >./$temp_file-sorted.tmp 2>/dev/null
+      !if $option notsametext checkonly
+        !sh cd $wims_home/log/classes/$qclass\
+            sort -f ./$temp_file.tmp >./$temp_file-sorted.tmp 2>/dev/null
+            mv ./$temp_file-sorted.tmp ../$subclass/.userlist
+      !endif
+    !endif
+  !next subclass
+  corrected_subclasses = !itemcnt $mess_list
+
+  # Remove temp files
+  !sh cd $wims_home/log/classes/$qclass\
+      rm *.tmp
+!endif
+
+
+!!read adm/class/stat
+

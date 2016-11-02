@@ -15,7 +15,6 @@ type=sheets
 !endif
 
 data1=!nonempty lines $data1
-data1=!singlespace $data1
 
 n=!linecnt $data1
 nbdefs=0
@@ -29,28 +28,30 @@ exocnt=!recordcnt $listexos
   l=!line $i of $data1
   l=!translate = to $\
 $ in $l
-  !distribute lines $l into n_,v_
-  n_=!word 1 of $n_
-  v_=!trim $v_
+  !distribute lines $l into name_,value_
+  name_=!word 1 of $name_
+  !! remove leading, ending and multiples spaces
+  value_=!trim $value_
+  value_=!singlespace $value_
+
   nbtot=!itemcnt $sheetdefs
 
   !for numfield=1 to $nbtot
-
     defcur=!item $numfield of $sheetdefs
-    !if $n_ = $defcur
-      !if $defcur = status
+    !if $name_ = $defcur
+      !if $defcur issametext status
         ####################
         # il faudrait verifier qu'il n'y a aucune note sur cette feuille avant de la repasser en preparation. si c'est le cas, il faut basculer les notes en question du dossier /score vers /noscore avec les options "deact noscore" en plus.
         ###################
 
-        #le statut d'une feuille est forcement >=0 et <4
-   	    !if $v_<0 or $v_>4
-   	      error=bad status
+        # Le statut d'une feuille est forcement >=0 et <4
+   	    !ifval $value_<0 or $value_>=4
+   	      error=bad status ($value_)
    	      !exit
         !endif
 
         #attention : avant de definir le statut a 0, il faut verifier qu'aucun examen ne fait appel a cette feuille
-        !if $v_=0
+        !ifval $value_=0
         #cas ou on desactive une feuille
           !for x=1 to $examcnt
             qexam=$x
@@ -75,7 +76,7 @@ $ in $l
       !endif
       !advance nbdefs
       update_field=$numfield
-      update_content=$v_
+      update_content=$value_
       !read scripts/update.proc
     !endif
   !next numfield

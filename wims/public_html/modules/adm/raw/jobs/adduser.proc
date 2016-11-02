@@ -16,7 +16,6 @@ l=!charcnt $quser
  !exit
 !endif
 
-
 class_superclass=!defof class_superclass in $classdeffile
 
 #on ajoute pas un utilisateur dans une sous-classe. toujours dans sa superclasse.
@@ -85,6 +84,7 @@ $ in $l
  rm -f score/$quser score/$quser.exam noscore/$quser >/dev/null
 
 !read adm/class/mkuserlist $qclass
+
 !! log student have been added to class (cfr. module/adm/class/reguser/var.proc)
 date=!translate : to . in $wims_now
 !appendfile wimshome/log/classes/$qclass/.log $date $httpd_REMOTE_ADDR      User $quser added
@@ -97,4 +97,5 @@ class_type=!defof class_type in $classdeffile
 !! need also to read mkteacherlist as you might want to add users wish user_supervisable=yes
   !read adm/gateway/mkteacherlist $qclass
 !endif
+
 !read adm/class/stat

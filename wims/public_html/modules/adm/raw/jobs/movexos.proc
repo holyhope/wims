@@ -16,7 +16,7 @@ qclass=$data1
 !endif
 
 !readdef $classdeffile
-  
+
 !if $class_type>0
   # on n'ajoute un exercice que si la destination est une simple classe
   error=class $qclass is a superclass
@@ -41,10 +41,10 @@ log=!sh $tool $src_class_dir/src/*.oef $wims_class_dir/src/
 !if $tool!=cp
 	!sh rm $src_class_dir/Exindex
 	!sh rm $src_class_dir/Extitles
-	
+
 	compil_src = !sh cd $src_class_dir;. $wims_home/public_html/scripts/oef/mkindex
 	compil_src = !lines2items $compil_src
-	
+
 	result_compil=!item 2 of $compil_src
 	!if ERROR isin $result_compil
 	  error = Compilation dans la classe Source : $result_compil
@@ -64,6 +64,3 @@ result_compil=!item 2 of $compil_dest
   error = COMPILATION $result_compil
   # faut-il detecter/supprimer l'exercice defectueux dans ce cas ?
 !endif
-
-
-

@@ -2,11 +2,52 @@
 
 !goto $job
 
-:deluser
+
 :recuser
 :search
 !shortout "message":"job done. TODO : more explicit messages here..."
 
+!goto footer
+
+:repairclass
+!shortout "qclass":"$qclass",\
+  "action,":"$option",
+!if $deleted_users!=$empty
+  !shortout "delete_users":$deleted_users,\
+    "correct_users":$corrected_users,\
+    "correct_subclasses":$corrected_subclasses,
+
+  !if $[$deleted_users + $corrected_users]=0
+    message=job done. Nothing to repair. Congratulations !
+  !else
+    message=Some users modified. You're class is now fixed !
+  !endif
+!endif
+
+!if $mess_list!=$empty
+  !if $option issametext checkonly
+    message=Some corrections must be made. See mess_list for details, and use option 'checkandrepair' to auto repair.
+  !else
+    message=Some corrections made. See mess_list for details.
+  !endif
+  mess_list=!replace internal , by "," in $mess_list
+  !shortout "mess_list":["$mess_list"],
+!endif
+
+!shortout  "message":"$message"
+
+!goto footer
+
+:deluser
+
+!shortout "qclass":"$qclass",\
+"quser":"$quser",
+
+!if del_from_trash != $option
+  !shortout "message":"User $quser moved to trash."
+!else
+  !shortout "message":"User $quser permanently deleted from trash."
+!endif
 !goto footer
 
 :moduser
@@ -95,7 +136,8 @@ list=!replace internal  ,  by "," in $list
 
 !shortout "server_version":"$wims_version",\
 "compilation_date":"$wims_version_date",\
-"wims_session":"$wims_session"
+"wims_session":"$wims_session",\
+"format":"$format"
 
 !if $ident != $empty
  !shortout ,\
@@ -113,7 +155,7 @@ list=!replace internal  ,  by "," in $list
  exo_points=!line 3 of $exo
  exo_weight=!line 4 of $exo
  exo_title=!line 5 of $exo
- exo_title=!replace internal "  by \" in in $exo_title
+ exo_title=!replace internal "  by \" in $exo_title
  exo_description=!line 6 of $exo
 
  exo_defs={"module":"$exo_module","title":"$exo_title","params":"$exo_params","points":"$exo_points","weight":"$exo_weight","description":"$exo_description"}
@@ -537,7 +579,10 @@ $ by ],[ in $($v)
 
 :getsession
 
-!shortout "wims_session":"$wims_session"
+!shortout "session_id":"$wims_session",\
+"query_module":"$q_module",\
+"log":["$log","$log2"],\
+"r_":"$r_"
 
 !goto footer
 
@@ -609,7 +654,7 @@ list_cnt=!itemcnt $listclasses
 	!shortout },\
 
    !endif
-   
+
 !next i
 !shortout }]\
 
@@ -754,12 +799,15 @@ title=!item $pos of $name_wims_listlevel
 :modsheet
 !shortout "query_class":"$qclass",\
 "querysheet":"$qsheet",\
-"message":"Modifications Done on sheet $qsheet."
+"changes_requested":$n,\
+"changes_done":$nbdefs,\
+"message":"$nbdefs modifications done on sheet $qsheet."
 !goto footer
 
 :putexo
  !shortout "message":"exercice correctly added in sheet #$wims_sheet",\
 "query_class":"$wims_class",\
+"exo_module":"$sh_module",\
 "querysheet":"$wims_sheet",\
 "exo_count":$exocnt
 

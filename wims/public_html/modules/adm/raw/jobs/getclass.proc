@@ -16,11 +16,17 @@ class_userlist=!singlespace $userlist
 class_usercount=!wordcnt $class_userlist
 class_userlist= !words2items $class_userlist
 
+userindex_cnt=!recordcnt wimshome/log/classes/$qclass/.userlist
+
+!if $class_usercount != $userindex_cnt
+  !read adm/class/mkuserlist $qclass
+!endif
+
 ##course list,  program list
 !if $class_type>=2
   super_defs=programs,classes,icourses,levels,courses
   supp=$supp,$super_defs
-  
+
   !for typ in $super_defs
    class_$typ=!record 0 of wimshome/log/classes/$qclass/$typ
    class_$typ=!lines2rows $(class_$typ)
@@ -39,7 +45,7 @@ class_sheetcount=!recordcnt wimshome/log/classes/$qclass/sheets/.sheets
 class_examcount=!recordcnt wimshome/log/classes/$qclass/exams/.exams
 
 
-# homepage = parametre obsolete  ?  
+# homepage = parametre obsolete  ?
 supp=$supp, userlist, usercount, examcount, sheetcount
 
 
