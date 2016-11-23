@@ -1,0 +1,14 @@
+# CHECK WORKSHEET script :
+# test if a sheet has already been used (if there are scores for it)
+# Input :
+#   $wims_class
+#   $sheet
+# Output :
+#  if $worktest isn't empty, there are scores associated to the sheet.
+# worksheet = Liste de comptes ayant déjà travaillé sur cette feuille
+
+worktest=!sh cd $wims_home/log/classes/$wims_class\
+   list=`ls score | grep -v '\.exam$$'`\
+   if [ ! -e "$$list" ]; then\
+    cd score; awk 'length($$1)==17 && $$3==$sheet {print FILENAME; nextfile}' $$list\
+   fi
