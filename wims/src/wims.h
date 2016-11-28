@@ -475,7 +475,7 @@ extern char tmplbuf[MAX_LINELEN+1]; /* for temporary uses not thru subroutines. 
 extern char cwdbuf[MAX_FNAME+1]; /* store current working directory */
 extern char ins_alt[MAX_LINELEN+1]; /* dynamic insertion alternative text */
 extern char *bin_dir; /* directory containing executable scripts and programs. */
-extern char *tmp_debug;
+extern char *tmp_debug, *tmp_debug_var;
 extern char *instex_style;
 extern char session_prefix[MAX_FNAME+1], s2_prefix[MAX_FNAME+1], module_prefix[MAX_FNAME+1];
 extern char multiexec_random[64];
@@ -488,6 +488,7 @@ extern char job_identifier[32];
 extern int print_precision, substnest, getvar_len;
 extern char pre_language[4];
 extern FILE * trace_file;
+extern int trace_indent;
 enum {
     ro_cmd, ro_empty, ro_lang, ro_module, ro_session, ro_special_parm,
       ro_special_parm2, ro_special_parm3, ro_special_parm4, ro_useropts, ro_wsession, ro_subsession, ro_win, ro_worksheet

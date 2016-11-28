@@ -310,6 +310,9 @@ int setvar(char *vname, char *vvalue)
          else backslash_insmath=0;
      }
     }
+    if (trace_file && wordchr(tmp_debug_var,vname)) {
+         fprintf(trace_file,"\n%s='%s'\n",vname,vvalue);
+    }
     return 0;
 }
 

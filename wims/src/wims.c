@@ -175,6 +175,7 @@ char *bin_dir="bin"; /* directory containing executable scripts and programs. */
 char cwdbuf[MAX_FNAME+1]; /* store current working directory */
 char var_hacking=0; /* Trying to hack a variable? */
 char *tmp_debug="no";
+char *tmp_debug_var="";
 char ins_alt[MAX_LINELEN+1]; /* dynamic insertion alternative text */
 char *devel_modules="close"; /* whether to open devel modules */
 int isclassmodule=0; /* 1 if the module is class module */
@@ -240,6 +241,7 @@ char available_lang[MAX_LANGUAGES][4]={"en","fr"};
 int available_lang_no=2;
 char pre_language[4]="";
 FILE *trace_file;
+int trace_indent=0;
 char *protocol="http"; /* http or https */
 
 /* check for coordinate input. This will mean that
@@ -1235,7 +1237,7 @@ int main(int argc, char *argv[], char *envp[])
     access_check(0);
 /* this gives some bug on some servers... so desactivated
   it is really for developing in wims, so no use in general */
-   if (1==0) {
+   if (1==1) {
     if(strstr(tmp_debug,"yes")!=NULL && checkhost(manager_site)>=1)
        trace_file = fopen(mkfname(NULL,"%s/%s",tmp_dir,"trace.txt"),"a");
    }

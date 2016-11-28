@@ -23,7 +23,7 @@ char *relation_type[]={
 };
 #define total_relations (sizeof(relation_type)/sizeof(relation_type[0]))
 
-/* Compares two string. Returns 1 if yes, 0 if no, -1 if error.
+/* Compares two strings. Returns 1 if yes, 0 if no, -1 if error.
  * In fact, -1 will occur only if module_error() is modified to
  * return instead of abort.
  */

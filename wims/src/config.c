@@ -284,6 +284,7 @@ CONFIG_DATA main_config[]={
       {"threshold1",		1, &threshold1},
       {"threshold2",		1, &threshold2},
       {"tmp_debug",		0, &tmp_debug},
+      {"tmp_debug_var",	0, &tmp_debug_var},
       {"trusted_modules",	0, &trusted_modules},
       {"usecookie",		0, &usecookie},
       {"user_limit",		1, &user_limit},

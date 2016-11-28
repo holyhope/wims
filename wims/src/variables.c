@@ -822,6 +822,21 @@ void set_vars_from_session(void)
     close_working_file(&m_file,0);
 }
 
+void start_tracefile(void)
+{
+  int i;
+  putc('\n',trace_file);
+  for(i=1; i<=2*trace_indent; i++) putc(' ',trace_file);
+  fprintf(trace_file,"%s:",m_file.filepath);
+  fflush(trace_file);
+  trace_indent++;
+}
+
+void stop_tracefile(void)
+{
+  trace_indent--;
+}
+
 /* Initialize environment variables according to module's
  * variable init or calculation file.
  * init is only used when cmd=new or renew.
@@ -833,9 +848,10 @@ void var_proc(char *fname,int cache)
 
     if(fname!=NULL && read_module_file(fname)) return;
     if(untrust&6) get_var_privileges();
-    if (trace_file) {fprintf(trace_file,"\n%s:",m_file.filepath); fflush(trace_file);}
+    if (trace_file) start_tracefile();
     while(m_file.linepointer<m_file.linecnt) {
-     if (trace_file) {fprintf(trace_file," %d",m_file.linepointer+1); fflush(trace_file); }
+     if (trace_file) {fprintf(trace_file," %d",m_file.linepointer+1);
+       fflush(trace_file); }
      t=m_file.lines[m_file.linepointer].isstart;
      if((t&~2)!=1 || m_file.lines[m_file.linepointer].llen==0) {
          m_file.linepointer++; continue;
@@ -845,8 +861,8 @@ void var_proc(char *fname,int cache)
      if((t&2)!=0) exec_main(p+1);
      else exec_set(p);
     }
-     if (trace_file) fprintf(trace_file,"\n");
-     close_working_file(&m_file,cache);
+    if (trace_file) stop_tracefile();
+    close_working_file(&m_file,cache);
 }
 
 /* Deposit the content of wims_deposit into a file */
@@ -1126,7 +1142,7 @@ void phtml_put(char *fname,int cache)
      /* File not found; we give empty output, but no error message. */
     if(fname!=NULL && read_module_file(fname)!=0) return;
     if(untrust&6) get_var_privileges();
-    if (trace_file) { fprintf(trace_file,"\n%s:",m_file.filepath); fflush(trace_file); }
+    if (trace_file) start_tracefile();
     while(m_file.linepointer<m_file.linecnt) {
 	 if (trace_file) { fprintf(trace_file," %d",m_file.linepointer+1);
 	                   fflush(trace_file); }
@@ -1136,7 +1152,7 @@ void phtml_put(char *fname,int cache)
      if((t&2)!=0) {exec_main(tbuf+1); continue;}
      substit(tbuf); output0(tbuf); _output_("\n");
     }
-	if (trace_file) { fprintf(trace_file,"\n");fflush(trace_file); }
+    if (trace_file) stop_tracefile();
     close_working_file(&m_file,cache);
 }
 
