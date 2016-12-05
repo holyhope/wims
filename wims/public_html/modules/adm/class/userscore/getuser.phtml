@@ -34,7 +34,7 @@ $wims_name_email: <a href="mailto:$user_email">$user_email</a>
  $name_activesession:
  !href cmd=reply&job=userexam&getuser=$getuser $esession
 !!!else
-!! ----- transfere dans usermanage (il s'agit d'un lien de transfert de score pour déplacer des élèves d'une classe à l'autre (dans un portail ou un groupement)
+!! ----- transfere dans usermanage (il s'agit d'un lien de transfert de score pour deplacer des eleves d'une classe a l'autre (dans un portail ou un groupement)
 !! !if $wims_user=supervisor and $wims_supertype iswordof 2 4
 !!  !readproc adm/gateway/transfer $getuser test
 !!  !if $transfer_test>0
@@ -182,10 +182,7 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
   !if $wims_user=supervisor
     !set nb_indic=5
   !else
-    !if $q!=1
-      !set nb_indic=3
-    !else
-      !set nb_indic=2
+    !set nb_indic=3
     !endif
   !endif
 
@@ -198,7 +195,7 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
    !for sev=0 to 2
      !set ff_$n_=!mathsubst I$sev=$(x$(sev)_) in $(ff_$n_)
    !next
-   !set p_=$[ceil(10*$scoremax*$(ff_$n_))/10]
+   !set p_=$[rint(100*$scoremax*$(ff_$n_))/100]
   !endif
  $table_header$table_hdtr<th colspan="$[$nb_indic+5]" style="text-align:left">
  !if $p2!=$empty
@@ -244,10 +241,8 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
  $table_hdtr
      <th>$(wims_name_thsheet[1])</th><th>$(wims_name_thsheet[2])</th>
      <th>$(wims_name_thsheet[3])</th><th>$(wims_name_thsheet[4])</th>
-     !if $wims_user=supervisor or $q!=1
 !!qualite
       <th>$(wims_name_thsheet[7])</th>
-     !endif
     !if $wims_user=supervisor or $sw=0
 !!I0: percentage work (related to cumul)
     <th>$(wims_name_thsheet[5])</th>
@@ -276,23 +271,20 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
    !set makelist=!makelist <td>--</td> for j=1 to $nb_indic
    !replace , by in $makelist
   !else
-   !if $wims_user=supervisor or $q!=1
-  !!quality
+!!!quality in exercise will always appear.
     !set d_=!getscorequality user=$getuser sheet=$n_ work=$j
     !default d_=0
     !read adm/class/colors $[ceil($d_)]
      <td style=$style_note>$d_</td>
-   !endif
+   !!endif
 !!cumul
     !if $wims_user=supervisor or $sw=0
      !set d_=!getscore user=$getuser sheet=$n_ work=$j
      !default d_=0
-!!   !read adm/class/colors $[ceil(10*$d_/$(req_))]
-!!   <td style=$style_note>$d_</td>
 !!percentage
     !if $(req_)>0
      !read adm/class/colors $[ceil(10*$d_/$(req_))]
-     <td style=$style_note>$[round(100*$d_/$(req_))]%</td>
+     <td style=$style_note>$[ceil(100*$d_/$(req_))]%</td>
     !else
      <td>--</td>
     !endif
@@ -301,7 +293,7 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
 !!best percentage
    !set best=!getscorebest user=$getuser sheet=$n_ work=$j
    !read adm/class/colors $[ceil(10*$best/$req_)]
-   <td style=$style_note>$[round($[$best*100/$req_])]%</td>
+   <td style=$style_note>$[ceil($[$best*100/$req_])]%</td>
    !endif
    !if $wims_user=supervisor or $sw=2
 !!level
@@ -312,8 +304,7 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
 !!last
    !set last=!getscorelast user=$getuser sheet=$n_ work=$j
    !read adm/class/colors $[ceil($last)]
-   <td style=$style_note>$last
-   </td>
+   <td style=$style_note>$last</td>
 
 !endif try
 !!try

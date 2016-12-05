@@ -118,7 +118,7 @@ $module_title
    !set wims_homeref_last=!getscorelast sheet=$wims_sheet work=$wims_exo
    !reset wims_name_score
   !if $(wims_severity[2])!=1 or $(wims_severity[2])=$empty
-     !set wims_name_score=$(wims_name_thsheet[7]): $[ceil(10*$[$wims_homeref_mean])/10]/10
+     !set wims_name_score=$(wims_name_thsheet[7]): $[ceil(100*$[$wims_homeref_mean])/100]/10
    !endif
    !if $(wims_severity[3])=2
      !set wims_homeref_level=!getscorelevel sheet=$wims_sheet work=$wims_exo
@@ -127,7 +127,7 @@ $module_title
    !else
      !if $(wims_severity[3])=1
        !set wims_homeref_best=!getscorebest sheet=$wims_sheet work=$wims_exo
-       !set wims_name_score=$wims_name_score<br />$(wims_name_thsheet[10]): $[round(100*$wims_homeref_best/$wims_homeref_req)] %
+       !set wims_name_score=$wims_name_score<br />$(wims_name_thsheet[10]): $[ceil(100*$wims_homeref_best/$wims_homeref_req)] %
        !!I2
      !else
        !set wims_homeref_got=!getscore sheet=$wims_sheet work=$wims_exo
