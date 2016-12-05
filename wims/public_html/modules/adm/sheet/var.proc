@@ -18,7 +18,14 @@ authscoresuspend=!defof class_authscoresuspend in wimshome/log/classes/$wims_cla
 !setdef wims_authscoresuspend=$authscoresuspend in wimshome/sessions/$wims_session/var.stat
 !set severity=!record 0 of wimshome/log/classes/$wims_class/sheets/.severity
 !set severity=!line $sh+1 of $severity
-!set severity=!words2items $severity
+!distribute words $severity into severity_w,severity_s,severity_ss
+!set tmp=!defof DF_SEVERITY in wimshome/public_html/bases/sys/define.conf
+!distribute words $tmp into tmp_w,tmp_s,tmp_ss
+!bound severity_w between 0 and 100000 default $tmp_w
+!bound severity_s between integer 0 and 6 default $tmp_s
+!bound severity_ss between integer 0 and 2 default $tmp_ss
+!reset tmp tmp_w tmp_s tmp_ss
+!set severity=$severity_w,$severity_s,$severity_ss
 !setdef wims_severity=$severity in wimshome/sessions/$wims_session/var.stat
 !if $authscoresuspend=yes
  !if $job=suspend
