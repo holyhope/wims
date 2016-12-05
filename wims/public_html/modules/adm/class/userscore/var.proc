@@ -63,6 +63,8 @@ deluser=!word 1 of $deluser
 !endif
 mean_per=0
 mean_av=0
+!set tmp=!defof DF_SEVERITY in wimshome/public_html/bases/sys/define.conf
+!set tmp=!word 1 of $tmp
 !for i in $showsheet
  !distribute item 0,0,0 into per_$i, av_$i, cnt_$i
 !next i
@@ -86,7 +88,7 @@ sheetcnt=!itemcnt $showsheet
    !distribute lines $s into a,e,t,d
    shw=!line $i+1 of $shweights
    shw=!word 1 of $shw
-   !default shw=1
+   !bound shw between 0 and 100000 default $tmp
    !if $a>0 and ($a<2 or $wims_user=supervisor or $shw>0)
     ec=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
     activesheets=!append line $i,$ec,$t to $activesheets
@@ -114,7 +116,7 @@ sheetcnt=!itemcnt $showsheet
      !distribute lines $s into a,e,t,d
      shw=!line $i+1 of $shweights
      shw=!word 1 of $shw
-     !default shw=1
+     !bound shw between 0 and 100000 default $tmp
      !if $a>0 and ($a<2 or $wims_user=supervisor or $shw>0)
       ec=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
       activesheets=!append line $i,$ec,$[$iii-1],$t to $activesheets
@@ -193,4 +195,4 @@ job=!word 1 of $job
  wims_module_log=$job
  !read var.proc.$job
 !endif
-
+!reset tmp

@@ -21,8 +21,10 @@
   <div class="wims_comment_item">$cos_</div>
 
 !reset seq_item
-<ul class="wims_work_list">
+!set tmp=!defof DF_SEVERITY in wimshome/public_html/bases/sys/define.conf
+!distribute words $tmp into tmp_w,tmp_s,tmp_ss
 
+<ul class="wims_work_list">
 !set dcnt=!itemcnt $obj_
 !for i_=1 to $dcnt
   !distribute word $(obj_[$i_]) into type,num
@@ -62,8 +64,8 @@
       !default scoremax=10
       !set sev_$num=!line $num + 1 of $sevlist
       !distribute word $(sev_$num) into w_$num,s,ss
-      !bound s between integer 0 and 6 default 2
-      !bound ss between integer 0 and 2 default 0
+      !bound s between integer 0 and 6 default $tmp_s
+      !bound ss between integer 0 and 2 default $tmp_ss
       !set f_$num=!item $s+1 of $formula_list
       !set f_$num=!replace internal I by I$ss in $(f_$num)
       !set pe=!line $num of $percents
@@ -170,3 +172,4 @@
 !next i_
 </ul>
 </div>
+!reset tmp  tmp_w tmp_s tmp_ss

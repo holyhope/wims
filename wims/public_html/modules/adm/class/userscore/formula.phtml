@@ -1,4 +1,7 @@
 !set wims_form_method=post
+!set tmp=!defof DF_SEVERITY in wimshome/public_html/bases/sys/define.conf
+!distribute words $tmp into tmp_w,tmp_s,tmp_ss
+
 !read adm/title.phtml 1\
 $classname\
 $name_severitylevels
@@ -15,9 +18,9 @@ $table_hdtr<th scope="col">$(name_formula[1])</th><th scope="col">$wims_name_tit
  !set t_=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
  !set k_=!line $i of $defaultformula
  !distribute word $k_ into w$i,s$i,ss$i
- !default w$i=1
- !default s$i=2
- !default ss$i=1
+ !bound w$i between 0 and 100000 default $tmp_w
+ !bound s$i between integer 0 and 6 default $tmp_s
+ !bound ss$i between integer 0 and 2 default $tmp_ss
  !distribute line $t_ into a_,b_,c_,d_
  !set a_=!char 1 of $a_
  !set S_=!item $a_+1 of $name_sheetstatut
@@ -60,4 +63,4 @@ $table_end
 !formend
 !set wims_menu_items=!append line back2,1,cmd=resume\
 to $wims_menu_items
-!reset formula
+!reset formula tmp tmp_w tmp_s tmp_ss

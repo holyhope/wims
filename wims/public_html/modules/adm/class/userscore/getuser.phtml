@@ -1,3 +1,5 @@
+!set tmp=!defof DF_SEVERITY in wimshome/public_html/bases/sys/define.conf
+ !distribute words $tmp into tmp_w,tmp_s,tmp_ss
 
 !read adm/title.phtml 1\
 $classname\
@@ -32,7 +34,7 @@ $wims_name_email: <a href="mailto:$user_email">$user_email</a>
  $name_activesession:
  !href cmd=reply&job=userexam&getuser=$getuser $esession
 !!!else
-!! ----- transféré dans usermanage (il s'agit d'un lien de transfert de score pour déplacer des élèves d'une classe à l'autre (dans un portail ou un groupement)
+!! ----- transfere dans usermanage (il s'agit d'un lien de transfert de score pour déplacer des élèves d'une classe à l'autre (dans un portail ou un groupement)
 !! !if $wims_user=supervisor and $wims_supertype iswordof 2 4
 !!  !readproc adm/gateway/transfer $getuser test
 !!  !if $transfer_test>0
@@ -164,8 +166,8 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
  !set sw=!line $[$n_+1] of $shweights
  !set q=!word 2 of $sw
  !set sw=!word 3 of $sw
- !default sw=0
- !default q=2
+ !bound sw between integer 0 and 2 default $tmp_ss
+ !bound q between integer 0 and 6 default $tmp_s
  !if $S_<=0
   !goto next
  !endif
@@ -356,3 +358,5 @@ to $wims_menu_items
  !endif
 !endif
  <br class="spacer" />
+
+ !reset tmp tmp_w tmp_s tmp_ss
