@@ -117,7 +117,7 @@ $module_title
    !set wims_homeref_mean=!getscoremean sheet=$wims_sheet work=$wims_exo
    !set wims_homeref_last=!getscorelast sheet=$wims_sheet work=$wims_exo
    !reset wims_name_score
-  !if $(wims_severity[2])!=1 or $(wims_severity[2])=$empty
+   !if $(wims_severity[2])!=1 or $(wims_severity[2])=$empty or $wims_homeref_mean<=2
      !set wims_name_score=$(wims_name_thsheet[7]): $[ceil(100*$[$wims_homeref_mean])/100]/10
    !endif
    !if $(wims_severity[3])=2
