@@ -147,7 +147,8 @@ void sp_draw(char *p, int ptype)
 {
     char *p2;
     p2=strchr(p,'	'); if(p2==NULL) p2=strchr(p,'\n');
-    if(p2==NULL) return; *p2++=0;
+    if(p2==NULL) return;
+    *p2++=0;
     fprintf(outf,"!readproc %s/draw.phtml %s \\\n%s \n\
 %stmp%d=$ins_url\n", primitive_dir, p, p2, setpre,prepcnt);
 }
@@ -156,7 +157,8 @@ void sp_canvasdraw(char *p, int ptype)
 {
     char *p2;
     p2=strchr(p,'	'); if(p2==NULL) p2=strchr(p,'\n');
-    if(p2==NULL) return; *p2++=0;
+    if(p2==NULL) return;
+    *p2++=0;
     fprintf(outf,"!readproc %s/canvasdraw.phtml %s \\\n%s \n\
 %stmp%d=$canvasdraw_out\n", primitive_dir, p, p2, setpre,prepcnt);
 }

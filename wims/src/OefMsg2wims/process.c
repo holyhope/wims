@@ -240,7 +240,8 @@ void p_answer(char *p[MAX_PARM])
           char *tt;
           tt=find_word_start(p[i]+strlen("type"));
           if(*tt=='=') {
-            for(j=i;j<6;j++) p[j]=p[j+1]; i--;
+            for(j=i;j<6;j++) p[j]=p[j+1];
+	    i--;
             tt=find_word_start(tt+1); *find_word_end(tt)=0;
             k=search_list(anstype,anstype_no,sizeof(anstype[0]),tt);
 /* unknown type is now substituted */
@@ -262,7 +263,8 @@ void p_answer(char *p[MAX_PARM])
           if(*tt=='s' || *tt=='S') tt++;
           tt=find_word_start(tt);
           if(*tt=='=') {
-            for(j=i;j<6;j++) p[j]=p[j+1]; i--;
+            for(j=i;j<6;j++) p[j]=p[j+1];
+	    i--;
             snprintf(nbuf,sizeof(nbuf),"%s",tt+1); subst(nbuf);
             for(tv=nbuf; *tv; tv++) if(*tv==',' || *tv==';') *tv=' ';
             strip_trailing_spaces(nbuf);
@@ -276,7 +278,8 @@ void p_answer(char *p[MAX_PARM])
           tt=p[i]+strlen("weight");
           tt=find_word_start(tt);
           if(*tt=='=') {
-            for(j=i;j<6;j++) p[j]=p[j+1]; i--;
+            for(j=i;j<6;j++) p[j]=p[j+1];
+	    i--;
             snprintf(nbuf,sizeof(nbuf),"%s",tt+1); subst(nbuf);
             strip_trailing_spaces(nbuf);
             fprintf(outf,"replyweight%d=%s \n",answercnt,
@@ -360,7 +363,8 @@ void p_choice(char *p[MAX_PARM])
           if(*tt=='s' || *tt=='S') tt++;
           tt=find_word_start(tt);
           if(*tt=='=') {
-            for(j=i;j<6;j++) p[j]=p[j+1]; i--;
+            for(j=i;j<6;j++) p[j]=p[j+1];
+	    i--;
             snprintf(nbuf,sizeof(nbuf),"%s",tt+1); subst(nbuf);
             for(tv=nbuf; *tv; tv++) if(*tv==',' || *tv==';') *tv=' ';
             strip_trailing_spaces(nbuf);
@@ -374,7 +378,8 @@ void p_choice(char *p[MAX_PARM])
           tt=p[i]+strlen("weight");
           tt=find_word_start(tt);
           if(*tt=='=') {
-            for(j=i;j<6;j++) p[j]=p[j+1]; i--;
+            for(j=i;j<6;j++) p[j]=p[j+1];
+	    i--;
             snprintf(nbuf,sizeof(nbuf),"%s",tt+1); subst(nbuf);
             strip_trailing_spaces(nbuf);
             fprintf(outf,"choiceweight%d=%s \n",choicecnt,
@@ -600,7 +605,8 @@ void p_condition(char *p[MAX_PARM])
           if(*tt=='s' || *tt=='S') tt++;
           tt=find_word_start(tt);
           if(*tt=='=') {
-            for(j=i;j<6;j++) p[j]=p[j+1]; i--;
+            for(j=i;j<6;j++) p[j]=p[j+1];
+	    i--;
             snprintf(buf1,sizeof(buf1),"%s",tt+1); subst(buf1);
             for(tv=buf1; *tv; tv++) if(*tv==',' || *tv==';') *tv=' ';
             strip_trailing_spaces(buf1);
@@ -614,7 +620,8 @@ void p_condition(char *p[MAX_PARM])
           tt=p[i]+strlen("weight");
           tt=find_word_start(tt);
           if(*tt=='=') {
-            for(j=i;j<6;j++) p[j]=p[j+1]; i--;
+            for(j=i;j<6;j++) p[j]=p[j+1];
+	    i--;
             snprintf(buf1,sizeof(buf1),"%s",tt+1); subst(buf1);
             strip_trailing_spaces(buf1);
             fprintf(outf,"condweight%d=%s \n",conditioncnt,

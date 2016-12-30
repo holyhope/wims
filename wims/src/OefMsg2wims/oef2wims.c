@@ -396,7 +396,8 @@ val5=$confparm4\n\n\
     fprintf(outf,"\n!exit\n\n:stat\nvsavelist=");
     for(k=0,i=1;i<prevars;i++) {
       if(param[i].save==0) continue;
-      if(k>0) fprintf(outf,","); k++;
+      if(k>0) fprintf(outf,",");
+      k++;
       fprintf(outf,"%d",i);
     }
     fprintf(outf,"\nembedcnt=%d\n",embedcnt);
