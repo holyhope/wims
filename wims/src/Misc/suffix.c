@@ -56,7 +56,8 @@ int suffix_list(void *list, int items, size_t item_size, const unsigned char *st
 
     if(items<=0) return -1;
     k=sufcomp(0,str);
-    if(k==0) return 0; if(k>0) return -1;
+    if(k==0) return 0;
+    if(k>0) return -1;
     j=items-1; k=sufcomp(j,str);
     if(k==0) return j;
     if(k>0) for(i1=0,i2=j;i2>i1+1;) {
@@ -69,7 +70,8 @@ int suffix_list(void *list, int items, size_t item_size, const unsigned char *st
     backcheck:
     v=j;for(t=0;t<suf[j].olen && t<sufwordlen
       && suf[j].original[t]==str[sufwordlen-t-1];t++);
-    if(t<sufminlen) return -1; if(t>=suf[j].olen) return j;
+    if(t<sufminlen) return -1;
+    if(t>=suf[j].olen) return j;
     for(j--,c=str[sufwordlen-1],d=str[sufwordlen-t];
       j>=0 && suf[j].original[0]==c && suf[j].olen>t
       && suf[j].original[t-1]==d;j--);

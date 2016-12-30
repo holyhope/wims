@@ -127,7 +127,8 @@ char *find_tag_end(char *p)
         if(pp==NULL) return p+strlen(p); else continue;
     }
     }
-    if(*pp=='>') pp++; return pp;
+    if(*pp=='>') pp++;
+    return pp;
 }
 
 char *find_tag(char *p, char *tag)

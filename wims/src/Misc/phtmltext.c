@@ -66,7 +66,8 @@ void output(void)
           if(!isspace(lastc)) {printf(" "); lastc=' ';}
           cont2: p=find_word_start(p);
           if(*p=='!' || *p==':') {
-            if(lastc!='	') printf(". "); lastc='	';
+            if(lastc!='	') printf(". ");
+	    lastc='	';
             cont1: p=strchr(p,'\n');
             if(p==NULL) return;
             if(*(p-1)=='\\') {p++; goto cont1;}

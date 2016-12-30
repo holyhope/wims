@@ -73,7 +73,8 @@ int search_list2(struct entry *list, int items, size_t item_size, const char *st
     if(items<=0) return -1;
     j=0; c=str[0];
     k=list[0].original[0]-c; if(k==0) k=compare(0,str);
-    if(k==0) goto more; if(k>0) return -1;
+    if(k==0) goto more;
+    if(k>0) return -1;
     j=items-1; k=list[j].original[0]-c; if(k==0) k=compare(j,str);
     if(k==0) return j;
     if(k>0) for(i1=0,i2=j;i2>i1+1;) {
@@ -106,7 +107,8 @@ void singlespace2(char *p)
           if(*pp=='\n') {
             pp++;
             gopt: for(p2=pp; isspace(*p2) && *p2!='\n'; p2++);
-            if(p2>pp) ovlstrcpy(pp,p2); pp--;
+            if(p2>pp) ovlstrcpy(pp,p2);
+	    pp--;
           }
           else {
             pp++; if(!isspace(*pp) || *pp=='\n') continue;
@@ -261,7 +263,8 @@ int main()
     if(leaveline) c='\n'; else c=' ';
     do {
       l=strlen(p1);
-      if(l>MAX_LINELEN-1024) l=MAX_LINELEN-1024; p2=p1+l;
+      if(l>MAX_LINELEN-1024) l=MAX_LINELEN-1024;
+      p2=p1+l;
       if(*p2) {
           while(p2>p1 && *p2!=c) p2--;
       }

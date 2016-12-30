@@ -102,7 +102,8 @@ void oneline(char *p, char *typ)
             || (i > 8 && strcmp(data[8], typ)!=0))
              )){ return; }
       t-=tab->lasttime; tab->lasttime=-1; if(t<0) t+=24*3600;
-      if(t<0) t=0; if(t>5*3600) t=5*3600;
+      if(t<0) t=0;
+      if(t>5*3600) t=5*3600;
       scores[sccnt].dure=t; scores[sccnt].next=-1;
       scores[sccnt].score=(double) atof(data[5])*100+0.5;
       if(tab->scorecnt>0) scores[tab->lastscore].next=sccnt;
@@ -194,8 +195,10 @@ void stati(statexodata *dat)
     for(i=0,j=dat->firstscore; i<dat->scorecnt; i++) {
       s=(double) scores[j].score/100; d=(double) scores[j].dure/60;
       scsum+=s; dursum+=d;
-      if(scmin>s) scmin=s; if(scmax<s) scmax=s;
-      if(durmin>d) durmin=d; if(durmax<d) durmax=d;
+      if(scmin>s) scmin=s;
+      if(scmax<s) scmax=s;
+      if(durmin>d) durmin=d;
+      if(durmax<d) durmax=d;
       {
        int k, l = 0;
        for (k = 0; k < 10; k++) if (best[k] < best[l]) l = k;

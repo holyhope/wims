@@ -81,7 +81,8 @@ void _extract(char *p, int dist)
          if(i<opalphano) {
           l=opalpha[i].lvl; if(l>expl2) {
               if(got) extrout(p1,p2,dist+p1-p,commas,&commacnt);
-              if(expl1>0) got=0; p1=find_word_start(p3);
+              if(expl1>0) got=0;
+	      p1=find_word_start(p3);
           }
           if(l>=expl1 && l<=expl2) {
               got=1;
@@ -109,7 +110,8 @@ void _extract(char *p, int dist)
      p3=p2+strlen(oppunct[i].name); l=oppunct[i].lvl;
      if(l>expl2) {
          if(got) extrout(p1,p2,dist+p1-p,commas,&commacnt);
-         if(expl1>0) got=0; p1=find_word_start(p3);
+         if(expl1>0) got=0;
+	 p1=find_word_start(p3);
      }
      if(l>=expl1 && l<=expl2) {
          got=1;

@@ -129,7 +129,8 @@ int main(int argc, char *argv[])
     if(parm==NULL || *parm==0) errorquit("no_parameter");
     snprintf(pbuf,sizeof(pbuf),"%s",parm);
     p1=find_word_start(pbuf); p2=find_word_end(p1);
-    if(*p2!=0) *p2++=0; https=0;
+    if(*p2!=0) *p2++=0;
+    https=0;
     outf=stdout; pp1=getenv("w_webget_output");
     pp2=getenv("session_dir");
     if(pp1!=NULL && strstr(pp1,"..")==NULL && isalnum(*pp1) && pp2!=NULL) {

@@ -238,8 +238,10 @@ int main(int argc, char *argv[])
       str2list(c2,2); for(i=0;i<listcnt;i++) by[i]=listbuf[i];
     }
     op=getenv("w_curvecomp_option"); if(op==NULL) op="";
-    if(bx[0]==-1) bx[0]=0; if(bx[1]==-1) bx[1]=pointlim;
-    if(by[0]==-1) by[0]=0; if(by[1]==-1) by[1]=pointlim;
+    if(bx[0]==-1) bx[0]=0;
+    if(bx[1]==-1) bx[1]=pointlim;
+    if(by[0]==-1) by[0]=0;
+    if(by[1]==-1) by[1]=pointlim;
     c1=getenv("w_curvecomp_tolerance");
     if(c1!=NULL && *c1!=0) tol=atoi(c1);
     tol=Min(30,Max(5,tol));

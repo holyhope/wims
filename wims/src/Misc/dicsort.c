@@ -68,7 +68,8 @@ void singlespace2(char *p)
           if(*pp=='\n') {
             pp++;
             gopt: for(p2=pp; isspace(*p2) && *p2!='\n'; p2++);
-            if(p2>pp) ovlstrcpy(pp,p2); pp--;
+            if(p2>pp) ovlstrcpy(pp,p2);
+	    pp--;
           }
           else {
             pp++; if(!isspace(*pp) || *pp=='\n') continue;

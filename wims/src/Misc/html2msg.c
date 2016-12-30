@@ -71,7 +71,8 @@ char *find_tag_end(char *p)
       if(pp==NULL) pp=strchr(old,'<');
       if(pp==NULL) pp=find_word_end(find_word_start(old));
     }
-    if(*pp=='>') pp++; return pp;
+    if(*pp=='>') pp++;
+    return pp;
 }
 
 char *find_tag(char *p, char *tag)
@@ -114,7 +115,8 @@ void prepare_file(void)
     if(flen>buflim) return;
     filebuf=xmalloc(2*flen+1024);flen=fread(filebuf,1,flen,f);
     fclose(f);
-    if(flen<0 || flen>=buflim) flen=0; filebuf[flen]=0;
+    if(flen<0 || flen>=buflim) flen=0;
+    filebuf[flen]=0;
     filelen=flen;
     outf=fopen(fn2,"w"); if(outf==NULL) return;
 }
@@ -133,8 +135,10 @@ void getmath(char *p)
       if(pv==NULL) return;
       goto insmath;
     }
-    if(*pt=='%') pt=strchr(pt,'$'); if(pt==NULL) return;
-    if(*pt!='$') return; do pt++; while(*pt=='$');
+    if(*pt=='%') pt=strchr(pt,'$');
+    if(pt==NULL) return;
+    if(*pt!='$') return;
+    do pt++; while(*pt=='$');
     pv=strchr(pt,'$'); if(pv==NULL) return;
     insmath: if(pv-pt>=MAX_LINELEN-256) return;
     memmove(mathbuf,pt,pv-pt); mathbuf[pv-pt]=0;
