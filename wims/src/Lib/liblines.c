@@ -324,7 +324,8 @@ char *strip_trailing_spaces(char *p)
     char *pp;
     if(*p==0) return p;
     for(pp=p+strlen(p)-1; pp>=p && myisspace(*pp); pp--);
-    if(pp[1]) pp[1]=0; return pp;
+    if(pp[1]) pp[1]=0;
+    return pp;
 }
 
 /*  strip trailing spaces; return string end. */
@@ -637,7 +638,8 @@ void _spaces2_(char *p, char c)
     char *pp; int n;
     singlespace(p);
     n=strlen(p); if(*p==' ') {memmove(p,p+1,n);n--;}
-    if(n==0) return; if(p[n-1]==' ') p[n-1]=0;
+    if(n==0) return;
+    if(p[n-1]==' ') p[n-1]=0;
     for(pp=strchr(p,' '); pp; pp=strchr(pp,' ')) *pp++=c;
 }
 /* change words to items */
