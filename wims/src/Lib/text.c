@@ -416,7 +416,8 @@ void text(char *p)
       substitute(maskbuf);
       n=strlen(maskbuf); if(n==0) goto zeromask;
       c=maskbuf[n-1]; cc=0;
-      if(c=='+') cc='1'; if(c=='-') cc='0';
+      if(c=='+') cc='1';
+      if(c=='-') cc='0';
       if(cc!=0) memset(maskbuf+n-1,cc,sizeof(maskbuf)-n);
       else for(j=n;j<MAX_LINELEN;j++) maskbuf[j]=maskbuf[j%n];
       maskbuf[sizeof(maskbuf)-1]=0;
