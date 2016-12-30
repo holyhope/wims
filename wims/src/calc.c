@@ -1767,7 +1767,8 @@ void calc_leveldata(char *p)
     for(i=0, pp=p; i<ld.datacnt && pp<p+MAX_LINELEN-16; i++) {
      float2str(ld.xdata[i],buf);
      if(pp-p+strlen(buf)<MAX_LINELEN-1) {
-         if(pp>p) *pp++=';'; ovlstrcpy(pp,buf); pp+=strlen(pp);
+         if(pp>p) *pp++=';';
+	 ovlstrcpy(pp,buf); pp+=strlen(pp);
      }
      float2str(ld.ydata[i],buf);
      if(pp-p+strlen(buf)<MAX_LINELEN-1) {
