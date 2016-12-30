@@ -154,8 +154,10 @@ int DVI_put(int p)
 	ct=cc-wfont[d_f].bc;
 	x1=dvix+wfont[d_f].fh[ct].xstart; y1=dviy+wfont[d_f].fh[ct].ystart;
 	x2=x1+wfont[d_f].fh[ct].xmax; y2=y1+wfont[d_f].fh[ct].ymax;
-	if(minx>x1) minx=x1; if(miny>y1) miny=y1;
-	if(maxx<x2) maxx=x2; if(maxy<y2) maxy=y2;
+	if(minx>x1) minx=x1;
+	if(miny>y1) miny=y1;
+	if(maxx<x2) maxx=x2;
+	if(maxy<y2) maxy=y2;
     }
     else {
 	paintfont(wfont+d_f,cc,dvix-minx,dviy-miny,currentcolor);
@@ -186,8 +188,10 @@ int DVI_put_rule(void)
 	x2=x1+xx; y1=y2-yy;
 	if(x1<x2) {xx1=x1; xx2=x2;} else {xx1=x2; xx2=x1;}
 	if(y1<y2) {yy1=y1; yy2=y2;} else {yy1=y2; yy2=y1;}
-	if(minx>x1) minx=x1; if(miny>y1) miny=y1;
-	if(maxx<x2) maxx=x2; if(maxy<y2) maxy=y2;
+	if(minx>x1) minx=x1;
+	if(miny>y1) miny=y1;
+	if(maxx<x2) maxx=x2;
+	if(maxy<y2) maxy=y2;
     }
     else {
 	x1=rint(dviratio*d_h)-minx; y1=rint(dviratio*d_v)-miny;

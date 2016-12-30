@@ -81,7 +81,8 @@ void GF_boc(int p)
     }
     if(cc>tfm.ec || cc<tfm.bc) return;
     charpos=cc-tfm.bc;
-    if(del_m<0) del_m=0; if(del_n<0) del_n=0;
+    if(del_m<0) del_m=0;
+    if(del_n<0) del_n=0;
     if(del_m>=MAX_FONT_X-1) del_m=MAX_FONT_X-2;
     if(del_n>=MAX_FONT_Y-1) del_n=MAX_FONT_Y-2;
     x=y=0; xmax=del_m+1; ymax=del_n+1;

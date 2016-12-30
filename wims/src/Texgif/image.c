@@ -26,9 +26,12 @@ int color_white, color_black, color_bounder;
 int getcolor(int r, int g, int b)
 {
     int col;
-    if(r>255) r=255; if(r<0) r=0;
-    if(g>255) g=255; if(g<0) g=0;
-    if(b>255) b=255; if(b<0) b=0;
+    if(r>255) r=255;
+    if(r<0) r=0;
+    if(g>255) g=255;
+    if(g<0) g=0;
+    if(b>255) b=255;
+    if(b<0) b=0;
     col=gdImageColorExact(image, r, g, b);
     if(col==-1) col=gdImageColorAllocate(image,r,g,b);
     return col;
