@@ -37,7 +37,8 @@ void float2str(double d, char *p)
      mystrncpy(p,int2str(d),MAX_LINELEN); return;
     }
     i=print_precision;
-    if(i<2) i=2; if(i>32) i=32;  /* Simple limitation. */
+    if(i<2) i=2;
+    if(i>32) i=32;  /* Simple limitation. */
     buf[0]='%';buf[1]='.';
     if(i>=10) {
      buf[2]='0'+i/10; buf[3]='0'+i%10; buf[4]='g'; buf[5]=0;
@@ -133,7 +134,8 @@ char *substit(char *p)
          }
      }
      noarray: ev=getvar(buf); ln=getvar_len;
-     if(ev==NULL) ev=""; if(strchr(ev,'$')==NULL) goto rep2;
+     if(ev==NULL) ev="";
+     if(strchr(ev,'$')==NULL) goto rep2;
      memmove(buf,ev,ln); buf[ln]=0;
      substnest++; substit(buf); substnest--;
      replace: ev=buf; ln=strlen(ev);

@@ -165,7 +165,8 @@ void check_exam(void)
      char *pu, *p1, tbuf[MAX_LINELEN+1];
      snprintf(dbuf,sizeof(dbuf),"%u",(unsigned int) nowtime);
      accessfile(dbuf,"w","%s",vbuf); start=nowtime;
-     if(pc==NULL) pc=getvar("wims_class"); if(pc==NULL) pc="";
+     if(pc==NULL) pc=getvar("wims_class");
+     if(pc==NULL) pc="";
      pu=getvar("wims_user"); if(pu==NULL) pu="";
      snprintf(vbuf,sizeof(vbuf),"%s/%s/.parmreg", class_base, pc);
      mkdirs(vbuf);

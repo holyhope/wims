@@ -113,7 +113,8 @@ void parms(void)
     if(parm[6]) backup_hour=atoi(parm[6]);
     if(parm[7]) site_accounting=atoi(parm[7]);
     if(parm[8]) r=atoi(parm[8])+1; else r=8;
-    if(r<2) r=2; if(r>100) r=100;
+    if(r<2) r=2;
+    if(r>100) r=100;
     snprintf(buf,sizeof(buf),"%d",r); setenv("examlog_lim2",buf,1);
     if(site_accounting>0) setenv("site_accounting","yes",1);
 }

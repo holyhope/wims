@@ -59,7 +59,8 @@ void _tex_sums(char *p, char *name, int type)
     char *p1,*p2,*p3;
     p1=find_item_end(p); if(*p1) *(p1++)=0;
     p2=find_item_end(p1); p3=strparstr(p1,"=");
-    if(p3<p2) p2=p3; if(*p2) *(p2++)=0;
+    if(p3<p2) p2=p3;
+    if(*p2) *(p2++)=0;
     p3=find_item_end(p2);
     if(*p3) *(p3++)=0;
     tprint("\\%s ",name);
@@ -335,7 +336,8 @@ int fsort(const void *p1, const void *p2)
 
     t1=*(struct afactor **) p1; t2=*(struct afactor **) p2;
     i1=t1->type; i2=t2->type;
-    if(i1>type_var) i1=type_var; if(i2>type_var) i2=type_var;
+    if(i1>type_var) i1=type_var;
+    if(i2>type_var) i2=type_var;
     return i1-i2;
 }
 
@@ -358,7 +360,8 @@ void t_oneterm(char *p, int num)
       }
       case '>': {
         rel++; p++; if(*p!='=') {tprint(" > "); rel=1; break;} // >
-        while(*p=='=') p++; tprint("\\ge "); // >=
+        while(*p=='=') p++;
+	tprint("\\ge "); // >=
         break;
       }
       case '-': {
@@ -507,7 +510,8 @@ void t_exponential(char *pp)
     else {
       tprint(" ^{"); if(t) tprint("(");
       t_onestring(pp);
-      if(t) tprint(")"); tprint("} ");
+      if(t) tprint(")");
+      tprint("} ");
     }
 }
 

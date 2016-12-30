@@ -360,7 +360,7 @@ void exec_read(char *p)
       if((untrust&255)!=0 &&
         (m_file.name[0]=='/' || strncmp(m_file.name,"wimshome/",9)==0))
         module_error("Illegal_file_access");
-        untrust|=0x200;
+      untrust|=0x200;
     }
     if((untrust&0x202)!=0) {
       pp=getvar("wims_trustfile");
@@ -512,7 +512,8 @@ void exec_tail(char *p)
     if(!outputing || tail_executed) {
       *p=0; return;
     }
-    if(!ismhelp) exec_homeref(p); *p=0;
+    if(!ismhelp) exec_homeref(p);
+    *p=0;
     _output_("</body></html>");
     tail_executed=1;
 }
@@ -747,7 +748,8 @@ void href_find_target(char *p)
       if(strncasecmp(pp,"target=wims_",strlen("target=wims_"))!=0) continue;
       memmove(buf1,pp,pe-pp); buf1[pe-pp]=0; substit(buf1);
       if(strncasecmp(buf1,"target=wims_mhelp",strlen("target=wims_mhelp"))==0) {
-        if(*pe!=0) *pe++=0; ovlstrcpy(href_target,"wims_help");
+        if(*pe!=0) *pe++=0;
+	ovlstrcpy(href_target,"wims_help");
         ref_mhelp=1;
       }
       else {
@@ -1157,7 +1159,8 @@ void _exec_ins(char *p, char *script_name,char *format)
     tag=getvar("ins_tag");  al=getvar("ins_align");
     if(at==NULL) at="";
     if(tag==NULL) tag="";
-    if(al==NULL) al="";al=find_word_start(al);
+    if(al==NULL) al="";
+    al=find_word_start(al);
     if(*al!=0) snprintf(buf2,sizeof(buf2),"vertical-align:%s",al); else buf2[0]=0;
     if(strcasecmp(al,"middle")==0) middle=1; else middle=0;
     tag2=""; vspace=0;
@@ -1169,7 +1172,8 @@ void _exec_ins(char *p, char *script_name,char *format)
     }
     if(b==NULL || *b==0) border=0;
     else border=atoi(b);
-    if(border<0) border=0; if(border>100) border=100;
+    if(border<0) border=0;
+    if(border>100) border=100;
     if(middle) {
       snprintf(outbuf+strlen(outbuf),
          sizeof(outbuf)-strlen(outbuf),"%s",mathalign_sup1);
@@ -1350,7 +1354,8 @@ void prepare_insplot_parm(char *p)
 /* frames of animation */
     pp=getvar("ins_anim_frames");
     if(pp!=NULL) i=evalue(pp); else i=1;
-    if(i>=ANIM_LIMIT) i=ANIM_LIMIT-1; if(i<1) i=1;
+    if(i>=ANIM_LIMIT) i=ANIM_LIMIT-1;
+    if(i<1) i=1;
     if(strstr(setbuf,"step")==NULL && strstr(p,"step")==NULL
        && varchr(setbuf,"s")==NULL && varchr(p,"s")==NULL && !multanim) i=1;
     setenv("ins_anim_frames",int2str(i),1);
@@ -1360,7 +1365,8 @@ void prepare_insplot_parm(char *p)
 /* delay of animation */
     pp=getvar("ins_anim_delay");
     if(pp!=NULL) d=evalue(pp); else d=0;
-    if(d>=10) d=10; if(d<0) d=0;
+    if(d>=10) d=10;
+    if(d<0) d=0;
     setenv("ins_anim_delay",int2str(d*100),1);
 }
 
@@ -1410,7 +1416,8 @@ void exec_insdraw(char *p)
 /* frames of animation */
     pp=getvar("ins_anim_frames");
     if(pp!=NULL) i=evalue(pp); else i=1;
-    if(i>=ANIM_LIMIT) i=ANIM_LIMIT-1; if(i<1) i=1;
+    if(i>=ANIM_LIMIT) i=ANIM_LIMIT-1;
+    if(i<1) i=1;
     if(i>1 && varchr(p,"s")==NULL && varchr(p,"animstep")==NULL
        && varchr(p,"step")==NULL) i=1;
     setenv("ins_anim_frames",int2str(i),1);
@@ -1420,7 +1427,8 @@ void exec_insdraw(char *p)
 /* delay of animation */
     pp=getvar("ins_anim_delay");
     if(pp!=NULL) d=evalue(pp); else d=0;
-    if(d>=10) d=10; if(d<0) d=0;
+    if(d>=10) d=10;
+    if(d<0) d=0;
     setenv("ins_anim_delay",int2str(d*100),1);
     pp=getvar("insdraw_filebase");
     if(pp!=NULL && strstr(pp,parent_dir_string)!=NULL)
@@ -1979,9 +1987,11 @@ static void _skip_contents(int isif)
       if(i<0) continue;
       switch(exec_routine[i].tag & 0xffff) {
         case EXEC_WHILE:
-          if(!isif) loop++; break;
+          if(!isif) loop++;
+	  break;
         case EXEC_IF:
-          if(isif) loop++; break;
+          if(isif) loop++;
+	  break;
         case EXEC_ELSE: {
           if(!isif) break;
           if(loop<=0) return; else break;

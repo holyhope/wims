@@ -133,8 +133,10 @@ void wlogdaccessfile(char *content, char *type, char *s,...)
     va_start(vp,s);
     vsnprintf(buf,sizeof(buf),s,vp);
     va_end(vp);
-    f=fopen(buf,type); if(f==NULL) {
-      if(*type=='r') content[0]=0; return;
+    f=fopen(buf,type);
+    if(f==NULL) {
+      if(*type=='r') content[0]=0;
+      return;
     }
     switch(*type) {
       case 'a':

@@ -636,7 +636,8 @@ void parse_query_string(int len, int type)
           p2=p1+ll; p3=memstr(p2,mpboundary,var_str+len-p2); l=p3-p1;
           p=memstr(p2,b1,var_str+len-p2); if(p>=p3) continue;
           p+=lb; if(p3<var_str+len) {
-            while(*p3!='\n' && p3>p2) p3--; *p3=0;
+            while(*p3!='\n' && p3>p2) p3--;
+	    *p3=0;
             p3--; if(*p3=='\r') *p3=0;
           }
           dlen=p3-p;
@@ -661,7 +662,8 @@ void parse_query_string(int len, int type)
                   for(p5--;
                       p5>=p4 && !isspace(*p5) && strchr("/\\:",*p5)==NULL;
                       p5--);
-                  if(p5>=p4) p4=p5+1; if(*p4==0) goto noname;
+                  if(p5>=p4) p4=p5+1;
+		  if(*p4==0) goto noname;
                   if(strstr(p4,"..")!=NULL || *p4=='.')
                     p4="noname.file";
                   setvar("wims_deposit",p4);
@@ -1003,7 +1005,8 @@ void mhelp(void)
       p=getvar("special_parm");
       if(p!=NULL && strcmp(p,"about")==0)
         phtml_put("about.phtml",0);
-      else phtml_put("help.phtml",0); phtml_put_base("mhelptail.phtml",0);
+      else phtml_put("help.phtml",0);
+      phtml_put_base("mhelptail.phtml",0);
       exec_tail(buf);
     }
 }

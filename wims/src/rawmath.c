@@ -273,7 +273,8 @@ void __replace_space(char *p)
  char *p1 ;
  for(p1=p;*p1!=0; p1++) {
     if(*p1=='\\' || isspace(*p1)) *p1=' ';// replace \ and all spaces by a simple space -
-    if(*p1=='\"') string_modify(p,p1,p1+1,"''"); p1++; // replace " by ''
+    if(*p1=='\"') string_modify(p,p1,p1+1,"''");
+    p1++; // replace " by ''
   }
 }
 

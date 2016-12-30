@@ -241,7 +241,8 @@ int wgetline(char buf[], size_t buflen, WORKING_FILE *f)
     if(i>=f->linecnt || f->textbuf==NULL) return EOF;
     n=f->lines[i].llen;
     if(n>=buflen) n=buflen-1;
-    if(n>0) memmove(buf,f->lines[i].address,n); buf[n]=0;
+    if(n>0) memmove(buf,f->lines[i].address,n);
+    buf[n]=0;
     for(j=i+1;j<f->linecnt && f->lines[j].isstart==0;j++);
     f->l=i; f->linepointer=j;
     if(j>=f->linecnt && n==0) return EOF; else return n;
@@ -457,7 +458,8 @@ void output0(char buf[])
          *p1=0; if(*(p2-1)=='\\') *(p2-1)=0; *p2++=0; _output_(ps); ps=p2;
          instex_usedynamic=1; insmath(p1+2);
      }
-     if(*ps) _output_(ps); instex_usedynamic=dynsave;
+     if(*ps) _output_(ps);
+     instex_usedynamic=dynsave;
     }
     else _output_(buf);
 }

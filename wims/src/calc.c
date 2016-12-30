@@ -403,7 +403,8 @@ int _randrep(char *p)
     int i;
     rep=wordchr(p,"repeat"); if(rep==NULL) return 1;
     *rep=0; rep+=strlen("repeat"); i=evalue(rep);
-    if(i<1) i=1; if(i>MAX_VALUE_LIST) i=MAX_VALUE_LIST;
+    if(i<1) i=1;
+    if(i>MAX_VALUE_LIST) i=MAX_VALUE_LIST;
     return i;
 }
 
@@ -639,8 +640,10 @@ void _blockof(char *p,
      int t=len_fn(buf);
      *pp=0; pe=find_word_start(pp+2);
      i=evalue(p); j=evalue(pe); pnext=buf;
-     if(i<0) i=t+i+1; if(i<1) i=1;
-     if(j<0) j=t+j+1; if(j>t) j=t;
+     if(i<0) i=t+i+1;
+     if(i<1) i=1;
+     if(j<0) j=t+j+1;
+     if(j>t) j=t;
      for(; i<=j; i++) {
          if(started==0 || fnd_fn==datafile_fnd_record)
            pp=_blockof_one(buf,t,fnd_fn,i,bbuf);
@@ -1127,11 +1130,13 @@ void calc_instexst(char *p)
     at=getvar("ins_attr");
     al=getvar("ins_align");
     if(at==NULL) at="";
-    if(al==NULL) al="";al=find_word_start(al);
+    if(al==NULL) al="";
+    al=find_word_start(al);
     if(*al!=0) snprintf(buf2,sizeof(buf2),"vertical-align:%s",al); else buf2[0]=0;
     if(b==NULL || *b==0) border=0;
     else border=atoi(b);
-    if(border<0) border=0; if(border>100) border=100;
+    if(border<0) border=0;
+    if(border>100) border=100;
     if(instex_ready(p2,urlbuf)) goto prt;
     if(stat(nbuf,&st)!=0 || st.st_mtime<stc.st_mtime || st.st_size<45) {
      setenv("texgif_style",instex_style,1);
@@ -1575,7 +1580,8 @@ void calc_solve(char *p)
          else {v2=v3;}
      }
      float2str(v3,vbuf); if(pp-p+strlen(vbuf)<MAX_LINELEN-1) {
-         if(pp>p) *pp++=','; ovlstrcpy(pp,vbuf);
+         if(pp>p) *pp++=',';
+	 ovlstrcpy(pp,vbuf);
          pp+=strlen(pp);
      }
      else break;
@@ -1598,7 +1604,8 @@ void _values(char *p, int type)
     fp=find_word_start(p); strip_trailing_spaces(fp);
     if(*fp==0) goto syntax;
     if(type<5) i=cutfor(forp,NULL); else i=cutfor(forp,tbuf);
-    if(i<0) goto syntax; if(i>0) {*p=0; return;}
+    if(i<0) goto syntax;
+    if(i>0) {*p=0; return;}
     start=forstruct.from; stop=forstruct.to; step=forstruct.step;
     forp=forstruct.var;
     mystrncpy(buf,fp,sizeof(buf)); substitute(buf);
@@ -1651,7 +1658,8 @@ void _values(char *p, int type)
          for(pt=varchr(buf2,EV_X);pt!=NULL;pt=varchr(pt+l,EV_X))
            string_modify(buf2,pt,pt+ln,"%s",ps);
          if(pp-p+strlen(buf2)>=MAX_LINELEN-1) return;
-         if(pp>p) *pp++=','; ovlstrcpy(pp,buf2);
+         if(pp>p) *pp++=',';
+	 ovlstrcpy(pp,buf2);
          pp+=strlen(pp);
      }
      return;
@@ -1666,7 +1674,8 @@ void _values(char *p, int type)
           case 1: { /* values */
               float2str(dd,vbuf);
               if(pp-p+strlen(vbuf)<MAX_LINELEN-1) {
-               if(pp>p) *pp++=','; ovlstrcpy(pp,vbuf);
+               if(pp>p) *pp++=',';
+	       ovlstrcpy(pp,vbuf);
                pp+=strlen(pp);
               }
               v0=dd; break;
@@ -1762,7 +1771,8 @@ void calc_leveldata(char *p)
      }
      float2str(ld.ydata[i],buf);
      if(pp-p+strlen(buf)<MAX_LINELEN-1) {
-         if(pp>p) *pp++=','; ovlstrcpy(pp,buf); pp+=strlen(pp);
+         if(pp>p) *pp++=',';
+	 ovlstrcpy(pp,buf); pp+=strlen(pp);
      }
     }
 }
@@ -2000,7 +2010,8 @@ void calc_embraced(char *p)
     if(*p2==0) {*p=0; return;}
     *p2++=0; p2=find_word_start(p2);
     mystrncpy(buf,p2,sizeof(buf)); substit(buf);
-    if(p1>p) ovlstrcpy(p,p1); substit(p);
+    if(p1>p) ovlstrcpy(p,p1);
+    substit(p);
     if(strcmp(p,"randitem")==0) {_embraced(buf,calc_randitem); goto end;}
     if(strcmp(p,"extract")==0) {
      p1=strchr(buf,'{'); if(p1!=NULL) {

@@ -673,9 +673,10 @@ int var_def_name(char *n, int v)
      *q++=0; r=find_matching(q,']');
      if(r==NULL) goto illegal;
      *r=0; int i;
-      for(i=0;i<special_name_no && strcmp(q, special_name[i].name)!=0; i++);
-      if(i<special_name_no) j=special_name[i].value; else j=atoi(q);
-      if(j<1) j=1; if(j>MAX_VAR_NUM) j=MAX_VAR_NUM;
+     for(i=0;i<special_name_no && strcmp(q, special_name[i].name)!=0; i++);
+     if(i<special_name_no) j=special_name[i].value; else j=atoi(q);
+     if(j<1) j=1;
+     if(j>MAX_VAR_NUM) j=MAX_VAR_NUM;
      var_def[v].beg=1; var_def[v].end=j;
      return j;
     }
@@ -872,7 +873,8 @@ void var_deposit(char *p)
     int l,fd;
     if(!trusted_module()) return;
     if(deplen>0) l=deplen; else {
-     while(isspace(*p)) p++; l=strlen(p);
+     while(isspace(*p)) p++;
+     l=strlen(p);
     }
     if(l<=0) return;
     if(l>MAX_DEPOSITLEN) l=MAX_DEPOSITLEN; /* silent truncation, should not occur */

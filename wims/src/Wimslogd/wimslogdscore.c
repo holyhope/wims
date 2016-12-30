@@ -67,8 +67,10 @@ void scoreline(struct classdata *cd, char *l)
     if(num<0) return;
     thiscore=uscore+num;
     if(strcmp(pm[4],"score")==0) {
-     score=atof(pm[5]); if(!isfinite(score)) score=0;
-     if(score>10) score=10; if(score<-10) score=-10;
+     score=atof(pm[5]);
+     if(!isfinite(score)) score=0;
+     if(score>10) score=10;
+     if(score<-10) score=-10;
 
      if(strcmp(pm[1],oldsession)==0 &&   /* measure to prohibit simultaneous scoring. */
         sheet==oldsheet && exo==oldexo &&

@@ -383,7 +383,8 @@ void main_configure(void)
       if(p2==NULL) continue; /* syntax error */
       *p2=0; *find_word_end(p)=0; p2=find_word_start(p2+1);
       p3=p2+strlen(p2); while(myislspace(p3[-1])) p3--;
-      while(p3[-1]=='\\') p3--; *p3=0;
+      while(p3[-1]=='\\') p3--;
+      *p3=0;
       i=search_list(main_config,MAIN_CONFIG_NO,sizeof(main_config[0]),p);
       if(i<0) continue; /* name non-defined */
       if(main_config[i].is_integer==1) {
@@ -814,7 +815,8 @@ void define_html_header(void)
          if(pc!=NULL && *pc!=0 && strcmp(cp,"class")==0) {
            nbuf=mkfname(NULL,"%s/%s/css",class_base,pc);
            th=getvar("class_theme");ti=getvar("class_theme_icon") ;
-           if(th==NULL || *th==0) th=getvar("wims_theme"); st=1;
+           if(th==NULL || *th==0) th=getvar("wims_theme");
+	   st=1;
            if(ti==NULL || *ti==0) ti=getvar("wims_theme_icon");
          }
          else {/* Il faut peut-être changer là aussi pour direction */
