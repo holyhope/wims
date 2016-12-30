@@ -44,7 +44,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/resource.h>
-
+#include <assert.h>
 int execuid=15999;
 int execgid=15999;
 int must=0;
@@ -233,7 +233,7 @@ int main(int argc,char *argv[])
         goto ex;
     }
     if(chroot("../chroot")==0) {
-        (void)chdir("/tmp");
+        assert(chdir("/tmp")==0);
         lim.rlim_cur=lim.rlim_max=PROC_QUOTA;
         setrlimit(RLIMIT_NPROC,&lim);
         setenv("PATH",chroot_path,1);
@@ -245,7 +245,7 @@ int main(int argc,char *argv[])
             setenv("tmp_dir",tmpbuf,1);
             p=getenv("w_wims_priv_chroot");
             if(p && strstr(p,"tmpdir")!=NULL)
-              (void)chdir(tmpbuf);
+              assert(chdir(tmpbuf)==0);
         }
     }
     else if(test_must()) goto abandon;

@@ -10722,8 +10722,7 @@ readinputfile (char *molfilename)
   mol_in_queue = false;
   do
     {
-      fgets (rline, 256, stdin);
-      if (feof (stdin))
+      if(fgets (rline, 256, stdin)==NULL || feof (stdin))
 	return;
       TEMP = strchr (rline, '\n');
       if (TEMP != NULL)
