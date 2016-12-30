@@ -22,19 +22,22 @@ static int _lcomp(const void *l1, const void *l2)
     double d;
     d1=(const double *) l1; d2=(const double *) l2;
     d=*d1-*d2;
-    if(d<0) return -1; if(d>0) return 1;
+    if(d<0) return -1;
+    if(d>0) return 1;
     return 0;
 }
 
 static double lc_scalex(leveldata *ld, int x)
 {
-    if(x<0) x=0; if(x>=ld->xsize) x=ld->xsize-1;
+    if(x<0) x=0;
+    if(x>=ld->xsize) x=ld->xsize-1;
     return ld->xspan*((double) x - 0.40127)/ld->xsize+ld->xrange[0];
 }
 
 static double lc_scaley(leveldata *ld, int y)
 {
-    if(y<0) y=0; if(y>=ld->ysize) y=ld->ysize-1;
+    if(y<0) y=0;
+    if(y>=ld->ysize) y=ld->ysize-1;
     return -ld->yspan*((double) y - 0.40127)/ld->ysize+ld->yrange[1];
 }
 

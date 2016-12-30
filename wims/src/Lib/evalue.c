@@ -57,7 +57,8 @@ void init_random(void)
 /*    initstate(1,rand_buf,RAND_BUF_SIZE); */
     gettimeofday(&t,NULL);
     r=t.tv_usec+t.tv_sec*1000;
-    if(r<0) r=-r; if(r==0) r=1;
+    if(r<0) r=-r;
+    if(r==0) r=1;
     srandom(r);
 }
 
@@ -363,7 +364,8 @@ double _evalue(int ord)
       case 0: {
           d=evalname[i].val;
           if(evalname[i].f1!=NULL) {
-            if(d==0) d=NAN; if(d==1) d=HUGE_VAL;
+            if(d==0) d=NAN;
+	    if(d==1) d=HUGE_VAL;
           }
           break;
       }
