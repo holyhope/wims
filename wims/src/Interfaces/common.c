@@ -17,6 +17,7 @@
 
 /* Common routines in interfaces */
 #include "common.h"
+#include <assert.h>
 #define ch_root "bin/ch..root"
 
 int mypid;
@@ -197,7 +198,8 @@ int execredirected(char *cmdf, char *inf, char *outf, char *errf, char *args)
       }
       else {
           i=0;
-          setreuid(getuid(),getuid());setregid(getgid(),getgid());
+          assert(setreuid(getuid(),getuid())==0);
+	  assert(setregid(getgid(),getgid())==0);
       }
       arg[i++]=cmdf;
       for(p=abuf; *p && i<1000; i++, p=find_word_start(p2))
@@ -381,8 +383,8 @@ void prepare1(void)
 
 void prepabout(char *cmd, char *outf, char *errf)
 {
-    (void)write(pipe_in[1],cmd,strlen(cmd));
-    execredirected(nameofcmd,NULL,outf,errf,cmdparm);
+  assert(write(pipe_in[1],cmd,strlen(cmd))==strlen(cmd));
+  execredirected(nameofcmd,NULL,outf,errf,cmdparm);
 }
 
 /* read to aboutbuf. Returns content length. */
