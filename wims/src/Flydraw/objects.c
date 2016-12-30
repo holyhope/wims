@@ -388,7 +388,8 @@ void obj_lattice(objparm *pm)
     int n1,n2,i1,i2,xi1,yi1,xi2,yi2;
     double xv1,xv2,yv1,yv2;
     n1=pm->pd[6];n2=pm->pd[7]; if(n1<0 || n2<0) return;
-    if(n1>256) n1=256; if(n2>256) n2=256;
+    if(n1>256) n1=256;
+    if(n2>256) n2=256;
     scale(pm->pd,pm->p,1);
     scale2(pm->pd[2],pm->pd[3],&xv1,&yv1);
     scale2(pm->pd[4],pm->pd[5],&xv2,&yv2);
@@ -801,7 +802,8 @@ void obj_plotjump(objparm *pm)
 {
     int dd;
     dd=pm->pd[0];
-    if(dd<3) dd=3; if(dd>MAX_SIZE) dd=MAX_SIZE;
+    if(dd<3) dd=3;
+    if(dd>MAX_SIZE) dd=MAX_SIZE;
     plotjump=dd;
 }
 
@@ -876,7 +878,8 @@ void obj_levelstep(objparm *pm)
 {
     int dd;
     dd=pm->pd[0];
-    if(dd<1) return; if(dd>16) dd=16;
+    if(dd<1) return;
+    if(dd>16) dd=16;
     lstep=dd;
 }
 
@@ -1274,7 +1277,9 @@ int parse_parms(char *p,objparm *pm,struct objtab *o)
 
     c=o->color_pos;c1=c2=0;
     pm->color[0]=pm->color[1]=0;
-    if(c>0) c1=c; if(c<0) c2=-c; c=c1+c2;
+    if(c>0) c1=c;
+    if(c<0) c2=-c;
+    c=c1+c2;
     t=itemnum(p);if(t<o->required_parms+3*c) return -1;
     if(c1>0 && t>o->required_parms+3*c) t=o->required_parms+3*c;
     pm->pcnt=t-3*c;

@@ -84,9 +84,12 @@ void collapse_item(char *p, int n)
 int getcolor(int r, int g, int b)
 {
     int col;
-    if(r>255) r=255; if(r<0) r=0;
-    if(g>255) g=255; if(g<0) g=0;
-    if(b>255) b=255; if(b<0) b=0;
+    if(r>255) r=255;
+    if(r<0) r=0;
+    if(g>255) g=255;
+    if(g<0) g=0;
+    if(b>255) b=255;
+    if(b<0) b=0;
     col=gdImageColorExact(image, r, g, b);
     if(col==-1) col=gdImageColorAllocate(image,r,g,b);
     return col;
@@ -154,8 +157,10 @@ void scale(double dbuf[], int ibuf[], int cnt)
       scale_buf[i]=x+transx; scale_buf[i+1]=y+transy;
       ibuf[i]=rint((x-xstart+transx)*xscale);
       ibuf[i+1]=rint((y-ystart+transy)*yscale);
-      if(ibuf[i]<-BOUND) ibuf[i]=-BOUND;if(ibuf[i]>BOUND) ibuf[i]=BOUND;
-      if(ibuf[i+1]<-BOUND) ibuf[i+1]=-BOUND;if(ibuf[i+1]>BOUND) ibuf[i+1]=BOUND;
+      if(ibuf[i]<-BOUND) ibuf[i]=-BOUND;
+      if(ibuf[i]>BOUND) ibuf[i]=BOUND;
+      if(ibuf[i+1]<-BOUND) ibuf[i+1]=-BOUND;
+      if(ibuf[i+1]>BOUND) ibuf[i+1]=BOUND;
     }
 }
 
