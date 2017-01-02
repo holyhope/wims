@@ -67,7 +67,7 @@ void output(void)
           cont2: p=find_word_start(p);
           if(*p=='!' || *p==':') {
             if(lastc!='	') printf(". ");
-	    lastc='	';
+            lastc='	';
             cont1: p=strchr(p,'\n');
             if(p==NULL) return;
             if(*(p-1)=='\\') {p++; goto cont1;}

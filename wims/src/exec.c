@@ -371,7 +371,7 @@ void exec_read(char *p)
     if(outputing) phtml_put(p,cache); else var_proc(p,cache);
     readnest--; untrust=t;
     memmove(&m_file,&save,sizeof(WORKING_FILE));
-    if (trace_file) 
+    if (trace_file)
     {
       int i;
       putc('\n',trace_file);
@@ -749,7 +749,7 @@ void href_find_target(char *p)
       memmove(buf1,pp,pe-pp); buf1[pe-pp]=0; substit(buf1);
       if(strncasecmp(buf1,"target=wims_mhelp",strlen("target=wims_mhelp"))==0) {
         if(*pe!=0) *pe++=0;
-	ovlstrcpy(href_target,"wims_help");
+        ovlstrcpy(href_target,"wims_help");
         ref_mhelp=1;
       }
       else {
@@ -1988,10 +1988,10 @@ static void _skip_contents(int isif)
       switch(exec_routine[i].tag & 0xffff) {
         case EXEC_WHILE:
           if(!isif) loop++;
-	  break;
+          break;
         case EXEC_IF:
           if(isif) loop++;
-	  break;
+          break;
         case EXEC_ELSE: {
           if(!isif) break;
           if(loop<=0) return; else break;

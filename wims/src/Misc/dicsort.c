@@ -69,7 +69,7 @@ void singlespace2(char *p)
             pp++;
             gopt: for(p2=pp; isspace(*p2) && *p2!='\n'; p2++);
             if(p2>pp) ovlstrcpy(pp,p2);
-	    pp--;
+            pp--;
           }
           else {
             pp++; if(!isspace(*pp) || *pp=='\n') continue;

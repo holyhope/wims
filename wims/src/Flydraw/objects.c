@@ -238,8 +238,7 @@ void obj_vline(objparm *pm)
 void obj_dline(objparm *pm)
 {
     scale(pm->pd,pm->p,2);
-    myDashedLine(image,pm->p[0],pm->p[1],pm->p[2],pm->p[3],
-		 pm->color[0]);
+    myDashedLine(image,pm->p[0],pm->p[1],pm->p[2],pm->p[3], pm->color[0]);
 }
 
 /* parallel lines.

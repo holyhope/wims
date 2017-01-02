@@ -637,7 +637,7 @@ void parse_query_string(int len, int type)
           p=memstr(p2,b1,var_str+len-p2); if(p>=p3) continue;
           p+=lb; if(p3<var_str+len) {
             while(*p3!='\n' && p3>p2) p3--;
-	    *p3=0;
+            *p3=0;
             p3--; if(*p3=='\r') *p3=0;
           }
           dlen=p3-p;
@@ -663,7 +663,7 @@ void parse_query_string(int len, int type)
                       p5>=p4 && !isspace(*p5) && strchr("/\\:",*p5)==NULL;
                       p5--);
                   if(p5>=p4) p4=p5+1;
-		  if(*p4==0) goto noname;
+                  if(*p4==0) goto noname;
                   if(strstr(p4,"..")!=NULL || *p4=='.')
                     p4="noname.file";
                   setvar("wims_deposit",p4);
@@ -1238,8 +1238,7 @@ int main(int argc, char *argv[], char *envp[])
     parse_ro_names();
     manager_check();
     access_check(0);
-/* this gives some bug on some servers... so desactivated
-  it is really for developing in wims, so no use in general */
+/* it is really for developing in wims, so no use in general */
    if (1==1) {
     if(strstr(tmp_debug,"yes")!=NULL && checkhost(manager_site)>=1)
        trace_file = fopen(mkfname(NULL,"%s/%s",tmp_dir,"trace.txt"),"a");

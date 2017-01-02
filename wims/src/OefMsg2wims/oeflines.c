@@ -198,7 +198,7 @@ char *find_matching2(char *p, char c)
          if(parenth>0 || brak>0 || brace>0) return NULL;
          if(*pp!=c) {
           if(badpar==NULL) badpar=pp;
-	  return NULL;
+          return NULL;
          }
          else break;
      }

@@ -365,7 +365,7 @@ double _evalue(int ord)
           d=evalname[i].val;
           if(evalname[i].f1!=NULL) {
             if(d==0) d=NAN;
-	    if(d==1) d=HUGE_VAL;
+            if(d==1) d=HUGE_VAL;
           }
           break;
       }

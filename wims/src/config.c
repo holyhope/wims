@@ -816,7 +816,7 @@ void define_html_header(void)
            nbuf=mkfname(NULL,"%s/%s/css",class_base,pc);
            th=getvar("class_theme");ti=getvar("class_theme_icon") ;
            if(th==NULL || *th==0) th=getvar("wims_theme");
-	   st=1;
+           st=1;
            if(ti==NULL || *ti==0) ti=getvar("wims_theme_icon");
          }
          else {/* Il faut peut-être changer là aussi pour direction */

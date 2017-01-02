@@ -361,7 +361,7 @@ void t_oneterm(char *p, int num)
       case '>': {
         rel++; p++; if(*p!='=') {tprint(" > "); rel=1; break;} // >
         while(*p=='=') p++;
-	tprint("\\ge "); // >=
+        tprint("\\ge "); // >=
         break;
       }
       case '-': {
