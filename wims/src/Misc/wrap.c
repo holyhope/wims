@@ -19,7 +19,6 @@
 
 #include <unistd.h>
 #include <string.h>
-#include <assert.h>
 
 int main(int argc,char *argv[])
 {
@@ -31,13 +30,11 @@ int main(int argc,char *argv[])
     args[i]=NULL;
     uid1=geteuid(); uid2=getuid(); gid1=getegid(); gid2=getgid();
     if(strchr(args[0],'/')) {
-      assert(setreuid(uid1,uid2)==0);
-      assert(setregid(gid1,gid2)==0);
+      setreuid(uid1,uid2); setregid(gid1,gid2);
       execv(args[0],args);
     }
     else {
-      assert(setreuid(uid1,uid1)==0);
-      assert(setregid(gid1,gid1)==0);
+      setreuid(uid1,uid1); setregid(gid1,gid1);
       execvp(args[0],args);
     }
     return 127;

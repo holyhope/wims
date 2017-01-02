@@ -44,7 +44,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/resource.h>
-#include <assert.h>
+
 int execuid=15999;
 int execgid=15999;
 int must=0;
@@ -114,7 +114,7 @@ void cleantmp(void)
     DIR *sdir_base;
     struct dirent *ses;
     struct stat dst;
-    
+
     if(chdir("../chroot/tmp/sessions")<0) return;
     sdir_base=opendir(".");
     if(sdir_base==NULL) return;
@@ -175,7 +175,7 @@ int main(int argc,char *argv[])
     struct stat st;
     struct rlimit lim;
     char *p, *pp;
-    
+
     if(argc<2) return 0;
     now=time(NULL);
     uid=geteuid();
@@ -233,7 +233,7 @@ int main(int argc,char *argv[])
         goto ex;
     }
     if(chroot("../chroot")==0) {
-        assert(chdir("/tmp")==0);
+        (void)chdir("/tmp");
         lim.rlim_cur=lim.rlim_max=PROC_QUOTA;
         setrlimit(RLIMIT_NPROC,&lim);
         setenv("PATH",chroot_path,1);
@@ -245,13 +245,13 @@ int main(int argc,char *argv[])
             setenv("tmp_dir",tmpbuf,1);
             p=getenv("w_wims_priv_chroot");
             if(p && strstr(p,"tmpdir")!=NULL)
-              assert(chdir(tmpbuf)==0);
+              (void)chdir(tmpbuf);
         }
     }
     else if(test_must()) goto abandon;
     ex:
     if(setregid(execgid,execgid)<0) goto abandon;
-    if(setreuid(execuid,execuid)<0) goto abandon; 
+    if(setreuid(execuid,execuid)<0) goto abandon;
     ex2:
     for(i=0;i<env_rm_cnt;i++) unsetenv(env_rm[i]);
     if(strchr(args[0],'/')) execv(args[0],args); else execvp(args[0],args);

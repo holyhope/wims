@@ -23,7 +23,6 @@
 #include <netdb.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <assert.h>
 
 #include "../includes.h"
 #include "../wimsdef.h"
@@ -146,11 +145,10 @@ int main(int argc, char *argv[])
       port=atoi(p2);
       soc=net_connect(p1); if(soc==-1) return 1;
       c=' '; for(p3=parm; *p3; p3++) {
-	if(*p3=='\n' && c!='\r') assert(write(soc,"\r",1)==1);
-	assert(write(soc,p3,1)==1);
-	c=*p3;
+          if(*p3=='\n' && c!='\r') (void)write(soc,"\r",1);
+          (void)write(soc,p3,1); c=*p3;
       }
-      assert(write(soc,"\r\n\r\n",4)==4);
+      (void)write(soc,"\r\n\r\n",4);
       pt=getenv("w_module");
       if(pt==NULL || *pt==0 || strncmp(pt,"adm/",4)==0 ) {  /* File to post? */
           pt=getenv("w_webget_post"); if(pt!=NULL && *pt!=0) {
@@ -160,7 +158,7 @@ int main(int argc, char *argv[])
             f=fopen(pt,"r"); if(f!=NULL) {
                 do {
                   l=fread(buf,1,sizeof(buf),f);
-                  if(l>0 && l<=sizeof(buf)) assert(write(soc,buf,l)==l);
+                  if(l>0 && l<=sizeof(buf)) (void)write(soc,buf,l);
                 } while(l==sizeof(buf));
                 fclose(f);
             }
@@ -195,7 +193,7 @@ Host: %s\r\n\
       soc=gethttps(p1); goto read;
     }
     soc=net_connect(p1);
-    assert(write(soc,tbuf,strlen(tbuf))==strlen(tbuf));
+    (void)write(soc,tbuf,strlen(tbuf));
 /* header */
     read: if(soc==-1) return 1;
     c=-1;
