@@ -27,6 +27,21 @@ p=!replace line number 1 by 0 in $p
 
 !appendfile wimshome/log/classes/$wims_class/sheets/.sheets :$p
 
+!! --- copy severity of the sheet:
+fsev=!record 0 of wimshome/log/classes/$wims_class/sheets/.severity
+sev=!line $[$sheet+1] of $fsev
+!if $sev!=$empty
+ n=!linecnt $fsev
+ !while $n<$scnt+1
+  fsev=$fsev\
+
+  !increase n
+ !endwhile
+ fsev=!append line $sev to $fsev
+ !writefile wimshome/log/classes/$wims_class/sheets/.severity $fsev
+!endif
+!! ---
+
 scnt=$[$scnt+1]
 sheet=$scnt
 message=$name_duplicateok
