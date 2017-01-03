@@ -89,6 +89,7 @@ to $wims_html_header
  !set wims_ref_class=wims_button
  !href $ $wims_name_giveup
  &nbsp; </p>
+ <div class="wims_msg info small">$name_exo_giveup</div>
  !goto end
 !endif
 
@@ -151,6 +152,7 @@ to $wims_html_header
   <span class="oef_exo_renew">
   !href $renewlink $wims_name_giveup
   </span>
+  <div class="wims_msg info small">$name_exo_giveup</div>
  $
  !else
   <div class="oef_serie_exo spacer">
@@ -170,12 +172,13 @@ to $wims_html_header
   <span class="oef_serie_renew">
   !href $renewlink $wims_name_giveup
   </span>
+ <div class="wims_msg info small">$name_exo_giveup</div>
  $
  !endif
  </div> <!-- id oef_action-->
 !else
  !if $error!=$empty
- <div class="wims_alertmsg">
+ <div class="wims_msg alert">
   !read oef/msg.phtml
  </div>
  !endif
@@ -211,7 +214,7 @@ to $wims_html_header
   !href $renewlink <span class="oef_serie_renew">$wims_name_giveup</span>
   </div>
   <div class="oef_serie_new2">$name_serie_new2</div>
-
+  <div class="wims_msg info small">$name_exo_giveup</div>
  !else
   !if $qnum>1
    <span class="oef_modulescore">
@@ -229,7 +232,7 @@ to $wims_html_header
    !href $renewlink <span class="oef_serie_renew">$name_serie_renew</span>
   $
    !if $wims_sheet=$empty
-    !set wims_ref_class=wims_button wims_secondary
+    !set wims_ref_class=wims_button wims_secondary_button
     !set wims_ref_id=oef_exo_intro
     <span class="oef_exo_intro">
     !href exo_Intro
