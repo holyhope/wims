@@ -26,6 +26,13 @@
 
 !set login=!text select $char_alnum in $login
 !set login=!char 1 to $[$login_max -$limit] of $login
+!set tmp=!charcnt $login
+!if $tmp<$login_min
+  !set tmp=!makelist 0 for x=1 to $login_min-$tmp
+  !set tmp=!items2words $tmp
+  !set login=!nospace $login$tmp
+  !reset tmp
+!endif
 !!set cl=!replace internal / by , in $cl
 !set cl=$(cl[1])
 !if $cl=$empty
@@ -43,14 +50,14 @@ login_init=$login
       !set tt2=!lookup $login_ext in wimshome/log/classes/$cl/.userlist_external
       !if $tt1!=$empty or $tt2!=$empty
 !! user can be both in .userlist and in .teacherlist (see r5260)
-	!if $tt1=$tt2
+	    !if $tt1=$tt2
            login=$tt1
         !else
            login=$tt1$tt2
         !endif
         !exit
       !endif
-      !read adm/class/userinclass $cl,$login
+      !read adm/class/userisinclass $cl,$login
       !set u_exists=$script_reply
       !increase cnt
 !endwhile
