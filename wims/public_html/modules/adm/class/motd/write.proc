@@ -1,9 +1,5 @@
 listuser=!listintersect $listuser and $wims_connectedlogin
-!reset connectedname
-!for user in $wims_connectedlogin
-    n=!positionof item $user in $listiduser
-    connectedname=!append item $(listnameuser[$n]) to $connectedname
-!next user
+nbconnecteduser=!itemcnt $wims_connectedlogin
 
 !if $listuser=$empty
  error=user_notconnected

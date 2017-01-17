@@ -45,6 +45,7 @@ a todos los participantes de la clase, que se mostrará en
 !set name_erase=Effacer
 !set name_change=Modifier
 !set name_all=All
+!set name_allconnected=All connected participant
 !set name_expert0=Si vous désirez sélectionner certains participants, plusieurs méthodes sont proposées.\
 Cochez la méthode désirée.
 !set name_checked=Les participants sélectionnés dans le tableau ci-dessous

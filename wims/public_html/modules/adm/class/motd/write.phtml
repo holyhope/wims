@@ -4,8 +4,18 @@
 !let local_name=!positionof item $user in $listiduser
 !let local_name=$(listnameuser[$(local_name)])
  $name_Introalertmsg1
- <br/>
- !formcheckbox listuser list $wims_connectedlogin prompt $connectedname
+ <br/> 
+ !let nbselect=!itemcnt $listuser
+ <span class="tt wims_login">
+ !if $nbselect=$nbconnecteduser
+  $name_allconnected
+ !else
+  !for k in $listuser
+   !let p=!positionof item $k in $listiduser
+   $(listnameuser[$p]) &nbsp;
+  !next k
+ !endif
+ </span>
  <br />
  $name_Introalertmsg2
  <br />

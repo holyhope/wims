@@ -6,8 +6,18 @@ $name_intro1
 !else
  $name_intro3
  <br/>
- !formcheckbox listuser list $listiduser prompt $listnameuser
- <br />
+ !let nbselect=!itemcnt $listuser
+ <span class="tt wims_login">
+ !if $nbselect=$nbuser
+  $name_all
+ !else
+  !for k in $listuser
+   !let p=!positionof item $k in $listiduser
+   $(listnameuser[$p]) &nbsp;
+  !next k
+ !endif
+ </span>
+ <br/>
 !endif
 $name_intro4
 !href style=student $name_home
@@ -28,7 +38,7 @@ $name_write :
  <input type="hidden" name="job" value="$job" />
 
 !if $speckedit!=no
-  <textarea $wims_id name="motd" cols="70" rows="18">$motd</textarea>
+ <textarea $wims_id name="motd" cols="70" rows="18">$motd</textarea>
 !else
  <textarea name="motd" cols="70" rows="18">$motd</textarea>
 !endif
