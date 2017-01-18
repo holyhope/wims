@@ -12,13 +12,13 @@ var seglength$slib_number = parseFloat('$slib_seglength');\
 var N = 10; var P$slib_number;\
   $brd = JXG.JSXGraph.initBoard('$jxgbox', {axis:true, boundingbox:[xmin$slib_number,ymax$slib_number,xmax$slib_number,ymin$slib_number]});\
     /*CURSOR*/\
-  var txt1 = JXG.GeonextParser.geonext2JS('$slib_f1');\
-  var txt2 = JXG.GeonextParser.geonext2JS('$slib_f2');\
+  var txt1 = $brd.jc.snippet('$slib_f1',true,'x,y');\
+  var txt2 = $brd.jc.snippet('$slib_f2',true,'x,y');\
 /*  $brd.update();*/\
   $brd.suspendUpdate();\
-  var f1_$slib_number = new Function("x", "yy", "var x = yy[0]; var y = yy[1]; var z = " + txt1 + "; return [z];");\
-  var f2_$slib_number = new Function("x", "yy", "var x = yy[0]; var y = yy[1]; var z = " + txt2 + "; return [z];");\
-  var f_$slib_number = new Function('t', 'yy', 'var x = yy[0], y = yy[1];  var z1 = ' + txt1 + '; var z2 = ' + txt2 + '; return [z1,z2];');\
+  var f1_$slib_number = function (x, yy){ return [txt1(yy[0], yy[1])];}\
+  var f2_$slib_number = function (x, yy){ return [txt2(yy[0], yy[1])];}\
+  var f_$slib_number  = function (t, yy){ return [txt1(yy[0], yy[1]), txt2(yy[0], yy[1])]}\
   slopefield(f1_$slib_number,f2_$slib_number,xmin$slib_number,xmax$slib_number,xsep$slib_number,ymin$slib_number,ymax$slib_number,ysep$slib_number,seglength$slib_number);\
 \
    var P$slib_number = $brd.create('point',[xinit$slib_number,yinit$slib_number], {name:'(x_0,y_0)'});\
