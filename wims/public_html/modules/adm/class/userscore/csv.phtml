@@ -115,22 +115,23 @@ $name_data2
  !readproc csv/keyword.proc
  <div class="field">
  <ul>
+   <li>
  !for bas in basic, basic2
   !if $($bas)!=$empty
-   <li>
    !let tmp=!replace password by in $($bas)
    !let tmp=!replace vars by in $($bas)
    !let tmp=!words2items $tmp
    !for k in $tmp
     <input type="checkbox" name="csvdownload" id="csvdownload_$k" value="$k"/><label for="csvdownload_$k">$k</label>
    !next k
-   </li>
   !endif
  !next bas
+   </li>
  !let list_type=sh,shexo,ex,exexo,examduration,ma
  !let list_name=$wims_name_Sheets,$name_indicateur,$wims_name_Examens,$wims_name_Examens ($wims_name_Exercices),\
  $wims_name_Examens ($name_Duration),$name_manualscore
- !let list_keyword=sheets,sheetexo,exams,examexo,examduration,manual
+ !!! list for field "all"
+ !let list_keyword=sheets,sheetexo,exams,examexo,examduration,manuals
  !if $($(list_type[1]))$($(list_type[2]))$($(list_type[3]))$($(list_type[4]))$($(list_type[5]))!=$empty
   <li><input type="checkbox" name="csvdownload" id="csvdownload_allscore" value="allscore"/><label for="csvdownload_allscore">$name_allscore</label></li>
  !endif
