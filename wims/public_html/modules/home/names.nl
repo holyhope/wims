@@ -6,6 +6,7 @@ wims_name_pref = Instellingen
 N_within = onder andere
 N_clear = wissen
 N_go = ga naar
+name_importfromtest=teaching materials from Test Zone.
 N_at = bij
 N_hide = Verbergen
 name_allexampleclass=Alle openbare klassen
