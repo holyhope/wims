@@ -7,10 +7,11 @@
 !set seriesaction=!nosubst $wims_name_change,$wims_name_erase,$wims_name_up
 !set name_duplicateok=Feuille d'exercices dupliquée correctement.
 
-!set name_name=Nom
+!set name_name=!nosubst $wims_name_name
 !set name_ltvalue=Valeur(s)
 
 !let name_shtab=!nosubst $wims_name_number,$wims_name_title,$wims_name_Description,Puntos,Points,$name_weight,$name_dependency,$wims_name_comment,$wims_name_action,Paramètres de la série,$wims_name_feedbackexo
+!set name_qnum=Nb ex. in series
 
 !if $activetest<=0
  !let wims_name_sheetadmin=Página de preparación

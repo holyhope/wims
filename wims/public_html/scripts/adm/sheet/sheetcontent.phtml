@@ -1,10 +1,14 @@
 !! --------------------  affiche le contenu de la feuille $sheet de la classe $wims_class
-!! ce fichier ne contient pas de langue (les mots utilisés sont dans names.phtml du module adm/class/sheet.$lang)
+!! langage is defined in adm/class/sheet/lang/names.phtml.$lang
 
 $table_header
  <caption>$name_content</caption>
  $table_hdtr
-  !for k=1 to 7
+  !for k=1 to 5
+   <th>$(name_shtab[$k])</th>
+  !next k
+   <th>$name_qnum</th>
+  !for k=6 to 7
    <th>$(name_shtab[$k])</th>
   !next k
   <th>$(name_shtab[10])</th>
@@ -23,6 +27,15 @@ $table_header
    <td>$de</td>
    <td>$re</td>
    <td>$we</td>
+   !set pa=!replace internal & by $ $ in $pa
+   !reset qnum
+   !!oef exercises
+   !set qnum=!getopt qnum in $pa
+   !if $qnum=
+   !!J.E. exercises
+     !set qnum=!getopt total_exos in $pa
+   !endif
+   <td>$qnum</td>
    <td>
     !if $dep!=$empty
      $dep

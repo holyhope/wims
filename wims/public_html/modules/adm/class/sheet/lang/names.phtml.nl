@@ -11,6 +11,7 @@
 !set name_ltvalue=Waarde(s)
 
 !let name_shtab=!nosubst No,$wims_name_title,$wims_name_Description,Punten,Weging,Afhankelijkheden,$wims_name_comment,$wims_name_action,Parameters,$wims_name_feedbackexo
+!set name_qnum=Nb ex. in series
 
 !if $activetest<=0
  !let wims_name_sheetadmin=Werkblad aanmaakpagina
