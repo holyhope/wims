@@ -78,17 +78,17 @@ brd=brd$slib_number
   slib_script_cursor=$slib_script_cursor\
    $(slib_cursor[$slib_j;2]) = $brd.createElement('slider', [[$[$slib_xmin+1],$[$slib_ymax-$slib_j-0.5]],[$[round(($slib_xmax+$slib_xmin)/2)],$[$slib_ymax-$slib_j-0.5]],[$(slib_cursor[$slib_j;4..6])]],{name:'$(slib_cursor[$slib_j;2]) ',strokeColor:'black',fillColor:'black', snapWidth:0.1});\
    $(slib_cursor[$slib_j;2])_name=$brd.createElement('text', [$[$slib_xmin+1],$[$slib_ymax-$slib_j], "$(slib_cursor[$slib_j;3])"]);
-  slib_f1=!replace internal $(slib_cursor[$slib_j;1]) by $(slib_cursor[$slib_j;2]).Value() in $slib_f1
-  slib_f2=!replace internal $(slib_cursor[$slib_j;1]) by $(slib_cursor[$slib_j;2]).Value() in $slib_f2
+  slib_f1=!replace internal $(slib_cursor[$slib_j;1]) by ' + $(slib_cursor[$slib_j;2]).Value() + ' in $slib_f1
+  slib_f2=!replace internal $(slib_cursor[$slib_j;1]) by ' + $(slib_cursor[$slib_j;2]).Value() + ' in $slib_f2
 !next
 
 slib_script_main=var $brd = JXG.JSXGraph.initBoard('jsxbox$slib_number', \
   {boundingbox:[$slib_xmin,$slib_ymax,$slib_xmax,$slib_ymin],axis:true,showCopyright:false});\
 \
   $slib_script_cursor\
-  var txt1_$slib_number = JXG.GeonextParser.geonext2JS('$slib_f1');\
-  var txt2_$slib_number = JXG.GeonextParser.geonext2JS('$slib_f2');\
-  f$slib_number = new Function('t', 'yy', 'var x = yy[0], y = yy[1];  var z1 = ' + txt1_$slib_number + '; var z2 = ' + txt2_$slib_number + '; return [z1,z2];');\
+  var txt1_$slib_number = $brd.jc.snippet('$slib_f1',true,'x,y,t');\
+  var txt2_$slib_number = $brd.jc.snippet('$slib_f2',true,'x,y,t');\
+  f$slib_number = function(t, yy){return [txt1_$slib_number(yy[0], yy[1],t), txt2_$slib_number(yy[0], yy[1],t)]};\
   $brd.update();
 !if pos iswordof $slib_sens
  slib_script_main=$slib_script_main\
