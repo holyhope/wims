@@ -342,10 +342,20 @@ void cmd_getscore(char *p)
      slast=uscore[i].last;
      sbest=uscore[i].best;
      slevel=uscore[i].level;
+/* case of one exo in a sheet */
      if(sheet==thissheet && exo==thisexo) {
          score+=thisscore; stry++;
          score2*=oldfactor; score2+=thisscore;
          slast=thisscore;
+    /* one compute the new sbest and slevel */
+         if (uscore[i].high[0] < thisscore) {
+           sbest += (thisscore - uscore[i].high[0]);
+           int k;
+           for (k = 1; 10*k < tscore[i].require && uscore[i].high[k] < thisscore; k++)
+             uscore[i].high[k-1] = uscore[i].high[k];
+           uscore[i].high[k-1] = thisscore;
+           slevel=uscore[i].high[0];
+        }
      }
      if(sheet==256) {
          tscore[i].score=score;
