@@ -1,4 +1,4 @@
-## identifiants de l'exercice: titre, auteur, format 
+## identifiants de l'exercice: titre, auteur, format
 \title{
 \\\toef_var1
 }
@@ -129,57 +129,25 @@ enonceR=
 
 ## ici on donne l'énoncé de l'exercice
 \statement{
-\enonceR
-<br />
-<br />
-<center>
-  <table bgcolor=darkcyan>
+<div>\enonceR</div>
+  <ul class="wims_nopuce">
     \for{k=1 to \rowsnb}{
-    <tr>
-      <td bgcolor=\bg[(2*\k-1)%3+1] align="left">
-        <table>
-	  <tr>
-	    <td bgcolor=sandybrown>
-	      \embed{reply 1,\c1[\k]} 
-	    </td>
-	    <td>
-	     \paf[\k;]
-	    </td>
-	  </tr>
-	</table>
-      </td>
-      <td bgcolor=\bg[(2*\k)%3+1] align="left">
-        <table>
-	  <tr>
-	    <td bgcolor=sandybrown>
-              \embed{reply 1,\c2[\k]} 
-	    </td>
-	    <td>
+      <li>
+	    \embed{reply 1,\c1[\k]} : \paf[\k;]
+	  <li>
+	 }
+	 \for{k=1 to \rowsnb}{
+      <li>
+        \embed{reply 1,\c2[\k]} :
 	     \paf[(\k+\rowsnb);]
-	    </td>
-	  </tr>
-	</table>
-      </td>
-    </tr>
+	 </li>
     }
     \if{\extrarow<>0}{
-    <tr>
-      <td align="center" bgcolor=\bg[\chnbp%3+1] colspan="2">
-        <table>
-	  <tr>
-	    <td bgcolor=sandybrown>
-	      \embed{reply 1,\chnbp} 
-	    </td>
-	    <td align="center"> 
-              \paf[\chnbp;]
-	    </td>
-	  </tr>
-	</table>
-      </td>
-    </tr>
+    <li>
+	      \embed{reply 1,\chnbp} : \paf[\chnbp;]
+	</li>
     }
-  </table>
-</center>
+  </ul>
 }
 
 ## champ de soumission et analyse de la réponse
@@ -187,11 +155,11 @@ enonceR=
 
 ## indications éventuelles
 \hint{
-  <div style="background-color:moccasin;width:80%"> 
+  <div class="oefhint">
   \if{\comN>1}{
       \com
       }{
-      <font color=magenta><span class="tt">désolé: il n' y a pas d'indication.</span></font> 
+      <div class="wims_msg info">Désolé: il n' y a pas d'indication.</div>
       }
   </div>
 }

@@ -13,29 +13,29 @@ wims_prefix=class user tmp toef
 !endif
 ###########################################################
 !if $cmd=reply and $status=waiting
-     
+
   #---------------------
   # vidange des alertes |
-  #--------------------- 
+  #---------------------
   exalert=
-  
+
   #---------------------------------------
   # si on veut modifier des codes sources |
   #---------------------------------------
-  !if $chexo>1 
+  !if $chexo>1
     !if $fichsrc=$empty
       exalert=$(alerts[6;])
       !exit
     !endif
-    
+
     !read recupsrc
     !exit
   !endif
-  
+
   #-----------------------------
   # sortir si retour en arrière |
   #-----------------------------
-  !if $navig!=$etape 
+  !if $navig!=$etape
     chronobs=0
     chronfoncs=0
     !if $etape=3
@@ -59,12 +59,12 @@ wims_prefix=class user tmp toef
     foncsrep=
     multirep=
   !endif
- 
+
   #------------------------------------
   # aller lire la procedure appropriée |
   #------------------------------------
-  !if $navig=$etapesnb     
-    exalert=<font color="red"><b>Cette étape est la dernière</b></font>
+  !if $navig=$etapesnb
+    exalert=<span class="color:red">Cette étape est la dernière</span>
     !exit
    !else
     !read $prefixdir/proc$(navig)
