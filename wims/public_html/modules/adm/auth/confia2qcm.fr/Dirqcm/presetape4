@@ -1,109 +1,69 @@
 !!! fichier de présentation de l'étape 4 !!!
-  <span class="color:darkcyan" size="+1"> Etape $etape: <u>rédaction de l'énoncé</u>
-  </span>
-  <br />
-<table class="wimscenter">
-  <tr>
-    <td>
-      <p style="background-color:lightblue">
+  <h3 class="wimscenter"> Etape $etape: rédaction de l'énoncé</h3>
+      <p>
         Modifiez l'énoncé type suivant pour l'adapter à votre exercice.
       </p>
-    </td>
-  </tr>
   !if ($propsnb>2 and $ckchnb=0)
     !set ckchnb=2
     !set par_defaut=<code>Par défaut: un nombre aléatoire compris entre 2 et $propsnb</code>.
-  <tr>
-    <td>
-      <div style="background-color:darkseagreen">
-          N'oubliez pas de préciser au passage le nombre de
-	  possibilités de choix à afficher avec l'énoncé. &nbsp;
+    <div style="background-color:darkseagreen">
+    N'oubliez pas de préciser au passage le nombre de possibilités de choix à
+    afficher avec l'énoncé.
 	  <span style="background-color:white">$par_defaut </span>
       </div>
-    </td>
-  </tr>
   !endif
-</table>
-<hr />
-<b>Enoncé type:</b>
-<br />
+<h4>Enoncé type</h4>
+<div>
 $enonceR
-<br />
-<hr />
-<div style="background-color:burlywood">
+</div><div>
   Modifiez le code source ci-dessous pour l'adapter à votre exercice.
-<hr />
-<b>Note</b>: dans le fichier source, la question est stockée dans
-la variabe <em><span class="color:red">obj</span></em> et est invoquée en entrant
+</div>
+<div class="wims_remark"><b>Note</b>: dans le fichier source, la question est stockée dans
+la variable <em><span class="color:red">obj</span></em> et est invoquée en entrant
 la <b>commande</b> <code><span class="color:red">\obj</span></code>.
  </div>
-<hr />
 
 !set wims_backslash_insmath=no
 !set enonceR=!reinput $enonceR
 
-<table class="wimscenter wimsborder">
-  <tr>
-    <th>
-      Texte à modifier
-    </th>
-  </tr>
-  <tr>
-    <td>
+<h4>Texte à modifier</h4>
 <textarea name="enonceR" rows="20" cols="70">
 $enonceR
 </textarea>
-    </td>
-  </tr>
-</table>
 
 !if $propsnb>2
-<table border="2">
-  <tr>
-    <th bgcolor="lightblue" colspan="2">
-      Nombre de possibilités de choix
-    </th>
-  </tr>
-  <tr>
-    <td bgcolor="wheat">
+<h4>Nombre de possibilités de choix</h4>
+   <ul><li>
       <input type="radio" name="ckchnb" value="0"
       !if $ckchnb=0
-        checked
+        checked="checked"
       !endif
       /> Toutes
-    </td>
-    <td bgcolor="turquoise" class="nowrap">
+    </li><li>
       <input type="radio" name="ckchnb" value="1"
         !if $ckchnb=1
-	  checked
+	  checked="checked"
 	!endif
        />
         Afficher <input size="5" name="fixchnb" value="$fixchnb" /> possibilités (au moins 2).
-     </td>
-   </tr>
-   <tr>
-     <td bgcolor="azure" class="nowrap">
+    </li><li>
        <input type="radio" name="ckchnb" value="2"
          !if $ckchnb=2
-	  checked
+	  checked="checked"
 	!endif
 	/>
          Nombre aléatoire compris entre 2 et $propsnb
-     </td>
-     <td bgcolor="wheat" class="nowrap">
+ </li><li>
        <input type="radio" name="ckchnb" value="3"
          !if $ckchnb=3
-	  checked
+	  checked="checked"
 	!endif
 	/>
          Nombre aléatoire compris entre <input size="5" name="borng" value="$borng" /> et
 	 <input size="5" name="bornd" value="$bornd" />
-     </td>
-   </tr>
-</table>
+</li></ul>
 !endif
 
-<br />
 !if $multirep=1
   <div style="text-align:justify;background-color:lightblue;width:65%">
     Certaines de vos questions comportent plusieurs réponses.
