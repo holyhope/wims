@@ -41,8 +41,24 @@ dd=$(reply$i)
 :nocheck
 reply$i=$dd
 m_reply$i=$dd
-reply_$i=!items2words $dd
+!distribute items $(oef_answer_option$i) into sizeh,sizev,sizei,sizej
+!set rightcolor=#87ceeb
+!set align_option=!getopt align in $(replyoption$i)
+!set align_option=!tolower $align_option
+!bound align_option within left,right,center default center
 
+!!reply_$i=!items2words $dd
+!set dd_cnt=!itemcnt $dd
+reply_$i=
+!for a = 1 to $dd_cnt
+  reply_$i=$(reply_$i)\
+  <div class="inline" style="vertical-align:middle;text-align:$align_option;background-color:$rightcolor;width:$(sizeh)px;height:$(sizev)px;">\
+  $(dd[$a])\
+  </div>
+  !if $a=$[(floor($a/$sizej))*$sizej]
+     reply_$i=$(reply_$i)<br/>
+  !endif
+!next
 !if $wims_read_parm=nocompare
  !exit
 !endif
