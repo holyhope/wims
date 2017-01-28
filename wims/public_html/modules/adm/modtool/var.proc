@@ -38,8 +38,8 @@ wims_nw=job mod existing serial_number auth_login auth_passwd \
 wims_nr=wims_sesrandom
 
 #############################################################
-jobs=modname create flist index edfile showfile delfile delconfirm \
-	backup restore copy move del publish prop diff binfile
+jobs=modname create flist index edfile showfile delfile delconfirm\
+	backup restore copy move del publish prop diff binfile changefile changeconfirm
 maxlist=100
 sellist=10
 alnum=0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
@@ -166,7 +166,7 @@ trans_lang=!words2items $i_translation_language
   !read adm/validation/validate.proc
 !endif
 
-!if $job iswordof showfile edfile binfile index publish diff backup move copy
+!if $job iswordof showfile edfile binfile index publish diff backup move copy changefile changeconfirm
   !set wims_ariane=!append line modcontent,1,cmd=reply&jobreq=flist\
 to $wims_ariane
 !endif

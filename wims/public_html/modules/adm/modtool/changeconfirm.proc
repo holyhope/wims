@@ -1,0 +1,58 @@
+
+!read scripts/getindex $mod
+!if $title=$empty
+ job=modname
+ !changeto modname.proc
+!endif
+!if $fnewname=$fname
+  error=nochange
+!exit
+!endif
+allowchar=/.-_$alnum
+fname=!word 1 of $fname
+fname=!text select $allowchar in $fname
+c=!char 1 of $fname
+!if $c=. or $c=/ or .. isin $fname
+ !goto badname
+!endif
+!read files
+!if $fname notitemof $files
+ :badname
+ error=bad_fname
+ lastfname=$fname
+ job=flist
+ !changeto flist.proc
+!endif
+allowchar=/._$alnum
+fnewname=!word 1 of $fnewname
+fnewname=!text select $allowchar in $fnewname
+c=!char 1 of $fnewname
+!if $c=. or $c=/ or .. isin $fnewname
+ !goto badname
+!endif
+!read files
+!if $fnewname isitemof $files
+ error=bad_fname_already
+ lastfname=$fname
+ job=flist
+ !changeto flist.proc
+!endif
+!if $fnewname=$empty
+ job=flist
+ !changeto $job.proc
+!endif
+
+moddir=modules/devel/$auth_login/$mod
+!if ../src/ isin ../$fnewname
+ mkdef=src2def 2>/dev/null
+!else
+ !reset mkdef
+!endif
+test=!sh cd $moddir; ls
+!sh cd $moddir\
+  mkdir -p .deleted\
+  cp $fname .deleted\
+  mv $fname $fnewname\
+  $mkdef
+
+wims_module_log=delete $mod/$fname
