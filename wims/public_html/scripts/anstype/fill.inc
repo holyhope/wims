@@ -2,7 +2,6 @@
 !set inputsize=!translate x to , in $inputsize
 !set inputsize=!items2words $inputsize
 !distribute words $inputsize into sizeh,sizev,sizei,sizej
-!default sizej=1
 !bound sizev between integer 5 and 500 default 20
 !bound sizeh between integer 5 and 1000 default 80
 !bound sizei between integer 1 and 100 default $
@@ -18,6 +17,8 @@ $ in $input_rg
 !set input_1=!line 1 of $input_rg
 !set n=!itemcnt $input_1
 !default sizei=$n
+!bound sizej between integer 1 and $sizei default 1
+!set oef_answer_option$i=$sizeh,$sizev,$sizei,$[ceil($sizei/$sizej)]
 !if $fillstarts=$empty
  !set filltotal=$sizei
  !set fillstarts=0
@@ -45,9 +46,9 @@ $ in $input_rg
  !if keeporder notwordof $wims_fill_option
    !set input_rg=!lines2items $input_rg
  !else
- !!on vérifie que la bonne réponse est bien dans la liste, si non on la rajoute
+ !!check the good answer is in the list, else add it
    !set input_rg2=!lines2items $input_rg
-   !set input_rg=!line 2 to -1  of $input_rg
+   !set input_rg=!line 2 to -1 of $input_rg
    !set l_=!listcomplement $input_rg in $input_rg2
    !if $l_!=$empty
      !set input_rg=$l_,$input_rg
