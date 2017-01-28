@@ -155,6 +155,7 @@ distracteur
 \text{props=wims(tolower \prop)}
 \text{alls=wims(tolower \all)}
 \text{size=\size1 x \max2}
+\text{sizev=\size x \max2}
 \text{rep=item(1..\prop_cnt,wims(makelist r x for x=1 to 10))}
 \steps{\rep}
 \integer{distc=\dist!= ? 1 : 0}
@@ -170,17 +171,26 @@ distracteur
 \pre
 </div>
 <table class="wimsnoborder">
-\for{k=1 to \prop_cnt}{
- <tr><th>\prop[\k]</th>
- <td style="text-align:left">\embed{reply \k, \size}
- </td></tr>
-}
+\if{vertical iswordof \option}{
+  <tr>\for{k=1 to \prop_cnt}{<th>\prop[\k]</th>}</tr>
+  <tr>\for{k=1 to \prop_cnt}{
+    <td style="text-align:left">\embed{reply \k, \sizev}</td>}
+  </tr>
+}{
+  \for{k=1 to \prop_cnt}{
+   <tr>
+     <th>\prop[\k]</th>
+     <td style="text-align:left">\embed{reply \k, \size}</td>
+   </tr>
+  }
+ }
 </table>
-\post}
+\post
+}
 
 :%%%%%%%%%%%%%      不要改动以下的命令        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\answer{\prop[1]}{\r1;\all}{type=dragfill}
+\answer{\prop[1]}{\r1;\all,\dist}{type=dragfill}
 \answer{\prop[2]}{\r2}{type=dragfill}
 \answer{\prop[3]}{\r3}{type=dragfill}
 \answer{\prop[4]}{\r4}{type=dragfill}
@@ -218,16 +228,18 @@ text{totans=wims(replace internal &#39; to ' in \totans)}
   \text{check=\check 0,}
  }
 }
-\integer{cat=0}
+
 \if{\dist!=}{
  \for{t=1 to 1}{
-  \text{all=\all,\dist}
-  \integer{cat=\dist[\t] iswordof \totans[\r]?\r}
-  \if{\cat = 0}{
+   \integer{cat=0}
+   \for{r=1 to \prop_cnt}{
+    \integer{cat=\dist[\t] iswordof \totans[\r]?\r}
+   }
+ \if{\cat = 0}{
    \text{clean=\clean \dist[\t] \noclass,}
    \text{check=\check 1,}
   }{
-   \text{clean=\clean \estun \props[\cat],}
+   \text{clean=\clean \dist[\t] \estun \props[\cat],}
    \text{check=\check 0,}
   }
  }

@@ -89,8 +89,11 @@ mucca,mammiferi
 }
 
 :Opzioni dell'esercizio.
+<ul><li>
 L'opzione <span class="wims_code_words">shuffle</span> permette di cambiare l'ordine in cui le categorie sono elencate.
-\text{option=}
+</li><li>
+ L'option <span class="wims_code_words">vertical</span> allows a vertical disposition.
+</li></ul>\text{option=}
 
 :Testo che precede la tabella. Sono permessi comandi html.
 \text{pre=Ordina i seguenti animali a seconda del loro genere.}
@@ -162,6 +165,7 @@ distracteur
 \text{props=wims(tolower \prop)}
 \text{alls=wims(tolower \all)}
 \text{size=\size1 x \max2}
+\text{sizev=\size x \max2}
 \text{rep=item(1..\prop_cnt,wims(makelist r x for x=1 to 10))}
 \steps{\rep}
 \integer{distc=\dist!= ? 1 : 0}
@@ -178,13 +182,22 @@ in upper case, or \props[4] in lower case.
 \pre
 </div>
 <table class="wimsnoborder">
-\for{k=1 to \prop_cnt}{
- <tr><th>\prop[\k]</th>
- <td style="text-align:left">\embed{reply \k, \size}
- </td></tr>
-}
+\if{vertical iswordof \option}{
+  <tr>\for{k=1 to \prop_cnt}{<th>\prop[\k]</th>}</tr>
+  <tr>\for{k=1 to \prop_cnt}{
+    <td style="text-align:left">\embed{reply \k, \sizev}</td>}
+  </tr>
+}{
+  \for{k=1 to \prop_cnt}{
+   <tr>
+     <th>\prop[\k]</th>
+     <td style="text-align:left">\embed{reply \k, \size}</td>
+   </tr>
+  }
+ }
 </table>
-\post}
+\post
+}
 
 :%%%%%%%%%%%%% Non modificare nulla da qui in poi. %%%%%%%%%%%%%%%%%
 
