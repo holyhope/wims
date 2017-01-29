@@ -1,5 +1,14 @@
 <h2 class="wimscenter">CSS</h2>
 
 !set a=!record 0 of wimshome/public_html/bases/sys/css_classes
+!set a=!nonempty lines $a
+!set acnt=!linecnt $a
 
-!line 2 to -1 of $a
+<table class="wimsborder wimscenter">
+!for j = 2 to $acnt
+!set aa=!line $j of $a
+!if $(aa[1])!=$empty
+  <tr><th>$(aa[1])</th><td>$(aa[2..-1])</td></tr>
+!endif
+!next
+</table>
