@@ -87,11 +87,12 @@ void dispatch_log(void)
     fflush(NULL);
     pid=fork(); if(pid>0) {addfork(pid,1); return;}
     close(commsock);
-    call_sh(1,"for f in %s*; do mv $f $f.bb 2>/dev/null; done;\n\
+    call_sh(1,"ls %s* 2>/dev/null >/dev/null || exit;\n\
+    for f in %s*; do mv $f $f.bb; done;\n\
 sleep 1;\n\
-cat %s*.bb >%s 2>/dev/null;\n\
+cat %s*.bb >%s;\n\
 rm -f %s*.bb",
-          TEMP_LOG_FILE+3,TEMP_LOG_FILE+3,TEMP_LOG_2,TEMP_LOG_FILE+3);
+          TEMP_LOG_FILE+3,TEMP_LOG_FILE+3,TEMP_LOG_FILE+3,TEMP_LOG_2,TEMP_LOG_FILE+3);
     f=fopen(TEMP_LOG_2,"r"); if(f==NULL) exit(0);
     fseek(f,0,SEEK_END); l=ftell(f); if(l<=0)
       {fclose(f); unlink(TEMP_LOG_2); exit(0);}
