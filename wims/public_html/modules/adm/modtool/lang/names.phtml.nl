@@ -42,7 +42,10 @@ into name_files_src,name_files_cpp, name_files_other,name_files_lang,name_files_
 !set name_replace=een vervangend bestand&nbsp;
 !set name_addfile=Voeg een nieuw bestand toe&nbsp;
 !set name_successfile=Het bestand is opgemonen in de module.
-!set name_changefile=Change the file name
+!set name_nosuccessfile=The file has not been uploaded in the module.\
+  Check that its name does not contain a stressed letter or \
+  one of the following characters
+!set name_changefile=Rename
 !set name_changenamefile=New name of the file
 !set name_warning_changenamefile=Be cautious, changing the file name can break
   worksheets in virtual classes.\
