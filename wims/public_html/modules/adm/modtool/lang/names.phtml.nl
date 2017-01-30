@@ -47,7 +47,7 @@ into name_files_src,name_files_cpp, name_files_other,name_files_lang,name_files_
   one of the following characters
 !set name_changefile=Rename
 !set name_changenamefile=New name of the file
-!set name_warning_changenamefile=Be cautious, changing the file name can break
+!set name_warning_changenamefile=Be cautious, changing the file name can break\
   worksheets in virtual classes.\
   That is in particular the case of exercise files with extenion
 
