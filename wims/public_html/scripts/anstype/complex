@@ -5,18 +5,26 @@
    reply$i=!replace internal , by . in $(reply$i)
    replyGood$i=!replace internal . by ,  in $(replygood$i)
   !endif
+  !else
+    replyGood$i=$(replygood$i)
+  !endif
 !endif
-
+!if j iswordof $(replyoption$i) and j isvariableof $(reply$i)
+   replyGood$i=!mathsubst i=j in $(replyGood$i)
+!endif
 reply$i=!rawmath $(reply$i)
 reply$i=!trim $(reply$i)
 parleft=(
 parright=)
 dd=$(reply$i)
+!if j iswordof $(replyoption$i)
+  dd=!mathsubst j=i in $dd
+!endif
 c=!char 1 of $dd
 !if $c=+ or $c=-
  dd=!char 2 to -1 of $dd
 !endif
-test=!exec pari $(reply$i)
+test=!exec pari $dd
 testimg=!exec pari abs(imag($test))
 !if $computeanswer!=yes
   !if ( ^ isin $dd or ( . isin $dd and / isin $dd ) )
@@ -55,7 +63,9 @@ testimg=!exec pari abs(imag($test))
 !endif
 
 m_reply$i=!mathsubst I=i in $(m_reply$i)
-
+!if j iswordof $(replyoption$i)
+  m_reply$i=!mathsubst i=j in $(m_reply$i)
+!endif
 !if $test_comma=yes
   m_reply$i=!replace internal . by , in $(m_reply$i)
   reply_$i= $(m_reply$i)
@@ -67,7 +77,11 @@ m_reply$i=!mathsubst I=i in $(m_reply$i)
  !endif
  !exit
 !endif
-good=!exec pari $(replygood$i)
+ good=$(replygood$i)
+!if j iswordof $(replyoption$i)
+  good=!mathsubst j=i in $(replygood$i)
+!endif
+good=!exec pari $good
 !if NaN isin $good or Inf isin $good or $good=$empty
  Test=bad $i
  !exit
