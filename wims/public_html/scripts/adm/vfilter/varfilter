@@ -22,6 +22,8 @@
    !set varfilter_cnt=!linecnt $varfilter
    !for v=1 to $varfilter_cnt
     var_line=!singlespace $(varfilter[$v;])
+    var_line=!replace internal $ =$ by = in $var_line
+    var_line=!replace internal $= $ by = in $var_line
     var_line=!replace $ $ by , in $var_line
 # check name of varfilter (valid value are not checked maybe we should ??) bad name are deleted
     n_=!itemcnt $var_line
