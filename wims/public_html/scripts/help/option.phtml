@@ -9,17 +9,25 @@
 $ in $name
      !distribute lines $name2 into bidon,name
    !endif
+   !set name=!words2items $name
+   !if $name=radiocheckbox
+     !set name=radio,checkbox
+   !endif
    !set list_=!append item $name to $list_
   !next
 !next
 !set list_=!sort item $list_
 <table class="blockcenter wimsborder">
 !for f in $list_
-  !set opt=!lookup :option in help/anstype.fr/$f.phtml
+  !if $f iswordof radio checkbox
+    !set opt=!lookup :option in help/anstype.fr/radiocheckbox.phtml
+  !else
+    !set opt=!lookup :option in help/anstype.fr/$f.phtml
+  !endif
   !if $opt!=$empty
 <tr><td>
 !href cmd=help&special_parm=reply,$f#_$f $f
-</td><td>$opt</td></tr>
+</td><td style="text-align:left">$opt</td></tr>
   !endif
 !next
 </table>
