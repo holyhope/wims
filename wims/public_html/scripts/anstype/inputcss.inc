@@ -1,5 +1,4 @@
 
-
 !set inputoption=!replace internal $	$ by $\
 $ in $inputsize
 !set inputsize=!line 1 of $inputoption
