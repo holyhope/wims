@@ -148,26 +148,28 @@ to $wims_html_header
  !endif
 
  !if $qnum<=1
-  !set wims_ref_class=wims_button wims_secondary_button
-  !set wims_ref_id=oef_renew
   !if $jquery_defined=yes
     !! Displays a dialog box explaining how the "giveup" button works.
-    <script>
+    <script type="text/javascript">
       $$( function() {
-        $$( "#exo_giveup" ).dialog({autoOpen: false});
+        $$( "#exo_giveup" ).dialog(
+          {autoOpen: false,
+           modal: true
+          });
         $$( "#exo_giveup_opener" ).on( "click", function() {
           $$( "#exo_giveup" ).dialog( "open" );
         });
       });
     </script>
+    <button class="wims_button wims_secondary_button" type="button" data-toggle="exo_giveup" id="exo_giveup_opener">$wims_name_giveup</button>
   !endif
-
-  <span class="oef_exo_renew">
-    !href $renewlink $wims_name_giveup
-  </span>
-  <button class="wims_button_help" type="button" data-toggle="exo_giveup" id="exo_giveup_opener">?</button>
   <div class="dropdown-pane wims_msg info small" id="exo_giveup" title="$wims_name_giveup" data-dropdown>
     $name_exo_giveup
+    <div class="oef_exo_renew wimscenter">
+      !set wims_ref_class=wims_button wims_warning
+      !set wims_ref_id=oef_renew
+      !href $renewlink $wims_name_giveup
+    </div>
   </div>
  $
  !else
