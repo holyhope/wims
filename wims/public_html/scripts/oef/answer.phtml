@@ -33,8 +33,9 @@
   !else
   !! could have been defined for another reply
    !if $display_noanalyze!=yes
-    !if ($(replytype$i) iswordof radio checkbox mark flashcard numeric or legend iswordof $(replyoption$i)) and ?analyze notin $(replygood$i) \
-     and $wims_isexam<1
+    !if (($(replytype$i) iswordof radio checkbox mark flashcard numeric and nolegend notwordof $(replyoption$i))\
+      or legend iswordof $(replyoption$i)) \
+      and ?analyze notin $(replygood$i) and $wims_isexam<1
 
      !if $(diareply$i)!=good or $(partialgood$i)=yes or $(precreply$i)=yes
       !set display_oeflegend=yes
