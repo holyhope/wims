@@ -45,6 +45,7 @@ into name_files_src,name_files_cpp, name_files_other,name_files_lang,name_files_
 !set name_nosuccessfile=The file has not been uploaded in the module.\
   Check that its name does not contain a stressed letter or \
   one of the following characters
+!set name_successdeletefile=has been deleted from the directory
 !set name_changefile=Rename
 !set name_changenamefile=New name of the file
 !set name_warning_changenamefile=Be cautious, changing the file name can break\
