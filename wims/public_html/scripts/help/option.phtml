@@ -17,7 +17,8 @@ $ in $name
   !next
 !next
 !set list_=!sort item $list_
-<table class="blockcenter wimsborder">
+$table_header
+$table_hdtr<th>$wims_name_name</th><th>Option</th></tr>
 !for f in $list_
   !if $f iswordof radio checkbox
     !set opt=!lookup :option in help/anstype.fr/radiocheckbox.phtml
@@ -25,7 +26,7 @@ $ in $name
     !set opt=!lookup :option in help/anstype.fr/$f.phtml
   !endif
   !if $opt!=$empty
-<tr><td>
+$table_tr<td>
 !href cmd=help&special_parm=reply,$f#_$f $f
 </td><td style="text-align:left">$opt</td></tr>
   !endif
