@@ -1,0 +1,162 @@
+#!/bin/sh
+
+########################################################################
+########################################################################
+# script pour reperer des erreurs html dans les modules pedagogiques
+########################################################################
+tidy=/usr/local/bin/tidy
+OUTDIR=result
+#Executer ce script depuis un dossier vide ou presque
+# argument l'adresse du module, par exempple H2/analysis/oeftoto.fr
+# sans argument parcourt tous les modules (hors devel)
+
+# les commandes principales a adapter dans le cas d'un module non oef ou non document si
+##le script  validator_clean.pl (adapter selon l'endroit ou se trouve w3c-validator.py
+## wget "http://127.0.0.1/wims/wims.cgi?cmd=new&module=__parmetre_de_lexo__ -nv -O  test.html ;
+## python $HOME/wimssvn/devtools/w3c-validator.py test.html 2>&1 resultat
+## $HOME/wimssvn/devtools/validator_clean.pl
+##
+## usage (results in validation/ )
+## look for modules in zone
+##./checkhtmlwims
+## or
+## ./checkhtmlwims U1/analysis/oefderint.fr
+##ATTENTION = etre en mode non debug (sinon la recuperation des sessions ne fonctionne pas)
+## il faudrait faire autrement pour les detruire.
+
+wimsdir=$HOME/wims
+moddir="$wimsdir/public_html/modules"
+zone='E1 E2 E3 E4 E5 E6 H1 H2 H3 H4 H5 H6 U1 U2 U3 U4 Lang'
+## change it if you want all modules of a zone
+## FIXME !
+zone='E1'
+wordtosearch="missing"
+searchmathml="ERROR"
+searchmathml2="Unknown"
+configdir=.
+
+#tidy=$tidy -qe --doctype html5 -latin1 -config $config/config.txt
+##https://github.com/srackham/w3c-validator/blob/master/w3c-validator.py
+validator="python $configdir/w3c-validator.py"
+cleanup="$configdir/validator_clean.pl"
+
+mkdir -p $OUTDIR
+#rm -f html.log;rm -f scorelog ;rm -f htmldoclog ;rm -f pari.log;rm -f maxima.log;rm -f gap.log;rm -f octave.log;rm -r mathml.log
+
+mot='!set exolist  =!char 1 to -2 of'
+forsession='The server is under debug mode. Your session: '
+### chercher la liste des exos
+###!set exolist  =!char 1 to -2 of mult1,mult2,mult3,mult4,mult5,mult6,mult7,mult8,division1,division2,division3,
+###dans Exindex
+check ( ) {
+  mod=$1
+  outputdir=$OUTDIR/$2/$3$4
+  mkdir -p $outputdir
+  rm -f $outputdir/html.log $outputdir/scorelog $outputdir/pari.log $outputdir/maxima.log $outputdir/gap.log $outputdir/octave.log $output/mathml.log
+
+  author=`grep author $moddir/$mod/INDEX | sed -e "s/author=//g"`
+  email=`grep email $moddir/$mod/INDEX | sed -e "s/address=//g"`
+  category=`grep category $moddir/$mod/INDEX | sed -e "s/category=//g"`
+  message=`wget "http://127.0.0.1/wims/wims.cgi?module=$mod" -nv -O  test.html ; $validator test.html  2>&1; `
+  if [ "$message" ] ; then
+    echo "$author\t$email\tmodule=$mod\tintro\n$message" >> $outputdir/htmllog ;
+  fi
+  if [ "$category" = "document" ] ; then
+    lblock=`ls $moddir/$mod/doc/1/*.def` ;
+    for bl in $lblock ; do
+#####doc=1
+      block=`basename $bl .def`
+      message=`wget "http://127.0.0.1/wims/wims.cgi?module=$mod&doc=1&block=$block&job=read" -nv -O  test.html ; $validator test.html  2>&1; `
+     # session=`grep -e "$forsession\s*[[:alnum:]]" test.html | sed -e "s/The server is under debug mode. Your session: //g" | sed -e "s|. <br />||g" sed -e "s| ||g"` ;
+      if [ "$message" ] ; then
+       echo "$author\t$email\tmodule=$mod block=$block\n$message" >> $outputdir/html.log ;
+      fi ;
+      mathml=`grep "$searchmathml" test.html` ;
+      if [ "$mathml" ] ; then
+       echo "$author\t$email\tmodule=$mod block=$block\t$mathml\n" >> $outputdir/mathml.log
+      fi
+      mathml=`grep "$searchmathml2" test.html` ;
+      if [ "$mathml" ] ; then
+       echo "$author\t$email\tmodule=$mod block=$block\t$mathml\n" >> $outputdir/mathml.log
+      fi
+      pari=`grep -A4 'ERROR from pari' test.html`
+      if [ "$pari" ] ; then
+       echo "$author\t$email\tmodule=$mod&block=$block\t$pari\n" >> $outputdir/pari.log ;
+      fi ;
+      maxima=`grep -A4 'ERROR from maxima' test.html`
+      if [ "$maxima" ] ; then
+       echo "$author\t$email\tmodule=$mod&block=$block\t$maxima\n" >> $outputdir/maxima.log ;
+      fi ;
+      octave=`grep -A4 'ERROR from octave' test.html`
+      if [ "$octave" ] ; then
+       echo "$author\t$email\tmodule=$mod&block=$block\t$octave\n" >> $outputdir/octave.log ;
+      fi ;
+      gap=`grep -A4 'ERROR from gap' test.html`
+      if [ "$gap" ] ; then
+       echo "$author\t$email\tmodule=$mod&block=$block\t$gap\n" >> $outputdir/gap.log ;
+      fi ;
+     if [ "$session" ] ; then
+      # rm -rf $wimsdir/tmp/sessions/$session
+      # rm -rf $wimsdir/sessions/$session
+      echo $session
+     fi ;
+    done ;
+  else
+    lexo=`grep "$mot" "$moddir/$mod/Exindex" | sed -e "s/$mot//g"| sed -e "s/,/ /g"`
+    scoring=`grep scoring $moddir/$mod/INDEX`
+    pari='' ;
+    for exo in $lexo ; do
+     message=`wget "http://127.0.0.1/wims/wims.cgi?module=$mod&exo=$exo&cmd=new" -nv -O  test.html ; $validator test.html  2>&1 ;`
+     session=`grep -e "$forsession\s*[[:alnum:]]" test.html | sed -e "s/The server is under debug mode. Your session: //g" | sed -e "s|. <br />||g" | sed -e "s| ||g"` ;
+
+     if [ "$message" ] ; then
+       echo "$author\t$email\tmodule=$mod&exo=$exo\n$message" >> $outputdir/html.log ;
+     fi ;
+     ## inutile d'utiliser tidy
+     mathml=`grep "$searchmathml" test.html` ;
+      if [ "$mathml" ] ; then
+       echo "$author\t$email\tmodule=$mod&exo=$exo\t$mathml\n" >> $outputdir/mathml.log
+      fi
+     mathml=`grep "$searchmathml2" test.html` ;
+      if [ "$mathml" ] ; then
+       echo "$author\t$email\tmodule=$mod&exo=$exo\t$mathml\n" >> $outputdir/mathml.log
+      fi
+     pari=`grep -A4 'ERROR from pari' test.html`
+     if [ "$pari" ] ; then
+       echo "$author\t$email\tmodule=$mod&exo=$exo\t$pari\n" >> $outputdir/pari.log ;
+     fi ;
+     maxima=`grep -A4 'ERROR from maxima' test.html`
+     if [ "$maxima" ] ; then
+       echo "$author\t$email\tmodule=$mod&exo=$exo\t$maxima"  >> $outputdir/maxima.log ;
+     fi ;
+     octave=`grep -A4 'ERROR from octave' test.html`
+     if [ "$octave" ] ; then
+       echo "$author\t$email\tmodule=$mod&exo=$exo\t$octave"  >> $outputdir/octave.log ;
+     fi ;
+     gap=`grep -A4 'ERROR from gap' test.html`
+     if [ "$gap" ] ; then
+       echo "$author\t$email\tmodule=$mod&exo=$exo\t$gap"  >> $outputdir/gap.log ;
+     fi ;
+     if [ "$session" ] ; then
+      # rm -rf $wimsdir/tmp/sessions/$session
+      # rm -rf $wimsdir/sessions/$session
+      echo $session
+     fi;
+    done ;
+    echo "$scoring\t$author\t$email\tmodule=$mod"  >> $outputdir/scorelog ;
+ fi
+}
+if [ $1 ] ; then
+   echo $1
+   check "$1" one
+else
+  for z in $zone; do
+    for c in `ls "$moddir/$z"` ; do
+      for a in `ls "$moddir/$z/$c"` ; do
+        check $z/$c/$a $z $c $a
+      done ;
+    done ;
+  done;
+fi
+
+$configdir/validator_clean.pl $OUTDIR
