@@ -24,8 +24,11 @@ OUTDIR=result
 ##ATTENTION = etre en mode non debug (sinon la recuperation des sessions ne fonctionne pas)
 ## il faudrait faire autrement pour les detruire.
 
-wimsdir=$HOME/wims
-moddir="$wimsdir/public_html/modules"
+wimsdir=`pwd`
+### modify if one prefer to launch from wims directory
+moddir="$wimsdir/../../public_html/modules"
+configdir=.
+
 zone='E1 E2 E3 E4 E5 E6 H1 H2 H3 H4 H5 H6 U1 U2 U3 U4 Lang'
 ## change it if you want all modules of a zone
 ## FIXME !
@@ -33,11 +36,11 @@ zone='E1'
 wordtosearch="missing"
 searchmathml="ERROR"
 searchmathml2="Unknown"
-configdir=.
+
 
 #tidy=$tidy -qe --doctype html5 -latin1 -config $config/config.txt
 ##https://github.com/srackham/w3c-validator/blob/master/w3c-validator.py
-validator="python $configdir/w3c-validator.py"
+validator="$configdir/w3c-validator.py"
 cleanup="$configdir/validator_clean.pl"
 
 mkdir -p $OUTDIR
