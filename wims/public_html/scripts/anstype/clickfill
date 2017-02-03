@@ -7,8 +7,17 @@ good=!line 1 of $good
 good=!translate | to $\
 $ in $good
 good=!nonempty lines $good
+!distribute items $(oef_answer_option$i) into sizeh,sizev,sizei,sizej
+!set rightcolor=#87ceeb
+!set align_option=!getopt align in $(replyoption$i)
+!set align_option=!tolower $align_option
+!bound align_option within left,right,center default center
+
 replyGood$i=!line 1 of $good
-replyGood$i=!items2words $(replyGood$i)
+tmp=class="inline drag_label" style="text-align:$align_option;background-color:$rightcolor;width:$(sizeh)px;height:$(sizev)px;"
+replyGood$i=!replace internal , by </div><div $tmp> in <div $tmp>$good</div>
+!reset tmp
+
 dd=$(reply$i)
 
 !if r$i notitemof $thisstep
@@ -42,11 +51,6 @@ dd=$(reply$i)
 :nocheck
 reply$i=$dd
 m_reply$i=$dd
-!distribute items $(oef_answer_option$i) into sizeh,sizev,sizei,sizej
-!set rightcolor=#87ceeb
-!set align_option=!getopt align in $(replyoption$i)
-!set align_option=!tolower $align_option
-!bound align_option within left,right,center default center
 
 !!reply_$i=!items2words $dd
 !set dd_cnt=!itemcnt $dd
@@ -63,15 +67,6 @@ m_reply$i=$dd
   !set reply_$i=
 !endif
 
-!for a = 1 to $dd_cnt
-  reply_$i=$(reply_$i)\
-  <div class="inline drag_label" style="text-align:$align_option;background-color:$rightcolor;width:$(sizeh)px;height:$(sizev)px;">\
-  $(dd[$a])\
-  </div>
-  !if $a=$[(floor($a/$sizej))*$sizej]
-     reply_$i=$(reply_$i)<br/>
-  !endif
-!next
 !if $wims_read_parm=nocompare
  !exit
 !endif
@@ -97,14 +92,34 @@ ddo=!sort items $dd
    go=!sort items $g
    !if $ddo issametext $go
      diag=yes
+   !else
+   !! more precisely
+     !reset gr
+     !for j=1 to $dd_cnt
+       !if  $(dd[$j]) isitemof $g
+         !set gr=!append item oef_indgood to $gr
+       !else
+         !set gr=!append item oef_indbad to $gr
+       !endif
+     !next
    !endif
+!endif
+!for a = 1 to $dd_cnt
+  reply_$i=$(reply_$i)\
+  <div class="inline drag_label $(gr[$a])" style="text-align:$align_option;background-color:$rightcolor;width:$[50+$(sizeh)]px;height:$(sizev)px;">\
+  $(dd[$a])\
+  </div>
+  !if $a=$[(floor($a/$sizej))*$sizej]
+     reply_$i=$(reply_$i)<br/>
+  !endif
+!next
    !if $diag notwordof yes and (split iswordof $(replyoption$i) or partialscore iswordof $(replyoption$i))
 !! nombre de reponses
        poscnt1=!itemcnt $ddo
        lint=!listintersect $ddo and $go
 !! nombre de bonnes reponses
        poscnt2=!itemcnt $lint
-!! nombre demandé de bonnes réponses
+!! nombre demande de bonnes reponses
        poscnt3=!itemcnt $go
        !if eqweight iswordof $(replyoption$i)
          diaratio_=$[2*$poscnt2 - $poscnt1]
