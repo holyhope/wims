@@ -14,7 +14,7 @@ good=!nonempty lines $good
 !bound align_option within left,right,center default center
 
 replyGood$i=!line 1 of $good
-tmp=class="inline drag_label" style="text-align:$align_option;background-color:$rightcolor;width:$(sizeh)px;height:$(sizev)px;"
+tmp=class="drag_label" style="text-align:$align_option;background-color:$rightcolor;width:$(sizeh)px;height:$(sizev)px;"
 replyGood$i=!replace internal , by </div><div $tmp> in <div $tmp>$good</div>
 !reset tmp
 
@@ -58,7 +58,7 @@ m_reply$i=$dd
 !if $fill_css_defined!=yes
   !set reply_$i=<style type="text/css">\
     .drag_label{\
-      display:table-cell;\
+      display:inline-block;\
       vertical-align:middle;\
     }\
   </style>
@@ -106,7 +106,7 @@ ddo=!sort items $dd
 !endif
 !for a = 1 to $dd_cnt
   reply_$i=$(reply_$i)\
-  <div class="inline drag_label $(gr[$a])" style="text-align:$align_option;background-color:$rightcolor;width:$[50+$(sizeh)]px;height:$(sizev)px;">\
+  <div class="drag_label $(gr[$a])" style="text-align:$align_option;background-color:$rightcolor;width:$[50+$(sizeh)]px;height:$(sizev)px;">\
   $(dd[$a])\
   </div>
   !if $a=$[(floor($a/$sizej))*$sizej]
