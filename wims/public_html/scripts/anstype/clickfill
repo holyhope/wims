@@ -14,7 +14,7 @@ good=!nonempty lines $good
 !bound align_option within left,right,center default center
 
 replyGood$i=!line 1 of $good
-tmp=class="drag_label" style="text-align:$align_option;background-color:$rightcolor;width:$(sizeh)px;height:$(sizev)px;"
+tmp=class="drag_label" style="text-align:$align_option;width:$(sizeh)px;height:$(sizev)px;"
 replyGood$i=!replace internal , by </div><div $tmp> in <div $tmp>$good</div>
 !reset tmp
 
@@ -58,8 +58,12 @@ m_reply$i=$dd
 !if $fill_css_defined!=yes
   !set reply_$i=<style type="text/css">\
     .drag_label{\
-      display:inline-block;\
-      vertical-align:middle;\
+      display:block;\
+      padding:2px;\
+      border:1px solid;\
+      /*box-sizing: border-box;*/\
+      margin:1px;\
+      background-color:$rightcolor;\
     }\
   </style>
   !set fill_css_defined=yes
@@ -106,12 +110,9 @@ ddo=!sort items $dd
 !endif
 !for a = 1 to $dd_cnt
   reply_$i=$(reply_$i)\
-  <div class="drag_label $(gr[$a])" style="text-align:$align_option;background-color:$rightcolor;width:$(sizeh)px;height:$(sizev)px;">\
+  <div class="drag_label $(gr[$a])" style="text-align:$align_option;width:$(sizeh)px;height:$(sizev)px;">\
   $(dd[$a])\
   </div>
-  !if $a=$[(floor($a/$sizej))*$sizej]
-     reply_$i=$(reply_$i)<br/>
-  !endif
 !next
    !if $diag notwordof yes and (split iswordof $(replyoption$i) or partialscore iswordof $(replyoption$i))
 !! nombre de reponses
