@@ -1,88 +1,36 @@
-
-!read adm/title.phtml 3\
-\
-File binari da inserire nell'esercizio
-
-!if $quota=yes
- <span class="wims_warning">$wims_name_Error</span>. Spiacenti: non è più possibile inserire file relativi 
+!set name_subtitle = File binari da inserire nell'esercizio
+!set name_over_quota = Spiacenti: non è più possibile inserire file relativi\
  al corso, avendo ormai saturato lo spazio disponibile.
- <p></p>
- !goto sendend
-!endif
 
-!set wims_form_method=file
- Potete caricare sul server diversi tipi di file binari (immagini, mp3, pdf, ...).
- 
-!form reply
-Nome del file immagine da inserire nell'esercizio:
-<input type="file" name="wims_deposit" />
-<input type="submit" value="$wims_name_tosave" />
+!set name_add_file = Add a new file
+!set name_add_file_label = Nome del file immagine da inserire nell'esercizio:
+!set name_add_file_help = Potete caricare sul server diversi tipi di file binari (immagini, mp3, pdf, ...).
 
-!formend
+!set name_empty_imglist = In questo esrcizio non sono ancora state inserite immagini.
+!set name_imglist = Elenco dei file inseriti nell'esercizio
+!set name_filename = Nome del file
+!set name_preview = Anteprima
+!set name_html_code = HTML code
+!set name_oef_code = OEF code
+!set name_Actions = Actions
 
-:sendend
+!set name_img_default_alt = preview of $$i file
+!set name_img_accessibility_alt = Describe here your picture to blind people
 
-!if $imglist=$empty
- In questo esrcizio non sono ancora state inserite immagini.
-!else
- Elenco dei file inseriti nell'esercizio.
- <table class="wimsborder wimscenter">
- <tr><th>Nome del file</th><th>Anteprima</th><th>-</th></tr>
- !for i in $imglist
-  <tr><td>$i</td>
-  <td>
-  <img src="$wims_ref_name?cmd=getfile&+session=$wims_session&+special_parm=oefimg/$i" alt=""
-   height="40px" width="50px" alt="" /></td>
-  <td>
-  !set wims_ref_class=wims_button
-  !href cmd=reply&delfile=$i  $wims_name_erase
-  </td>
- !next i
- </tr>
- $table_end 
+!set name_some_browsers = some web browsers
+!set name_ogg_warning = are not able to read .ogg files.
 
- !if $imgfname!=
-   !set example=$imgfname
- !else
-  !set example=!item 1 of $imglist
- !endif
- <p>
- Queste immagini possono essere inserite nell'enunciato dell'esercizio
+
+!set name_access_via_imagedir = Queste immagini possono essere inserite nell'enunciato dell'esercizio\
  utilizzando il parametro <span class="tt wims_code_variable">\imagedir</span>.
- </p>
- !set example1=!lowercase $example
- !if .gif isin $example1 or .jpg isin $example1 or .png isin $example1
-   !set test_=1
- !endif
- !if $test_=1
-   !set eximage=$example
- !else
-   !set eximage=file.jpg
- !endif
- Per esempio scrivendo
- <pre class="wimscenter">
-  !if $test_=1
- &lt;img src="\imagedir/$example"/&gt;
- !else
-   &lt;a href="\imagedir/$example"&gt;$example&lt;/a&gt;.  
- !endif
-  </pre>
- Per i file immagine potete scrivere 
-  <span class="tt">&lt;img src="\imagedir/$eximage"/&gt;</span>, ma anche 
- <span class="tt">\img{\imagedir/$eximage}</span>, oppure
- <span class="tt">\img{\imagedir/$eximage}{opzioni html}</span>. Il vantaggio di questo 
- approccio è che il nome del file non sarà visibile agli studenti. &Egrave; 
- però un metodo <em>costoso</em> e il suo uso va pertanto limitato a quando
- effettivamente necessario.
-<p>Per altri tipi di file il comando html deve essere adattato:
-<span class="tt">&lt;a href="\imagedir/file.pdf"&gt;file.pdf&lt;/a&gt;</span> ...
-</p>
-!endif
-<p class="wims_warning">
-Salva l'esercizio in modo che i file siano inseriti definitivamente 
-sul server.
-</p>
-!set wims_menu_items=!append line \
-testexo,1,cmd=resume&level=3&realtest=yes&retest=again\
-backcreatexo,1,cmd=reply&level=3\
-to $wims_menu_items
+
+!set name_how_to_hide_help = <h2>Hiding Images files names</h2>\
+    If you pick a random picture, the file name can be an help to the student.\
+    You can hide this file name with this code:\
+    <pre>\img{\imagedir/picture.jpg alt="$name_img_accessibility_alt"}</pre>\
+    If the student takes a look at the generated page, he will only see\
+    <pre>&lt;img src="a_random_unrelated_file_name" alt="$name_img_accessibility_alt" /&gt;</pre>\
+    <p>The advantage of this method is that the file name will be hidden to the student.</p>\
+    <p>Due to its performance cost, this method should be used only when necessary.</p>\
+
+!set name_save_exo_warning = Salva l'esercizio in modo che i file siano inseriti definitivamente sul server.

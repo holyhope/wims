@@ -1,82 +1,34 @@
+!set name_subtitle = 练习的二进制文件
+!set name_over_quota = 你不再能放文件到你的班级里, 因为它的内容已经达到或超出硬盘空间的限制. 抱歉.
 
-!read adm/title.phtml 3\
-\
-练习的二进制文件
+!set name_add_file = Add a new file
+!set name_add_file_label = 发送到练习的文件 :
+!set name_add_file_help = 你可以上传各种类型的文件 (图像, mp3, pdf, ...).
 
-!if $quota=yes
-<span class="wims_warning">$wims_name_Error</span>. 你不再能放文件到你的班级里, 因为它的内容已经达到或超出硬盘空间的限制. 抱歉.
- <p></p>
- !goto sendend
-!endif
+!set name_empty_imglist =  此练习尚无二进制文件.
+!set name_imglist = 这里是本练习的文件表.
+!set name_filename = 文件名
+!set name_preview = 概要
+!set name_html_code = HTML
+!set name_oef_code = OEF
+!set name_Actions = Actions
 
-!set wims_form_method=file
-你可以上传各种类型的文件 (图像, mp3, pdf, ...).
+!set name_img_default_alt = preview of $$i file
+!set name_img_accessibility_alt = Describe here your picture to blind people
 
-!form reply
-发送到练习的文件 :
-<input type="file" name="wims_deposit" />
-<input type="submit" value="$wims_name_tosave" />
+!set name_some_browsers = some web browsers
+!set name_ogg_warning = are not able to read .ogg files.
 
-!formend
 
-:sendend
+!set name_access_via_imagedir = 在练习陈述中使用内部参数 <span class="tt wims_code_variable">\imagedir</span> 可以引用这些文件.
 
-!if $imglist=$empty
- 此练习尚无二进制文件.
-!else
- 这里是本练习的文件表.
-<table class="wimsborder wimscenter">
- <tr><th>文件名</th><th>概要</th><th>-</th></tr>
- !for i in $imglist
-  <tr><td>$i</td>
-  <td>
-  <img src="$wims_ref_name?cmd=getfile&+session=$wims_session&+special_parm=oefimg/$i" alt=""
-   height="40px" width="50px" alt="" /></td>
-  <td>
-  !set wims_ref_class=wims_button
-  !href cmd=reply&delfile=$i  $wims_name_erase
-  </td>
- !next i
- </tr>
- $table_end 
+!set name_how_to_hide_help = <h2>Hiding Images files names</h2>\
+    If you pick a random picture, the file name can be an help to the student.\
+    You can hide this file name with this code:\
+    <pre>\img{\imagedir/picture.jpg alt="$name_img_accessibility_alt"}</pre>\
+    If the student takes a look at the generated page, he will only see\
+    <pre>&lt;img src="a_random_unrelated_file_name" alt="$name_img_accessibility_alt" /&gt;</pre>\
+    <p>The advantage of this method is that the file name will be hidden to the student.</p>\
+    <p>Due to its performance cost, this method should be used only when necessary.</p>
 
- !if $imgfname!=
-   !set example=$imgfname
- !else
-  !set example=!item 1 of $imglist
- !endif
- $wims_deposit $imgfname
-在练习陈述中使用内部参数 \imagedir 可以引用这些文件. 
- !set example1=!lowercase $example
- !if .gif isin $example1 or .jpg isin $example1 or .png isin $example1
-   !set test_=1
- !endif
- !if $test_=1
-   !set eximage=$example
- !else
-   !set eximage=file.jpg
- !endif
-例如, 你可以写
- <pre class="wimscenter">
-  !if $test_=1
- &lt;img src="\imagedir/$example"/&gt;
- !else
-   &lt;a href="\imagedir/$example"&gt;$example&lt;/a&gt;.  
- !endif
-  </pre>
-  对于图形文件, 你可以写  
-  <span class="tt">&lt;img src="\imagedir/$eximage"/&gt;</span>, 或
-  <span class="tt">\img{\imagedir/$eximage}</span> 或
- <span class="tt">\img{\imagedir/$eximage}{html 选项}</span>. 
- 这个方法的好处是学生看不到文件名.
- 由于这样做的代价较大, 请仅在必要时才使用.
-<p></p>对于其他类型的文件, 可以使用 html 的命令 :
-<span class="tt">&lt;a href="\imagedir/file.pdf"&gt;file.pdf&lt;/a&gt;</span> ...
-!endif
-<p class="wims_warning">
-保存练习以使添加的文件成为永久性的.
-</p>
-!set wims_menu_items=!append line \
-testexo,1,cmd=resume&level=3&realtest=yes&retest=again\
-backcreatexo,1,cmd=reply&level=3\
-to $wims_menu_items
+!set name_save_exo_warning = 保存练习以使添加的文件成为永久性的.

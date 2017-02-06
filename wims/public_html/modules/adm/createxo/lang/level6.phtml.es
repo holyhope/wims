@@ -1,69 +1,38 @@
+!set name_subtitle = Ficheros de imagen para el ejercicio
+!set name_over_quota = No puede añadir más ficheros a su clase porque su contendido\
+ ha igualado o superado el espacio de disco autorizado. Lo sentimos.
 
-!read adm/title.phtml 3\
-\
-Ficheros de imagen para el ejercicio
+!set name_add_file = Add a new file
+!set name_add_file_label = Fichero de imagen que se va a enviar en el ejercicio:
+!set name_add_file_help = You may download different types of files (picture, audio, pdf, ...).
 
-!if $quota=yes
- <span class="wims_warning">$wims_name_Error</span>. No puede añadir más ficheros a su clase porque su contendido
- ha igualado o superado el espacio de disco autorizado.
- Lo sentimos.
- <p>
- !goto sendend
-!endif
+!set name_empty_imglist = Este ejercicio no tiene aún ningún fichero de imagen.
+!set name_imglist = Lista de ficheros de imagen del ejercicio
+!set name_filename = Nombre del fichero
+!set name_preview = Vista
+!set name_html_code = HTML code
+!set name_oef_code = OEF code
+!set name_Actions = Actions
 
-!set wims_form_method=file
- Vous pouvez charger différents types de fichiers (image, mp3, pdf, ...).
- 
-!form reply
-Fichero de imagen que se va a enviar en el ejercicio:
-<input type="file" name="wims_deposit" />
-<input type="submit" value="$wims_name_tosave" />
+!set name_img_default_alt = preview of $$i file
+!set name_img_accessibility_alt = Describe here your picture to blind people
 
-!formend
+!set name_some_browsers = some web browsers
+!set name_ogg_warning = are not able to read .ogg files.
 
-:sendend
 
-!if $imglist=$empty
- Este ejercicio no tiene aún ningún fichero de imagen.
-!else
- Lista de ficheros de imagen del ejercicio:
- <table class="wimsborder wimscenter">
- <tr><th>Nombre del fichero</th><th>Vista</th><th>-</th></tr>
- !for i in $imglist
-  <tr><td>$i</td>
-  <td>
-  <img src="$wims_ref_name?cmd=getfile&+session=$wims_session&+special_parm=oefimg/$i" alt=""
-   height="40px" width="50px" alt="" /></td>
-  <td>
-  !set wims_ref_class=wims_button
-  !href cmd=reply&delfile=$i  $wims_name_erase
-  </td>
- !next i
- </tr>
- $table_end 
+!set name_access_via_imagedir = These images files can be accessed in the statement of the exercise \
+ via the internal parameter <span class="tt wims_code_variable">\imagedir</span>.
 
- !if $imgfname!=
-   !set example=$imgfname
- !else
-  !set example=!item 1 of $imglist
- !endif
- <p>
- Se puede acceder a estos ficheros de imagen en el enunciado del ejercicio
- mediante el parámetro interno \imagedir. Por ejemplo puede escribir
- </p>
- <pre class="wimscenter">
- &lt;img src=\imagedir/$example/&gt;
- </pre>
- Puede también escribir simplemente <span class="tt">\img{\imagedir/$example}</span>, o
- <span class="tt">\img{\imagedir/$example}{opciones html}</span>. La ventaja de este segundo método
- es que los estudiantes no verán el nombre del fichero. A causa de su coste
- en consumo de recursos, no utilice este método más que cuando sea necesario.
-!endif
-<p class="wims_warning">
-Sauvez l'exercice pour que les fichiers ajoutés le soient de manière
-permanente.
-</p>
-!set wims_menu_items=!append line \
-testexo,1,cmd=resume&level=3&realtest=yes&retest=again\
-backcreatexo,1,cmd=reply&level=3\
-to $wims_menu_items
+!set name_how_to_hide_help = <h2>Hiding Images files names</h2>\
+    If you pick a random picture, the file name can be an help to the student.\
+    You can hide this file name with this code:\
+    <pre>\img{\imagedir/picture.jpg alt="$name_img_accessibility_alt"}</pre>\
+    If the student takes a look at the generated page, he will only see\
+    <pre>&lt;img src="a_random_unrelated_file_name" alt="$name_img_accessibility_alt" /&gt;</pre>\
+    <p>La ventaja de este segundo método es que los estudiantes no verán el nombre del fichero.</p>\
+    <p>A causa de su coste en consumo de recursos, no utilice este método más que cuando sea necesario.</p>
+
+!set name_save_exo_warning = Binary files will only be permanently added to your exercice when you save the exercice itself.
+
+
