@@ -1,16 +1,18 @@
-!set lstyle=<br/><span class="command_attr">
-!set lstend=</span>:
+!set lstyle=<span class="command_attr">
+!set lstyle2=<span class="tt">
+!set lstend=</span>
 !set lst_tit=!char 5 to -1 of $tit
 !set lst_titend=$titend
 !set lst_type=$lstyle Type$lstend
-!set type_exec=$lst_type execution command
-!set type_pexec=$lst_type execution command (only valid for phtml files)
-!set type_var =$lst_type variable command
-!set type_both=$lst_type both execution and variable command
-!set lst_syntax=$lstyle Syntax$lstend <span class="tt">!
-!set lst_alias=$lstyle Aliases$lstend
-!set lst_mean =$lstyle Meaning$lstend
-!set lst_sample =$lstyle Sample(s)$lstend
+!set type_exec= execution command
+!set type_pexec= execution command (only valid for phtml files)
+!set type_var = variable command
+!set type_both= both execution and variable command
+!set lst_syntax=$lstyle Syntax$lstend:$lstyle2
+!set lst_syntaxend=</span>
+!set lst_alias=$lstyle Aliases$lstend:
+!set lst_mean =$lstyle Meaning$lstend:
+!set lst_sample =$lstyle Sample(s)$lstend:
 
 <p>WIMS commands can be used in variable processing files and phtml files.
   A command is a word preceeded by the character $emph!$emphend.</p>
@@ -42,16 +44,50 @@ fields are separated by white spaces or special words (depending on the command)
  !next i
  </ul>
 !endif
-
 <ul>
 !for c in $cmdfiles
  <li class="wims_command" id="cmdlist_$(c)_">
  !if $style != folding
-  !read cmd/$c.phtml
+ <ul class="wims_nopuce">
+ !for ff in tit,type,syntax, mean,alias,sample
+   !set text=!lookup $ff in cmd/$c.phtml
+   !if $text!=$empty
+ <li>
+   $(lst_$ff)
+   !set text=!replace internal ` by $emph in $text
+   !if $ff=syntax and $c=bound
+     !set text=!replace internal $\
+$ by $(lst_$(ff)end) <br/>$lstyle2 in $text
+   !endif
+   !replace internal ' by $emphend in $text
+   $(lst_$(ff)end)
+  </li>
+  !endif
+ !next
+  </ul>
+  !if $c iswordof if
+    !read help/if.phtml
+  !endif
+  !if $c iswordof randfile record recordcnt
+    <div>
+    !read cmd/datafile.phtml
+   </div>
+  !endif
+  !if $c iswordof word column char item line record
+      <div>
+    !set numlist_type=$c
+    !read cmd/numlist
+      </div>
+  !endif
+  !set text=!lookup numlist in cmd/$c.phtml
+  !if $text!=$empty
+    !set text=!replace internal ` by $emph in $text
+    !replace internal ' by $emphend in $text
+  !endif
  !else
   !if cmdlist_$(c)_ isin $expand
    <a href="$httpd_SCRIPT_NAME?session=$session&+cmd=resume&+op=close&+subject=cmdlist_$(c)_#cmdlist_$(c)_"></a>
-   !read cmd/$c.phtml
+   !!!read cmd/$c.phtml
   !else
    !href cmd=resume&op=open&subject=cmdlist_$(c)_#cmdlist_$(c)_ $c
   !endif
