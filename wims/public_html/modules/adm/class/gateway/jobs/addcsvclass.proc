@@ -1,0 +1,75 @@
+!if bla=0  (vérification qu'on est bien au bon niveau pour faire cela)
+ error=not_level
+!endif
+
+
+!if $save!=$empty
+ wims_deposit=!word 1 of $wims_deposit
+ !if $wims_deposit=$empty
+  !exit
+ !endif
+ !if / isin $wims_deposit or .. isin $wims_deposit
+  error=bad_filename
+  !exit
+ !endif
+ d=!translate . to $ $ in $wims_deposit
+ d=!word -1 of $d
+ !if $d notwordof csv tsv txt
+  error=bad_filename
+  !exit
+ !endif
+ sdir=$wims_home/$wims_sesdir
+ t=!exec ftype $sdir/user-deposit
+ !if $t=$empty
+  !exit
+ !endif
+ !if $t=binary
+  error=binary_upload
+  !exit
+ !endif
+ !sh grep . $sdir/user-deposit | awk '{print ":"$$0}' | tr '	"' ', ' >$sdir/user_deposit
+ file=wimshome/$wims_sesdir/user_deposit
+ nbdata=!recordcnt $file
+!! ----- search for keywords in the firstline
+ keylist=cname,login,regpass,secure,limit
+ keydon=!record 1 of $file
+ missingkey=$empty
+ keyposition=$empty
+ !for k in $keylist
+ 	p=!positionof item $k in $keydon
+	!if $p=$empty
+		missingkey=!append item $k to $missingkey
+	!endif
+	keyposition=!append item $p to $keyposition
+ !next k
+ !if $missingkey!=$empty
+ 	error=missing_key
+ 	!exit
+ !endif
+!! ----- process for each class
+ listerror=$empty
+ !for classk=2 to $nbdata
+  data=!record $classk of $file
+  cname=!item $(keyposition[1]) of $data
+  sup=!item $(keyposition[2]) of $data
+  pass=!item $(keyposition[3]) of $data
+  pass2=$pass
+  !reset passs,passs2
+  sechost=!item $(keyposition[4]) of $data
+  cadd_limit=!item $(keyposition[5]) of $data
+  !bound cadd_limit within 0 and $class_limit default $class_limit 
+  !readproc adm/gateway/addclass $sup,$cname
+  !if $error!=$empty
+      listerror=!append line $classk,$error to $listerror
+  !endif
+  !reset error
+  !read adm/gateway/mkindex
+ !next classk
+ !if $listerror!=$empty
+        !debug $listerror
+ 	error=baddata
+ !endif       
+ job=level
+ !reset save
+ !changeto jobs/$job.proc
+!endif

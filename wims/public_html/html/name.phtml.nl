@@ -454,7 +454,7 @@ Een studieniveau toevoegen\
 Inloggen beheerder \
 Verander van zone\
 into wims_name_addcourse,wims_name_addicourse,wims_name_addclass,wims_name_addprog,wims_name_addlevel,\
-wims_name_login,wims_name_chzone
+wims_name_login,wims_name_chzone,wims_name_addclasscsv
 
 !distribute line Statistisch overzicht van de activiteiten\
 Globale activiteiten\
@@ -462,6 +462,7 @@ Verander de moeilijkheidsgraad\
 Handmatig ingevoerde cijfers\
 Spreadsheet data\
 Activiteiten\
+Ajouter des classes (csv)\
 into wims_name_class_stat,wims_name_activity,wims_name_formula,wims_name_grades,\
 wims_name_csv,wims_name_activity1
 

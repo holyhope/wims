@@ -454,8 +454,9 @@ Añadir un programa \
 Añadir un nivel \
 login de gestión \
 Cambiar de zona \
+Ajouter des classes (csv)\
 into wims_name_addcourse,wims_name_addicourse,wims_name_addclass,wims_name_addprog,wims_name_addlevel,\
-wims_name_login,wims_name_chzone
+wims_name_login,wims_name_chzone,wims_name_addclasscsv
 
 !distribute line Estadísticas de actividad \
 Actividades globales de los participantes \

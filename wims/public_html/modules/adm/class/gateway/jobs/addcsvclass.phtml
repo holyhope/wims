@@ -1,0 +1,29 @@
+
+<fieldset class="property_fields blockcenter">
+  <legend>Ajout de classe par fichier</legend>
+ !set wims_form_method=file
+ !form reply
+ <input type="hidden" name="job" value="addcsvclass" />
+ <input type="hidden" name="csvtype" value="upload" />
+ <div class="field box">
+  $name_data <input type="file" size="30" name="wims_deposit" />
+  $name_format2: <span class="tt">.csv</span>, <span class="tt">.tsv</span>, <span class="tt">.txt</span>
+  !set wims_ref_class=wims_button_help
+  !href module=$module&cmd=help&special_parm=addcsvclass $wims_name_help
+ </div>
+ <div class="wimscenter wimsform">
+ <input type="submit" value="$wims_name_send" name="save"/>
+  $
+ !set wims_ref_class=wims_button
+ !href cmd=reply&job=level&level=$level $wims_name_giveup
+
+ </div>
+ !formend
+</fieldset>
+
+!if $datasend!=$empty
+$datasend
+!endif
+
+
+

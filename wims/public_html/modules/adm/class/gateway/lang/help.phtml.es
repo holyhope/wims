@@ -96,3 +96,24 @@ responsable "oficial".
 </p>
 
 !exit
+
+:addcsvclass
+<h2>Ajout de classes par importation d'un fichier.</h2>
+
+<p>
+Pour envoyer des données de votre tableur à la classe, sauvez les données
+dans un fichier au format texte (txt, csv, ou tsv), puis envoyez le fichier
+au serveur.
+</p>
+$table_header
+<caption>Champs de données valables</caption>
+$table_hdtr<th scope="col">Nom</th><th scope="col">Signification</th>
+$table_tr<td class="tt wims_code_variable">cname</td><td>nom de la classe</td></tr>
+$table_tr<td class="tt wims_code_variable">login</td><td>identifiant de l'enseignant controlant la classe (qui doit exister dans la classe avec les autorisations d'enseignant). Ecrire supervisor pour que la classe soit gérée par l'administrateur du portail.</td></tr>
+$table_tr<td class="tt wims_code_variable">regpass</td><td>mot de passe d'inscription de la classe.</td></tr>
+$table_tr<td class="tt wims_code_variable">secure</td><td>accès sécurisé de la classe (IP ou all).</td></tr>
+$table_tr<td class="tt wims_code_variable">limit</td><td>nombre maximum d'élèves.</td></tr>
+
+les colonnes regpass,secure,limit ne sont pas obligatoires. Elles seront fixées avec des valeurs par défauts si elles ne sont pas présentes.
+$table_end
+!exit
