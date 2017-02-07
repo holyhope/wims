@@ -13,39 +13,43 @@ good=!nonempty lines $good
 !set align_option=!tolower $align_option
 !bound align_option within left,right,center default center
 
+# sizej represent the number of object per line
+# $sizeh+2 represent an object width + its margin in px
+!set container_width = $[($sizeh+2) * $sizej]
+!set container_width = class="fill_container" style="width:$(container_width)px"
 replyGood$i=!line 1 of $good
 tmp=class="drag_label" style="text-align:$align_option;width:$(sizeh)px;height:$(sizev)px;"
-replyGood$i=!replace internal , by </div><div $tmp> in <div $tmp>$good</div>
+  replyGood$i=!replace internal , by </div><div $tmp> in <div $container_width><div $tmp>$good</div></div>
 !reset tmp
 
 dd=$(reply$i)
 
 !if r$i notitemof $thisstep
- !goto nocheck
+  !goto nocheck
 !endif
 
 !if $i notitemof $fill_checked
- fill_checked=!append item $i to $fill_checked
- dd2=
- !for d_ in $dd
-  !if $d_ isitemof $fill_check
-   dd2=!append item $d_ to $dd2
-   !if $(replytype$i)=dragfill
-    pos=!positionof item $d_ in $fill_check
-    pos=!item 1 of $pos
-    !if $pos!=$empty
-     fill_check=!replace item number $pos by $ in $fill_check
+  fill_checked=!append item $i to $fill_checked
+  dd2=
+  !for d_ in $dd
+    !if $d_ isitemof $fill_check
+      dd2=!append item $d_ to $dd2
+      !if $(replytype$i)=dragfill
+        pos=!positionof item $d_ in $fill_check
+        pos=!item 1 of $pos
+        !if $pos!=$empty
+          fill_check=!replace item number $pos by $ in $fill_check
+        !endif
+      !endif
+    !else
+      !set default_$i= !replace internal &nbsp by &nbsp; in $(default_$i)
+      dd2=!append item $(default_$i) to $dd2
     !endif
-   !endif
-  !else
-   !set default_$i= !replace internal &nbsp by &nbsp; in $(default_$i)
-   dd2=!append item $(default_$i) to $dd2
+  !next d_
+  dd=$dd2
+  !if $(replytype$i)=dragfill
+    fill_check=!nonempty items $fill_check
   !endif
- !next d_
- dd=$dd2
- !if $(replytype$i)=dragfill
-  fill_check=!nonempty items $fill_check
- !endif
 !endif
 
 :nocheck
@@ -58,26 +62,28 @@ m_reply$i=$dd
 !if $fill_css_defined!=yes
   !set reply_$i=<style type="text/css">\
     .drag_label{\
-      display:block;\
+      display:inline-block;\
       padding:2px;\
       border:1px solid;\
-      /*box-sizing: border-box;*/\
+      box-sizing: border-box;\
       margin:1px;\
       background-color:$rightcolor;\
     }\
-  </style>
+    .fill_container{font-family:sans-serif;background-color:#ffd080;margin:2px;};\
+  </style>\
+
   !set fill_css_defined=yes
 !else
   !set reply_$i=
 !endif
 
 !if $wims_read_parm=nocompare
- !exit
+  !exit
 !endif
 
 !if $good=$empty
- Test=bad $i
- !exit
+  Test=bad $i
+  !exit
 !endif
 
 diag=
@@ -87,56 +93,59 @@ good=!replace internal , $ by , in $good
 dd=!replace internal , $ by , in $dd
 ddo=!sort items $dd
 !for n=1 to $t_
- g=!line $n of $good
- g=!trim $g
- !if $dd issametext $g
-  diag=yes
- !endif
- !if noorder iswordof $(replyoption$i)
-   go=!sort items $g
-   !if $ddo issametext $go
-     diag=yes
-   !else
-   !! more precisely
-     !reset gr
-     !for j=1 to $dd_cnt
-       !if  $(dd[$j]) isitemof $g
-         !set gr=!append item oef_indgood to $gr
-       !else
-         !set gr=!append item oef_indbad to $gr
-       !endif
-     !next
-   !endif
-!endif
-!for a = 1 to $dd_cnt
-  reply_$i=$(reply_$i)\
-  <div class="drag_label $(gr[$a])" style="text-align:$align_option;width:$(sizeh)px;height:$(sizev)px;">\
-  $(dd[$a])\
-  </div>
-!next
-   !if $diag notwordof yes and (split iswordof $(replyoption$i) or partialscore iswordof $(replyoption$i))
-!! nombre de reponses
-       poscnt1=!itemcnt $ddo
-       lint=!listintersect $ddo and $go
-!! nombre de bonnes reponses
-       poscnt2=!itemcnt $lint
-!! nombre demande de bonnes reponses
-       poscnt3=!itemcnt $go
-       !if eqweight iswordof $(replyoption$i)
-         diaratio_=$[2*$poscnt2 - $poscnt1]
-       !else
-         diaratio_=$[3*$poscnt2 - 2*$poscnt1]
-       !endif
-       !if $diaratio_ > 0
-        diaratio=$[max($diaratio,$[$diaratio_/max($poscnt3,1)])]
-       !endif
-   !endif split
- !endif noorder
+  g=!line $n of $good
+  g=!trim $g
+  !if $dd issametext $g
+    diag=yes
+  !endif
+  !if noorder iswordof $(replyoption$i)
+    go=!sort items $g
+    !if $ddo issametext $go
+      diag=yes
+    !else
+      !! more precisely
+      !reset gr
+      !for j=1 to $dd_cnt
+        !if  $(dd[$j]) isitemof $g
+          !set gr=!append item oef_indgood to $gr
+        !else
+          !set gr=!append item oef_indbad to $gr
+        !endif
+      !next j
+    !endif
+  !endif
+
+  reply_$i=$(reply_$i)<div $container_width>
+  !for a = 1 to $dd_cnt
+    reply_$i=$(reply_$i)<div\
+      class="drag_label $(gr[$a])" style="text-align:$align_option;width:$(sizeh)px;height:$(sizev)px;">\
+      $(dd[$a])\
+      </div>
+  !next
+  reply_$i=$(reply_$i)</div>
+
+  !if $diag notwordof yes and (split iswordof $(replyoption$i) or partialscore iswordof $(replyoption$i))
+    !! nombre de reponses
+    poscnt1=!itemcnt $ddo
+    lint=!listintersect $ddo and $go
+    !! nombre de bonnes reponses
+    poscnt2=!itemcnt $lint
+    !! nombre demande de bonnes reponses
+    poscnt3=!itemcnt $go
+    !if eqweight iswordof $(replyoption$i)
+      diaratio_=$[2*$poscnt2 - $poscnt1]
+    !else
+      diaratio_=$[3*$poscnt2 - 2*$poscnt1]
+    !endif
+    !if $diaratio_ > 0
+      diaratio=$[max($diaratio,$[$diaratio_/max($poscnt3,1)])]
+    !endif
+  !endif split
 !next n
 
 !if $diag=yes
- diareply$i=good
- !advance freegot
+  diareply$i=good
+  !advance freegot
 !else
   !if $diaratio > 0 and (split iswordof $(replyoption$i) or partialscore iswordof $(replyoption$i))
     diareply$i=good
