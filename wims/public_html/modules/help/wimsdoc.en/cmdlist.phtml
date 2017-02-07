@@ -55,11 +55,13 @@ fields are separated by white spaces or special words (depending on the command)
  <li>
    $(lst_$ff)
    !set text=!replace internal ` by $emph in $text
-   !if $ff=syntax and $c=bound
+   !if $ff=syntax
      !set text=!replace internal $\
 $ by $(lst_$(ff)end) <br/>$lstyle2 in $text
    !endif
-   !replace internal ' by $emphend in $text
+   !set text=!replace internal \' by UUUUU in $text
+   !set !replace internal ' by $emphend in $text
+   !replace internal UUUUU by ' in $text
    $(lst_$(ff)end)
   </li>
   !endif
