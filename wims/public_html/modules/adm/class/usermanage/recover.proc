@@ -1,5 +1,11 @@
 !if $getuser!=$empty
- !sh cd $wims_home/$userdir; mv -f .$getuser $getuser 2>/dev/null
+!!FIXME does it work for a portal ?
+!! move all files directory related to getuser
+ !sh cd $wims_home/$userdir; mv -f .$getuser $getuser 2>/dev/null\
+   cd $wims_home; for a in `find $sclassdir -name '.$getuser.*'`; do \
+      aa=`echo $$a | sed -e "s/.$getuser/$getuser/"`; mv -f $$a $$aa; done\
+     for a in `find $sclassdir -name '.$getuser'`; do \
+      aa=`echo $$a | sed -e "s/.$getuser/$getuser/"`; mv -f $$a $$aa; done
  !read adm/class/mkuserlist
  !read adm/class/stat
  !defread wimshome/$userdir/$getuser

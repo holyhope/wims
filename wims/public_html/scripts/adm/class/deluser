@@ -12,8 +12,12 @@ deleted=
  test=!defof user_exists in $userdef
  !if $test=yes
   erased=!replace internal .users/ by .users/. in $Userdef
-  !sh mv -f $Userdef $erased 2>/dev/null
-  deleted=yes
+   !sh mv -f $Userdef $erased 2>/dev/null\
+     for a in `find $wims_home/log/classes/$delu_class -name '$uu.*'`; do \
+      aa=`echo $$a | sed -e "s/$uu/.$uu/"`; mv -f $$a $$aa; done\
+     for a in `find $wims_home/log/classes/$delu_class -name '$uu'`; do \
+      aa=`echo $$a | sed -e "s/$uu/.$uu/"`; mv -f $$a $$aa; done
+   deleted=yes
  !endif
 !else
  typename=!defof class_typename in wimshome/log/classes/$delu_class/.def
