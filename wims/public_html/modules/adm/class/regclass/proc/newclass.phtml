@@ -52,7 +52,7 @@
       <div class="field box fullwidth">
         !let firstname=$wims_firstname
         !let lastname=$wims_lastname
-        $wims_name_Supervisor: $wims_firstname $wims_lastname
+        <strong>$wims_name_lastname</strong>: $wims_firstname $wims_lastname
       </div>
     !else
       <div class="field box halfwidth">
@@ -71,7 +71,7 @@
       <label for="email">$wims_name_email</label>
       !if $Cltype=1 and $email!=$empty
         !default email=$email
-        $email
+        &#58; <a href="mailto:$email">$email</a>
       !else
         <input size="$emaillim2" name="email" value="$email" id="email" maxlength="$emaillim2" required="required" />
         <div class="formHelp">$name_atmost $emaillim2 $name_characters</div>
@@ -99,7 +99,7 @@
         <label for="institution">$name_Name_portal</label>
         !if $Cltype isin 13
           !let institution=$wims_institutionname
-          $institution
+          &#58; $institution
         !else
           <input size="$instlim" name="institution" value="$institution" id="institution" maxlength="$instlim" required="required" />
           <div class="formHelp">$name_atmost $instlim $name_characters</div>
@@ -190,7 +190,20 @@
         </div>
       !endif
 
-      <div class="field box halfwidth">
+      !if $cltype isin 024
+        <div class="field box halfwidth">
+          <label for="cas_auth">$name_cas ($name_optional)</label>
+          <input size="30" name="cas_auth" value="$cas_auth" id="cas_auth" />
+          <div class="formHelp">$name_cas_help</div>
+        </div>
+      !endif
+
+      !if $Cltype=0
+        !set field_width=halfwidth
+      !else
+        !set field_width=fullwidth
+      !endif
+      <div class="field box $field_width">
         <label for="secure">$name_secure ($name_sup)</label>
         !default secure=all
         <input size="30" name="secure" value="$secure" id="secure" />
@@ -200,13 +213,7 @@
           !! $name_optional.
         !!!endif
       </div>
-      !if $cltype isin 024
-        <div class="field box halfwidth">
-          <label for="cas_auth">$name_cas ($name_optional)</label>
-          <input size="30" name="cas_auth" value="$cas_auth" id="cas_auth" />
-          <div class="formHelp">$name_cas_help</div>
-        </div>
-      !endif
+
     </div>
   </fieldset>
   <div class="wimscenter wimsform">
