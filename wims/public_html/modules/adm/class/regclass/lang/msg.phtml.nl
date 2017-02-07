@@ -1,7 +1,7 @@
 !set wims_module_log=error: $error
 
-!default name_passsup=$wims_name_Password ($name_sup)
-!default name_password=$wims_name_Password ($name_classesss)
+!default wims_name_passsup=$wims_name_Password ($name_sup)
+!default wims_name_password=$wims_name_Password ($name_classesss)
 !default wims_name_institution=$name_Name_portal
 !default wims_name_description=$wims_name_name $name_classesss
 
@@ -125,7 +125,8 @@
 
 !if has_empty=$error
   U hebt voor het oprichten van een klas niet alle vereiste informatie ingevuld.
-  Graag aanvullen.
+  Graag aanvullen.<br/>
+ <span class="tt wims_code_words">$(wims_name_$error_subject) required.</span>
  !exit
 !endif
 
@@ -170,7 +171,7 @@
 !endif
 
 !if bad_pass=$error
- Uw $(name_$(error_subject)) bevat niet toegestane karakters.
+ Uw $(wims_name_$(error_subject)) bevat niet toegestane karakters.
   Gebruik een woord met alleen cijfers en/of letters zonder accenten en zonder spaties.
  !exit
 !endif

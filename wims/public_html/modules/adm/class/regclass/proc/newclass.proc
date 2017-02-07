@@ -33,7 +33,7 @@
  !if $regpolicy!=file and ($step=$empty or $step=pre) and $wims_ismanager<2
   !exit
  !endif
-!else		$wims_user!=$empty
+!else	$wims_user!=$empty
  !read adm/class/userdef classes,$wims_class,$wims_user
  supervisable=!defof user_supervisable in $userdef
  !if $wims_supertype!=2 or ($wims_user!=supervisor and $supervisable!=yes) or \
@@ -168,28 +168,40 @@ thisday=!char 7,8 of $today
 
 !if $step=1
  code=
- !if $Cltype isin 24
-  !reset level,checklist
-  addcheck=,passsup
+ !! for groups and portals
+
+ !! for subclasses, supervisor already exists.
+ !if $Cltype=1
+  listpwd=password
  !else
-  addcheck=$empty
+  listpwd=password,passsup
  !endif
 
- !for i in $(checklist)institution,description,firstname,lastname,email,password$addcheck,location
+ !if $Cltype isin 24
+  !reset level,checklist
+ !endif
+
+ !for i in $(checklist)institution,description,firstname,lastname,email,$listpwd,location
   $i=!translate ,!$$"< to $     $ in $($i)
   $i=!singlespace $($i)
   $i=!trim $($i)
 
-  !if $($i)=$empty and $i!=location
+  !!required fields (class password can be empty)
+  !if $($i)=$empty and $i notitemof location,password
    error=has_empty
+   error_subject=$i
    !exit
   !endif
+
+  !! fields with a minimun length
   n=!charcnt $($i)
-  !if $n<$(min_$i) and $i!=location
+  !if $n<$(min_$i) and $i notitemof location,password
    error=too_short
    error_subject=$i
    !exit
   !endif
+
+  !! fields with a maximum length
   !if $n>$(max_$i)
    $i=!char 1 to $(max_$i) of $($i)
    warn=too_long
@@ -213,11 +225,7 @@ thisday=!char 7,8 of $today
   error=bad_level
   !exit
  !endif
- !if $Cltype=1
-  listpwd=password
- !else
-  listpwd=password,passsup
- !endif
+
  !for i in $listpwd
   ptest=!text select $char_passwd in $($i)
   !if $ptest != $($i)

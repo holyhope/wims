@@ -1,7 +1,7 @@
 !set wims_module_log=error: $error
 
-!default name_passsup=$wims_name_Password ($name_sup)
-!default name_password=$wims_name_Password ($name_classesss)
+!default wims_name_passsup=$wims_name_Password ($name_sup)
+!default wims_name_password=$wims_name_Password ($name_classesss)
 !default wims_name_institution=$name_Name_portal
 !default wims_name_description=$wims_name_name $name_classesss
 
@@ -101,7 +101,8 @@ Virtual class creation password
 !endif
 
 !if has_empty=$error
- 對於課程的開設資料不完全！請在送出資料前先將基本資料填寫完全。
+ 對於課程的開設資料不完全！請在送出資料前先將基本資料填寫完全。<br/>
+ <span class="tt wims_code_words">$(wims_name_$error_subject) required.</span>
  !exit
 !endif
 
@@ -150,7 +151,7 @@ Virtual class creation password
 !endif
 
 !if bad_pass=$error
- 您的 $(name_$(error_subject)) 含不合法字元！
+ 您的 $(wims_name_$(error_subject)) 含不合法字元！
  請使用使用僅含數字或字母，且無空白的字串。
  !exit
 !endif

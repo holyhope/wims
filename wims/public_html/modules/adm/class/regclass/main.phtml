@@ -5,8 +5,6 @@
 
 <!-- Begin regclass/main.phtml -->
 
-<!--!read adm/title.phtml 3\-->
-
 <div class="title_box">
 	<h1 class="wims_title">
 		<!--WIMS $httpd_HTTP_HOST\-->
@@ -21,10 +19,12 @@
 
 !if $error!=$empty
  <div class="wims_msg alert">
+ <span class="wims_warning">$wims_name_Error:</span>
  !read lang/msg.phtml.$modu_lang
  </div>
  !if $restart!=no and $job=emptyclass
-  <p>
+  <p class="wimscenter">
+   !set wims_ref_class = wims_button
    !href module=$module&cmd=reply&step=0 $name_again
   </p>
  !endif

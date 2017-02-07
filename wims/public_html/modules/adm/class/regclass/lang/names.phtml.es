@@ -1,15 +1,6 @@
 !set lang_exists=yes
 
-!set lev_E=educación primaria
-!set lev_H=educación secundaria
-!set lev_U=universidad
-!set lv1=!char 1 of $ilevel
-!set lv2=!char 2 of $ilevel
-!set name_level=$(lev_$lv1), año $lv2
-!set levelid=E1,E2,E3,E4,E5,E6,H1,H2,H3,H4,H5,H6,H7,U1,U2,U3,U4,U5,G,R
-!set leveldesc=$levelid
-!set nblevel=!itemcnt $levelid
-
+!set name_password_check=Password security check
 !set name_listclass=clase,clase,agrupación de clases,clase,portal de centro educativo
 
 !default Cltype=$cltype

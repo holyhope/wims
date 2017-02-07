@@ -1,7 +1,7 @@
 !set wims_module_log=error: $error
 
-!default name_passsup=$wims_name_Password ($name_sup)
-!default name_password=$wims_name_Password ($name_classesss)
+!default wims_name_passsup=$wims_name_Password ($name_sup)
+!default wims_name_password=$wims_name_Password ($name_classesss)
 !default wims_name_institution=$name_Name_portal
 !default wims_name_description=$wims_name_name $name_classesss
 
@@ -131,7 +131,8 @@ Contrasenya per a la creació de classes virtuals
 
 !if has_empty=$error
  No heu donat tota la informació necessària per a la creació
- d'una classe. Si us plau, completeu les dades abans d'enviar-les.
+ d'una classe. Si us plau, completeu les dades abans d'enviar-les.<br/>
+ <span class="tt wims_code_words">$(wims_name_$error_subject) required.</span>
  !exit
 !endif
 
@@ -179,7 +180,7 @@ La creació de la classe només pot tenir èxit si
 !endif
 
 !if bad_pass=$error
- El vostre $(name_$(error_subject)) conté caràcters no permesos. <p>
+ El vostre $(wims_name_$(error_subject)) conté caràcters no permesos. <p>
  Si us plau, escolliu una paraula que només contingui números o lletres
  sense accent i sense espais entre ells.
  !exit

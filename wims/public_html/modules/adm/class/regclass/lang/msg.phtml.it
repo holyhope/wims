@@ -1,7 +1,7 @@
 !set wims_module_log=error: $error
 
-!default name_passsup=$wims_name_Password ($name_sup)
-!default name_password=$wims_name_Password ($name_classesss)
+!default wims_name_passsup=$wims_name_Password ($name_sup)
+!default wims_name_password=$wims_name_Password ($name_classesss)
 !default wims_name_institution=$name_Name_portal
 !default wims_name_description=$wims_name_name $name_classesss
 
@@ -131,7 +131,8 @@ Virtual class creation password
 
 !if has_empty=$error
  Mancano dei dati indispensabili per la creazione di un nuovo corso
- interattivo. Torna indietro e ricomincia.
+ interattivo. Torna indietro e ricomincia.<br/>
+ <span class="tt wims_code_words">$(wims_name_$error_subject) required.</span>
  !exit
 !endif
 
@@ -179,7 +180,7 @@ Virtual class creation password
 !endif
 
 !if bad_pass=$error
- $(name_$(error_subject)) contiene caratteri non accettati dal server.
+ $(wims_name_$(error_subject)) contiene caratteri non accettati dal server.
  Si prega di utilizzare solo numeri o lettere non accentate e di non
  utilizzare spazi.
  !exit

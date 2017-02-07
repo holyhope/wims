@@ -1,7 +1,7 @@
 !set wims_module_log=error: $error
 
-!default name_passsup=$wims_name_Password ($name_sup)
-!default name_password=$wims_name_Password ($name_classesss)
+!default wims_name_passsup=$wims_name_Password ($name_sup)
+!default wims_name_password=$wims_name_Password ($name_classesss)
 !default wims_name_institution=$name_Name_portal
 !default wims_name_description=$wims_name_name $name_classesss
 
@@ -119,7 +119,8 @@
 !endif
 
 !if has_empty=$error
-你还没有给出创建班级所需的所有信息. 请在填全数据后再递交.
+ 你还没有给出创建班级所需的所有信息. 请在填全数据后再递交.<br/>
+ <span class="tt wims_code_words">$(wims_name_$error_subject) required.</span>
  !exit
 !endif
 
@@ -163,7 +164,7 @@
 !endif
 
 !if bad_pass=$error
-你的 $(name_$(error_subject)) 含有非法字符. <p>
+你的 $(wims_name_$(error_subject)) 含有非法字符. <p>
 请使用一个只含英文字母与数字且不含空格的字符串.
  !exit
 !endif

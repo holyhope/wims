@@ -1,7 +1,7 @@
 !set wims_module_log=error: $error
 
-!default name_passsup=$wims_name_Password ($name_sup)
-!default name_password=$wims_name_Password ($name_classesss)
+!default wims_name_passsup=$wims_name_Password ($name_sup)
+!default wims_name_password=$wims_name_Password ($name_classesss)
 !default wims_name_institution=$name_Name_portal
 !default wims_name_description=$wims_name_name $name_classesss
 
@@ -116,7 +116,8 @@ Virtual class creation password
 
 !if has_empty=$error
  You have not given all the necessary informations for the creation of a
- class. Please complete your data before submitting them.
+ class. Please complete your data before submitting them.<br/>
+ <span class="tt wims_code_words">$(wims_name_$error_subject) required.</span>
  !exit
 !endif
 
@@ -163,7 +164,7 @@ Virtual class creation password
 !endif
 
 !if bad_pass=$error
- Your $(name_$(error_subject)) contains illegal characters.
+ Your $(wims_name_$(error_subject)) contains illegal characters.
  Please use a word containing only digits or letters without accent, and
  without space between them.
  !exit

@@ -1,7 +1,7 @@
 !set wims_module_log=error: $error
 
-!default name_passsup=$wims_name_Password ($name_sup)
-!default name_password=$wims_name_Password ($name_classesss)
+!default wims_name_passsup=$wims_name_Password ($name_sup)
+!default wims_name_password=$wims_name_Password ($name_classesss)
 !default wims_name_institution=$name_Name_portal
 !default wims_name_description=$wims_name_name $name_classesss
 
@@ -111,7 +111,8 @@ para desactivar esta medida de seguridad.
 
 !if has_empty=$error
  No ha proporcionado todas las informaciones necesarias para la creación
- de una clase. Por favor complete sus datos antes de enviarlos.
+ de una clase. Por favor complete sus datos antes de enviarlos.<br/>
+ <span class="tt wims_code_words">$(wims_name_$error_subject) required.</span>
  !exit
 !endif
 
@@ -159,7 +160,7 @@ La creación de clases sólo puede tener éxito si
 !endif
 
 !if bad_pass=$error
- Su $(name_$(error_subject)) contiene caracteres ilegales.
+ Su $(wims_name_$(error_subject)) contiene caracteres ilegales.
  Por favor utilice una contraseña que contenga únicamente cifras o letras
  sin acentos y sin espacios entre ellas.
  !exit
