@@ -5,7 +5,7 @@
 !!FIXME propagation for class password should not be done
 !! allows inscription of teachers in portal and of participants in classes
 
-propall=secure,colors,css,logo,theme,theme_icon,level,security,supass,exolog,ent
+propall=secure,colors,css,logo,theme,theme_icon,level,security,supass,exolog,ent,oefdefault
 propagate=!listintersect $propagate and $propall
 
 !if $propagate=$empty or $confirm=$empty
@@ -43,6 +43,14 @@ propag=!replace item exolog by exolog,examlog in $propag
  propag_supass=no
 !endif
 
+!if oefdefault isitemof $propag
+ propag=!listcomplement oefdefault in $propag
+ propag_oefdefault=yes
+!else
+ propag_oefdefault=no
+!endif
+ 
+
 !defread wimshome/log/classes/$wims_class/.def
 setup=
 
@@ -68,6 +76,18 @@ css=!record 0 of wimshome/log/classes/$wims_class/css
   !endif
   !if $propag_supass=yes
    !setdef !set user_password=$supass in wimshome/log/classes/$s/supervisor
+  !endif
+  !if $propag_oefdefault=yes
+   !setdef !set user_qnum=$wims_oefdefault_qnum\
+!set user_qcmlevel=$wims_oefdefault_qcmlevel\
+!set user_scoredelay=$wims_oefdefault_scoredelay\
+!set user_qcmpresent=$wims_oefdefault_qcmpresent\
+!set user_presentsol=$wims_oefdefault_presentsol\
+!set user_check=$wims_oefdefault_check_\
+!set user_sepow=$wims_oefdefault_sepow\
+!set user_expow=$wims_oefdefault_expow\
+!set user_precw=$wims_oefdefault_precw\
+in wimshome/log/classes/$s/supervisor
   !endif
  !endif
 !next s
