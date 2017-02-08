@@ -14,9 +14,15 @@ cnt_variable=!itemcnt $liste_variable
   !else
      !set script=!replace internal $(liste_variable[$j]) by [$(reply[$j;])] in $script
   !endif
+  !set tmp=!replace internal var by rep in $(liste_variable[$j])
+  !set script=$script\
+  $tmp.setProperty({fixed:true})
   !if \ notin $(replygood[$j;])
     !set script1=!replace internal $(liste_variable[$j]) by [$(replygood[$j;])] in $script1
   !endif
+  !set script1=$script1\
+  $tmp.setProperty({fixed:true})
+  !reset tmp
 !next
 !set jbox=!item 2 of $(oef_answer_option$i)
 !set your_brd=!item 1 of $(oef_answer_option$i)
@@ -27,13 +33,13 @@ script1=!replace internal $jbox by new$jbox in $script1
   free_var=!getopt free in $free_var
   free_var_cnt=!itemcnt $free_var
   !for j = 1 to $[$free_var_cnt/2]
-    script=!append line $(your_brd).create('point',[$(free_var[2*$j-1]) , $(free_var[2*$j])],{size: 1,showInfobox: false,name:''}) ; to $script
+    script=!append line $(your_brd).create('point',[$(free_var[2*$j-1]), $(free_var[2*$j])],{size: 1,showInfobox: false,name:'',fixed:true}) ; to $script
   !next
 !endif
 precision=!getopt precision in $(replyoption$i)
 !default precision=10
 
-!readproc slib/geo2D/jsxgraph $script; $(your_brd).suspendUpdate() ;
+!readproc slib/geo2D/jsxgraph $script; $(your_brd).suspendUpdate();
 
 reply_$i=$slib_out
 !! bonne reponse
