@@ -8,7 +8,7 @@
 !set type_pexec=执行命令(只对phtml文件有效)
 !set type_var =变量命令
 !set type_both=既是执行命令又是变量命令
-!set lst_syntax=$lstyle 语法$lstend:
+!set lst_syntax=$lstyle 语法$lstend:$lstyle2
 !set lst_syntaxend=</span>
 !set lst_alias=$lstyle 别名$lstend:
 !set lst_mean =$lstyle 意义$lstend:
@@ -44,53 +44,15 @@ Wims命令可同时用于变量处理文件以及phtml文件.
 !for c in $cmdfiles
  <li class="wims_command" id="cmdlist_$(c)_">
  !if $style != folding
- <ul class="wims_nopuce">
- !for ff in tit,type,syntax, mean,alias,sample
-   !set text=!lookup $ff in cmd/$c.phtml
-   !if $text!=$empty
- <li>
-   $(lst_$ff)
-   !set text=!replace internal ` by $emph in $text
-   !if $ff=syntax
-     !set text=!replace internal $\
-$ by $(lst_$(ff)end) <br/>$lstyle2 in $text
-   !endif
-   !set text=!replace internal \' by UUUUU in $text
-   !set !replace internal ' by $emphend in $text
-   !replace internal UUUUU by ' in $text
-   $(lst_$(ff)end)
-  </li>
-  !endif
- !next
-  </ul>
-  !if $c iswordof if
-    !read help/if.phtml
-  !endif
-  !if $c iswordof randfile record recordcnt
-    <div>
-    !read cmd/datafile.phtml
-   </div>
-  !endif
-  !if $c iswordof word column char item line record
-      <div>
-    !set numlist_type=$c
-    !read cmd/numlist
-      </div>
-  !endif
-  !set text=!lookup numlist in cmd/$c.phtml
-  !if $text!=$empty
-    !set text=!replace internal ` by $emph in $text
-    !replace internal ' by $emphend in $text
-  !endif
+   !read cmdone.phtml $c
  !else
   !if cmdlist_$(c)_ isin $expand
    <a href="$httpd_SCRIPT_NAME?session=$session&+cmd=resume&+op=close&+subject=cmdlist_$(c)_#cmdlist_$(c)_"></a>
-   !!!read cmd/$c.phtml
+   !read cmdone.phtml $c
   !else
    !href cmd=resume&op=open&subject=cmdlist_$(c)_#cmdlist_$(c)_ $c
   !endif
  !endif
  </li>
 !next c
-
 </ul>
