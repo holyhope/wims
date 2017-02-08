@@ -19,6 +19,9 @@ polygon = 12
 text = 13
 rect = 14
 rects =15
+poly = 16
+polys = 17
+paralelogram = 18
 28/6/2015:
 the next js-code block (parsing/scanning the multidraw objects array) is -for now- generic, 
 e.g. not responsive to the actual draw_types used.
@@ -50,11 +53,13 @@ clear_draw_area%d = function(type,name){\
    case 8: context_arrows.clearRect(0,0,xsize,ysize);arrows_x = [];arrows_y = [];break;\
    case 9: arrows_x.pop();arrows_y.pop();arrows_x.pop();arrows_y.pop();draw_arrows();break;\
    case 10:context_triangles.clearRect(0,0,xsize,ysize); triangles_x = [];triangles_y = [];break;\
-   case 11:for(var p=0;p<poly_num;p++){triangles_x.pop();triangles_y.pop();};draw_triangles();break;\
+   case 11:for(var p=0;p<3;p++){triangles_x.pop();triangles_y.pop();};draw_triangles();break;\
    case 12:context_closedpoly.clearRect(0,0,xsize,ysize);closedpoly_x = [];closedpoly_y = [];break;\
    case 13:context_text.clearRect(0,0,xsize,ysize);text_x.pop();text_y.pop();text_abc.pop();draw_text();break;\
    case 14:context_rects.clearRect(0,0,xsize,ysize);rects_x = [];rects_y = [];break;\
-   case 15: rects_x.pop();rects_y.pop();rects_x.pop();rects_y.pop();draw_rects();break;\
+   case 15:rects_x.pop();rects_y.pop();rects_x.pop();rects_y.pop();draw_rects();break;\
+   case 16:context_polys.clearRect(0,0,xsize,ysize); polys_x = [];polys_y = [];break;\
+   case 17:for(var p=0;p<polynum;p++){polys_x.pop();polys_y.pop();};draw_polys();break;\
    default:break;\
   };\
  };\
@@ -80,6 +85,8 @@ function user_draw(evt){\
   case 13: text(x,y,0,1);break;\
   case 14: rects(x,y,0,0);break;\
   case 15: rects(x,y,0,1);break;\
+  case 16: polys(x,y,0,0);break;\
+  case 17: polys(x,y,0,1);break;\
   default:break;\
  };\
 };\
@@ -104,6 +111,8 @@ function user_drag(evt){\
   case 13: break;\
   case 14: rects(x,y,1,0);break;\
   case 15: rects(x,y,1,1);break;\
+  case 16: polys(x,y,1,0);break;\
+  case 17: polys(x,y,1,1);break;\
   default:break;\
  };\
 };\
@@ -225,7 +234,7 @@ for(var p = 0;p < draw_things.length;p++){\
        }\
        else\
        {\
-        if( draw_things[p] == 'triangle' || draw_things[p] == 'triangles' || draw_things[p].indexOf('poly') != -1  || draw_things[p].indexOf('para') != -1 ){\
+        if( draw_things[p] == 'triangle' || draw_things[p] == 'triangles' ||  draw_things[p].indexOf('para') != -1 ){\
          var canvas_triangles = create_canvas%d(1005,xsize,ysize);\
          var context_triangles = canvas_triangles.getContext(\"2d\");\
          context_triangles.lineCap = \"round\";\
@@ -236,21 +245,42 @@ for(var p = 0;p < draw_things.length;p++){\
          if(multidash[p] == '1' ){ if( context_triangles.setLineDash ){context_triangles.setLineDash([2,4]);}else{if(context_triangles.mozDash){context_triangles.mozDash = [2,4]};};};\
          var triangles_x = new Array();var triangles_y = new Array();\
          var triangles_snap = multisnaptogrid[p];\
-         if( draw_things[p] == 'triangle'){desc = 10;}else{if( draw_things[p] == 'triangles'){desc = 11;}else{if( draw_things[p].indexOf('poly') != -1 ){ if( draw_things[p].indexOf('polys') != -1 ){ desc = 11;}else{desc = 10;};}else{if( draw_things[p] == 'parallelogram'){multiuserinput[p] = 0;desc = 10;}else{if( draw_things[p] == 'parallelograms'){multiuserinput[p] =  0;desc = 11;};};};};};\
+         if( draw_things[p] == 'triangle'){desc = 10;};\
+         if( draw_things[p] == 'triangles'){desc = 11;};\
+         if( draw_things[p] == 'parallelogram'){multiuserinput[p] = 0;desc = 10;};\
+         if( draw_things[p] == 'parallelograms'){multiuserinput[p] =  0;desc = 11;};\
          id_x = 'input_triangles_x';id_y = 'input_triangles_y';id_r = 'input_triangles_r';\
         }\
         else\
         {\
-         if( draw_things[p] == 'text' ){\
-          var canvas_text = create_canvas%d(1007,xsize,ysize);\
-          var context_text = canvas_text.getContext(\"2d\");\
-          context_text.font = multifont_family;\
-          context_text.fillStyle = \"rgba(\"+multifont_color+\",\"+multistrokeopacity[p]+\")\";\
-          var text_snap = multisnaptogrid[p];\
-          var text_x = new Array;var text_y = new Array; var text_abc = new Array();\
-          multiuserinput[p] = 1;\
-          id_x = 'input_text_x';id_y = 'input_text_y';id_r = 'input_text_r';\
-          desc = 13;\
+         if( draw_things[p].indexOf('poly') != -1 ){\
+          var canvas_polys = create_canvas%d(1009,xsize,ysize);\
+          var context_polys = canvas_polys.getContext(\"2d\");\
+          context_polys.lineCap = \"round\";\
+          context_polys.lineWidth = multilinewidth[p];\
+          if(multilinewidth[p]%%2 == 1){ context_polys.translate(0.5,0.5);};\
+          context_polys.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
+          if(multifill[p] == '1' ){ context_polys.fillStyle = \"rgba(\"+multifillcolors[p]+\",\"+multifillopacity[p]+\")\";}else{context_polys.fillStyle = \"rgba( 255,255,255,0)\"; };\
+          if(multidash[p] == '1' ){ if( context_polys.setLineDash ){context_polys.setLineDash([2,4]);}else{if(context_polys.mozDash){context_polys.mozDash = [2,4]};};};\
+          var polys_x = new Array();var polys_y = new Array();\
+          var polys_snap = multisnaptogrid[p];\
+          if( draw_things[p].indexOf('polys') != -1){desc = 17;}else{desc = 16;}\
+          multiuserinput[p] = 0;\
+          id_x = 'input_polys_x';id_y = 'input_polys_y';id_r = 'input_polys_r';\
+         }\
+         else\
+         {\
+          if( draw_things[p] == 'text' ){\
+           var canvas_text = create_canvas%d(1007,xsize,ysize);\
+           var context_text = canvas_text.getContext(\"2d\");\
+           context_text.font = multifont_family;\
+           context_text.fillStyle = \"rgba(\"+multifont_color+\",\"+multistrokeopacity[p]+\")\";\
+           var text_snap = multisnaptogrid[p];\
+           var text_x = new Array;var text_y = new Array; var text_abc = new Array();\
+           multiuserinput[p] = 1;\
+           id_x = 'input_text_x';id_y = 'input_text_y';id_r = 'input_text_r';\
+           desc = 13;\
+          };\
          };\
         };\
        };\
@@ -277,12 +307,12 @@ for(var p = 0;p < draw_things.length;p++){\
     }\
     else\
     {\
-     if( desc == 10 || desc == 11 ){\
+     if( desc == 10 || desc == 11){\
       inner_html+=\"<td><b>(<input type='text' size='5' value='x1 : y1' id='\"+id_x+\"' style='\"+button_style+\"' />) -- (<input type='text' size='5' value='x2 : y2' id='\"+id_y+\"' style='\"+button_style+\"' />) -- (<input type='text' size='5' value='x3 : y3' id='\"+id_r+\"' style='\"+button_style+\"' />)</b></td>\";\
      }\
      else\
      {\
-      if( desc == 12 ){\
+      if( desc == 12 || desc == 16 || desc == 17 ){\
        inner_html+=\"<td><b>(<input type='text' size='8' value='x1,x2...x_n' id='\"+id_x+\"' style='\"+button_style+\"' /> ---- <input type='text' size='8' value='y1,y2...y_n' id='\"+id_y+\"' style='\"+button_style+\"' />)</b></td>\";\
       }\
       else\
@@ -330,6 +360,7 @@ if( triangles_x && triangles_x.length > 0 ){triangles_x = scale_xy(1,triangles_x
 if( rects_x && rects_x.length > 0 ){rects_x = scale_xy(1,rects_x);rects_y = scale_xy(2,rects_y);draw_rects();};\
 if( closedpoly_x && closedpoly_x.length > 0 ){closedpoly_x = scale_xy(1,closedpoly_x);closedpoly_y = scale_xy(2,closedpoly_y);draw_closedpoly();};\
 if( text_x && text_x.length > 0 ){text_x = scale_xy(1,text_x);text_y = scale_xy(2,text_y);draw_text();};\
+if( polys_x && polys_x.length > 0 ){polys_x = scale_xy(1,polys_x);polys_y = scale_xy(2,polys_y);draw_polys();};\
 return;\
 };\
 update_draw_area%d = function(desc,id_x,id_y,id_r){\
@@ -381,13 +412,15 @@ update_draw_area%d = function(desc,id_x,id_y,id_r){\
    closedpoly_y.push(y1);\
   draw_closedpoly();break;\
   case 13:text_abc.push( document.getElementById(id_r.id).value);text(x2px(safe_eval(x1)),y2px(safe_eval(y1)),0,1);draw_text();break;\
-  default:break;\
   case 14: rects_x[0] = x1;rects_x[1] = x2;rects_y[0] = y1;rects_y[1] = y2;draw_rects();break;\
   case 15: rects_x.push(x1);rects_x.push(x2);rects_y.push(y1);rects_y.push(y2);draw_rects();break;\
+  case 16: polys_x[0] = x1;polys_x[1] = x2;polys_x[2] = x3;polys_y[0] = y1;polys_y[1] = y2;polys_y[2] = y3;draw_polys();break;\
+  case 17: polys_x.push(x1);polys_x.push(x2);polys_x.push(x3);polys_y.push(y1);polys_y.push(y2);polys_y.push(y3);draw_polys();break;\
+  default:break;\
  };\
 };\
  <!-- end multidraw -->\n",canvas_root_id,canvas_root_id,draw_types,canvas_root_id,button_style,
- canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,
+ canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,
  canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id );
  
 /* 
@@ -789,8 +822,6 @@ TODO: add a selection of the 'generic js-code' from above into these C-code sele
     return;\
    };");
  }
- else
- {
    /* need to rethink the parallelogram !!! 26/6/2015 */
  if(strstr( draw_types,"parallel") != 0){
   fprintf(js_include_file,"\
@@ -851,71 +882,58 @@ TODO: add a selection of the 'generic js-code' from above into these C-code sele
     return;\
    };");
   }
-  else
-  {
+  
   if( strstr( draw_types,("poly")) != 0 ){
-   char *p = draw_types;
-   int polynum=-1;
-   while( *p ){
-    if( isdigit(*p) ){
-        polynum = atoi(p);
-        break;
-    }
-    else 
-    { 
-	p++;
-    }
-   }
+   char *p = draw_types; int polynum=-1;
+   while( *p ){ if( isdigit(*p) ){ polynum = atoi(p);break; } else { p++;} }
    if(polynum != -1 ){
     fprintf(js_include_file,"var polynum = %d;\
-    function triangles(x,y,event_which,num){\
-     var last = triangles_x.length - 1;\
+    function polys(x,y,event_which,num){\
+     var last = polys_x.length - 1;\
      if(event_which == 0){\
       if(num == 0 && click_cnt == 0){\
-       triangles_x = [];triangles_y = [];\
-       triangles_x[0] = x_snap_check(x,triangles_snap);triangles_y[0] = y_snap_check(y,triangles_snap);\
+       polys_x = [];polys_y = [];\
+       polys_x[0] = x_snap_check(x,polys_snap);polys_y[0] = y_snap_check(y,polys_snap);\
       }\
       else\
       {\
-       triangles_x.push(x_snap_check(x,triangles_snap));triangles_y.push(y_snap_check(y,triangles_snap));\
+       polys_x.push(x_snap_check(x,polys_snap));polys_y.push(y_snap_check(y,polys_snap));\
       };\
       click_cnt++;\
      }\
      else\
      {\
       if( click_cnt < polynum ){\
-       triangles_x.push(x_snap_check(x,triangles_snap));triangles_y.push(y_snap_check(y,triangles_snap));\
-       draw_triangles();\
-       triangles_x.pop();triangles_y.pop();\
+       polys_x.push(x_snap_check(x,polys_snap));polys_y.push(y_snap_check(y,polys_snap));\
+       draw_polys();\
+       polys_x.pop();polys_y.pop();\
       };\
      };\
      if( click_cnt == polynum ){\
-      triangles_x.pop();triangles_y.pop();\
-      triangles_x.push(x_snap_check(x,triangles_snap));triangles_y.push(y_snap_check(y,triangles_snap));\
+      polys_x.pop();polys_y.pop();\
+      polys_x.push(x_snap_check(x,polys_snap));polys_y.push(y_snap_check(y,polys_snap));\
       click_cnt = 0;\
-      draw_triangles();\
+      draw_polys();\
      };\
     };\
-    function draw_triangles(){\
-     var len = triangles_x.length - 1;\
-     context_triangles.clearRect(0,0,xsize,ysize);\
+    function draw_polys(){\
+     var len = polys_x.length - 1;\
+     context_polys.clearRect(0,0,xsize,ysize);\
      for(var p = 0 ; p < len ; p = p+polynum){\
-      context_triangles.beginPath();\
-      context_triangles.moveTo(triangles_x[p],triangles_y[p]);\
+      context_polys.beginPath();\
+      context_polys.moveTo(polys_x[p],polys_y[p]);\
       for( var m = p+1 ;m < p+polynum ; m++){\
-       context_triangles.lineTo(triangles_x[m],triangles_y[m]);\
+       context_polys.lineTo(polys_x[m],polys_y[m]);\
       };\
-      context_triangles.lineTo(triangles_x[p],triangles_y[p]);\
-      context_triangles.closePath();\
-      context_triangles.fill();\
-      context_triangles.stroke();\
+      context_polys.lineTo(polys_x[p],polys_y[p]);\
+      context_polys.closePath();\
+      context_polys.fill();\
+      context_polys.stroke();\
      };\
      return;\
     };",polynum);
-    }
    }
   }
- }
 } /* end 'void add_js_multidraw()' */
 
 void add_js_circles(FILE *js_include_file,int num,char *draw_type,int line_width, int radius ,char *stroke_color,double stroke_opacity,int use_filled,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1){
