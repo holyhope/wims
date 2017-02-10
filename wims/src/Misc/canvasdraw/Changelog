@@ -635,14 +635,13 @@ replyformat 32
 30/10 added some options to command jsplot/jscurve: multiple js-curves may now be plot in a single command and on
       the same  canvas :making it possible to do a 'userdraw clickfill,color' & pan & zoom on the single js-curves-canvas   
 2017
-8/2
+9/2
       command multidraw
-      removed command poly[3-9] from 'triangle' sub-command and used as additional command.
-      multiple polys[3-9] may be used
-      now poly[3-9] or polys[3-9] has "line 7" in the reply
-      parallelogram[s] and triangle[s] are still mutually exclusive (only one type may be used)
-      to use parallelogram[s] and triangle[s] at the same time: use poly3 or polys3 for triangle[s] drawing
-      The output is always a 10 lines string with fixed sequence.
+      removed command poly[s][3-9] and parallelogram[s] from 'triangle' sub-command and used as additional commands.
+      multiple polys[3-9] may be used: poly[3-9] or polys[3-9] has "line 7" in the reply
+      multiple parallograms may be used: the coordinates are stored in "line 10" in the reply
+     
+      The output is always a 11 lines string with fixed sequence.
       line 1 = points_x+";"+points_y+"\n"
       line 2 = circles_x+";"+circlespoint_y+";"+multi_radius+"\n"
       line 3 = segments_x+";"+segments_y+"\n"
@@ -652,6 +651,7 @@ replyformat 32
       line 7 = polys[3-9]_x+";"+polys[3-9]_y+"\n"
       line 8 = rects_x +";"+rects_y+"\n"
       line 9 = closedpoly_x+";"+closedpoly_y+"\n"
-      line 10 = text_x+";"+text_y+";"+text"\n"
+      line 10 = parallelogram_x+";"+parallelogram_y+"\n"
+      line 11 = text_x+";"+text_y+";"+text"\n"
       
       

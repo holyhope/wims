@@ -40,7 +40,7 @@ if(wims_status != \"done\"){\
  canvas_div.addEventListener(\"touchmove\",user_drag,false);\
 };\
 clear_draw_area%d = function(type,name){\
- if(confirm(\"delete \"+multilabel[name]+\" ?\")){\
+ if(confirm(\"delete \"+multilabel[name]+\" ? \")){\
   switch(type){\
    case 0: context_points.clearRect(0,0,xsize,ysize);points_x = [];points_y = [];break;\
    case 1: points_x.pop();points_y.pop();draw_points();break;\
@@ -60,6 +60,8 @@ clear_draw_area%d = function(type,name){\
    case 15:rects_x.pop();rects_y.pop();rects_x.pop();rects_y.pop();draw_rects();break;\
    case 16:context_polys.clearRect(0,0,xsize,ysize); polys_x = [];polys_y = [];break;\
    case 17:for(var p=0;p<polynum;p++){polys_x.pop();polys_y.pop();};draw_polys();break;\
+   case 18:context_parallelogram.clearRect(0,0,xsize,ysize); parallelogram_x = [];parallelogram_y = [];break;\
+   case 19:for(var p = 0; p < 4;p++){ parallelogram_x.pop();parallelogram_y.pop();};draw_parallelogram();break;\
    default:break;\
   };\
  };\
@@ -87,6 +89,8 @@ function user_draw(evt){\
   case 15: rects(x,y,0,1);break;\
   case 16: polys(x,y,0,0);break;\
   case 17: polys(x,y,0,1);break;\
+  case 18: parallelogram(x,y,0,0);break;\
+  case 19: parallelogram(x,y,0,1);break;\
   default:break;\
  };\
 };\
@@ -113,6 +117,8 @@ function user_drag(evt){\
   case 15: rects(x,y,1,1);break;\
   case 16: polys(x,y,1,0);break;\
   case 17: polys(x,y,1,1);break;\
+  case 18: parallelogram(x,y,1,0);break;\
+  case 19: parallelogram(x,y,1,1);break;\
   default:break;\
  };\
 };\
@@ -234,7 +240,7 @@ for(var p = 0;p < draw_things.length;p++){\
        }\
        else\
        {\
-        if( draw_things[p] == 'triangle' || draw_things[p] == 'triangles' ||  draw_things[p].indexOf('para') != -1 ){\
+        if( draw_things[p] == 'triangle' || draw_things[p] == 'triangles' ){\
          var canvas_triangles = create_canvas%d(1005,xsize,ysize);\
          var context_triangles = canvas_triangles.getContext(\"2d\");\
          context_triangles.lineCap = \"round\";\
@@ -247,39 +253,55 @@ for(var p = 0;p < draw_things.length;p++){\
          var triangles_snap = multisnaptogrid[p];\
          if( draw_things[p] == 'triangle'){desc = 10;};\
          if( draw_things[p] == 'triangles'){desc = 11;};\
-         if( draw_things[p] == 'parallelogram'){multiuserinput[p] = 0;desc = 10;};\
-         if( draw_things[p] == 'parallelograms'){multiuserinput[p] =  0;desc = 11;};\
          id_x = 'input_triangles_x';id_y = 'input_triangles_y';id_r = 'input_triangles_r';\
         }\
         else\
         {\
-         if( draw_things[p].indexOf('poly') != -1 ){\
-          var canvas_polys = create_canvas%d(1009,xsize,ysize);\
-          var context_polys = canvas_polys.getContext(\"2d\");\
-          context_polys.lineCap = \"round\";\
-          context_polys.lineWidth = multilinewidth[p];\
-          if(multilinewidth[p]%%2 == 1){ context_polys.translate(0.5,0.5);};\
-          context_polys.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
-          if(multifill[p] == '1' ){ context_polys.fillStyle = \"rgba(\"+multifillcolors[p]+\",\"+multifillopacity[p]+\")\";}else{context_polys.fillStyle = \"rgba( 255,255,255,0)\"; };\
-          if(multidash[p] == '1' ){ if( context_polys.setLineDash ){context_polys.setLineDash([2,4]);}else{if(context_polys.mozDash){context_polys.mozDash = [2,4]};};};\
-          var polys_x = new Array();var polys_y = new Array();\
-          var polys_snap = multisnaptogrid[p];\
-          if( draw_things[p].indexOf('polys') != -1){desc = 17;}else{desc = 16;}\
-          multiuserinput[p] = 0;\
-          id_x = 'input_polys_x';id_y = 'input_polys_y';id_r = 'input_polys_r';\
+         if( draw_things[p].indexOf('para') != -1 ){\
+          var canvas_parallelogram = create_canvas%d(1010,xsize,ysize);\
+          var context_parallelogram = canvas_parallelogram.getContext(\"2d\");\
+          context_parallelogram.lineCap = \"round\";\
+          context_parallelogram.lineWidth = multilinewidth[p];\
+          if(multilinewidth[p]%%2 == 1){ context_parallelogram.translate(0.5,0.5);};\
+          context_parallelogram.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
+          if(multifill[p] == '1' ){ context_parallelogram.fillStyle = \"rgba(\"+multifillcolors[p]+\",\"+multifillopacity[p]+\")\";}else{context_parallelogram.fillStyle = \"rgba( 255,255,255,0)\"; };\
+          if(multidash[p] == '1' ){ if( context_parallelogram.setLineDash ){context_parallelogram.setLineDash([2,4]);}else{if(context_parallelogram.mozDash){context_parallelogram.mozDash = [2,4]};};};\
+          var parallelogram_x = new Array();var parallelogram_y = new Array();\
+          var parallelogram_snap = multisnaptogrid[p];\
+          if( draw_things[p] == 'parallelogram'){multiuserinput[p] =  0;desc = 18;};\
+          if( draw_things[p] == 'parallelograms'){multiuserinput[p] =  0;desc = 19;};\
+          id_x = 'input_parallelogram_x';id_y = 'input_parallelogram_y';id_r = 'input_parallelogram_r';\
          }\
          else\
          {\
-          if( draw_things[p] == 'text' ){\
-           var canvas_text = create_canvas%d(1007,xsize,ysize);\
-           var context_text = canvas_text.getContext(\"2d\");\
-           context_text.font = multifont_family;\
-           context_text.fillStyle = \"rgba(\"+multifont_color+\",\"+multistrokeopacity[p]+\")\";\
-           var text_snap = multisnaptogrid[p];\
-           var text_x = new Array;var text_y = new Array; var text_abc = new Array();\
-           multiuserinput[p] = 1;\
-           id_x = 'input_text_x';id_y = 'input_text_y';id_r = 'input_text_r';\
-           desc = 13;\
+          if( draw_things[p].indexOf('poly') != -1 ){\
+           var canvas_polys = create_canvas%d(1009,xsize,ysize);\
+           var context_polys = canvas_polys.getContext(\"2d\");\
+           context_polys.lineCap = \"round\";\
+           context_polys.lineWidth = multilinewidth[p];\
+           if(multilinewidth[p]%%2 == 1){ context_polys.translate(0.5,0.5);};\
+           context_polys.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
+           if(multifill[p] == '1' ){ context_polys.fillStyle = \"rgba(\"+multifillcolors[p]+\",\"+multifillopacity[p]+\")\";}else{context_polys.fillStyle = \"rgba( 255,255,255,0)\"; };\
+           if(multidash[p] == '1' ){ if( context_polys.setLineDash ){context_polys.setLineDash([2,4]);}else{if(context_polys.mozDash){context_polys.mozDash = [2,4]};};};\
+           var polys_x = new Array();var polys_y = new Array();\
+           var polys_snap = multisnaptogrid[p];\
+           if( draw_things[p].indexOf('polys') != -1){desc = 17;}else{desc = 16;}\
+           multiuserinput[p] = 0;\
+           id_x = 'input_polys_x';id_y = 'input_polys_y';id_r = 'input_polys_r';\
+          }\
+          else\
+          {\
+           if( draw_things[p] == 'text' ){\
+            var canvas_text = create_canvas%d(1007,xsize,ysize);\
+            var context_text = canvas_text.getContext(\"2d\");\
+            context_text.font = multifont_family;\
+            context_text.fillStyle = \"rgba(\"+multifont_color+\",\"+multistrokeopacity[p]+\")\";\
+            var text_snap = multisnaptogrid[p];\
+            var text_x = new Array;var text_y = new Array; var text_abc = new Array();\
+            multiuserinput[p] = 1;\
+            id_x = 'input_text_x';id_y = 'input_text_y';id_r = 'input_text_r';\
+            desc = 13;\
+           };\
           };\
          };\
         };\
@@ -312,7 +334,7 @@ for(var p = 0;p < draw_things.length;p++){\
      }\
      else\
      {\
-      if( desc == 12 || desc == 16 || desc == 17 ){\
+      if( desc == 12 || desc == 16 || desc == 17 || desc == 18 || desc == 19){\
        inner_html+=\"<td><b>(<input type='text' size='8' value='x1,x2...x_n' id='\"+id_x+\"' style='\"+button_style+\"' /> ---- <input type='text' size='8' value='y1,y2...y_n' id='\"+id_y+\"' style='\"+button_style+\"' />)</b></td>\";\
       }\
       else\
@@ -361,6 +383,7 @@ if( rects_x && rects_x.length > 0 ){rects_x = scale_xy(1,rects_x);rects_y = scal
 if( closedpoly_x && closedpoly_x.length > 0 ){closedpoly_x = scale_xy(1,closedpoly_x);closedpoly_y = scale_xy(2,closedpoly_y);draw_closedpoly();};\
 if( text_x && text_x.length > 0 ){text_x = scale_xy(1,text_x);text_y = scale_xy(2,text_y);draw_text();};\
 if( polys_x && polys_x.length > 0 ){polys_x = scale_xy(1,polys_x);polys_y = scale_xy(2,polys_y);draw_polys();};\
+if( parallelogram_x && parallelogram_x.length > 0 ){parallelogram_x = scale_xy(1,parallelogram_x);parallelogram_y = scale_xy(2,parallelogram_y);draw_parallelogram();};\
 return;\
 };\
 update_draw_area%d = function(desc,id_x,id_y,id_r){\
@@ -416,12 +439,14 @@ update_draw_area%d = function(desc,id_x,id_y,id_r){\
   case 15: rects_x.push(x1);rects_x.push(x2);rects_y.push(y1);rects_y.push(y2);draw_rects();break;\
   case 16: polys_x[0] = x1;polys_x[1] = x2;polys_x[2] = x3;polys_y[0] = y1;polys_y[1] = y2;polys_y[2] = y3;draw_polys();break;\
   case 17: polys_x.push(x1);polys_x.push(x2);polys_x.push(x3);polys_y.push(y1);polys_y.push(y2);polys_y.push(y3);draw_polys();break;\
+  case 18: parallelogram_x[0] = x1;parallelogram_x[1] = x2;parallelogram_x[2] = x3;parallelogram_y[0] = y1;parallelogram_y[1] = y2;parallelogram_y[2] = y3;draw_parallelogram();break;\
+  case 19: parallelogram_x.push(x1);parallelogram_x.push(x2);parallelogram_x.push(x3);parallelogram_y.push(y1);parallelogram_y.push(y2);parallelogram_y.push(y3);draw_parallelogram();break;\
   default:break;\
  };\
 };\
  <!-- end multidraw -->\n",canvas_root_id,canvas_root_id,draw_types,canvas_root_id,button_style,
  canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,
- canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id );
+ canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id );
  
 /* 
  now add specific draw functions according to draw_types 
@@ -823,61 +848,73 @@ TODO: add a selection of the 'generic js-code' from above into these C-code sele
    };");
  }
    /* need to rethink the parallelogram !!! 26/6/2015 */
- if(strstr( draw_types,"parallel") != 0){
+ if(strstr( draw_types,"parallelogram") != 0){
   fprintf(js_include_file,"\
-    function triangles(x,y,event_which,num){\
-     var l2 = triangles_x.length;\
+    function parallelogram(x,y,event_which,num){\
+     var l2 = parallelogram_x.length;\
      var l1 = l2 - 1;\
      var l0 = l2 - 2;\
     if(event_which == 0){\
      if(click_cnt == 0){\
-      if(num==0){triangles_x = [];triangles_y = [];};\
-      triangles_x.push(x_snap_check(x,triangles_snap));triangles_y.push(y_snap_check(y,triangles_snap));\
+      if(num == 0){parallelogram_x = [];parallelogram_y = [];};\
+      parallelogram_x.push(x_snap_check(x,parallelogram_snap));parallelogram_y.push(y_snap_check(y,parallelogram_snap));\
      }\
      else\
      {\
-      triangles_x.push(x_snap_check(x,triangles_snap));triangles_y.push(y_snap_check(y,triangles_snap));\
+      parallelogram_x.push(x_snap_check(x,parallelogram_snap));parallelogram_y.push(y_snap_check(y,parallelogram_snap));\
       if(click_cnt == 2){\
-       triangles_x.push(x_snap_check(triangles_x[l2]-triangles_x[l1] + triangles_x[l0]));\
-       triangles_y.push(y_snap_check(triangles_y[l2]-triangles_y[l1] + triangles_y[l0]));\
+       parallelogram_x.push(x_snap_check(parallelogram_x[l2]-parallelogram_x[l1] + parallelogram_x[l0]));\
+       parallelogram_y.push(y_snap_check(parallelogram_y[l2]-parallelogram_y[l1] + parallelogram_y[l0]));\
       };\
      };\
      click_cnt++;\
     }\
     else\
     {\
-      if(click_cnt > 0 && click_cnt < 3){\
-       triangles_x.push(x_snap_check(x,triangles_snap));triangles_y.push(y_snap_check(y,triangles_snap));\
-       triangles_x.push(x_snap_check(triangles_x[l2]-triangles_x[l1] + triangles_x[l0]));\
-       triangles_y.push(y_snap_check(triangles_y[l2]-triangles_y[l1] + triangles_y[l0]));\
-       draw_triangles();\
-       triangles_x.pop();triangles_y.pop();\
-       triangles_x.pop();triangles_y.pop();\
+     if(click_cnt == 1){\
+      parallelogram_x.push(x_snap_check(parallelogram_x[l1]));\
+      parallelogram_y.push(y_snap_check(parallelogram_y[l1]));\
+      parallelogram_x.push(x_snap_check(x,parallelogram_snap));\
+      parallelogram_y.push(y_snap_check(y,parallelogram_snap));\
+      draw_parallelogram();\
+      parallelogram_x.pop();parallelogram_y.pop();\
+      parallelogram_x.pop();parallelogram_y.pop();\
+     }\
+     else\
+     {\
+      if(click_cnt > 1 && click_cnt < 3){\
+       parallelogram_x.push(x_snap_check(x,parallelogram_snap));parallelogram_y.push(y_snap_check(y,parallelogram_snap));\
+       parallelogram_x.push(x_snap_check(parallelogram_x[l2]-parallelogram_x[l1] + parallelogram_x[l0]));\
+       parallelogram_y.push(y_snap_check(parallelogram_y[l2]-parallelogram_y[l1] + parallelogram_y[l0]));\
+       draw_parallelogram();\
+       parallelogram_x.pop();parallelogram_y.pop();\
+       parallelogram_x.pop();parallelogram_y.pop();\
       };\
+     };\
     };\
     if( click_cnt == 3 ){\
-     triangles_x.pop();triangles_y.pop();\
-     triangles_x.push(x_snap_check(triangles_x[l2]-triangles_x[l1] + triangles_x[l0]));\
-     triangles_y.push(y_snap_check(triangles_y[l2]-triangles_y[l1] + triangles_y[l0]));\
-     triangles_x.push(x_snap_check(x,triangles_snap));triangles_y.push(y_snap_check(y,triangles_snap));\
-     triangles_x.pop();triangles_y.pop();\
+     parallelogram_x.pop();parallelogram_y.pop();\
+     parallelogram_x.push(x_snap_check(parallelogram_x[l2]-parallelogram_x[l1] + parallelogram_x[l0]));\
+     parallelogram_y.push(y_snap_check(parallelogram_y[l2]-parallelogram_y[l1] + parallelogram_y[l0]));\
+     parallelogram_x.push(x_snap_check(x,parallelogram_snap));parallelogram_y.push(y_snap_check(y,parallelogram_snap));\
+     parallelogram_x.pop();parallelogram_y.pop();\
      click_cnt = 0;\
-     draw_triangles();\
+     draw_parallelogram();\
     };\
    };\
-   function draw_triangles(){\
-    var len = triangles_x.length - 1;\
-    context_triangles.clearRect(0,0,xsize,ysize);\
+   function draw_parallelogram(){\
+    var len = parallelogram_x.length-1;\
+    context_parallelogram.clearRect(0,0,xsize,ysize);\
     for(var p = 0 ; p < len ; p = p+4){\
-     context_triangles.beginPath();\
-     context_triangles.moveTo(triangles_x[p],triangles_y[p]);\
+     context_parallelogram.beginPath();\
+     context_parallelogram.moveTo(parallelogram_x[p],parallelogram_y[p]);\
      for( var m = p+1 ;m < p+4 ; m++){\
-      context_triangles.lineTo(triangles_x[m],triangles_y[m]);\
+      context_parallelogram.lineTo(parallelogram_x[m],parallelogram_y[m]);\
      };\
-     context_triangles.lineTo(triangles_x[p],triangles_y[p]);\
-     context_triangles.closePath();\
-     context_triangles.fill();\
-     context_triangles.stroke();\
+     context_parallelogram.lineTo(parallelogram_x[p],parallelogram_y[p]);\
+     context_parallelogram.closePath();\
+     context_parallelogram.fill();\
+     context_parallelogram.stroke();\
     };\
     return;\
    };");
