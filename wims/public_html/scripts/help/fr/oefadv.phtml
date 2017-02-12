@@ -15,8 +15,9 @@ Le vrai nom de l'image est ainsi caché.
 
 <p><b>Remarque</b>. N'utilisez pas directement la commande WIMS <em>rename</em> pour
 traiter le nom de fichier, sinon l'exercice ne fonctionnera pas correctement dans
-l'environnement sauvegardé.
-
+l'environnement sauvegardé. D'autre part, le nom sera changé uniquement dans le
+cas où l'exercice est sauvé dans un module et non dans une classe.
+</p>
 <h3>Exercices à plusieurs étapes</h3>
 Des exercices à plusieurs étapes peuvent être conçus grâce à la commande
  <span class="tt wims_code_variable">\steps</span>. Par exemple, si vous définissez (parmi d'autres paramètres)
@@ -25,9 +26,8 @@ Des exercices à plusieurs étapes peuvent être conçus grâce à la commande
 choice 2, reply 2, reply 3
 choice 3
 }</pre>
-
 l'exercice sera présenté en trois étapes, la première proposant
-un choix multiple (choice 1) et une réponse de type <span class="tt wims_code_words">reply</span>  (reply 1),
+un choix multiple (choice 1) et une réponse de type <span class="tt wims_code_words">reply</span> (reply 1),
 la seconde proposant un choix multiple et deux réponses de type <span class="tt wims_code_words">reply</span>, etc.
 <p>
 
@@ -51,7 +51,7 @@ la commande <span class="tt wims_code_variable">\nextstep{...}</span>. L'argumen
 <span class="tt wims_code_variable">\nextstep</span> est semblable à celui de <span class="tt wims_code_variable">\steps</span> mais seule la première
 ligne est effective. Elle n'est utile que si cet argument est une variable qui change
 après avec les définitions de paramètres après soumission.
-L'exercice s'arrête quand le contenu de <span class="tt wims_code_variable">\nextstep</span>  est vide.
+L'exercice s'arrête quand le contenu de <span class="tt wims_code_variable">\nextstep</span> est vide.
 <p>
 Dans tous les cas, une seule déclaration parmi <span class="tt wims_code_variable">\steps</span> ou <span class="tt wims_code_variable">\nextstep</span>
 doit apparaître dans un source OEF.
@@ -84,7 +84,7 @@ permet de faire les méthodes suivantes :
 !if $special_parm=all
  !for sp in $special_list
   <h4 class="wimscenter">La méthode spéciale <span class="tt wims_code_words">$sp</span></h4>
-  Syntaxe générale: <span class="tt wims_code_words">\special{$sp <i>paramètres</i>}</span> <div>
+  Syntaxe générale : <span class="tt wims_code_words">\special{$sp <i>paramètres</i>}</span> <div>
 
   !read oef/special/$sp.phtml help
   </div>
@@ -92,7 +92,7 @@ permet de faire les méthodes suivantes :
 !else
  !for sp in $special_list
   !href cmd=help&special_parm=oefadv&special_parm2=$sp#special $sp
-  &nbsp;
+  $
  !next sp
 !endif
 
@@ -179,7 +179,7 @@ premier caractère de la ligne. Il ne faut pas non plus utiliser
 </div>
 
 <h3>Environnement dans un exercice</h3>
-La variable spéciale  <span class="tt wims_code_variable">\oefenv</span> est utilisée pour tester un exercice
+La variable spéciale <span class="tt wims_code_variable">\oefenv</span> est utilisée pour tester un exercice
 (si elle n'est pas redéfinie dans l'exercice).
 <p>
 Pour l'instant, le seul contenu possible de cette variable est le mot

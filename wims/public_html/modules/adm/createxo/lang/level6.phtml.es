@@ -31,7 +31,8 @@
     If the student takes a look at the generated page, he will only see\
     <pre>&lt;img src="a_random_unrelated_file_name" alt="$name_img_accessibility_alt" /&gt;</pre>\
     <p>La ventaja de este segundo método es que los estudiantes no verán el nombre del fichero.</p>\
-    <p>A causa de su coste en consumo de recursos, no utilice este método más que cuando sea necesario.</p>
+    <p>A causa de su coste en consumo de recursos, no utilice este método más que cuando sea necesario.\
+    The file will be renamed only if the exercise is saved in a module and not in a class.</p>
 
 !set name_save_exo_warning = Binary files will only be permanently added to your exercice when you save the exercice itself.
 
