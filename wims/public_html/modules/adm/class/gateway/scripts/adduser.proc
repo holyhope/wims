@@ -7,8 +7,8 @@ bad=
 !endif
 
 !if $auth_method isitemof $auth_method_list
-  !if $idp_method=ldap 
-    !read adm/class/initldap 
+  !if $idp_method=ldap
+    !read adm/class/initldap
     !if $ldap_login!=$empty
       !set login_method=$idp_method $ldap_login
     !endif
@@ -39,8 +39,8 @@ bad=
 
 test=!defof user_exists in $classdir1/.users/$login
 !if $new_user=yes and $test=yes
+ error=user_exists $login
  login=
- error=user_exists
  !exit
 !endif
 
