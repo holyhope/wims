@@ -6990,7 +6990,6 @@ var draw_xml = function(canvas_root_id,x,y,w,h,mathml,drag_type,onclick,click_cn
  xml_div.style.top = y+\"px\";\
  xml_div.style.width = w+\"px\";\
  xml_div.style.height = h+\"px\";\
- alert(onclick+':'+click_cnt);\
  xml_div.onclick = function(){\
   if( onclick != 2 ){ return; };\
   xml_div.style.color = 'red';\
