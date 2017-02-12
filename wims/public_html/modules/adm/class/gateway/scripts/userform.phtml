@@ -12,37 +12,41 @@
    <legend>$wims_name_properties</legend>
    <div class="field box">
  !if $login=$empty
+   !set tmp_require=required="required"
     <label for="login">$wims_name_Login</label>
-    <input size="30" name="login" value="" id="login"/>
+    <input size="30" name="login" value="" id="login" $tmp_require/>
  !else
+    !set tmp_require=$empty
     <strong>$wims_name_Login</strong>
     <span class="tt wims_login">$login</span>
  !endif
    </div>
    <div class="field box">
     <label for="pass">$wims_name_Password</label>
-    <input type="password" size="30" name="pass" value="" id="pass"/>
+    <input type="password" size="30" name="pass" value="" id="pass" $tmp_require />
    </div>
    <div class="field box">
     <label for="pass2">$wims_name_repeat_pass</label>
-    <input type="password" size="30" name="pass2" value="" id="pass2"/>
+    <input type="password" size="30" name="pass2" value="" id="pass2" $tmp_require />
    </div>
    <div class="field box">
     <label for="firstname">$wims_name_firstname</label>
-    <input size="30" name="firstname" value="$firstname" id="firstname"/>
+    <input size="30" name="firstname" value="$firstname" id="firstname" $tmp_require/>
    </div>
    <div class="field box">
     <label for="lastname">$wims_name_lastname</label>
-    <input size="30" name="lastname" value="$lastname" id="lastname"/>
+    <input size="30" name="lastname" value="$lastname" id="lastname" $tmp_require />
    </div>
    <div class="field box">
     <label for="email"> $wims_name_email</label>
-    <input size="30" name="email" value="$email" id="email"/>
+    <input size="30" name="email" value="$email" id="email" />
    </div>
 !else  external
   !if $login=$empty
+     !set tmp_require=required="required"
      <div class="wimscenter">$name_addteacher</div>
   !else
+     !set tmp_require=
     !set user_external_auth=!getdef user_external_auth in wimshome/log/classes/$wims_class/.users/$login
     <div class="wimscenter">$wims_name_modteacher</div>
   !endif
@@ -56,7 +60,7 @@
   !endif
     <div class="field box">
      <label for="user_auth">$wims_name_Login</label>
-     <input size="30"name="user_auth" value="$user_external_auth" id="user_auth" />
+     <input size="30"name="user_auth" value="$user_external_auth" id="user_auth" $tmp_require />
      <div class="formHelp">$name_external,
       <span class="wims_warning wims_small_remark">$name_login_external
       !if $idp_method isitemof $idp_method_list
@@ -70,9 +74,9 @@
 !if $idp_method notitemof $idp_method_list and $auth_method isitemof $auth_method_list
     <div class="field box">
      <label for="firstname">$wims_name_firstname</label>
-     <input size="30" name="firstname" value="$firstname" id="firstname" />
+     <input size="30" name="firstname" value="$firstname" id="firstname" $tmp_require />
      <label for="lastname">$wims_name_lastname</label>
-     <input size="30" name="lastname" value="$lastname" id="lastname" />
+     <input size="30" name="lastname" value="$lastname" id="lastname" $tmp_require />
     </div>
     <div class="field box">
      <label for="email"> $wims_name_email</label>
