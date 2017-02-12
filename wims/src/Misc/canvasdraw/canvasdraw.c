@@ -2885,7 +2885,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	@ mathml x1,y1,x2,y2,mathml_string
 	@ mathml will be displayed in a rectangle left top (x1:y1) , right bottom (x2:y2)
-	@ can be set onclick <br />(however dragging is not supported)<br />javascript:read_dragdrop(); will return click number of mathml-object
+	@ can be set onclick <br />javascript:read_dragdrop(); will return click number of mathml-object
+	@ can be set draggable (very primitive 'move-to-the-click' type of 'dragging')<br /> the javascript:read_dragdrop() will return the new coordinates (in same order as the canvas script)<br />drag xy|x|y and [xy]snaptogrid are also supported<br/>snaptopoints will not work...due to the primitive dragging<br />technically: the dragstuff library is not used...the mathml is embedded in a new div element and not in the html5-canvas
 	@ if inputfields are incorporated in mathml (with id's : id='mathml0',id='mathml1',...id='mathml_n')<br />the user_input values will be read by javascript:read_mathml();<br /><b>attention</b>: if after this mathml-input object other user-interactions are included, these will read mathml too using "read_canvas();"
 	@ If other inputfields (command input / command textarea) or userdraw is performed, the function read_canvas() will not read mathml. Use some generic function to read it....
 
@@ -2900,11 +2901,11 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		    case 4: decimals = find_number_of_digits(precision);
 			    temp = get_string(infile,1);
 			    if( strstr(temp,"\"") != 0 ){ temp = str_replace(temp,"\"","'"); }
-			    string_length = snprintf(NULL,0,"draw_xml(%d,%d,%d,%d,%d,\"%s\",%d,%d,\"%s\",%.2f);\n",canvas_root_id,int_data[0],int_data[1],int_data[2],int_data[3],temp,onclick,click_cnt,stroke_color,stroke_opacity);
+			    string_length = snprintf(NULL,0,"draw_xml(%d,%d,%d,%d,%d,\"%s\",%d,%d,%d,\"%s\",%.2f);\n",canvas_root_id,int_data[0],int_data[1],int_data[2],int_data[3],temp,drag_type,onclick,click_cnt,stroke_color,stroke_opacity);
 			    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-			    snprintf(tmp_buffer,string_length,"draw_xml(%d,%d,%d,%d,%d,\"%s\",%d,%d,\"%s\",%.2f);\n",canvas_root_id,int_data[0],int_data[1],int_data[2],int_data[3],temp,onclick,click_cnt,stroke_color,stroke_opacity);
+			    snprintf(tmp_buffer,string_length,"draw_xml(%d,%d,%d,%d,%d,\"%s\",%d,%d,%d,\"%s\",%.2f);\n",canvas_root_id,int_data[0],int_data[1],int_data[2],int_data[3],temp,drag_type,onclick,click_cnt,stroke_color,stroke_opacity);
 			    add_to_buffer(tmp_buffer);
-			    if(onclick == 1 ){click_cnt++;}
+			    if(onclick == 1 || onclick == 2 ){click_cnt++;}
 			    /*
 			     in case inputs are present , trigger adding the read_mathml()
 			     if no other reply_format is defined
@@ -6969,30 +6970,60 @@ var draw_http = function(canvas_root_id,x,y,w,h,URL){\
 };");
     break;
 
-    case DRAW_XML:
+    case DRAW_XML: /* 
+    onclick=1 : click 
+    onclick=2 drag
+    xy:drag_type = 0;
+    x:    drag_type = 1;
+    y:    drag_type = 2;
+    */
+
 fprintf(js_include_file,"\n<!-- draw xml -->\n\
-var draw_xml = function(canvas_root_id,x,y,w,h,mathml,onclick,click_cnt,stroke_color,stroke_opacity){\
+var draw_xml = function(canvas_root_id,x,y,w,h,mathml,drag_type,onclick,click_cnt,stroke_color,stroke_opacity){\
  var canvas_div = document.getElementById(\"canvas_div\"+canvas_root_id);\
  var xml_div = document.createElement(\"div\");\
  canvas_div.appendChild(xml_div);\
  xml_div.innerHTML = mathml;\
  xml_div.style.color = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
- if(onclick != 0){\
-  xml_div.onclick = function(){\
-  reply[0] = click_cnt;\
-  };\
-  xml_div.onmouseover = function(){\
-  xml_div.style.color = \"red\";\
-  };\
-  xml_div.onmouseout = function(){\
-  xml_div.style.color = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
-  };\
- };\
  xml_div.style.position = \"absolute\";\
  xml_div.style.left = x+\"px\";\
  xml_div.style.top = y+\"px\";\
  xml_div.style.width = w+\"px\";\
  xml_div.style.height = h+\"px\";\
+ alert(onclick+':'+click_cnt);\
+ xml_div.onclick = function(){\
+  if( onclick != 2 ){ return; };\
+  xml_div.style.color = 'red';\
+  canvas_div.onclick = function(evt){\
+   var x1;\
+   var y1;\
+   var mouse = dragstuff.getMouse(evt,xml_div);\
+   switch(drag_type){\
+    case 0: x1 = mouse.x;y1 = mouse.y;break;\
+    case 1: x1 = mouse.x;y1 = y;break;\
+    case 2: x1 = x;y1 = mouse.y;break;\
+    default: break;\
+   };\
+   if( x_use_snap_to_grid == 1 ){\
+    x1 = snap_to_x(x1);\
+   };\
+   if( y_use_snap_to_grid == 1 ){\
+    y1 = snap_to_y(y1);\
+   };\
+   xml_div.style.left = x1 + 'px';\
+   xml_div.style.top = y1 + 'px';\
+   reply[click_cnt] = x1+','+y1;\
+  };\
+ };\
+ if(onclick == 1){\
+  xml_div.onclick = function(){reply[0] = click_cnt;};\
+  xml_div.onmouseover = function(){\
+   xml_div.style.color = \"red\";\
+  };\
+  xml_div.onmouseout = function(){\
+   xml_div.style.color = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
+  };\
+ };\
  return;\
 };"
 );
