@@ -14,6 +14,17 @@
 !default modu_lang=$lang
 !read $(script_file).$modu_lang
 
+!! when call from html/headmenu:
+!if lang/ notin $(script_file)
+  !read themes/$wims_theme/lang/$(script_file).$modu_lang
+  !if $class_theme!=$empty
+    !read themes/$class_theme/lang/$(script_file).$modu_lang
+  !endif
+  !if $theme_class!=$empty
+    !read themes/$theme_class/lang/$(script_file).$modu_lang
+  !endif
+!endif
+
 !if $lang_exists!=yes
  !set modu_lang=en
  !read $(script_file).$modu_lang
@@ -28,4 +39,3 @@
 !if $title_!=$empty
    !set module_title=$title_
 !endif
-
