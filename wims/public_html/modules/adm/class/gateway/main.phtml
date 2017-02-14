@@ -57,11 +57,11 @@ to $wims_menu_items
  !read lang/msg.phtml.$moduclass_lang
  </div>
 !endif
-!!if $wims_menu_items!=
+!if $wims_realuser=supervisor or $wims_superclass isitemof $wims_supervise
 !set wims_menu_items=addteacher,1,cmd=reply&job=addteacher \
 backstruct,1,cmd=reply&job=backstruct\
 itemsep,0,
-!!endif
+!endif
 !read jobs/$job.phtml
 !if $job iswordof first level prog class course icourse
   <div id="wims_othergestion">
