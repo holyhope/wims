@@ -146,44 +146,48 @@ to $wims_html_header
    !endif
  $
  !endif
- !if $jquery_defined=yes
-    !! Displays a Modal dialog box explaining what the "giveup" button will do.
-    <script type="text/javascript">
-    /*<![CDATA[*/
-      $$(function(){
-        $$("#exo_giveup").dialog({
-            autoOpen: false,
-            modal: true,
-            buttons: {
-              "$wims_name_yes": function() {window.location = '?session=$session&$renewlink';},
-              "$wims_name_no": function() {$$(this).dialog("close");}
-            }
+
+  !if _exam notin $wims_session
+    !if $jquery_defined=yes
+      !! Displays a Modal dialog box explaining what the "giveup" button will do.
+      <script type="text/javascript">
+      /*<![CDATA[*/
+        $$(function(){
+          $$("#exo_giveup").dialog({
+              autoOpen: false,
+              modal: true,
+              buttons: {
+                "$wims_name_yes": function() {window.location = '?session=$session&$renewlink';},
+                "$wims_name_no": function() {$$(this).dialog("close");}
+              }
+            });
+          $$("#exo_giveup_opener").on("click", function() {
+            $$("#exo_giveup").dialog("open");
           });
-        $$("#exo_giveup_opener").on("click", function() {
-          $$("#exo_giveup").dialog("open");
         });
-      });
-    /*]]>*/
-    </script>
-    <button class="wims_button wims_secondary_button" type="button" data-toggle="exo_giveup" id="exo_giveup_opener">$wims_name_giveup</button>
- !endif
-  <div class="dropdown-pane wims_msg info small" id="exo_giveup" title="$wims_name_giveup" data-dropdown>
-    <p>
-    !if $qnum>1
-       $name_serie_giveup
-    !else
-       $name_exo_giveup
+      /*]]>*/
+      </script>
+      <button class="wims_button wims_secondary_button" type="button" data-toggle="exo_giveup" id="exo_giveup_opener">$wims_name_giveup</button>
     !endif
-    </p>
-    !if $jquery_defined!=yes
-      <div class="oef_exo_renew">
-        !set wims_ref_class=wims_button wims_secondary_button
-        !set wims_ref_id=oef_renew
-        !href $renewlink $wims_name_giveup
-      </div>
-    !endif
-  </div>
- $
+    <div class="dropdown-pane wims_msg info small" id="exo_giveup" title="$wims_name_giveup" data-dropdown>
+      <p>
+      !if $qnum>1
+         $name_serie_giveup
+      !else
+         $name_exo_giveup
+      !endif
+      </p>
+      !if $jquery_defined!=yes
+        <div class="oef_exo_renew">
+          !set wims_ref_class=wims_button wims_secondary_button
+          !set wims_ref_id=oef_renew
+          !href $renewlink $wims_name_giveup
+        </div>
+      !endif
+    </div>
+  !endif
+
+  $
   !if $qnum>1
    <div class="oef_serie_exo spacer">
    <span>$name_serie_exo</span>

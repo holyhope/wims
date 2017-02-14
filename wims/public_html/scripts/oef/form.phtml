@@ -1,7 +1,7 @@
 !nocache
 
 !if $hasembedding!=yes
-<fieldset class="oefform">
+  <fieldset class="oefform">
 !endif
 
 !nocache
@@ -41,7 +41,7 @@ $name_enterreply:
  !endif
 !endif
 <br />
-<table class="oefnoembed"> <!-- table noembed-->
+<table class="oefnoembed">
 !distribute item 1,1 into cntr,cntc
 !for t in $ansorder
  !if $oefsteps=$empty or $t$(cnt$t) isitemof $thisstep
@@ -49,7 +49,7 @@ $name_enterreply:
  !endif
  !advance cnt$t
 !next t
-</table> <!-- end table noembed-->
+</table> <!-- end table oefnoembed -->
 :send
 !if $wims_fill_list!=$empty and $fillcnt>0 and $wims_fill_type!=$empty
  !read anstype/$wims_fill_type.after
@@ -71,11 +71,11 @@ $name_enterreply:
 
 !formend
 !if $hasembedding!=yes
-</fieldset>
-<!-- </fieldset> end of "oefform" fieldset-->
+  </fieldset>
+  !! end of "oefform" fieldset
 !endif
 
 !if $qcmgood<1 and $choicecnt>0
- <p class="small">$name_remark</p>
+  <p class="small">$name_remark</p>
 !endif
 
