@@ -7,6 +7,8 @@ good=!line 1 of $good
 good=!translate | to $\
 $ in $good
 good=!nonempty lines $good
+replyGood$i=!line 1 of $good
+
 !distribute items $(oef_answer_option$i) into sizeh,sizev,sizei,sizej
 !set rightcolor=#87ceeb
 !set align_option=!getopt align in $(replyoption$i)
@@ -15,11 +17,22 @@ good=!nonempty lines $good
 
 # sizej represent the number of objects per line
 # $sizeh+2 represent an object width + its margin in px
-!set container_width = $[($sizeh+2) * $sizej]
-!set container_width = class="fill_container" style="width:$(container_width)px"
-replyGood$i=!line 1 of $good
+!if $sizei=$sizej
+!! case of 1 line.
+  !set sizerep=!itemcnt $(reply$i)
+  !set sizegood=!itemcnt $(replyGood$i)
+  !set container_width_g = $[($sizeh+2) * $sizegood]
+  !set container_width_r = $[($sizeh+2) * $sizerep]
+!else
+  !set container_width_g = $[($sizeh+2) * $sizej]
+  !set container_width_r = $container_width_g
+!endif
+
+!set container_width_g = class="fill_container" style="width:$(container_width_g)px"
+!set container_width_r = class="fill_container" style="width:$(container_width_r)px"
+
 tmp=class="drag_label" style="text-align:$align_option;width:$(sizeh)px;height:$(sizev)px;"
-  replyGood$i=!replace internal , by </div><div $tmp> in <div $container_width><div $tmp>$(replyGood$i)</div></div>
+  replyGood$i=!replace internal , by </div><div $tmp> in <div $container_width_g><div $tmp>$(replyGood$i)</div></div>
 !reset tmp
 
 dd=$(reply$i)
@@ -135,7 +148,7 @@ ddo=!sort items $dd
   !endif split
 !next n
 
-reply_$i=$(reply_$i)<div $container_width>
+reply_$i=$(reply_$i)<div $container_width_r>
   !for a = 1 to $dd_cnt
     reply_$i=$(reply_$i)<div\
       class="drag_label $(gr[$a])" style="text-align:$align_option;width:$(sizeh)px;height:$(sizev)px;">\
