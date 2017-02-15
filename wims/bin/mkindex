@@ -43,7 +43,7 @@ DATAMODULE=$WIMS_HOME/public_html/modules/data
 FORTUNE=$BASES/fortune
 KEYWDIR=$WIMS_HOME/public_html/scripts/keywords
 WIMSDOC=$WIMS_HOME/public_html/modules/help
-## copy all sheet in example class to base/sheet/ for search engine
+echo " bin/mkindex > copy all sheet in example class to base/sheet/ for search engine"
 $WIMS_HOME/bin/mkexamplesheet.sh $WIMS_HOME
 
 # MAX_LINELEN
@@ -58,16 +58,18 @@ mlist="$mlist
 $mlist2"
 grep -l "ask_trusted=yes" */*/*/var.init | awk -F "/" '{ print $1"/"$2"/"$3 }' > $BASES/site/trusted_modules
 
-
+echo " bin/mkindex > bin/css.pl"
 cd $WIMS_HOME ;
 perl bin/css.pl
 
+echo " bin/mkindex > cd $BASES/sys; ./mkindex"
 cd $BASES/sys ;
 ./mkindex
 cd $WIMS_HOME
 mkdir -p $KEYWDIR
 cp $BASES/sys/tmp/* $KEYWDIR
 
+echo " bin/mkindex > indexing sheets..."
 cd $BASES/sheet
 slist="`find . -name '*.def' | sed 's!^./!!g;s!.def$!!g' | sort`"
 rm -f index/*
@@ -78,6 +80,7 @@ cd site2
 rm -f [A-Z].?? lists/[A-Z].??
 mkdir -p lists
 
+echo " bin/mkindex > indexing modules..."
 cd $WIMS_HOME
 bin/modind || exit
 
@@ -116,6 +119,7 @@ cd lists
 cats=`ls [A-Z].??`
 cd ..
 
+echo "CATS"
 for t in $cats
 do
  w_translator_unknown=leave
@@ -289,16 +293,16 @@ echo " generate oefdocumentation for javascript"
 cd $WIMS_HOME
 perl bin/oefdoc.pl
 
-#make circuits index and generate component images
+echo " make circuits index and generate component images"
 ## should also understand mkindex and
 cd $CIRCUIT
 ./mksymbols ; ./mkthumbs
 
-#make some bg images
+echo " make some bg images"
 cd $BGIMAGE
 ./.generate
 
-#make images in some datamodule
+echo " make images in some datamodule"
 cd $DATAMODULE/images;
 ##create test if done ; do nothing if file test exists
 if [ -f "roadsigns.fr/INDEX" ]; then
@@ -313,7 +317,7 @@ if [ -f "roadsigns.fr/INDEX" ]; then
   fi
 fi;
 
-#make file.dat for fortune
+echo " make file.dat for fortune"
 cd $FORTUNE
 ##create test if done ; do nothing if file test exists
 if [ `which strfile` ]; then
