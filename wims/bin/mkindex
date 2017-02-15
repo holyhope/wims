@@ -11,7 +11,7 @@
 #  - build index of docs in bases/doc
 #  - make model list
 #  - make oefdocumentation for javascript in createxo
-
+#  - make index in wimsdoc.en
 #	It should be run each time a module is added or modified.
 #
 
@@ -42,7 +42,7 @@ THEME=$WIMS_HOME/public_html/themes
 DATAMODULE=$WIMS_HOME/public_html/modules/data
 FORTUNE=$BASES/fortune
 KEYWDIR=$WIMS_HOME/public_html/scripts/keywords
-
+WIMSDOC=$WIMS_HOME/public_html/modules/help
 ## copy all sheet in example class to base/sheet/ for search engine
 $WIMS_HOME/bin/mkexamplesheet.sh $WIMS_HOME
 
@@ -222,6 +222,13 @@ cd $BASES/dic ;
 echo "index slib ..."
 cd $SLIB
 ./mkindex >>mkindex.log
+
+#wimsdoc.en
+echo "index wimsdoc ..."
+cd $WIMSDOC/wimsdoc.en
+./Makeindex
+cd $WIMSDOC/wimsdoc.cn
+./Makeindex
 
 #shtooka index
 cd $SWAC
