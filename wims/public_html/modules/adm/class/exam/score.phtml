@@ -16,7 +16,7 @@ $wims_institutionname
 
 !if $error!=$empty
  <div class="wims_msg alert">
- !read lang/msg.phtml.$moduclass_lang
+  !read lang/msg.phtml.$moduclass_lang
  </div>
  <p>
  !href module=home $wims_name_back2
@@ -60,20 +60,23 @@ $wims_institutionname
    $table_tr
     <td colspan="4" class="wims_average">
      !default score=$sprime
-     $name_scoreexam2: <span class="bold">$[$score*$scoremax/10]/$scoremax</span>.
+     $name_scoreexam2: <strong>$[$score*$scoremax/10]/$scoremax</strong>.
     </td>
    </tr>
   </tfoot>
  $table_end
 !endif
 
+!if $wims_exam_remain > 0
+  <p id="exam_clock">$wims_name_examremain $wims_hr_rm:$wims_hr_rs.</p>
+!endif
 
 !if $registered=$empty
  $name_begin1.
  !href cmd=reply&job=student $name_begin2
 !else
  !if $timeleft<=0
- <div class="wims_alert warning">
+ <div class="wims_msg warning">
   $name_timeleft
  </div>
  !endif

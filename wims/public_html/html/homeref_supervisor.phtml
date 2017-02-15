@@ -5,12 +5,11 @@
 !endif
 
 !if _test isin $session and $wims_hacked_variables!=$empty
- <p><span class="wims_warning">WIMS WARNING</span>. The following variables of your module could be hacked
- by students using manually modified http addresses! You might want to put more
- strict permissions to them in var.def, in order to build a secure exercise module.
- </p>
- <pre>$wims_hacked_variables</pre>
-
+  <p><span class="wims_warning">WIMS WARNING</span>. The following variables of your module could be hacked
+    by students using manually modified http addresses! You might want to put more
+    strict permissions to them in var.def, in order to build a secure exercise module.
+  </p>
+  <pre>$wims_hacked_variables</pre>
 !endif
 
 !read name.phtml.$lang
@@ -19,11 +18,8 @@
 !read themes/$wims_theme/local.phtml
 
 !if exam isin $wims_session
- !set wims_hr_r=$[max(0,$wims_exam_remain)]
- !set wims_hr_rm=$[floor($wims_hr_r/60)]
- !set wims_hr_rs=!char 2,3 of $[$wims_hr_r%60+100]
- !set wims_homeref_special=$wims_name_examremain $wims_hr_rm:$wims_hr_rs ($wims_name_whenloaded)
- !goto rmend
+  !read examclock.proc
+  !goto rmend
 !endif
 
 !if $wims_rm_1=no
@@ -275,7 +271,9 @@ WIMS $module_title [$module_language]
 !endif
 !set 2_=!append line syou,0,$wims_name_syou to $2_
 !set 2_=!append line class,0,$wims_classname ($wims_institutionname) to $2_
-!set 2_=!append line time,0,Server time: $wims_now to $2_
+
+!read date.phtml $wims_now,noprint
+!set 2_=!append line time,0,$wims_name_server_time: $slib_out to $2_
 !set wims_rm_2=$2_
 !set wims_rm_5=$5_
 

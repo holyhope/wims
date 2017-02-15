@@ -234,8 +234,9 @@ into wims_name_classactivity,wims_name_configuration,\
  !if _exam isin $session
   !distribute items Andere opgaven uit deze overhoring,\
 	resterende tijd voor deze overhoring&nbsp;:,\
+  This exam will automaticaly be closed at:,\
 	zo gauw deze pagina is geladen\
-	into wims_name_back,wims_name_examremain,wims_name_whenloaded
+	into wims_name_back,wims_name_examremain,wims_name_exam_ending,wims_name_whenloaded
  !endif
  !if _check isin $session
   !let wims_page_name=Pagina's

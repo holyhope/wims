@@ -235,8 +235,9 @@ into wims_name_class_home,wims_name_add,wims_name_addh,\
  !if _exam isin $session
   !distribute items Otros ejercicios del examen,\
 	Tiempo que permanece para este examen&nbsp;:,\
+    This exam will automaticaly be closed at:,\
 	cuando se cargue esta página\
-	into wims_name_back,wims_name_examremain,wims_name_whenloaded
+	into wims_name_back,wims_name_examremain,wims_name_exam_ending,wims_name_whenloaded
  !endif
  !if _check isin $session
   !let wims_page_name=Page
