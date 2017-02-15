@@ -1,12 +1,13 @@
 
 !form new
- <input type="hidden" name="module" value="home" />
- <div id="search_engine" class="wims_search_engine">
-  <script src="scripts/js/interface/search_engine.js" type="text/javascript" /></script>
-   $C_T
-   <input size="20" name="search_keywords" value="$search_keywords" />
-   <input type="submit" value="$wims_name_search" />
- </div>
-
- !formend
- !read result.phtml
+  <input type="hidden" name="module" value="home" />
+  <div id="search_engine" class="wims_search_engine">
+    !if jquery_defined=yes
+      <script src="scripts/js/interface/search_engine.js" type="text/javascript" /></script>
+    !endif
+    $C_T
+    <input size="20" name="search_keywords" value="$search_keywords" />
+    <input type="submit" value="$wims_name_search" />
+  </div>
+!formend
+!read result.phtml

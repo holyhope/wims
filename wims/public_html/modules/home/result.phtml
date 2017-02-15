@@ -97,18 +97,19 @@
 !endif
 
 !if $gottype=search or $gotcnt1=0
- !reset tt
- !if $test_exist!=$empty
-  <p>$RE_found2</p>
-
-  <script type="text/javascript">
-    /*<![CDATA[*/
-    jQuery(function($$) {
-        $$("#searchresult").tabs();
-      });
-    /*]]>*/
-  </script>
- !endif
+  !reset tt
+  !if $test_exist!=$empty
+    <p>$RE_found2</p>
+    !if jquery_defined=yes
+      <script type="text/javascript">
+        /*<![CDATA[*/
+        jQuery(function($$) {
+            $$("#searchresult").tabs();
+          });
+        /*]]>*/
+      </script>
+    !endif
+  !endif
 
  <div id="searchresult">
  !if $s_category=A

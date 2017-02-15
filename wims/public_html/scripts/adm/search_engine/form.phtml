@@ -5,54 +5,55 @@
 
 <div class="wims_search_engine" id="searchform">
 
-!set wims_form_method=post
-!form new
-<input type="hidden" name="module" value="home" />
+  !set wims_form_method=post
+  !form new
+    <input type="hidden" name="module" value="home" />
 
-!if $wims_accessright!=$empty
-!read adm/search_engine/search_accessright.phtml
-!endif
+    !if $wims_accessright!=$empty
+      !read adm/search_engine/search_accessright.phtml
+    !endif
 
-  <ul class="inline">
-    <li>$name_search_engine</li>
-    <li>
-    !set wims_ref_class=wims_button_help
-    !href module=adm/light&phtml=search_engine.phtml.$lang $name_search_help
-    </li>
-  </ul>
-  <ul class="inline">
-    <li>
-      <input size="25"
-             type="search"
-             name="search_keywords"
-             value="$search_keywords"
-             class="wims_home_form multicomplete"
-             placeholder="$name_keywords_enter"
-             results="5"
-             autosave="search_keywords"
-              /><button class="wims_button icon-search" type="submit">$N_Search</button>
-    </li>
-    <li>
-      !!-- categories -->
-      !formselect search_category list $slist prompt $plist
+    <ul class="inline">
+      <li>$name_search_engine</li>
+      <li>
+        !set wims_ref_class=wims_button_help
+        !href module=adm/light&phtml=search_engine.phtml.$lang $name_search_help
+      </li>
+    </ul>
+    <ul class="inline">
+      <li>
+        <input size="25"
+               type="search"
+               name="search_keywords"
+               value="$search_keywords"
+               class="wims_home_form multicomplete"
+               placeholder="$name_keywords_enter"
+               results="5"
+               autosave="search_keywords"
+                /><button class="wims_button icon-search" type="submit">$N_Search</button>
+      </li>
+      <li>
+        !!-- categories -->
+        !formselect search_category list $slist prompt $plist
 
-      !!-- search type -->
-      !default search_and=no
-      !formselect search_and list yes,no prompt $name_search_and
+        !!-- search type -->
+        !default search_and=no
+        !formselect search_and list yes,no prompt $name_search_and
 
-      !!-- language -->
-      !set L_language=!words2items $wims_site_languages
-      !formselect search_lang list $L_language
-    </li>
-  </ul>
+        !!-- language -->
+        !set L_language=!words2items $wims_site_languages
+        !formselect search_lang list $L_language
+      </li>
+    </ul>
 
-!formend
-<span class="text_icon browse">
-!href module=adm/browse $wims_name_browse
-</span>
+  !formend
+  <span class="text_icon browse">
+    !href module=adm/browse $wims_name_browse
+  </span>
 </div>
-<script type="text/javascript" src="scripts/js/interface/search_engine.js"></script>
-
+!if jquery_defined=yes
+  <script type="text/javascript" src="scripts/js/interface/search_engine.js"></script>
+!endif
 
 <!-- end adm/search_engine/form.phtml -->
 !set srchl=$search_keywords
