@@ -13,8 +13,18 @@
 !if embededwindow isin $module_init_parm
 	!set window=embeded
 !endif
+!! Don't succeed to use script/language for the moment
+!! translated. FIXME
+!!!read language name.phtml
+!read name.phtml.$lang
+!read themes/$wims_theme/lang/name.phtml.$lang
+!if $class_theme!=$empty
+  !read themes/$class_theme/lang/$(script_file).$modu_lang
+!endif
+!if $theme_class!=$empty
+  !read themes/$theme_class/lang/$(script_file).$modu_lang
+!endif
 
-!read language name.phtml
 !default wims_name_bgcolor=$wims_ref_bgcolor
 !if $wims_hm!=$empty or $wims_lightpopup=yes
  !goto defend
