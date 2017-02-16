@@ -11,26 +11,25 @@
 !set name_preview = Thumbnail
 !set name_html_code = HTML code
 !set name_oef_code = OEF code
-!set name_Actions = Actions
+!set name_Actions = Akties
 
-!set name_img_default_alt = preview of $$i file
-!set name_img_accessibility_alt = Describe here your picture to blind people
+!set name_img_default_alt = preview van $$i bestand
+!set name_img_accessibility_alt = Omschrijving voor blinden en slechtzienden
 
-!set name_some_browsers = some web browsers
-!set name_ogg_warning = are not able to read .ogg files.
+!set name_some_browsers = sommige browsers
+!set name_ogg_warning = kunnen niet met .ogg bestanden overweg.
 
 
 !set name_access_via_imagedir = Deze bestanden zijn aan te roepen in een oefening via de\
  interne parameter <span class="tt wims_code_variable">\imagedir</span>.
 
-!set name_how_to_hide_help = <h2>Hiding Images files names</h2>\
-    If you pick a random picture, the file name can be an help to the student.\
-    You can hide this file name with this code:\
+!set name_how_to_hide_help = <h2>Maak bestandsnamen van plaatjes onzichtbaar</h2>\
+    Als een willekeurig plaatje wordt gekozen, kan de bestandsnaam een hint geven voor de leerling...\
+    De naam van het plaatje kan worden verborden door de ondestaande code:\
     <pre>\img{\imagedir/picture.jpg alt="$name_img_accessibility_alt"}</pre>\
-    If the student takes a look at the generated page, he will only see\
+    De code op de pagina wordt dan:\ 
     <pre>&lt;img src="a_random_unrelated_file_name" alt="$name_img_accessibility_alt" /&gt;</pre>\
-    <p>The advantage of this method is that the file name will be hidden to the student.</p>\
-    <p>Due to its performance cost, this method should be used only when necessary.\
-    The file will be renamed only if the exercise is saved in a module and not in a class.</p>
+    <p>Gebruik deze methode alleen als het absoluut noodzakelijk is: het is nogal bewerkelijk voor de server.\
+    Deze methode is alleen buikbaar als de oefening wordt opgenomen in een module en niet in een oefening exclusief voor een klas.</p>
 
 !set name_save_exo_warning = Bewaar de bestanden voor de oefening, zodat ze niet verloren gaan.

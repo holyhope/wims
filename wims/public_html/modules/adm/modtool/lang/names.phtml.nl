@@ -42,15 +42,14 @@ into name_files_src,name_files_cpp, name_files_other,name_files_lang,name_files_
 !set name_replace=een vervangend bestand&nbsp;
 !set name_addfile=Voeg een nieuw bestand toe&nbsp;
 !set name_successfile=Het bestand is opgemonen in de module.
-!set name_nosuccessfile=The file has not been uploaded in the module.\
-  Check that its name does not contain a stressed letter or \
-  one of the following characters
-!set name_successdeletefile=has been deleted from the directory
-!set name_changefile=Rename
-!set name_changenamefile=New name of the file
-!set name_warning_changenamefile=Be cautious, changing the file name can break\
-  worksheets in virtual classes.\
-  That is in particular the case of exercise files with extenion
+!set name_nosuccessfile=Het bestand is niet geupload naar de module.\
+  Kontroleer of de bestandsnaam geen vreemde lettertekens bevat of \
+  een van de volgende karakters
+!set name_successdeletefile=is verwijderd uit de directory
+!set name_changefile=Hernoemen
+!set name_changenamefile=Nieuwe  naam van het bestand
+!set name_warning_changenamefile=Let op, veranderen van een bestandsnaam kan\
+problemen veroorzaken in werkbladen in een klas.
 
 !set name_help_addfile=De naam <span class="tt wims_fname">name_file</span> mag geen accenten en spaties bevatten en ook geen min-tekens..
 !set name_help_addfile_src=De naam van de OEF broncode moet zijn in de vorm <span class="tt"> src/name_file.oef</span>
@@ -60,7 +59,7 @@ into name_files_src,name_files_cpp, name_files_other,name_files_lang,name_files_
 !set name_help_addfile_phtml=U kunt een aantal van deze bestanden te wijzigen bij het configureren van uw module.
 !set name_gestion=Voor documenten klik op de link <span class="wims_button disabled">$wims_name_docgestion</span>
 !set name_your_module=Uw module
-!set name_your_module_OEF=is a module of exercises written in OEF format and
+!set name_your_module_OEF=is een module met oefeningen in het OEF formaat en
 !set name_file2=bevat de volgende bestanden
 !set name_updateadress=Vernieuw het adres
 !set name_simpl_address=Deze module heeft slechts een enkelvoudig adres
