@@ -8,6 +8,7 @@ Ce type doit obligatoirement être utilisé avec la commande <span class="tt wims_
 La bonne réponse doit être donnée sous la forme d'une matrice.
 Chaque ligne contient des instructions d'une des formes suivantes
 (f pour formal, n pour numeric)
+</p>
 <pre>
 n, "condition numérique", text
 f, "condition formelle", text
@@ -40,20 +41,20 @@ quelque chose comme <span class="tt wims_code_words">c=Circle[A,B]</span>.
 f,C=Point,Le point C est construit :;
 f,F=Point,Le point F est construit :;}{type=geogebra}{option=max=6 extra=yes output=coord}
 </pre>
-Attention : il reste un problème de reconstruction quand un point est sur un des axes du repère mais l'analyse de la réponse reste correcte.
-
+Attention : il reste un problème de reconstruction quand un point est sur un des axes
+du repère mais l'analyse de la réponse reste correcte.
 </li><li>
 <span class="tt wims_code_words">Circle</span> :
  les conditions formelles analysent l'ensemble des cercles qu'ils soient construits au préalable ou qu'ils soient construits par les élèves.
  Attention ce comportant différe des conditions sur un point vu au préalable. Pour éviter de transformer les cercles en ellipse, La commande setCoordSystem ne doit pas être utilisée ou judicieusement.
   Les conditions d'analyse sont les suivantes :
 <ul><li><span class="tt wims_code_words">c=Circle[A,B]</span> :
- vérifie que le cercle (c) de centre A et de rayon AB soit tracé. L'utilisateur doit impérativement avoir cliqué sur les points A et B avec l'outil cercle.</li>
-<li><span class="tt wims_code_words">=Circle[A,B]</span> :
- vérifie qu'un cercle quelconque de centre A et de rayon AB soit tracé. L'utilisateur doit impérativement avoir cliqué sur les points A et B.</li>
-<li><span class="tt wims_code_words">=Circle[,B]</span> :
- vérifie qu'un cercle quelconque passe par le point B qui n'est pas le centre du cercle. L'utilisateur doit impérativement avoir cliqué sur le point B.</li>
-<li><span class="tt wims_code_words">=Circle[C,]</span> :
+ vérifie que le cercle (c) de centre A et de rayon AB soit tracé. L'utilisateur doit impérativement avoir cliqué sur les points A et B avec l'outil cercle.
+ </li><li><span class="tt wims_code_words">=Circle[A,B]</span> :
+ vérifie qu'un cercle quelconque de centre A et de rayon AB soit tracé. L'utilisateur doit impérativement avoir cliqué sur les points A et B.
+ </li><li><span class="tt wims_code_words">=Circle[,B]</span> :
+ vérifie qu'un cercle quelconque passe par le point B qui n'est pas le centre du cercle. L'utilisateur doit impérativement avoir cliqué sur le point B.
+ </li><li><span class="tt wims_code_words">=Circle[C,]</span> :
  vérifie qu'un cercle quelconque a pour centre le point C. L'utilisateur doit impérativement avoir cliqué sur le point C.
 </li></ul>
 <pre>
@@ -69,11 +70,13 @@ f,=Circle[C,],Un cercle de centre C (clic obligatoire sur C) est construit :;
  les conditions formelles prennnent en compte l'ensemble des droites construites au préalable ou réalisées par les élèves.
  Les conditions d'analyse sont les suivantes :
 <ul><li><span class="tt wims_code_words">a=Line[A,B]</span> :
- vérifie que la droite (a) passant par A et B soit tracé. L'utilisateur doit impérativement avoir cliqué sur les points A et B.</li>
-<li><span class="tt wims_code_words">=Line[A,B]</span> :
- vérifie qu'une droite passant par A et B soit tracé. Le nom de la droite ayant aucune importance permet de ne pas tenir compte de l'ordre de construction. L'utilisateur doit impérativement avoir cliqué sur les points A et B.</li>
-<li><span class="tt wims_code_words">=Line[,B]</span> :
- vérifie qu'une droite passant par B soit tracé. L'utilisateur doit impérativement avoir cliqué sur le point B avec l'object droite sélectionné.</li></ul>
+ vérifie que la droite (a) passant par A et B soit tracé. L'utilisateur doit impérativement avoir cliqué sur les points A et B.
+ </li><li><span class="tt wims_code_words">=Line[A,B]</span> :
+ vérifie qu'une droite passant par A et B soit tracé. Le nom de la droite ayant aucune
+ importance permet de ne pas tenir compte de l'ordre de construction. L'utilisateur doit impérativement avoir cliqué sur les points A et B.
+ </li><li><span class="tt wims_code_words">=Line[,B]</span> :
+ vérifie qu'une droite passant par B soit tracé. L'utilisateur doit impérativement avoir cliqué sur le point B avec l'object droite sélectionné.
+ </li></ul>
 <pre>
 \answer{}{f,B=Point,Le point B est construit :;
 f,C=Point,Le point C est construit :;
@@ -91,19 +94,18 @@ Pour conserver les angles, La commande setCoordSystem est à proscrire. De plus i
 <ul><li><span class="tt wims_code_words">b=OrthogonalLine[A,a]</span> :
  vérifie que la droite (b) est perpendiculaire à (a)
  et passe par A. L'utilisateur doit impérativement avoir cliqué sur la droite (a) et le point A
- avec l'outil perpendiculaire.</li>
- <li><span class="tt wims_code_words">=OrthogonalLine[A,]</span> :
+ avec l'outil perpendiculaire.
+ </li><li><span class="tt wims_code_words">=OrthogonalLine[A,]</span> :
  vérifie qu'une droite perpendiculaire passe par le point A.
- L'utilisateur doit impérativement cliquer sur le point A avec l'outil perpendiculaire.</li>
-<li><span class="tt wims_code_words">=OrthogonalLine[,a]</span> :
+ L'utilisateur doit impérativement cliquer sur le point A avec l'outil perpendiculaire.
+ </li><li><span class="tt wims_code_words">=OrthogonalLine[,a]</span> :
  vérifie qu'une droite est perpendiculaire à la droite (a).
- L'utilisateur doit impérativement cliquer sur la droite (a) avec l'outil perpendiculaire.</li>
-</ul>
+ L'utilisateur doit impérativement cliquer sur la droite (a) avec l'outil perpendiculaire.
+ </li></ul>
 </li></ul>
 
 <p>
 <b>L'ensemble des commandes disponibles sont les suivantes</b> :
-
 </p><ul>
 <li><span class="tt wims_code_words">A=Point</span> :
  A est un point de la figure.
@@ -145,8 +147,7 @@ absolue de 0.3 sur les valeurs de l'abscisse et de l'ordonnée.
 n,abs(x_C+2)<0.3&abs(y_C-5)<0.3,Est-ce-que le point \(C(-2,5)) est bien placé ?;
 n,abs(x_F+4)<0.3&abs(y_F+3)<0.3,Est-ce-que le point \(F(-4,-3)) est bien placé ?;}{type=geogebra}{option=max=6 extra=yes output=coord}
 </pre>
-</li>
-<li><span class="tt wims_code_words">Cercle</span> :
+</li><li><span class="tt wims_code_words">Cercle</span> :
 l'analyse numérique d'un cercle nécessite selon les cas la connaissance du nom du cercle.
  Les variables <span class="tt wims_code_words">R_c, x_c et y_c</span> sont respectivement le carré du rayon d'un cercle c,
  l'abscisses et l'ordonné de son centre. Pour éviter de transformer les cercles en ellipse , La commande setCoordSystem
@@ -154,13 +155,16 @@ l'analyse numérique d'un cercle nécessite selon les cas la connaissance du nom d
 <ul><li>Si la construction doit tolérer des approximations, les conditions d'analyse sont
  les suivantes :
 <ul><li><span class="tt wims_code_words">abs(R_c-((x_A-x_B)^2+(y_A-y_B)^2))<0.3 :</span> vérifie que le rayon du cercle (c)
-est environ égale à la distance AB. Attention R_c est le rayon au carré.</li>
-<li><span class="tt wims_code_words">abs(x_c-x_A)<0.1 & abs(y_c-y_A)<0.1 :</span> vérifie que le centre du cercle (c) est
- confondu avec le point A.</li></ul>
- <li>Dans le cadre d'une construction formelle, on peut réaliser l'analyse d'un cercle dont on
+est environ égale à la distance AB. Attention R_c est le rayon au carré.
+</li><li><span class="tt wims_code_words">abs(x_c-x_A)<0.1 & abs(y_c-y_A)<0.1 :</span>
+vérifie que le centre du cercle (c) est
+ confondu avec le point A.
+ </li></ul></li><li>
+ Dans le cadre d'une construction formelle, on peut réaliser l'analyse d'un cercle dont on
  ne connait pas le nom avec les conditions d'analyse suivantes :
-<ul><li><span class="tt wims_code_words">eq_c:(x+1)^2+(y-4)^2=10 :</span>vérifie que le cercle (c) a pour équation (x+1)^2+(y-4)^2=10</li>
-<li><span class="tt wims_code_words">eq_:(x-x_A)^2+(y-y_A)^2=(x_A-x_B)^2+(y_A-y_B)^2 :</span> vérifie qu'un cercle passe par le
+<ul><li><span class="tt wims_code_words">eq_c:(x+1)^2+(y-4)^2=10 :</span>vérifie que le cercle (c) a pour équation (x+1)^2+(y-4)^2=10
+</li><li><span class="tt wims_code_words">eq_:(x-x_A)^2+(y-y_A)^2=(x_A-x_B)^2+(y_A-y_B)^2 :</span>
+vérifie qu'un cercle passe par le
  point A et a pour rayon AB.</li></ul>
  </li></ul>
 <pre>
@@ -170,7 +174,7 @@ n,eq_c:(x-x_A)^2+(y-y_A)^2=(x_A-x_B)^2+(y_A-y_B)^2, L'équation du cercle \(C) es
 n,eq_:(x+1)^2+(y-4)^2=10, Le cercle de centre C est de rayon CA est tracé : ;}
 {type=geogebra}{option=extra=yes max=20 output=nocoord}
 </pre>
-<li><span class="tt wims_code_words">Droite</span> :
+</li><li><span class="tt wims_code_words">Droite</span> :
 l'analyse numérique de droite nécessite selon les cas la connaissance du nom de la droite.
  Les variables <span class="tt wims_code_words">m_d et p_d</span> sont respectivement le coefficient directeur et l'ordonnée à
  l'origine de l'équation réduite de la droite (d). Les variables <span class="tt wims_code_words">a_d, b_d et c_d</span> sont
@@ -178,8 +182,9 @@ l'analyse numérique de droite nécessite selon les cas la connaissance du nom de 
 <ul><li>Si la construction doit tolérer des approximations, les conditions d'analyse sont
  les suivantes :
 <ul><li><span class="tt wims_code_words">abs(m_a-0.5)<0.1 & abs(p_a-2)<0.1 :</span> vérifie le coefficient directeur
- et l'ordonnée à l'origine de l'équation réduite de la droite (a) avec une précision de 0.1.</li>
-<li><span class="tt wims_code_words">abs(a_b-2)<0.1 & abs(b_b-1)<0.1 & abs(c_b+3)<0.1 :</span> vérifie les 3 coefficients
+ et l'ordonnée à l'origine de l'équation réduite de la droite (a) avec une précision de 0.1.
+ </li><li><span class="tt wims_code_words">abs(a_b-2)<0.1 & abs(b_b-1)<0.1 & abs(c_b+3)<0.1 :</span>
+ vérifie les 3 coefficients
  de l'équation \(ax+by=c) d'une droite (b) avec une précision de 0.1. Attention
   une même droite peut avoir plusieurs triplets (a,b,c) donc il est préférable d'analyser les
   quotients.</li></ul></li>
@@ -212,8 +217,7 @@ n,eq_:-2x+3y=-1,Est-ce-qu'une droite d'équation \(-2x+3y=-1) est tracée ?;}{type
 \answer{}{n,abs(v_B5-(\nwc))<=0,La case B5 est correct;
 n,abs(v_D2-(\pm))<=0,Le prix Total HT des écrans est juste;}{type=geogebra}{option=extra=yes precision=2 max=50 output=coord}
 </pre>
-</li>
-<li>
+</li><li>
 <span class="tt wims_code_words">x2_c,y2_c,xy_c,x_c,y_c,cst_c</span> : coefficients de <span class="tt wims_code_words">x^2, y^2, x*y, x,y, 1</span> d'une conique
 <span class="tt wims_code_words">c</span>.
 </li>
@@ -305,12 +309,13 @@ si cela est possible, puis numériquement.
 </p><p>
 La variable <span class="tt wims_code_words">\sc_reply</span><i>n</i> contient
 sur la première ligne une valeur. Elle évalue la réponse globale de la manière suivante :
+</p>
 <ul><li> 0 : mauvaise réponse</li>
 <li> 0.5 : erreur de nom seulement</li>
 <li>1 : bonne réponse</li></ul>
 La seconde ligne est constituée de plusieurs colonnes qui évaluent chaque condition numérique ou formelle de la même manière que précédement.
 La troisième ligne indique le numéro du scénario utilisé. Si l'option n'est pas activé, le numéro renvoyé est 0.
-</p><p>
+<p>
 <b>Options</b> :
 <ul><li><span class="tt wims_code_words">max</span>
 nombre maximum d'objets qui peuvent être construits dans l'applet
