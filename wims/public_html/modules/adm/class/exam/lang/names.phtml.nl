@@ -49,7 +49,7 @@ name_lasttry,name_exam7,name_exam8,name_depend,name_scoreexam2
 !set name_exam9=!nosubst Dit proefwerk mag maximaal <strong>$sdure min.</strong> in beslag nemen.\
 Wanneer een opgave wordt aangeklikt,
 
-!set name_simulation=Dit proefwerk verloopt in simulatie mode. Het werkt precies zo als het echte proefwerk, \
+!set name_simulation=<strong>Dit proefwerk verloopt in simulatie mode.</strong> Het werkt precies zo als het echte proefwerk, \
 alleen worden nu de cijfers -en andere data- natuurlijk niet opgeslagen.
 
 !set wims_name_examremain=Resterende tijd voor dit proefwerk : $

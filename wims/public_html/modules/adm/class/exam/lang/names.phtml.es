@@ -53,7 +53,7 @@ name_lasttry,name_exam7,name_exam8,name_depend,name_scoreexam2
 !set name_exam9=!nosubst Tiene <strong>$sdure minutos</strong> para trabajar en el examen.
      Cuando pulse en un ejercicio de los anteriores,
 
-!set name_simulation=Este examen está en modo simulación. Funciona exactamente igual
+!set name_simulation=<strong>Este examen está en modo simulación.</strong> Funciona exactamente igual
 que el examen verdadero pero no se puede guardar la puntuación y el intento no se tendrá en cuenta.
 
 !set wims_name_examremain=Tiempo restante de examen: $
