@@ -7,7 +7,7 @@
 !! **** Default Names ***
 !distribute items Zoeken,\
 Werk,Terug naar het werk,\
-WIMS hoofdpagina,Intro/Configuratie,Help,Over deze module,\
+WIMS hoofdpagina,Intro/Configuratie,Help,Over deze module,About WIMS,\
 Introductie,Sluiten,\
 Sluit dit venster,Terug,Start of page,\
 Site manager,Schrijver van deze pagina,Schrijvers van deze pagina,\
@@ -66,7 +66,7 @@ Oude technische variabelen,\
 Globale resultaten,\
  into wims_name_search,\
    wims_name_work,wims_name_resume,\
-   wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
+   wims_name_home,wims_name_intro,wims_name_help,wims_name_about,wims_name_aboutw,\
    wims_name_titleintro,wims_name_Close,\
    wims_name_back,wims_name_back2,wims_name_top_page,\
    wims_name_manager,wims_name_author,wims_name_authors,\

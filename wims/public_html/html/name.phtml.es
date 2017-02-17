@@ -7,7 +7,7 @@
 !! **** Default Names ***
 !distribute items Buscar,\
 Al trabajo,Volver al trabajo,\
-Página inicial de WIMS,Introducción/Configuración,Ayuda,Acerca de,\
+Página inicial de WIMS,Introducción/Configuración,Ayuda,Acerca de,About WIMS,\
 Introducción,Cerrar,\
 Cerrar esta ventana,Atrás,Start of page,\
 Administrador del sitio,Autor de la página,Autores de la página,\
@@ -66,7 +66,7 @@ Old technical variables,\
 Global results,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
-	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
+	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,wims_name_aboutw,\
 	wims_name_titleintro,wims_name_Close,\
 	wims_name_back,wims_name_back2,wims_name_top_page,\
 	wims_name_manager,wims_name_author,wims_name_authors,\
