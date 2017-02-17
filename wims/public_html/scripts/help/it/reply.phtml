@@ -46,8 +46,8 @@ wlist,Elenco di parole,\
 !set namelist=Tipologie di base, Tipologie specifiche o avanzate
 !set symtextlist=text atext raw compose
 
-<h3>Tipi di risposte</h3>
-
+<h2 id="freestyle">Tipi di risposte</h2>
+<p>
 Un esercizio OEF può prevedere tipi di risposta molto diversi. Oltre alle
 più comuni domande a scelta multipla e alle risposte aperte standard,
 WIMS mette a disposizione molte altre possibilità.
@@ -57,9 +57,8 @@ possibile creare dei
  che vengono mostrati all'utente solo se la risposta soddisfa determinate
 condizioni (ad esempio per commentare un errore tipico).
 
-<a id="freestyle"></a>
 Nell'attuale implementazione di WIMS, in un esercizio è possibile inserire
-fino a $answerlim risposte aperte. <p>
+  fino a $answerlim risposte aperte. </p><p>
 La sintassi del comando è la seguente (gli ultimi 3 campi sono opzionali):
 </p>
 <pre>
@@ -71,7 +70,7 @@ La sintassi del comando è la seguente (gli ultimi 3 campi sono opzionali):
 Le domande aperte possono essere, indipendentemente l'una dall'altra, di uno dei tipi seguenti.
 </p>
 !for k=1 to 2
- <span class="bold">$(namelist[$k])</span>
+ <h4>$(namelist[$k])</h4>
  !set n=!linecnt $(typelist$k)
  <ul>
  !for j=1 to $n
@@ -83,11 +82,10 @@ Le domande aperte possono essere, indipendentemente l'una dall'altra, di uno dei
   !set name=!item 1 of $name
   !default name1=$name
   !if $name isitemof $special_parm or all isitemof $special_parm
-   <li><a id="_$name"></a>
+   <li id="_$name">
    !read help/anstype.$lang/$name.phtml
    !if $name iswordof $symtextlist
-    <p>
-    <b>ATTENZIONE</b>.
+    <p><b>ATTENZIONE</b>.
     Questo tipo di risposta accetta l'opzione symtex. Se la parola
   <span class="tt wims_code_words">symtext</span> è presente tra le opzioni, allora l'analisi
     della risposta sarà eseguita come per il tipo
@@ -108,12 +106,9 @@ le opzioni valide per il tipo di risposta symtext.
 
 !read help/$lang/embedans.phtml
 
-<h3>Il parametro opzionale <span class="tt wims_code_words">weight</span></h3>
-<a id="weight"></a>
+<h3 id="weight">Il parametro opzionale <span class="tt wims_code_words">weight</span></h3>
 È possibile assegnare un peso alle risposte.
-<p>
-Esempio:
-</p>
+<p>Esempio:</p>
 <pre>\answer{}{1}{type=numeric}{weight=8}
 \answer{}{1}{type=numeric}{weight=2}
 </pre>
@@ -133,35 +128,34 @@ Esempio:
 \answer{}{1}{type=numeric}{weight=3}
 </pre>
 
-<h3>Il parametro opzionale <span class="tt wims_code_words">option</span></h3>
- <a id="option"></a>
+<h3 id="option">Il parametro opzionale <span class="tt wims_code_words">option</span></h3>
  In caso di più opzioni, queste vanno separate con uno spazio.
  Per esempio <span class="tt wims_code_words">option=default noanalyzeprint</span>
 
 I comandi <span class="tt wims_code_variable">\answer</span> o
 <span class="tt wims_code_variable">\condition</span> accettano le seguenti opzioni
 <ul>
-<li><span class="tt wims_code_words">option=default</span>: L'opzione <span class="tt wims_code_words">default</span> è valida per tutte le risposte aperte.
-La risposta di default va assegnata in questo modo
-<span class="tt wims_code_words">default="valore_di_default"</span>. Se l'utente
-invia una risposta vuota, viene utilizzato il valore valore_di_default.
-</li>
-<li>
-<span class="tt wims_code_words">option=split</span>: L'opzione è valida per i tipi <span class="tt wims_code_words">correspond</span>, <span class="tt wims_code_words">checkbox</span> o <span class="tt wims_code_words">mark</span>,
-e assegna un voto proporzionale in caso di risposta parziale.
-</li>
-<li>
-<span class="tt wims_code_words">option=nonstop</span>: In caso di esercizi a passi, indica di continuare l'esercizio con le domande successive anche in caso di risposta sbagliata.
-</li>
-<li>
-<span class="tt wims_code_words">option=noanalyzeprint</span>: Il testo automatico di analisi della risposta non viene mostrato. L'autore dell'esercizio dovrebbe in questo caso fornire un commento/feedback adeguato.
-Questo può essere utile per certi tipi di risposta, come <span class="tt wims_code_words">mark</span> per cui il testo automatico è spesso inadeguato. Se si
-usa questa ozione non viene mostrato alcun commento sulla risposta,
-ma solo il punteggio ottenuto.
-</li><li>
-Il comando <span class="tt wims_code_words">condition</span> accetta anche l'opzione
-<span class="tt wims_code_words">option=hide</span>: in questo caso viene effettuata la verifica, ma non viene mostrato alcun testo.
-</li>
+  <li><span class="tt wims_code_words">option=default</span>: L'opzione <span class="tt wims_code_words">default</span> è valida per tutte le risposte aperte.
+  La risposta di default va assegnata in questo modo
+  <span class="tt wims_code_words">default="valore_di_default"</span>. Se l'utente
+  invia una risposta vuota, viene utilizzato il valore valore_di_default.
+  </li>
+  <li>
+  <span class="tt wims_code_words">option=split</span>: L'opzione è valida per i tipi <span class="tt wims_code_words">correspond</span>, <span class="tt wims_code_words">checkbox</span> o <span class="tt wims_code_words">mark</span>,
+  e assegna un voto proporzionale in caso di risposta parziale.
+  </li>
+  <li>
+  <span class="tt wims_code_words">option=nonstop</span>: In caso di esercizi a passi, indica di continuare l'esercizio con le domande successive anche in caso di risposta sbagliata.
+  </li>
+  <li>
+  <span class="tt wims_code_words">option=noanalyzeprint</span>: Il testo automatico di analisi della risposta non viene mostrato. L'autore dell'esercizio dovrebbe in questo caso fornire un commento/feedback adeguato.
+  Questo può essere utile per certi tipi di risposta, come <span class="tt wims_code_words">mark</span> per cui il testo automatico è spesso inadeguato. Se si
+  usa questa ozione non viene mostrato alcun commento sulla risposta,
+  ma solo il punteggio ottenuto.
+  </li><li>
+  Il comando <span class="tt wims_code_words">condition</span> accetta anche l'opzione
+  <span class="tt wims_code_words">option=hide</span>: in questo caso viene effettuata la verifica, ma non viene mostrato alcun testo.
+  </li>
 </ul>
 Altre opzioni sono descritte nella documentazione dei tipi di risposta per cui
 sono utilizzabili. For precision, return to the documentation of the answer type.
@@ -171,9 +165,10 @@ sono utilizzabili. For precision, return to the documentation of the answer type
 <p>
 Le risposte aperte possono essere verificate in base a condizioni elaborate
 (domande che ammettono più di una risposta corretta, esercizi che
-richiedono esempi, risposte determinate da diseguaglianze, ecc.). Ciò
-può essere ottenuto in WIMS nel modo seguente. <p>
-Se nel comando <span class="tt wims_code_variable">\answer</span> come <span class="tt wims_code_variable">\risposta</span> si utilizza una
+richiedono esempi, risposte determinate da diseguaglianze, ecc.).
+Ciò può essere ottenuto in WIMS nel modo seguente.</p><p>
+Se nel comando <span class="tt wims_code_variable">\answer</span>
+come <span class="tt wims_code_variable">\risposta</span> si utilizza una
 variabile non definita in precedenza, la risposta dell'utente viene
 salvata in questa variabile. Questa variabile può essere utilizzata
 per definire condizioni da verificare. Il punteggio assegnato viene

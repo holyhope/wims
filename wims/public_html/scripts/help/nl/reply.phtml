@@ -47,7 +47,7 @@ wlist,Lijst met significante woorden,\
 !set namelist=Basis types, Specifieke of geavanceerde types
 !set symtextlist=text atext raw compose
 
-<h3>Antwoorden op een OEF</h3>
+<h2>Antwoorden op een OEF</h2>
 
 Er zijn twee hoofdgroepen antwoord modellen in een OEF oefening:
 de meerkeuze model en het open_antwoord model [freestyle]
@@ -55,7 +55,7 @@ Bij alle modellen kan
 !href cmd=help&special_parm=feedback feedback
  worden gegeven, als het antwoord van de leerling aan bepaalde condities voldoet.
 
-<h4>Multiple choices</h4>
+<h3>Multiple choices</h3>
 <p>
 Een meerkeuze vraag wordt bepaald door een lijst met goede keuzes [1 of meer]
 en door een lijst met foutieve keuzes.
@@ -68,7 +68,7 @@ Zie ook
 !href cmd=help&special_parm=oef help bij OEF formaat
  voor de syntax bij het meerkeuze vraag type.
 </p>
-<h4>Freestyle antwoorden</h4> <p>
+<h3 id="freestyle">Freestyle antwoorden</h3><p>
 Een freestyle antwoord [open antwoord] wordt door de leerling zelf ingetypt.
 Er kunnen op deze server gelijktijdig $answerlim freestyle vragen worden gesteld binnen een enkele OEF
 </p><p>
@@ -81,7 +81,7 @@ De algemene syntax is als volgt:
 Elk open antwoord kan ,onafhankelijk van de andere vragen in een OEF, 1 van het onderstaande types zijn:
 </p>
 !for k=1 to 2
-<b>$(namelist[$k])</b>
+<h4>$(namelist[$k])</h4>
  !set n=!linecnt $(typelist$k)
  <ul>
  !for j=1 to $n
@@ -93,7 +93,7 @@ Elk open antwoord kan ,onafhankelijk van de andere vragen in een OEF, 1 van het 
   !set name=!item 1 of $name
   !default name1=$name
   !if $name isitemof $special_parm or all isitemof $special_parm
-   <li><a id="_$name"></a>
+   <li id="_$name">
    !read help/anstype.$lang/$name.phtml
    !if $name iswordof $symtextlist
     <br />
@@ -122,8 +122,7 @@ De meest gebruikte [gemakkelijkste...] optie voor open antwoorden is: <span clas
 Deze antwoord model accepteerd ook nog een extra sleutel <span class="tt wims_code_words">default="default_value"</span>.
 Wanneer de leerling een leeg antwoord invult, wordt verder gerekend met de "default_value"
 </p>
-<h4>De optionele parameter <span class="tt wims_code_words">weight</span></h4>
-<a id="weight"></a>
+<h3 id="weight">De optionele parameter <span class="tt wims_code_words">weight</span></h3>
 Het is mogelijk de antwoorden binnen een enkele OEF een weging
 mee te geven.
 <p>
@@ -148,46 +147,45 @@ Voorbeeld :
 \answer{}{1}{type=numeric}{weight=3}
 </pre>
 
-<h4>De optionele parameter <span class="tt wims_code_words">option</span></h4>
- <a id="option"></a>
+<h3 id="option">De optionele parameter <span class="tt wims_code_words">option</span></h3>
  In het geval van meerdere opties, moeten deze worden gescheiden door spaties.
  Bijvoorbeeld : <span class="tt wims_code_words">option=default noanalyzeprint</span>
 
 De toegestane option parameters voor <span class="tt wims_code_words">\answer</span>
 of <span class="tt wims_code_words">\condition</span> zijn
 <ul>
-<li><span class="tt wims_code_words">option=default</span> : De optie <span class="tt wims_code_words">default</span> is algemeen voor alle vrije antwoorden :
-Deze optie kan de vorm <span class="tt wims_code_words">default="default_value"</span> hebben.
-Wordt niets ingevuld , is dat de default waarde die zal worden gebruikt.
-</li>
-<li>
-<span class="tt wims_code_words">option=split</span> : By het antwoordtype type =
-<span class="tt wims_code_words">correspond</span>, <span class="tt wims_code_words">checkbox</span>
-of <span class="tt wims_code_words">mark</span>,
-wordt er een gedeelde score behaald.
-</li>
-<li>
-<span class="tt wims_code_words">option=nonstop</span> :
-In het geval van een OEF met stappen, wordt de volgende vraag gesteld, ook al is het vorige antwoord fout.
-</li>
-<li><span class="tt wims_code_words">option=noanalyzeprint</span> :
-Er wordt geen automatische analyse van het antwoord weergegeven.
-De maker van de oefening zal zelf passende feedback moeten formuleren.
-Deze optie is handig bij bepaalde vraag types, zoals <span class="tt wims_code_words">mark</span>
-waarbij automatische textherkenning vaak ontoereikend is.
-Attentie: de analyse van de condities wordt niet weergegeven.
-Alleen de score blijft.
-</li>
-<li>Een optionele parameter bij <span class="tt wims_code_words">condition</span> : <span class="tt wims_code_words">option=hide</span> :
-De conditie wordt gebruikt om te analyseren.
-En bij option=hide worden de resultaten van de test niet geprint en zijn dus niet zichtbaar voor de leerling,
-</li>
+  <li><span class="tt wims_code_words">option=default</span> : De optie <span class="tt wims_code_words">default</span> is algemeen voor alle vrije antwoorden :
+  Deze optie kan de vorm <span class="tt wims_code_words">default="default_value"</span> hebben.
+  Wordt niets ingevuld , is dat de default waarde die zal worden gebruikt.
+  </li>
+  <li>
+  <span class="tt wims_code_words">option=split</span> : By het antwoordtype type =
+  <span class="tt wims_code_words">correspond</span>, <span class="tt wims_code_words">checkbox</span>
+  of <span class="tt wims_code_words">mark</span>,
+  wordt er een gedeelde score behaald.
+  </li>
+  <li>
+  <span class="tt wims_code_words">option=nonstop</span> :
+  In het geval van een OEF met stappen, wordt de volgende vraag gesteld, ook al is het vorige antwoord fout.
+  </li>
+  <li><span class="tt wims_code_words">option=noanalyzeprint</span> :
+  Er wordt geen automatische analyse van het antwoord weergegeven.
+  De maker van de oefening zal zelf passende feedback moeten formuleren.
+  Deze optie is handig bij bepaalde vraag types, zoals <span class="tt wims_code_words">mark</span>
+  waarbij automatische textherkenning vaak ontoereikend is.
+  Attentie: de analyse van de condities wordt niet weergegeven.
+  Alleen de score blijft.
+  </li>
+  <li>Een optionele parameter bij <span class="tt wims_code_words">condition</span> : <span class="tt wims_code_words">option=hide</span> :
+  De conditie wordt gebruikt om te analyseren.
+  En bij option=hide worden de resultaten van de test niet geprint en zijn dus niet zichtbaar voor de leerling,
+  </li>
 </ul>
 De andere opties kunnen worden gebruikt bij specifieke antwoord modellen.
 For precision, return to the documentation of the answer type.
 !read help/option.phtml
 
-<h4>Test condities</h4> <p>
+<h3>Test condities</h3> <p>
 Onder bepaalde omstandigheden, is het wenselijk een open antwoord aan extra te testen te onderwerpen.<br/>
 Bijvoorbeeld als er meerdere goede oplossingen zijn [wortels van een vierkantsvergelijking enz.] of antwoorden
 die in de vorm van een ongelijkheid worden geformuleerd.

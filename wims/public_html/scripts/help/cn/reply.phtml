@@ -45,35 +45,36 @@ wlist,词表\
 !set namelist=基本类型,特殊或高级类型
 !set symtextlist=text atext raw compose
 
-<h3>用户对练习的回答</h3>
+<h2>用户对练习的回答</h2>
 
 OEF练习有两种基本的方式接受用户的回答: 多重选择或自由格式的回答.
 用户的回答根据其类型被分析. 当答案符合某些特定条件时, 有可能显示一个
 !href cmd=help&special_parm=feedback 反馈信息
 (例如对典型错误的警告).
 
-<h4>多重选择</h4>
-多重选择用一个正确选择表(含一个或几个元素)与一个错误选择表来定义. <p>
-目前一个练习中最多可以同时提出$choicelim个多重选择问题.
-一个多重选择题中的正确与错误选择的个数只受到WIMS中字符串长度的限制.
+<h3>多重选择</h3>
+多重选择用一个正确选择表(含一个或几个元素)与一个错误选择表来定义.
 <p>
-至于定义多重选择的语法可参看
-!href cmd=help&special_parm=oef 关于OEF格式的帮助.
-
-<a id="freestyle"></a>
-<p><h4>自由格式的回答</h4> <p>
-自由格式的回答就是用户自己键入的回答.
-目前一个练习中最多可以同时提出$answerlim个自由回答的问题. <p>
-其语法如下:
-<span class="tt">\answer{名称}{\reponse}{type=...}{option=...}{weight=...}</span>
-<br/>
-(后面3栏是可选的.)
-<p>
-<h4>参数 <span class="tt">type</span></h4>
-每个自由格式的回答可以互相独立地取下列类型之一.
+  目前一个练习中最多可以同时提出$choicelim个多重选择问题.
+  一个多重选择题中的正确与错误选择的个数只受到WIMS中字符串长度的限制.
+</p><p>
+  至于定义多重选择的语法可参看
+  !href cmd=help&special_parm=oef 关于OEF格式的帮助.
 </p>
+
+<h3 id="freestyle">自由格式的回答</h3>
+  自由格式的回答就是用户自己键入的回答.
+  目前一个练习中最多可以同时提出$answerlim个自由回答的问题.
+<p>
+  其语法如下:
+  <span class="tt">\answer{名称}{\reponse}{type=...}{option=...}{weight=...}</span>
+  <br/>(后面3栏是可选的.)
+</p>
+
+<h3>参数 <span class="tt">type</span></h3>
+<p>每个自由格式的回答可以互相独立地取下列类型之一.</p>
 !for k=1 to 2
- <p><b>$(namelist[$k])</b>
+ <h4>$(namelist[$k])</h4>
  !set n=!linecnt $(typelist$k)
  <ul>
  !for j=1 to $n
@@ -85,7 +86,7 @@ OEF练习有两种基本的方式接受用户的回答: 多重选择或自由格式的回答.
   !set name=!item 1 of $name
   !default name1=$name
   !if $name isitemof $special_parm or all isitemof $special_parm
-   <li><p><a id="_$name"></a>
+   <li id="_$name">
    !read help/anstype.$lang/$name.phtml
    !if $name iswordof $symtextlist
     <br />
@@ -93,8 +94,8 @@ OEF练习有两种基本的方式接受用户的回答: 多重选择或自由格式的回答.
     此类型的回答可接受 symtext 的选项. 如果在回答选项里声明了
     <span class="tt">symtext</span>, 将按
     !href cmd=help&special_parm=reply,symtext#_symtext symtext
-   对回答作分析, 特别是对文本不作预处理. 在这种情形,
-   symtext 的所有选项都能使用.
+    对回答作分析, 特别是对文本不作预处理. 在这种情形,
+    symtext 的所有选项都能使用.
    !endif
   !else
    <li>
@@ -117,24 +118,24 @@ OEF练习有两种基本的方式接受用户的回答: 多重选择或自由格式的回答.
 插入一个回答栏可使用命令 <span class="tt">embed</span>,
 !href cmd=help&special_parm=embedans 参看这里.
 
-<p><h4>测试条件</h4> <p>
+<h3>测试条件</h3><p>
 在目前情况下, 希望自由回答能利用特殊的条件(如具有多重正确答案的问题,
-要求举例的练习, 由不等式确定的答案等等)被判定. 这可用以下方式来实现. <p>
+  要求举例的练习, 由不等式确定的答案等等)被判定. 这可用以下方式来实现.</p><p>
 如果自由格式问题的正确答案是一个未经定义的变量, 那么这个问题的答案
 就被赋予这个变量. 后者可被用作测试条件. 练习的评分是由被满足的测试条件
-的个数所确定的, 这比计算正确答案的个数好.
+  的个数所确定的, 这比计算正确答案的个数好.</p>
 <p>
-目前对于一个练习最多可同时定义$condlim个条件, 而且只有数值条件才能如此测试. 其语法如下.
+  目前对于一个练习最多可同时定义$condlim个条件, 而且只有数值条件才能如此测试. 其语法如下.</p>
 <p><span class="tt">
 \condition{提示文字}{测试条件}{weight=...}
 </span>
 (最后一栏是可选的.)
-<p>
+  </p><p>
 这里是一些测试条件的例. (<span class="tt">\ans1</span> 和 <span class="tt">\ans2</span> 是出现在自由格式解答中的未定义变量.)
 <small>
 !href target=wims_mhelp cmd=help&special_parm=if 全部关系式表
 </small>
-<p>
+  </p>
 $table_header
 $table_hdtr<th>条件<th>意义</th></tr>
 $table_tr<td><tt>\ans1>=0 and \ans1<=1</tt></td>
@@ -149,9 +150,8 @@ $table_tr<td class="tt">sin(\ans1)=0</td>
 $table_end <p>
 关于定义回答的语法请参看
 !href cmd=help&special_parm=oef 关于 OEF 格式的帮助.
-
-<h4>选项参数 <span class="tt">weight</span></h4>
-<a id="weight"></a>
+  </p>
+<h3 id="weight">选项参数 <span class="tt">weight</span></h3>
 可对回答加权.
 <p>
 例:
@@ -163,7 +163,7 @@ $table_end <p>
 
 可以用变量作为 <span class="tt">weight</span> 的参数,
 如果它们在 <span class="tt wims_code_variable">\statement</span> 之前定义的话.
-<p>
+</p><p>
 例:
 <pre>
 \text{w = \t = 1 ? 1 : 2}
@@ -171,26 +171,22 @@ $table_end <p>
 \answer{}{1}{type=numeric}{weight=3}
 </pre>
 
-<h4>选项参数 <span class="tt">option</span></h4>
- <a id="option"></a>
+<h3 id="option">选项参数 <span class="tt">option</span></h3>
 在 <span class="tt">\answer</span> 或 <span class="tt">\condition</span> 里允许的 option 有
 <ul>
-<li>
-<span class="tt">option=split</span> : 当类型 = <span class="tt">correspond</span>, <span class="tt">checkbox</span> 或 <span class="tt">mark</span> 时,
-允许对回答拆分给分.
-</li>
-<li>
-<span class="tt">option=nonstop</span> : 在分步给出的练习中,
-即使这个问题答错了, 仍然给出下一个问题.
-</li>
-<li><span class="tt">option=noanalyzeprint</span> : 不打印对回答自动分析的文字.
-而由作者提供合适的反馈. 这适用于某些特殊的类型, 例如 <span class="tt">mark</span>,
-此时自动设置的分析文字往往不合适. 注意: 对条件的分析也不再打印.
-只有得分仍被打印.</li>
-<li>在 <span class="tt">condition</span> 后面:
-<span class="tt">option=hide</span> : 此条件用于对回答的分析, 但不被打印.
-</li>
-
+  <li>
+  <span class="tt">option=split</span> : 当类型 = <span class="tt">correspond</span>, <span class="tt">checkbox</span> 或 <span class="tt">mark</span> 时,
+  允许对回答拆分给分.
+  </li>
+  <li>
+  <span class="tt">option=nonstop</span> : 在分步给出的练习中,
+  即使这个问题答错了, 仍然给出下一个问题.
+  </li>
+  <li><span class="tt">option=noanalyzeprint</span> : 不打印对回答自动分析的文字.
+  而由作者提供合适的反馈. 这适用于某些特殊的类型, 例如 <span class="tt">mark</span>,
+  此时自动设置的分析文字往往不合适. 注意: 对条件的分析也不再打印.
+  只有得分仍被打印.</li>
+  <li>在 <span class="tt">condition</span> 后面:
+  <span class="tt">option=hide</span> : 此条件用于对回答的分析, 但不被打印.
+  </li>
 </ul>
-
-

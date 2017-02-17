@@ -45,7 +45,7 @@ wlist,Liste de mots,\
 !set namelist=Types de base,Types spécifiques ou avancés
 !set symtextlist=text atext raw compose
 
-<h3>Respuestas de los usuarios a un ejercicio</h3>
+<h2>Respuestas de los usuarios a un ejercicio</h2>
 
 Hay dos maneras básicas en las que un ejercicio OEF acepta respuestas
 del usuario: opciones múltiples y respuestas libres.
@@ -55,7 +55,7 @@ También es posible añadir
  cuando la respuesta cumpla determinada condición (por ejemplo
 para advertir de un error típico).
 
-<h4>Opciones múltiples</h4> <p>
+<h3>Opciones múltiples</h3> <p>
 Una opción múltiple se define dando una lista de opciones correctas
 (una o varias) y otra lista con todas las opciones (las opciones correctas
 se añaden de forma automática).
@@ -69,8 +69,8 @@ Ver la
 !href cmd=help&special_parm=oef help ayuda sobre el formato OEF
  acerca de la sintaxis para definir una opción múltiple.
 </p>
-<a id="freestyle"></a>
-<h4>Respuestas de estilo libre</h4>
+
+<h3 id="freestyle">Respuestas de estilo libre</h3>
 Una respuesta de estilo libre es la que la tiene que escribir el usuario.
 Se pueden pedir hasta $answerlim respuestas libres simultáneamente en el
 mismo ejercicio con la implementación actual. <p>
@@ -83,7 +83,7 @@ Cada respuesta libre puede tomar independientemente uno de los siguientes
 tipos:
 </p>
 !for k=1 to 2
- <span class="bold">$(namelist[$k])</span>
+ <h4>$(namelist[$k])</h4>
  !set n=!linecnt $(typelist$k)
  <ul>
  !for j=1 to $n
@@ -95,7 +95,7 @@ tipos:
   !set name=!item 1 of $name
   !default name1=$name
   !if $name isitemof $special_parm or all isitemof $special_parm
-   <li><a id="_$name"></a>
+   <li id="_$name">
    !read help/anstype.$lang/$name.phtml
    !if $name iswordof $symtextlist
     <p>
@@ -120,8 +120,7 @@ tipos:
 
 !read help/$lang/embedans.phtml
 
-<h3>Le paramètre optionnel <span class="tt wims_code_words">weight</span></h3>
-<a id="weight"></a>
+<h3 id="weight">Le paramètre optionnel <span class="tt wims_code_words">weight</span></h3>
 Il permet d'imposer un poids aux questions posées.
 <br/>
 Exemple :
@@ -143,42 +142,41 @@ Exemple :
 \answer{}{1}{type=numeric}{weight=3}
 </pre>
 
-<h3>Le paramètre optionnel <span class="tt wims_code_words">option</span></h3>
- <a id="option"></a>
+<h3 id="option">Le paramètre optionnel <span class="tt wims_code_words">option</span></h3>
  Dans le cas de plusieurs options, elles sont séparées par des espaces.
  Par exemple, <span class="tt wims_code_words">option=default noanalyzeprint</span>
 
 Les options possibles à la suite d'une instruction <span class="tt wims_code_variable">\answer</span>
 ou <span class="tt wims_code_variable">\condition</span> sont
 <ul>
-<li><span class="tt wims_code_words">option=default</span> : L'option <span class="tt wims_code_words">default</span> est commune à toutes les réponses libres : cette option
-peut prendre la forme <span class="tt wims_code_words">default="valeur_par_défaut"</span>. Si l'utilisateur donne une réponse vide, c'est la valeur_par_défaut
-qui remplace.
-</li>
-<li>
-<span class="tt wims_code_words">option=split</span> : Dans le cas d'une réponse dont
-le type est <span class="tt wims_code_words">correspond</span>, <span class="tt wims_code_words">checkbox</span> ou <span class="tt wims_code_words">mark</span>, la notation
-tient compte des réponses justes, même si elles ne le sont pas toutes.
-</li>
-<li>
-<span class="tt wims_code_words">option=nonstop</span> : Dans le cas d'un exercice à étapes, les questions
-suivantes sont posées même en cas de réponses fausses.
-</li>
-<li><span class="tt wims_code_words">option=noanalyzeprint</span> : Le texte automatique d'analyse de réponses n'est
-pas affiché. C'est donc à l'auteur de l'exercice de fournir un feedback convenable.
-Cela est utile dans certains types comme le type <span class="tt wims_code_words">mark</span> où le texte automatique
-est souvent inadéquat. Attention, l'analyse des conditions n'est pas non plus affichée.
-Seul le score subsiste.</li>
-<li>A la suite d'une instruction <span class="tt wims_code_words">condition</span>,
-<span class="tt wims_code_words">option=hide</span> : La condition sera utilisée pour l'analyse
-de la réponse mais ne sera pas affichée.
-</li>
+  <li><span class="tt wims_code_words">option=default</span> : L'option <span class="tt wims_code_words">default</span> est commune à toutes les réponses libres : cette option
+  peut prendre la forme <span class="tt wims_code_words">default="valeur_par_défaut"</span>. Si l'utilisateur donne une réponse vide, c'est la valeur_par_défaut
+  qui remplace.
+  </li>
+  <li>
+  <span class="tt wims_code_words">option=split</span> : Dans le cas d'une réponse dont
+  le type est <span class="tt wims_code_words">correspond</span>, <span class="tt wims_code_words">checkbox</span> ou <span class="tt wims_code_words">mark</span>, la notation
+  tient compte des réponses justes, même si elles ne le sont pas toutes.
+  </li>
+  <li>
+  <span class="tt wims_code_words">option=nonstop</span> : Dans le cas d'un exercice à étapes, les questions
+  suivantes sont posées même en cas de réponses fausses.
+  </li>
+  <li><span class="tt wims_code_words">option=noanalyzeprint</span> : Le texte automatique d'analyse de réponses n'est
+  pas affiché. C'est donc à l'auteur de l'exercice de fournir un feedback convenable.
+  Cela est utile dans certains types comme le type <span class="tt wims_code_words">mark</span> où le texte automatique
+  est souvent inadéquat. Attention, l'analyse des conditions n'est pas non plus affichée.
+  Seul le score subsiste.</li>
+  <li>A la suite d'une instruction <span class="tt wims_code_words">condition</span>,
+  <span class="tt wims_code_words">option=hide</span> : La condition sera utilisée pour l'analyse
+  de la réponse mais ne sera pas affichée.
+  </li>
 </ul>
 D'autres options sont utilisables dans des types particuliers de réponses. Pour des précisions,
 revenir à la documentation du type de réponse.
 !read help/option.phtml
 
-<h4>Condiciones de comprobación</h4>
+<h3>Condiciones de comprobación</h3>
 <p>
 Bajo ciertas circunstancias, es deseable que las respuestas de estilo libre
 se corrijan según condiciones especiales (preguntas con múltiples respuestas

@@ -47,32 +47,24 @@ time,Mémoire
 !set namelist=Types de base,Types spécifiques ou avancés
 !set symtextlist=text atext raw compose
 
-<h2>Réponses à un exercice</h2>
-
-Un exercice OEF peut accepter les réponses
-des utilisateurs de manière très variée. Outre le choix multiple ou la réponse libre,
-on trouve de nombreuses autres possibilités.
+<h2 id="freestyle">Réponses à un exercice</h2>
+<p>Un exercice OEF peut accepter les réponses des utilisateurs de manière très variée.
+Outre le choix multiple ou la réponse libre,
+ on trouve de nombreuses autres possibilités.
 La réponse donnée par l'utilisateur est analysée selon la nature du type.
 D'autre part, il est possible d'afficher des
 !href cmd=help&special_parm=feedback commentaires ciblés
- quand la réponse tombe sous une certaine condition (pour
-avertir d'une erreur typique par exemple).
-
-<a id="freestyle"></a>
+ quand la réponse tombe sous une certaine condition
+ (pour avertir d'une erreur typique par exemple).
 Actuellement, jusqu'à $answerlim réponses simultanées peuvent être demandées dans
-un exercice sous l'implémentation actuelle. <p>
-La syntaxe est la suivante (les 3 derniers champs sont optionnels) :
-</p>
-<pre>
-\answer{Texte}{\reponse}{type=...}{option=...}{weight=...}
-</pre>
+ un exercice sous l'implémentation actuelle.
+<p>La syntaxe est la suivante (les 3 derniers champs sont optionnels) :</p>
+<code>\answer{Texte}{\reponse}{type=...}{option=...}{weight=...}</code>
 
 <h3>Le paramètre <span class="tt wims_code_words">type</span></h3>
-<p>
-Chaque réponse peut prendre indépendamment l'un des types suivants.
-</p>
+<p>Chaque réponse peut prendre indépendamment l'un des types suivants.</p>
 !for k=1 to 2
- <span class="bold">$(namelist[$k])</span>
+ <h4>$(namelist[$k])</h4>
  !set n=!linecnt $(typelist$k)
  <ul>
  !for j=1 to $n
@@ -84,7 +76,7 @@ Chaque réponse peut prendre indépendamment l'un des types suivants.
   !set name=!item 1 of $name
   !default name1=$name
   !if $name isitemof $special_parm or all isitemof $special_parm
-   <li><a id="_$name"></a>
+   <li id="_$name">
    !read help/anstype.$lang/$name.phtml
    !if $name iswordof $symtextlist
     <p>
@@ -109,8 +101,8 @@ Chaque réponse peut prendre indépendamment l'un des types suivants.
 
 !read help/$lang/embedans.phtml
 
-<h3>Le paramètre optionnel <span class="tt wims_code_words">weight</span></h3>
-<a id="weight"></a>
+<h3 id="weight">Le paramètre optionnel <span class="tt wims_code_words">weight</span></h3>
+
 Il permet d'imposer un poids aux questions posées.
 <p>
 Exemple :
@@ -134,8 +126,7 @@ Exemple :
 \answer{}{1}{type=numeric}{weight=3}
 </pre>
 
-<h3>Le paramètre optionnel <span class="tt wims_code_words">option</span></h3>
- <a id="option"></a>
+<h3 id="option">Le paramètre optionnel <span class="tt wims_code_words">option</span></h3>
  Dans le cas de plusieurs options, elles sont séparées par des espaces.
  Par exemple, <span class="tt wims_code_words">option=default noanalyzeprint</span>
 
