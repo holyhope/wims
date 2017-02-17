@@ -147,7 +147,7 @@ to $wims_html_header
  $
  !endif
 
-  !if _exam notin $wims_session
+ !if _exam notin $wims_session
     !if $jquery_defined=yes
       !! Displays a Modal dialog box explaining what the "giveup" button will do.
       <script type="text/javascript">
@@ -168,14 +168,14 @@ to $wims_html_header
       /*]]>*/
       </script>
       <button class="wims_button wims_secondary_button" type="button" data-toggle="exo_giveup" id="exo_giveup_opener">$wims_name_giveup</button>
-    !endif
+    !endif jquery
     <div class="dropdown-pane wims_msg info small" id="exo_giveup" title="$wims_name_giveup" data-dropdown>
       <p>
       !if $qnum>1
          $name_serie_giveup
       !else
          $name_exo_giveup
-      !endif
+      !endif qnum
       </p>
       !if $jquery_defined!=yes
         <div class="oef_exo_renew">
@@ -185,7 +185,7 @@ to $wims_html_header
         </div>
       !else
         $name_giveup_confirm
-      !endif
+      !endif jquery
     </div>
   !endif _exam notin $wims_session
 
@@ -235,10 +235,11 @@ to $wims_html_header
   !set wims_ref_class=wims_button
   !set wims_ref_id=oef_serie_nextexo
   !href cmd=next <span class="oef_serie_nextexo">$name_serie_nextexo</span>
- $wims_name_or
-  !set wims_ref_class=wims_button wims_secondary_button
-  !set wims_ref_id=oef_serie_renew
-  !if $jquery_defined=yes
+  !if _exam notin $wims_session
+    $wims_name_or
+    !set wims_ref_class=wims_button wims_secondary_button
+    !set wims_ref_id=oef_serie_renew
+    !if $jquery_defined=yes
     !! Displays a Modal dialog box explaining what the "giveup" button will do.
     <script type="text/javascript">
     /*<![CDATA[*/
@@ -258,19 +259,18 @@ to $wims_html_header
     /*]]>*/
     </script>
     <button class="wims_button wims_secondary_button" type="button" data-toggle="exo_giveup" id="exo_giveup_opener">$wims_name_giveup</button>
-  !endif
-   <div class="dropdown-pane wims_msg info small" id="exo_giveup" title="$wims_name_giveup" data-dropdown>
-    <p>
-    $name_serie_giveup
-    </p>
-    !if $jquery_defined!=yes
+    !endif jquery
+    <div class="dropdown-pane wims_msg info small" id="exo_giveup" title="$wims_name_giveup" data-dropdown>
+    <p>$name_serie_giveup</p>
+     !if $jquery_defined!=yes
       <div class="oef_exo_renew">
         !set wims_ref_class=wims_button wims_secondary_button
         !set wims_ref_id=oef_renew
         !href $renewlink $wims_name_giveup
       </div>
-    !endif
-    </div>
+     !endif jquery
+   !endif exam
+   </div>
  !else
   !if $qnum>1
    <span class="oef_modulescore">
