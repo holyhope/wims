@@ -29,7 +29,7 @@ examout=!examscore user=$uu
 !for i in $activexams
   es_$i=!line 1 of $examout
   es__$i=!word $i of $(es_$i)
-  !!it happens that es__$i is empty
+  !!it happens that es__$i is empty, so we calculate per with 0 instead
   es_$i=$(es__$i)
   !default es_$i=0
    per=$[$per+$(ew_$i)*$(es_$i)/10]
