@@ -1,4 +1,4 @@
-!if $chapter!=2 
+!if $chapter!=2
 <ol>
  !set n=!linecnt $(chapter$chapter)
  !for i=2 to $n
@@ -8,10 +8,9 @@
   <li><a id="$t"></a>
   !if $(chapter)_$t iswordof $open
    !set o=!replace word $(chapter)_$t by $ in $open
-   <h3>$s <span class="smaller">
+  <strong>$s</strong> <span class="smaller">
    !href module=$module&chapter=$chapter&open=$o replier
-   </span></h3>
-   
+   </span>
    !read $chapter/$t.phtml
   !else
    !href module=$module&chapter=$chapter&open=$open,$(chapter)_$t#$t $s
@@ -19,5 +18,4 @@
  </li>
  !next i
  </ol>
-
 !endif
