@@ -17,19 +17,17 @@ $module_title
 $name_intro
 
 !form reply
-<input type="hidden" name="job" value="all" />
 <div class="wimscenter wimsform"><input type="submit" name="reg" value="$wims_name_tosave" /></div>
 
 $name_expert
 !set wims_ref_class=wims_button_help
 !href cmd=help $wims_name_help
-!default job=$job
 <fieldset class="property_fields blockcenter">
  <legend>$name_menu</legend>
  <div class="field box">
  !set wims_ref_class=wims_formradio
  <p>
-!formradio job list filter prompt <b>$wims_name_filter:</b>
+!formcheckbox job list filter prompt <b>$wims_name_filter:</b>
 $name_expert3
 </p>
  !read adm/vfilter/varfilter htmldiv
@@ -38,7 +36,6 @@ $name_expert3
  !formcheckbox job list login prompt $name_loginlist
    <textarea name="loginlist" cols="20" rows="5">$loginlist</textarea>
 </div>
-
 </fieldset>
 
 !formend
@@ -65,7 +62,7 @@ $name_expert3
     !href module=$tmp&getuser=$(u[1]) <img border="0" width="120px" src="$(u[4])" alt="$(u[2]) $(u[3])" />
     <br />$(u[2]) $(u[3])
   !else
-     !href module=adm/class/$tmp&getuser=$(u[1]) $(u[2]) $(u[3])
+     !href module=$tmp&getuser=$(u[1]) $(u[2]) $(u[3])
   !endif
   </li>
   !endif

@@ -2,8 +2,9 @@
 lim=250
 !!!bound job within all,filter,login default all
 job=!items2words $job
+
 !set cnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
-!if $job notwordof login
+!if login notwordof $job
   !reset loginlist
 !endif
 !if $cmd=resume
@@ -35,24 +36,14 @@ file=$rac/.userlist
     loginlist_=$select_user
   !endif
 !endif
-!if $job=all
+!if login notwordof $job and filter notwordof $job
   loginlist_=all
 !endif
-!default loginlist_=all
+
 $(aim)_exists=0
 
 varfilter=!trim $varfilter
-!!if filter iswordof $job
-!!   !if $variable!=$empty
-!!     filter_cnt=!linecnt $variable
-!!     !reset filter
-!!     !for v=1 to $filter_cnt
-!!       line=!singlespace $(variable[$v;])
-!!       line =!replace $ $ by , in $line
-!!       filter=!append line $line to $filter
-!!     !next
-!!  !endif
-!!!endif
+
 !reset list_user1 list_user2 list_user3 list_user4 list_user5 list_user6 list_user7 list_user8 list_user9 list_user10
 
 !if $varfilter=$empty and $job notwordof select login
@@ -66,18 +57,24 @@ varfilter=!trim $varfilter
   !distribute item $us_ into l_name_,f_name_,login
   !defread wimshome/log/classes/$wims_superclass/.users/$login
   !if $varfilter=all or $varfilter=$empty
-    !if $loginlist_=all or $login isitemof $loginlist_ or $varfilter=all
+    !if $loginlist_=all or (login iswordof $job and $login isitemof $loginlist_) or $varfilter=all
       TEST=1
       !goto OK
-   !endif
+    !endif
   !else
-    !if ($login isitemof $loginlist_) or $loginlist_=all or ($filter!=all and $filter!=$empty)
-     !read adm/vfilter/testfilter $login\
+    !if (login iswordof $job and $login isitemof $loginlist_) or $loginlist_=all
+      TEST=1
+      !goto OK
+    !else
+      !if $varfilter!=all and $varfilter!=$empty
+       !read adm/vfilter/listvarfilter.proc
+       !read adm/vfilter/testfilter $login\
 $varfilter
-     TEST=$var_filter_test
-  !else
-     TEST=0
-  !endif
+       TEST=$var_filter_test
+      !else
+       TEST=0
+     !endif
+   !endif
  !endif
 :OK
   !if $TEST=1
@@ -90,28 +87,4 @@ $varfilter
     !endif
   !endif
 !next lu
-!goto end
-!endif
-!endif
-
-!if $job=login
-  !for lu =1 to $cnt
-   ll=$[ceil($lu/$lim)]
-   us_=!record $lu of $file
-   !distribute item $us_ into l_name_,f_name_,login
-   !if $login isitemof $loginlist
-    !defread wimshome/log/classes/$wims_superclass/.users/$login
-    aim_=!defof user_$aim in wimshome/log/classes/$wims_superclass/.users/$login
-    !if $aim_ !=
-     list_user$ll=!append line $login,$l_name_,$f_name_,$ph_ to $(list_user$ll)
-     !set $(aim)_exists=1
-    !else
-     list_user$ll=!append line $login,$l_name_,$f_name_, to $(list_user$ll)
-    !endif
-   !endif
-  !next lu
- !goto end
-!endif
-
-:end
 !endif
