@@ -1,4 +1,8 @@
 !set faqcnt=!recordcnt $faqfile
+<style type="text/css">
+.faq_Q {font-style: italic; padding:0.3em;color:blue;}
+.faq_R {padding:0.3em;}
+</style>
 !if $faqcnt>0
 <ul>
  !for j=1 to $faqcnt
@@ -9,11 +13,11 @@
     !set lt=!line $t of $tmp
     !if $t=1
    <div class="faq_Q"><b>Q</b>:
-    !set lt=!replace @Q by in $lt
+    !set lt=!replace @Q: by in $lt
     !endif
     !if @R isin $lt
    </div><div class="faq_R"><b>R</b>:
-    !set lt=!replace @R by in $lt
+    !set lt=!replace @R: by in $lt
     !endif
     $lt
   !next
