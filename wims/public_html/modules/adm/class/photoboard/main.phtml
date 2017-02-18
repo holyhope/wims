@@ -19,7 +19,6 @@ $name_intro
 !form reply
 <input type="hidden" name="job" value="all" />
 <div class="wimscenter wimsform"><input type="submit" name="reg" value="$wims_name_tosave" /></div>
-
 $name_expert
 !set wims_ref_class=wims_button_help
 !href cmd=help $wims_name_help
@@ -28,8 +27,11 @@ $name_expert
  <legend>$name_menu</legend>
  <div class="field box">
  !set wims_ref_class=wims_formradio
- !formcheckbox job list filter prompt $name_filter
- <textarea name="variable" cols="20" rows="3">$variable</textarea>
+ <p>
+!formradio job list filter prompt <b>$wims_name_filter:</b>
+$name_expert3
+</p>
+ !read adm/vfilter/varfilter htmldiv
  </div>
  <div class="field box">
  !formcheckbox job list login prompt $name_loginlist
@@ -46,37 +48,38 @@ $name_expert
  <p class="wimscenter">$name_nophoto</p>
  !goto end
 !endif
-!set cmp=0
-!set cmp_tr=0
+!!set cmp=0
+!!set cmp_tr=0
 !if $class_type=0 or $class_typename=course or ($class_typename=class and $class_type=1)
   !set tmp=adm/class/userscore&job=getuser
 !else
   !set tmp=adm/class/usermanage&job=userprop
 !endif
-  <table><tr>
+
+<ul class="inline wims_nopuce">
 !for l_ = 1 to $cnt
   !set ll=$[ceil($l_/$lim)]
   !set u=!line $[$l_ - ($ll-1)*$lim] of $(list_user$ll)
   !if $(u[1])!=
-  <td style="width:120px;">
+  <li>
   !if $(u[4])!=
     !href module=$tmp&getuser=$(u[1]) <img border="0" width="120px" src="$(u[4])" alt="$(u[2]) $(u[3])" />
     <br />$(u[2]) $(u[3])
   !else
      !href module=adm/class/$tmp&getuser=$(u[1]) $(u[2]) $(u[3])
   !endif
-  </td>
-  !increase cmp_tr
-  !increase cmp
-  !if $cmp_tr=6
-  </tr>
-  !reset cmp_tr
-  <tr>
-  !endif
+  </li>
+  !!!increase cmp_tr
+  !!!increase cmp
+  !!!if $cmp_tr=6
+ !! </tr>
+ !! !reset cmp_tr
+ !! <tr>
+ !! !endif
   !endif
   !reset u
 !next
-</table>
+</li>
 !reset tmp
 !if $cmd=reply
  !set wims_menu_items=!append line back2,1,cmd=resume\

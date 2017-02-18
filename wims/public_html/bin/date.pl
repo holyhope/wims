@@ -1,5 +1,5 @@
 #!/bin/sh
-exec perl <<'EOF'
+exec /usr/bin/perl  <<'EOF'
 use Time::Local;
 push (@ARGV,split(' ', $ENV{'wims_exec_parm'})) if ($ENV{'wims_exec_parm'});
 my ($option)=shift @ARGV;

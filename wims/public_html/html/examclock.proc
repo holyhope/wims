@@ -10,8 +10,8 @@
 !set wims_hr_r=$[max(0,$wims_exam_remain)]
 !set wims_hr_rm=$[floor($wims_hr_r/60)]
 !set wims_hr_rs=!char 2,3 of $[$wims_hr_r%60+100]
-!set wims_homeref_special=<p class="exam_remain">$wims_name_examremain <strong>$wims_hr_rm:$wims_hr_rs</strong> ($wims_name_whenloaded)</p>
-!set wims_homeref_special=$wims_homeref_special
+!!!set wims_homeref_special=<p class="exam_remain">$wims_name_examremain <strong>$wims_hr_rm:$wims_hr_rs</strong> ($wims_name_whenloaded)</p>
+!!set wims_homeref_special=$wims_homeref_special
 !if $lang=fr
   !set date_format=%d/%m/%Y - %T
 !else
@@ -20,4 +20,5 @@
 
 !set exam_end_date=!exec get_end_date.pl $wims_hr_r,$date_format
 
-!set wims_homeref_special=$wims_homeref_special<p class="exam_ending">$wims_name_exam_ending <strong>$exam_end_date</strong> ($wims_name_server_time)</p>
+!set wims_homeref_special=$wims_homeref_special\
+ <p class="exam_ending">$wims_name_exam_ending <strong>$exam_end_date</strong> ($wims_name_server_time)</p>
