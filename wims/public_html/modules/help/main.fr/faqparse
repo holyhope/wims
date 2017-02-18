@@ -1,0 +1,24 @@
+!set faqcnt=!recordcnt $faqfile
+!if $faqcnt>0
+<ul>
+ !for j=1 to $faqcnt
+ <li>
+  !set tmp=!record $j of $faqfile
+  !set tmpcnt=!linecnt of $tmp
+  !for t=1 to $tmpcnt
+    !set lt=!line $t of $tmp
+    !if $t=1
+   <div class="faq_Q"><b>Q</b>:
+    !set lt=!replace @Q by in $lt
+    !endif
+    !if @R isin $lt
+   </div><div class="faq_R"><b>R</b>:
+    !set lt=!replace @R by in $lt
+    !endif
+    $lt
+  !next
+  </div>
+ </li>
+!next
+</ul>
+!endif
