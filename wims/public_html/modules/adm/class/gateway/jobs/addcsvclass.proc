@@ -1,8 +1,3 @@
-!if bla=0  (vérification qu'on est bien au bon niveau pour faire cela)
- error=not_level
-!endif
-
-
 !if $save!=$empty
  wims_deposit=!word 1 of $wims_deposit
  !if $wims_deposit=$empty
@@ -57,7 +52,7 @@
   !reset passs,passs2
   sechost=!item $(keyposition[4]) of $data
   cadd_limit=!item $(keyposition[5]) of $data
-  !bound cadd_limit within 0 and $class_limit default $class_limit 
+  !bound cadd_limit within 0 and $class_limit default $class_limit
   !readproc adm/gateway/addclass $sup,$cname
   !if $error!=$empty
       listerror=!append line $classk,$error to $listerror
@@ -66,9 +61,9 @@
   !read adm/gateway/mkindex
  !next classk
  !if $listerror!=$empty
-        !debug $listerror
+!! we can made more explicit error message (TODO)
  	error=baddata
- !endif       
+ !endif
  job=level
  !reset save
  !changeto jobs/$job.proc
