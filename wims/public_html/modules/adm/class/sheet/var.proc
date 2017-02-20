@@ -294,6 +294,10 @@ expday=!char 7,8 of $expiration
 expyear=!char 1,2,3,4 of $expiration
 
 !if $job!=text
+ mod_desc=!replace internal $\
+$ by &#13;&#10; in $mod_desc
+ mod_comment=!replace internal $\
+$ by &#13;&#10; in $mod_comment
  !if $title_save$desc_save=$empty
   rec=!record $sheet of wimshome/log/classes/$wims_class/sheets/.sheets
   !distribute lines $rec into bidon,bidon,title_save,desc_save,prpage_save,,comment_save
@@ -307,10 +311,10 @@ expyear=!char 1,2,3,4 of $expiration
   error=no_title
   !exit
  !endif
- desc=!replace $\
-$ by &#13; in $desc
- comment=!replace $\
-$ by &#13; in $comment
+ desc=!replace internal $\
+$ by &#13;&#10; in $desc
+ comment=!replace internal $\
+$ by &#13;&#10; in $comment
  title=!singlespace $title
  desc=!singlespace $desc
  comment=!singlespace $comment
