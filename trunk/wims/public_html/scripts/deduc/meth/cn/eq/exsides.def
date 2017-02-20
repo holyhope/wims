@@ -1,0 +1,27 @@
+!set methtit=交换方程的两边
+!set methparmtype=parm equation
+!set methhelp=此方法把方程 \(a = b) 重写成 \(b = a).
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ 交换以下方程的两边
+ !read deduc/methparm.phtml 1
+
+!exit
+:check
+ !distribute items $methparmobj1 into data,left,sign,right
+ methexp=交换 \($left $sign $right) 的两边
+
+ newobject1=$right $sign $left
+ oldobject=1
+
+ contextlist=$ct_Always,\
+    $ct_Onlywhen两边是正的,\
+    $ct_Onlywhen两边同号
+
+!exit
+

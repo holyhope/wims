@@ -1,0 +1,53 @@
+!if $nblisttechvar=0
+   $name_notechvar
+!else
+   !if $tv_listlocal!=$empty
+      $table_header
+        <caption>$name_listtechvarlocal</caption>
+        <thead>
+          $table_hdtr
+         <th>$wims_name_name</th>
+         <th>$name_ltvalue</th>
+         <th>&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+      !for k in $tv_listlocal
+         $table_tr
+            !let don=!line $k of $tv_listtechvar
+            !let don2=!record $(don[3]) of wimshome/log/classes/$wims_class/.techvar
+            !distribute line $don2 into name,val
+            <td>$name</td>
+            <td>$val</td>
+            <td>
+             !set wims_ref_class=wims_button
+             !href cmd=reply&job=modifvar&techvar=$(don[3]) $wims_name_change
+            </td>
+         </tr>
+      !next k
+       </tbody>
+      $table_end
+   !endif
+   !if $listglobal!=$empty
+      $table_header
+        <caption>$name_listtechvarglobal</caption>
+        <thead>
+          $table_hdtr
+            <th>$wims_name_name</th>
+            <th>$name_value</th>
+          </tr>
+        </thead>
+        <tbody>
+      !for k in $listglobal
+         $table_tr
+            !let don=!line $k of $tv_listtechvar
+            !let don=!record $(don[3]) of wimshome/log/classes/$(don[2])/.techvar
+            !distribute line $don into name,val
+            <td>$name</td>
+            <td>$val</td>
+         </tr>
+      !next k
+       </tbody>
+      $table_end
+   !endif
+!endif

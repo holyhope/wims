@@ -1,0 +1,30 @@
+!form reply
+<input type="hidden" name="show" value="yes" />
+<fieldset class="property_fields halfwidth blockcenter">
+ <legend>$name_title</legend>
+   <div class="field box">
+      <label for="show">$name_showstat</label>
+!set wims_formselect_switch=multiple="multiple" size="8"
+!formselect show list req,weight,cid,tot,scoremean,partmean,minmax,deviat\
+	prompt\
+	$name_prompt
+   </div>
+   <div class="field box">
+     <label for="types">$name_data</label>
+!set wims_formselect_switch=
+!formselect types list 1,2,3 prompt \
+	$name_typ_activities
+    </div>
+!if $sharer!=$empty
+   <div class="field box">
+    <label>$name_shareclass</label>
+    !set wims_ref_class=wims_formradio
+    !formradio share list yes,no prompt $wims_name_yes,$wims_name_no
+   </div>
+!endif
+   <div class="wimscenter wimsform">
+     <input type="submit" value="$wims_name_Show" />
+  </div>
+</fieldset>
+
+!formend

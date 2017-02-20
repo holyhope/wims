@@ -1,0 +1,46 @@
+!!! fichier de traitement des données de l'exo de type 2 !!!
+
+## l'étape 2
+!if $navig!=$etape 
+  !if $foncsrecord!=$empty
+    foncsList=
+    rfmatL=
+    rindic=
+    pn=!linecnt $foncsrecord
+    !for i=1 to $pn
+      fonc=!trim $(foncsrecord[$i;])
+      foncsList=!append line $fonc, to $foncsList
+    !next i
+    fonc=!char 1 to -2 of $(foncsList[$pn;])
+    foncsList=!replace line number $pn by $fonc in $foncsList
+  !endif 
+  etape=$navig
+  !exit
+!endif
+
+!if $foncsList=$empty
+  exalert=$(alerts[1;])
+  !exit
+!endif
+
+foncsnb=!itemcnt $foncsList
+foncsrecord=
+fvid=0
+!for i=1 to $foncsnb
+  fonc=!item $i of $foncsList
+  fonc=!trim $fonc
+  fonc=!translate $\
+  $ to $ $ in $fonc
+  nv=!charcnt $fonc
+  !if $nv<3
+    fvid=$[$fvid+1]
+  !endif
+  foncsrecord=!append line $fonc to $foncsrecord
+!next i
+!if $fvid!=0
+  exalert=$(alerts[9;])
+  !exit
+!endif
+
+etape=$[$etape+1]
+!exit

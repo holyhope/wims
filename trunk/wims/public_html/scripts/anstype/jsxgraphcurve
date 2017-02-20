@@ -1,0 +1,84 @@
+option:color1=" " color2=" " precision
+
+replygood=$(replygood$i)
+reply=$(reply$i)
+image=$(replygood$i[1;1])
+tester=$(replygood$i[2;1])
+oef_answer_option=$(oef_answer_option$i)
+
+!if $wims_read_parm=nocompare
+ image=$(oef_answer_option[2;])
+ tester=$(oef_answer_option[3;1])
+ tester=!words2items $tester
+!endif
+type=!item 1 of $tester
+
+!!color can be changed... (color1=student answer, color2 good answer)
+!set color1=!getopt color1 in $(replyoption$i)
+!default color1=black
+!set color2=!getopt color2 in $(replyoption$i)
+!default color2=#B4B4FF
+
+!set rlist=!getopt free in $reply
+m_reply$i=$rlist
+reply__$i=&nbsp;
+
+!set Inputsize=!replace internal x by , in $(oef_answer_option[1;])
+!distribute items $Inputsize into xsize,ysize
+!default xsize=200
+!default ysize=200
+
+!bound type within line,poly,polygon,points,segment,vector,rectangle,sline,circle,bound,curve,brokenline default points
+
+!if $type notwordof points
+ !if $(reply$i)=$empty
+  error=empty_data
+  !exit
+ !endif
+!endif
+
+!!useful only for polygon.
+!if $type iswordof polygon brokenline
+  !set rlist=!translate internal ; to , in $rlist
+!endif
+!set rlist=!nonempty items $rlist
+!set n=!itemcnt $rlist
+
+!if $wims_read_parm!=nocompare
+ !if $type iswordof curve
+  !set glist=!item 2 to -1 of $(replygood[2..-1;])
+ !else
+  !set glist=!item 2 to -1 of $(replygood[2;])
+ !endif
+ !set m=!itemcnt $glist
+!endif
+
+!set script$i=$(script$i)\
+var brd$i = JXG.JSXGraph.initBoard('jsxbox$i', {axis:false, boundingbox: [0,0,$xsize,$ysize],showNavigation:false, showCopyright: false, grid:false });\
+var urlImg ='$image';\
+var ima = brd$i.create('image',[urlImg,[0,$ysize],[$xsize,-$ysize]],{fixed: true, highlight: false});\
+/*brd$i.create('text',[0,360, 'e= $oef_fill_option'], {fontSize:15});*/
+
+!if $type iswordof line sline segment vector rectangle polygon \
+   curve brokenline bound
+!set script$i=$(script$i)\
+var p$i=[];\
+var q=[];
+!endif
+
+!if $type iswordof curve brokenline
+  !read anstype/javacurve.curve $wims_read_parm
+!else
+  !read anstype/javacurve.$type $wims_read_parm
+!endif
+!if $wims_read_parm=nocompare
+  !goto draw
+!endif
+!if $Test!=$empty or NaN isin $test
+  !exit
+!endif
+
+:draw
+!reset slib_out
+!readproc slib/geo2D/jsxgraph jsxbox$i,$xsize x $ysize,$(script$i)
+reply_$i=$slib_out

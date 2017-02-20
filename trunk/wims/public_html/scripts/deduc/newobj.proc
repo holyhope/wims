@@ -1,0 +1,72 @@
+!if $casesplit!=$empty
+ splitobj=!translate internal $\
+$ to $	$ in $objects
+ !if $goalsplit!=yes
+  oldobject=0
+  newobject0=!line 1 of $casesplit
+  newobject0=!translate internal $	$ to $\
+$ in $newobject0
+ !else
+  newobject=!line 1 of $casesplit
+ !endif
+!endif
+
+shift=0
+!distribute item <,>,= into lt,gt,eq
+!for i in $oldobject
+ newobject=!nonempty lines $(newobject$i)
+ newobject=!trim $newobject
+ no=!line 1 of $newobject
+ !if $i=0
+  ln=!replace internal $\
+$ by $\
+> $ in > $newobject
+  newObject=$ln
+  n=!linecnt $ln
+  !for k=1 to $n
+   l=!line $k of $ln
+   !if $l notlineof $objects
+    objects=!append line $objects to $l
+    !advance shift
+   !endif
+  !next k
+ !else
+  l=!line $(methparm$i) of $(mtobj$i)
+  d=!item 1 of $l
+  !distribute words $d into l_,s_,e_
+  l_=$[$l_+$shift]
+  L=!line $l_ of $objects
+  !reset l1,l2
+  !if $s_>0
+   l1=!char 1 to $s_ of $L
+  !endif
+  v_=!charcnt $L
+  !if $e_<$v_
+   l2=!char $e_+1 to -1 of $L
+  !endif
+  LL=$l1$newobject$l2
+  !read deduc/objsimp.proc LL
+  newObject=$LL
+  D=!word 1 of $L
+  impl=>
+  bt=<
+  !if $L=$empty or ($D=$impl and $i notitemof $forcereplace)
+   !if $LL notlineof $objects and $newobject!=$empty
+    objects=!append line $objects to $LL
+    !advance shift
+   !endif
+  !else
+   !if $newobject!=$empty
+    objects=!replace line number $l_ by $LL in $objects
+   !else
+    objects=!replace line number $l_ by $ in $objects
+   !endif
+  !endif
+ !endif
+!next i
+
+objects=!nonempty lines $objects
+newObject=!trim $newObject
+m_newobject=!translate internal $\
+$ to $	$ in $no
+

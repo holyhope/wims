@@ -1,0 +1,72 @@
+
+sec=!defof class_secure in wimshome/log/classes/$wims_class/.def
+sec=!trim $sec
+htest=!checkhost $sec
+!if $wims_sup_secure<0 or ($sec!=$empty and $htest<1)
+ error=not_secure
+ !exit
+!endif
+
+typename=!defof class_typename in wimshome/log/classes/$wims_class/.def
+classtype=!defof class_type in wimshome/log/classes/$wims_class/.def
+
+#!if $wims_superclass!=$empty and $csvtype=upload
+# error=not_superclass
+# !exit
+#!endif
+
+csvformatlist=csv,tsv
+!!for ods the script csv/mkODS.py is not there.
+!bound csvformat within $csvformatlist default csv
+!default csvdownload=login,name
+
+!if $csvtype=download
+ csvdownload=!trim $csvdownload
+ !if techvar isitemof $csvdownload
+  !! add technical variable list to download list
+    csvdownload=!listcomplement techvar in $csvdownload
+    nb=!linecnt $tv_listtechvar
+    !for k=1 to $nb
+      name=$(tv_listcode[$k])
+      csvdownload=!append item techvar_$name to $csvdownload
+      code_user_techvar_$name=var_$(tv_listtechvar[$k;1])
+      name_user_techvar_$name=$(tv_listtechvar[$k;1])
+    !next k
+ !endif
+ !if regvar isitemof $csvdownload
+  !! add register variable list to download list
+    !if $wims_superclass!=$empty
+      regvar_name=!defof class_regvars in wimshome/log/classes/$wims_superclass/.def
+    !else
+      regvar_name=!defof class_regvars in wimshome/log/classes/$wims_class/.def
+    !endif
+    regvar_cnt=!itemcnt $regvar_name
+    csvdownload=!listcomplement regvar in $csvdownload
+    !reset regvarlist
+    !for k=1 to $regvar_cnt
+       name_regprop$k=$(regvar_name[$k])
+       csvdownload=!append item regprop$k to $csvdownload
+       regvarlist=!append item regprop$k to $regvarlist
+    !next k
+ !endif
+
+ !if $csvdownload!=$empty and $usercnt>0
+  !read csv/download.proc
+ !endif
+!endif
+
+!if $csvtype=upload
+ !if $classtype isin 13 and $typename notwordof class course and\
+     ($typename notwordof level or $wims_user!=supervisor)
+  error=not_class
+  !exit
+ !endif
+ !read csv/upload.proc
+!endif
+
+!reset csvtype
+
+!set wims_ariane_self=no
+!set wims_ariane=!append line csv,8 to\
+$wims_ariane
+

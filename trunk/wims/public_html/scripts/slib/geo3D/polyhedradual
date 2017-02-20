@@ -1,0 +1,231 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+
+slib_author=Bernadette, Perrin-Riou
+
+slib_require=pari
+!exit
+!! slib_ray is the coefficient of the inversion.
+:proc
+
+wims_multiexec=pari
+
+!distribute items $wims_read_parm into slib_polyedre,slib_options
+!default slib_polyedre=cube
+
+!reset slib_vertex, slib_face, slib_edge
+!!********** Traitement des options
+slib_k=0.7
+slib_f=33
+!!slib_k=0.6
+!!slib_f=33
+
+slib_Z0=-1
+slib_Z1=-1000
+
+slib_ray=!getopt power in $slib_options
+slib_ray=!text select 0123456789. in $slib_ray
+slib_ray=!nospace $slib_ray
+
+slib_name_vertex=!getopt name_vertex in $slib_options
+slib_name_face=!getopt name_face in $slib_options
+slib_name_edge=!getopt name_edge in $slib_options
+slib_format=!getopt format in $slib_options
+
+slib_angle=!getopt angle in $slib_options
+slib_angle=!declosing $slib_angle
+slib_angle=!text select uvw, in $slib_angle
+
+slib_option_face=!getopt face in $slib_options
+slib_option_edge=!getopt edge in $slib_options
+
+!default slib_option_face=1
+!default slib_option_edge=0
+!default slib_option_vertex=1
+!default slib_angle=u v w
+slib_0=0
+!if off isin $slib_format
+  slib_0=1
+!endif
+
+slib_tool=!getopt tool in $slib_options
+slib_tool=!declosing $slib_tool
+
+!default slib_tool=
+ slib_fichier=$wims_nowseconds.zir
+
+
+!!********** Lecture des données polyedre
+
+slib_polyedre=!record 0 of data/polyedre_off/$slib_polyedre.off
+
+slib_H=1
+slib_u=!line 1 of $slib_polyedre
+slib_nom=!replace internal # by $empty in $slib_u
+!while # isin $slib_u
+!advance slib_H
+slib_u=!line $slib_H of $slib_polyedre
+!endwhile
+
+!distribute word $slib_u into slib_vertex_cnt, slib_face_cnt, slib_edge_cnt
+
+slib_vertex=!line $[$slib_H+1] to $[$slib_H+$slib_vertex_cnt] of $slib_polyedre
+slib_vertex=!nonempty lines $slib_vertex
+
+slib_edge=!line $[$slib_H+$slib_vertex_cnt+$slib_face_cnt+1] to $[$slib_H+$slib_vertex_cnt+$slib_face_cnt+$slib_edge_cnt] of $slib_polyedre
+slib_edge=!nonempty line $slib_edge
+
+slib_face=!line $[$slib_H+$slib_vertex_cnt+1] to $[$slib_H+$slib_vertex_cnt+$slib_face_cnt] of $slib_polyedre
+slib_face=!nonempty line $slib_face
+
+Ou est le centre ? en 0 ? il faut le calculer
+slib_vertex0=!lines2rows $slib_vertex
+slib_vertex0=!singlespace $slib_vertex0
+slib_vertex0=!replace internal ;$ $ by ; in $slib_vertex0
+slib_vertex0=!words2items $slib_vertex0
+
+!!prg=!exec pari centre(F) = 0.001*round(1000*sum(j=1,#F,F[j])/#F);
+prg=!exec pari centre(F) = 0.001*round(1000*sum(j=1,matsize(F)[1],F[j,])/matsize(F)[1]);
+slib_center=!exec pari centre([$slib_vertex0])
+!! find the mean of the distances from the center to the vertices (as a matrix)
+prg=!exec pari rhosubs(V,Pt) = sum(j=1,matsize(V)[1],norml2(V[j,]-Pt)^(1/2))/matsize(V)[1];
+!! find the minimal of the distance from the center to the faces (as a vector of coord)
+[[],[],[]]
+prg=!exec pari rhoinsc(F,Pt) = my(P,Q);P=matrix(3,3);P[1,]=[F[1][1]-F[2][1],F[1][2]-F[2][2],F[1][3]-F[2][3]]; P[2,]=[F[1][1]-F[3][1],F[1][2]-F[3][2],F[1][3]-F[3][3]]; P[3,]=[x-F[1][1],y-F[1][2],z-F[1][3]];Q=matdet(P); V=[polcoeff(Q,1,x),polcoeff(Q,1,y),polcoeff(Q,1,z),subst(subst(subst(Q,x,0),y,0),z,0)]; abs(V*[Pt[1],Pt[2],Pt[3],1]~)/norml2(V[1..3])^(1/2)
+
+equation du plan de la face puis coordonnées du sommet. suppose que le centre est 0
+prg=!exec pari dualvertex(F,{Pt=[0,0,0]},{r=1}) = my(P,Q,d);P=matrix(3,3);P[1,]=[F[1][1]-F[2][1],F[1][2]-F[2][2],F[1][3]-F[2][3]];P[2,]=[F[1][1]-F[3][1],F[1][2]-F[3][2],F[1][3]-F[3][3]];P[3,]=[x-F[1][1],y-F[1][2],z-F[1][3]];Q=matdet(P); V=[polcoeff(Q,1,x),polcoeff(Q,1,y),polcoeff(Q,1,z),subst(subst(subst(Q,x,0),y,0),z,0)]; d=V*[Pt[1],Pt[2],Pt[3],1]~ ;  Pt - r^2/d* V[1..3];
+
+
+!!prg=!exec pari dualvertex(F, r=1) = 0.001*round(1000*sum(j=1,#F,F[j])/#F);
+
+slib_polyedre_vertex=
+slib_v_d=
+!for slib_na=1 to $slib_vertex_cnt
+    slib_coord=!line $slib_na of $slib_vertex
+    slib_coord=!words2items $slib_coord
+    slib_polyedre_vertex=!append line $slib_coord to $slib_polyedre_vertex
+!next
+slib_p_face=!lines2rows $slib_face
+slib_p_face=!words2items $slib_p_face
+slib_p_face=!replace internal ,; by ; in $slib_p_face
+slib_p_face1=!rows2lines $slib_p_face
+!for slib_n=1 to $slib_face_cnt
+   slib_line= !exec pari H=[$(slib_p_face[$slib_n;])] ; H + vector(#H,i,1)
+   slib_p_face1=!replace line number $slib_n by $slib_line in $slib_p_face1
+!next
+
+slib_p_face=!lines2rows $slib_p_face1
+slib_p_edge=!lines2rows $slib_edge
+slib_p_edge=!words2items $slib_p_edge
+slib_p_edge=!exec pari [$slib_p_edge] + matrix($slib_edge_cnt,2,i,j,1)
+
+slib_polyedre_vertex=!lines2rows $slib_polyedre_vertex
+slib_rho=100000
+slib_rho_M=0
+slib_Face=
+!for slib_nc=1 to $slib_face_cnt
+   slib_f=
+   slib_v=!line $slib_nc of $slib_face
+   slib_v=!words2items $slib_v
+   slib_cn=!itemcnt $slib_v
+   slib_v=!exec pari [$slib_v]+vector($slib_cn,i,1)
+   !for slib_u = 2 to $slib_cn
+     slib_f = !append item [$(slib_polyedre_vertex[$(slib_v[$slib_u]);])] to $slib_f
+   !next
+   slib_Face=!append line $slib_f to $slib_Face
+   slib_tmp=!exec pari rhoinsc([$slib_f],[$slib_center])
+   slib_rho_m=$[min($slib_tmp,$slib_rho)]
+   slib_rho_M=$[max($slib_tmp,$slib_rho_M)]
+!next
+slib_rho_vertex_mean=!exec pari rhosubs([$slib_vertex0],[$slib_center])
+slib_rho_vertex_mean=$[round(10000000*$slib_rho_vertex_mean)/10000000]
+slib_rho=$slib_rho_m
+!if $slib_rho< 0.4 and $slib_ray=$empty
+   slib_rho=$slib_rho_M
+   !if $slib_rho <0.5
+     slib_rho=$slib_rho_vertex_mean
+   !endif
+!endif
+!default slib_ray=$slib_rho
+!for slib_nc=1 to $slib_face_cnt
+   slib_v=!line $slib_nc of $slib_Face
+   slib_r=!exec pari dualvertex([$slib_v],[$slib_center],$slib_ray)
+   slib_v_d=!append line v,$slib_r to $slib_v_d
+!next
+
+slib_e_d=
+slib_adj=!makelist x for x=1 to $[$slib_face_cnt]
+slib_adj=!items2lines $slib_adj
+!for slib_e = 1 to $slib_edge_cnt
+    slib_ed=
+    !for slib_f=1 to $slib_face_cnt
+      slib_fo= !nospace $(slib_p_edge[$slib_e;2,1])
+      slib_tmp=!nospace ,$(slib_p_face[$slib_f;2..-1]),$(slib_p_face[$slib_f;2]),
+     !if ,$(slib_p_edge[$slib_e;]), isin $slib_tmp or ,$slib_fo, isin $slib_tmp
+        slib_ed= !append item $[$slib_f+$slib_vertex_cnt-$slib_0] to $slib_ed
+     !endif
+    !next
+    slib_e_d=!append line l $slib_ed to $slib_e_d
+!next
+
+#### j'ajoute les sommets des faces dans le désordre !
+slib_f_d=
+!for slib_na=1 to $slib_vertex_cnt
+   slib_fd=
+   !for slib_f=1 to $slib_face_cnt
+      slib_ff= $(slib_p_face[$slib_f;2..-1])
+      !if $[$slib_na-1] isitemof $slib_ff
+        slib_fd=!append item $[$slib_f] to $slib_fd
+      !endif
+     !next
+    slib_c=!itemcnt $slib_fd
+   slib_f_d=!append line $slib_fd to $slib_f_d
+!next
+
+!for slib_na=1 to $slib_vertex_cnt
+    slib_l=!line $slib_na of $slib_vertex
+    slib_vertex=!replace line number $slib_na by v $slib_l in $slib_vertex
+!next
+!if off notin $slib_format
+  !for slib_nb=1 to $slib_edge_cnt
+    slib_edge=!replace line number $slib_nb by $ $ $(slib_p_edge[$slib_nb;]) in $slib_edge
+  !next
+  !for slib_nb=1 to $slib_face_cnt
+    slib_face=!replace line number $slib_nb by f$ $ $(slib_p_face[$slib_nb;2..-1]) in $slib_face
+  !next
+  slib_out=$slib_vertex\
+$slib_edge\
+$slib_face\
+$slib_v_d\
+$slib_e_d
+
+slib_out=!items2words $slib_out
+!readproc slib/geo3D/CaR $slib_out,$slib_options
+
+!else
+  slib_e_d_cnt=!linecnt $slib_e_d
+  slib_v_d_cnt=!linecnt $slib_v_d
+  slib_f_d_cnt=!linecnt $slib_f_d
+  slib_out=#\
+$[$slib_vertex_cnt+$slib_v_d_cnt] $[$slib_face_cnt+$slib_f_d_cnt] $[$slib_e_d_cnt+$slib_edge_cnt] \
+$slib_vertex\
+$slib_v_d\
+$slib_face\
+$slib_f_d\
+$slib_edge\
+$slib_e_d
+
+  slib_out=!replace internal , by $ $ in $slib_out
+  slib_out=!replace internal ; by $\
+$ in $slib_out
+  slib_out=!replace internal l$ $ by in $slib_out
+  slib_out=!replace internal v$ $ by in $slib_out
+  slib_out=$slib_out\
+$slib_vertex_cnt,$[$slib_vertex_cnt+$slib_v_d_cnt],$[$slib_vertex_cnt+$slib_v_d_cnt+$slib_face_cnt],$[$slib_vertex_cnt+$slib_v_d_cnt+ $slib_face_cnt + $slib_f_d_cnt],$[$slib_vertex_cnt+$slib_v_d_cnt+ $slib_face_cnt + $slib_f_d_cnt + $slib_edge_cnt], $[$slib_vertex_cnt+$slib_v_d_cnt+ $slib_face_cnt + $slib_f_d_cnt + $slib_edge_cnt+$slib_e_d_cnt]\
+$slib_rho_m,$slib_rho_M, $slib_rho_vertex_mean
+
+!endif
+
+slib_out=$slib_out

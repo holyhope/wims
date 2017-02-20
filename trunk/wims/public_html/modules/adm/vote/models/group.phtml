@@ -1,0 +1,57 @@
+!goto $gstep
+
+:1
+<fieldset class="property_fields blockcenter">
+  <div class="field box">
+   <label for="up_namevar">$name_namevar <span class="field_required">*</span></label>
+!if $vote_status>0
+ $namevar
+!else
+ !let up_codevar=$codevar
+ !formselect up_codevar list $tv_listlocalcode prompt $tv_listlocalname
+!endif
+  </div>
+</fieldset>
+<input type="hidden" name="gstep" value="2" />
+!exit
+
+:2
+<p>$name_introtext</p>
+<textarea class="iEdit" id="testointro" rows="10" cols="80" name="up_testointro">
+!replace internal \( by &#92;( in $testointro
+</textarea>
+
+<p>$name_introtext_group</p>
+$table_header
+ $table_hdtr
+  <th>$name_group1</th>
+  <th>$name_cardinal</th>
+  <th>$name_extra</th>
+ </tr>
+ !for i=1 to $numsess
+  $table_tr
+   <td>
+    !item $i of $listval
+  </td>
+  <td>
+    <input size="4" name="up_nstud$i" id="nstud$i" value="$(nstud$i)" />
+  </td>
+  <td>
+   <input size="10" name="up_testoextra$i" id="testoextra$i" value="$(testoextra$i)" />
+  </td>
+ </tr>
+ !next i
+ $table_end
+ <div class="formHelp">$name_remark_numstud</div>
+ <input type="hidden" name="gstep" value="3" />
+!exit
+
+:3
+$name_describesource
+<p>$name_yourvariable.</p>
+<pre>
+$reg_src
+</pre>
+$(name_$(reg_model)_instr)
+<input type="hidden" name="gstep" value="0" />
+

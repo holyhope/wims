@@ -1,0 +1,90 @@
+!! ariane.proc :
+!! manage links for breadcrumbs
+!! options :
+!! wims_ariane_home = no ==> don't use $wims_home_items
+!! wims_ariane_self = no ==> don't generate automatically : home / module
+!!module d'aide (101..)
+!set tmp_=!charcnt $doc
+!if $module=adm/doc and $tmp_=3 and $doctype!=class
+  !exit
+!endif
+!if $module=home and $class_type isin 31 and $wims_user!=supervisor and $wims_user!=$empty
+  !set wims_ariane_home=no
+!endif
+!reset wims_ariane_list
+!! the test is when student are doing an exercise in a sheet!
+!! tricky
+!if $wims_ariane_home=$empty
+  !if $wims_home_items=$empty
+    !set wims_home_items = !append line home,8 to $wims_home_items
+  !endif
+  !set 1_=!line 1 of $wims_home_items
+  !set wims_ariane_list = !append line $1_ to $wims_ariane_list
+!endif
+!! the variable wims_ariane_self must be defined in the var.proc of
+!! the module if one does not want an ariane thread automatically created
+!! should have more parameters, for the moment, just no.
+!set wims_ariane_cnt=!linecnt $wims_ariane
+
+!if $wims_ariane_self=no
+  !for i_=1 to $wims_ariane_cnt
+    !set 1_=!line $i_ of $wims_ariane
+    !set wims_ariane_list = !append line $1_ to $wims_ariane_list
+  !next
+  !if $wims_ariane_cnt>1
+    !set 3_=!item 2 of $1_
+    !if $3_!=8
+      !set wims_ariane_list = !append line *,8 to $wims_ariane_list
+    !endif
+  !endif
+
+!else
+  !if _ notin $session and $module!=home and adm isin $module_category
+!!hack, list to complete : for these adm modules wims_name_xxx
+!!(for example wims_name_modtool ) exists (to complete)
+    !for a_ in modtool,quicktool,createxo,latex2wims
+      !if $a_ isin $module
+        !set ariane_title=$a_
+      !endif
+    !next
+
+!!should be in the module ?? made to correct the automatic creation of ariane thread
+    !if $ariane_title=$empty
+      !default ariane_title=$(module_title_$lang)
+      !default ariane_title=$module_title
+      !set ariane_title="$ariane_title"
+    !endif
+    !if $module=adm/class/userscore
+      !set ariane_title=Score1
+    !endif
+    !! clickable or not ? it depends and the link module=$module
+    !! is not always pertinent and sometimes repetition with Back
+    !! the other problem is that some modules
+    !! rename module_title according to the job.
+    !! the test is not always OK, how to find if we are not
+    !! in the homepage of the adm module
+    !if $cmd!=$empty and ($module_init_parm!=$empty or $cmd!=new) and adm/light notin $module
+!! put quotes in the ariane_title if useful (for icon reason)
+      !set wims_ariane_list = !append line $ariane_title,1,module=$module to $wims_ariane_list
+      !if $wims_ariane_cnt>0
+        !for i_=1 to $wims_ariane_cnt
+          !set 1_=!line $i_ of $wims_ariane
+          !set 3_=!item 2 of $1_
+          !set wims_ariane_list = !append line $1_ to $wims_ariane_list
+        !next
+      !endif
+      !if $3_!=8
+        !if $wims_title_title!=$empty
+          !set tmp=!detag $wims_title_title
+          !set wims_ariane_list = !append line "$tmp",8 to $wims_ariane_list
+        !else
+          !set wims_ariane_list = !append line *,8 to $wims_ariane_list
+        !endif
+      !endif
+    !else
+      !set tmp=!detag $ariane_title
+      !set wims_ariane_list = !append line $ariane_title,8 to $wims_ariane_list
+    !endif
+  !endif
+!endif
+!set wims_ariane_cnt=!linecnt $wims_ariane_list

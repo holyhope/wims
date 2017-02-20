@@ -1,0 +1,111 @@
+
+!! list of basic keyword
+basic=login lastname firstname password email regnum comments photourl \
+  external_auth
+!if $wims_user=supervisor and $typename iswordof portal
+!!##for the moment, delete supervise supervisable in basic2 as
+!!## this script does not look at the teacher list.
+   basic2=participate
+   basic3=supervise supervisable
+!endif
+
+!reset sh shexo ex ma se exe exexo examduration
+!! list of active sheet
+sheetcnttot=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+sheetcnt=!itemcnt $activesh
+
+!for i in $activesh
+  sh=$sh sheet$i
+  shexo=$shexo sheetexo$i
+  l=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+  name=!line 3 of $l
+  name_sheet$i=$quote$name$quote
+!next i
+
+!! list of active exam
+examcnttot=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
+examcnt=!itemcnt $activexams
+!for i in $activexams
+  ex=$ex exam$i
+  exe=$exe
+  examduration=$examduration examduration$i
+  exexo=$exexo examexo$i
+  l=!record $i of wimshome/log/classes/$wims_class/exams/.exams
+  name=!line 4 of $l
+  name_exam$i=$quote$name$quote
+  name_examduration$i=$quote$name$quote
+!next i
+
+!! list of manual score
+l=!record 1 of wimshome/log/classes/$wims_class/.grades
+l=!line 2 of $l
+!for i=1 to $gcnt
+ ma=$ma manual$i
+ name=!item $i+2 of $l
+ name_manual$i=$quote$name$quote
+!next i
+
+!! add or not keyword for average
+av=
+!if $sheetcnt+$examcnt>0 and $gcnt>0
+ av=$av average0
+!endif
+!if $sheetcnt+$examcnt>0
+ av=$av average1
+!endif
+!if $gcnt>0
+ av=$av average2
+!endif
+
+!! add keyword for sheetexo information
+!set control_overflow=0
+!if $dl!=$empty
+  !for i in $activesh
+    !if sheetexo$i isin $dl
+      e=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
+      se=!append line $i to $se
+      control_overflow=$[$control_overflow+4*$e]
+      !if $control_overflow>$TOO_BIG
+        error=too_big
+        !exit
+      !endif
+      !for ee=1 to $e
+        seq=sheet$(i)_exo_$(ee)_Q
+        se0=sheet$(i)_exo_$(ee)_I0
+        se1=sheet$(i)_exo_$(ee)_I1
+        se2=sheet$(i)_exo_$(ee)_I2
+        tmp=$seq $se0 $se1 $se2
+        se=!append item $tmp to $se
+        name=!record $ee of wimshome/log/classes/$wims_class/sheets/.sheet$i
+        name=!line 5 of $name
+        name=!replace , by  in $name
+        name_$seq=$name Q
+        name_$se0=$name I0 (%)
+        name_$se1=$name I1 (%)
+        name_$se2=$name I2
+      !next ee
+    !endif
+  !next i
+  !for i in $activexams
+    !if exam$(i)_exexo isin $dl
+      e=!recordcnt wimshome/log/classes/$wims_class/exams/.exam$i
+      exe=!append line $i to $exe
+      !set nb_ses$i=!record $i of wimshome/log/classes/$wims_class/exams/.exams
+      !set nb_ses$i=!line 3 of $(nb_ses$i)
+      !set nb_ses$i=!word 2 of $(nb_ses$i)
+      control_overflow=$[$control_overflow+4*$e]
+      !if $control_overflow>$TOO_BIG
+        error=too_big
+        !exit
+      !endif
+      !for ee=1 to $e
+        exe=!append item exam$(i)_exexo_$ee to $exe
+        name=!record $ee of wimshome/log/classes/$wims_class/exams/.exam$i
+        name=!line 3 of $name
+        name=!replace , by - in $name
+        name_exam$(i)_exexo_$ee=!makelist $name $ee for x=1 to $(nb_ses$i)
+        name_exam$(i)_exexo_$ee=!replace internal , by $ :$ in $(name_exam$(i)_exexo_$ee)
+      !next ee
+    !endif
+  !next i
+!endif

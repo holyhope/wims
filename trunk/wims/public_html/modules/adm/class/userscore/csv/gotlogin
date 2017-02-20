@@ -1,0 +1,53 @@
+!!INPUT name of csv file, keyword to look for
+!!OUTPUT : position of the keyword, bad item for this keyword :
+!! logtest loglist dep_$ltest  got$keyword types ???
+!! list of types
+!distribute items $wims_read_parm into file,keyword
+n=!recordcnt $file
+!if $n<=0
+ !exit
+!endif
+
+loglist=
+logtest=
+!! look for the position of keyword in the two first lines
+!! check if the keyword have more than 4 characters in all lines not commented by #
+!for i=1 to $n
+ l=!record $i of $file
+ l=!replace internal ; by , in $l
+ l=!replace internal $	$ by , in $l
+ !if $(got$keyword)!=$empty
+  ltest=!item $(got$keyword) of $l
+  ll=!wordcnt $ltest
+  !if $ll=1 and # notin $ltest
+   ltest_cnt=!charcnt $ltest
+   !if $ltest_cnt<4
+     bad_$keyword=!append item $ltest to $(bad_$keyword)
+   !else
+     loglist=!append item $ltest to $loglist
+     !if @ isin $ltest or . isin $ltest
+!!!FIXME bidouillage - useful only to be able to define a variable dep_$ltest
+!!! replace by writing in a file ???
+      ltest=!replace internal @ by _____ in _$ltest
+      ltest=!replace internal . by 555555 in __$ltest
+      ltest=!replace internal - by 666666 in __$ltest
+      !!!!modification necessaire car les noms de variables ne peuvent pas
+      !!!!contenir @ ; aucun login commencant par _ ne peut avoir été accepté,
+      !!!!donc il n'y a pas de confusion possible
+     !endif
+     logtest=!append item $ltest to $logtest
+   !endif
+   dep_$ltest=$l
+  !endif
+ !else
+  !if $i>3
+   !exit
+  !endif
+  !if $keyword isitemof $l
+   l=!lower $l
+   types=!nospace $l
+   got$keyword=!positionof item $keyword in $l
+   got$keyword=!item 1 of $(got$keyword)
+  !endif
+ !endif
+!next i

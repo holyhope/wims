@@ -1,0 +1,47 @@
+#! /bin/sh
+#
+# Get list of reference words from last page.
+# No input parameter is allowed.
+
+if [ -z "$w_wims_session" ]; then exit; fi
+ss=`echo $w_wims_session | tr '_' ',' | cut -d, -f1 `
+l=$w_module_language
+
+ses=../s2/$ss
+if [ ! -d $ses ]; then exit; fi
+if [ "$w_special_parm" = "intro" ]; then
+ input=modules/$w_module/intro.phtml
+else
+ input=$ses/last.html
+fi
+# echo "$input" >$ses/test
+if [ ! -f $input ]; then exit; fi
+if [ $input = $ses/last.html ]; then
+ awk 'BEGIN {a=0};
+     /class=wimstail/ {a=0; exit};
+     /<script/ {a=0};
+     /<\/script/ {a=1};
+     a==1 {print};
+     /class=wimsbody/ {a=1}' $input >$ses/last.body
+else
+ cp $input $ses/last.body
+fi
+echo "$w_module_keywords, $w_module_domain" >>$ses/last.body
+
+wims_exec_parm=`../bin/phtmltext $ses/last.body | sed 's/[^A-Za-z0-9,. ]/ /g'`
+export wims_exec_parm w_dictionary w_suffix_dictionary
+export w_translator_switch w_translator_unknown
+w_dictionary=bases/sys/words.$l
+w_suffix_dictionary=bases/sys/suffix.$l
+w_translator_switch=
+w_translator_unknown=leave
+next=`bin/translator`
+wims_exec_parm="$next"
+w_dictionary=bases/wikipedia/words.$l
+w_suffix_dictionary=
+w_translator_unknown=
+
+bin/translator | tr -d . | tr ',' '\n' | \
+	tr -s ' ' | sed 's/^ //;s/ $//' | \
+	grep . | sort -f | uniq | head -300 | tr '\n ' ',_'
+

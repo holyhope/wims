@@ -1,0 +1,56 @@
+!set wims_module_log=error: $error
+
+!if no_pick=$error
+ È necessario
+ !href cmd=resume selezionare un test
+ prima di cliccare su <span class="wims_button disabled">$wims_name_Insert</span>.
+ !exit
+!endif
+
+!if not_supervisor=$error
+ Spiacente, ma solo il docente pu&ograve; modificare un
+ test di autovalutazione.
+ !exit
+!endif
+
+!if no_sheet=$error
+ Questo corso interattivo contiene solo test in corso in cui non
+ è  possibile inserire un nuovo modulo modulo.
+ !href module=adm/class/sheet&sheet=$[$sheettot+1] $wims_name_add_sheet
+?
+ !exit
+!endif
+
+!if bad_sheet=$error
+ Il numero inserito è errato.
+ !exit
+!endif
+
+!if too_many_exos=$error
+ Il test $picksheet contiene già il massimo numero ($max_exos) di
+ moduli possibile. Se si vuole inserire anche questo, occorre cancellarne qualcuno.
+ !exit
+!endif
+
+!if already_exist=$error
+ Il test $test contiene già il modulo che volete inserire.
+ Se si vuole inserire un esercizio simile è necessario cambiare
+ i parametri iniziali (non è possibile inserire in un
+ test di autovalutazione lo stesso esercizio con gli stessi parametri
+ iniziali. <p>
+ Se si vuole che lo stesso esercizio venga ripetuto, è sufficiente
+ aumentare punteggio richiesto.
+ !exit
+!endif
+
+!if $error=bad_exo
+ Nessun esercizio corrisponde alle informazioni inserite.
+ !exit
+!endif
+
+!if $error=not_exo
+ Il modulo che state inserendo nel test non è un modulo di esercizi. Si tratta probabilmente di un errore!
+ !exit
+!endif
+
+!msg $error

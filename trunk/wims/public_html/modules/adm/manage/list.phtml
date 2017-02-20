@@ -1,0 +1,97 @@
+!if yes isin $sectest
+ <p>
+ <span class="wims_warning">$wims_name_warning!</span> $name_warning
+ </p>
+!endif
+
+$name_online
+!set catcnt=!recordcnt lang/cat.$modu_lang
+!set cat1cnt=!recordcnt lang/cat1.$modu_lang
+!for i=1 to $cat1cnt
+ !set l=!record $i of lang/cat1.$modu_lang
+ !distribute lines $l into x1_$i,y1_$i
+!next i
+!for i=1 to $catcnt
+ !set l=!record $i of lang/cat.$modu_lang
+ !distribute lines $l into x_$i,y_$i
+!next i
+
+<ul><li>$name_configuration:
+<ul><li>
+!for i in 1,7,2,3,4
+!href cmd=reply&job=conf&confcat=$i $(y_$i)
+ $
+!next i
+</li><li>
+!for i in 6
+!href cmd=reply&job=conf&confcat=$i $(y_$i)
+ $
+!next i
+</li><li>
+!for i in 8,9
+!href cmd=reply&job=conf&confcat=$i $(y_$i)
+ $
+!next i
+!href cmd=reply&job=attrib $(y1_1)
+</li><li>
+!for i in 12,10
+ !href cmd=reply&job=conf&confcat=$i $(y_$i)
+ $
+!next i
+</li><li>
+!for i in 13
+ !href cmd=reply&job=conf&confcat=$i $(y_$i)
+ $
+!next i
+</li></ul>
+<li>$name_checklist:
+!for i in 5,11
+ !href cmd=reply&job=conf&confcat=$i $(y_$i)
+ $
+!next i
+</li><li>$name_checkmaintain:
+<ul><li>
+ !href cmd=reply&job=class&job2=first $(y_2)
+ $
+!href cmd=reply&job=classrestore $name_restore_class
+</li><li>
+!href cmd=reply&job=developer&job2=first $(y1_3)
+ ($wims_name_modtool)
+</li><li>
+!href module=adm/doc $(y_3)
+</li></ul>
+<li>
+!href cmd=reply&job=modules&job2=first $(y1_4)
+ $
+!!href cmd=reply&job=mkindex $(y1_5)
+!! ($name_mkindex).
+</li><li>
+!href cmd=reply&job=sendmail $(y1_11)
+</li><li>
+!href cmd=reply&job=activ $(y1_2)
+</li><li>
+!href cmd=reply&job=backup&job2=first $(y1_6)
+ $
+!href cmd=reply&job=upload $(y1_7)
+ $
+!! !href cmd=reply&job=otherdownload $(y1_9)
+</li><li>
+!href cmd=reply&job=update&job2=first $(y1_8)
+</li><li>
+!href cmd=reply&job=fs&job2= $(y1_10)
+</li>
+</ul>
+!! old version
+!!!for i=1 to $catcnt
+!! !if $i notwordof 5 11
+!! !href cmd=reply&job=conf&confcat=$i $(y_$i)
+!! $
+!!!endif
+!!!next i
+
+<div class="wimscenter">
+ !read adm/QRcode.phtml $(wims_ref_name)?
+ <br />
+</div>
+
+!reset fsdir

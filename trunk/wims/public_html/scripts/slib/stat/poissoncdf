@@ -1,0 +1,37 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+
+slib_parms=2\
+,[data]\
+1,p
+slib_author=Sophie, Lemaire; Bernadette, Perrin-Riou
+
+slib_example=[2,4,7],6.1\
+0,1\
+[20,21,22,23,24,25,50],16
+slib_require=octave
+!exit
+
+:proc
+
+!distribute  item $wims_read_parm into slib_data,slib_p
+
+!default slib_N=1000
+!if  $slib_p<=0
+slib_out=0
+!exit
+!endif
+
+slib_data=!declosing $slib_data
+slib_cnt=!itemcnt $slib_data
+pari_precision=100
+!!slib_out=!exec pari slib_data=[$slib_data];\
+!!print(vector($slib_cnt, x,if(slib_data[x] >= 0, incgam(floor(slib_data[x])+1,$slib_p)/gamma(floor(slib_data[x])+1))))
+
+slib_out=!exec octave poisscdf([$slib_data],$slib_p)
+
+slib_out=!words2items $slib_out
+slib_out=!trim $slib_out
+slib_out=!values x for x in $slib_out
+

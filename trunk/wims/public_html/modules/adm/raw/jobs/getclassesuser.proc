@@ -1,0 +1,44 @@
+# GetClassesUser
+# Liste les classes liees a un utilisateur quser
+
+!read jobs/listclasses.proc
+!if $error!=$empty
+	!exit
+!endif
+
+
+listclasses_cnt=!itemcnt $listclasses
+
+#on stock le parametre rclass demand
+r_class=$rclass
+
+!for cl =1 to $listclasses_cnt
+
+ qclass=!item $cl of $listclasses
+ rclass=!item $cl of $list_rclasses
+ 
+ !read scripts/check.user
+ 
+ !if $error!=$empty
+  	user_error=!append item $error to $user_error
+ 	error=$empty
+ !else
+	listclassesuser=!append item $qclass to $listclassesuser
+	list_rclassesuser=!append item $rclass to $list_rclassesuser
+ !endif
+
+!next
+
+#puis on reinitialise rclass (il pourra ainsi tre retourn au demandeur)
+rclass=$r_class
+
+nb_user_error=!itemcnt $user_error
+
+!if $listclassesuser=$empty
+ #debug_msg n'est utilis que pour le developpement, et sera ˆ retirer en production
+ !if $nb_user_error > 0
+ 	debug_msg = This job also generated $nb_user_error errors ($user_error) 
+ !endif
+ error=user $quser didn't participate in $listclasses_cnt listed classes ($listclasses). $debug_msg
+ !exit
+!endif

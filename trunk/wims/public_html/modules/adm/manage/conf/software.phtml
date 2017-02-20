@@ -1,0 +1,87 @@
+
+!if $save!=$empty and $changed>0
+ !href cmd=reply#check $name_click
+$name_check
+
+ !exit
+!endif
+
+<hr />
+<a id="check"></a>
+$name_checksoftware (
+!href cmd=reply&confcat=5#check $name_click
+ $name_checkgraphics.)
+
+$table_header
+$table_hdtr
+<th>$wims_name_name</th><th>$name_command</th><th class="small">$name_importance</th><th>.</th><th>$name_availability</th></tr>
+
+!distribute items PARI/GP,Maxima,GAP,Octave,\
+	Macaulay 2,Yacas\
+	into n_pari,n_maxima,n_gap,n_octave,\
+	n_m2,n_yacas
+!distribute items 100,80,10,20,\
+	5,20\
+	into i_pari,i_maxima,i_gap,i_octave,\
+	i_m2,i_yacas
+!distribute items 2^17-1,2^17-1;,2^17-1;,2^17-1,\
+	2^17-1,2^17-1\
+	into t_pari,t_maxima,t_gap,t_octave,\
+	t_m2,t_yacas
+!set res=131071
+
+!for sw in pari,maxima,octave,gap,yacas,m2
+
+ $table_tr<td>$(n_$sw)</td><td>$sw</td>
+ <td>$(i_$sw)%</td>
+ <td>
+ !set wims_ref_class=wims_button_help
+ !href cmd=help&help_subject=soft&help_conf=$sw $wims_name_help
+ </td><td>
+ !set av=!exec $sw about
+ !set av=!trim $av
+ !set r_=!exec $sw $(t_$sw)
+ !set r_=!trim $r_
+ !if $sw=m2
+  !set r_=!word 3 of $r_
+ !endif
+ !if $av!=$empty and $res=$r_
+  $wims_name_yes: $av
+ !else
+  $name_Unavailable.
+ !endif
+ </td></tr>
+!next sw
+
+$table_end
+!if $othermiss!=$empty
+ $name_warning_program
+ !set ll=!record 12 of lang/cat.$modu_lang
+ !set ll=!line 2 of $ll
+ !href cmd=reply&job=conf&confcat=12 $ll
+).
+ $table_header
+ $table_hdtr<th>$wims_name_name</th><th>$name_dependingonit</th>
+ !for other in $othermiss
+  !set o=!replace internal units-filter by units in $other
+  !if $(pack_$other)!=$empty
+     !set other=$(pack_$other)
+  !endif
+  $table_tr<td class="tt">$other</td>
+  <td>
+  !if $(mod_$o)!=$empty
+    !set mn=!module title $(mod_$o)
+    !if $mn!=$empty
+      !href module=$(mod_$o) $mn
+    !endif
+  !else
+    !lookup $o in lang/help_soft.$modu_lang
+  !endif
+  !if $other iswordof chemeq units-filter
+   <span class="small">$name_fail.</span>
+  !endif
+  </td></tr>
+ !next other
+ $table_end
+!endif
+

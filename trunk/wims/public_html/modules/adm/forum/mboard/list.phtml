@@ -1,0 +1,66 @@
+!!set already_seen=!record 0 of $forumdir/.users/$forumrealuser
+
+!read desc.phtml
+<br />
+!if $tot<=0
+ !if $mlist!=.newlist
+  $n_nomessage
+ !else
+  $n_emptyforum
+ !endif
+!else
+ !if $mlist=.newlist
+  $n_list, $n_most
+ !else
+  $n_list_month
+  !item $lmon of $monthnames
+  $lyear, $n_most
+ !endif
+ !item $l_order of $n_old
+.
+ !set wims_ref_class=wims_button
+ !href cmd=reply&l_order=$[$l_order%2+1] $n_reverse
+
+ <div class="wimscenter">
+ !set wims_ref_class=wims_button
+ !href cmd=reply&job=threadlist& $n_bysubject
+ &nbsp;&nbsp;
+ !if $mlist!=.newlist
+   !set wims_ref_class=wims_button
+   !href cmd=reply&job=list&mlist=.newlist $n_bydate
+ !else
+   <span class="wims_button disabled">$n_bydate</span>
+ !endif
+ !if $mlist=.newlist
+   !set mlist1=!record 0 of $forumdir/$mlist
+   !set mlist1=!line -1 of $mlist1
+   !set mlist1=!word 1 of $mlist1
+   !set wims_ref_class=wims_button
+   !href cmd=reply&job=list&mlist=$mlist1 $n_recent
+ !else
+  <span class="wims_button disabled">$n_recent</span>
+ !endif
+</div>
+
+ <ul class="wims_forum_list">
+ !if $l_order=1
+  !distribute item $tot,1,-1 into start,end,step
+ !else
+  !distribute item 1,$tot,1 into start,end,step
+ !endif
+ !for i=$start to $end step $step
+  !if $mlist=.newlist
+   !set l_=!line $i of $mnew
+   !distribute word $l_ into a_,b_
+   !set l_=!record $b_ of $forumdir/$a_/.msglist
+  !else
+   !set l_=!record $i of $forumdir/$mlist/.msglist
+  !endif
+  !read listone.phtml $l_
+  </li>
+ !next i
+ </ul>
+!endif
+
+!read listarch.phtml
+

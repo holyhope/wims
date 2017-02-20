@@ -1,0 +1,90 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+
+slib_author=Bernadette, Perrin-Riou
+
+!exit
+
+:proc
+!reset slib_out
+
+!distribute items $wims_read_parm into slib_f1,slib_f2,slib_size,slib_xmin,slib_xmax,slib_ymin,slib_ymax,slib_xsep,slib_ysep,slib_seglength,slib_color,slib_xyinit,slib_option
+
+!default slib_xsep=0.5
+!default slib_ysep=0.5
+!default slib_seglength=4
+!if x isin $slib_size
+  slib_size=!replace internal x by , in $slib_size
+!else
+  !if $slib_size!=$empty
+    slib_size=$slib_size,$slib_size
+  !endif
+!endif
+
+!default slib_size=200,200
+
+slib_xyinit=!declosing $slib_xyinit
+!distribute items $slib_xyinit into slib_xinit,slib_yinit
+
+slib_pasx=$[floor(($slib_xmax-($slib_xmin))/$slib_xsep)]
+slib_pasy=$[floor(($slib_ymax-($slib_ymin))/$slib_ysep)]
+
+!reset slib_Arrow
+
+!read slib/function/bounds2 ($slib_f1)^2+($slib_f2)^2,[x,y],$slib_xmin,$slib_xmax,$slib_ymin,$slib_ymax
+slib_N=$slib_out
+
+slib_N=$[max(1,$(slib_N[2])^(1/2))]
+
+!for slib_a=0 to $slib_pasx
+  !set slib_u= $[$slib_xmin+$slib_a*$slib_xsep]
+  !set slib_f1x= !mathsubst x=$slib_u in $slib_f1
+  !set slib_f2x= !mathsubst x=$slib_u in $slib_f2
+  !for slib_b=0 to $slib_pasy
+	 !set slib_v=$[$slib_ymin+$slib_b*$slib_ysep]
+	  !set slib_A= !evalsubst y=$slib_v in $slib_f1x
+	  !set slib_B= !evalsubst y=$slib_v in $slib_f2x
+	  !if unit iswordof slib_option
+	    slib_norm1=$[sqrt((($slib_A)^2 + ($slib_B)^2))^(-1)]
+	    slib_arrow=arrow $slib_u,$slib_v,$[$slib_u+$slib_A*$slib_norm1*$slib_seglength],$[$slib_v+$slib_B*$slib_norm1*$slib_seglength],6,green
+	  !else
+	    slib_arrow=arrow $slib_u,$slib_v,$[$slib_u+$slib_A/$slib_N],$[$slib_v+$slib_B/$slib_N],8,$slib_color
+     !endif
+	  slib_Arrow=$slib_Arrow\
+$slib_arrow
+  !next
+!next
+
+!if $slib_xinit!=$empty and $slib_yinit!=$empty
+  !! utiliser rungekutta , demande de ne pas avoir du tout les mêmes variables
+  !readproc slib/analysis/rungekutta [$slib_f1,$slib_f2],0,[$slib_xinit,$slib_yinit],0.1,100,data
+  slib_runge=$slib_out
+!endif
+!reset slib_out
+
+slib_out=$slib_Arrow
+!if $slib_runge!=
+  slib_out=$slib_out\
+  polyline red,$slib_runge
+!endif
+!if data iswordof $slib_option
+ !exit
+!endif
+slib_out=xrange $slib_xmin,$slib_xmax\
+yrange $slib_ymin,$slib_ymax\
+$slib_out\
+hline black,0,0\
+vline black,0,0
+!endif
+
+!if url iswordof $slib_option or html iswordof $slib_option
+  insdraw_size=$slib_size,$slib_size
+  !insdraw $slib_out
+  slib_out=$ins_url
+  !if html iswordof $slib_option
+    slib_out=<img src="$ins_url" alt="" />
+ !else
+    slib_out=$slib_out,$insdraw_size
+ !endif
+!endif

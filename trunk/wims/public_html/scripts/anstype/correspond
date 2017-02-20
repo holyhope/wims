@@ -1,0 +1,62 @@
+option:split
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+!distribute items $oef_fill_option into sizeh1, sizeh2, sizev
+
+rr=$(reply$i)
+gg=!singlespace $(replygood$i)
+gg=!rows2lines $gg
+!distribute lines $gg into left,right
+!set right=!imgrename $right
+left=!nonempty items $left
+leftcnt=!itemcnt $left
+bgbad=#f04040
+bggood=#40c040
+badcnt=0
+
+tt=<table style="margin-left:auto;margin-right:auto;border-collapse:collapse;padding:4px;border-spacing:4px;">
+!for j=1 to $leftcnt
+ g_=!item $j of $right
+ r_=!item $j of $rr
+ l_=!item $j of $left
+ tt=$tt\
+<tr><td style="background-color:#c0c0c0;text-align:center;min-height:$(sizev)px;min-width:$(sizeh1)px;" >$l_</td>\
+<td><img src="gifs/arrows/corrlr.gif" alt="arrow"/>
+ !if $g_ notsametext $r_
+  !advance badcnt
+  bg=$bgbad
+ !else
+  bg=$bggood
+ !endif
+ tt=$tt\
+</td><td style="background-color:$bg; text-align:center;min-height:$(sizev)px;min-width:$(sizeh2)px;">$r_</td></tr>
+!next j
+tt=$tt\
+</table>
+
+!if (split iswordof $(replyoption$i) or partialscore iswordof $(replyoption$i)) and $leftcnt>2
+ !if $badcnt<1
+  diareply$i=good
+  !advance freegot
+ !else
+  !if $badcnt<$leftcnt
+   diareply$i=good
+   partialgood$i=yes
+   freegot=$[$freegot+($leftcnt-$badcnt)/$leftcnt]
+  !else
+   diareply$i=bad
+  !endif
+ !endif
+!else
+ !if $badcnt<1
+  diareply$i=good
+  !advance freegot
+ !else
+  diareply$i=bad
+  tt=!replace $bggood by #c0b040 in $tt
+ !endif
+!endif
+reply_$i=$tt
+reply__$i=&nbsp;
+

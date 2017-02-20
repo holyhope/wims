@@ -1,0 +1,61 @@
+!if $wims_superclass=$empty
+  !let wims_superclass=$wims_class
+!endif
+!set wims_realuser=!defof wims_realuser in wimshome/$wims_sesdir/var.stat
+!set user_participate=!defof user_participate in wimshome/log/classes/$wims_superclass/.users/$wims_realuser
+!if $user_participate=$empty
+  !exit
+!endif
+!set levels=!record 0 of wimshome/log/classes/$wims_class/levels
+!set levelcnt=!linecnt $levels
+!set classes=!record 0 of wimshome/log/classes/$wims_class/classes
+!set classcnt=!linecnt $classes
+!set progs=!record 0 of wimshome/log/classes/$wims_class/programs
+!set progcnt=!linecnt $progs
+
+!!if $classcnt+$progcnt>=1
+ !set courses=!record 0 of wimshome/log/classes/$wims_class/courses
+ !set coursecnt=!linecnt $courses
+!!endif
+!set icourses=!record 0 of wimshome/log/classes/$wims_class/icourses
+!set icoursecnt=!linecnt $icourses
+
+!!add the compulsory courses
+
+!for cls in $user_participate
+  !set sub_=!record 0 of wimshome/log/classes/$cls/courses
+  !set sub_cnt=!linecnt $sub_
+  !if $sub_cnt>0
+     !for k_=1 to $sub_cnt
+       !set parent_c=!defof class_parent in wimshome/log/classes/$wims_superclass/$(sub_[$k_;1])/.def
+       !set split=!replace internal / by , in $(sub_[$k_;1])
+       !set progstyle=!defof class_progstyle in wimshome/log/classes/$wims_superclass/$(split[1])/$(split[3])/.def
+       !if optional iswordof $progstyle
+          !set inscrit=!defof user_class in wimshome/log/classes/$wims_superclass/$(sub_[$k_;1])/.users/$wims_user
+       !endif
+       !if mandatory iswordof $progstyle or $(split[1])/$(split[2]) iswordof $inscrit
+          !set user_participate=!append item $wims_superclass/$(sub_[$k_;1]) to $user_participate
+       !endif
+     !next
+  !endif
+!next
+
+!let compsup=$empty
+!for cls in $user_participate
+  !if $wims_class isin $cls
+    !let tmp=!replace internal / by , in $cls
+    !let compsup=!append line $tmp to $compsup
+  !endif
+!next cls
+!set user_participate_=$user_participate
+!let compsup=!sh echo "$compsup" | sort | uniq;
+
+
+!if $class_type=3 and $class_typename!=level
+   $U_gotoclass01
+!else
+   $U_gotoclass0
+!endif
+
+!read adm/class/graphclass participate\
+$compsup

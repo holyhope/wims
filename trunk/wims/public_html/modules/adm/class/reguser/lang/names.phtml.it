@@ -1,0 +1,102 @@
+!set lang_exists=yes
+
+!set levelE=scuola elementare
+!set levelH=scuola media
+!set levelU=università
+
+!set lang_fr=français
+!set lang_en=English
+!set lang_es=español
+!set lang_nl=nederlands
+!set lang_it=Italiano
+!set lang_cn=ÖÐÎÄ
+!set lang_ca=Català
+!set lang_tw=¤¤¤å(Big5)
+
+!if $cltype iswordof 2 4
+   !if $cltype=2
+    !set name_classe=coordinamento di corsi
+    !set name_sup=del docente coordinatore
+    !set name_classes= il $name_classe
+    !set name_classess= un $name_classe
+    !set name_classesss= del $name_classe
+    !set name_classessss= Il $name_classe
+   !else
+    !set name_classe=portale di sede
+    !set name_sup=del docente supervisore
+    !set name_classes= la $name_classe
+    !set name_classess= una $name_classe
+    !set name_classesss= della $name_classe
+    !set name_classessss= La $name_classe
+    !endif
+ !else
+   !set name_classe=corso
+   !set name_classes=il $name_classe
+   !set name_classess=un $name_classe
+   !set name_classesss= del $name_classe
+   !set name_classessss= Il $name_classe
+   !set name_sup=del docente
+ !endif
+
+!distribute lines il portale\
+  Il portale\
+  registrare come <b>docente</b>\
+  iscriversi come studente\
+  Se sei uno studente, devi invece iscriverti \
+  ai corsi collegati\
+  è `riservato', per l'iscrizione occorre conoscere la password di iscrizione.\
+  cominciare a lavorare\
+into name_portal,name_Portal,name_asateacher,name_asaparticipant,\
+ name_inscription_student,name_inyourclass,name_isprotected,name_gotowork
+
+
+!distribute lines posti<br />disponibili\
+  anno\
+  aperto,riservato\
+  Iscrizione a $name_classess\
+  riservato ai docenti\
+  Spiacente, non sono ancora stati creati corsi interattivi. Riprovate più tardi\
+  Selezionare il corso interattivo cui vi volete iscrivere (cliccare sul nome).\
+  è `riservato' (per la registrazione è necessario conoscerne la password di iscrizione) e solo i <b>docenti</b> possono iscriversi.\
+  Clicca sul nome per inserirlo nel corso.\
+  Questo `login' in futuro permetterà di accedere al $$classname.\
+  Scegliere un nome di almeno 4 e non più di 16 caratteri alfanumerici (usare solo numeri e/o lettere non accentate).\
+  Per verificare l'esattezza della password, inseriscila ancora una volta\
+  Non hai dato un indirizzo di posta elettronica.\
+  Tieni conto dell'attività pregressa anche per questo corso.\
+  Questo studente potrebbe aver già svolto attività in altri corsi.\
+  Scrivi al coordinatore\
+  facoltativo\
+  Tipo di utente\
+  Può essere utile salvare questo indirizzo nei &ldquo;Preferiti&rdquo;.\
+  A questo punto puoi accedere al corso e cominciare a lavorare cliccando su\
+  Inserire la password di iscrizione per potersi\
+  la password necessaria per l'iscrizione è disponibile nelle istruzioni che il docente vi ha fornito per l'accesso al corso\
+  Cara/o\
+into name_remainig, name_year,name_statut,name_title,name_reserved,name_warning1,name_inscription,\
+name_warning_protected,name_clickname,name_warning_login,name_passwd_warning,name_passwd_exact,name_emptyemail,\
+name_transfer1,name_otheractivities,name_write_adm,name_optional,name_accounttype,name_bookmark,name_youcan,\
+name_writepasswd,name_obtainpasswd,name_hello
+
+!set name_remark1=È sempre possibile registrarsi per un corso `aperto',\
+  mentre per iscriversi ad un corso `riservato' &egrave; necessario conoscere\
+  la password apposita (comunicata dal docente del corso).
+
+!set name_access1=!nosubst Se il coordinatore ($supervisor) autorizza l'accesso,
+!set name_access2=!nosubst Se il docente ($supervisor) autorizza l'accesso,
+!set name_research=Per cercare uno studente già iscritto al portale, inserire una parola contenuta nel nome e/o nel login
+!set name_nofound=!nosubst Non è stato trovato alcuno studente corrispondente a <span class="tt wims_code_words">$search</span> nel nome o nel login.
+
+!set name_student=!nosubst $firstn $lastn!
+!set name_studentadded=!nosubst L'utente <span class="tt wims_login">$firstn $lastn</span> è stato aggiunto al vostro $name_classe utilizzando il login
+!set name_welcome=!nosubst Benvenuta/o nel corso $classname. Sei in grado fin da ora di partecipare al $name_classes $classname utilizzando il login
+!set name_newparticipant=!nosubst Inserisci i dati del nuovo studente al $name_classe $classname.
+!set name_inscription2=!nosubst Per iscrivervi al $name_classes $classname, inserite i vostri dati.
+!set name_inscription3=!nosubst  Ti sei registrato al $name_classe $classname, con login
+!set name_inscription4=Per effettuare l'iscrizione, è necessario leggere e accettare le condizioni generali di utilizzo
+!set name_inscription21=!nosubst Per iscrivervi al $name_classes $classname, inserite i vostri dati.
+!set name_inscription31=!nosubst  Ti sei registrato al $name_classe $classname, con login
+
+ !set name_warning_direct=La registrazione a $name_classess è riservata ai docenti. Gli studenti devono iscriversi
+!set name_cgu=Accetto le condizioni generali di utilizzo
+!set name_seecgu=Visualizza le CGU

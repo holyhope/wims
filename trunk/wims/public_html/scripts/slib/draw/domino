@@ -1,0 +1,85 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Domino
+
+slib_author=Bernadette, Perrin-Riou
+
+slib_example=5,3,red,H\
+5,0,blue,V,Text,html\
+5,0,red,V,Text,url\
+3,5,red,V,,html\
+3,5,red,H,,html
+!exit
+
+:proc
+!reset slib_color slib_D
+!distribute items $wims_read_parm into slib_h,slib_k,slib_color,slib_D,slib_text,slib_option
+slib_h=$[$slib_h]
+slib_k=$[$slib_k]
+slib_color=!declosing $slib_color
+!default slib_D=H
+slib_w=8
+!default slib_color=black
+!set slib_domino0=
+!set slib_domino1=fcircle 2.5,2.5,$slib_w,$slib_color
+!set slib_domino2=fcircle 1.5,1.5,$slib_w,$slib_color\
+fcircle 3.5,3.5,$slib_w,$slib_color
+!set slib_domino3=fcircle 2.5,2.5,$slib_w,$slib_color\
+fcircle 1.5,1.5,$slib_w,$slib_color\
+fcircle 3.5,3.5,$slib_w,$slib_color
+!set slib_domino4=fcircle 1.5,1.5,$slib_w,$slib_color\
+fcircle 3.5,3.5,$slib_w,$slib_color\
+fcircle 1.5,3.5,$slib_w,$slib_color\
+fcircle 3.5,1.5,$slib_w,$slib_color
+!set slib_domino5=fcircle 1.5,1.5,$slib_w,$slib_color\
+fcircle 3.5,3.5,$slib_w,$slib_color\
+fcircle 1.5,3.5,$slib_w,$slib_color\
+fcircle 3.5,1.5,$slib_w,$slib_color\
+fcircle 2.5,2.5,$slib_w,$slib_color
+!set slib_domino6=fcircle 1.5,1.5,$slib_w,$slib_color\
+fcircle 1.5,2.5,$slib_w,$slib_color\
+fcircle 1.5,3.5,$slib_w,$slib_color\
+fcircle 3.5,1.5,$slib_w,$slib_color\
+fcircle 3.5,2.5,$slib_w,$slib_color\
+fcircle 3.5,3.5,$slib_w,$slib_color
+
+
+!if $slib_text!=
+   slib_domino0=text $slib_color,2,3,medium,$slib_text
+!endif
+
+!if $slib_D=H
+ slib_out=xrange -1,11\
+yrange -1,6\
+linewidth 3\
+rectangle 0,0,10,5,$slib_color\
+segment 5,0,5,5,black\
+$(slib_domino$slib_h)\
+translate 5,0\
+$(slib_domino$slib_k)
+!else
+  slib_out=xrange -1,6\
+yrange -1,11\
+linewidth 3\
+rectangle 0,0,5,10,$slib_color\
+segment 0,5,5,5,$slib_color\
+$(slib_domino$slib_k)\
+translate 0,5\
+$(slib_domino$slib_h)
+ !endif
+
+!if url iswordof $slib_option or html iswordof $slib_option
+  !if $slib_D=H
+    insdraw_size=200,100
+  !else
+    insdraw_size=100,200
+  !endif
+  !insdraw $slib_out
+  slib_out=$ins_url
+  !if html iswordof $slib_option
+    slib_out=<img src="$ins_url" alt="" />
+ !else
+    slib_out=$slib_out,$insdraw_size
+ !endif
+!endif

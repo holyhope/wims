@@ -1,0 +1,28 @@
+!if $wims_read_parm!=$empty
+ !set parms=$wims_read_parm
+!else
+ !if $parms=$empty
+   !set audio=!slashsubst \audio
+   $audio
+  !exit
+ !endif
+!endif
+!if \ isin $parms
+  !set parms=!slashsubst $(parms)
+!endif
+
+!set audiof_=!word 1 of $parms
+!! This avoids module errors if people try to hack.
+!if .. isin $audiof_
+ !exit
+!endif
+!if $parms=$empty
+ !exit
+!endif
+
+!set options=!word 2 to -1 of $parms
+
+!set audio_=!word 1 of $parms
+!readproc slib/media/audio $audio_, $options
+
+$slib_out

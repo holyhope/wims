@@ -1,0 +1,32 @@
+This documentation is yet not finished ...
+<p>
+Many OpenSource java applets are suitable (or can be easily modified) to work within WIMS,
+e.g. WIMS can dynamically configure applets,
+the student actions on the applet can be read from the applet and send back to WIMS as answer
+(via javascript).
+</p>
+!read tabletheme
+!set cnt=!recordcnt interface2
+!for j=1 to $cnt
+  !set interf=!record $j of interface2
+$table_header
+$table_tr
+<th style="width:150px;">$wims_name_name</th><td>
+!line 1 of $interf
+</td>
+</tr>$table_tr
+<th>$wims_name_Author</th><td>
+!line 2 of $interf
+!!!exec $name about
+</td>
+</tr>$table_tr
+<th>$wims_name_Address</th><td>
+!line 3 of $interf
+</td>
+</tr>$table_tr
+<th>Use</th><td>
+!line 4 of $interf
+</td></tr>
+$table_end
+
+!next

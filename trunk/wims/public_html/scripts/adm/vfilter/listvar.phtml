@@ -1,0 +1,22 @@
+!let nblisttechvar_=!linecnt $tv_listtechvar
+!if $nblisttechvar_>0
+$table_header
+    <thead>
+	$table_hdtr
+	    <th>$name_name</th>
+	    <th>$name_ltvalue</th>
+	</tr>
+    </thead>
+    <tbody>
+    !for k_=1 to $nblisttechvar_
+	$table_tr
+	    !let don_=!line $k_ of $tv_listtechvar
+	    !let don2_=!record $(don_[3]) of wimshome/log/classes/$(don_[2])/.techvar
+	    !distribute line $don2_ into name_,val_
+	    <td>$name_</td>
+	    <td>$val_</td>
+	</tr>
+    !next k_
+    </tbody>
+$table_end
+!endif

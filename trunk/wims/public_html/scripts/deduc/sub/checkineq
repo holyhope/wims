@@ -1,0 +1,37 @@
+# Standardized inequality checker, sensible to m_environ.
+# For RR, there is a danger of rounding errors rending false comparisons!
+# Input are lines, "$left,$sign,$right".
+# Output are lines, in $out. `true' if true, `bad' if non-checkable.
+
+I__=!nonempty lines $wims_read_parm
+n__=!linecnt $I__
+!reset out,p__
+!distribute item <,=,>,! into lt,eq,gt,nt
+!distribute item integerp,ratnump,constantp into p_ZZ,p_QQ,p_RR
+ch__=$(p_$m_environ)
+!for i__=1 to $n__
+ l__=!line $i__ of $I__
+ !distribute items $l__ into L__,S__,R__
+ L__=$maximasimp($L__)
+ R__=$maximasimp($R__)
+ !if $S__ isitemof $lt,$gt,$lt$eq,$gt$eq,$eq,$nt$eq
+  !if $m_environ notwordof ZZ QQ RR
+   p__=!append line "bad"; to $p__
+  !else
+   p__=!append line if $ch__($L__) and $ch__($R__) then is($L__ $S__ $R__) else "bad"; to $p__
+  !endif
+ !else
+  p__=!append line "not_comparison"; to $p__
+ !endif
+!next i__
+
+out__=!exec maxima $p__
+
+!for i__=1 to $n__
+ l__=!line $i__ of $out__
+ !if $l__ notwordof true false
+  l__=bad
+ !endif
+ out=!append line $l__ to $out
+!next i__
+

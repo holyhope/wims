@@ -1,0 +1,112 @@
+!!
+!! page edition to add exo to a sheet
+!!
+
+!if $cmd=new or $cmd=resume
+ $name_insert <span class="tt wims_fname">$dir</span>
+ !if $iniparm!=$empty
+  $name_parm
+ <p>
+ <span class="tt wims_parm">
+  !replace internal & by &amp; in $iniparm
+ </span>
+ </p>
+ !endif
+ <p>
+ $name_choose_exo
+ </p>
+
+ !form reply
+<fieldset class="property_fields halfwidth blockcenter">
+ <legend>$name_title</legend>
+ <div class="field box">
+  <label for="picksheet">$name_choose</label>
+  <select name="picksheet" id="picksheet">
+ !for i=1 to $sheetcnt
+  !set sh=!line $i of $sheets
+  !set se=!item 1 of $sh
+  !set ti=!item 2 to -1 of $sh
+  !if $se=$sheetcnt
+   <option value="$se" selected="selected">$wims_name_Sheet $se: $ti</option>
+  !else
+   <option value="$se">$wims_name_Sheet $se: $ti</option>
+  !endif
+ !next i
+  </select>
+  </div>
+
+ !set iniparm1=!replace internal & by $ $ in $iniparm
+ !set exo=!getopt exo in $iniparm1
+ !if __classes/ isin __$dir
+   !set title1=!lookup $exo in wimshome/log/classes/$wims_class/Extitles
+ !else
+   !if $tr_lang=yes
+      !set title1=!lookup $exo in wimshome/public_html/modules/$dir/Extitles_$lang
+   !endif
+   !default title1=!lookup $exo in wimshome/public_html/modules/$dir/Extitles
+ !endif
+ !default title1=!module title $dir
+ !if $title1!=$empty
+   !set title=$title1
+ !endif
+ !set title=!trim $title
+ !default title=$wims_name_Exercise
+ <div class="field box">
+  <label for="title">$wims_name_title</label>
+  <input size="50" name="title" value="$title" id="title" />
+  <div class="formHelp">$name_modifytitle</div>
+ </div>
+ <div class="field box">
+  <label for="new_desc">$wims_name_Description</label>
+  <textarea name="new_desc" rows="5" cols="50" id="new_desc">$desc</textarea>
+ </div>
+ !if $scoring=yes
+  <div class="field box">
+   <label for="require">$name_required</label>
+    <select name="require" id="require">
+    <option value="0">0</option>
+    <option value="10" selected>10</option>
+   !for i=2 to $require_limit
+     <option value="$[10*$i]">$[10*$i]</option>
+   !next
+    </select>
+   <div class="formHelp">$name_repeat</div>
+  </div>
+  <div class="field box">
+   <label for="weight">$name_weight</label>
+   <input size="6" name="weight" value="$weight" id="weight" />
+   <div class="formHelp">$name_weight_hint</div>
+  </div>
+ !endif
+!if $exocnt_=$get_qnum and $get_random=0
+  <div class="field box">
+   <label>$name_orderchange</label>
+   <table>
+  !for ex = 1 to $exocnt_
+   <tr><td>
+   !lookup $(get_exo[$ex]) in wimshome/public_html/modules/$dir/Extitles
+   </td><td>
+    <input name="update_ex$ex" size="5" value="$ex" />
+  </td></tr>
+  !next
+   </table>
+  </div>
+ !endif
+ <div class="wimscenter wimsform"><input type="submit" value="$wims_name_Insert" /></div>
+</fieldset>
+!formend
+!endif
+
+!if $cmd=reply
+ $name_end
+ $picksheet.
+!!<p>
+ !! !href target=wims_test module=adm/tool/classification&dir=$dir&iniparm=$iniparm $wims_name_Indexation
+!!</p>
+
+ !set wims_menu_items=!append line sheetcheck,1, module=adm/class/sheet&sheet=$picksheet\
+to $wims_menu_items
+
+!endif
+
+

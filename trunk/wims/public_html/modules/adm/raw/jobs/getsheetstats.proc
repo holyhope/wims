@@ -1,0 +1,128 @@
+# GetSheetStats
+# Donne des statistiques sur le travail des participants pour chaque exo de la feuille $qsheet
+
+#Pour commencer, on verifie la classe
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+#puis la feuille
+type=sheets
+!read scripts/check.proc
+!if $error!=$empty
+ !exit
+!endif
+
+sheet_properties=!lines2items $qproperties\
+
+sheet_status=!item 1 of $sheet_properties
+!if $sheet_status<1 or $sheet_status>2
+    error=Sheet #$qsheet must be active
+    !exit
+!endif
+
+# S'il n'y a aucun utilisateur, inutile de continuer
+usercnt=!recordcnt  wimshome/log/classes/$qclass/.userlist
+!if $usercnt=0
+  error=There is no user in this class
+  !exit
+!endif
+
+sheet_mean_quality = 0
+sheet_mean_percent = 0
+sheet_max_percent  = 0
+sheet_max_quality  = 0
+
+!for u=1 to $usercnt
+    l=!record $u of wimshome/log/classes/$qclass/.userlist
+    quser=!item 3 of $l
+    !defread $users_dir/$quser
+
+    #getscorepercent fournit le pourcentage de realisation et la qualite obtenus sur la feuille
+    sheet_summaries=!getscorepercent user=$quser class=$qclass sheet=$qsheet
+    user_percent=!word 1 of $sheet_summaries
+    user_quality=!word 2 of $sheet_summaries
+    
+    !default user_percent=0
+    !default user_quality=0
+    
+    # On calcule les notes maximums
+    !if $user_percent>$sheet_max_percent
+        sheet_max_percent=$user_percent
+    !endif
+    !if $user_quality>$sheet_max_quality
+        sheet_max_quality=$user_quality
+    !endif
+    
+    # notes détaillées par exercice
+    # getscore : 
+    gotdetail=!getscore user=$quser class=$qclass sheet=$qsheet
+    # getscoremean : obtient le détail des notes de qualité par exercice
+    qualitydetail=!getscoremean user=$quser class=$qclass sheet=$qsheet
+    
+    !for v in gotdetail, qualitydetail
+        $v=!trim $($v)
+        $v=!wordstoitems $($v)
+    !next v
+    
+    nb_exos = 0
+    !if $u=1
+       # au premier utilisateur, on initialise le total des notes par exercice :
+       sheetqualitydetail = $qualitydetail
+       sheetgotdetail = $gotdetail
+       sheet_mean_quality = $user_quality
+       sheet_mean_percent = $user_percent
+       nb_exos = !itemcnt $gotdetail
+    !else
+        total_temp = $empty
+        quality_temp = $empty
+        
+        !for note in $gotdetail
+            !advance nb_exos
+            old_note = !item $nb_exos of $sheetgotdetail
+            new_note = $[$old_note + $note]
+            total_temp=!append item $new_note to $total_temp
+            
+            old_mean = !item $nb_exos of $sheetqualitydetail
+            new_mean = !item $nb_exos of $qualitydetail
+            new_mean = $[$new_mean + $old_mean]
+            quality_temp= !append item $new_mean to $quality_temp 
+        !next note
+        
+        sheetgotdetail = $total_temp
+        sheetqualitydetail = $quality_temp
+        sheet_mean_quality = $[$sheet_mean_quality + $user_quality]
+        sheet_mean_percent = $[$sheet_mean_percent + $user_percent]
+    !endif
+    
+!next u
+
+
+total_temp = $empty
+quality_temp = $empty
+!for i=1 to $nb_exos
+    old_note = !item $i of $sheetgotdetail
+    new_note = $[$old_note / $usercnt]
+    total_temp=!append item $new_note to $total_temp
+
+    old_quality = !item $i of $sheetqualitydetail
+    new_quality = $[$old_quality / $usercnt]
+    quality_temp= !append item $new_quality to $quality_temp
+!next i
+
+sheetgotdetail = $total_temp
+sheetqualitydetail = $quality_temp
+
+sheet_mean_quality=$[$sheet_mean_quality/$usercnt]
+sheet_mean_percent=$[$sheet_mean_percent/$usercnt]
+
+scoremax=!record 0 of wimshome/log/classes/$qclass/sheets/.severity
+scoremax=!word 1 of $scoremax
+!default scoremax = 10
+
+weights = !record 0 of wimshome/log/classes/$qclass/sheets/.weight
+weights = !line $qsheet of $weights
+
+requires=!getscorerequire class=$qclass sheet=$qsheet
+

@@ -1,0 +1,31 @@
+!! Give answers in this file.
+!if $step >= $limit
+  $name_limit
+!endif
+<ul>
+<li>
+$name_copy
+</li>
+<li>
+$name_createxo
+!set wims_deposit1=click/$wims_deposit
+!if $type=2
+  !set wims_deposit1=!nospace $wims_deposit1,click/z_$wims_deposit
+!endif
+!set wims_ref_class=wims_button
+!href module=adm/createxo&mode=model&level=2&outimages=$wims_deposit1 $wims_name_createxo
+. $name_createxo2
+
+</li>
+</ul>
+<table class="wimsborder wimscenter"><tr><td style="width:100px; height-min:50px;text-align:top;">
+!set insdraw_filebase=!append word $wims_home/sessions/$wims_session/$sesdir to $insdraw_filebase
+      !insdraw copy 0,0,-1,-1,-1,-1,$wims_deposit\
+     $dessin
+</td><td>
+  <pre style="text-align:left;">
+$data
+</pre>
+</td></tr></table>
+
+

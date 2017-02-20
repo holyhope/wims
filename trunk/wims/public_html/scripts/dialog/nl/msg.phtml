@@ -1,0 +1,53 @@
+
+
+!set wims_module_error=error: $error
+
+<span class="wims_warning">$wims_name_Error.</span>
+
+!if empty_data iswordof $error
+ Je hebt een onvolledig ingevuld antwoord opgestuurd. <br/> Graag volledig invullen. 
+ !exit
+!endif
+
+!if bad_data iswordof $error
+ Het is me niet gelukt iets zinnigs van de opgestuurde waarden te maken.Een tiepfout misschien ;) 
+ !exit
+!endif
+
+!if double_reply iswordof $error
+ Je hebt reeds eerder een antwoord gegeven op deze vraag.
+ Dat antwoord is inmiddels geanalyseerd en beoordeeld.
+ (Gebruik nooit de <span class="tt">terug knop</span> van je browser !) 
+ !exit
+!endif
+
+!if bad_answer iswordof $error
+ Je opgestuurde antwoord <p class="wims_center">
+ <b>$bad_name</b> = <span class="tt">$bad_value</span> </p>
+ !if nocompute isin $test
+ is niet toegestaan, en dus afgekeurd.<br/>
+ Voer zelf je berekeningen uit en vul dan de resultaten in!
+ !else
+  is volslagen onbegrijpelijk en waarschijnlijk niet terzake. Corrigeer je antwoord en stuur het nog maar een keer op.
+ !endif
+ !exit
+!endif
+
+!if bad_exo iswordof $error
+Door een fout in deze oefening (het goede antwoord voor <b>$(replyname$i)</b> is ongeldig ), 
+is het voor mij onmogelijke de juistheid van je antwoord te controleren.. 
+Excuses hiervoor.
+ <p>
+ S.V.P. 
+ !if $email!=$empty
+  !mailurl $email maak melding van de fout
+ !else
+  schrijf naar de auteur
+ !endif
+ van deze oefening.
+ !exit
+!endif
+
+$error
+
+

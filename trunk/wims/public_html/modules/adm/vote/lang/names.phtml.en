@@ -1,0 +1,136 @@
+!set lang_exists=yes
+
+!set name_remark_numstud=You can enter 0 in the second column to indicate that there is no limit.
+!set name_introtext_group=Enter the size of each group and a comment (optional).
+!set name_cardinal=Size
+
+!set name_0=under preparation
+!set name_1=open
+!set name_2=closed
+!set name_3=hidden
+!set name_publish=publish
+!set name_publish2=publish
+!set name_hide=hide
+!set name_hide2=hide
+!set name_nominative=with identification
+!set name_anonymous=anonymous
+!set name_trace=anonymous with log files
+!set name_choice=Choices
+!set name_question=Question
+!set name_data=data
+!set name_global=global
+!set name_detail=detailed
+!set name_yourchoice=Your choice:&nbsp;
+!set title_data=Spreadsheet data
+!set title_nominative=registration
+!set title_vote=Vote
+!set title_anonymous=vote
+!set name_choose=-- Choose --
+!set wims_name_vote=Vote list
+!set name_result=Results of the survey
+!set name_content=Content
+!set name_creation= Creation of a vote.
+!set name_edition=Editing a vote.
+!set name_remaining=remaining free places
+!set name_untitled=Untitled
+!set name_showresult=Show result
+!set name_nowritable=you cannot modify the vote when it is active. Here is the source:
+!set name_novotant=No replies yet
+!set name_notenough=Need more replies in order to show the list
+!set name_showlist=List by question
+!set name_showglobal=Global results
+!set name_showlistbystudent=List by students
+!set name_showstudentbyitem=List by choices
+
+!distribute lines Your class has no vote yet.\
+Please verify with your supervisor.\
+There is no active vote.\
+Here are the votes / registrations of your class.\
+Number of votes\
+into name_novote,name_novotecheck,name_noactivevote,name_class_vote,\
+name_cnt_votes
+
+!distribute line This is an anonymous vote.\
+   This is an anonymous and recorded vote.\
+   This is a nominative registration.\
+   It is closed.\
+   answers\
+   You have already voted.\
+   You have already voted, but you can still change your mind.\
+   Vote\
+   Detailed result of the vote.\
+   Comments\
+   For comments, use the forum.\
+into name_thisvote_anomymous,name_thisvote_trace,name_thisvote_nominatif,\
+   name_thisvote_closed,name_thisvote_answer,name_thisvote_already1,\
+   name_thisvote_already2,name_give_your_choice,name_details,\
+   name_comments,name_textarea
+
+!set name_textarea_limit=!nosubst limited to $limit_textarea characters
+!set name_whovote=List of those who have voted
+!set name_whodontvote=List of those who have not voted
+
+!set name_csv1=You can download this file and open it with your preferred spreadsheet
+
+!set name_csv2=!nosubst You can dowload the data of the vote $vote &nbsp;
+!set name_format=format
+
+!set name_option=Options
+!set name_value=Values
+
+!! guided mode
+
+!set name_optionclosed=closed, will be opened only when other options will be full
+
+!distribute lines How many sessions?\
+How many groups?\
+at most\
+uservar name\
+Default host IP \
+can be changed in the following page\
+Introductory text \
+e.g. general instructions for the students\
+Num.Stud.\
+Date of session\
+Beg. time of session\
+End time of session\
+Host IP\
+Extra info\
+Inscription cancellation\
+into name_howmany,name_howmanygroups,name_atmost,name_namevar,name_textconnip,\
+  name_textconnip2, name_introtext,name_introtext2,name_numstud,name_sessiondate,\
+  name_begintime,name_endtime,name_connip,name_extra,\
+  name_cancellation
+
+!set name_numsess=!nosubst $numsess sessions are available.
+!set name_session_select=!nosubst Select date and time of the $numsess available sessions\
+
+!set name_describesource=!nosubst Here you can see the source code of the vote. Check the data and click on <span class="wims_button disabled">$wims_name_tosave</span>.
+
+!if $vote_mode!=free
+ !readproc adm/lang/sheetexam.phtml.$lang
+!endif
+
+!set name_yourvariable=!nosubst The name of the variable that you have chosen \
+  for this vote is <span class="tt wims_code_variable">$namevar</span>
+!set name_accessvar_instr=!nosubst <strong>Usage with exams and worksheets</strong>: \
+configuring an active worksheet or exam, as <span class="tt wims_code_words">$(name_shinfo[6])</span> choose \
+ <span class="tt wims_code_words">$(name_allowtype[4])</span>.
+
+!set name_group_instr=!nosubst <strong>Use in the class</strong>:  You can filter \
+participants according to this variable for some activities in the class.
+
+!set name_group_help= allows to select participants \
+according to the groups (currently email and photo board).
+
+!set name_accessvar_help= allows to individualize participant access \
+to a sheet or exam.
+
+!distribute items Free Mode ,Access to sheets or exams,Constitution of groups,Groups into name_free,name_accessvar, name_group,name_group1
+
+!set name_model=Model
+!set name_nextstep=Next Step
+
+!set name_getsource=This is the source code. The code written between the \
+  two rows of `*'; can be copied into$ an empty vote (use the clipboard) to create a\
+  new vote with the same content.

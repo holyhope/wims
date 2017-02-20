@@ -1,0 +1,61 @@
+
+!read adm/title.phtml 3\
+\
+$title
+<p class="wimscenter">
+!href cmd=reply&job2=def $nei_description
+ $name_of
+<span class="wims_emph">$nei_institution</span>
+($wims_name_nameteacher:
+ <a href="mailto:$nei_email?subject=Class neighboring
+relations">$nei_supervisor</a>)
+</p>
+<p>
+$name_class_share
+&nbsp;
+!set wims_ref_class=wims_button_help
+!href cmd=help&special_parm=share $wims_name_help
+</p>
+<ul>
+!for r in $nsharable
+ <li><em>$(name_$r)</em> ($(it_$(r)cnt) $name_available).
+ !if $r isitemof $sharing or $(sharable_$r)!=$empty
+  !if $r isitemof $sharing
+   !if $(sharing_$r)=$nei
+    $name_actually_sharing
+    !href cmd=reply&job2=stopshare&stoprec=$r $name_stopsharing
+.&nbsp;
+!set wims_ref_class=wims_button_help
+    !href cmd=help&special_parm=stopshare $wims_name_help
+   !else
+    $name_nosharing
+   !endif
+  !else
+   $name_warning1
+   <span class="wims_classdesc">$nei_description</span>.
+  !endif
+ !else
+  !if $(me_$(r)cnt)>0 and $r isitemof $nosharelist
+  $name_warning2
+   !href cmd=reply&job=clean $name_cleanup
+    ($name_ifpossible).
+  !else
+   !href cmd=reply&addshare=$r $name_share
+.
+   !if $(me_$(r)cnt)>0
+    <span class="wims_warning">$wims_name_warning</span>.
+    !if $r=sup
+     $name_dangerous
+     &nbsp;
+!set wims_ref_class=wims_button_help
+     !href cmd=help&special_parm=supshare $wims_name_detail
+    !else
+     $name_warning_erase
+    !endif
+   !endif
+  !endif
+ !endif
+ </li>
+!next r
+</ul>
+

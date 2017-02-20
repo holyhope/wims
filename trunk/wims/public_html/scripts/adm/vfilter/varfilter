@@ -1,0 +1,92 @@
+!! three keywords
+!! proc : processing of varfilter, manage of initialising, merging save varfilter etc... (use in the var.proc file of the module using varfilter)
+!!        checking compatibility of varfilter text
+!!        input : varfilterclear,varfilter  output:varfilter (+write varfilter in order to use it in other module)
+!! html : html interface to use varfilter
+!! htmldiv : same with div
+
+
+
+
+
+
+!bound wims_read_parm within proc,html,htmldiv default $empty
+
+!if $wims_read_parm!=$empty
+	!goto $wims_read_parm
+!endif
+!exit
+
+:proc
+ !if $varfilterclear!=$empty
+    !reset varfilter,varfilter_,varfilterclear
+    !writefile wimshome/s2/$wims_session/varfilter $varfilter
+ !else
+  !if $varfilter=$empty and $wims_user=supervisor
+	varfilter=!record 0 of wimshome/s2/$wims_session/varfilter
+  !else
+	!writefile wimshome/s2/$wims_session/varfilter $varfilter
+  !endif
+ !endif
+ !if $varfilter!=$empty
+   !reset varfilter_
+   !readproc adm/vfilter/listvarfilter.proc
+   !set varfilter_cnt=!linecnt $varfilter
+   !for v=1 to $varfilter_cnt
+    var_line=!singlespace $(varfilter[$v;])
+    var_line=!replace internal $ =$ by = in $var_line
+    var_line=!replace internal $= $ by = in $var_line
+    var_line=!replace $ $ by , in $var_line
+# check name of varfilter (valid value are not checked maybe we should ??) bad name are deleted
+    n_=!itemcnt $var_line
+    t_=$empty
+    !for k_=1 to $n_
+	name_=!replace internal = by , in $(var_line[$k_])
+	!if $(name_[1]) isitemof $tv_listname
+	    t_=!append item $(var_line[$k_]) to $t_
+	!endif
+    !next k_
+    n_=!itemcnt $t_
+    !if $n_>0
+        varfilter_=!append line $t_ to $varfilter_
+    !endif
+   !next v
+   varfilter2_=!replace internal , by $ $ in $varfilter_
+   !if $varfilter!=$varfilter2_
+	!writefile wimshome/s2/$wims_session/varfilter $varfilter2_
+	varfilter=$varfilter2_
+   !endif
+ !endif
+!exit
+
+:html
+!read adm/language adm/lang/varfilter
+<fieldset class="property_fields halfwidth blockcenter">
+ <legend>$name_filtertitle</legend>
+  $name_filter
+  <br/>
+  <textarea name="varfilter" cols="20" rows="3">$varfilter</textarea>
+  <input type="submit" value="$name_clear" name="varfilterclear" />
+  !set wims_ref_class=wims_button_help float_right
+  !href target=wims_mhelp cmd=help&special_parm=filter $wims_name_help
+  <div class="wimsform wimscenter">
+  <input type="submit" value="$wims_name_Show" />
+  </div>
+</fieldset>
+!exit
+
+:htmldiv
+ !read adm/language adm/lang/varfilter
+ !readproc adm/vfilter/listvarfilter.proc
+ <div class="field box">
+ <label for="varfilter">$name_filtertitle</label>
+  <br/>
+  $name_filter
+  <br/>
+  !set wims_ref_class=wims_button_help float_right
+  !href target=wims_mhelp cmd=help&special_parm=filter $wims_name_help
+
+  <textarea name="varfilter" cols="20" rows="3">$varfilter</textarea>
+  <input type="submit" value="$name_clear" name="varfilterclear" />
+ </div>
+!exit

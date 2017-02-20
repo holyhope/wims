@@ -1,0 +1,45 @@
+
+$name_introconfig
+!read tabletheme
+!form reply
+<input type="hidden" name="job" value="config" />
+<input type="hidden" name="cf_set" value="yes" />
+<fieldset class="property_fields blockcenter">
+  <legend>$wims_name_config</legend>
+  <div class="field box">
+   <label for="cf_title">$wims_name_title</label>
+   <input size="60" name="cf_title" value="$cf_title" />
+  </div>
+  <div class="field box">
+   <label for="cf_description">$wims_name_Description</label>
+   <textarea name="cf_description" id="cf_description" cols="60" rows="5">
+    $cf_description
+   </textarea>
+  </div>
+  <div class="field box">
+   <label for="cf_readpolicy">$name_whoread?</label>
+ !if classes/ isin $forum or $forum>9999
+   !formselect cf_readpolicy list alluser,owner prompt \
+	$name_prompt1
+ !else
+   !formselect cf_readpolicy list open,alluser,owner prompt \
+	$name_prompt2
+ !endif
+   </div>
+   <div class="field box">
+   <label for="cf_sendpolicy">$name_whosend?</label>
+ !if classes/ isin $forum or $forum>9999
+   !formselect cf_sendpolicy list alluser,mailuser,owner prompt \
+	$name_prompt3
+ !else
+  !formselect cf_sendpolicy list mail,alluser,mailuser,owner prompt \
+	$name_prompt4
+ !endif
+   </div>
+   <div class="wimscenter wimsform">
+     <input type="submit" name="cf_set" value="$wims_name_tosave" />
+&nbsp;&nbsp;
+    <input class="wims_secondary_button" type="submit" name="cf_abandon" value="$wims_name_giveup" />
+   </div>
+ </fieldset>
+!formend

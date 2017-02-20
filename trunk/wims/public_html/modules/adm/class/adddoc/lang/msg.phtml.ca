@@ -1,0 +1,36 @@
+!set wims_module_log=error: $error
+
+!if $error iswordof already_exist baddocnumber not_supervisor insert_fail maxdoc toomuchsheet noexo
+  !goto $error
+!else
+ !msg $error
+ !exit
+!endif
+
+:already_exist
+ El document que voleu inserir ja hi és a la classe.
+!exit
+
+:baddocnumber
+ Les informations que vous avez saisies ne correspondent pas à un document enregistré de la classe.
+!exit
+
+:not_supervisor
+Seul l'administrateur de la classe peut mener cette action.
+!exit
+
+:insert_fail
+vous essayez d'insérer un module non autorisé.
+!exit
+
+:maxdoc
+Le nombre de documents est limité à $max_doc.
+!exit
+
+:toomuchsheet
+The number of worksheets is limited to $max_sheets. You may not create another worksheet.
+ !exit
+
+:noexo
+Ce document ne contient aucun exercice.
+!exit

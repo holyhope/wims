@@ -1,0 +1,24 @@
+$wims_name_Manage $name_remoteserver
+<span class="wims_emph">$connident</span>
+($ident_desc) located at
+<a href="http://$site">$site</a>, of type
+<span class="wims_emph">$ident_type</span>.
+
+!if $cn_status=$empty
+ <p><b>$wims_name_Error</b>.
+ !if $cn_status=$empty
+  $name_errornoreply
+  !mailurl $wims_site_manager webmaster
+.
+ </p>
+ !else
+  $name_errorreject
+ </p>
+<pre>
+$cn_data
+</pre>
+ !endif
+ !set error=yes
+ !exit
+!endif
+

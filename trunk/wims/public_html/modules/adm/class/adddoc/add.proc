@@ -1,0 +1,63 @@
+!bound step within 0,1 default 0
+
+!if $step=0
+ test=!defof category in wimshome/public_html/modules/$dir/INDEX
+ !if ../adm/ isin ../$dir or $dir=home or \
+   (../devel/ isin ../$dir and $wims_devel_modules notwordof open) or \
+   document notwordof $test
+  error=insert_fail
+  !exit
+ !endif
+
+ !if $doctot>=$max_doc
+  error=maxdoc
+  !exit
+ !endif
+
+ title=!module title $dir
+ desc=!module description $dir
+ desc=!singlespace $desc
+ desc=!char 1 to $desc_limit of $desc
+ title=!singlespace $title
+ title=!char 1 to $title_limit of $title
+ status=0
+ update=$empty
+ wksheet=0
+
+ !for i=1 to $doctot
+   e=!record $i of wimshome/log/classes/$wims_class/doc/.docindex
+   !distribute lines $e into wdi,win,otitle
+   !if $dir=$wdi and $iniparm=$win
+     test=$i
+     error=already_exist
+     title=$otitle
+     !exit
+   !endif
+ !next i
+ sdir=$dir
+ siniparm=$iniparm
+!endif
+
+!if $step=1
+ desc=!singlespace $desc
+ desc=!char 1 to $desc_limit of $desc
+ title=!singlespace $title
+ title=!char 1 to $title_limit of $title
+ !bound status within 0,1 default 0
+ !bound wksheet within 0 and $nbsheet default 0
+!appendfile wimshome/log/classes/$wims_class/doc/.docindex :$sdir\
+$siniparm\
+$title\
+$desc\
+$status\
+$wksheet\
+
+sdoc=!recordcnt wimshome/log/classes/$wims_class/doc/.docindex
+wims_module_log=class $wims_class: add $sdir
+dir=$sdir
+iniparm=$siniparm
+message=$name_confirm
+job=prop
+
+!endif
+

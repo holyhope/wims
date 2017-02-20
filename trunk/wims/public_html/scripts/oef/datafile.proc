@@ -1,0 +1,26 @@
+!nocache
+
+!if $status=waiting
+ !exit
+!endif
+
+df_data=!record 0 of Dataindex
+df_names=!column 1 of $df_data
+df_titles=!column 2 of $df_data
+df_record_cnt=!column -1 of $df_data
+
+df_record_cnt_total=0
+df_cnt=!itemcnt $df_names
+!for i=1 to $df_cnt
+  !! df_prompt = !append item $(df_titles[$i]) ($df_record_cnt) to $df_prompt
+  tmp=$(df_titles[$i]) [$(df_record_cnt[$i])]
+  df_prompt = !append item $tmp to $df_prompt
+  df_record_cnt_total=!eval $df_record_cnt_total+$(df_record_cnt[$i])
+!next i
+
+df_ask=!listintersect $(confparm$wims_read_parm) and $df_names
+!default df_ask=$df_names
+df_ask=!randitem $df_ask
+oefenv_datafile=src/data/$df_ask.data
+df_namecnt=!positionof item $df_ask in $df_names
+df_title=!item $df_namecnt of $df_titles

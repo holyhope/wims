@@ -1,0 +1,105 @@
+fml=$formula
+fml=!translate ; to $\
+$ in $fml
+icnt=!itemcnt $fml
+:retest
+!if $icnt>1
+ test=!item 1 of $fml
+ test=!declosing $test
+ tcnt=!itemcnt $test
+ !if $tcnt=2
+  form=!lines2items $fml
+  form=!nonempty items $form
+  lcnt=!itemcnt $form
+  !reset fml
+  !for i=1 to $lcnt
+   l=!item $i of $form
+   l=!declosing $l
+   c=!itemcnt $l
+   !if $c!=2
+    error=bad_formula
+    !exit
+   !endif
+   fml=!append line $l to $fml
+  !next i
+ !else
+  tcnt=!wordcnt $test
+  !if $tcnt=2
+   form=!lines2items $fml
+   form=!nonempty items $form
+   lcnt=!itemcnt $form
+   !reset fml
+   !for i=1 to $lcnt
+    l=!item $i of $form
+    l=!declosing $l
+    c=!wordcnt $l
+    t=!itemcnt $l
+    !if $c!=2 or $t!=1
+     error=bad_formula
+     !exit
+    !endif
+    !distribute words $l into x_,y_
+    fml=!append line $x_,$y_ to $fml
+   !next i
+  !else
+   form=$fml
+   form=!nonempty lines $form
+   lcnt=!linecnt $form
+   !reset fml
+   !for i=1 to $lcnt
+    l=!line $i of $form
+    c=!itemcnt $l
+    !if $c!=2
+     error=bad_formula
+     !exit
+    !endif
+    fml=!append line $l to $fml
+   !next i
+  !endif
+ !endif
+!else
+ fml=!lines2items $fml
+ icnt=!itemcnt $fml
+ !if $icnt>1
+  !goto retest 
+ !else
+  error=bad_formula
+  !exit
+ !endif
+!endif
+
+fml=!nonempty lines $fml
+cnt=!linecnt $fml
+op=!lower $option
+fml3=
+!if exchange iswordof $op
+ f=
+ !for i=1 to $cnt
+  l=!line $i of $fml
+  !distribute items $l into x_,y_
+  f=!append line $y_,$x_ to $f
+  fml3=!append item ($y_,$x_) to $fml3
+ !next i
+ fml=$f
+!else
+ !for i=1 to $cnt
+  l=!line $i of $fml
+  fml3=!append item ($l) to $fml3
+ !next i
+!endif
+fml2=!translate $\
+$ to ; in $fml
+fml2=!rawmath $fml2
+fml2=!replace , by , $ in $fml2
+fml2=!replace ; by ; $ in $fml2
+fml2=!singlespace $fml2
+fml3=!replace , by , $ in $fml3
+fml3=!singlespace $fml3
+
+# fml: x1,y1\
+# x2,y2...
+#
+# fml2: x1,y1;x2,y2;...
+#
+# fml3: (x1,y1),(x2,y2),...
+

@@ -1,0 +1,62 @@
+
+!read themes/_widgets/user_varsheet.phtml
+
+!if $n>0
+ <!-- _widgets/usersheet.phtml -->
+
+<div class="wims_seq" id="wims_user_sheet">
+  <div class="wims_title_seq">$wims_name_Sheets</div>
+
+ !set sevlist=!record 0 of wimshome/log/classes/$wims_class/sheets/.severity
+ <ul class="wims_work_list">
+  !for i=1 to $n
+    !set se=!item $i of $aclist
+    !distribute lines $(s_$se) into ac,t_,ti,de
+    <li class="wims_sheet_item">
+      <span class="wims_user_sheet_type">$wims_name_Sheet $se.</span>
+      <span class="wims_user_sheet_title">
+        !href module=adm/sheet&sh=$se $ti
+      </span>
+      <ul class="wims_sheet_info">
+        !if showshweight iswordof $class_option
+          <li class="wims_sheet_weight small">$wims_name_coeff $(w_$se)</li>
+        !endif
+        !if $ac>=2
+          <li class="wims_user_sheet_expire small">$U_expired</li>
+        !else
+          !if showshexpire iswordof $class_option
+            <li class="wims_user_sheet_expire small">
+              !read misc/expire.phtml.$lang $t_
+            </li>
+          !endif
+        !endif
+      </ul>
+    !set pe=!line $se of $percents
+    !set try=!getscoretry sheet=$se
+    !set try0=!text select 123456789 in $try
+    !distribute words $pe into p1,p2,p3,p4
+    !if $try0!=$empty
+       <div class="wims_user_info">
+        !distribute item $[$p1/100],$[$p2/10],$[$p3/100],$[$p4/100] into x0_,y_,x1_,x2_
+        !set ff_$se=!mathsubst Q=$y_ in $(f_$se)
+        !for sev=0 to 2
+          !set ff_$se=!mathsubst I$sev=$(x$(sev)_) in $(ff_$se)
+        !next
+        !read adm/class/colors $[ceil(10*$(ff_$se))],color
+        !default scoremax=10
+        <span style=$style_note>
+        $(wims_name_thsheet[9]): $[ceil(100*$scoremax*$(ff_$se))/100]/$scoremax
+        </span>
+!!      $(wims_name_thsheet[7]): $[$p2]/10,
+!!      I0 $(wims_name_thsheet[5]): $p1%,
+!!      I1 $(wims_name_thsheet[10]): $p3%,
+!!      I2 $(wims_name_thsheet[13]): $[$p4/10]/10
+      </div>
+     !endif
+!read themes/_widgets/userbar.phtml $se
+   </li>
+  !next i
+ </ul>
+</div>
+ <!-- end _widgets/usersheet.phtml -->
+!endif

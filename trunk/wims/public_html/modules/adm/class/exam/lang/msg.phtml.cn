@@ -1,0 +1,135 @@
+!set wims_module_log=error: $error
+
+!if bad_maxexams=$error
+ Le nombre d'examens est limité à $max_exams.
+ !exit
+!endif
+
+!if not_supervisor=$error
+ ¶Ô²»Æğ, Ö»ÓĞ°à¼¶µÄ×¢²áµ¼Ê¦²ÅÓĞÈ¨ ×¼±¸/ĞŞ¸Ä ÊÔ¾í.
+ !exit
+!endif
+
+!if $error=no_sheet
+ <p>
+ ÊÔ¾íµÄÄÚÈİ±ØĞëÀ´Ô´ÓÚ¼¤»î¹ıµÄ×÷ÒµÒ³ (ÈÔ±»¼¤»îµÄ»òÒÑ¾­¹ıÆÚµÄ).
+ </p><p>
+ ÄãµÄ°à¼¶»¹Ã»ÓĞ±»¼¤»îµÄ×÷ÒµÒ³. ÔÚĞÎ³É°à¼¶µÄÊÔ¾íÇ°, ÇëÏÈ¶¨ÒåÄãµÄ×÷ÒµÒ³, ·ÅÈë×÷Òµ²¢¼¤»îËü.
+ </p>
+ !exit
+!endif
+
+!if bad_exam=$error
+ ÄãµÄÊÔ¾í±àºÅÎŞĞ§. Èí¼ş´íÎó?
+ !exit
+!endif
+
+!if $error=simuchange
+ ±¾ÊÔ¾íµÄ×´Ì¬¸Õ¸Õ±»ĞŞ¸Ä. Çë
+ !href cmd=reply&job=scorereg µã»÷ÕâÀï
+ÒÔ½áÊøÕâ³¡¿¼ÊÔ.
+ !exit
+!endif
+
+!if already_registered=$error
+ ÄãµÄµÃ·ÖÒÑ¾­±»¼ÍÂ¼.
+ !exit
+!endif
+
+!if no_more_registration=$error
+ ±¾ÊÔ¾íÖ»ÄÜ¼ÍÂ¼ $stries ´ÎµÃ·Ö. Äã²»ÄÜÔÙ¼ÍÂ¼·ÖÊı.
+ !exit
+!endif
+
+!if bad_source=$error
+ Äã¸Õ²Å·¢ËÍµÄÔ´ÂëµÄÏîÄ¿ºÅ $bad_source ÎŞĞ§.
+ !href cmd=reply&job=prep_putsource&source=$source ¸ÄÕıÔ´Âë
+ .
+ !exit
+!endif
+
+!if no_title=$error
+ ÄãÏë¼ÍÂ¼µÄÊÔ¾íÃ»ÓĞ±êÌâ, ÕâÊÇ²»ºÃµÄ. ÊÇ²Ù×÷Ê§ÎóÂğ?
+ !exit
+!endif
+
+!if prep_activate=$error
+ ÄãÒªÇó¼¤»îÊÔ¾í $exam, Ò²¾ÍÊÇËµ, Ê¹ËüÄÜ±»°à¼¶µÄ²Î¼ÓÕß´ò¿ª. <p>
+ Çë×¢Òâ, Ò»µ©±»¼¤»î, Äã¾Í²»ÔÙÄÜ¸Ä¶¯Ëü. ¼ÌĞøÂğ?
+  <div class="wimscenter">
+ !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
+ .&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ . </div>
+ !exit
+!endif
+
+!if prep_erase=$error
+ ÄãÊÇ·ñÕæµÄÒªÉ¾³ı±¾ÊÔ¾í #$exam ($title)?
+  <div class="wimscenter">
+  !set wims_ref_class=wims_button wims_warning
+ !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
+ !set wims_ref_class=wims_button
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ . </div>
+ !exit
+!endif
+
+!if prep_expire=$error
+ ±¾ÊÔ¾í #$exam ($title) ½«ÓÚ $expday
+ !item $expmon of $months
+ $expyear Ê§Ğ§. ÄãÒªËüÏÖÔÚ¾ÍÊ§Ğ§Âğ?
+  <div class="wimscenter">
+ !href cmd=reply&job=expire $wims_name_yes; $(wims_name_actionlist[2])
+ .&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ . </div><b>×¢½â.</b> ÄãµÄÑ§Éú²»ÄÜÔÙ×öÒÑÊ§Ğ§µÄÊÔ¾í. µ«ËûÃÇµÄµÄÔçÏÈµÃ·Ö¼ÍÂ¼ÈÔ±»±£Áô
+(¶øÇÒÔÚÍ³¼ÆÊ±±»¼ÆÈë), ¶øÇÒÄã×ÜÊÇ¿ÉÒÔ²éÔÄÕâĞ©·ÖÊı.
+ !exit
+!endif
+
+!if prep_putsource=$error
+ Èç¹ûÄãÓĞÒÔÇ°±£´æµÄ¿¼ÊÔÔ´ÎÄ¼ş,
+ Äã¿ÉÒÔ°ÑÕâ¸öÔ´ÎÄ¼ş¸´ÖÆµ½ÏÂÃæ´°¿ÚÀï,
+ ÔÙµã»÷ `·¢ËÍ' °´Å¥ÒÔ°ÑËü²åÈëµ±Ç°°à¼¶.
+ <p>
+ ·ñÔò,
+ !href cmd=resume ·µ»Ø¿¼ÊÔµÄÖ÷Ò³.
+ !form reply
+ <input type="hidden" name="job" value="putsource" /><div class="wimscenter">
+ <textarea cols="55" rows="10" name="source">$source</textarea>
+ <br /><input type="submit" value="·¢ËÍ" />
+ </div>
+!formend
+ <b>¾¯¸æ</b>. ²»Òª²åÈëĞŞ¸Ä¹ıµÄÔ´ÎÄ¼ş! Õâ¿ÉÄÜ»áµ¼ÖÂÄãµÄ¿¼ÊÔÒ³²»¿ÉÓÃ.
+ !exit
+!endif
+
+!if nodeactivate=$error
+  ´Ë¿¼ÊÔ²»ÄÜ·ÅÆú¼¤»î, ÕâÊÇÒòÎª
+  !if badstructure isin $deactivate
+   °à¼¶½á¹¹µÄÎÊÌâ.
+  !else
+   !if score isin $deactivate
+    ÓĞĞ©²Î¼ÓÕßÒÑ¾­ÔÚ¿¼ÁË !
+   !else
+    ÄãµÄ¿¼ÊÔÊÇÓëÆäËû°à¼¶·ÖÏíµÄ !
+   !endif
+  !endif
+!endif
+!if active_exam=$error
+   Õâ¸ö¿¼ÊÔÒÑ±»¼¤»î, ²»ÄÜÔÙĞŞ¸Ä. Òò´Ë²»ÄÜ¸Ä¶¯ÆäÖĞµÄÁ·Ï°.
+ !exit
+!endif
+
+!if $error=prep_noexercise
+  ¿¼ÊÔµÄÁ·Ï° $exo µÄÄÚÈİÊÇ¿ÕµÄ. ÇëÔÙÊÔ.
+  !exit
+!endif
+
+!if $error=addexook
+  Ajout de l'exercice effectué correctement.
+  !exit
+!endif
+
+!msg $error

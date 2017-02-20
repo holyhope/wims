@@ -1,0 +1,199 @@
+#! /bin/sh
+
+if [ "$(id -ru)" = 0 ]; then
+ cat <<@
+You are trying to compile WIMS as 'root'. You should not do that !
+Please compile as 'wims'.
+@
+ exit 1
+fi
+
+option=$1
+
+##########################################################################
+cat <<@
+Welcome to the compilation of WIMS (WWW Interactive Multipurpose Server)
+
+@
+cd `dirname $0`
+dir=`pwd`;
+
+if [ ! "$option" ] ; then option=no ; fi ;
+## option: --mathjax --jmol --geogebra --shtooka --gcov
+for a in $(seq $#) ; do opt=$1;
+ if [ "$opt" = "--build-chroot" ] ; then
+  if [ -d chroot ] ; then
+    mkdir -p chroot/tmp
+    mkdir -p chroot/tmp/sessions
+    touch chroot/tmp/sessions/.chroot
+  else
+   cat <<@
+   You must first get and install the chroot directory. See the README
+
+@
+   exit 1
+  fi
+ fi
+ if [ "$opt" = "--mathjax" ] ; then
+  echo "load mathjax"
+    vmathjax=v2.6
+    if [ -d "public_html/scripts/js/mathjax" ] ; then
+     mv public_html/scripts/js/mathjax public_html/scripts/js/mathjax_tmp
+    fi;
+    cd tmp
+    wget --no-check-certificate http://github.com/mathjax/MathJax/zipball/$vmathjax-latest
+    unzip $vmathjax-latest
+    rm -f $vmathjax-latest
+    cd $dir
+    mv -f tmp/mathjax-MathJax-* public_html/scripts/js/mathjax
+    rm -rf public_html/scripts/js/mathjax_tmp
+ fi
+ if [ "$opt" = "--jmol" ] ; then
+  echo "load jmol"
+    vjmol0=14
+    vjmol1=4
+    vjmol2=4
+    datejmol=_2016.04.22
+    vjmol012=$vjmol0.$vjmol1.$vjmol2
+    vJmol=Jmol-$vjmol012
+    vjmol=jmol-$vjmol012
+    cd tmp
+    wget http://downloads.sourceforge.net/project/jmol/Jmol/Version%20$vjmol0.$vjmol1/Version%20$vjmol012/$vJmol$datejmol-binary.zip
+    unzip $vJmol$datejmol-binary.zip
+    cd $vjmol$datejmol;
+    unzip jsmol.zip
+    rm -f jsmol.zip
+    cd $dir
+    if [ -d "public_html/java/jmol/j2s" ] ; then
+      mv public_html/java/jmol/j2s public_html/java/jmol/j2s_tmp
+    fi
+    mv -f tmp/$vjmol$datejmol/jsmol/j2s public_html/java/jmol/j2s
+    cp -f tmp/$vjmol$datejmol/jsmol/JSmol.min.js public_html/java/jmol/
+    cp -f tmp/$vjmol$datejmol/jsmol/js/Jmol2.js public_html/java/jmol/
+    rm -rf tmp/$vjmol$datejmol
+    rm -rf tmp/$vJmol$datejmol-binary.zip
+    rm -rf public_html/java/jmol/j2s_tmp
+ fi
+ if [ "$opt" = "--geogebra" ] ; then
+  echo "load geogebra"
+    vGeogebra=GeoGebraWeb-5.0.182.0
+    cd tmp
+    wget http://dev.geogebra.org/download/web/$vGeogebra.zip
+    unzip $vGeogebra.zip
+    rm -f $vGeogebra.zip
+    cd $dir
+    if [ -d "public_html/scripts/js/geogebra/geogebraweb" ] ; then
+      mv public_html/scripts/js/geogebra/geogebraweb public_html/scripts/js/geogebra/geogebraweb_tmp
+    fi
+    mv -f tmp/$vGeogebra public_html/scripts/js/geogebra/geogebraweb
+    rm -rf tmp/$vGeogebra
+    rm -rf public_html/scripts/js/geogebraweb_tmp
+    echo "geogebra_exists=yes" | cat > public_html/scripts/js/geogebra/test
+ fi
+ if [ "$opt" = "--modules" ] ; then
+    echo "load modules"
+    src/wims_modules.pl
+    cd $dir
+ fi
+ if [ "$opt" = "--shtooka" ] ; then
+    echo "load audio shtooka"
+    bin/swac
+    cd $dir
+ fi
+ if [ "$opt" = "--gcov" ] ; then
+    export CFLAGS="$CFLAGS -fprofile-arcs -ftest-coverage"
+ fi
+ shift
+done
+
+cd src
+
+if [ -f ../.wims_maintainer_mode ]; then
+  touch configure.ac ;
+  if (autoconf); then :; else
+    echo "[maintainer mode] Please install autoconf first."
+    exit 1
+  fi
+  autoheader
+fi
+./configure || exit
+#./configure CFLAGS="-g -O2 -I/usr/local/include" LDFLAGS=-L/usr/local/lib || exit
+make clean || exit
+make all || exit
+
+if [ -f ../.wims_maintainer_mode ]; then
+### use convert, identify
+  make maintainer || exit
+### all the maintainers should have Apache ant - java compilation
+  if (ant -version); then :; else
+    echo "[maintainer mode] Please install Apache ant first."
+    exit 1
+  fi
+  if (convert -version) || (identify -version); then :; else
+    echo "[maintainer mode] Please install convert and identify first."
+    exit 1
+  fi
+  cd Misc ; make maintainer || exit
+  cd ..
+fi
+cd ..
+
+if [ -f log/wims.conf ]; then :; else
+  if (echo | mail -r wims testuser@localhost 2>/dev/null); then
+    echo "mailback_opt=-r" >> log/wims.conf;
+    chmod 600 log/wims.conf
+  fi
+  cat <<@
+
+You can configure some parameters which allow the manager site
+to make more configuration from the web interface.
+
+Please write the IP address of the wims webmaster ? [127.0.0.1]
+@
+  read ans1
+  if [ -z $ans1 ]; then :; else
+    echo "manager_site=$ans1" >> log/wims.conf
+    chmod 600 log/wims.conf
+  fi
+  cat <<@
+
+Please write the email address of the wims webmaster: ? []
+@
+  read ans2
+  if [ -z $ans2 ]; then
+     if [ -z $ans1 ]; then :; else echo "site_manager=" >> log/wims.conf; fi
+  else
+     if [ -z $ans1 ]; then echo "manager_site=127.0.0.1" >> log/wims.conf ; fi
+     echo "site_manager=$ans2" >> log/wims.conf
+     chmod 600 log/wims.conf
+  fi
+fi
+if [ -f log/.wimspass ]; then :; else
+  cat <<@
+
+Please give the password for the wims webmaster
+You can change it in the file log/.wimspass
+Webmaster password: ? []
+@
+  read ans3
+  if [ -z $ans3 ]; then :; else
+    echo "$ans3" > log/.wimspass
+    chmod 600 log/.wimspass
+  fi
+fi
+if [ $option = "--build-chroot" ] ; then
+  script=wrapuid ;
+else
+ script=setwrapexec ;
+fi
+
+cat <<@
+
+Please run './bin/$script' (and './bin/apache-config' for the first installation) as root
+(e.g. using sudo) to finish WIMS setup.
+
+See README about installation of help and teaching modules.
+
+@
+
+exit

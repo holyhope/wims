@@ -1,0 +1,21 @@
+
+!set errorhead=<b>Error.</b>
+
+!if forum_not_exist = $error
+ $errorhead You have asked for a message board which does not exist.
+ Please verify your request.
+ !set fatal=yes
+ !exit
+!endif
+
+!if no_register = $error
+ $errorhead This message board does not allow online user registration.
+ Please 
+ !mailurl $mb_email ask its owner\
+$mb_title
+ if you want to become a user.
+ !exit
+!endif
+
+!msg $error
+

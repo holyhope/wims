@@ -1,0 +1,68 @@
+!set lan=nl
+!!<HTML><HEAD>
+!!$wims_html_header
+!!</head>
+!if $wims_window=new
+ !!!set w_resize=onload="self.resizeTo(550,550);self.moveTo(30,50);"
+ !set wims_html_onload=!append word self.resizeTo(550,550);self.moveTo(30,50); to $wims_html_onload
+!endif
+
+!header1
+
+<div id="wimsmhelp">
+
+<div class=wimsmenu>
+!robottrap
+
+<center><table summary="" border="0" cellspacing="0" cellpadding="5" bgcolor="$wims_ref_bgcolor">
+<tr><td align="center">
+!if _ isin $wims_subsession
+ <a href="#" onclick="window.close()">Sluit dit venster</a>
+!else
+ !href session=$wims_session.1 Terug
+!endif
+!if $style=print
+ &nbsp;
+ !href module=$module&chapter=0 Interactieve version
+ !set chapter=-1
+ !goto tabend
+!endif
+!if $chapter>0
+ <td align="center">
+ !href module=$module&chapter=0 Help index
+&nbsp;
+!endif
+<td align="center">
+!href module=$module&style=print Print versie
+&nbsp;
+!if $chapter>1
+ <td align="center">
+ !href module=$module&chapter=$[$chapter-1] Vorige&nbsp;hoofdstuk
+!endif
+!if $chapter<$chaptercnt
+ <td align="center">
+ !href module=$module&chapter=$[$chapter+1] Volgende&nbsp;hoofdstuk
+!endif
+
+:tabend
+</table></center>
+</div>
+<!--wimsmenu-->
+<div id="wimsbodybox">
+<div id="wimspagebox">
+<div class="wimsbody">   
+
+!if $chapter>0
+ !set l=!line 1 of $(chapter$chapter)
+ !set ll=!word $chapter of I II III IV V VI VII IIIV IX X
+ !set l=Hoofdstuk $ll. $l
+!else
+    !if $chapter<0
+	!set l=Print versie
+    !else
+	!set l=Algemene index
+    !endif
+!endif
+<p><h1 class="wims_title">WIMS help<br/><font size="+1"><b>
+$l</b></font>
+</h1> <p> 

@@ -1,0 +1,77 @@
+vcnt=!defof vcnt in wimshome/log/classes/$wims_class/vote/$vote.votes
+!default vote_status=0
+!if $vote_status=0 or $vcnt=0 or $vcnt=$empty or $reg_src$vote_src=$empty
+ !bound reg_status between integer 0 and 3 default 0
+ !bound reg_option within anonymous,nominative,trace default anonymous
+!else
+ !bound reg_status between integer 1 and 3 default 1
+ reg_option=$vote_option
+!endif
+reg_title=!trim $reg_title
+reg_title=!singlespace $reg_title
+!bound reg_show within 0,1 default 1
+!bound reg_whovoteshow within 0,1 default 0
+!if $reg_title=$empty
+  reg_status=0
+  gstep=$[max(0,$[$gstep-1])]
+  error=no_title
+ :edit
+ job=edit
+ !changeto edit.proc
+!endif
+reg_src=!trim $reg_src
+!! FIXME: for models I need to bypass this error. Anyway there is
+!!        no real syntax check, so is it really useful?
+!!
+!! !if $reg_src=$empty and $vote>$votecnt
+!!    error=no_content
+!!    reg_status=0
+!!  !goto edit
+!! !endif
+
+!for i=1 to $votecnt
+ v_$i=!record $i of $votedir/.votes
+!next i
+!if $reg_model isitemof $vmodellist
+  reg_option=nominative
+!endif
+v_$vote=$reg_status\
+$reg_title\
+$reg_option\
+$reg_show\
+$reg_whovoteshow\
+$reg_model
+
+!sh mkdir -p $wims_home/log/$Votedir
+!writefile $votedir/.votes
+
+!for i=1 to $[max($votecnt,$vote)]
+ !appendfile $votedir/.votes :$(v_$i)
+!next i
+
+!if $reg_src!=$empty and ($vote_status=0 or $mod_numsess>0)
+!! convert username/code for technical variable
+  !readproc adm/vfilter/msgchange.proc write\
+$reg_src
+  !writefile $votedir/$vote.src $out_script
+!! -----------
+ msg2wims_primitives=def define comment draw if for uservar\
+	menu list radio mmenu mlist checkbox textarea
+ !sh cd $wims_home; bin/msg2wims log/$Votedir/$vote.src log/$Votedir/$vote.def
+!endif
+
+!if $reg_src=$empty and $vote_status=0
+  !goto edit
+!endif
+
+!if $vote_model!=free
+    !goto edit
+!endif
+!! when all is done, need to reset gstep. Not sure this is the best way
+
+!if $gstep=3
+ !reset gstep
+!endif
+job=read
+!read var.proc
+

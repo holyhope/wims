@@ -1,0 +1,83 @@
+option:precision=" "
+
+good=!rows2lines $(replygood$i)
+image=!line 1 of $good
+tester=!line 2 of $good
+
+!if $wims_read_parm=nocompare
+ image=$(oef_applet_option[2;])
+ tester=$(oef_applet_option[3;1])
+ tester=!nonempty lines $tester
+ tester=!words2items $tester
+!endif
+type=!item 1 of $tester
+
+!!color can be changed... (color1=student answer, color2 good answer)
+!set color1=!getopt color1 in $(replyoption$i)
+!default color1=black
+!set color2=!getopt color2 in $(replyoption$i)
+!default color2=180,180,255
+
+rlist=$(reply$i)
+m_reply$i=$rlist
+reply__$i=&nbsp;
+
+!set Inputsize=!replace internal x by , in $(oef_applet_option[1;])
+!distribute items $Inputsize into xsize,ysize
+
+!bound type within line,poly,polygon,points,segment,vector,rectangle,sline,circle,bound,curve default points
+
+!if $type notwordof points
+ !if $(reply$i)=$empty
+  error=empty_data
+  !exit
+ !endif
+!endif
+
+rlist=!translate internal ; to , in $rlist
+rlist=!nonempty items $rlist
+n=!itemcnt $rlist
+
+!!only in points initially
+!if $wims_read_parm!=nocompare
+ glist=!item 2 to -1 of $tester
+ glist=!nonempty items $glist
+ m=!itemcnt $glist
+!endif
+
+!read anstype/javacurve.$type $wims_read_parm
+
+!if $wims_read_parm=nocompare
+  !goto draw
+!endif
+!if $Test!=$empty or NaN isin $test
+  !exit
+!endif
+
+:draw
+ifile=$image
+!if $imagedir isin $image
+ ifile=!translate internal / to $ $ in $ifile
+ ifile=!word -1 of $ifile
+!else
+ !if getfile isin $image
+  ifile=!translate internal =/ to $  $ in $ifile
+  ifile=!word -1 of $ifile
+ !else
+  !if getins isin $image
+   ifile=!replace internal &modif= by $ $ in $ifile
+   ifile=!replace internal &+modif= by $ $ in $ifile
+   ifile=!replace internal special_parm= by $ $ in $ifile
+   ifile=!word 2 of $ifile
+  !endif
+ !endif
+!endif
+
+!insdraw existing $ifile\
+linewidth 3\
+$primitive2\
+linewidth 1\
+$primitive1
+
+reply_$i=<img src="$ins_url" alt=""/>
+

@@ -1,0 +1,33 @@
+!header
+
+!if $wims_mode=popup
+ !changeto popup.phtml
+!endif
+
+!if $operation=$empty
+ This is a multi-purpose single-step calculator, which can make many kinds of 
+ calculations.
+ <p>
+ You may use the input form below to submit a request for calculation, but
+ this module is mainly designed to serve as a popup calculator, via the
+ searchable
+ !href module=tool/popup database of popup calculator forms
+.
+ !goto form
+!endif
+
+<p>
+!if $error!=$empty
+ !read msg.phtml
+!else
+ !read op/$opr.def output
+!endif
+
+:form
+<p><hr> <p>
+!read form.phtml
+!href cmd=renew Refresh
+.
+
+!tail
+

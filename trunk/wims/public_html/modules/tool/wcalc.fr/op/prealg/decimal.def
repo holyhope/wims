@@ -1,0 +1,23 @@
+!goto $wims_read_parm
+
+:def
+title=Convertir en décimal
+synonyme=decimal, nombre decimal, convertir en nombre decimal
+input=function
+!exit
+
+:proc
+
+formula=!rawmath $formula
+
+pari_precision=$precision
+result=!exec pari print(($formula)*1.0);
+
+!exit
+
+:output
+
+!htmlmath $formula = $result
+ .
+!exit
+

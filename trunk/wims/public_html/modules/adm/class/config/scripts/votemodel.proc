@@ -1,0 +1,14 @@
+!! test if vote use model in the class (waiting sharing/share techvar)
+cnt_=!recordcnt wimshome/log/classes/$wims_class/vote/.votes
+!if $cnt_>0
+ votemodel=no
+ k_=0
+ !while $k_<$cnt_ and $votemodel=no
+  !increase k_
+  tmp_=!record $k_ of wimshome/log/classes/$wims_class/vote/.votes
+  tmp_=!line 6 of $tmp_
+  !if $tmp_ isitemof accessvar,group
+   votemodel=yes
+  !endif
+ !endwhile
+!endif

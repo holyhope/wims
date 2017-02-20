@@ -1,0 +1,315 @@
+!nocache
+!! useful when one comes from modtool
+!set modu_lang=$lang
+!read oef/$modu_lang/names
+!if $lang_exists!=yes
+   !let modu_lang=en
+   !read oef/$modu_lang/names
+!endif
+!set wims_backslash_insmath=yes
+!set proc=oef
+!if robot isin $session
+ !changeto content.html
+!endif
+!read oef/default
+
+!!!#### contributions
+!! very tricky ...
+!reset authorlist
+!set dictionary=$module_dir/$(class_header)Exauthors
+!set translator_unknown=delete
+!set exolist_cnt=!itemcnt $exolist
+!for ex = 1 to  $exolist_cnt
+  !if - notin $(exolist[$ex])
+   !set tmp=!exec translator $(exolist[$ex])
+   !set tmp=!replace internal , by $ $ in $tmp
+   !set tmp=!singlespace $tmp
+   !set authorlist=!append item $tmp to $authorlist
+  !endif
+!next ex
+!set authorlist=!replace internal $translator_unknown by in $authorlist
+!set authorlist=!replace internal ; by , in $authorlist
+!if $authorlist!= and $authorlist notsametext $exolist
+  !set authorlist=!listuniq $authorlist
+  !set tmp=!items2words $module_author
+  !set tmp=!replace internal ; by ,$  in $tmp
+  !set tmp=!singlespace $tmp
+  !set authorlist=!singlespace $authorlist
+  !!set authorlist1=!listcomplement $tmp in $authorlist
+  !set authorlist1=$authorlist
+  !set authorlist_cnt=!itemcnt $authorlist1
+  !set authorlist=!replace internal , by ,$ $ in $authorlist
+  !if $authorlist_cnt > 0
+   <div class="wims_contribute">$name_Contribute $authorlist.</div>
+  !endif
+!endif
+
+!set test_data=!replace internal data/ by in $module_data
+!set test_data=!defof title in datamodule/$test_data/INDEX
+!if $test_data= and $module_data!=
+   <p class="name_datamodule">
+    <i>$name_datamodule</i>
+   </p>
+!endif
+<hr style="width:35%" />
+
+!if robot isin $session
+ !changeto content.html
+!endif
+
+!if $special_parm3!=$empty
+ !let tmp=!replace internal ; by $ $ in $special_parm3
+!!!should use the script getparm
+ !set testw=!replace internal ; by $\
+$ in $special_parm3
+ !set testw=!replace internal = by , in  $testw
+ !for cle in exo,qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_presentsol,\
+   intro_check,intro_sepow,intro_expow,intro_precw,random,confparm1,confparm2,confparm3,\
+   confparm4,confparm5,confparm6,confparm7,confparm8,intro_expert
+  !set testw0=!select $testw where column 1=$cle
+  !set get_$cle=$(testw0[;2..-1])
+  !set get_$cle=!singlespace $(get_$cle)
+  !set get_$cle=!words2items $(get_$cle)
+  !set get_$cle=!listuniq $(get_$(cle))
+   !default $(cle)=$(get_$cle)
+ !next cle
+ !if $scoredelay=0
+  !reset scoredelay
+ !endif
+ !if $exo=0
+  !reset exo
+ !endif
+ !if yes isin $intro_expert
+  !let special_parm2=!append word expert to $special_parm4
+ !endif
+!endif
+
+!if $wims_class!=$empty and $wims_user=supervisor and ($special_parm3=$empty or intro_expert isin $special_parm3)
+ !default qnum=$wims_oefdefault_qnum
+ !default qcmlevel=$wims_oefdefault_qcmlevel
+ !default scoredelay=$wims_oefdefault_scoredelay
+ !default intro_qcmpresent=$wims_oefdefault_qcmpresent
+ !default intro_presentsol=$wims_oefdefault_presentsol
+ !default intro_check=$wims_oefdefault_check
+ !default intro_sepow=$wims_oefdefault_sepow
+ !default intro_expow=$wims_oefdefault_expow
+ !default intro_precw=$wims_oefdefault_precw
+ !let special_parm2=$special_parm
+ !if ($special_parm3=$empty or intro_expert=yes isin $special_parm3) and ($wims_oefdefault_qcmpresent$wims_oefdefault_presentsol$wims_oefdefault_check$wims_oefdefault_sepow$wims_oefdefault_expow$wims_oefdefault_precw!=$empty)
+    !let expert_option=yes
+ !else
+    !let expert_option=no
+ !endif
+!endif
+!reset special_parm3
+
+!if ////classes/ isin ////$module
+ !set class_header=wimshome/log/classes/$wims_class/
+!endif
+
+!read $(class_header)Exindex
+!set exocnt=!itemcnt $exolist
+!set qcnt=$[min($exocnt,15)]
+!if $wims_user=supervisor and #classes/ isin #$module
+  !set wims_menu_items=!append line add_exo,1,module=adm/createxo\
+  to $wims_menu_items
+    !if $exocnt<1
+     !exit
+    !endif
+!else
+   !if $exocnt<1
+    $name_noexercise
+    !exit
+   !endif
+!endif
+
+!if $lang notsametext $module_language and $(titlelist_$lang) notsametext
+ !set titlelist=$(titlelist_$lang)
+!endif
+
+!!if $exocnt=1
+!! $name_oneexercise, <span class="bold">
+!! !item 1 of $titlelist
+!! </span>.
+!! !else
+!!   !if $wims_user=supervisor
+!!  <div class="formHelp">
+!!   $name_remarkallexo
+!!  </div>
+!!   !endif
+!!!endif
+
+!form new
+<input type="hidden" name="module" value="$module" />
+<div id="oef_intro_params">
+  <h2 class="legend oef_name_menu">$name_menu</h2>
+  <div class="formHelp">$name_remarkintro1</div>
+
+  <fieldset class="property_fields blockcenter" id="general_parms">
+    <legend>$name_general_parms</legend>
+    !if $oefintro_custom_select=$empty
+      <div class="field">
+        !if $exocnt>1
+          !set special_parm=!trim $special_parm
+          !if select iswordof $special_parm2 and $special_parm notsametext $empty
+            <span>$name_chooseexo$name_exercisescontaining</span> &laquo;<em style="color:blue">$special_parm</em>&nbsp;&raquo;&nbsp;:
+          !endif
+        !endif
+        !read oef/select.phtml
+      </div>
+
+      !if * isin $titlelist
+        <p>$name_remarkintro2</p>
+      !endif
+    !else
+      !read $oefintro_custom_select
+    !endif
+  </fieldset>
+
+  !!test if there is an introhook (works with new modules)
+  !if _classes/ isin _$module
+    !set introhook_exists=no
+  !else
+    !readproc introhook.phtml
+  !endif
+
+  !if $introhook_exists!=no
+    <fieldset class="introhook property_fields blockcenter">
+      <legend>$name_module_setup</legend>
+      !if $introhook_tableless=yes
+        !read introhook.phtml
+      !else
+        <table>
+          !read introhook.phtml
+        </table>
+      !endif
+    </fieldset>
+  !endif
+
+  !if $oefintro_custom_series_setup=$empty
+    !read oef/intromenu_series.phtml
+  !endif
+
+!set wims_ref_class=wims_button
+!set trimmed_parm2=!trim $special_parm2
+!set trimmed_parm3=!trim $special_parm3
+
+!if expert notwordof $trimmed_parm2 and yes notin $expert_option
+  <p class="oef_intro_buttons" id="score_setup">
+    !set trimmed_parm2=$trimmed_parm2 expert
+    !set trimmed_parm3=!replace internal intro_expert=no by $ in $trimmed_parm3
+    !set trimmed_parm3=$trimmed_parm3 intro_expert=yes
+    !href module=$module&special_parm=$special_parm&special_parm2=$trimmed_parm2&special_parm3=$trimmed_parm3&special_parm4=$special_parm4#general_parms $name_expertmenu
+  </p>
+  <fieldset class="oef_expert property_fields blockcenter">
+    <legend>$name_score_setup</legend>
+    <div class="field">
+      <label for="qcmlevel">$name_levelseverity:</label>
+      !default qcmlevel=$(default_choice[2])
+      !formselect qcmlevel from 1 to 9
+      <div class="formHelp">$name_warning_levelseverity</div>
+    </div>
+  </fieldset>
+!else
+  <p class="oef_intro_buttons" id="score_setup">
+    !set trimmed_parm2=!replace word expert by $ in $trimmed_parm2
+    !set trimmed_parm3=!replace internal intro_expert=yes by $ in $trimmed_parm3
+    !set trimmed_parm3=$trimmed_parm3 intro_expert=no
+    !href module=$module&special_parm=$special_parm&special_parm2=$trimmed_parm2&special_parm3=$trimmed_parm3&special_parm4=$special_parm4#general_parms $name_simplifiedmenu_back
+  </p>
+  <fieldset class="oef_expert property_fields blockcenter">
+    <legend>$name_score_setup</legend>
+    !!default intro_check=1,2,3,4
+    !reset name_prompt_expower2 name_prompt_sepower2
+    !set powercnt=!itemcnt $list_expow
+    !for j=1 to $powercnt
+      !set name_prompt_expower2=!append item $(name_prompt_expower[$j]) ($(list_expow[$j])) to $name_prompt_expower2
+      !set name_prompt_sepower2=!append item $(name_prompt_sepower[$j]) ($(list_sepow[$j])) to $name_prompt_sepower2
+    !next
+    !default intro_sepow=$(list_sepow[1])
+    !default intro_expow=$(list_expow[1])
+    !default intro_precw=$(list_precw[1])
+
+    <input type="hidden" name="intro_expert" value="yes" />
+
+    <div class="field">
+      <label for="intro_presentsol">$name_solutiongiven? </label>
+      !default intro_presentsol=$(default_choice[3])
+      !formselect intro_presentsol list 0,1,2 prompt $name_choice
+    </div>
+
+    <div class="field">
+      !set wims_ref_id=introcheck3
+      !formcheckbox  intro_check list 3 prompt $(name_choice_check[3])
+    </div>
+
+    <div class="field">
+      !set wims_ref_id=introcheck4
+      !formcheckbox intro_check list 4 prompt $(name_choice_check[4])
+    </div>
+
+    <div class="field">
+      $name_expower:
+      <div>
+        !set wims_ref_class=wims_formradio
+        !formradio intro_expow list $list_expow prompt $name_prompt_expower2
+        <div class="formHelp">$name_warning_expower</div>
+      </div>
+    </div>
+
+    <div class="field">
+      $name_sepower:
+      <div>
+       !set wims_ref_class=wims_formradio
+       !formradio intro_sepow list $list_sepow prompt $name_prompt_sepower2
+       <div class="formHelp">
+        $name_warning_sepower $name_warning_pow
+       </div>
+      </div>
+     </div>
+
+    <div class="field">
+      $name_precweight:
+      !set wims_ref_class=wims_formradio
+      !formradio intro_precw list $list_precw
+      <div class="formHelp">$name_help_precweight</div>
+    </div>
+  </fieldset>
+  !if $oefintro_custom_choices_setup=$empty
+    !read oef/intromenu_choices.phtml
+  !endif
+!endif
+</div>
+
+<div class="oef_intro_buttons spacer">
+	<input type="submit" value="$wims_name_work" />&nbsp;
+	<input type="submit" name="print" value="$name_print" />
+	<input type="hidden" name="special_parm2" value="$special_parm2" />
+	<input type="hidden" name="special_parm4" value="$special_parm4" />
+</div>
+!formend
+
+!if $exocnt>10
+  !form intro
+    <input type="hidden" name="special_parm2" value="select $special_parm2" />
+    <input type="hidden" name="special_parm3" value="$special_parm3" />
+    <input type="hidden" name="special_parm4" value="$special_parm4" />
+    <input type="hidden" name="module" value="$module" />
+    $name_select
+    <input size="12" maxlength="12" name="special_parm" value="$special_parm" />
+    <input type="submit" value="$wims_name_send" />
+  !formend
+!endif
+
+!if expert iswordof $special_parm2 or yes isin $expert_option
+  <div class="formHelp">
+    $name_remarkseverity
+    !read oef/helpseverity
+    !read oef/helppenality
+  </div>
+!endif
+
+!if $wims_class!=$empty and $wims_user=supervisor and (../devel/ notin ../$module or $wims_devel_modules iswordof open)
+    !set wims_menu_items=!append line addallexo,1,module=adm/class/addmodule&job=addallexo&dir=$module&scoring=$module_scoring\
+,0, to $wims_menu_items
+!endif

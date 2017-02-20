@@ -1,0 +1,47 @@
+
+!if $cmd=help and $wims_ismanager=2
+  !if $help_subject iswordof conf
+   !changeto conf/help-$help_subject.phtml
+  !endif
+  !if $help_subject iswordof soft
+   !changeto lang/help-$help_subject.phtml.$modu_lang
+  !endif
+!endif
+!if $(module_title_$modu_lang)!=
+  !set module_title=$(module_title_$modu_lang)
+!endif
+
+!if $job!=$empty
+  !set wims_ariane = !append line "$title",8 to $wims_ariane
+!endif
+
+!header
+
+!if $wims_ismanager iswordof -1 1
+  <p>
+    $name_intromain
+    <span class="tt wims_fname">log/wims.conf</span>.
+  </p>
+!endif
+
+!if $job!=$empty
+ !read $job.phtml
+!endif
+
+!if $wims_ismanager=2 and $job!=list
+ !set wims_name_sitegestion=$(module_title_$modu_lang)
+ !if $wims_theme=default
+!! ARIANE
+   !set wims_menu_items=!append line sitegestion,1,cmd=reply&job=list\
+to $wims_menu_items
+ !endif
+ !if $job=conf and $confcat=6
+  !set wims_menu_items=!append line download_module,1,cmd=reply&job=modules&job2=first to $wims_menu_items
+ !endif
+ !if $job=modules and $job2=first
+  !set wims_menu_items=!append line config_module,1,cmd=reply&job=conf&+confcat=6 to $wims_menu_items
+ !endif
+!endif
+!tail
+
+!reset auth,save,abandon

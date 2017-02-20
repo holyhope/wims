@@ -1,0 +1,223 @@
+!! item_list : lines , item_type : items , break=2 : 2 columns , break=6 : 6 columns 
+!set DHTML=$empty
+!set n=$counter
+!if $dragcolors=$empty
+    !set unused_color=#ffbb63
+    !set pick_color=#639bff
+    !set drop_color=#00fc96
+    !set blue_layer=#b2d1ff
+!else
+    !set unused_color=!item 1 of $dragcolors
+    !set pick_color=!item 2 of $dragcolors
+    !set drop_color=!item 3 of $dragcolors
+    !set blue_layer=!item 4 of $dragcolors
+!endif
+!set c=0
+!set f=0
+!set total_objects=!itemcnt $item_type
+!set break_cnt=0
+!if $break=$empty
+    !set break=2
+!endif
+<table id="exercise" class="exercise">
+    <tr>
+    <td class="exercise_t">
+	$(question$n)
+	!if $exotext!=$empty
+	    $exotext
+	!endif
+    </td>
+    </tr>
+    <tr>
+    <td class="exercise_m">
+	<table class="exercise">
+	    <tr>
+	    !for p=1 to $total_objects
+		!increase break_cnt
+		!set thing=!line $p of $item_list
+		!set type=$(item_type[$p])
+		<td style="text-align:center;background-color:$blue_layer;vertical-align:middle;">
+		    <div id="mydiv$c" style="width:$xsize;height:$ysize;text-align:center;background-color:$unused_color;position:relative;border:2px solid red;">
+			!if $type=0
+			    $thing
+			!else
+			    !if $type=1
+				!if $tex_adjust=1
+				    !set ins_attr=width="$xsize"
+				!endif
+				!insmath $thing
+			    !else
+				!if $type=2
+				    !set ins_attr=width="$xsize" height="$ysize"
+				    !insdraw $thing
+				!else
+				    !if $type=3
+					!set ins_attr=width="$xsize" height="$ysize"
+					!insplot $thing
+				    !else
+					error: no type definitionlist $$item_type[$p]
+				    !endif
+				!endif
+			    !endif
+			!endif
+			!set DHTML=!append item "mydiv$c" to $DHTML
+		    </div>
+		</td>
+		!if $break_cnt<$break
+		<td style="background-color:$blue_layer;text-align:center;vertical-align:middle;height:$ysize;width:$xsize">
+		    <img src="$gifdir/blank.gif" style="display:block" id="blank$c" width="$xsize" height="$ysize" alt="noalt" />
+		    <img src="$gifdir/leftright.gif" style="display:none" id="leftright$c" width="$xsize" height="$ysize" alt="noalt" />
+		</td>
+		!endif
+		!if $break_cnt=$break
+		    !set break_cnt=0
+		    </tr>
+		    <tr>
+		!endif
+		!increase c
+	    !next p
+	    </tr>
+	</table>
+    </td>
+    </tr>
+</table>
+    
+<div id="send_buttons" class="embedded_central">
+    <input type="button" id="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
+    !if $wims_user = supervisor
+    	<input type="button" id="schaersvoorde_ok_button" onclick="showanswer();" value="show correct answer" />
+    !else
+	!set clear=!record 67 of $remarkdir/commonremarks.$taal
+    	<input type="button" id="schaersvoorde_nok_button" onclick="resetall();" value="$clear" />
+    !endif
+    <input type="button" id="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
+</div>
+ 
+<script type="text/javascript" src="$jsdir/wz_dragdrop.js"></script>
+
+<script type="text/javascript">
+//<![CDATA[
+<!-- no validator -->
+    var URL;
+    SET_DHTML( CURSOR_MOVE , $DHTML);
+    var orgx = 0;
+    var orgy = 0;
+    var pick_id = 0;
+    var size = $total_objects;
+    var show="<ol>";
+    var reply = new Array();
+    for(var p = 0;p < size; p++){
+	reply[p] = p;
+    }
+    
+    function resetall(){
+	document.location.reload();
+    }
+    
+    function my_PickFunc(){
+	orgx = dd.obj.x;
+	orgy = dd.obj.y;
+	pick_id = dd.obj.id;
+	document.getElementById(dd.obj.id).style.backgroundColor = "$pick_color";
+    }
+    
+    function setVisible(n){
+	document.getElementById("leftright"+n).style.display = "block";
+	document.getElementById("blank"+n).style.display = "none";
+	return;
+    }
+    
+    !if $wims_user=supervisor
+	var only_once = 0;
+	function showanswer(){
+	    if(only_once == 0 ){
+		!set r=0
+		x_original = new Array();
+		y_original = new Array()
+		!for p in $(answer$n)
+		    reply[$r] = "$p";
+		    x_original[$r] = dd.elements["mydiv$r"].x;
+		    y_original[$r] = dd.elements["mydiv$r"].y;
+		    !increase r
+		!next p
+		!set r=0
+		!for p in $(answer$n)
+		    dd.elements["mydiv$p"].moveTo(x_original[$r],y_original[$r]);
+		    try{setVisible($p);}catch(e){}
+		    document.getElementById("mydiv$p").style.backgroundColor = "$drop_color";
+		    !increase r
+		!next p
+		only_once = 1;
+	    }
+	    return;
+	}
+    !endif
+    
+    function my_DropFunc(){
+	var marge = 10;var x = dd.obj.x;var y = dd.obj.y;var found = 0;var tmp;var idx;var id;
+	if( dd.obj.id == pick_id ){
+	    id = pick_id.replace("mydiv","");
+	    for(var p = 0; p < size  ; p++){
+		if(reply[p] == id){
+		    idx = p; // dus sleepplaatje heeft rangvolgorde idx
+		}
+	    }
+	    for(var p = 0; p < size  ; p++){
+		if(found == 0 && reply[p] != id){
+		    if( y > dd.elements["mydiv"+reply[p]].y - marge && y < dd.elements["mydiv"+reply[p]].y + marge){
+			if( x > dd.elements["mydiv"+reply[p]].x - marge && x < dd.elements["mydiv"+reply[p]].x + marge){
+			    dd.obj.moveTo(dd.elements["mydiv"+reply[p]].x,dd.elements["mydiv"+reply[p]].y);
+			    dd.elements["mydiv"+reply[p]].moveTo(orgx,orgy);
+			    found = 1;
+			    tmp = reply[p];
+			    try{setVisible(p);}catch(e){}
+			    try{setVisible(idx);}catch(e){}
+			    reply[p] = reply[idx];
+			    reply[idx] = tmp;
+			    document.getElementById("mydiv"+reply[p]).style.backgroundColor = "$drop_color";
+			    document.getElementById("mydiv"+reply[idx]).style.backgroundColor = "$drop_color";
+			}
+		    }
+		}
+	    }
+	}
+	if(found == 0){ dd.obj.moveTo(orgx,orgy);
+	document.getElementById(dd.obj.id).style.backgroundColor = "$unused_color";}
+	dd.obj='null';
+    }
+    
+    function check_inputs(input_id){
+	if(document.getElementById(input_id+0)){
+	    var i = 0;var input;var n=1;
+            while(document.getElementById(input_id+i)){
+                input = document.getElementById(input_id+i).value;
+                if (input.length == 0){setAlarm(r44+"&nbsp;no.&nbsp;"+n);return "error";}
+                if(input.indexOf(',') != -1){setAlarm(r4);return "error";}
+                input=science(input);if(input == "error"){return "error";}
+                reply[size+i] = input;
+                show=show + "<li>" + input + "</li>";
+		document.getElementById(input_id+i).style.backgroundColor = "$drop_color";
+                i++;
+            }
+        }
+        return;
+    }
+    
+    function sendanswer(){
+	// try if inputfields "mathml0" or "myinput0" are present
+	show="<ol>";// reset "show"
+	if(check_inputs("mathml")  == "error"){return;}
+	if(check_inputs("myinput") == "error"){return;}
+	for(var p = 0 ; p < size ; p++){
+	    try{setVisible(p);}catch(e){}
+	    document.getElementById("mydiv"+p).style.backgroundColor = "$drop_color";
+	}
+	show = show + "</ol>";
+	myConfirm(show,reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
+    }
+    
+    function dontknow(){
+	myConfirm('$dontknow','?','$wims_ref_name','$session','$module','$counter','$nok_send_color');
+    }
+//]]>
+</script>

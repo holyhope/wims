@@ -1,0 +1,317 @@
+!! 10 types of input are possible with this page , single or in any combination
+!! 1) mathview inputapplet via id="MathView" ; 
+!! 2) inputfields via id="myinput0" ... id="myselect100"
+!! 3) selectboxes via id="myselect0" ... id="myselect100"
+!! 4) mathml inputfields via id="mathml0" ... id="mathml100"
+!! 5) canvas answer inputfields/textarea [ read_canvas();]
+!! 6) canvas userdrawing
+!! 7) canvas drag and drop
+!! 8) canvas onclick
+!! 9) FlyApplet drawing via ReadDrawing() : coordinates/points/lines x1:y1,x2:y2,x3:y3....x_n:y_n (wordmax (=20) is adjustable upperlimit ; wordmin (=1) is adjustable underlimit) from FlyApplet0...FlyApplet100
+!! 10) InvulGrid applet via ReadApplet(0,1,2,3) ; carefull applet produces large strings (html/latex)
+
+!if $my_arrows=$empty
+    !set my_arrows=2
+!endif
+!if $convert_root=$empty
+    !set convert_root=0
+!endif
+!if $use_ineq != 1
+    !set use_ineq=0
+!endif
+<script type="text/javascript">
+//<![CDATA[
+<!-- no validator  -->
+"use strict";
+ <!-- will return all 'userdraw' or 'userinput' data from all canvas javascript includes --> 
+ function read_canvas(){if( typeof popup !== 'undefined'){var fun = popup['read_canvas'+canvas_scripts[0]];if(typeof fun === 'function' ){ var result = fun();if( result  && result.length != 0){return result;};}else{return null;};}else{var script_len = canvas_scripts.length;var draw_reply = "";var found_result = false;for(var p = 0 ; p < script_len ; p++){var fun = eval("read_canvas"+canvas_scripts[p]);if( typeof fun === 'function'){var result = fun();if( result  && result.length != 0){if(script_len == 1 ){ return result;};found_result = true;draw_reply = draw_reply + "["+p+"]="+ result + "\n";};};};if( found_result ){return draw_reply;}else{return null;};};};
+ <!-- will return all 'drag&drop' or 'onclick' data from all canvas javascript includes --> 
+ function read_dragdrop(){if( typeof popup !== 'undefined'){var fun = popup['read_dragdrop'+canvas_scripts[0]];var result = fun();if( result  && result.length != 0){return result;}else{return null;};}else{var script_len = canvas_scripts.length;var dragdrop_reply = "";var found_result = false;for(var p = 0 ; p < script_len ; p++){var fun = eval("read_dragdrop"+canvas_scripts[p]);if(typeof fun === 'function'){var result = fun();if( result && result.length != 0 ){if(script_len == 1 ){ return result;};found_result = true;dragdrop_reply = dragdrop_reply + "["+p+"]="+result +"\n";};};};if( found_result ){return dragdrop_reply;}else{return null;};};};
+!if $inputs <0
+    !if $goback=1
+	!set r=!nospace $(reply$n)
+ function refill(){var hi="$r";if(hi.length !=0 ){hi = hi.split(',');for( var i=0; i<hi.length; i++){try{document.getElementById("myinput"+i).value = hi[i];}catch(e){}};};}
+    !endif
+!endif
+ <!-- do not use "' in description -->
+ var descr_list="$description";var descr_cnt = 30;var description = make_description(descr_list,descr_cnt);function dontknow(){myConfirm('$dontknow','?','$wims_ref_name','$session','$module','$counter','$nok_send_color');}
+ function sendanswer(){
+  var input;var show="<ul>";var inputfieldnumber = 0;var reply = new Array();var tmp_show;
+  <!-- MathView java input applet -->
+  if(document.getElementById("MathView")){input=document.getElementById("MathView").getLinear();input = input+'';if( input.length == 0){setAlarm(r1+"\ 1");return;};if( input.length > 100){setAlarm(r2); return;};if(input.indexOf('error')!=-1){setAlarm(input);return;};if(input.indexOf(',') != -1){setAlarm(r4);return;};if(check_f(input) == 0){return;}if(check_o(input) == 0){return;};if(check_log_NaN(input) == 0){return;}if(check_sqrt_NaN(input) == 0){return;};input = science(input);if(input == "error"){return;};if(check_x(input) == 0){return;};show = input;if( show.indexOf('>') != 0 || show.indexOf('>') ){show=show.replace(/\>=/g,'&ge;');show=show.replace(/\<=/g,'&le;');show=show.replace(/\>/g,'&gt;');show=show.replace(/\</g,'&lt;');};
+ !if $convert_root=0
+   input = arrows(input,$my_arrows,"","");if(input == "error"){return;};input = nthroot(input);if(input ==" error"){return;};if(input.indexOf("[") !=- 1){if(input.indexOf("sqrt[")!=-1){input=specialroot(input);if(input=="error"){return;};};if(input.indexOf("log[")!=-1){input=speciallog(input);if(input=="error"){return;};};if( input.indexOf("[") !=-1){setAlarm(r13);return;};};
+ !endif
+   input = input.replace(/#/g,' ');reply[inputfieldnumber] = input;inputfieldnumber = 1;
+  };
+  <!-- InvulGrid ruitjespapier applet -->
+  if(document.getElementById("InvulGrid0") ){var p = 0;var tmp_reply="";var tmp_htmlreply="";var tmp_latexreply="";var latexreply="";var invulgrid;
+   !if $decimals=1
+    var decimals=1;
+   !else
+    var decimals=0;
+   !endif
+   while( document.getElementById('InvulGrid'+p )){invulgrid = document.getElementById('InvulGrid'+p);tmp_reply = invulgrid.ReadApplet('0');tmp_htmlreply = invulgrid.ReadApplet('2');tmp_latexreply = invulgrid.ReadApplet('3');if(tmp_reply.indexOf('error')!= -1){setAlarm(r26+"<br />(java applet no."+parseInt(p+1)+")");return;};if(tmp_reply.indexOf("?") != -1){dontknow();return;};if(decimals == 0){tmp_reply = tmp_reply.replace(/\./g,'');};reply[inputfieldnumber] = tmp_reply+"\n"+tmp_htmlreply+"\n"+tmp_latexreply;show = show + "<br />"+tmp_htmlreply;inputfieldnumber++;p++;if(p>10){setAlarm(r2);dontknow();};};
+  };
+  <!-- FlyApplet id="FlyApplet0" is not interfering with non-readable FlyApplet based illustrations (id="FlyApplet") -->
+  if(document.getElementById("FlyApplet0") ){var p=0;while( document.getElementById("FlyApplet"+p) ){try{input = document.getElementById('FlyApplet'+p).ReadDrawing();}catch(e){setAlarm(r1+" $counter");return;};if(input.indexOf("error")!=-1){setAlarm(r1+" $counter");return;};var tmp = input.split(',');if( tmp.length > $wordmax ){setAlarm(r6);return;};if( tmp.length < $wordmin ){setAlarm(r26);return;};for(var r = 0;r < tmp.length;r = r + 2){show = show + "<li>"+description[inputfieldnumber] + "&nbsp;:&nbsp;" + "( " + tmp[r] + " : " + tmp[r+1]+" )</li>";reply[inputfieldnumber] = tmp[r]+":"+tmp[r+1];inputfieldnumber++;};p++;if(p>10){setAlarm(r2);dontknow();};};};
+  <!-- normal html input / textarea fields -->
+  if(document.getElementById("myinput0")){var p=0;while(document.getElementById("myinput"+p)){input = document.getElementById("myinput"+p).value;if(input.length == 0){setAlarm(r1+"\ "+parseInt(p+1));return;};input = nthroot(input);if(input == "error"){return;};if(input.indexOf(',') != -1){setAlarm(r4);return;}
+   !if $use_ineq!=1
+   <!-- all arrows will be converted to "->" or only last answer will be stored -->
+    input = arrows(input,$my_arrows,"","");if(input == "error"){return;}
+   !endif
+   if(check_f(input) == 0){return;};if(check_o(input) == 0){return;};if(check_log_NaN(input) == 0){return;};if(check_sqrt_NaN(input)==0){return;};input = science(input);if(input == "error"){return;};if(check_x(input) == 0){return;};tmp_show = input;if( input.indexOf("[") !=- 1 ){if(input.indexOf("sqrt[")!=-1){input=specialroot(input);if(input=="error"){return;};};if(input.indexOf("log[")!=-1){input=speciallog(input);if(input=="error"){return;};};if(input.indexOf("[") != -1){setAlarm(r13);return;};};input=input.replace(/#/g,' ');reply[inputfieldnumber] = input;if( tmp_show.indexOf('<') != -1 || tmp_show.indexOf('>') != -1 ){if( input.indexOf('=>') != -1){setAlarm("<span style=\'color:red;size:300%\'>x&nbsp;=&gt;&nbsp;2</span><br /><span style=\'color:green;size:300%\'>x&nbsp;&gt;= &nbsp;2&nbsp;&nbsp;&nbsp;[x&nbsp;&ge;&nbsp;2]</span>");return;};if( input.indexOf('=<') != -1){setAlarm("<span style=\'color:red;size:300%\'>x&nbsp;=&lt;&nbsp;2</span><br /><span style=\'color:green;size:300%\'>x&nbsp;&lt;= &nbsp;2&nbsp;&nbsp;&nbsp;[x&nbsp;&le;&nbsp;2]</span>");return;};tmp_show=tmp_show.replace(/\>=/g,'&ge;');tmp_show=tmp_show.replace(/\<=/g,'&le;');tmp_show=tmp_show.replace(/\>/g,'&gt;');tmp_show=tmp_show.replace(/\</g,'&lt;');};show = show + "<li>"+description[inputfieldnumber] + "&nbsp;:&nbsp;" + tmp_show + "</li>";inputfieldnumber++;p++;if(p>100){setAlarm(r2);dontknow();};};
+  };
+  <!-- select boxes inputs -->
+  if( document.getElementById("myselect0") ){var p = 0;var options;var option_value;var option_text;while(document.getElementById("myselect"+p)){options = document.getElementById("myselect"+p).options;try{ option_value = options[options.selectedIndex].value;option_text = options[options.selectedIndex].text;}catch(e){setAlarm(r1+parseInt(p+1));return;};show = show + "<li>" + option_text + "</li>";reply[inputfieldnumber] = option_value;inputfieldnumber++;p++;if(p>100){setAlarm(r2);dontknow();};};};
+  <!-- MathML inputfield --> 
+  if(document.getElementById("mathml0")){var p = 0;while(document.getElementById("mathml"+p)){input = document.getElementById('mathml'+p).value;if (input.length == 0){setAlarm(r1+" "+parseInt(p+1));return;};input = nthroot(input);if(input == "error"){return;};if(input.indexOf(',') != -1){setAlarm(r4);return;}
+   !if $use_ineq != 1
+    input = arrows(input,$my_arrows,"","");if(input == "error"){return;};
+   !endif
+   if(check_f(input) == 0){return;}if(check_o(input) == 0){return;};if(check_log_NaN(input) == 0){return;}if(check_sqrt_NaN(input) == 0){return;};input=science(input);if(input == "error"){return;};if(check_x(input) == 0){return;};tmp_show = input;if( input.indexOf("[") !=- 1 ){;if(input.indexOf("sqrt[") != -1){input = specialroot(input);if(input == "error"){return;};};if(input.indexOf("log[") != -1){input = speciallog(input);if(input == "error"){return;};};if(input.indexOf("[") != -1){setAlarm(r13);return;};};input = input.replace(/#/g,' ');if(p>99){break;};reply[inputfieldnumber] = input;if( tmp_show.indexOf('<') != -1 || tmp_show.indexOf('>') != -1 ){if( input.indexOf('=>') != -1){setAlarm("<span style=\'color:red;size:300%\'>x&nbsp;=&gt;&nbsp;2</span><br /><span style=\'color:green;size:300%\'>x&nbsp;&gt;= &nbsp;2&nbsp;&nbsp;&nbsp;[x&nbsp;&ge;&nbsp;2]</span>");return;};if( input.indexOf('=<') != -1){setAlarm("<span style=\'color:red;size:300%\'>x&nbsp;=&lt;&nbsp;2</span><br /><span style=\'color:green;size:300%\'>x&nbsp;&lt;= &nbsp;2&nbsp;&nbsp;&nbsp;[x&nbsp;&le;&nbsp;2]</span>");return;};tmp_show=tmp_show.replace(/\>=/g,'&ge;');tmp_show=tmp_show.replace(/\<=/g,'&le;');tmp_show=tmp_show.replace(/\>/g,'&gt;');tmp_show=tmp_show.replace(/\</g,'&lt;');};show = show + "<li>"+description[inputfieldnumber] + "&nbsp;:&nbsp;" + tmp_show + "</li>";inputfieldnumber++;p++;if(p>100){setAlarm(r2);dontknow();};};
+  };
+  if( typeof canvas_scripts !== 'undefined' ){
+   <!-- CanvasDraw : try  read_canvas() from canvasdraw ; read_mathml() is already covered -->
+   var canvas_reply = read_canvas();
+   if(canvas_reply != null ){
+     show = show + "<li>" + description[inputfieldnumber] + "&nbsp;:&nbsp;"  + canvas_reply + "</li>";
+     reply[inputfieldnumber] = canvas_reply;
+     inputfieldnumber++;
+   }
+   <!-- CanvasDraw : try  read_dragdrop() from canvasdraw ; read_mathml() is already covered -->
+   var dragdrop_reply = read_dragdrop();
+   if(dragdrop_reply != null ){
+     show = show + "<li>" + description[inputfieldnumber] + "&nbsp;:&nbsp;"  + dragdrop_reply + "</li>";
+     reply[inputfieldnumber] = dragdrop_reply;
+     inputfieldnumber++;
+   }
+  }
+  <!-- finally ... -->
+  if(typeof reply[0] === 'undefined' ){setAlarm(r1+" $counter");return;};show = show + "</ol>";
+  myConfirm(show,reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
+}
+!if $wims_user=supervisor
+ <!-- only visible for supervisor : to fill inputfields called myinput_n not default on this page, but stored in some variable -->
+    !set a_items=!itemcnt $(answer$n)
+    !if $a_items != $[floor($inputs)]
+	!set use_lines=1
+    !else
+	!set use_lines=0
+    !endif
+    !if $inputs<0
+	!set ans=!lines2items $(answer$n)
+	!set s = !itemcnt $ans
+	function putanswer(){var input_type=['myinput','mathml','canvas_input'];for( var i=0; i < input_type.length ;i++){ if(document.getElementById( input_type[i]+0 )){var ans = new Array();ans = make_description("$ans",$s);var p = 0;var r = 0;while( document.getElementById( input_type[i]+p) ){if( ! document.getElementById(input_type[i]+p).getAttribute("readonly")){document.getElementById(input_type[i]+p).value = ans[r];r++;};p++;};};};}
+    !endif
+!endif
+//]]>
+</script>
+<table id="exercise" class="exercise" ><!-- begin table id=exercise -->
+    <tr>
+    <td class="exercise_t">
+	!if $(question$n) != $empty
+	    $(question$n)
+	    <br />
+	!endif
+	!if $embed=1 and $mathview!=3
+	    !if $(formula$n) != $empty
+		<table class="exercise">
+		    <tr>
+		    <td class="exercise_c">
+			!insmath $(formula$n)
+		    </td>
+		    <td class="exercise_c">
+			!if $inputs=1
+			    !if $wims_user=supervisor
+				$(description[1])&nbsp;$m_rightarrow&nbsp;<textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(answer$n)</textarea>&nbsp;$ex1
+        		    !else
+        			$(description[1])&nbsp;$m_rightarrow&nbsp;<textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(reply$n)</textarea>&nbsp;$ex1
+			    !endif
+			!else
+			    <ul class="vlist">
+			    !for p=1 to $inputs
+				<li>
+				!if $wims_user=supervisor
+				    !if $use_lines=1
+					!set deelantwoord=!line $p of $(answer$n)
+				    !else
+				        !set deelantwoord=!item $p of $(answer$n)
+				    !endif
+        			!else
+				    !set deelantwoord=!item $p of $(reply$n)
+				!endif
+				    $(description[$p])&nbsp;$m_rightarrow&nbsp;<input type="text" id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value="$deelantwoord" />&nbsp;$(ex$p)
+				</li>
+			    !next p
+			    </ul>
+			!endif
+		    </td>
+		    </tr>
+		</table>
+	    !else
+		<ul class="vlist"><!-- this "span" line-height / font-size is related to schaersvoorde.css : "schaersvoorde_input" class font-size -->
+		!if $wims_user=supervisor
+		    !for p=1 to $inputs
+			!if $use_lines=1
+			    !set deelantwoord=!line $p of $(answer$n)
+			!else
+			    !set deelantwoord=!item $p of $(answer$n)
+			!endif
+			<li><span style="font-size:14pt;text-align:left;line-height:26px;">$(description[$p]) $m_rightarrow </span><input type="text" id="myinput$[$p-1]" value="$deelantwoord" size="$cols" class="schaersvoorde_input" /></li>
+		    !next p
+		!else
+		    !for p=1 to $inputs
+			<li><span style="font-size:14pt;text-align:left;line-height:26px;">$(description[$p]) $m_rightarrow </span><input type="text" id="myinput$[$p-1]" value="" size="$cols" class="schaersvoorde_input" /></li>
+		    !next p
+		!endif
+		</ul>
+	    !endif
+	!else
+	    !if $(formula$n) != $empty
+		!if $display=1234
+		    !insmath $$$$ $(formula$n) $$$$
+		!else
+		    !insmath $(formula$n)
+		!endif
+	    !endif
+	!endif
+	!if $exotext != $empty
+	    <br />
+	    $exotext
+	!endif
+    </td>
+!if $image=1
+    !if $make_tr=1
+    </tr>
+    <tr>
+    !endif
+    <td class="exercise_t">
+    !if $draw=1
+	!set insdraw_size=$xsize,$ysize
+	!set ins_attr=id="myimage"
+	!! voor answer.phtml gebruiken we de opgeslagen variabele "insdraw_settings"
+	!insdraw $(image$n)
+    !else
+	!if $plot=1
+	    !set insplot_set=$(image_settings$n)
+	    !set ins_attr=id="myimage"
+	    !insplot $(image$n)
+	!endif
+    !endif
+    </td>
+!else
+    !if $applet=1
+	!if $make_tr=1 
+        </tr>
+	<tr>
+        !endif
+	<th class="exercise_t" id="object$n">
+	    $(object$n)
+	</th>
+    !endif
+!endif
+
+!if $mathview=3
+    </tr>
+    <tr>
+    <td class="exercise_c">
+	<object classid="java:MathView.class" id="MathView" width="580" height="280" type="application/x-java-applet;jpi-version=1.4" >
+	    <param name="java_codebase" value="$appletdir" />
+	    <param name="java_archive" value="MathView.jar" />
+	    <param name="java_code" value="MathView" />
+	    <param name="mayscript" value="true" />
+	    <script type="text/javascript" />
+	    //<![CDATA[
+	    if(document.body.style.background){var obj="\<param name=\"bgcolor\" value=\""+document.body.style.background+"\" />"}else{var obj="\<param name=\"bgcolor\" value=\"#ffffff\" />"} document.write(obj.toString());
+	    //]]>
+	    </script>
+	    <param name="largefont" value="$largefont">
+	!if $wims_user=supervisor
+	    <param name="oldreply" value="
+	    !nospace $(answer$n)
+	    "/>
+	!else
+	    <param name="oldreply" value="
+	    !nospace $(reply$n)
+	    "/>
+	!endif
+	    <param name="smallfont" value="$smallfont" />
+	    <param name="helptext" value="$applettext" />
+	    <param name="wimsvars" value="$varlist" />
+	    <param name="special_fraction" value="$special_fraction" />
+	    !! declare varlist=x,y,z,s    or varlist=x y z s
+	!if $mathviewpanel=$empty
+	    <param name="my_panel" value="$module_title:and:or:sqrt():+:-:*:/">
+	!else
+	    <param name="my_panel" value="$mathviewpanel" />
+	!endif
+	    <a onmouseover="return escape('<img src=\'$gifdir/java.jpg\' alt=\'Get JAVA\' />');" href="http://www.java.com/$lang/download/manual.jsp?locale=$lang" >
+	    	$nojava
+	    </a>
+	</object>
+    </td>
+!else
+    !if $embed != 1
+        !if $make_tr=1
+	    </tr>
+	    <tr>
+        !endif
+	!if $inputs=1
+	<td class="exercise_t" id="use_inputs">
+	    !if $wims_user=supervisor
+        	$(description[1])&nbsp;<textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(answer$n)</textarea>&nbsp;$ex1
+    	    !else
+    		$(description[1])&nbsp;<textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(reply$n)</textarea>&nbsp;$ex1
+    	    !endif
+	</td>
+	!else
+	    !if $inputs > 1
+	    <td class="exercise_t" id="use_inputs">
+		<table class="zebra_table_h2">
+		!for p=1 to $inputs
+		    !if $wims_user=supervisor
+			!if $use_lines=1
+			    !set deelantwoord=!line $p of $(answer$n)
+			!else
+			    !set deelantwoord=!item $p of $(answer$n)
+			!endif
+        	    !else
+			!set deelantwoord=!item $p of $(reply$n)
+		    !endif
+		    <tr><td>$(description[$p])</td><td>$m_rightarrow</td><td><input type="text" id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value="$deelantwoord" /></td><td>&nbsp;$(ex$p)</td></tr>
+		!next p
+		</table>
+	    </td>
+	    !endif
+	!endif
+    !endif
+!endif
+    </tr>
+</table><!-- end table id=exercise -->
+<div id="send_buttons" class="embedded_central">
+!if $inputs != 0
+    <input type="button" id="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
+!endif
+    <input type="button" id="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
+
+
+!if $inputs < 0
+<!-- we are using other inputfields not present in this default page...but in a variable (like exotext) called "myinput0...myinput_n"     And we don't want to use the myjavascript template page...  -->
+    !if $wims_user=supervisor
+	<input type="button" id="schaersvoorde_extra_button" onclick="javascript:putanswer();"  value="$wims_firstname $wims_lastname" />
+    !endif
+    !if $goback=1
+	<!--  after the inputelements are in the DOM-tree: try to fill-in the previous answers -->
+	<script type="text/javascript">
+	//<![CDATA[
+	<!-- no validator  -->
+	    try{document.onload=refill();}catch(e){}
+	//]]>
+	</script>
+    !endif
+!endif
+
+</div>
+!exit

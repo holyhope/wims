@@ -1,0 +1,59 @@
+!if $module=home or $module=
+ !goto home
+!else
+ $module_about
+!endif
+!if $module_require=$empty
+ !goto end
+!endif
+
+!set wims_multiexec=
+!read lang/names.phtml.$lang
+!if $lang_script_exists!=yes
+ !read lang/names.phtml.en
+!endif
+<p>$name_prompt_about</p>
+<ul>
+!for s in $module_require
+ !if $s iswordof pari maxima povray m2 octave coq graphviz yacas gnuplot
+  <li>
+  !exec $s about
+.
+ </li>
+ !endif
+!next s
+</ul>
+:end
+!changeto NEWS.phtml
+
+:home
+$module_about
+<strong>$wims_name_Version:</strong> WIMS-$wims_version $E_comp $wims_version_date.
+<hr/>
+$E_manager
+!mailurl $wims_site_manager\
+<strong>WIMS:</strong> $httpd_HTTP_HOST .
+<hr/>
+
+!if $wims_theme_icon!=$empty
+!set icon_about=!defof title,author,description,address,version,copyright in wimshome/public_html/gifs/themes/$wims_theme_icon/INDEX
+  $table_header
+   <caption class="text_icon about">[Information Pictos]</caption>\
+   $table_tr<th>$wims_name_title</th><td>$(icon_about[1])</td></tr>
+   $table_tr<th>$wims_name_Author</th><td>$(icon_about[2])</td></tr>
+   $table_tr<th>$wims_name_Description</th><td>$(icon_about[3])</td></tr>
+   $table_tr<th>$wims_name_Address</th><td><a target="_blank" href="$(icon_about[4])">$(icon_about[4])</a></td></tr>
+   $table_tr<th>$wims_name_Version</th><td>$(icon_about[5])</td></tr>
+   $table_tr<th>$wims_name_Copyright</th><td>$(icon_about[6])</td></tr>
+   $table_end
+!endif
+
+<h2>Change log:</h2>
+!!FIXME 700
+<pre>
+!sh head -n 700 html/Changelog
+</pre>
+
+!if $wims_forum_limit<=1
+ !href target=wims_lightpopup module=adm/forum/mboard&forum=1001&lightpopup=yes Historical forum
+!endif

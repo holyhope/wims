@@ -1,0 +1,38 @@
+!! update .docindex and seq repertory in a class when a sheet is deleted
+!!
+
+!! update .docindex
+nbdocu_=!recordcnt wimshome/log/classes/$wims_class/doc/.docindex
+!if $nbdocu_!=0
+ docu_=$empty
+ !for k_=1 to $nbdocu_
+  don_=!record $k_ of wimshome/log/classes/$wims_class/doc/.docindex
+  !distribute lines $don_ into dir_,param_,title_,desc_,status_,wksheet_,autosheet_
+  !for name_ in wksheet_,autosheet_
+    !if $($name_)=$sheet
+      $name_=$empty
+    !else
+      !if $($name_)>$sheet
+       $name_=$[$($name_)-1]
+      !endif
+    !endif
+    !if $wksheet_=$empty
+     wksheet_=0
+    !endif
+  !next name_
+    tmp_=$dir_\
+$param_\
+$title_\
+$desc_\
+$status_\
+$wksheet_\
+$autosheet_
+    docu_=!append line :$tmp_ to $docu_
+ !next k_
+ !writefile wimshome/log/classes/$wims_class/doc/.docindex $docu_
+!endif
+
+!readproc adm/updatesequence.proc sheet,$sheet
+
+
+

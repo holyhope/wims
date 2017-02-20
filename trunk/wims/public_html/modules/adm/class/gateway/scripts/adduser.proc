@@ -1,0 +1,76 @@
+bad=
+
+!if $pass!=$empty and $pass notsametext $pass2
+ login=
+ error=pass_discord
+ !exit
+!endif
+
+!if $auth_method isitemof $auth_method_list
+  !if $idp_method=ldap
+    !read adm/class/initldap
+    !if $ldap_login!=$empty
+      !set login_method=$idp_method $ldap_login
+    !endif
+  !endif
+  up_external_auth=!lowercase $user_auth
+  !if $new_user!=no
+    !read adm/class/hashlogin $user_auth,$class,$login_method
+  !endif
+!endif
+
+!if $idp_method isitemof $idp_method_list
+  !read adm/class/idp_$idp_method $user_auth
+  firstname=$up_firstname
+  lastname=$up_lastname
+  email=$up_email
+!endif
+
+!if $login=$empty or $lastname=$empty or $firstname=$empty or \
+  ($new_user=yes and $pass=$empty)
+ login=
+ error=empty_data
+ !exit
+!endif
+!set login_char=!charcnt $login
+!if $login_char=3
+  !set login=$(login)0
+!endif
+
+test=!defof user_exists in $classdir1/.users/$login
+!if $new_user=yes and $test=yes
+ error=user_exists $login
+ login=
+ !exit
+!endif
+
+!if $new_user=no and $test!=yes
+ error=bad_user
+ !exit
+!endif
+
+!if $new_user=yes or $pass!=$empty
+ up_password=$pass
+!endif
+
+test=!defof user_exists in $classdir1/.users/.$login
+!if $test=yes
+ login=
+ error=user_deleted
+ !exit
+!endif
+
+up_lastname=$lastname
+up_firstname=$firstname
+up_email=$email
+up_class=$wims_superclass
+up_external_auth=!lowercase $user_auth
+
+replacelist=external_auth,supervise,participate,email
+!read adm/class/adduser $login
+
+!if $bad!=$empty
+ error=bad_definition
+ !exit
+!endif
+

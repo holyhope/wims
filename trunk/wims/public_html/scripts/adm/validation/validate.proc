@@ -1,0 +1,12 @@
+!reset validate_out
+!reset test_validate
+
+!filewrite getfile/last.html
+test_validate=!sh sed -e '1,5d' < $wims_home/s2/$(wims_session)_test/last.html > $wims_home/sessions/$(wims_session)/getfile/last.html
+
+!if $validator_address!=$empty and $validation_ask!=$empty
+  validate_out=!sh perl scripts/adm/validation/validator.pl $wims_home/sessions/$(wims_session)/getfile/last.html "$validator_address"
+!endif
+!if $validate_out=$empty and $wims_exec_error!=$empty
+  validate_out=$name_validation_message
+!endif

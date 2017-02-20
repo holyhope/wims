@@ -1,0 +1,38 @@
+!set wims_rm_1 = !nonempty lines $wims_rm_1
+!set wims_homeref_n1 = !linecnt $wims_rm_1
+
+!if $wims_homeref_n1>0
+    !if $module = home
+      !set path = ./adm/
+    !else
+      !set path = $empty
+    !endif
+    !set started=0
+    <!-- _widgets/menubox.phtml -->
+    <div id="wimsmenubox" class="footer">
+      !for i_=1 to $wims_homeref_n1
+       !set 1_=!line $i_ of $wims_rm_1
+       !set is_link=!item 2 of $1_
+       !set css_class=!item 1 of $1_
+       !set css_class=!word 1 of $css_class
+       !if $is_link!=0
+         !if $started!=1
+            <$div0 class="wimsmenu">
+            !set started=1
+         !endif
+         <$div1 class="menuitem $css_class">
+          !read $(path)oneitem.phtml $1_
+         </$div1>
+       !else
+         !if $started!=1
+            !set started=1
+         !else
+            </$div0>
+         !endif
+         <$div0 class="wimsmenu $css_class">
+       !endif
+      !next i_
+     </$div0>
+    </div>
+    <!-- end _widgets/menubox.phtml -->
+!endif

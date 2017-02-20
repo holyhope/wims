@@ -1,0 +1,33 @@
+!!##language independant
+ !if $parm1=$empty
+  !exit
+ !endif
+!if \ isin $parm1$parm2$parm3$parm4
+ !for p in 1,2,3,4
+  !set parm$p=!slashsubst $(parm$p)
+ !next p
+!endif
+!if / isin $parm1
+ !default parm4=style="width:90%;height:300px;"
+ !set parm3=!replace internal &amp;+ by ; in $parm3
+ !set parm3=!replace internal &amp; by ; in $parm3
+ !set parm3=!replace internal &+ by ; in $parm3
+ !set parm3=!replace internal & by ; in $parm3
+ <iframe src="wims.cgi?module=adm/raw&amp;job=lightpopup&amp;emod=$parm1&amp;parm=$parm3;cmd=new;&amp;option=noabout" $parm4></iframe>
+!exit
+!endif
+ !reset titb
+ !read $docdir/$doc/$parm1.def
+ !set prompt=!item 2 to -1 of $parms
+ !default prompt=$titb
+ !if $titb=$empty
+  !default prompt=<span class="tt">$parm1</span>
+  $prompt
+  <span class="small">$n_nonavailable</span>
+ !else
+  <a id="$parm1"></a>
+  $prompt
+  !read $docdir/$doc/$parm1.def content
+  !set gotblock=!append item $parm1 to $gotblock
+ !endif
+

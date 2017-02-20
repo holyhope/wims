@@ -1,0 +1,106 @@
+!set precision=!getopt precision in $(replyoption$i)
+
+!if $n<2
+ :badrep
+ reply$i=
+ test=NaN
+ !exit
+!endif
+!if $wims_read_parm=nocompare
+  !goto drawing
+!endif
+!if $m<2
+ Test=bad $i
+ !exit
+!endif
+
+!!for the moment assume that linecnt =1
+!set linecnt=!itemcnt $(rlist[;1])
+!set n=!itemcnt $(rlist[1;])
+
+!default precision=8
+!!tol1	= 10,   8,   7,   6,   5,   4,  3.5,   3, 2.5,   2
+!!tol2	= 50,  40,  30,  25,  20,   17,  15,  13,11.5,  10
+!set precision1=$precision
+!set precision2=$[5*$precision]
+
+var=!varlist $(glist[1])
+!if $var issametext x
+  !distribute items $(glist) into f,xrange1,xrange2,yrange1,yrange2
+  glist=!values floor((-$xrange1+x)*$xsize/($xrange2-($xrange1))),\
+		floor((-$f+$yrange2)*$ysize/($yrange2-($yrange1))) for\
+		x=$xrange1 to $xrange2 step 0.02
+  m=!itemcnt $glist
+  !goto begin
+!endif
+!if $var issametext t
+  !distribute items $(glist) into f,g,trange1,trange2,xrange1,xrange2,yrange1,yrange2
+  glist=!values floor((-$xrange1+$f)*$xsize/($xrange2-($xrange1))),\
+		floor((-$g+$yrange2)*$ysize/($yrange2-($yrange1))) for\
+		t=$trange1 to $trange2 step 0.02
+  m=!itemcnt $glist
+  !goto begin
+!endif
+
+:begin
+
+curvecomp_xrange=0,$xsize
+curvecomp_yrange=0,$ysize
+
+!!curvecomp_option=discrete1 discrete2
+curvecomp_1=$glist
+curvecomp_2=$(rlist[1;])
+curvecomp_tolerance=$precision2
+
+tt=!exec curvecomp
+!distribute words $tt into mean1, mean2
+mean=$[max($mean1,$mean2)]
+
+!if NaN isin $mean or Inf isin $mean or $mean1=$empty
+ !goto badrep
+!endif
+
+:diag
+test=$mean
+
+!if $mean<$[$precision1]
+  diareply$i=good
+  !advance freegot
+!else
+  !if $mean<[2*$precision1]
+    diareply$i=bad
+    precreply$i=yes
+    !advance precgood
+  !else
+    !if $mean<$[$precision2]
+     partialgood$i=yes
+     diareply$i=good
+     freegot=$[$freegot + max(0,1-($mean-$precision1)/($precision2-$precision1))]
+    !endif
+  !endif
+
+!endif
+
+:drawing
+!if $(replytype$i)=javacurve
+ primitive1=polyline $color1,$rlist
+ !if $wims_read_parm!=nocompare
+  primitive2=polyline $color2,$glist
+ !endif
+ !exit
+!endif
+
+!! $(replytype$i)=jsxgraphcurve
+!if $wims_read_parm!=nocompare
+ script$i=!append line p$i[0] = brd$i.create('point',[$(glist[1]),$(glist[2])],{face:'', size:'0',fixed:true,name:'',showInfobox:false,strokeColor:'$color2'}); to $(script$i)
+ !for j=1 to $m/2
+  script$i=!append line p$i[$j] = brd$i.create('point',[$(glist[2*$j-1]),$(glist[2*$j])],{face:'', size:'0',fixed:true,name:'',showInfobox:false,strokeColor:'$color2'}); to $(script$i)
+  script$i=!append line brd$i.create('line',[p$i[$[$j-1]],p$i[$j]],{strokeColor:'$color2', straightFirst:false, straightLast:false}); to $(script$i)
+ !next
+!endif
+nb=1
+script$i=!append line q[0] = brd$i.create('point',[$(rlist[$nb;1]),$(rlist[$nb;2])],{face:'', size:'8',fixed:true,name:'',showInfobox:false,strokeColor:'$color1'}); to $(script$i)
+!for j=1 to $n/2
+ script$i=!append line q[$j] = brd$i.create('point',[$(rlist[$nb;2*$j-1]),$(rlist[$nb;2*$j])],{face:'', size:'8',fixed:true,name:'',showInfobox:false,strokeColor:'$color1'}); to $(script$i)
+ script$i=!append line brd$i.create('line',[q[$[$j-1]],q[$j]],{strokeColor:'$color1',straightFirst:false, straightLast:false}); to $(script$i)
+!next

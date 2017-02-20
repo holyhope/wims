@@ -1,0 +1,22 @@
+!!## load the css file of a class by a link in the header
+!!distribute words $wims_read_parm into css_file
+!default module_title2=$module_title
+
+!if $wims_class!=
+  !set css_file=!sh \
+  if (test -r $wims_home/log/classes/$wims_class/css) then\
+  cat $wims_home/log/classes/$wims_class/css\
+  fi
+!endif
+
+!if $css_file=$empty
+!exit
+!endif
+!set css_file=!replace internal $$$wims_bgcolor by $$wims_bgcolor in $css_file
+!set css_file=!replace internal $$$wims_ref_bgcolor by $$wims_ref_bgcolor in $css_file
+!set css_file=!replace internal $$$wims_ref_menucolor by $$wims_ref_menucolor in $css_file
+!writefile getfile/css.css $css_file
+
+!setdef class_css=yes in wimshome/$wims_sesdir/var.stat
+!set wims_html_header=!append line <link href="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=css.css" rel="stylesheet" type="text/css" />\
+to $wims_html_header

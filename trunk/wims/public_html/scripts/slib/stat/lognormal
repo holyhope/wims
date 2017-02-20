@@ -1,0 +1,33 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+
+slib_author=Sophie, Lemaire; Bernadette, Perrin-Riou
+
+slib_parms=3\
+,N\
+1,mu\
+1,sigma
+
+slib_example= 5,0,1\
+[2,3],0,2
+slib_require=octave
+!exit
+
+:proc
+slib_out=
+
+!distribute item $wims_read_parm into slib_data,slib_a,slib_b
+slib_data=!declosing $slib_data
+slib_cnt=!itemcnt $slib_data
+!if $slib_cnt=1
+	slib_data=1,$slib_data
+!endif
+!!deprecated syntax
+!!slib_out=!exec octave lognormal_rnd($[exp($slib_a)],$[$slib_b^2], $slib_data)
+slib_out=!exec octave lognrnd($[exp($slib_a)],$[$slib_b], $slib_data)
+
+slib_out=!trim $slib_out
+slib_out=!replace internal $\
+$ by ; in $slib_out
+slib_out=!words2items $slib_out

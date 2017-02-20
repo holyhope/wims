@@ -1,0 +1,19 @@
+
+!if $seq_cnt!=
+ !for j =1 to $seq_cnt
+  !set s_=!record 1 of wimshome/log/classes/$wims_class/seq/.sequence$j
+  !set s_=!line 3 of $s_
+  !set scnt=!itemcnt $s_
+  list_exsh=!append line $j\
+  to $list_exsh
+  !for k=1 to $scnt
+   !if exam isin $(s_[$k]) or sheet isin $(s_[$k])
+     list_exsh=!append item $(s_[$k]) to $list_exsh
+   !endif
+  !next k
+!next j
+
+!writefile wimshome/log/classes/$wims_class/seq/.sequences $seq_cnt\
+$list_exsh\
+
+!endif 

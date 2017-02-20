@@ -1,0 +1,181 @@
+
+!read adm/css.phtml
+!read adm/class/classname.phtml $wims_classname\
+$wims_institutionname
+
+!read js/speckedit.phtml name_deposit
+!header1
+
+!read adm/title.phtml 1\
+$classname\
+$name_title
+
+<div class="wims_content">
+!if $error!=$empty
+ <div class="wims_msg alert">
+   !read lang/msg.phtml.$moduclass_lang
+ </div>
+ <p>
+   !href module=home $wims_name_class_home
+.</p>
+ !goto end
+!endif
+
+!if $job!=$empty
+ !read $job.phtml
+ !goto end
+!endif
+
+<p>
+  $name_Intro
+  !href style=student $name_home
+.</p>
+
+<fieldset class="property_fields blockcenter">
+  <legend>$name_commun</legend>
+  <div class="field box">
+    !set motd=!record 0 of wimshome/log/classes/$wims_class/.motd
+    !if $motd=$empty
+      <div style="padding:.5em;background-color:#DFDFDF;color:#444;">
+        <em>$name_nomessage.<br/>
+        $name_clicktocreate.</em>
+      </div>
+    !else
+      <div style="padding:.5em;background-color:white;">
+        $motd
+      </div>
+    !endif
+
+    <div class="wimscenter">
+      !set wims_ref_class=wims_button
+      !href cmd=reply&job=modif&user=.CLASS. $wims_name_change
+      &nbsp;
+      !set wims_ref_class=wims_button wims_warning
+      !href cmd=reply&job=delete&user=.CLASS. $wims_name_erase
+    </div>
+  </div>
+</fieldset>
+
+!form reply
+<fieldset class="property_fields blockcenter">
+ <legend>$name_grpaction</legend>
+ <p>$name_expert0</p>
+  <div class="field box">
+
+    <ul>
+      !set wims_html_mode= li
+      !set wims_ref_class=wims_formradio
+      !set wims_ref_id=motd_type
+      !if $tv_listtechvar!=$empty
+        !set listuser=__ALL__,__CHECK__,__FILTER__
+        !set listuserchoices=$name_all,$name_checked,$name_filter
+      !else
+        !set listuser=__ALL__,__CHECK__
+        !set listuserchoices=$name_all,$name_checked
+      !endif
+      !formradio listuser list $listuser prompt $listuserchoices
+    </ul>
+    !if $tv_listtechvar!=$empty
+	!read adm/vfilter/varfilter htmldiv
+    
+    !!# Avec JQuery, Le champ "variable technique" n'apparait que lorsqu'il est necessaire.
+    !if $jquery_defined=yes
+      <script type="text/javascript">
+        /*<![CDATA[*/ jQuery(function(jq) {
+          jq( "#tech_var" ).hide();
+          jq( "#motd_type3" ).click(function() {
+            jq( "#tech_var" ).slideDown();
+          });
+          jq( "#motd_type1, #motd_type2" ).click(function() {
+            jq( "#tech_var" ).slideUp();
+          });
+        }); /*]]>*/
+      </script>
+    !endif
+    !endif
+  </div>
+
+ <div class="wimscenter">
+  <input type="hidden" name="job" value="groupe">
+  <input type="submit" name="action" value="$name_reactive" $wims_on_click/>
+  <input type="submit" name="action" value="$name_change" $wims_on_click/>
+  <input type="submit" name="action" value="$name_erase" class="wims_warning" $wims_on_click/>
+  !if $wims_numpartconnected>0
+    <input type="submit" name="action" value="$name_walertmsg" $wims_on_click/>
+  !endif
+ </div>
+</fieldset>
+
+$table_header
+  <caption>$name_listusermotd</caption>
+  <thead>
+    $table_hdtr
+      <th>Select</th>
+      <th>$name_participant</th>
+      <th style="width:50%">$name_actualmotd</th>
+      <th>$wims_name_Status</th>
+      <th>$name_alertmsg</th>
+      <th>$name_aloneaction</th>
+    </tr>
+  </thead>
+  <tbody>
+ !set listuser=$listuser
+ !for k=1 to $nbuser
+  $table_tr
+   !let u=$(listiduser[$k])
+   <td><input type="checkbox" name="listuser" id="listuser$k" value="$u"/>
+   <label for="listuser$k"></label></td>
+   !reset css_connected
+   !if $u isitemof $wims_connectedlogin
+    !set css_connected=class="wims_connected"
+    !set wims_ref_title=connected
+   !endif
+   <td>
+    <label for="listuser$k"><span $css_connected>$(listnameuser[$k])</span></label>
+   </td><td>
+    !record 0 of wimshome/log/classes/$wims_class/motd/$u
+   </td><td>
+    !let test=!record 0 of wimshome/log/classes/$wims_class/motd/.$u
+    !if $test=$empty
+     $(name_status[1])
+    !else
+     $(name_status[2])
+     !href cmd=reply&job=reactivate&listuser=$u $name_reactive
+    !endif
+   </td><td>
+    !let p=!positionof item $u in $wims_connectedlogin
+    !if $p!=$empty
+     !let n=!itemcnt $(wims_whoconnect[$p;])
+     !if $n>4
+      $name_usermultisession
+     !else
+      !defof wims_alertmsg in wimshome/sessions/$(wims_whoconnect[$p;4])/var.stat
+     !endif
+    !endif
+   </td>
+   <td>
+   !set wims_ref_class=wims_button
+    !href cmd=reply&job=modif&listuser=$u $wims_name_change
+    &nbsp;
+    !set wims_ref_class=wims_button wims_warning
+    !href cmd=reply&job=delete&listuser=$u $wims_name_erase
+    !if $n<5 and $p!=$empty
+     &nbsp;
+     !set wims_ref_class=wims_button
+     !href cmd=reply&job=write&listuser=$u $name_walertmsg
+    !endif
+   </td>
+  </tr>
+ !next k
+ </tbody>
+$table_end
+!formend
+:end
+
+!if $job!=$empty and $job!=delete
+  !set wims_menu_items=!append line back2,1,cmd=reply\
+ to $wims_menu_items
+!endif
+</div>
+!tail
+!reset job

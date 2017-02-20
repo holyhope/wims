@@ -1,0 +1,38 @@
+:测试用户点击的可用条件
+:语法,意义
+
+:point,x,y
+在(x,y)的点. 这是一个有固定宽度的``大''点.
+
+:rectangle,x1,y1,x2,y2
+对顶点 (x1,y1) 与 (x2,y2) 的矩形内部.
+
+:circle,x,y,d
+中心在 (x,y), 直径为 d 的圆的内部.
+
+:ellipse,x,y,w,h
+中心在 (x,y), 宽度为 w, 高度为 h 的椭圆的内部.
+
+:polygon,x1,y1,x2,y2,x3,y3,...
+顶点为 (x1,y1), (x2,y2), (x3,y3), ... 的多边形的内部.
+
+:bound,FNAME,x,y
+由图形文件 FNAME 定义的边界,此图形必须和被点击的图形一样大, 如果用户点击处与 (x,y) 位于同一填充区域里, 就认为条件满足.
+如果 <span class="tt">fill</span> 出现在回答的选项栏里, 就用红色或蓝色涂满区域 (不再是一个圆盘).
+<span class="wims_warning">$wims_name_warning</span>. 如果是班级里的练习, 应该复制图像 NOMFIC :
+<pre>\text{cache=draw(\size[1],\size[2]
+copy 0,0,-1,-1,-1,-1,NOMFIC)}
+\text{cache = slib(oef/insfilename)}
+</pre>
+在模块里只要写出它的名称即可.
+
+有两个选项可用:
+<ul><li>
+ <span class="tt wims_code_words">fill</span> : 区域被填满,
+  而不是在回答里用球指示 
+  (当使用了辅助图形 FNAME 时请勿使用本选项).
+</li><li>
+<span class="tt wims_code_words">goodanswershown</span>: 遇到错误的回答时在图形里显示正确的答案.
+</li></ul>
+:bound,FNAME
+同上, 如果用户点击处的颜色不同于 FNAME 的左上角像素的颜色, 就认为条件满足.

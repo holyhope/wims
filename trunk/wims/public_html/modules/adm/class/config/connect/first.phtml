@@ -1,0 +1,68 @@
+!set job2=first
+
+<p>
+!read lang/names.phtml.$moduclass_lang connect_first_info
+</p>
+!if $ccnt<1
+ !set basedir=!sh cd ..; pwd
+ <div class="wims_alertmsg">
+ !read lang/names.phtml.$moduclass_lang connect_first
+ </div>
+ !exit
+!endif
+
+$name_listserver1
+$table_header
+$table_hdtr<th>$wims_name_name</th>
+<th>$wims_name_Description</th><th>$wims_name_Address</th><th>$wims_name_Type</th><th>$wims_name_action</th>
+</tr>
+!for s in $Clist
+
+ $table_tr
+ <td>$s</td>
+ <td>$(desc_$s)</td>
+ <td><a href="$(url_$s)">$(site_$s)</a></td>
+ <td>$(type_$s)</td>
+ <td class="nowrap" class="small">
+ !href cmd=reply&job2=testserver&connident=$s $wims_name_test
+ &nbsp;
+ !href cmd=reply&job2=add1&connident=$s $wims_name_addconnection
+
+ </td></tr>
+!next s
+$table_end
+
+
+!if $clcnt<1
+ $name_noconnection
+ !exit
+!endif
+<p>
+$name_declaration
+</p>
+!distribute items yes,no into io1,io0
+$table_header
+$table_hdtr<th>$wims_name_server</th><th>$wims_name_class</th>
+<th>$name_connexion_action</th><th>-</th>
+!for clc in $cllist
+ !distribute words $clc into n_,c_,o_,i_
+
+ $table_tr
+ <td>$n_</td><td>$c_
+ </td><td>
+ !set wims_ref_class=wims_button
+ !href cmd=reply&job2=testclass&connident=$n_&connclass=$c_ $wims_name_test
+ &nbsp;
+ !set wims_ref_class=wims_button
+ !href cmd=reply&job2=mod1&connident=$n_&connclass=$c_ $wims_name_Manage
+&nbsp;
+!set wims_ref_class=wims_button
+ !href cmd=reply&job2=del1&connident=$n_&connclass=$c_ $wims_name_erase
+ </td><td>
+ !set wims_ref_class=wims_button
+ !href cmd=reply&job2=del1&connident=$n_&connclass=$c_&connopt=destroy $wims_name_destroy
+</td></tr>
+!next clc
+$table_end
+
+

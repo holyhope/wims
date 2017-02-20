@@ -1,0 +1,68 @@
+<p>
+WIMS 有一个简单的方法使你不需要成为专家就能利用它的大部分功能:
+$emph light phtml$emphend.
+只需拿一个已有的网页, 添加一些 WIMS 命令,
+然后将它作为 light phtml 发布在 WIMS 网站上即可.
+这样使你的网页看起来更富有智能.
+<p>
+一旦你的网页放在了 wims 网站上, 就可如同普通网页一样,
+从任何地方浏览.
+<p>
+如果你希望你的网页和你自己一样聪明, 
+你需要知道一点计算机编程原理以及看一下技术说明以了解可使用的命令与变量.
+即使不使用交互式以及编程, 你的网页也可有以下基本功能:
+<ol>
+ <li>在线数学符号. 只要在你的 phtml 文件里写入
+  <tt>$$m_alpha$$m_le$$m_beta</tt>, 就能在 wims 下得到
+  $m_alpha$m_le$m_beta. 
+  网页的浏览者可以自己选择字体大小, 不需你操心.
+  请参见
+  $(ref1)mathfonts$(ref2)mathfonts">$title_mathfonts</a>. <p>
+  
+ <li>对于更复杂的数学公式, 你可使用
+  $(ref1)cmdlist_instex_&+cmd_choose=all$(ref2)cmdlist_instex_">instex</a>.
+  例如, 在你的 phtml 里的 
+  !set ins_align=middle
+  <pre>
+  $ !instex $$$$ \int^b_a \sqrt{x^2+1}dx $$$$
+  </pre>
+  将给出行内公式
+  !instex $$ \int^b_a\sqrt{x^2+1}dx $$
+  , 而 <pre>
+  $ !instex $$$$$$$$ \int^b_a \sqrt{x^2+1}dx $$$$$$$$
+  </pre>
+  用行间公式的形式给出同样的式子:
+  !instex $$$$ \int^b_a \sqrt{x^2+1}dx $$$$
+  . 不像有的软件, 你不需要预先编译 phtml 文件,
+  而且你的公式可以跟随不同的请求变化 (见下面).
+  <p>计划在不久后 WIMS 命令将可翻译成 TeX 源文件的数学式.
+  这样你即使不懂 TeX 也能插入漂亮的公式.<p>
+
+ <li>图形的动态插入. 只需带有一个公式的 WIMS 命令
+  ($(ref1)cmdlist_insplot_&+cmd_choose=all$(ref2)cmdlist_insplot_">insplot</a>)
+  你的网页就能包含一个图形, 甚至还能活动.
+  而且它还能随着不同的请求而变化.<p>
+
+ <li>你可以定义及使用能替换的变量. 
+ 这些变量的值可以是用户定义的或者是随机的.
+ 并且还能放到 <tt>instex</tt>, <tt>insplot</tt>, 等的命令中. 
+ 此外这些变量也能用于定义格式的宏.<p>
+ 
+ <li>你可以直接应用强有力的数学软件: 一个简单的命令
+  <pre>!exec pari factor(2^67-1)</pre>
+  就能对数 2<sup>67</sup>-1 作因子分解 (不过你要复制我的某个模块
+  使得输出具有合适的形式).
+  <p> 
+ <li>使用 wims 命令将能随 wims 服务器的改进而得益.
+ 例如更好的 TeX 字体及图形, 对数学公式更漂亮的显示等.
+</ol>
+
+如果你需要更强大的交互性, 你可以把你的 light phtml 转换成
+WIMS 模块, 这使你能够做非常复杂的结构. 请参见
+$(ref1)migrate$(ref2)mibrate">$title_migrate</a>.
+
+<p>
+
+请 $(ref1)lighthowto$(ref2)lighthowto">参阅这里</a> 以了解如何发布一个
+light phtml 网页.
+

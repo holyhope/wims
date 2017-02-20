@@ -1,0 +1,110 @@
+
+!if $datay=$empty
+  !exit
+!endif
+!distribute item 30,0,14,0,lightgrey,lightgrey,blue,darkgreen,darkgreen,orange,grey, into lim,testfin,\
+  noactivity,noday,\
+  colorgrid,colorgridm,color,colorg,colorgraph,colorgraph1,colorbreak,rupture
+!if $datanew!=$empty
+ !set test=!text select 123456789 in $datanew
+ !if $test=$empty
+   !reset datanew
+ !endif
+!endif
+!if $datanew!=$empty
+  !set maxexo=!exec pari vecmax([$datay,$datanew,7])+1
+!else
+  !set maxexo=!exec pari vecmax([$datay,7])+1
+!endif
+!reset barchart linegraph legend goodlist linegraph1
+!set dataxcnt=!itemcnt $datax
+!for j=1 to $dataxcnt
+  !set cnt=$(datax[$j])
+  !set cnt1=!char 1 to 4 of $cnt
+  !set cnt2=!char 5 to 6 of $cnt
+  !set cnt3=!char 7 to 8 of $cnt
+  !set jday_=$(day[$j])
+  !if $j>1 and $[$jday_ - $(day[$j-1])+1] > $noactivity
+    !set noday_=$[7*floor(($jday_ -$(day[$j-1]))/7)]
+    !set noday=$[$noday + $noday_]
+    !set rupture=!append line frectangle $[$jday_ - $noday],-3,$[$jday_ - $noday+6],$[$maxexo],$colorbreak\
+    text black, $[$jday_ - $noday+2],-1.5,,$noday_ $name_days\
+    arrow2 $[$jday_ - $noday],-2.5,$[$jday_ - $noday+6],-2.5,6,black\
+    to $rupture
+    !set noday=$[$noday -7]
+  !endif
+  !if $noday!=0
+    !set jday_=$[$jday_ - $noday]
+  !endif
+  !set tmp=$[min($(datay[$j]),$maxexo)]
+  !set barchart=!append colon $jday_:$tmp:$color to $barchart
+  !!set linegraph=!append colon $jday_:$(dataz[$j]) to $linegraph
+  !if $(datanew[$j])!=$empty
+   !!set linegraph1=!append colon $jday_:$(datanew[$j]) to $linegraph1
+   !if $(datanew[$j])>0
+     !set linegraph1=!append line segment $[$jday_+0.5],0,$[$jday_+0.5],$(datanew[$j]),$colorgraph1 to $linegraph1
+   !endif
+  !endif
+  !set legend=!append colon $jday_:$cnt3/$cnt2 to $legend
+  !set good=!declosing $(datagood[$j])
+  !set good=!nonempty items $good
+  !if $good!=$empty
+   !set gcnt=!itemcnt $good
+   !set good=!makelist $jday_,x for x in $good
+   !if $gcnt > $lim
+    !for t=0 to $[floor($gcnt/$lim)-1]
+      !set goodlist=!append line crosshairs,$colorg,$(good[$[2*$t*$lim+1]..$[2*($t+1)*$lim]]) to $goodlist
+    !next
+    !if $[2*$t*$lim] < [2*$gcnt]
+      !set goodlist=!append line crosshairs,$colorg,$(good[$t*2*$lim+1..-1]) to $goodlist
+    !endif
+   !else
+    !set goodlist=!append line crosshairs,$colorg,$good to $goodlist
+   !endif
+  !endif
+  !endif
+  !if $jday_ > $maxday
+   !break
+  !endif
+!next
+!if $barchart=$empty
+ !exit
+!endif
+
+!set testfin=$[$jday_+2]
+!if $testfin < 100
+  !set mult=10
+!else
+  !set mult=8
+!endif
+!distribute item $[$testfin*$mult],$[$maxexo*$mult] into xsize, ysize
+
+!exec canvasdraw\
+size $xsize,$ysize\
+xrange -2,$[$testfin]\
+yrange -4,$maxexo\
+axis\
+fontsize 8\
+xaxisup $legend\
+ylabel $name_ylabel\
+legend $lastname $(datax[1])-$(datax[-1])\
+opacity 255,40\
+grid 7,10,$colorgrid,7,10,0,$colorgridm\
+barchart $barchart\
+linewidth 2\
+crosshairsize $[rint($mult/3)]\
+$goodlist\
+linewidth 3\
+$linegraph1\
+comment strokecolor $colorgraph\
+comment linegraph $linegraph\
+$rupture
+
+!exit
+
+!set xsize_gnuplot_mult=$[round(10*$xsize/500)/10]
+!set ysize_gnuplot_mult=$[round(10*$ysize/400)/10]
+!set insplot_set=grid;title "$name_student($datafirst ..)";format x;size $xsize_gnuplot_mult,$ysize_gnuplot_mult;
+!set insplot_transparent=white
+!set insplot_set=$(insplot_set)boxwidth 0.4;style fill solid 1.0;timefmt "%y:%m:%d";xtics ($tics) rotate;xrange [0:$testfin];yrange [0:$maxexo];
+!insplot "insplot_data" using 1:2 with boxes notitle

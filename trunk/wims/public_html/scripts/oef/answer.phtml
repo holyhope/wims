@@ -1,0 +1,107 @@
+!nocache
+<div class="oefanswer">
+
+!nocache
+!if bad_exo iswordof $error
+ !exit
+!endif
+!read ./oef/$module_language/answer.phtml
+<div id="answeranalysis">
+<h3 class="legend oefanswername">$name_answeranalysis</h3>
+
+<div class="content">
+!if $ansorder!=$empty or $conditioncnt >0
+  <table class="float_left answeranalysis">
+!endif
+
+!distribute item 1,1 into cntr,cntc
+
+!set indgood   =<span class="oef_indgood">$indgood</span>
+!set indpartial=<span class="oef_indpartial">$indpartial</span>
+!set indprec   =<span class="oef_indprec">$indprec</span>
+!set indbad    =<span class="oef_indbad">$indbad</span>
+!set condgood  =<span class="oef_condgood">$condgood</span>
+!set condbad   =<span class="oef_condbad">$condbad</span>
+
+!for t in $ansorder
+ !set i=$(cnt$t)
+ !if $oefsteps=$empty or $t$i isitemof $gotsteps
+  !read oef/answer$t.phtml
+  !! # Here is a whitelist of answer types where color legend must be displayed.
+  !if noanalyzeprint iswordof $(replyoption$i)
+   !set display_noanalyze=yes
+  !else
+  !! could have been defined for another reply
+   !if $display_noanalyze!=yes
+    !if (($(replytype$i) iswordof radio checkbox mark flashcard numeric and nolegend notwordof $(replyoption$i))\
+      or legend iswordof $(replyoption$i)) \
+      and ?analyze notin $(replygood$i) and $wims_isexam<1
+
+     !if $(diareply$i)!=good or $(partialgood$i)=yes or $(precreply$i)=yes
+      !set display_oeflegend=yes
+      !if $(partialgood$i)=yes
+       !default display_partialgood=yes
+      !endif
+      !if $(precreply$i)=yes
+       !default display_precreply=yes
+      !endif
+      !if ($(replystyle$i)=mc or $(replytype$i) iswordof draw) and $(replytype$i) notwordof radio
+       !default display_forget=yes
+      !endif
+     !endif
+    !endif
+  !endif
+  !endif
+ !endif
+ !advance cnt$t
+!next t
+
+!if $conditioncnt>0
+ !if $embedded_bracket!=$empty
+  <tr><td style="text-align:left" colspan="2" class="nowrap small">$embedded_bracket</td></tr>
+ !endif
+!endif
+
+!for i in $condlist
+ !if hide notwordof $(condoption$i)
+  <tr><td colspan="2" class="bold">$(condname$i):</td><td>
+  !item $(condtest$i)+1 of $condbad,$condgood
+  </td></tr>
+ !endif
+!next i
+
+!if $ansorder!=$empty or $conditioncnt >0
+  </table>
+!endif
+
+!if $display_oeflegend issametext yes
+  !read oef/color_legend.phtml
+!endif
+
+!if $feedbackcnt>0
+ <div class="oef_feedbacks" style="clear:left;">
+  !read $deffile feedback
+ </div>
+!endif
+
+!if $solution!=$empty and ($presentsol>1 or ($presentsol=1 and $score<10))
+  <div class="wims_widget_box clearall">
+   <div class="title_box"><h3>$name_Solution.</h3></div>
+   <div class="box_content">
+     !if $solution!=$executed_str or $oef2wims_version<3.10
+      $solution
+     !else
+      !read $deffile solution
+     !endif
+   </div>
+  </div>
+!endif
+
+!if $m_reply_err != $empty
+ <pre class="wimswarning">$m_reply_err</pre>
+!endif
+    <br class="spacer clearall"/>
+  </div>
+ </div>
+</div>
+<!--END oef answer-->

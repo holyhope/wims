@@ -1,0 +1,85 @@
+#GetLog permet d'obtenir les logs d'un utilisateur $quser
+# 3 options possibles : "score" , "noscore" ou "exams"
+
+#on commence par verifier la classe $qclass
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+!read scripts/check.user
+!if $error!=$empty
+ !exit
+!endif
+
+!if $option==exams
+  tmp_log =  !sh cd $wims_home/log/classes/$qclass\
+  cat noscore/$quser | grep '^E' 2>/dev/null
+!else
+    !if $option==score or $option==noscore
+      tmp_log =  !sh cd $wims_home/log/classes/$qclass\
+      cat $option/$quser | grep '^[^E]' 2>/dev/null
+    !else
+      tmp_log =  !sh cd $wims_home/log/classes/$qclass\
+      cat score/$quser noscore/$quser | grep '^[^E]' 2>/dev/null | sort
+    !endif
+!endif
+
+logsize=!linecnt $tmp_log
+export_size = 0
+
+!writefile wimshome/sessions/$wims_session/user.log \
+
+# Si "qexam" ou "qsheet" est renseigé, on n'afficher les logs que de cette feuille / exam
+!if $qexam != $empty
+  id_filter = $qexam
+!endif
+!if $qsheet != $empty
+  id_filter = $qsheet
+!endif
+
+!for i=1 to $logsize
+   current = !line $i of $tmp_log
+
+   # Sheet Log Format :
+   #DATE, SESSION, SHEET_ID, EXO, CMD, [SCORE if cmd=score] ,IP
+   # Exam Log Format :
+   #EDATE, SESSION, EXAM_ID, EXO, CMD, [SCORE if cmd=SCORE], IP, [SH.EXO if cmd = new]
+
+   # Procedure pour masquer partiellement les IP des etudiants :
+   position = -1
+   !if $option==exams
+     command = !word 5 of $current
+     !if $command==new
+       position = -2
+     !endif
+   !endif
+
+   IP = !word $position of $current
+   IP = !replace internal . by , in $IP
+   IP3 = !item -2 of $IP
+   IP4 = !item -1 of $IP
+   masked_IP = ###.###.$IP3.$IP4
+   current = !replace word number $position by $masked_IP in $current
+
+   !if $id_filter != $empty
+       id = !word 3 of $current
+       !if $id == $id_filter
+          user_log = !append line :$current to $user_log
+          export_size = $[$export_size + 1]
+       !endif
+   !else
+       user_log = !append line :$current to $user_log
+       export_size = $[$export_size + 1]
+   !endif
+
+
+   # Pour des raisons de performance (wims interdit des variables trop gourmandes), on enregistre maintenant les donnees dans un fichier, toutes les 100 lignes
+   !ifval  $export_size % 100 = 0
+	   !appendfile wimshome/sessions/$wims_session/user.log $user_log
+	   user_log = $empty
+   !endif
+!next i
+
+!appendfile wimshome/sessions/$wims_session/user.log $user_log
+user_log = $empty

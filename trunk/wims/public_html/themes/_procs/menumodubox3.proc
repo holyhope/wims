@@ -1,0 +1,36 @@
+!!menumodubox3.proc :
+!! Adds all class links for supervisor in wims_rm_0 for navigation menus,
+!! when class_type=3 (portal class) or 4 (??)
+
+!! What is this test for ?
+!if $class_type = 3
+    !set super_ = $wims_superclass
+!endif
+
+!set wims_rm_0 = $wims_rm_0\
+itemsep,0,$wims_name_manage
+
+!read themes/_procs/supervisorusermanage.proc
+
+!!read themes/_procs/extlink.proc
+!!set wims_rm_0 = $wims_rm_0\
+!!techvar,1,module=adm/class/techvar
+
+!set wims_rm_0 = $wims_rm_0\
+itemsep,0,$wims_name_configuration
+!read themes/_procs/supervisorconfig.proc 0
+
+!read themes/_procs/extlink.proc cnt
+!if $class_ent_n0 >0
+  !set wims_rm_0 = !append line itemsep,0,$wims_name_otherclasses to $wims_rm_0
+  !set tmp_exists=yes
+  !read themes/_procs/extlink.proc proc
+!endif
+!if $class_type isin 024 and $auth_method notwordof cas
+  !if $tmp_exists!=yes
+  !set wims_rm_0 = !append line itemsep,0,$wims_name_otherclasses to $wims_rm_0
+  !endif
+  !read themes/_procs/supervisorotherclass.proc
+!endif
+!reset tmp_exists
+!set wims_homeref_n0 = !linecnt $wims_rm_0

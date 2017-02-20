@@ -1,0 +1,46 @@
+!if $wims_read_parm=$empty
+ !exit
+!endif
+
+!set pp=!trim $wims_read_parm
+!set pp=!replace internal \\ by ///?/?/?/// in $pp
+!set pp=!replace internal \ by $$m_ in $pp
+!set pp=!replace internal ///?/?/?/// by \\ in $pp
+!set s_=!line 1 of $pp
+
+!set test=!text remove ,0123456789 in $s_
+!set testcnt=!itemcnt $s_
+!if $test notsametext $empty or $s_=$empty or $testcnt!=2
+  !exit
+!endif
+
+
+!set pp=!line 2 to -1 of $pp
+!set pp=!translate internal $	$ to $\
+$ in $pp
+
+!read canvasimagedir.phtml $pp
+!set pp=!trim $canvas_ppm
+
+!!need a space at the end
+!set pp=!rows2lines $pp$
+!!non empty lines in canvasdraw
+!set pp=!nonempty lines $pp
+!set pp=$pp$ $
+!set canvasdraw_out=!exec canvasdraw\
+size $s_\
+$pp
+!reset canvasdraw_idclass
+!set id1=!positionof canvas_div in $canvasdraw_out
+!if $id1!=$empty
+  !set id2=!positionof " in $canvasdraw_out
+  !for j in $id2
+    !if $j>$id1
+      !break
+    !endif
+  !next
+  !set canvasdraw_idclass=!char $id1+1 to $j of $canvasdraw_out
+!endif
+!set canvasdraw_out=!replace internal , by in $canvasdraw_out
+
+$canvasdraw_out

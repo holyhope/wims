@@ -1,0 +1,22 @@
+
+!for t in context,result
+ !if $(ask$t)>1 and $($(t)list)!=$empty
+  rep=!trim $(rep$t)
+  !if $rep=$empty or $rep<1
+   error=empty_data
+   !exit
+  !endif
+  N=!itemcnt $(sh$t)
+  rep=$[floor($rep)]
+  !if NaN isin $rep or $rep<1 or $rep>$N
+   error=bad_data
+   !exit
+  !endif
+  !if $rep!=$(good$t)
+   error=bad_reply
+   !advance penalty
+   !exit
+  !endif
+ !endif
+!next t
+

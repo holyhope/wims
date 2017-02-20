@@ -1,0 +1,24 @@
+!read adm/class/classname.phtml $wims_classname\
+$wims_institutionname
+
+!read adm/title.phtml 1\
+$classname\
+$livret_title\
+$name_job
+
+<hr style="
+:40%" />
+
+$name_delpalier
+<table class="wimscenter wimsnoborder">
+ <tr><td> 
+  !href cmd=reply&job=delpalier&palier=$palier&comp=$comp&cf_set=$wims_name_tosave $wims_name_yes
+ </td><td style="width:50px;">&nbsp;</td><td>
+  !href cmd=reply&job=addcomp&comp=$comp $wims_name_no
+ </td></tr>
+</table>
+!reset cf_set
+
+!set wims_menu_items=!append line back2,1,cmd=reply&job=home\
+to $wims_menu_items
+

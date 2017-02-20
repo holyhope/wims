@@ -1,0 +1,36 @@
+!goto $wims_read_parm
+
+:def
+title=Moyenne harmonique
+input=data1d
+!exit
+
+:proc
+
+cnt=!itemcnt $formula
+!if $cnt>0
+ result=!sum 1/x for x in $formula
+ result=$[$cnt/($result)]
+!else
+ result=0
+!endif
+
+!exit
+
+:output
+
+<p class="wimscenter">
+Moyenne harmonique =
+!htmlmath $result
+</p>
+Données : $cnt nombres { $formula }
+<p>
+La <em>moyenne harmonique</em> de 
+\(\{x_1, x_2, ..., x_n\}\)
+est égale à
+!set ins_align=middle
+!insmath \frac{n}{\sum_{i=1}^n \frac{1}{ x_i}}
+&nbsp;.
+</p>
+!exit
+

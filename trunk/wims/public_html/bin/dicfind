@@ -1,0 +1,42 @@
+#! /bin/sh
+# This script looks up a specified word in a dictionary.
+
+#Dictionary file directory
+cwd=`pwd`
+lang=$w_module_language
+dicdir=bases/dic/$lang
+
+if [ ! -d $dicdir ]; then exit; fi
+cd $dicdir
+
+if [ -z "$w_dicfind_limit" ]; then
+ limit=800
+else
+ limit=$w_dicfind_limit
+fi
+
+files=
+for i in $w_dicfind_wordlen
+do
+ if [ $i -gt 0 ] && [ -f $lang.$i ]; then files="$files $lang.$i"; fi
+done
+oncechar=$wims_exec_parm
+export oncechar
+if `echo $w_dicfind_option | grep -q noaccent`; then
+ if `echo $w_dicfind_option | grep -q oncechar`; then
+  cat $files |\
+   tr 'חיטךכתשûüבאגהדףעפצץםלןמס‎ÇÉÈÊËÚÙ' 'ceeeeuuuuaaaaaoooooiiiinyCEEEEUUUUAAAAAOOOOOIIIINY' |\
+   grep $wims_exec_parm | $cwd/bin/oncechar | head -$limit
+ else
+  cat $files |\
+   tr 'חיטךכתשûüבאגהדףעפצץםלןמס‎ÇÉÈÊËÚÙ' 'ceeeeuuuuaaaaaoooooiiiinyCEEEEUUUUAAAAAOOOOOIIIINY' |\
+   grep $wims_exec_parm | head -$limit
+ fi
+else
+ if `echo $w_dicfind_option | grep -q oncechar`; then
+  cat $files | grep $wims_exec_parm | $cwd/bin/oncechar | head -$limit
+ else
+  cat $files | grep $wims_exec_parm | head -$limit
+ fi
+fi
+

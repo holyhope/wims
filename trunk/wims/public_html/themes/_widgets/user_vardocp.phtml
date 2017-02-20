@@ -1,0 +1,14 @@
+!set dpcnt=!recordcnt wimshome/log/classes/$wims_class/doc/.docindex
+!reset dps_list dpt_list dpti_list dpde_list dpdw_list
+!for i=1 to $dpcnt
+ !set d__=!record $i of wimshome/log/classes/$wims_class/doc/.docindex
+ !distribute lines $d__ into s_,t_,ti_,de_,o_,w_
+ !if $o_>0
+  !set dps_list=!append line $s_ to $dps_list
+  !set dpt_list=!append line $t_ to $dpt_list
+  !set dpti_list=!append line $ti_ to $dpti_list
+  !set dpde_list=!append line $de_ to $dpde_list
+  !set dpdw_list=!append line $w_ to $dpw_list
+ !endif
+!next i
+!set dpcnt=!linecnt $dps_list

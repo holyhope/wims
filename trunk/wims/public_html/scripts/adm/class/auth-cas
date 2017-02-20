@@ -1,0 +1,45 @@
+
+!!# Input variables: authdef=def file  / superclass
+!!# Parameters: NOTHING
+!!# Output : auth_test,auth_error
+
+auth_test=ERROR
+
+cas_auth = !defof class_cas_auth in $authdef
+!default cas_auth=!defof cas_auth in wimshome/log/wims.conf
+
+ticket = !replace internal & by $\
+$ in $module_init_parm
+module_init_parm=!replace &ticket=.* by in $module_init_parm
+type= !getopt type in $ticket
+ticket = !getopt ticket in $ticket
+!if $ticket != $empty
+   url = $wims_ref_name?module=adm/class/classes&$module_init_parm
+   !read adm/codeurl $url
+   !!response = !exec webget $cas_auth/validate?ticket=$ticket&service=$script_out
+   tmpdir=$wims_home/tmp/sessions/$wims_session
+   response=!sh export wims_exec_parm="$cas_auth/validate?ticket=$ticket&service=$script_out" ;\
+      bin/webget > $tmpdir/getcas ; gunzip -c -f $tmpdir/getcas
+   test2 = !line 1 of $response
+   !if $test2 = yes
+      auth_user=!line 2 of $response
+      auth_user=!lowercase $auth_user
+      auth_test=OK
+   !else
+      !if authenticationFailure notin $response
+!!! answer to serviceValidate (xml)
+        !set auth_user=!detag $response
+        !set auth_user=!nonempty lines $auth_user
+        !set auth_user=!line 1 of  $auth_user
+        !set auth_user=!nospace $auth_user
+        !set auth_user=!lowercase $auth_user
+        !set auth_test=OK
+      !else
+        error=bad_cas_connexion
+        !exit
+      !endif
+   !endif
+!endif
+auth_user_orig=$auth_user
+auth_error=$wims_exec_error
+wims_exec_error=

@@ -1,0 +1,68 @@
+!goto $wims_read_parm
+
+:def
+title=Angle convertion
+synonyme=angle
+input=function
+!exit
+
+:proc
+formula=!item 1 of $formula
+option=!lower $option
+option=!word -1 of $option
+!default option=degree
+!if $option notwordof radian radians degree degrees
+ error=bad_formula
+ !exit
+!endif
+
+!if $option iswordof degree degrees
+ o1=rad
+ o2=deg
+ t1=$formula
+ t2=a*180/pi
+ prest=c=abs(b); d=sign(b); v=floor(c); m=(c-v)*60; M=floor(m); s=round((m-M)*60); print(d*v,",",M,",",s);
+!else
+ o1=deg
+ o2=rad
+ t1=$formula*pi/180
+ t2=a
+ prest=print(($formula)/180);
+!endif
+
+result=!exec pari a=$t1; b=$t2; print($formula);\
+	print(b);\
+	$prest
+!distribute lines $result into l1, l2, l3
+!if $l3=$empty or NaN isin $[$l2]
+ result=
+!endif
+!exit
+
+:output
+!set name_rad=radians
+!set name_deg=degrees
+
+!htmlmath $l1 
+ $(name_$o1) = 
+!htmlmath $l2
+ $(name_$o2)
+!if $o2=rad
+ !if $l2!=0
+  <p> =
+  !if / isin $l3
+   !set l3=($l3)
+  !endif
+  !htmlmath $l3*pi
+ !endif
+!else
+ !distribute items $l3 into d,m,s
+ !ifval ($m!=0 or $s!=0) and $s<60
+  <p> =
+  !htmlmath $d
+  &deg; $m' $s''
+ !endif
+!endif
+
+!exit
+

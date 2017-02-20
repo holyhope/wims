@@ -1,0 +1,47 @@
+!set p_=!word 1 of $wims_read_parm
+!bound p_ within none,header,source,html default none
+!goto $p_
+:none
+!exit
+:header
+!set m_subject=Changes in 3.32
+!set m_date=20030926
+!set m_time=17:15:42
+!set m_from=Gang XIAO
+!set m_sender_ip=127.0.0.1
+!set m_sender_id=
+!set m_sender_class=
+!set m_email=xiao@unice.fr
+!set m_to=
+!set m_prec=O200309/1
+!set m_exists=yes
+!exit
+:source
+<pre>
+There are two changes in WIMS-3.32 that may, in some very rare
+occasions, bring compatibility problems with earlier versions&#58;
+&lt;ol>
+&lt;P>&lt;li>The virtual class directory structure is reorganized. The existing classes on your server will automatically be updated to the new version by the installation script of the software, but class backups made before 3.32 will no longer be recognized under the new version.
+
+At any rate, it is recommended that you make new class backups immediately after server update.
+
+&lt;p>&lt;li>A direct array addressing method has been added to the OEF syntax. Now &lt;tt>\\var[3]&lt;/tt> will give you the third item of the value of &lt;tt>\\var&lt;/tt> (if it is a comma-separated list). This helps
+to greatly simplify variable processing in many cases, but in the very unlikely case where you have written things like &lt;tt>\\var[3]&lt;/tt> to mean something else, these will be broken when you recompile your OEF.
+
+An easy solution consists of inserting a space between the variable name and the bracket.
+&lt;/ol></pre>
+!exit
+:html
+There are two changes in WIMS-3.32 that may, in some very rare
+occasions, bring compatibility problems with earlier versions&#58;
+<ol>
+<P><li>The virtual class directory structure is reorganized. The existing classes on your server will automatically be updated to the new version by the installation script of the software, but class backups made before 3.32 will no longer be recognized under the new version.
+<p>
+At any rate, it is recommended that you make new class backups immediately after server update.
+<p>
+<p><li>A direct array addressing method has been added to the OEF syntax. Now <tt>\var[3]</tt> will give you the third item of the value of <tt>\var</tt> (if it is a comma-separated list). This helps
+to greatly simplify variable processing in many cases, but in the very unlikely case where you have written things like <tt>\var[3]</tt> to mean something else, these will be broken when you recompile your OEF.
+<p>
+An easy solution consists of inserting a space between the variable name and the bracket.
+</ol>
+

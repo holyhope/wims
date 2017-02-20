@@ -1,0 +1,42 @@
+!set methtit2=The square of a real number is positive or zero
+!set methtit=Positivity of a square
+!set methenv=ZZ QQ RR
+!set methparmtype=function
+!set methhelp=this method add a condition of the type \(U^2 >= 0) into\
+ the hypotheses, where \(U) is an algebraic expression of your choice.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ One applies \(U^2 >= 0), where \(U) =
+ !read deduc/methparm.phtml 1
+
+!exit
+:check
+ !if / isin $methparm1
+  error=Division is not allowed in this method!
+  !exit
+ !endif
+ !read deduc/sub/simplify ($methparm1)^2
+ !if $out=$empty
+  error=bad_data
+  !exit
+ !endif
+ sqr=$out
+ oldobject=0
+ newobject0=$sqr >= 0
+ methexp=Positivity of the squre of \($methparm1)
+ 
+ contextlist=$ct_Onlywhen $m_U represents a real number,\
+	$ct_Always,\
+	$ct_Onlywhen $m_U is positive or zero,\
+	$ct_Onlywhen $m_U is an integer
+
+ resultlist=$newobject0,\
+  $sqr > 0
+
+!exit
+

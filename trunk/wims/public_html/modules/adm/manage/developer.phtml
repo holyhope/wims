@@ -1,0 +1,50 @@
+
+!if $job2 iswordof mod1 mod2 del1
+ !read developer/$job2.phtml
+ !set wims_menu_items=!append line develaccount,1,cmd=reply&job2=first\
+to $wims_menu_items
+ !exit
+!endif
+!! for cn versions can be redefine in lang/names.phtml.xx
+!default name_name=$wims_name_name
+$table_header
+<caption>$name_dev</caption>
+$table_hdtr
+<th>$wims_name_Login</th><th>$name_name</th><th>$wims_name_action</th></tr>
+!for d=1 to $devcnt
+ !distribute lines $(drec$d) into login,passwd,name,email
+ !read namewriting.phtml $name
+ $table_tr
+ <td>$login</td>
+ <td>
+ <a href="mailto:$email">$script_out</a></td>
+ <td>
+ !set wims_ref_class=wims_button wims_warning
+ !href cmd=reply&job2=del1&devno=$d $wims_name_erase
+&nbsp;
+!set wims_ref_class=wims_button
+ !href cmd=reply&job2=mod1&devno=$d $wims_name_properties
+&nbsp;
+!set wims_ref_class=wims_button
+ !href module=adm/modtool&login=$login&passwd=$passwd&jobreq=modname $name_visit
+ </td></tr>
+!next d
+$table_end
+
+!set wims_menu_items=!append line adddevel,1,cmd=reply&job2=mod1&devno=0\
+to $wims_menu_items
+
+!form reply
+<input type="hidden" name="job2" value="pub" />
+$name_allowed
+<div class="wimscenter">
+<input size="50" name="devpublisher" value="$devpublisher" />
+</div>
+<div class="wimscenter wimsform">
+<input type="submit" value="$wims_name_tosave" />
+</div>
+
+!formend
+
+!reset job2,devno,devlogin,devpasswd,devname,devemail,devpublisher
+

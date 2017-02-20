@@ -1,0 +1,470 @@
+!set lang_exists=yes
+
+!set name_intromain=Cet outil permet à l'administrateur de maintenir l'installation WIMS en ligne.\
+Son accès est contrôlé par les définitions du fichier de configuration
+
+!set name_warning_wrongpass=Vous avez donné un mauvais mot de passe.
+!set name_try_wrongpass=Essayez de nouveau
+
+!!list
+ !distribute lines Les installations de sécurité doivent être vérifiées après la compilation. Exécutez <span class="tt">bin/wrapuid</span> comme <span class="tt">root</span>!\
+   Voici les tâches que vous pouvez effectuer en ligne.\
+   Configuration\
+   Vérification de l'installation\
+à exécuter après chaque ajout de nouvelles ressources (modules, feuilles) au serveur\
+   Maintenance\
+   Création et maintenance\
+into name_warning,name_online,name_configuration,name_checklist,name_mkindex,name_checkmaintain,\
+  name_createmaintain
+
+!set name_restore_class=Restauration d'une classe
+!!help
+
+!set name_warning_help=Utiliser les liens d'aide spécifiques pour accéder aux différents sujets d'aide.
+
+!set name_visit=Visiter
+!set name_click=Cliquez ici
+
+!set wims_name_download_module=Téléchargement des modules
+
+!if $job=access
+ !set title=Configuration de la politique d'accès
+ !set name_subtitle=Définition de la politique d'accès
+ !exit
+!endif
+
+!if $job=activ
+  !set title=Activités actuelles du serveur
+  !distribute lines Temps du serveur\
+    Charge en moyenne\
+    minute\
+    minutes\
+    heure\
+    heures\
+    last\
+    depuis\
+    Nombre de requêtes\
+    Sessions actives dans les 10 dernières minutes\
+    Session\
+    Client IP\
+    Requêtes\
+    Module\
+  into name_servor_time,name_Load,name_min,name_mins,name_hour,name_hours,name_last,name_since,\
+   name_requests,name_activesessions,name_session,name_IP,name_Requests,name_module
+ !exit
+!endif
+
+!if $job=attrib
+  !set title=Vérification des permissions de fichiers
+
+  !distribute lines Les permissions d'accès de cette installation WIMS sont toutes sécurisées.\
+   Les fichiers ou dossiers suivants sont lisibles par d'autres, ce qu'ils ne devraient pas être.\
+   Il y a beaucoup de fichiers ou dossiers lisibles par d'autres, ce qu'ils ne devraient pas être.\
+   Le problème a été réparé partiellement.\
+   Exécutez le script une fois de plus\
+   jusqu'à ce qu'il n'y ait plus de fichiers ou dossiers ayant de mauvaises permissions.\
+   Listes des permissions réparées\
+   Les fichiers ou dossiers suivants sont modifiables par d'autres, ce qu'ils ne devraient pas être.\
+   Les fichiers ou dossiers suivants sont exécutables par d'autres, ce qu'ils ne devraient pas être.\
+   Il y a un grand nombre de fichiers ou dossiers qui n'appartiennent pas à  WIMS. En voici une liste partielle.\
+   Les fichiers ou dossiers suivants n'appartiennent pas à WIMS.\
+   Les fichiers ou dossiers suivants doivent être exécutables par n'importe qui, ce qu'ils ne sont pas.\
+into name_attrib1,name_attrib2,name_attrib3,name_attrib4,name_repeat,\
+  name_attrib5,name_attrib6,name_attrib7,name_attrib8,name_attrib9,name_attrib10,
+  name_attrib11
+
+  !set name_warning1=Les dossiers de WIMS ne doivent pas contenir des fichiers appartenant à d'autres.\
+  Vous devez vérifier l'origine de ces fichiers et les effacer ou changer leur appartenance.
+  !set name_warning2=Recommandation importante de sécurité : merci de changer le propriétaire \
+  des fichiers suivants.
+
+ !set name_warning_chroot=Si vous utilisez la distribution wims-chroot, vous devez exécuter \
+  comme <span class="tt">root</span> le script <span class="tt">bin/setchroot</span>.
+ !set name_warning_wimsd=Si vous utilisez wimsd, vous devez exécuter comme <span class="tt">root</span> \
+   le script <span class="tt">bin/setwimsd</span>.
+ !set name_warning_wrapexec=Vous devez exécuter comme <span class="tt">root</span> le script <span class="tt">bin/setwrapexec</span>.\
+ Cela est crucial pour la sécurité de votre installation.
+ !set name_warning3=Les mauvaises permissions suivantes sont un risque pour votre installation. Cela a\
+  pu été réparé mais vous devez en être conscient et vérifier les permissions d'accès\
+  plus régulièrement. Si ce problème réapparait, vous devriez vérifier\
+  la possibilité d'intrusion sur votre système, car les données du serveur\
+  pourraient être abimées.
+ !exit
+!endif
+
+!if $job=backup
+
+ !distribute lines La sauvegarde des données n'est pas activée sur ce serveur.\
+ Cliquez ici\
+ pour configurer la sauvegarde quotidienne des données.\
+ Dernière sauvegarde des données\
+ Télécharger les fichiers de sauvegarde\
+ Pour restaurer un fichier de sauvegarde ancien, donnez le nom du fichier (cela doit être un fichier *.tgz)\
+ Vous avez besoin d'une connexion rapide si le fichier à télécharger est gros.\
+into name_backup,name_click,name_daily,name_last,name_download,name_restore,name_fast
+ !exit
+!endif
+
+!if $job=badconf
+
+  !set name_warning1=!nosubst Le fichier $fname est lisible par le monde entier!\
+    Il y un très grand risque que les réglages du site et/ou le mot de passe soient\
+    piratés. Aussi vous devez changer les permissions du fichier $fname pour le rendre lisible \
+    uniquement par son propriétaire
+  !set name_warning2=et mettre des définitions de sécurité dès que possible.
+  !set name_warning3=et définir un nouveau mot de passe d'administrateur.
+  !set name_warning4=Une fois que cela a été fait, essayez de nouveau.
+
+ !exit
+!endif
+
+!if $job iswordof class bestclass
+  !set title=
+  !distribute lines Cliquez ici\
+   pour configurer la politique d'accès aux classes virtuelles.\
+    Il n'y a pas de classe virtuelle correspondant à votre recherche. \
+    Liste des établissements et groupements de classes\
+    créé\
+    expire\
+    signifie le nombre d'heures de connection cumulées depuis\
+   meilleures activités de classe pendant cette période\
+    Participant\
+    Liste des classes individuelles\
+    signifie les connections cumulées d'heures-participants depuis\
+    Classes ayant le plus d'heures de connexion cumulées depuis\
+    Votre classe virtuelle WIMS\
+    Liste des classes\
+    charge\
+    format\
+  into name_click,name_config,name_noclass,name_list,name_created,name_expire,name_cumul,name_best,\
+  name_part,name_listindependant,name_cumul_student,name_bestcumul,name_yourclass,name_listclass,\
+  name_load,name_format
+
+  !set name_search1=Il y a beaucoup de classes virtuelles sur ce site. Pour trouver une classe, veuillez taper un mot de recherche.
+  !set name_search2=Il y a encore trop de classes correspondant à votre recherche. Donnez un mot plus précis.
+  !set name_total=!nosubst Il y a $nbcls classes ou groupements de classes sur ce serveur.
+
+  !if $job2 iswordof modify erase
+  !set title=
+  !distribute lines Propriétés importantes de la classe virtuelle\
+     de\
+     numéro de série\
+     Cette classe provient de la distribution WIMS.\
+     Mot de passe administrateur\
+     Mot de passe pour l'enregistrement des participants\
+     Effacer ce mot de passe rend la classe accessible par tout le monde.\
+     Postes sûrs\
+    Date d'expiration\
+    prévenir l'administrateur\
+    de la classe des changements faits.\
+    Autres classes\
+    Limite du nombre de participants\
+    Êtes-vous sûr que vous désirez effacer cette classe?\
+    Votre classe virtuelle WIMS\
+    Modification de votre classe WIMS\
+  into name_prop,name_of,name_serial,name_distrib,name_supervisor_p,name_supervisor_r,\
+    name_warning,name_secure,name_expire,name_notify,name_change,name_other,name_limit,name_erase,\
+    name_yourclass,name_yourclassmod
+  !set name_creation=!nosubst est créé le $class_creation et
+  !set name_expires=!nosubst expire le $class_expiration
+  !set name_remark=<b>Remarque</b>. Changer ces champs n'a de sens que si cela est demandé par\
+     l'administrateur de la classe (qui a perdu le contrôle de la classe). Et vous devez certainement
+!exit
+!endif
+
+ !exit
+!endif
+
+!if $job=conf
+  !set title=!nosubst $cattit
+  !distribute lines La configuration n'a pas changé car vous n'avez pas fait de modifications.\
+défaut\
+Conseillé\
+   into name_config,name_default,name_recommended
+
+ !set name_updated=!nosubst Le fichier <span class="tt">wims.conf</span> est mis à jour. Les informations sur l'ancienne\
+   configuration sont dans le fichier <span class="tt">$backdir/wims.conf.old</span>.
+
+  !set name_warning=Les paramètres avec une `*' dans le titre sont importants. \
+Ceux avec un `!' peuvent démolir l'installation si vous mettez n'importe quoi.<br />\
+De toute façon, effacer le fichier <span class="tt">log/wims.conf</span> permet de \
+de revenir à la configuration par défaut. Les configurations sauvées antérieurement peuvent aussi être retrouvées\
+dans le dossier <span class="tt">log</span>.
+!!confcat=6
+ !distribute lines Cliquez ici\
+   pour la gestion des sauvegardes et\
+   ici\
+  pour la gestion manuelle des modules.\
+ into name_click,name_backup,name_here,name_manual
+
+!!ressources
+  !set name_config_site=pour configurer la politique d'accès au site.
+!!graphics and software
+   !distribute line pour vérifier les nouveaux réglages.\
+   Vérifiez les logiciels de calcul utilisés par divers modules WIMS\
+   pour vérifier les graphiques dynamiques\
+   commande\
+   importance\
+   disponibilité\
+   Non disponible\
+   Exemple de modules en dépendant\
+   Ce logiciel est attaché à la distribution WIMS. Sa compilation a peut-être échoué.\
+  pour vérifier les nouveaux réglages.\
+ into name_check,name_checksoftware,name_checkgraphics,name_command,name_importance,\
+   name_availability,name_Unavailable,name_dependingonit,name_fail,name_refresh
+
+!set name_warning_program=WIMS ne trouve pas les programmes suivants utilisés dans certains \
+de ses modules. Il est possible que ces programmes ne sont pas installés dans le système\
+(dans ce cas, faites-le) ou qu'ils soient installés dans un dossier qui n'est pas\
+dans le chemin de recherche de WIMS. Dans ce cas, ajoutez le nom du dossier \
+au paramètre PATH dans
+
+!set name_imagemagick=Nous n'avons pas trouvé ImageMagick dans le système.\
+ Sans ce logiciel, la plupart des images et animations WIMS ne seront pas disponibles. \
+ Aussi nous vous conseillons d'installer ImageMagick avant de continuer
+
+!set name_dynamic=Vérification des graphiques dynamiques (vous pouvez faire la vérification avec différents navigateurs)
+!set name_tex=L'affichage de cette formule utilise l'insertion dynamique en TeX. Si elle n'apparait pas \
+correctement, c'est que TeX n'est pas bien installé dans votre système.
+!set name_size=Vous pouvez aussi changer la taille des fontes si elles ne vous paraissent pas de bonne dimension.
+!set name_mathml=L'affichage de cette formule utilise l'insertion dynamique en MathML. Si elle n'apparait pas \
+correctement, c'est que le navigateur que vous utilisez ne gère pas bien MathML.
+
+!set name_drawing=Les deux images suivantes sont créées avec le programme de dessin interne \
+à WIMS (flydraw). L'une est statique, l'autre est animé. Les voyez-vous ? \
+Si non, essayez d'autres formats d'image.
+
+
+!set name_gnuplot1=Le dessin suivant utilise <b>gnuplot</b>
+!set name_gnuplot2=Les courbes doivent avoir des couleurs différentes. Si cela n'est pas le cas, essayez d'autres formats d'image.
+
+!set name_graphviz1=Le graphe coloré suivant utilise <b>graphviz</b> et est indépendant des autres logiciels de dessin. \
+  S'il n'apparaît pas,
+!set name_graphviz2=n'est pas installé correctement.
+
+!set name_povray1=Le dessin tracé avec Povray suivant est indépendant des autres formats de dessin. \
+  S'il n'apparaît pas,
+!set name_povray2=n'est pas installé correctement.
+ !exit
+!endif
+
+
+!if $job=crontab
+  !set title=Maintenance quotidienne automatique
+ !distribute lines Une installation manuelle de crontab a été trouvée. Vous devriez  continuer à administrer les tâches manuellement ou effacer le crontab manuel avant de passer à l'outil en ligne.\
+   N'utilisez pas cet outil si vous avez un crontab personnalisé!\
+   Erreur bizarre : Je ne retrouve pas le dossier de travail. Vérifiez votre installation : elle ne fonctionne pas normalement.\
+   Maintenance disponible\
+   Sauvegarde quotidienne à\
+   Choisissez une heure où le serveur est peu occupé.\
+   Comptage des activités (nécessaire pour les statistiques du site)\
+into name_manually,name_warning,name_strange,name_available,name_daily,name_notbusy,name_accounting
+
+
+ !exit
+!endif
+
+!if $job2=del1
+  !set name_warning=Êtes-vous sûr de vouloir effacer le compte de développeur
+
+ !exit
+!endif
+
+!if $job=developer
+  !set title=
+  !set wims_name_adddevel=Ajouter un nouveau compte de développeur
+  !set wims_name_develaccount=Liste des comptes développeurs
+  !set name_dev=Développeurs enregistrés sur ce serveur
+
+  !set name_allowed=Développeurs ayant l'autorisation d'installer des modules \
+  dans le dossier local de ce serveur (entrer les identifiants) :
+
+ !exit
+!endif
+
+!if $job=file
+  !distribute lines Voici le fichier à télécharger\
+     Voulez-vous vraiment effacer le fichier\
+     dernière modification\
+     bits\
+     est une image\
+      est un fichier binaire\
+     est trop long pour être montré ou édité.\
+     Ce fichier appartient à la distribution, il ne peut pas être modifié\
+     Téléchargez le fichier\
+     Contenu de\
+   into name_file,name_erase,name_last,name_bytes,name_image,name_binary,name_toolong,\
+   name_distrib,name_download,name_content
+
+!exit
+!endif
+
+!if $job=fs
+!distribute lines Dossier actuel\
+  Sous-dossiers (cliquez pour y aller)\
+  Liens symboliques\
+  Lui ajouter un nouveau fichier\
+  Fichiers\
+  Pas de fichier dans ce dossier.\
+into name_current,name_sub,name_symbolic,name_add,name_files,name_file
+
+ !exit
+!endif
+
+!if $job=no_right
+  !set name_warning=Désolé mais vous n'êtes pas reconnu comme l'administrateur du site.\
+  Vous n'avez pas le droit d'accéder à ce module.
+!exit
+!endif
+!if $job=mkindex
+  !set title=Indexation des ressources
+  !distribute lines L'indexation des ressources est programmée. Vous recevrez un courriel contenant le résultat.\
+    L'indexation des ressources utilise du temps serveur, aussi évitez de le faire quand le serveur est très occupé.\
+    Résultat de la dernière indexation des ressources à\
+    Cliquez ici\
+    pour lancer l'indexation des ressources (vous ne devriez pas).\
+    pour relancer l'indexation des ressources.\
+  into name_scheduled,name_rebuilding,name_result,name_click,name_restart,name_start
+!exit
+!endif
+
+!if $job=mod2
+  !set name_error1=!nosubst Le login <span class="tt">$devlogin</span> est déjà utilisé par un autre\
+ compte. Merci de choisir un autre nom.
+  !set name_error2=!nosubst Le champ <span class="tt">$badfield</span> n'est pas entré \
+  correctement. Merci de corriger.
+
+!exit
+!endif
+
+!if $job=modform
+  !set name_modification=Modification des propriétés d'un compte de développeur (laissez le champ du mot de passe vide\
+    si vous ne désirez pas changer le mot de passe.)
+ !set name_add=Pour ajouter un nouveau compte de développeur, spécifiez: (tous les champs sont obligatoires)
+!exit
+!endif
+
+!if $job=modules
+  !set title=Téléchargement de modules
+  !set name_scheduled=!nosubst L'exécution de votre commande <span class="tt wims_code_words">$auto</span> est programmée.\
+  Un email vous sera envoyé une fois l'exécution faite. Ne répétez pas cette commande \
+  tant que l'exécution n'est pas terminée.
+  !distribute lines les modules publiés\
+    Zone\
+    Catégorie\
+    modules modifiés depuis au moins\
+    jours\
+    Configuration du téléchargement\
+  into name_mod,name_zone,name_cat,name_change,name_ago,wims_name_config_module
+
+  !distribute lines Erreur pendant le chargement du module \
+      Erreur d'installation/mise à jour\
+      Installation/Mise à jour\
+      Réussi\
+      Vous avez besoin de\
+      Tester\
+      reconstruire l'index des modules\
+      Installer\
+      Mise à jour\
+      versus\
+      Changements\
+      Nouvelle version de\
+      Nouveau module\
+      Vous devez\
+      après la mise à jour des modules\
+      Cliquez ici\
+      pour configurer les centres de publication et téléchargements utilisés, pour configurer la mise à jour quotidienne des modules ou pour choisir les centres de publication mis à la disposition des développeurs de votre site.\
+      Vous pouvez aussi mettre à jour\
+      Vous pouvez ici mettre à jour / charger des modules.\
+    into name_error1,name_error2,name_install,name_successful,name_need,name_test,name_rebuild,name_Install,\
+      name_Update,name_versus,name_Changes,name_version,name_newmodule,name_youneed,name_after,\
+      name_click,name_automatic,name_rss,name_canupdate
+
+!!check
+  !distribute lines Aucune publication de module ne correspond à votre recherche.\
+    Cliquez sur l'adresse d'un module pour le vérifier/l'installer/le mettre à jour.\
+    Nouvelles versions de modules\
+    Nouveaux modules\
+    tout mettre à jour\
+    tout installer\
+    mise à jour par\
+    Nouvelle version\
+    Nouveaux modules\
+    Version<br />du serveur\
+    publié<br />par\
+  into name_check1,name_click_adress,name_foundv,name_foundm,name_all_u,name_all_i,name_updated,name_newv,name_newm,name_server,name_published
+
+!exit
+!endif
+
+!if $job=restore
+   !set name_warning1=Mauvaise archive : le contenu n'est pas compatible.
+   !set name_warning2=Les données des dossiers suivants ont été restaurées/installées avec succès
+ !exit
+!endif
+
+!if $job=sess
+  !set title=Session de l'utilisateur
+  !distribute lines Contenu de la session\
+    Contenu du fichier des variables de session\
+    Contenu du fichier\
+    Liste des sessions actives\
+  into name_content_s,name_content_v,name_content_f,name_listsessions
+!exit
+!endif
+
+!if $job=upload
+ !set name_warning=Pour charger des ressources sur le serveur, insérez le cd-rom ou la clé usb contenant\
+   la ressource sur votre ordinateur et trouver un fichier nommé <span class="tt">wims-resource.tgz</span>\
+   ou <span class="tt">wimsres-*.tgz</span> dans le champ suivant
+ !set name_need=Vous avez besoin d'une connexion rapide si le fichier à télécharger est gros.
+!exit
+!endif
+
+!if $job=rss
+   !set title= Reconstruire les fils RSS
+   !set name_start=pour lancer la reconstructions des fils RSS.
+ !exit
+!endif
+
+!if $job=otherdownload
+  !set name_text1=D'autres ressources peuvent être téléchargées manuellement.
+  !set name_shtooka=Télécharger les ressources Shtooka (mots audio)
+
+!exit
+!endif
+
+!if $job=swac
+  !set name_mkindex=Refaire l'index
+  !set name_text_swac= Vous pouvez télécharger les fichiers mp3 de quelques paquets \
+  du projet Shtooka.<p>Si les modules qui les appellent sont beaucoup utilisés sur le\
+  serveur wims, vous devriez le faire. Si non, ces modules iront chercher les mp3 du site http://shtooka.net\
+</p><p>\
+Pour charger les collections, utilisez le script <span class="tt">$wims_home/bin/swac </span> \
+en ligne de commande. Il installera quelques paquets swac à la bonne place.\
+</p><p class="small">Comme les fichiers de wims sont codés en iso-latin, il n'est pas possible \
+actuellement d'utiliser les paquets cyrilliques.</p>
+!exit
+!endif
+
+!if $job=sendmail
+ !distribute item Sujet,Message \
+into name_subject,name_message
+ !let name_dest=Destinataires,Administrateur du serveur,Administrateur d'une classe individuelle,Administrateur d'un groupement de classes,Administrateur d'un établissement,Enseignant d'un groupemement de classes,Enseignant d'un établissement
+ !let name_sending=Votre message a été envoyé à tous les destinataires
+ !exit
+!endif
+
+!if $job=classrestore
+  !distribute lines Classe à restaurer.\
+  Il n'y a pas de classes à restaurer.\
+  Il y a beaucoup de classes archivées. Entrez l'identifiant de la classe à restaurer.\
+into name_restore_choose, name_restore_noclass,name_toomuchbackup
+!set name_restore_done=!nosubst La classe $year/$class a été restaurée. L'indexation des classes\
+se fera lors du ménage quotidien. Nous vous déconseillons de le refaire trop souvent pendant\
+la période d'utilisation du serveur. Veuillez prévenir alors\
+l'enseignant que la nouvelle date d'expiration est le $date. Il est déconseillé de refaire\
+cette opération une seconde fois.
+  !exit
+!endif
+

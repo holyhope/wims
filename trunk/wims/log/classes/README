@@ -1,0 +1,116 @@
+Classes with 4 digits are classes examples.
+
+Reserved :
+
+1000 1002 1004 Nederlands classes
+
+%%%%%%%%%%%%%%%%%%%%
+These classes are neighbors of every class if
+they have a file "neighbors" containing
+
+n_sup=all
+n_part=all
+sharable_exo=yes
+sharable_sheet=yes
+sharable_exam=yes
+sharable_doc=
+sharable_forum=
+sharable_user=
+sharable_motd=
+sharable_all=
+
+
+Pour faire une classe d'exemple :
+
+Prendre une classe
+lui donner un numéro de 4 chiffres
+créer un fichier neighbors
+mettre une date d'expiration lointaine dans le fichier .def
+  !set class_expiration=21000101
+enlever dans .users les utilisateurs et mettre un utilisateur
+de login anonymous
+!set user_lastname=Anonyme
+!set user_firstname=Visiteur
+!set user_password=anonymous
+!set user_email=
+!set user_exists=yes
+
+Le fichier .userlist doit donc contenir la ligne
+:Visitor,Anonymous,anonymous
+
+et recompiler (ou ./.build-index dans wims/log/classes)
+pour qu'elles apparaissent en tant que classe d'exemple
+
+si une classe est "vieille" (vieux programmes ou autre), on peut la mettre dans la
+catégorie Archives :
+class_archived=yes
+
+%%%%%%
+Feuilles d'exercice des classes :
+les feuilles sont automatiquement mises dans un répertoire public_html/bases/sheets/
+par le script bin/mkexamplesheet.sh
+Le répertoire sera désormais donné par la variable class_sheetadress
+Cette variable NE DOIT PAS être changée même si le niveau de la classe change.
+Elle détermine de manière unique l'adresse physique de la feuille créée (pas son niveau).
+
+Il est conseillé de mettre une en-tête sur 10 lignes dans les .sheet$i avant les premiers
+"deux-points" :
+
+title
+description
+duration, date
+severity
+level (E1... U4)
+domain (mots imposés en anglais, voir la liste dans public_html/bases/sys/domain en développement)
+keywords (mots imposés en anglais, voir la liste qui peut augmenter)
+author
+email
+information
+
+Le contenu de la ligne "description" sera affiché en introduction de la feuille.
+La ligne "information" est affichée lors de la recherche de la feuille.
+Bien laisser une ligne blanche si le champ est vide (même pour la dernière ligne !).
+Ces données sur la feuille doivent être mis dans l'en-tête de la feuille
+
+%%%%%%%%%%%%%%%%%%%%%%
+Pour les classes d'exemple, on peut ajouter dans le .def par rapport aux paramètres
+d'une classe usuelle.
+class_information=
+Il ne sert que pour l'affichage des résultats de la recherche et joue
+le rôle de description dans les modules (cela vaut mieux que d'essayer de trafiquer !)
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+class_type=0 classe individuelle
+class_type=2 groupement
+class_type=1 classe dans un groupement ou cours dans un établissement
+  ou zone test d'un programme
+class_type=3 niveau ou classe ou programme dans un établissement
+class_type=4 etablissement
+
+class_typename: portal, level, program, course, class
+(should add testclass)
+classe dans un etablissement : $class_typename=class and $class_type=3
+cours dans un etablissement : $class_typename=course
+class dans un groupement: $class_typename=class and $class_type=1
+
+progamme + classe dans un établissement : $class_type=3 and class_typename!=level
+cours ou classe individuelle ou classe groupement (score):
+   $class_typename=course or class_type=0 or ($class_typename=class and $class_type=1)
+%%%%%%%%%%%%%%%%%%%%%%
+.index
+
+class_type=0, 2, 4
+number,expiration,institution,description,lang,type,level,password,supervisor,connections
+
+class_type=2
+ le fichier .subclasses est créé dans la classe
+
+à exploiter
+
+4.12: version 5 (variables techniques nouveau format).
+
+
+%%%%%
+
+class=1128; level=H1;for i in `seq 30` ; do diff log/classes/$class/sheets/.sheet$i public_html/bases/sheet/fr/$level/$class/sheet$i.def ; done

@@ -1,0 +1,103 @@
+!! +exec+ +var+ +string+
+tit:text
+type:$type_both
+syntax:!text `operation' `parameter'
+mean:这是极其有力的文本操作工具,\
+  可以快速地对很长的文字串作复杂的处理. <br/>\
+  许多操作 `operation' 能使用掩码(mask). 掩码是一个 '0' '1' 序列.\
+  对于接受掩码的操作, 只对掩码为 '1' 的位置的字符作处理\
+  (这相当于`掩盖'了 '0' 对应的字符).\
+  空的掩码相当于全部由 '1' 构成. <br/>\
+  太短的掩码将被重复使用, 除非它的结尾为 '+', 这时剩下的全取为 '1',\
+  或以 '-' 结尾, 这时剩下的全取为 '0'. <br/>\
+  目前已实现的操作 `operation' 有以下几种.\
+  <ul>\
+   <li><tt>!text common `text1' and `text2'\
+    [mask `maskstring']\
+ <br/>\
+    把 `text1' 中与 `text2' 的对应字符相同,\
+    又不被 `maskstring' 掩盖的字符一个一个地提取出来.\
+   <li><tt>!text compare `text1' and `text2'\
+    \
+ <br/>\
+    对 `text1' 与 `text2' 的字符逐个比较,\
+    返回一个掩码串, 其中两个串的对应字符相同的位置取 '0', 其它位置取 '1'.\
+   <li><tt>!text copy `text'\
+    [mask `maskstring']</tt> <br/>\
+    返回 `text' 内不被掩盖的字符.\
+   <li><tt>!text count `charlist' in `text'\
+    [mask `maskstring']</tt> <br/>\
+    返回 `text' 内既不被 `maskstring' 掩盖,\
+    又包含在 `charlist' 里的字符的个数.\
+   <li><tt>!text diff `text1' from `text2'\
+    [mask `maskstring']</tt> <br/>\
+    把 `text1' 中与 `text2' 的对应字符不同,\
+    又不被 `maskstring' 掩盖的字符一个一个地提取出来. <br/>\
+    (diff 的同义词: differ).\
+   <li><tt>!text expand `text' using `maskstring'\
+    </tt> <br/>\
+    生成这样的字符串: 与 `maskstring' 中的 '0' 对应的位置变为 ' '(空格),\
+    与 `maskstring' 中的 '1' 对应的位置取为 `text'\
+    中的字符, `text' 中的字符被一个一个地使用.\
+    直至 `text' 的字符被用尽, 或生成的字符串达到长度限制才终止.\
+   <li><tt>!text insert `text1' into `text2'\
+    [mask `maskstring']</tt> <br/>\
+    把 `text2' 中未被掩盖的位置用 `text1' 的字符取代,\
+    然后返回 `text2'. `text1' 的字符被一个一个地使用\
+    (与掩码无关), 直至 `text1' 里没有字符时才结束.\
+   <li><tt>!text interact `text1' and `text2'\
+    table `itab' [mask `maskstring']</tt> <br/>\
+    返回一个新的文本, 它是 `text1' 与 `text2'\
+    的对应位置的字符相互作用的结果. 相互作用的规则由 `itab' 定义. <br/>\
+    `itab' 有 n+1 行, 每行 n 个字符. 后面的 n\
+    行字符定义了相对于第一行字符的乘法表.\
+    <br/>\
+    乘法表不必对称. 这时的行对应于 `text1' 里的字符,\
+    列则对应于 `text2' 里的字符.\
+    <br/>\
+    如果 `text1' 或 `text2' 的对应字符中有一个不出现在\
+    `itab' 的第一行, 则对应位置的相互作用结果是空(什么也没有).\
+    类似地, 被掩盖的位置也被忽略.\
+    <br/>\
+    如果 `text1' 与 `text2' 有不同长度,\
+    就把长的串截短.\
+   <li><tt>!text mark `charlist' in `text'\
+    </tt> <br/>\
+    返回一个掩码串, 如果 `text' 的字符出现在 `charlist' 中,\
+    掩码串的相应位置取 '1', 否则取 '0'.\
+   <li><tt>!text max `text1' and `text2'\
+    [mask `maskstring']</tt> <br/>\
+    返回一个字符串, 其字符是 `text1' 与 `text2'\
+    的对应字符中 ASCII 码较大的那个. 长度等于较长的串. 掩盖的位置被跳过.\
+   <li><tt>!text min `text1' and `text2'\
+    [mask `maskstring']</tt> <br/>\
+    返回一个字符串, 其字符是 `text1' 与 `text2'\
+    的对应字符中 ASCII 码较小的那个. 长度等于较短的串. 掩盖的位置被跳过.\
+   <li><tt>!text occur `charlist' in `text'\
+    [mask `maskstring']</tt> <br/>\
+    返回 `charlist' 中出现在 `text'\
+    里未被掩盖位置的字符. <br/>\
+    (occur 的同义词: appear, occurrence).\
+   <li><tt>!text remove `charlist' in `text'\
+    [mask `maskstring']</tt> <br/>\
+    返回字符串 `text', 其中除去了被掩盖的字符以及出现在\
+    `charlist' 里的字符. <br/>\
+    (remove 的同义词: drop, delete).\
+   <li><tt>!text reorder `text' by `orderlist'\
+    </tt> <br/>\
+    返回利用排序表 `orderlist' 重排过的 `text'.\
+    当 `orderlist' 比 `text' 短时, 重排将循环进行. <br/>\
+    `orderlist' 必须是集合 {1,...,n} 的排列表.\
+    如果 `orderlist' 含有超界的整数, 返回的是空串.\
+    但是对 `orderlist' 的项并不作唯一性检查.\
+   <li><tt>!text repeat `text' to `len'\
+    </tt> <br/>\
+    循环地重复串 `text', 直至达到长度 `len'.\
+   <li><tt>!text reverse `text'</tt> <br/>\
+    颠倒 `text' 的次序.\
+   <li><tt>!text select `charlist' in `text'\
+    [mask `maskstring']</tt> <br/>\
+    返回字符串 `text', 其中除去了被掩盖的字符以及不出现在\
+    `charlist' 里的字符. <br/>\
+    (select 的同义词: pick, pickup).\
+  </ul>

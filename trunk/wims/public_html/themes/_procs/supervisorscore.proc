@@ -1,0 +1,15 @@
+!!supervisorscore.proc
+!! Adds supervisor score links in wims_rm_0 for navigation menus
+
+!if ($wims_supertype<4 and $wims_typename=class) or ($wims_supertype=4 and $wims_typename iswordof course program)
+  !if ($wims_supertype<4 and $wims_typename=class) or ($wims_supertype=4 and $wims_typename iswordof course)
+  !set wims_rm_0 = $wims_rm_0\
+Score1,1,module=adm/class/userscore
+  !endif
+  !set wims_rm_0 = $wims_rm_0\
+livret,1,module=adm/class/livret
+!endif
+!if ($wims_supertype<4 and $wims_typename=class) or ($wims_supertype=4 and $wims_typename iswordof course)
+    !set wims_rm_0 =$wims_rm_0\
+activity,1,module=adm/class/activity
+!endif

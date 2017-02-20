@@ -1,0 +1,93 @@
+<p> 
+You can define variables in your documents, and call them later (within a
+same page), thus making your document more dynamic.
+
+For example, the following line defines a variable under the name of
+<span class="wims_variable bold">x1</span>, whose value will be a random integer
+between -10 and 10 (inclusive):
+<pre>
+\\def{integer x1=random(-10..10)}
+</pre>
+This random parameter may then be called by the word
+<b><span class="tt wims_code_words">\\x1</span></b>, in the rest of the block defining it.
+That is, each word <span class="tt wims_code_words">\\x1</span> will be replace by the random value
+of the variable. This substitution will also take effect within definitions
+of other variables following it.
+
+\def{integer x1=random(10..50)}
+\def{integer y1=random(10..50)}
+\def{integer xy=\x1*\y1}
+For example, in this page we have defined
+<pre>
+\\def{integer x1=random(10..50)}
+\\def{integer y1=random(10..50)}
+\\def{integer xy=\\x1*\\y1}
+</pre>
+Consequently, the text <span class="tt wims_code_words">\\x1*\\y1=\\xy</span> gives
+\x1*\y1=\xy. You may \reload{renew the page} to see the values change.
+<p>Some other examples of variables
+\help{module=adm/doc.en&job=help&help_subject=oefparm}
+{[Complete list]}
+</p>
+<table class="wimscenter wimsborder">
+<tr><th>Definition</th><th>Effect</th></tr>
+<tr><td class="tt wims_code_words">\\def{real x=random(-5..5)}</span>
+    <td>\\x will be a random real number<br/>between -5 and 5</td></tr>
+<tr><td class="tt wims_code_words">\\def{real a=random(-5,-3,0.3,4)}</td>
+    <td>\\a will be a real number taken randomly<br/>among -5,-3,0.3 and 4
+    </td></tr>
+<tr><td class="tt wims_code_words">\\def{complex z=(1+2*i)^3}</td>
+    <td>\\z will be the complex number z=\((1+2*i)^3)
+    </td></tr>
+<tr><td class="tt wims_code_words">\\def{text sign=random(+,-)}</td>
+    <td>\\sign will be a random sign: + ou -
+    </td></tr>
+<tr><td class="tt wims_code_words">\\def{integer n=3*exp(\\a)}</td>
+    <td>\\n will be the closest integer to 3*e<sup>\\a</sup><br/>(it
+    depends on the value of \\a)
+    </td></tr>
+<tr><td class="tt wims_code_words">\\def{function f=random<br/>(x^2+1,sin(x),log(x))}</td>
+    <td>\\f will be a random function: either \(x^2+1),<br/>or sin(x), or log(x)
+    </td></tr>
+<tr><td class="tt wims_code_words">\\def{text s=shuffle(6)}</td>
+    <td>\s will be a list of 6 integers 1,2,...,6, in random order.
+    </td></tr>
+<tr><td class="tt wims_code_words">\\def{text s=shuffle(a,b,c,d,e)}</td>
+    <td>\s will be the letters {a,b,c,d,e} in random order.</td></tr>
+<tr><td class="tt wims_code_words">\\def{real a=evalue(x^2+sin(y),x=3,y=4)}</td>
+    <td>Evaluation of the function \(x^2+sin(y)),<br/>
+    for x=3, y=4</td></tr>
+<tr><td class="tt wims_code_words">\\def{real r=solve(x^3-3*x+1,x=0..1)}</td>
+    <td>\\r will the the simple root of \(x^3-3x+1) between 0 and 1</td></tr>
+<tr><td class="tt wims_code_words">\\def{function h=simplify(x^5*y^3*x^2/y)}</td>
+    <td>Simplified expression: \(x^7*y^2)</td></tr>
+<tr><td class="tt wims_code_words">\\def{function g=diff(sin(x)+cos(y),x)}</td>
+    <td>\\g will the the derivative of sin(x)+cos(y) with respect to x</td></tr>
+<tr><td class="tt wims_code_words">\\def{function F=int(x^2+3*x+1,x)}</td>
+    <td>\\F will an antiderivative of \(x^2+3*x+1),<br/>
+     the constant term being not garanteed to be always the same
+\comment{<tr><td class="tt wims_code_words">\\def{function F=int(t^2+3*t+1,t=1..x)}</td>
+    <td>\\F will the antiderivative of \(x^2+3*x+1) such that F(1)=0}</td></tr>
+<tr><td class="tt wims_code_words">\\def{real a=int(t^2+3*t+1,t=0..1)}</td>
+    <td>\a will the numerical integral of \(x^2+3*x+1), from 0 to 1</td></tr>
+<tr><td class="tt wims_code_words">\\def{text f=htmlmath(2*x^2+3*x)}</td>
+    <td>\\f will be rendered in html as: \(2x^2+3x)</td></tr>
+<tr><td class="tt wims_code_words">\\def{text f=texmath(2*x^2+3*x)}</td>
+    <td>\\f will be the TeX source for the expression.</td></tr>
+<tr><td class="tt wims_code_words">\\def{matrix m=1,2,3<br/>4,5,6<br/>7,8,9}</td>
+    <td>\\m will be the matrix of 3 rows and 3 columns.
+</td></tr>
+</table>
+<p>
+Conditional parameters: You may write<p>
+<span class="tt wims_code_words">\\def{text ttt=_condition?_def1}</span> or <br />
+<span class="tt wims_code_words">\\def{text ttt=_condition?_def1:_def2}</span>
+</p>
+In this case, <span class="tt wims_code_words">\\ttt</span> will be set to <span class="tt wims_code_words">_def1</span> if
+<span class="tt wims_code_words">_condition</span> is true, or to <span class="tt wims_code_words">_def2</span> otherwise (in the second
+syntax).
+\help{module=adm/doc&cmd=new&job=help&help_subject=if}{List of conditions}
+
+Finally, note that inserted blocks via
+\link{fold}{<span class="tt wims_code_words">\fold</span>} or \link{embed}{<span class="tt wims_code_words">\embed</span>} inherit the
+definitions of variables before insertion.

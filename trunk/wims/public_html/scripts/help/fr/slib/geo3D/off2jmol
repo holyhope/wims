@@ -1,0 +1,27 @@
+slib_lang_exists_tmp=yes
+
+slib_title=Conversion du format off en un script jmol
+slib_parms=4\
+,fichier format off\
+,[SS,AA,FF,BA,BF] par exemple, ne remplir que si on veut qu'apparaissent respectivement les arêtes, les faces, des boutons des arêtes, des boutons sur les faces\
+[blue,red,yellow,,,],couleur dans l'ordre : des sommets, bords, faces, bouton des arêtes, boutons des faces\
+raw, option parmi les mots raw url distance
+\text{cube=slib(geo3D/off2jmol \cubeoff,[S,,F],[red,green,yellow,green,orange])}
+
+
+slib_out=conversion du format "off" en un script jmol
+slib_comment=De petits boutons peuvent être ajoutés pour représenter les sommets, \
+les bords et les faces.<br />\
+avec l'option url,les données sont converties en fichier et le script renvoie \
+leur adresse (fichier de format xyz et fichier de scripts pour jmol)<br />\
+avec l'option distance, les arêtes sont colorées automatiquement selon leur longueur\
+(il ne faut alors pas donner de couleurs pour les arêtes).\
+<br />
+Exemple d'utilisation en OEF avec l'option url :\
+<pre>\text{jmol_poly=wims(record 0 of data/polyedre_off/cube.off)}\
+\text{jmol_poly=slib(geo3D/off2jmol \jmol_poly,[AA,,BB],[brown,,blue])}\
+\text{jmol_script=\jmol_poly[1]}\
+\text{jmol_file=\jmol_poly[2]}\
+\text{jmol_script=wims(declosing \jmol_script)}\
+\text{jmol_applet=slib(chemistry/jmolshow \jmol_file,400,400,white,\jmol_script)}\
+</pre>

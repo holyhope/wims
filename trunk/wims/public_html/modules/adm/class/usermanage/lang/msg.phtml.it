@@ -1,0 +1,23 @@
+!set wims_module_log=error: $error
+
+<span class="wims_warning">Errore!</span>
+
+!if not_supervisor=$error
+ Spiacente, ma la preparazione e la modifica di un test di autovalutazione &egrave; 
+ riservata al docente registrato del corso.
+ !exit
+!endif
+
+!if bad_classpass=$error
+ Spiacente, la password &egrave; errata. Non sei autorizzato a modificare
+ i tuoi dati.
+ !exit
+!endif
+
+!if bad_user=$error
+ Errore di chiamata: lo studente <span class="tt wims_login">$checkuser</span> non esiste.
+ !exit
+!endif
+
+!msg $error
+

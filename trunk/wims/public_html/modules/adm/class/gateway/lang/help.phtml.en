@@ -1,0 +1,113 @@
+!goto $wims_read_parm
+
+:pass
+
+<h2 class="wimscenter">Registration password</h2>
+
+There are two types of registration password:
+<p>
+Registration password of the portal is for teacher accounts. This password
+should NEVER be given to students, because everybody registering directly
+into the portal will be recognized as a teacher and be given teacher's rights.
+</p><p>
+Registration password of a class or a course is for student accounts.
+Students must register to a given class, but any registation is globally
+registered for the whole institution, as a student.
+</p><p>
+Only classes and certain courses need registration password, because other
+zones (level, program) do not accept student registrations.
+</p><p>
+But you can also define or modify the registration password for a level,
+which will go down to all the classes and courses of the level as the default
+password.
+</p><p>
+Leave the field empty when you modify the properties, if you do not want to
+change the password.
+</p>
+
+!exit
+:passs
+
+<h2 class="wimscenter">Supervisor password</h2>
+<p>
+This is used to let teachers to gain management access to the level, class,
+program or course. By default, the supervisor password of the parent zone
+will be used.
+</p><p>
+Leave the field empty when you modify the properties, if you do not want to
+change the password.
+</p>
+
+!exit
+
+:progopt
+<h2 class="wimscenter">Options of a program</h2>
+<p>
+If a program is <em>mandatory</em>, all students of a class having a course
+corresponding to it will be automatically registered to the course. That is,
+all its courses are mandatory for the corresponding classes.
+</p><p>
+On the other hand, for an <em>optional</em> program, students must
+specifically register to its courses. This is useful when the program is an
+option.
+</p><p>
+If the automatic course installation of the program is set to "yes", a course will
+be created for each class of the level at the creation of the program. A
+course for the program will also be created when a new class is created in
+the level.
+</p><p>
+If automatic course installation is set to "no", supervisors of classes must
+manually create courses corresponding to the program.
+</p>
+
+!exit
+
+:sechost
+!reset wims_prefix
+!set special_parm2=secure
+!read wimshome/public_html/modules/adm/class/config/lang/help.$moduclass_lang/config.phtml
+
+!exit
+
+:structure
+
+!read help/$moduclass_lang/structure.phtml
+
+!exit
+
+:supervisor
+<h2 class="wimscenter">The supervisor of a zone</h2>
+
+Each zone (level, class, program, course) of the institutional structure
+should have a supervisor. This is usually a teacher, who will be given right
+to the management page of the zone.
+<p>
+By default, the supervisor of the zone is that of the parent zone.
+<p>
+However, other teachers may also have access to the management page, if they
+knows the supervisor password of the zone. The difference is that it is the
+"official" supervisor's name and email address that will be shown to the 
+participants the zone.
+
+!exit
+
+:addcsvclass
+<h2>Ajout de classes par importation d'un fichier.</h2>
+
+<p>
+Pour envoyer des données de votre tableur à la classe, sauvez les données
+dans un fichier au format texte (txt, csv, ou tsv), puis envoyez le fichier
+au serveur.
+</p>
+$table_header
+<caption>Champs de données valables</caption>
+$table_hdtr<th scope="col">Nom</th><th scope="col">Signification</th>
+$table_tr<td class="tt wims_code_variable">cname</td><td>nom de la classe</td></tr>
+$table_tr<td class="tt wims_code_variable">login</td><td>identifiant de l'enseignant controlant la classe (qui doit exister dans la classe avec les autorisations d'enseignant). Ecrire supervisor pour que la classe soit gérée par l'administrateur du portail.</td></tr>
+$table_tr<td class="tt wims_code_variable">regpass</td><td>mot de passe d'inscription de la classe.</td></tr>
+$table_tr<td class="tt wims_code_variable">secure</td><td>accès sécurisé de la classe (IP ou all).</td></tr>
+$table_tr<td class="tt wims_code_variable">limit</td><td>nombre maximum d'élèves.</td></tr>
+
+les colonnes regpass,secure,limit ne sont pas obligatoires. Elles seront fixées avec des valeurs par défauts si elles ne sont pas présentes.
+$table_end
+!exit

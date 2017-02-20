@@ -1,0 +1,20 @@
+var addPoint = function(x) {
+  p.push(brd.create('point',
+              [x,(Math.random()-0.5)*3],{style:6}));
+  brd.update();
+};
+ 
+var brd = JXG.JSXGraph.initBoard('jsxbox',
+           {axis:true,originX: 250, originY: 250, unitX: 50, unitY: 25});
+brd.suspendUpdate();
+var p = [];
+p[0] = brd.create('point', [-4,2], {style:6});
+p[1] = brd.create('point', [3,-1], {style:6});
+addPoint(-2);
+addPoint(0.5);
+addPoint(1);
+var pol = brd.lagrangePolynomial(p);
+var g = brd.create('functiongraph', [pol, -10, 10], {strokeWidth:3});
+var g2 = brd.create('functiongraph', [brd.D(pol), -10, 10],
+                                      {dash:3, strokeColor:'#ff0000'});
+brd.unsuspendUpdate();

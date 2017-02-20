@@ -1,0 +1,10 @@
+!bound option within 0,1,$empty default $empty
+!if $option!=$empty
+ !if $seq>0 and $seq<=$seq_cnt
+  x_=!record 1 of wimshome/log/classes/$wims_class/seq/.sequence$[$seq]
+  x_=!line 1 to -2 of $x_
+  x_=!append line $option to $x_
+  !writefile wimshome/log/classes/$wims_class/seq/.sequence$[$seq] :$x_
+ !endif
+!endif
+job=show

@@ -1,0 +1,40 @@
+type=image
+textarea="data"
+
+:$name_description
+:%%%%%%%%
+:\title{$name_title}
+:\author{$wims_firstname,$wims_lastname}
+:\email{$wims_email}
+:\credits{}
+:$name_instruction
+\text{instruction=$name_instruction21}
+:$name_image
+\text{image=$wims_deposit}
+:$name_data
+$name_help_data
+\matrix{data=$data}
+
+:%%%%%%%%%%%%%%%%%%%%%%%%
+\text{cache=\image}
+\text{size= \data[1;]}
+\text{coord = \data[2..-1;]}
+\integer{N=rows(\coord)}
+\matrix{coord=\coord}
+
+\text{V = shuffle(\N)}
+\text{K=\V[1]}
+\text{point=\coord[\K;]}
+\text{zone=\point[2,3]}
+\text{point=wims(embraced randitem \point[1])}
+\text{cache=draw(\size[1],\size[2]
+copy 0,0,-1,-1,-1,-1,\cache)}
+\text{cache = slib(oef/insfilename)}
+
+\statement{
+\instruction \point.
+&lt;div class="wimscenter">
+\embed{r1}
+&lt;/div>
+}
+\answer{}{\imagedir/\image;bound,\cache,\zone}{type=coord}{option=fill}

@@ -1,0 +1,52 @@
+
+!set wims_form_method=post
+!form reply
+
+!if $vote_title=$empty
+ !set name_create_or_edit= $name_creation
+!else
+ !set name_create_or_edit= $name_edition
+!endif
+
+!if $gstep= or $gstep=0 or $vote_title=$empty
+  !read votesetup.phtml
+!endif
+!if $error!=$empty
+ !goto endform
+ !exit
+!endif
+!if $gstep>0
+!!to put in the legend
+  $name_create_or_edit
+  !read models/$reg_model.phtml
+!endif
+:endform
+
+!! this should probably best be defined in models/_______.phtml
+!! (and similar checks are probably needed in order to !reset gstep, cfr. reg.proc)
+!!
+!! if ok, analogous should be done for previous step - $wims_name_givup
+
+!set submit_name=$name_nextstep
+!set abandon_name=$wims_name_back2
+!if $vote_model=free and $gstep>0
+ !set submit_name=$wims_name_tosave
+ !set abandon_name=$wims_name_giveup
+!else
+ !if $gstep>2
+   !set submit_name=$wims_name_tosave
+ !endif
+!endif
+!if $gstep <1
+   !set abandon_name=$wims_name_giveup
+!endif
+<p class="wimscenter wimsform">
+   <input type="submit" name="rEg" value="$submit_name" $wims_on_click/>
+ $
+   <input type="submit" name="abandon" value="$abandon_name" class="wims_secondary_button" />
+</p>
+
+!formend
+!reset reg_option reg_status reg_show reg_whovoteshow up_bday[10] up_bmonth[10] up_byear[10] \
+up_bhour[10] up_bmin[10] up_ehour[10] up_emin[10] up_nstud[10]\
+up_testoextra[10] up_exconnip[10] up_testointro up_namevar,up_defconnip

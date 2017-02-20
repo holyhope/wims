@@ -1,0 +1,73 @@
+!!called by participant.phtml, not by authparticipant.phtml
+
+!!! adm/class/initclass change the value of $superclass which is tested
+!!! in supervisor.phtml (should be with the old value).
+!set superclass_orig=$superclass
+!read adm/class/initclass $wims_class
+!reset directlistparticipate directlistsupervisor
+!if $directcnt>0
+ !for i_=1 to $directcnt
+  !set cl=!word 1 of $(directlist[$i_])
+  !if /0/ notin $(cl)/
+    !set type_=!defof class_typename in wimshome/log/classes/$cl/.def
+    !set direct$type_=!append item $(directlist[$i_]) to $(direct$type_)
+  !else
+    !set directtest=!append item $(directlist[$i_]) to $directtest
+  !endif
+  !set tmp=!word 2 of $(directlist[$i_])
+  !if $tmp=supervisor
+    !set directlistsupervisor=!append item $cl to $directlistsupervisor
+  !else
+    !set directlistparticipate=!append item $cl to $directlistparticipate
+  !endif
+ !next
+ !set user_participate_=!append item $directlistparticipate to $user_participate
+ !set user_participate_=!listuniq $user_participate_
+ !set user_supervise_=!append item $directlistsupervise to $user_supervise
+ !set user_supervise_=!listuniq $user_supervise_
+!! finally leave the old table ! too much trouble
+!!!for cls in $user_supervise_
+!!  !if $wims_class isin $cls
+!!   !let tmp=!replace internal / by , in $cls
+!!    !let compsup=!append line $tmp to $compsup
+!!  !endif
+!!!next cls
+!!!let compsup=!sh echo "$compsup" | sort | uniq;
+
+!!!read adm/class/graphclass supervise\
+!!$compsup
+ !reset compsup
+ !if $directcnt=0
+  !goto enter
+ !endif
+ $name_direct:
+
+!!!if / isin $user_participate_
+!! !for cls in $user_participate_
+!!  !if $wims_class isin $cls
+!!    !let tmp=!replace internal / by , in $cls
+!!    !let compsup=!append line $tmp to $compsup
+!!  !endif
+!! !next cls
+!! !let compsup=!sh echo "$compsup" | sort | uniq;
+!! !read adm/class/graphclass participate\
+!!$compsup
+!! !reset compsup
+!! !goto enter
+!!!endif
+!read tableold.phtml
+:enter
+<div>
+ !if $wims_user=supervisor
+   $name_text3
+ !else
+   $name_text1
+ !endif
+!else
+ !if $wims_user=supervisor
+  $name_text2
+ !else
+  $name_noaccount
+ !endif
+!endif directcnt>0
+</div>

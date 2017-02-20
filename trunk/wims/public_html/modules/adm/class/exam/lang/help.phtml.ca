@@ -1,0 +1,67 @@
+!goto $wims_read_parm
+
+:allowtype
+
+!read adm/title.phtml 1\
+Indicacions sobre l'enregistrament de notes
+
+En el mode selectiu, podeu imposar una
+ restricció de temps per a l'enregistrament de notes afegint
+ paraules
+ <span class="tt wims_code_words">
+&gt;aaaammdd.hh:mm</span>
+ (inici) i/o
+ <span class="tt wims_code_words">
+&lt;aaaammdd.hh:mm</span>
+ (fi). Les dates i hores han d'estar en temps local del SERVIDOR
+ i aquestes paraules han de separar-se per espais.
+ <br />
+Les hores de tall es poden utilitzar per permetre que els alumnes facin l'examen en sessions diferents. Un
+ alumne que hagi treballat a l'examen abans d'una hora tall no podrà tornar a treballar
+ després d'aquesta hora de tall.
+ <br />
+ Format de les hores de tall: <span class="tt wims_code_words">aaaammdd.hh:mm</span> (separeu les diverses
+ hores de tall per espais).
+
+!! for translation copy the part of the lang/help.phtml.fr corresponding to the record :variable
+!read lang/help.phtml.fr variable
+
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
+:dependency
+ <p class="wimscenter" style="font-weight:bold;">Dependències de les notes</p>
+ Dependències de les notes vol dir que un participant ha
+  d'haver obtingut punts dels altres exercicis del full abans de
+  poder treballar-hi. Per exemple,
+  <span class="tt wims_code_words">1:50,2:30,3+4+5:60</span>
+  vol dir que el participant ha de tenir un èxit del 50% a l'exercici 1,
+  el 30% a l'exercici 2, i una mitjana d'èxit del 60% als exercicis
+  3,4,5.
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
+:options
+ <p class="wimscenter">Opcions.</b></center>
+ De moment només hi ha una opció disponible
+  <ul>
+   <li><em>autogen</em> significa que l'exercici es genera automàticament
+  fins i tot si l'usuari no hi clica damunt. Per tant, pot consultar
+  l'exercici registrat fins i tot quan la sessió està tancada. No es recomana
+  excepte per exercicis corregits manualment.
+  </li>
+  </ul>
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
+:contenu
+ <p class="wimscenter">Contingut d'un exercici</p>
+Aquest exercici pot ser agafat (a l'atzar) d'una llista d'exercicis
+existents en els fulls de treball. Si us plau, marqueu els exercicis dels
+fulls de la següent llista, que passaran a ser candidats a ser exercicis d'aquest examen.
+!if $wims_read_parm!=$empty
+ !exit
+!endif 

@@ -1,0 +1,92 @@
+# PutExo
+# Ajoute du contenu (un exercice existant) a la feuille $qsheet de la classe $qclass
+
+#Pour commencer, on verifie la classe
+!read scripts/check.class
+!if $error!=$empty
+  !exit
+!endif
+
+type=sheets
+!read scripts/check.proc
+!if $error!=$empty
+  !exit
+!endif
+
+#On verifie que la feuille n'est pas "Active"
+sheet_status=!line 1 of $qproperties
+!ifval $sheet_status >0
+  error=sheet mustn't be active
+  !exit
+!endif
+
+exocnt=!recordcnt wimshome/log/classes/$qclass/sheets/.sheet$wims_sheet
+!if $exocnt >= $MAX_EXOS
+  error=Sorry, a sheet is limited to $MAX_EXOS exercises.
+  !exit
+!endif
+
+!if $data1=$empty
+  error=no data found
+  !exit
+!endif
+
+data1=!nonempty lines $data1
+n1=!linecnt $data1
+!for i=1 to $n1
+  v_=$empty
+  l=!line $i of $data1
+  #On remplace temporairement les eventuelles virgules pour ne pas interferer avec la suite
+  l2=!translate , to XTEMPX in $l
+  l2=!translate = to $,$ in $l2
+  n_=!item 1 of $l2
+  v_=!item 2 of $l2
+  nb_elem=!itemcnt $l2
+  !if $nb_elem>2
+  !for j=3 to $nb_elem
+    courrant=!item $j of $l2
+    v_=$v_=$courrant
+  !next j
+  !endif
+  # puis on remet en place les virgules
+  v_=!translate XTEMPX to $,$ in $v_
+  sh_$n_=$v_
+!next i
+
+
+!for t in sh_module, sh_params
+  !if $($t) = $empty
+    error=incomplete data $t
+    !exit
+  !endif
+!next t
+
+!default sh_weight=1
+!default sh_points=10
+!default sh_title=Nouvel exercice
+!default sh_description=$empty
+!default sh_dep=$empty
+!default sh_comment=$empty
+
+
+# On remplace les eventuels codes URI (%2F, etc..) par les caracteres adequats
+!read adm/urldecode $sh_module
+sh_module=$url
+
+!if $sh_module=$empty
+  error=urldecode failure ! Make sure URI::URL perl module is well installed on the server.
+  !exit
+!endif
+
+!appendfile wimshome/log/classes/$qclass/sheets/.sheet$qsheet \
+:$sh_module\
+$sh_params\
+$sh_points\
+$sh_weight\
+$sh_title\
+$sh_description\
+$sh_dep\
+$sh_comment\
+
+
+exocnt=!recordcnt wimshome/log/classes/$qclass/sheets/.sheet$wims_sheet

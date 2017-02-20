@@ -1,0 +1,47 @@
+# procedure de listing (utilisee par listsheets et listexams)
+# pre-requis : $list_type doit etre specifie (exam ou sheet)
+
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+!if $list_type=$empty
+ error=error in listing.proc
+ !exit
+!endif
+
+
+
+!if $list_type=sheets
+ titleline=3
+!else 
+ titleline=4
+!endif
+
+listfile=wimshome/log/classes/$qclass/$list_type/.$list_type
+cnt=!recordcnt $listfile
+
+list=$empty
+titles=$empty
+nb_hidden=0
+
+
+!for i=1 to $cnt
+ current=!record $i of $listfile
+ 
+ status=!line 1 of $current
+ !if $status=3
+  !advance nb_hidden
+ !endif
+ title=!line $titleline of $current
+ 
+ !if $list=$empty
+  list=$i
+  titles=$i:$title:$status
+
+ !else
+  list=$list,$i
+  titles=$titles$separator$i:$title:$status
+ !endif
+!next i

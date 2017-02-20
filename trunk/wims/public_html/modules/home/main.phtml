@@ -1,0 +1,53 @@
+!if robot isin $session
+ !set wims_htmlbody=
+!endif
+!if _tool isin $wims_session
+ !set wims_html_onload=window.focus();window.resizeTo(800,650);window.moveTo(15,35);$wims_html_onload
+!endif
+
+!read adm/css.phtml
+
+!set home_theme=!text select 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz/ in $wims_theme
+!default home_theme=default
+
+!let site_logo=!defof site_logo\
+site_logolink in wimshome/log/wims.conf
+!distribute line $site_logo into site_logo,site_logolink
+
+!header1
+
+!robottrap
+
+!if robot isin $session
+ !changeto ./robot.phtml
+!endif
+!if $directworksheet!=$empty
+ !readproc names.$lang
+ !changeto launchseries.phtml
+!endif
+
+!if $special_parm=logo
+</div>
+<div id="wimsbodybox">
+ <div id="wimspagebox">
+  !read ./logo/logo.phtml.$lang
+ </div>
+</div>
+!exit
+!endif
+
+!if $special_parm=download
+ <div class="wims_msg alert">Sorry, this page no more exists.</div>
+ !! is special_parm=download really still used ?
+ !exit
+!endif
+
+!if $wims_user=$empty
+ !changeto theme.phtml visitor
+!endif
+
+!if $wims_user=supervisor and $style!=student
+ !changeto theme.phtml supervisor
+!else
+ !changeto theme.phtml user
+!endif

@@ -1,0 +1,39 @@
+<h1 class="wims_docu_title">$tit</h1>
+
+$name_author_is
+!if $email!=$empty
+ !mailurl $email $author
+.
+!else
+ $author.
+!endif
+!if $readauth=yes
+ $name_code_warning1
+!else
+ $name_code_warning2
+!endif
+
+!form reply
+<input type="hidden" name="job" value="auth2" />
+!if $readauth=yes
+ <input type="hidden" name="noedit" value="$noedit" />
+!endif
+!if $noedit=yes
+ <div class="wimscenter">
+  $name_secretcoder<input type="password" size="16" name="coderr" />
+  <input type="submit" value="$wims_name_tosave" />
+ </div>
+!endif
+!if $noedit=no
+ <div class="wimscenter">
+  $name_secretcode<input type="password" size="16" name="coder" />
+  <input type="submit" value="$wims_name_tosave" />
+ </div>
+!endif
+!formend
+
+!if $readauth=yes
+ <p>
+ !read lang/names.phtml.$modu_lang readauth
+ </p>
+!endif

@@ -1,0 +1,125 @@
+option:absolute comma j precision
+!reset test_comma
+!if comma iswordof $(replyoption$i)
+  !if , isin $(reply$i)
+   test_comma=yes
+   reply$i=!replace internal , by . in $(reply$i)
+   replyGood$i=!replace internal . by ,  in $(replygood$i)
+  !endif
+  !else
+    replyGood$i=$(replygood$i)
+  !endif
+!endif
+!if j iswordof $(replyoption$i) and j isvariableof $(reply$i)
+   replyGood$i=!mathsubst i=j in $(replyGood$i)
+!endif
+reply$i=!rawmath $(reply$i)
+reply$i=!trim $(reply$i)
+parleft=(
+parright=)
+dd=$(reply$i)
+!if j iswordof $(replyoption$i)
+  dd=!mathsubst j=i in $dd
+!endif
+c=!char 1 of $dd
+!if $c=+ or $c=-
+ dd=!char 2 to -1 of $dd
+!endif
+test=!exec pari $dd
+testimg=!exec pari abs(imag($test))
+!if $computeanswer!=yes
+  !if ( ^ isin $dd or ( . isin $dd and / isin $dd ) )
+    test=NaN nocomputecomplex
+    !exit
+  !endif
+  testI=!text select iI in $dd
+  !if ii isin $testI
+   test=NaN nocomputecomplex
+   !exit
+  !endif
+  !if i notin $testI
+    !if ( + isin $dd or - isin $dd or * isin $dd)
+        test=NaN nocomputecomplex
+        !exit
+    !endif
+  !endif
+  testpm=!text select +- in $dd
+  testpm=!charcnt $testpm
+  !if $testpm > 1
+    test=NaN nocomputecomplex
+    !exit
+  !endif
+  teststar=!text select * in $dd
+  teststar=!charcnt $teststar
+  !if $teststar > 2 or ($testimg=1 and $teststar=1) or ($teststar=2 and $parleft notin $dd)
+    test=NaN nocomputecomplex
+    !exit
+  !endif
+  dd=!nospace $dd
+
+  !if $parright isin $dd and $parright/ notin $dd
+!! a  supprimer et remplacer par $parright notin $dd
+    test=NaN nocomputecomplex
+  !endif
+!endif
+
+m_reply$i=!mathsubst I=i in $(m_reply$i)
+!if j iswordof $(replyoption$i)
+  m_reply$i=!mathsubst i=j in $(m_reply$i)
+!endif
+!if $test_comma=yes
+  m_reply$i=!replace internal . by , in $(m_reply$i)
+  reply_$i= $(m_reply$i)
+!endif
+
+!if $wims_read_parm=nocompare
+ !if NaN isin $test
+  !exit
+ !endif
+ !exit
+!endif
+ good=$(replygood$i)
+!if j iswordof $(replyoption$i)
+  good=!mathsubst j=i in $(replygood$i)
+!endif
+good=!exec pari $good
+!if NaN isin $good or Inf isin $good or $good=$empty
+ Test=bad $i
+ !exit
+!endif
+
+!if NaN isin $test
+ !exit
+!endif
+
+!default precision=1000
+tot=!exec pari max(abs($test)+abs($good),1/$precision)
+
+diff=!exec pari abs($test-($good))
+!if NaN isin $tot $diff or Inf isin $tot $diff or $tot=$empty or $diff=$empty
+ test=NaN
+ !exit
+!endif
+!if absolute iswordof $(replyoption$i)
+ !if $diff < 1/$precision
+   diareply$i=good
+   !advance freegot
+ !else
+   !if $diff < 10/$precision
+     !advance precgood
+      precreply$i=yes
+   !endif
+   diareply$i=bad
+ !endif
+!else
+ !if $[$precision*$diff]<=$tot
+   diareply$i=good
+   !advance freegot
+ !else
+  !if sqrt($precision)*$diff<=$tot
+   !advance precgood
+   precreply$i=yes
+  !endif
+  diareply$i=bad
+ !endif
+!endif

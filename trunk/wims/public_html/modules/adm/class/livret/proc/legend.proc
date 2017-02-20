@@ -1,0 +1,62 @@
+
+!let numcom=$empty
+!let cpt=1
+!if $livret_scoreoption=livret
+    !let scorevar=livret_scorecolor
+!else
+    !let scorevar=wims_scorecolor
+!endif
+!for k=3 to 11
+    !if $($scorevar[$k-1])=$($scorevar[$k])
+      !increase cpt
+    !else
+      !let numcom=!append item $cpt to $numcom
+      !let cpt=1
+    !endif
+!next k
+!let numcom=!append item $cpt to $numcom
+!let nb=!itemcnt $numcom
+
+!if $wims_read_parm!=$empty
+    !goto $wims_read_parm
+!else
+    !exit
+!endif
+
+:save
+!! check modification
+
+!for k=1 to $nb
+    cf_legende$k=!char 1 to 30 of $(cf_legende$k)
+!next k
+!distribute items 0,1 into cpt, cpt2
+!for k=2 to 11
+   !if $cpt>=$(numcom[$cpt2])
+      !increase cpt2
+      cpt=1
+   !else
+      !increase cpt
+   !endif
+   cf_legend$k=$(cf_legende$cpt2)
+!next k
+
+!exit
+
+:legend
+<table class="wimscenter">
+ <tr>
+   <td style="background-color:$(livret_scorecolor[1])">&nbsp;$name_nowork&nbsp;</td>
+   !let tcolor=2
+   !for k=1 to $nb
+      !if $livret_scoreoption=livret
+         !let tlegend=$(livret_legende$tcolor)
+         !default tlegend=$[($tcolor-2)*10]% - $[($tcolor-2+$(numcom[$k]))*10]%
+      !else
+          !let tlegend=$[($tcolor-2)*10]% - $[($tcolor-2+$(numcom[$k]))*10]%
+      !endif
+      <td style="background-color:$($scorevar[$tcolor])">&nbsp;$tlegend&nbsp; </td>
+      !let tcolor=$[$tcolor+$(numcom[$k])]
+   !next k
+ </tr>
+</table>
+!exit

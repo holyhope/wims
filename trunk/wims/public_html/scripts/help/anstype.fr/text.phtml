@@ -1,0 +1,37 @@
+<b>Texte (sensible ou non à la casse : majuscules/minuscules et approximatif).</b>
+(noms : <span class="tt wims_code_words">case</span>, <span class="tt wims_code_words">nocase</span> et <span class="tt wims_code_words">atext</span>)
+<br />
+Les types <span class="tt wims_code_words">case</span>, <span class="tt wims_code_words">nocase</span> et <span class="tt wims_code_words">atext</span>
+ comparent la réponse donnée par l'élève aux bonnes réponses textes données par l'enseignant.
+
+:syntaxe
+La syntaxe générale de ce type de réponse est :
+<pre>
+\answer{}{BlAnC|WhItE}{type=case}{option=noreaccent}
+\answer{}{BlAnC}{type=nocase}
+\answer{Commentaire}{BonneRéponse|Synonyme1|Synonyme2;MauvaiseRéponse1|MauvaiseRéponse2}{type=atext}
+\answer{}{BlAnC|WhItE;rouge|bleue}{type=atext}
+</pre>
+
+!read help/anstype.fr/syno.phtml synonym
+
+Voici une description de chacun des types et de leurs différences.
+<ul><li><span class="tt wims_code_words">case</span> :
+ Chaque lettre de la réponse doit
+ être identique à l'une des bonnes réponses attendues. Les expressions du type e'
+ sont transformées en é (réaccentuation) pour les élèves qui utilisent un clavier sans accent.
+ Pour l'éviter, utiliser l'option
+ <span class="tt wims_code_words">noreaccent</span>.</li>
+<li><span class="tt wims_code_words">nocase</span> :
+La comparaison ne tient pas
+compte des différences entre lettres majuscules et minuscules. Les accents ne sont pas évalués.</li>
+<li><span class="tt wims_code_words">atext</span> :
+Dans le cas du type atext,
+la comparaison n'est faite que sur les éléments essentiels des textes. Sont ignorés
+<ul><li>les différences majuscule/minuscule,</li>
+<li>certaines différences singulier/pluriel (s en fin de mot),</li>
+<li>les accents sur les lettres,</li>
+<li>les mots très communs (de, le, un, ...).</li>
+</ul></li></ul>
+
+!read help/anstype.fr/syno.phtml badonly

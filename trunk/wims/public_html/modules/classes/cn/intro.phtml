@@ -1,0 +1,35 @@
+!set proc=oef
+!header
+
+!if $wims_class=$empty
+ <p>
+本模块是虚拟班的内部模块. 由于你不是以班级成员建立连接的,
+你无权进入. 抱歉.
+ </p>
+ <p class="wimscenter">
+  !href $ 返回Wims
+ </p>
+ !tail
+ !exit
+!endif
+
+<p>本模块收集了<span class="wims_institutiondesc">$wims_institutionname</span>的
+<span class="wims_classdesc">$wims_classname</span>的互动式练习,
+它们是在班级内创立的.</p>
+
+!if $wims_user=supervisor
+ <p>
+  !set wims_ref_class=wims_button
+  !href module=adm/createxo 点击这里以创建其它练习.
+ </p>
+ !read oef/intromenu.phtml
+!else
+  <p>
+   只有主持教师才能进入这个练习目录.
+  </p>
+  <p class="wimscenter">
+   !href $ $wims_name_home
+  </p>
+!endif
+
+!tail

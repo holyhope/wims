@@ -1,0 +1,46 @@
+!set lang_exists=yes
+
+!distribute line Llista de fòrums\
+	Autenticació de gestor\
+	Autenticació d'alumne\
+	Registre d'usuari\
+	into n_list,n_authowner,n_authuser,n_register
+
+!distribute line visitant\
+  alumne\
+  gestor\
+  inscriure's\
+  No hi ha cap fòrum.\
+  Contrasenya de gestor\
+into name_visitor,name_user,name_owner,name_register,name_noforum,\
+ name_pass_owner
+
+!set name_number_message=!nosubst Acollim $ccnt fòrums en aquest \
+  lloc. Trobeu el que us interessi a la taula següent.
+	
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
+
+!exit
+
+:create
+Cliqueu al tipus de connexió per entrar al fòrum, o
+cliqueu a la paraula <span class="wims_button disabled">$name_register</span> per registrar-vos. També podeu
+!href module=adm/forum/regforum crear el vostre fòrum
+ en aquest lloc.
+
+!exit
+
+:enter
+Per entrar a <span class="wims_emph">$mb_title</span>
+en tant que <em>participant registratt</em>, si us plau doneu el nom d'usuari
+i la contrasenya personal.
+
+!exit
+
+:owner
+Per entrar a <span class="wims_emph">$mb_title</span> com a
+<em>gestor</em>, si us plau introduiu la contrasenya de gestor.
+
+!exit

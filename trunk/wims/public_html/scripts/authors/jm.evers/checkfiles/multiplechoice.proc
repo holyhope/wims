@@ -1,0 +1,58 @@
+# CHECKS A MULTIPLECHOICE ANSWER
+# ALSO DRAG+DROP SINGLEDROP MULTIPLE CHOICE
+# this file expects a reply$n and returns a modulescore
+n=$counter
+goback=0
+errortext=$empty
+!if $(reply$n)=?
+    goback=0
+    maxscore=0
+    remark$n=$NOK
+    !exit
+!endif
+answer$n=!nospace $(answer$n)
+reply$n=!nospace $(reply$n)
+
+tg=!itemcnt $(answer$n)
+ta=!itemcnt $(reply$n)
+
+!if $ta!=$tg
+    goback=1
+    errortext=!record 38 of $remarkdir/commenremarks.$taal
+    maxscore=$[$P6*$maxscore]
+    !exit
+!endif
+
+score=0
+your_rep=$empty
+!for p=1 to $ta
+    g=!item $p of $(answer$n)
+    a=!item $p of $(reply$n)
+    !if $a=?
+	k=red
+	a=$dontknow
+    !else
+	!ifval $a=$g
+ 	    !increase score
+ 	    k=green
+	!else
+	    k=red
+	!endif
+    !endif
+    your_rep=!append line <li><span style="color:$k"> $a </span></li> to $your_rep
+!next p
+math=0
+maxscore=$[$maxscore*$score/$ta]
+reply$n=<ol>$your_rep</ol>
+modulescore=$[$modulescore + $maxscore]
+!if $maxscore>0.9
+    remark$n=$OK
+!else
+    !if $maxscore>0.4
+	remark$n=$BOK
+    !else
+	remark$n=$NOK
+    !endif
+!endif
+goback=0
+!exit

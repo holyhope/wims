@@ -1,0 +1,53 @@
+!! change participant registration in subclasses of groupement
+!! this job is actually limited to groupement type when user=supervisor (at the groupement level)
+
+!readproc adm/vfilter/listvarfilter.proc
+usercnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
+
+!! generate list of subclasses
+nbsubclasses=!recordcnt wimshome/log/classes/$wims_class/.subclasses
+!reset ltsubclasses,ltnamesubclasses,ltsupsubclasses
+!if $nbsubclasses>0
+    !for k=1 to $nbsubclasses
+	tmp=!record $k of wimshome/log/classes/$wims_class/.subclasses
+	!distribute item $tmp into num,b,b,title,b,b,b,b,sup,b
+	ltsubclasses=!append item $num to $ltsubclasses
+	ltnamesubclasses=!append item $title to $ltnamesubclasses
+	ltsupsubclasses=!append item $sup to $ltsupsubclasses
+    !next k
+!endif
+
+!if $action=$name_reguser or $action=$name_unreguser
+    listlogin=$empty
+    !for k=1 to $usercnt
+	tmp=!record $k of wimshome/log/classes/$wims_class/.userlist
+        !if $varfilter_!=$empty
+        	!read adm/vfilter/testfilter $(tmp[3])\
+$varfilter_
+     	!endif
+     	!if $(var_filter_test)=1 or $varfilter_=$empty
+	 listlogin=!append item $(tmp[3]) to $listlogin
+        !endif
+    !next k
+    !if __ALL__ isin $listuser
+	listuser=$listlogin
+    !else
+	listuser=!listintersect $listlogin and $listuser
+    !endif
+    listsclassch=!listintersect $listsclassch and $ltsubclasses
+    !if $listsclassch!=$empty and $listuser!=$empty
+	!if $action=$name_reguser
+	    !for login in $listuser
+		 tmp=!defof user_participate in wimshome/log/classes/$wims_class/.users/$login
+		 tmp=!listunion $tmp and $listsclassch
+		 !setdef !set user_participate=$tmp in wimshome/log/classes/$wims_class/.users/$login
+	    !next login
+	!else
+	    !for login in $listuser
+		 tmp=!defof user_participate in wimshome/log/classes/$wims_class/.users/$login
+		 tmp=!listcomplement $listsclassch in $tmp
+		 !setdef !set user_participate=$tmp in wimshome/log/classes/$wims_class/.users/$login
+	    !next login
+    !endif
+    !reset action,listuser,listuserchoice,listsclassch
+!endif

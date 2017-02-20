@@ -1,0 +1,138 @@
+!! add exercise in a sheet
+
+max_exos=!defof MAX_EXOS in wimshome/public_html/bases/sys/define.conf
+max_sheets=!defof MAX_SHEETS in wimshome/public_html/bases/sys/define.conf
+title_limit=50
+desc_limit=255
+!if $scoring=yes
+ !default require=10
+ !default weight=1
+!else
+ require=0
+ weight=0
+!endif
+
+!if $cmd=new or $cmd=resume
+ sheets=
+ !for i=1 to $sheettot
+  sh=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+  !distribute lines $sh into a_,t_,title
+  !if $a_<1
+   sheets=!append line $i,$title to $sheets
+  !endif
+ !next i
+ sheetcnt=!linecnt $sheets
+ !ifval $sheetcnt=0
+  error=no_sheet
+  !exit
+ !endif
+ test_transl=!module translation_language $dir
+ !if $lang iswordof $test_transl
+   tr_lang=yes
+   title=!module title_$lang $dir
+   desc=!module description_$lang $dir
+ !endif
+ !read getparm $iniparm exo
+ desc=!lookup $get_exo in wimshome/public_html/modules/$dir/Descindex
+ obs=!lookup $get_exo in wimshome/public_html/modules/$dir/Obsindex
+ !default title=!module title $dir
+ !default desc=!module description $dir
+ cat=!module category $dir
+ !if exercise notin $cat and oef notin $cat
+  error=not_exo
+  !exit
+ !endif
+ !exit
+!endif
+
+!if $cmd=reply
+ !if ../adm/ isin ../$dir or $dir=home or \
+   (../devel/ isin ../$dir and $wims_devel_modules notwordof open)
+  error=insert_fail
+  !exit
+ !endif
+ !if $picksheet=$empty
+  error=no_pick
+  !exit
+ !endif
+ picksheet=$[floor($picksheet)]
+ !if $picksheet=NaN or $picksheet<1 or $picksheet>min($max_sheets,$sheettot)
+  error=bad_sheet
+  !exit
+ !endif
+ sh=!record $picksheet of wimshome/log/classes/$wims_class/sheets/.sheets
+ a=!line 1 of $sh
+ !if $a>0
+  error=bad_sheet
+  !exit
+ !endif
+ exocnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$picksheet
+ !if $exocnt>=$max_exos
+  error=too_many_exos
+  !exit
+ !endif
+ idesc=!singlespace $new_desc
+ idesc=!char 1 to $desc_limit of $idesc
+ iobs=!singlespace $obs
+ iobs=!char 1 to $desc_limit of $iobs
+ ititle=!singlespace $title
+ ititle=!char 1 to $title_limit of $ititle
+ !if $scoring=yes
+  require=$[$require]
+  weight=$[$weight]
+  !if NaN isin $require
+   require=0
+  !endif
+  !if NaN isin $weight
+   weight=0
+  !endif
+  !bound require between 0,$[10*$require_limit] default 0
+  !bound weight between 0,10 default 0
+ !endif
+ !for i=1 to $exocnt
+  e=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$picksheet
+  !distribute lines $e into wdi,win
+  !if $dir=$wdi and $iniparm=$win
+   test=$picksheet
+   error=already_exist
+   !exit
+  !endif
+ !next i
+####
+  !if $get_random=0
+  !for i=1 to $get_qnum
+    update_order=!append item $(update_ex$i) to $update_order
+  !next
+
+  get_exo=$(get_exo[$update_order])
+  iniparm2=!replace internal & by $\
+$ in $iniparm
+  iniparm2_cnt=!linecnt $iniparm2
+  new_iniparm=
+  equal==
+  !for v in $get_exo
+    new_iniparm=!append item exo=$v to $new_iniparm
+  !next
+  !for u=1 to $iniparm2_cnt
+    l=!line $u of $iniparm2
+    !if exo$equal notin $l
+     new_iniparm=!append item $l to $new_iniparm
+    !endif
+  !next
+  new_iniparm=!nospace $new_iniparm
+  new_iniparm=!replace internal , by & in $new_iniparm=
+  iniparm=$new_iniparm
+!endif
+#####
+ !appendfile wimshome/log/classes/$wims_class/sheets/.sheet$picksheet :$dir\
+$iniparm\
+$require\
+$weight\
+$ititle\
+$idesc\
+\
+$iobs
+
+ exocnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$picksheet
+ wims_module_log=class $class: add No$exocnt to worksheet $picksheet
+!endif

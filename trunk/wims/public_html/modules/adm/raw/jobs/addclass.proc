@@ -1,0 +1,144 @@
+# AddClass
+# Let you create a new classe, or a group of classes, or a subclass in a group
+
+!if $qclass!=$empty
+ qclass=$[$qclass]
+ !if NaN isin $qclass or $qclass<11111 or $qclass>10^9
+  error=bad class id
+  !exit
+ !endif
+!endif
+
+!if $qclass=$empty
+ :recode
+ cd=!randint 10^6,10^7-1
+ test=!defof class_defined in wimshome/log/classes/$cd/.def
+ !if $test=yes
+  !goto recode
+ !endif
+!else
+ test=!defof class_defined in wimshome/log/classes/$qclass/.def
+ #Si la classe existe :
+ !if $test=yes
+
+  !read scripts/check.class
+  !if $error!=$empty
+   !exit
+  !endif
+
+  !readdef $classdeffile
+
+  !if $class_type<2
+  # You can't add a subclass inside an independent class
+  	error=class $qclass already exists
+  	!exit
+  !endif
+
+  class_nbsubclasses=!recordcnt wimshome/log/classes/$qclass/.subclasses
+
+  :new_sub_id
+  !advance class_nbsubclasses
+
+  #If $qclass exists and is a group, we add a subclass inside it.
+  cd=$qclass/$class_nbsubclasses
+
+  classdeffile=wimshome/log/classes/$cd/.def
+  test=!defof class_defined in $classdeffile
+  !if $test=yes
+  	# If a subclass has been deleted before, nb_subclass may not correspond to the next available subclass. So we use the next free ID.
+    !goto new_sub_id
+  !endif
+
+ !else
+  #si la classe n'existe pas, on la cree.
+  cd=$qclass
+ !endif
+
+!endif
+
+data1=!nonempty lines $data1
+data2=!nonempty lines $data2
+n1=!linecnt $data1
+n2=!linecnt $data2
+!for i=1 to $n1
+ l=!line $i of $data1
+ l=!translate = to $\
+$ in $l
+ !distribute lines $l into n_,v_
+ cl_$n_=$v_
+!next i
+!for i=1 to $n2
+ l=!line $i of $data2
+ l=!translate = to $\
+$ in $l
+ !distribute lines $l into n_,v_
+ su_$n_=$v_
+!next i
+
+!for t in cl_description, cl_institution, cl_supervisor, cl_email, cl_password,\
+	su_lastname, su_password
+ !if $($t) = $empty
+  error=incomplete data $t
+  !exit
+ !endif
+!next t
+
+# Ici il me semble redondant d'enregistrer a la fois type et typename. est-ce vraiment utile ?
+!bound cl_type between integer 0 and 4 default 0
+cl_typename = !item ($cl_type+1) of $classtypes
+
+!if $cl_type > 1 and / isin $cd
+ error=superclass $qclass already exists
+ !exit
+!else
+ !if / isin $cd
+   cl_superclass=$qclass
+   cl_parent=$qclass
+ !endif
+!endif
+
+log = !sh cd $wims_home/log/classes\
+	mkdir -p $cd\
+	cd $cd\
+	mkdir -p .users sheets exams score noscore\
+	echo 4 >version
+
+# la date de creation de la classe est automatiquement la date du jour.
+cl_creation=!char 1 to 8 of $wims_now
+cl_creation=!eval $cl_creation
+
+
+!default cl_expiration=$[$cl_creation+10000]
+
+!bound cl_limit between integer 1 and 500 default 30
+langs=!words2items $wims_site_languages
+!bound cl_lang within $langs default en
+!default cl_level=H4
+!default cl_theme=standard
+!default cl_css=-theme-
+!default cl_creator=$httpd_REMOTE_ADDR
+!default cl_scorecolor=#ffffff, #ff0000, #ff0000, #ff0000, #ffa500, #ffa500, #fff500, #d2ff00, #b9ff00, #2fc42f, #259425
+
+!writefile wimshome/log/classes/$cd/.def !set class_connections=+$ident/$rclass+ $(cl_connections) \
+!set class_defined=yes\
+!set class_creation=$cl_creation
+
+!for t in $classdefs
+ !appendfile wimshome/log/classes/$cd/.def !set class_$t=$(cl_$t)
+!next t
+
+!writefile wimshome/log/classes/$cd/supervisor !set user_lastname=$su_lastname\
+!set user_firstname=$su_firstname\
+!set user_password=$su_password\
+!set user_email=$cl_email\
+!set user_exists=yes
+
+!if $cssfile!=$empty
+  !writefile wimshome/log/classes/$cd/css $cssfile
+!endif
+
+!if $logofile!=$empty
+  !writefile wimshome/log/classes/$cd/logo $logofile
+!endif
+
+log = !sh cd $wims_home/log/classes; ./.build-index $qclass

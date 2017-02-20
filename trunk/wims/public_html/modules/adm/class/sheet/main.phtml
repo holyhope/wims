@@ -1,0 +1,148 @@
+<!-- adm/class/sheet/main.phtml START -->
+
+!read adm/class/classname.phtml $wims_classname\
+$wims_institutionname
+
+!reset confirm
+!read adm/css.phtml
+!header1
+
+!if $job iswordof student chseries
+ !changeto $job.phtml
+!endif
+!if $job notwordof prep_modify getsource clone
+!read adm/title.phtml 1\
+$classname\
+$name_title $name_title2
+!else
+!read adm/title.phtml 1\
+$name_title\
+$(name_$(job1)) $modif
+!endif
+!if $error!=$empty
+!!this is not a true message error ...
+ !read lang/msg.phtml.$moduclass_lang
+ !goto end
+!else
+ !if $message!=$empty
+    <div class="wims_msg success">
+     $message
+     !reset message
+    </div>
+ !endif
+!endif
+
+!if $job=getsource
+ !read getsource.phtml
+ !goto end
+!endif
+
+<div id="sheet_management">
+  !if $jquery_defined=yes
+      <script type="text/javascript">
+        /*<![CDATA[*/
+        jQuery(function($$) {
+          // Get in sessionStorage if a tab was previously selected, and activate it.
+          var selectedTabId = sessionStorage.getItem("sheet_management_selectedTab");
+          selectedTabId = selectedTabId === null ? 0 : selectedTabId; //default tab = 0
+          $$("#sheet_management").tabs({
+            active: selectedTabId,
+            activate : function( event, ui ) {
+                selectedTabId = $$("#sheet_management").tabs("option", "active");
+                sessionStorage.setItem("sheet_management_selectedTab", selectedTabId);
+            }
+          });
+        });
+        /*]]>*/
+      </script>
+      <ul>
+        <li><a href="#sheetinfo">$name_info</a></li>
+        !ifval $activetest!=-1
+          <li><a href="#list">$name_content</a></li>
+        !endif
+      </ul>
+      <div id="sheetinfo">
+         !read adm/sheet/sheetinfo.phtml
+      </div>
+  !else
+    !if $wims_infoshow=no
+     <fieldset class="property_fields blockcenter">
+     <legend> $name_info [
+     !href cmd=resume&infoshow=yes $wims_name_showall
+     ]
+     </legend>
+     </fieldset>
+    !else
+     !read adm/sheet/sheetinfo.phtml
+    !endif
+  !endif
+
+!ifval $activetest=-1
+ !goto end
+!endif
+
+:end1
+<div id="list">
+!if $exocnt=0
+ <p>$name_warning</p>
+!else
+
+ !set wims_ref_class=wims_button float_right
+ !href module=adm/sheet&sh=$sheet&job=print $wims_name_printable
+
+ !read adm/sheet/sheetcontent.phtml
+!endif
+</div>
+
+!if $activetest=0
+ <p>$name_text1</p>
+  <ul>
+   <li> $name_text2:
+	!read adm/search_engine/form.phtml
+   </li><li>
+	!href target=wims_internal module=adm/browse&job=taxo $name_texttaxo
+   !!</li><li>
+	!!!href target=wims_internal module=adm/browse&job=subject $name_textsubject
+   </li><li>
+    !href cmd=reply&job=prep_putsource $wims_name_putsource
+   </li><li>
+    $name_text3
+   !href module=classes/$lang&special_parm=.nocache. $wims_name_classexo
+   </li>
+   !if $wims_devel_modules iswordof open
+    <li> $name_text4
+    !href module=adm/modtool $wims_name_modtool
+    </li>
+   !endif
+   !if $name_helpprog!=$empty
+    <li>$(name_helpprog[1])
+     !href module=help/teacher/program $(name_helpprog[2])
+     $(name_helpprog[3])
+    </li>
+   !endif
+  </ul>
+!endif
+</div>
+
+:end
+</div>
+!if $activetest>=0
+ !if $activetest=0
+  !let wims_menu_items=!append line putsource,1,cmd=reply&job=prep_putsource to $wims_menu_items
+ !endif
+ !if $job!=getsource and
+  !let wims_menu_items=!append line sheetsource,1,cmd=reply&job=getsource to $wims_menu_items
+ !endif
+ !if $exocnt>0
+  !let wims_menu_items=!append line duplicatesheet,1,cmd=reply&job=duplicate&sheet=$sheet to $wims_menu_items
+ !endif
+ !let wims_menu_items=!append line itemsep,0,\
+printable,1,module=adm/sheet&sh=$sheet&job=print\
+participantview,1,module=adm/sheet&sh=$sheet to $wims_menu_items
+!endif
+
+<!-- adm/class/sheet/main.phtml END -->
+!tail
+
+!distribute item ,, into job,source,title,desc,prpage
+

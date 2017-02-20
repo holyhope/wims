@@ -1,0 +1,69 @@
+
+!if empty_data iswordof $wims_error
+ Oddali ste nepopoln odgovor. Prosim, dopolnite podatke, predno jih po¹ljete.
+ !exit
+!endif
+
+!if double_reply iswordof $wims_error
+ Odgovor na to vpra¹anje ste ¾e oddali in zanj prejeli oceno. Ponovni poskusi niso upo¹tevani (ne uporabljajte gumba 
+ `Vnoviè nalo¾i' na va¹em brskalniku, da bi odgovarjali ponovno!).
+ !exit
+!endif
+
+!if bad_data iswordof $wims_error
+  Oddanih podatkov ni mogoèe preveriti. Morda gre za napako pri vnosu.
+ !exit
+!endif
+
+!if no_ldap_parameter iswordof $wims_error
+Polja z zvezdico je potrebno izpolniti.
+ !exit
+!endif
+
+!if bad_class iswordof $wims_error
+ Napaka. Ka¾e, da iskana uèilnica ni veljavna?
+ !exit
+!endif
+
+!if bad_day iswordof $wims_error or day_dontexist iswordof $wims_error
+ Zahtevani datum ni veljaven.
+!exit
+!endif
+
+
+!if not_supervisor iswordof $wims_error
+ Oprostite. Do tega modula lahko dostopa le skrbnik uèilnice.
+ !exit
+!endif
+
+
+!if nouser iswordof $wims_error or bad_user iswordof $wims_error \
+  or bad_usercls iswordof $wims_error
+ Napaka. Ne najdem vas med uporabniki te uèilnice ($wims_class)!
+!exit
+!endif
+
+
+
+!if insert_fail iswordof $wims_error
+  Stre¾nik va¹ega dela ni uspel shraniti v uèilnici. Preverite smiselnost podatkov.
+ !exit
+!endif
+
+!if bad_pass iswordof $wims_error
+ Neustrezno geslo: uporabite lahko le èrke in ¹tevke, skupaj med 4 in 16 znakov.
+ !exit
+!endif
+
+!if bad_auth iswordof $wims_error
+ Prijava ni uspela. Poskusite ponovno.
+ !exit
+!endif
+
+!if bad_login iswordof $wims_error
+ Va¹e uporabni¹ko ime vsebuje nedovoljene znake.
+ Dovoljene so le èrke in ¹tevke brez stre¹ic in akcentov.
+ !exit
+!endif
+
+Tip napake: $wims_error $wims_error_parm.

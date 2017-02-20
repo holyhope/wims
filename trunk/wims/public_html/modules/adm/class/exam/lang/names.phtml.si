@@ -1,0 +1,104 @@
+!set lang_exists=yes
+
+!set name_duplicateok=Examen dupliqué correctement.
+!set name_title=Priprava izpita
+!set name_mainpage=Main page of the exam
+
+!if $activetest<=0
+ !set name_title=!nosubst Edit exam
+!else
+ !set name_title=!nosubst Edit exam
+!endif
+
+!read adm/lang/date.phtml.$lang
+!read adm/lang/sheetexam.phtml.$lang
+
+!! ---------------------------------------------------------------------------------------------------
+!! ancien fichier name du module exam.fr
+
+!set wims_name_scoreexam=Moj rezultat
+
+!set name_Options=Options
+!set name_All=All
+
+!set name_done=done
+
+!distribute lines Zakljuèi ta izpit\
+Back to work on the exam\
+Skrbnikov pogled izpita.\
+Predstavitev za uporabnike\
+Current score detail\
+Ta izpit ne vsebuje nobene naloge. Morda gre za napako skrbnika uèilnice.\
+Trenutni rezultat - podrobnosti\
+Z va¹e povezave re¹evanje izpita ni dovoljeno.\
+Ta izpit lahko re¹ujete le enkrat.\
+zato rezultata zdaj ne morete veè izbolj¹evati.\
+To je va¹ zadnji dovoljeni poskus. Bodite uspe¹ni!\
+ boste spro¾ili od¹tevanje èasa in poveèali ¹tevec porabljenih poskusov za ena.\
+boste spro¾ili od¹tevanje èasa.\
+Requires uspeh pri drugih vajah\
+Rezultat tega izpitnega poskusa\
+into name_endexam,name_backexam,name_teacherview,name_presentation,\
+name_scoreexam,name_empty,name_content,name_examclosed,name_exam1,name_exam5,\
+name_lasttry,name_exam7,name_exam8,name_depend,name_scoreexam2
+
+
+!set name_exam2=!nosubst ©tevilo dovoljenih ponovitev tega izpita je $stries.
+!set name_exam3=!nosubst Pisanje izpita ste ¾e zakljuèili, na voljo ste imeli $tried poskusov,
+!set name_exam4=!nosubst Izkoristili ste ¾e <strong>$tried</strong> dovoljenih poskusov,
+!set name_exam6=!nosubst Na voljo vam je ¹e <strong>$tryremain poskusov</strong>.
+
+!set name_exam9=!nosubst Za re¹evanje izpita imate na voljo <strong>$sdure minut</strong>.\
+   S klikom na zgornjo nalogo
+
+!set name_simulation=Ta izpit deluje v poskusnem naèinu, ki je enak obièajnemu, \
+le da se vam poskusi ne ¹tejejo in registracija rezultata ni mo¾na.
+
+!set wims_name_examremain=Time left for this exam: $
+
+!distribute lines pending\
+  You have not yet started your work on the exam.\
+  Go to start the work.\
+into name_pending,name_begin1,name_begin2
+!set name_simulation2=The current score is not taken into account because the exam runs in simulation mode.
+
+!set name_timeleft=!nosubst Time is up! You have used up the $sdure minutes \
+  allocated for this exam. You must logout now.
+!set name_realscore=!nosubst Your real score for this exam sheet is $lastscore.
+!set name_bestscore =!nosubst Your best score for this exam is $lastscore. (It is the best score which will be taken into account.)
+
+!! ---------------------------
+!! nouvelle partie
+
+!set statutname=$(wims_name_shstatus[1]),$wims_name_shstatus
+
+!set name_desc_duration=in minutes
+!let name_mkexam=Create the exam page
+
+!let name_shinfo_cutt=Cut times
+
+!! différents commentaires de la page de gestion
+!distribute lines General information&nbsp;\
+Content of the exam&nbsp;\
+This exam has no content yet.\
+into name_info,name_content,name_warning
+
+!! titre du tableau de contenu de l'examen (file examcontent.phtml)
+!let name_extab=!nosubst No,$wims_name_title,Content,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
+
+!set name_contenu=Choose content
+!let name_cpsheet1=Each exercise of the worksheet will have to be added one after the other to \
+the end of the exam sheet. Each exercise will have its weight set to 1.\
+If the field below is left empty, the title of the exercise will remain \
+the same as in the worksheet it comes from.
+
+!let name_cpsheet3=Generic title word
+!let name_cpsheet4=Exercises will be numbered in order
+
+!set name_warning_nonfinished=You have not yet done all the exercises in this exam. Finishing now will\
+  freeze the score and consume one try of the exam,and you will have to start \
+  from the beginning the next time.<br />Are you sure you want to finish?
+
+!set wims_name_cpexam=Copy an active exam
+
+!set name_cpexam1=You are about to copy the content of an other active exam into this one. You will be able to modify the contents of this exam until you will activate it

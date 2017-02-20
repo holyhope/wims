@@ -1,0 +1,29 @@
+!if $tv_listtechvar=$empty
+	Non sono definite variabili tecniche.
+	<br/>
+  È possibile definire variabili tecniche:
+	<ul><li>
+importando i dati (da un file .csv)
+  (Al momento non disponibile)</li><li>
+direttamente dalla pagina di ogni studente
+</li><li>
+attraverso un questionario nominale
+</li></ul>
+(si vedano le documentazioni corrispondenti)
+!else
+  Queste sono le variabili tecniche disponibili:
+	!read adm/vfilter/listvar.phtml
+	potete costruire
+filtri utilizzando tali variabili. Le condizioni scritte
+su una stessa riga, separate da spazi, devono essere tutte soddisfatte.
+Saranno inclusi nell'elenco gli studenti che soddisfano
+le condizioni di almeno una riga.
+<p>Per esempio
+<pre>
+groupe=1 langue=2
+groupe=3
+</pre>
+selezionerà gli iscritti per cui il valore della variabile <span class="tt wims_code_words">groupe</span> è 1 <strong>e</strong> il valore della variabile <span class="tt wims_code_words">langue</span> è 2; <strong>oppure</strong> gli studenti per cui il valore della variabile <span class="tt wims_code_words">groupe</span> è 3 (senza ulteriori condizioni).
+!endif
+
+ 

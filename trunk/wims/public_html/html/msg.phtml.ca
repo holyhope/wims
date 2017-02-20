@@ -1,0 +1,73 @@
+
+!if empty_data iswordof $wims_error
+ Has enviat una resposta incompleta. Sisplau completa les teves dades abans d'enviar-les.
+ !exit
+!endif
+
+!if double_reply iswordof $wims_error
+ Ja has enviat una resposta a aquest problema, i ja ha estat analitzada i
+ avaluada. Respostes repetides són ignorades. (No utilitzis el botó 
+ `actualitzar' del teu navegador per reenviar respostes!)
+ !exit
+!endif
+
+!if bad_data iswordof $wims_error
+  No he pogut avaluar el que has enviat.
+ !exit
+!endif
+
+!if no_ldap_parameter iswordof $wims_error
+ Vous devez remplir les champs marqués d'un astérisque. Consultez pour cela 
+ le gestionnaire de votre annuaire ldap. 
+ !exit
+!endif
+
+!if bad_class iswordof $wims_error
+Estrany, però sembla que la vostra classe no és vàlida!
+ !exit
+!endif
+
+!if bad_day iswordof $wims_error or day_dontexist iswordof $wims_error
+ La date que vous avez saisie n'est pas valide.
+!exit
+!endif
+
+
+!if not_supervisor iswordof $wims_error
+  Ho sento, però aquesta operació només es permet als professors registrats
+ !exit
+!endif
+
+!if nouser iswordof $wims_error or iswordof  bad_user iswordof $wims_error \
+  or bad_usercls iswordof $wims_error 
+ Etrange, mais je ne trouve pas ce participant dans cette classe !
+!exit
+!endif
+
+!if insert_fail iswordof $wims_error
+  El software ha fallat en inserir el teu treball a la base de dades. Sisplau
+ comprova les teues dades.
+ !exit
+!endif
+
+!if bad_pass iswordof $wims_error
+ La vostra contrasenya conté caràcters no permesos. <p>
+ Si us plau, escolliu una paraula que només contingui números o lletres
+ sense accent i sense espais entre ells.
+ !exit
+!endif
+
+!if bad_auth iswordof $wims_error
+ Echec d'authentification. Veuillez réessayer.
+ !exit
+!endif
+
+!if bad_login iswordof $wims_error
+ El vostre nom d'usuari conté caràcters no permesos. <p>
+ Si us plau, escolliu una paraula que només contingui números o lletres
+ sense accent i sense espais entre ells.
+ !exit
+!endif
+
+Tipus d'error: $wims_error $wims_error_parm.
+

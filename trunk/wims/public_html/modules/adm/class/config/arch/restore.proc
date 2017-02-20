@@ -1,0 +1,140 @@
+!bound restore within replace,merge default merge
+
+v=!record 0 of wimshome/$wims_sesdir/upload/class/version
+v=!word 1 of $v
+!if $v=$empty or $v<4
+ error=no_upload
+ !exit
+!endif
+serial=!record 0 of wimshome/$wims_sesdir/upload/class/serial
+serial=!word 1 of $serial
+!readdef wimshome/log/classes/$wims_class/neighbors
+
+sharing=
+!for r in $sharelist
+ !if $(sharing_$r)!=$empty
+  sharing=!append item $r to $sharing
+ !endif
+!endif
+sharing=!append item log,neighbor to $sharing
+
+safe=!listcomplement def,sup in $reclist
+selection=!replace item all by $safe in $selection
+sel=!listintersect $selection and $reclist
+sel=!listcomplement $sharing in $sel
+!if $sel=$empty
+ no_selection=yes
+ !read arch/upload.proc
+ job2=upload
+ !exit
+!endif
+selw=!items2words $sel
+dictionary=$module_dir/arch/recdep
+dep=!exec translator $selw
+copy=!words2items $selw $dep
+copy=!listuniq $copy
+
+!! ----------------------------- restore of user when replace or merge
+!if user isitemof $copy
+ n=!recordcnt wimshome/$wims_sesdir/upload/class/.userlist
+ !read adm/class/userremain.proc
+ m=!recordcnt wimshome/log/classes/$wims_class/.userlist
+ !if $restore=merge
+  !if $n>$dispo
+   user_bad=refused
+   copy=!listcomplement user,score in $copy
+  !endif
+ !else
+  !if ($n>$dispo and $class_superclass!=$empty) or ($class_superclass=$empty and $n>$dispo+$m)
+   user_bad=refused
+   copy=!listcomplement user,score in $copy
+  !else
+   !if $m>0
+    erase=user
+   !endif
+  !endif
+ !endif
+ !if ($wims_supertype=4 or $wims_supertype=2)
+  !if $class_typename=class
+   !if user isin $erase
+    !for k=1 to $m
+     u=!record $k of wimshome/log/classes/$wims_class/.userlist
+     t=!defof user_participate in wimshome/log/classes/$wims_superclass/.users/$(u[3])
+     t=!listcomplement $wims_class in $t
+     !setdef !set user_participate=$t in wimshome/log/classes/$wims_superclass/.users/$(u[3])
+    !next k
+   !endif
+   !reset user_ok,user_loginused
+   !for k=1 to $n
+    u=!record $k of wimshome/$wims_sesdir/upload/class/.userlist
+    test=!defof user_exists in wimshome/log/classes/$wims_superclass/.users/$(u[3])
+    !if $test!=$empty
+     user_loginused=!append item $(u[3]) to $(user_loginused)
+     !sh rm -f $wims_home/$wims_sesdir/upload/class/.users/$(u[3]) $wims_home/$wims_sesdir/upload/class/score/$(u[3]) $wims_home/$wims_sesdir/upload/class/noscore/$(u[3]);
+    !else
+     user_ok=!append item $(u[3]) to $user_ok
+    !endif
+   !next k
+   !sh cd $wims_home/$wims_sesdir/upload/class/;\
+cp -pR .users $wims_home/log/classes/$wims_superclass/;
+   !for u in $user_ok
+    !setdef !set user_participate=$wims_class in wimshome/log/classes/$wims_superclass/.users/$u
+   !next k
+  !endif
+  copy=!listcomplement user in $copy
+  !readproc adm/class/mkuserlist
+ !endif
+!endif
+
+!if $restore=replace
+ erase=$copy
+!else
+ erase=!listcomplement user,exo in $copy
+!endif
+copyw=!items2words $copy
+erasew=!items2words $erase
+dictionary=$module_dir/arch/recdir
+copylist=!exec translator $copyw
+eraselist=!exec translator $erasew
+c=!replace , by , $ in $copy
+dictionary=$module_dir/lang/recnames.$moduclass_lang
+restored=!exec translator $c
+
+!distribute words y y y y y y y y y y y y y y y y y y y y y y y into $copy
+
+!if def isitemof $copy
+ creat=!defof class_creation in wimshome/log/classes/$wims_class/.def
+!endif
+
+!mexec arch/restore.sh
+wims_class_log=Restore $copy from $wims_deposit by $wims_realuser
+selection=
+
+!if user isitemof $copy
+ !read adm/class/mkuserlist
+!endif
+
+!if def isitemof $copy
+ !setdef !set class_creation=$creat in wimshome/log/classes/$wims_class/.def
+ exp=!defof class_expiration in wimshome/log/classes/$wims_class/.def
+ today=!char 1 to 8 of $wims_now
+ later=!date -d '2 months' '+%Y%m%d'
+ !if NaN isin $[$exp]
+  exp_bad=bad
+  exp=$later
+ !endif
+ !if $exp<$later
+  exp=$later
+  exp_bad=early
+ !endif
+ !if $exp>$today+10000
+  exp=$[$today+10000]
+  exp_bad=late
+ !endif
+ !if $exp_bad!=$empty
+  !setdef !set class_expiration=$exp in wimshome/log/classes/$wims_class/.def
+ !endif
+ !mexec scripts/classlist.sh
+!endif
+
+!read adm/class/stat

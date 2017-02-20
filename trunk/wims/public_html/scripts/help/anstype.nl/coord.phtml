@@ -1,0 +1,56 @@
+
+ <b>Klik in een plaatje (hotspot).</b>
+ (naam: <span class="tt wims_code_words">coord</span>)
+ <br/>
+ Bij dit antwoordtype wordt het antwoord gelezen als de positie van een muisklik in een plaatje.
+ <p>
+ Het goede antwoord moet worden gedefinieerd als een matrix (het rij scheidingsteken is een ';')
+ De eerste rij is de URL van het plaatje. Op dit moment moet het plaatje van het "gif" formaat zijn.
+ De tweede rij van deze matrix bevat de kriteria voor de goede klik co&ouml;rdinaten.
+Van af de derde rij kunnen allerlei foute posities worden opgenomen.
+Alle punt co&ouml;rdinaten zijn in pixels 
+ </p><p>
+ Het antwoord van de leerling wordt goed gerekend als deze voldoet aan de kriteria
+ zoals opgenomen in de tweede rij van de 'antwoordmatrix'
+Als er kriteria voor foute antwoorden zijn gedefinieerd (van af de derde rij)
+en het antwoord komt hiermee overeen, is de som fout.
+In dit geval wordt bij een antwoord dat niet overeenkomt met een goed of
+ een fout antwoord, de vraag ter correctie geretourneerd.
+ <br/>
+Als er geen kriteria voor foute antwoorden zijn gedefinieerd, wordt een antwoord dat niet
+voorkomt in de tweede matrixrij, fout gerekend.
+ </p><p>
+ Het "nummer minus 1" van de rij dat overeenkomt met het antwoord van de leerling,
+ wordt bewaard in de variabele <span class="tt wims_code_variable">\result</span><em>n</em> waarbij <em>n</em>
+ het nummer is van het input-veld zelf is. De variabele kan eventueel worden opgeroepen in een \feedback.
+ </p><p>
+Beschikbare condities voor het testen van de antwoord-klik:
+</p>
+ <p>
+ Meerder testcondities kunnen worden gecombineerd in een zelfde rij, onder gebruikmaking van:
+ '&' (intersectie) <br/>
+ '|' (union)<br/>
+  '^' (complementair) of haakjes.
+ </p><p>
+Het wordt aanbevolen het 'input-field' via \embed{} op te nemen in het \statement{}.
+Dit antwoordtype n.l. is niet compatible met andere invulvelden;
+omdat elke gebruiker muisklik wordt opgestuurd naar de server als antwoord.
+</p>
+
+!set p=anstype.$lang/coord
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td class="tt wims_code_words">
+!line 1 of $l_
+    </td><td>
+!line 2 to -1 of $l_
+   </td>
+  !next
+$table_end

@@ -1,0 +1,27 @@
+
+
+ <b>纯文本.</b>
+ (名称: <span class="tt">raw</span>)
+ <br/>
+用于与正确答案比较的文本. 下面的选项决定了在进行比较前需要作怎样的变换.
+如果没有给出选项, 则只除去首尾的空格. 使用这个格式要小心, 在默认情形,
+多一个空格就被认为不同的! 这主要用于作者手工打分.
+
+
+!set p=anstype.$lang/raw
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td class="tt">
+!line 1 of $l_
+    </td><td>
+!line 2 of $l_
+   </td>
+  !next
+$table_end

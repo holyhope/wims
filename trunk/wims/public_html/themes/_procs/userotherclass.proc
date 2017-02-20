@@ -1,0 +1,27 @@
+!! dans le cas d'un portal et dans le cas où wims_otherclass est non vide,
+!! le lien otherclass est dans le fil d'ariane
+
+!if $auth_method isitemof $auth_method_list
+  !set tmp_=auth
+!else
+   !reset tmp_
+!endif
+!if $wims_superclass!=$wims_class and $wims_superclass!=$empty
+  !if $auth_method isitemof $auth_method_list
+    !set wims_rm_0 = $wims_rm_0\
+U_oclass,1,module=adm/class/classes&type=$(tmp_)participant&auth_user=$ext_login&class=$wims_superclass
+  !else
+    !set wims_rm_0 = $wims_rm_0\
+U_oclass,1,module=adm/class/classes&type=participant
+  !endif
+  !exit
+!else
+  !if $wims_otherclass=$empty
+   !set wims_rm_0 = $wims_rm_0\
+U_oclass,1,module=adm/class/classes&type=$(tmp_)participant
+  !exit
+  !endif
+!endif
+
+!set wims_rm_0 = $wims_rm_0\
+U_oclass,1,module=adm/class/classes&type=$(tmp_)participant

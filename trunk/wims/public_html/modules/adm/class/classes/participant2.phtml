@@ -1,0 +1,32 @@
+
+   <td>
+    !if $class_auth iswordof cas
+     !if $wims_user=$empty or $code iswordof $directlist_
+      !set url = $wims_ref_name?module=adm/class/classes&type=authparticipant&class=$code$tmp_parm
+      !read adm/codeurl $url
+      <a class="wims_button" href="$host_auth/login?service=$script_out">$wims_name_Enter</a>
+     !else
+      !set wims_ref_class=wims_button
+      !if $splevel=$empty or $splevel=2
+       !set wims_ref_class=wims_button
+       !href module=adm/class/reguser&class=$code$tmp_parm $name_register
+      !else
+       <span style="color:grey;">$name_register</span>
+      !endif
+     !endif
+    !endif
+    !if $class_auth iswordof php
+      !if $userdef=$empty or $code=$superclass
+       <a class="wims_button" href="$host_auth?enter=$code">$wims_name_Enter</a>
+      !else
+!! to fix "direct" access to other classes
+       !set u__=!defof user_external_auth in $userdef
+       !set wims_ref_class=wims_button
+       !href module=adm/class/reguser&class=$code&+auth_user=$u__ $name_register
+      !endif
+   !endif
+   !if $class_auth iswordof ldap
+     !set wims_ref_class=wims_button
+     !href module=$module&type=authparticipant&class=$code$tmp_parm $wims_name_Enter
+   !endif
+   </td>

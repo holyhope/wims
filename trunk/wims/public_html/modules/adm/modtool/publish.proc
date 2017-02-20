@@ -1,0 +1,154 @@
+
+i_title=!module title devel/$auth_login/$mod
+mname=!translate internal ~ to , in $mod
+mname=!nonempty items $mname
+mcnt=!itemcnt $mname
+!distribute items $mname into m1,m2,m3
+mdir=$m1/$m2
+mname=$m3
+
+!!check domain
+i_domain=!module domain devel/$auth_login/$mod
+i_domain=!nonempty items $i_domain
+i_keywords=!module keywords devel/$auth_login/$mod
+i_keywords=!nonempty items $i_keywords
+
+!reset dombad domgood keywordsgood keywordsbad
+!for cd in $i_domain
+  check_domain=!lookup $cd in wimshome/public_html/bases/sys/domain/reversedomain
+  !if $check_domain =$empty
+    dombad=!append item $cd to $dombad
+  !else
+    domgood=!append item $cd to $domgood
+  !endif
+!next
+
+!for cd in $i_keywords
+  check_domain=!lookup $cd in wimshome/public_html/bases/sys/domain/reversedomain
+  !if $check_domain =$empty
+    keywordsbad=!append item $cd to $keywordsbad
+  !else
+    keywordsgood=!append item $cd to $keywordsgood
+  !endif
+!next
+
+!if $m1=local
+ local=yes
+!endif
+!if $i_domain=$empty or $i_keywords=$empty
+  rep=ERROR domain_keyword $mod
+  !goto end
+!endif
+!if $mcnt!=3 or $m1 notitemof $zonepublishs
+ rep=ERROR unpublishable $mod
+ unpublishable_site=$submitpublish_site
+ !reset submitpublish_site
+ !goto end
+!endif
+
+!if $mod=$empty
+ job=modname
+ !changeto $job.proc
+!endif
+
+tmp=a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z
+tmp2=!items2words $tmp
+tmp2=!nospace $tmp2
+wver1=$wims_version
+Wver2=!module wims_version devel/$auth_login/$mod
+wver2=$Wver2
+!for k=1 to 2
+  l0=!text select $tmp2 in $(wver$k)
+  l=!positionof item $l0 in $tmp
+  l=$[100+$l]
+  wver$k=!replace internal $l0 by $l in $(wver$k)
+!next k
+!bound vcheat within yes,no default $
+!if $wver2<$wver1
+ !if $vcheat=$empty
+  askcheat=yes
+  !exit
+ !else
+  !if $vcheat=yes
+   cheatversion=$Wver2
+  !else
+   !setdef wims_version=$wims_version in wimshome/public_html/modules/devel/$auth_login/$mod/INDEX
+  !endif
+ !endif
+!else
+ !if $wver2>$wver1
+  rep=ERROR antiwversion $Wver2
+  !goto end
+ !endif
+!endif
+
+!if $confirm!=yes
+ pubprep=yes
+ !exit
+!endif
+target=!translate internal ~ to / in $mod
+thisver=!module version devel/$auth_login/$mod
+oldver=!module version $target
+!if $oldver!=$empty and $thisver <= $oldver and \
+	($submittype != devel or $m1 = local)
+ rep=ERROR please-update-module-version
+ !goto end
+!endif
+
+!default cheatversion=$wims_version
+!if $m1=local
+ nopublish=!items2words $wims_busyhours
+ nopublish=!singlespace $nopublish
+ nopublish=!text select 0123456789 $ in $nopublish
+ thishour=!char 10,11 of $wims_now
+ !if $nopublish != $empty and $thishour iswordof $nopublish
+  rep=ERROR badhour
+  !goto end
+ !endif
+ publishers=!sh cat $wims_home/log/.devpublishers
+ !if $auth_login notitemof $publishers
+  rep=ERROR nolocalright
+  !goto end
+ !endif
+ today=!char 1 to 8 of $wims_now
+ !if $oldver=$empty
+  !appendfile wimshome/modules/Changelog.new $today: $target $thisver
+ !else
+  !if $thisver>$oldver
+   !appendfile wimshome/modules/Changelog.modif $today: $target $thisver
+  !endif
+ !endif
+ !sh cd modules\
+  rm -fR $target\
+  mkdir -p `dirname $target`\
+  cp -pR devel/$auth_login/$mod $target\
+  find $target ! \( -type f -o -type d \) -exec rm -f '{}' \;\
+  cd $wims_home\
+  [ -d /wsys/wims ] && touch log/newmodules\
+  date '+%Y-%m-%d.%H:%M:%S' >tmp/mkindex.log\
+  echo "Building module index..." >>tmp/mkindex.log\
+  bin/mkindex >>tmp/mkindex.log
+ rep=OK copied to $target
+!else
+ !if $submitauth=$empty or $submitpass=$empty
+  pubprep=yes
+  !exit
+ !endif
+ !read scripts/publish
+!endif
+
+:end
+status=!word 1 of $rep
+status2=$rep
+!if $status notwordof OK ERROR
+ !if length limit isin $status2
+   rep=ERROR lengthlimit
+ !else
+   rep=ERROR noreply
+ !endif
+ !goto end
+!endif
+rep=!trim $rep
+sl=!charcnt $status
+rep2=!char $sl+1 to -1 of $rep
+wims_module_log=publish $submitauth/$mod $submittype $status $submitpublish_site

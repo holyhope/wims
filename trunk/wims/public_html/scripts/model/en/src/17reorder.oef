@@ -1,0 +1,99 @@
+type=first
+textarea="data explain"
+
+:Reorder items correctly, drag-and-drop.
+
+It presents a list of items to be reordered correctly by dragging and dropping the items in the right place. <p>
+To make an exercise with this model, type the list of
+items to be sorted and change the instruction.
+<p>
+<p>
+With a slight modification, a variant of this model can accept images as items.
+<p>
+Author of the model: Gang Xiao <qualite@wimsedu.info>
+
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Remove the above header if you destroy the model tags, i.e. the lines starting
+with a ':'. Otherwise the exercise might not be recognised by Createxo.
+
+:%%%%%%%% Example parameters to be redefined %%%%%%%%%%%%%%%%%
+
+:\title{Reorder (drag and drop)}
+:\author{XIAO, Gang}
+:\email{qualite@wimsedu.info}
+:\credits{}
+
+:Number of items to be sorted per exercise: up to 20.
+If this number is lower than the available items, a random subset of the
+items will be presented to the learner. <p>
+If this number is greater than the available items, it will be truncated
+to the number of items.
+\integer{tot=6}
+
+:The size of labels to drag, in pixels, x times y.
+Think of people who have to increase the font size of their browsers to see well! Don't make the labels too small.
+\text{size=80x40}
+
+:The list of items to reorder
+Write the itemss in the correct order, separated by commas.
+\text{data=Mercury,Venus,Earth,Mars,Jupiter,Saturn,Uranus,Neptune}
+
+:Text that explains what should be done.
+\text{explain=
+Please put the following planets of the solar system into the right order, with
+the closest to the Sun in first position.
+}
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
+\text{accolade=item(1,1 oui,
+2 non)}
+
+:%%%%%%%%%%%%%% Nothing to modify before the statement %%%%%%%%%%%%%%%%
+\text{data=randomrow(\data)}
+\text{accolade=wims(word 1 of \accolade)}
+\text{data=\accolade=1 ? wims(embraced randitem \data)}
+\integer{datacnt=items(\data)}
+\integer{tot=min(20,min(\tot,\datacnt))}
+\if{\tot<\datacnt}{
+ \text{sh=shuffle(\datacnt)}
+ \text{sh=wims(sort numeric items \sh[1..\tot])}
+ \text{data=item(\sh,\data)}
+}
+
+\text{st=wims(makelist r x for x=1 to \tot)}
+\steps{\st}
+
+:%%%%%%%%%%%%% Now the statement in html. %%%%%%%%%%%%%%%%%%%%
+
+::You don't need to modify this in general.
+
+\statement{\explain
+<table class="wimsnoborder"><tr>
+\for{k=1 to \tot}{<td>\embed{r\k,\size}</td>}
+</tr></table>
+}
+
+:%%%%%%%%%%%%% Nothing to modify after. %%%%%%%%%%%%%%%%%5
+
+\answer{1}{\data[1]}{type=dragfill}
+\answer{2}{\data[2]}{type=dragfill}
+\answer{3}{\data[3]}{type=dragfill}
+\answer{4}{\data[4]}{type=dragfill}
+\answer{5}{\data[5]}{type=dragfill}
+\answer{6}{\data[6]}{type=dragfill}
+\answer{7}{\data[7]}{type=dragfill}
+\answer{8}{\data[8]}{type=dragfill}
+\answer{9}{\data[9]}{type=dragfill}
+\answer{10}{\data[10]}{type=dragfill}
+\answer{11}{\data[11]}{type=dragfill}
+\answer{12}{\data[12]}{type=dragfill}
+\answer{13}{\data[13]}{type=dragfill}
+\answer{14}{\data[14]}{type=dragfill}
+\answer{15}{\data[15]}{type=dragfill}
+\answer{16}{\data[16]}{type=dragfill}
+\answer{17}{\data[17]}{type=dragfill}
+\answer{18}{\data[18]}{type=dragfill}
+\answer{19}{\data[19]}{type=dragfill}
+\answer{20}{\data[20]}{type=dragfill}
+

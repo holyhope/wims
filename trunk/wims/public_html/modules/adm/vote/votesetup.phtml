@@ -1,0 +1,59 @@
+!! might want to share code with edit.phtml
+
+<fieldset class="property_fields blockcenter">
+  <legend>$name_create_or_edit</legend>
+  <div class="field box">
+   <label for="reg_title">$wims_name_title</label>
+   <input size="50" name="reg_title" value="$vote_title" id="reg_title"/>
+   !set wims_ref_class=wims_button_help float_right
+   !href cmd=help&helpname=generalinfo $wims_name_help
+  </div>
+  <div class="field box">
+   <label for="reg_option">$wims_name_Type</label>
+  !default vote_status=0
+ !! !default reg_model=free
+  !set reg_status=$vote_status
+  !set reg_option=$vote_option
+  !set reg_show=$vote_show
+  !set reg_whovoteshow=$vote_whovoteshow
+  !if $vote_status=0
+    !formselect reg_option list anonymous,trace,nominative prompt $name_anonymous,$name_trace,$name_nominative
+  !else
+    $(name_$(vote_option))
+  !endif
+  </div>
+  <div class="field box">
+    <label for="reg_status">$wims_name_Status</label>
+  !if $vote_status=0 or $vcnt=0 or $vcnt=$empty or $vote_src$reg_src=$empty
+    !formselect reg_status from 0 to 3 prompt $name_0,$name_1,$name_2,$name_3
+  !else
+    !formselect reg_status from 1 to 3 prompt $name_1,$name_2,$name_3
+  !endif
+  </div>
+  <div class="field box">
+ !if $gstep= $empty or $gstep=0
+    <input type="hidden" name="gstep" value="1" />
+ !endif
+    <label for="reg_show ">$name_result</label>
+   !formselect reg_show list 1,0 prompt $name_publish,$name_hide
+  </div>
+  <div class="field box">
+   <label for="reg_whovoteshow">$name_whovote</label>
+   !formselect reg_whovoteshow list 1,0 prompt $name_publish2,$name_hide2
+  </div>
+  <div class="field box">
+    <label for="reg_model">$name_model</label>
+  !set wims_ref_class=wims_button_help float_right
+  !href cmd=help&helpname=guidedmode $wims_name_help
+!!bad conditions !!!
+  !if $vote_status=0 and ($vote_src=$empty or $vote_src=<br /> or $vote_src=<br />)
+   !formselect reg_model list free,$vmodellist prompt $name_free,$name_vmodellist
+  !else
+   $(name_$vote_model)
+!! why do I need the following? --> questo era in "riserva" lo provo
+!! a togliere per -svn
+!!   <input type="hidden" name="reg_model" value="$vote_model" />
+  !endif
+ </div>
+
+</fieldset>

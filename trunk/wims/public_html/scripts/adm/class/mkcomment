@@ -1,0 +1,13 @@
+tmp_=$wims_read_parm
+!bound $tmp_ within name,val default val
+
+!!name_=!replace / by , in $wims_class
+!!name_=!item 2 to -1 of $name_
+!!scriptout=!replace , by A in $name_
+scriptout=!replace / by _ in $wims_class
+scriptout=!nospace $scriptout
+scriptout=_$scriptout
+!if $tmp_=val
+	scriptout=$(user_comments$scriptout)
+	!default scriptout=$user_comments
+!endif

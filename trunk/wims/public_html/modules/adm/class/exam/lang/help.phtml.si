@@ -1,0 +1,62 @@
+!goto $wims_read_parm
+
+:allowtype
+ <p class="wimscenter" style="font-weight:bold;">Tuning the score registration.</p>
+In the selective open mode, you can make time
+restrictions for score registrations, by adding words <span class="tt wims_code_words">
+&gt;yyyymmdd.hh:mm</span>
+ (starting time) and/or
+ <span class="tt wims_code_words">
+&lt;yyyymmdd.hh:mm</span>
+ (ending time). These must be in the
+ SERVER's local time, and must be separated from other words by white spaces.
+ <br />
+ Cut times are used to let people take the exam in different sessions. A
+ participant having worked on the exam before a cut time will have no access
+ after the cut time.
+ <br />
+ Format of cut times: <span class="tt wims_code_words">yyyymmdd.hh:mm</span> (separate several cut times
+ by white spaces).
+
+!! for translation copy the part of the lang/help.phtml.fr corresponding to the record :variable
+!read lang/help.phtml.fr variable
+
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
+:dependency
+  <p class="wimscenter" style="font-weight:bold;">Score dependencies</p>
+Score dependencies means that a participant must get 
+required scores in other exercises of the worksheet before he/she can do 
+this one. For example, <span class="tt wims_code_words">1:50,2:30,3+4+5:60</span>
+ means that the participant must get 50% success on exercise 1, 30% success on exercise 2, 
+ and an average of 60% success on exercises 3,4,5.
+ <p>
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
+:options
+  <p class="wimscenter" style="font-weight:bold;">Options.</p>
+ At this moment just a single option is available. 
+ <ul>
+  <li><em>autogen</em> means that the exercise is automatically generated
+  even if the user does not click on it. So that he can consult the registered
+  exercise even when the session is closed. Not recommended except for
+  manually scored exercises.
+ </li>
+ </ul>
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
+:contenu
+  <p class="wimscenter" style="font-weight:bold;">Content</p>
+This exercise can be (randomly) taken from a list of existing exercises in
+worksheets. Please mark the worksheet exercises in the following list, which
+you want to be candidate of this exam exercise.
+
+!if $wims_read_parm!=$empty
+ !exit
+!endif

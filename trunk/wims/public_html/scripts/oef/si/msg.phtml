@@ -1,0 +1,81 @@
+
+!if empty_out iswordof $error
+ Your code did not give any output. Please correct it.
+ !if $m_reply_err!=$empty
+  <pre><span class="wims_warning">$m_reply_err</span></pre>
+ !endif
+ !exit
+!endif
+
+!! empty_data bad_data double_reply  are in html/msg.phtml.fr - suppress on test
+
+!if bad_answer iswordof $error
+ Va¹ odgovor
+ <b>$bad_name</b> = <span class="tt">$bad_value</span>
+ !if unknownword iswordof $test
+  !set w=!word 3 of $test
+  ni razumljiv: beseda <span class="tt">$w</span>
+  v odgovoru ni videti povezana s problemom. Prosim, da vnesete popravek.
+  !exit
+ !endif
+ !if nocompute iswordof $test
+  ni dovoljen: izraz je treba izraèunati oziroma poenostaviti. Vnesete lahko le konèen rezultat.
+  !exit
+ !endif
+ !if nocomputecomplex iswordof $test
+   is not allowed.
+   Please give the complex number in standard rectangular form
+   <span class="tt"> a + b i </span>
+   where
+   <span class="tt">a</span>
+   and
+   <span class="tt">b</span>
+   are computed, and submit the resulting value (for example,
+    <span class="tt"> -1 + 2 i</span> or <span class="tt"> 1 - 2 i</span>).
+   !exit
+ !endif
+ !if badform iswordof $test
+  ni zapisan v zahtevani obliki. Prosim, da ga zapi¹ete na ustrezen naèin.
+  !exit
+ !endif
+ !if notunit iswordof $test
+  je zgolj ¹tevilo. Prosim, da v odgovoru oznaèite tudi enoto.
+  !exit
+ !endif
+ !if bad_variable iswordof $test
+   is not understandable. It should contain extra variables.
+   !exit
+ !endif
+ ni razumljiv. Prosim, popravite napako.
+ !exit
+!endif
+
+!if bad_exo iswordof $error
+ Napaka v vaji. Pravilni odgovor za <b>$(replyname$i)</b>
+ je neveljaven, zato je ni mogoèe preveriti pravilnosti va¹ega odgovora.
+ Poskusite raje s kak¹no drugo vajo in
+ !if $email!=$empty
+  !mailurl $email obvestite avtorja
+ !else
+  obvestite avtorja
+ !endif
+ te vaje o napaki.
+ !exit
+!endif
+
+!if too_many_print iswordof $error
+ Va¹i zahtevni po razlièicah za tiskanje so prepogosti.
+ !exit
+!endif
+
+!if chemclick_empty_data iswordof $error
+ You have selected no atom or bond. Look at the help.
+ !exit
+!endif
+
+!if chemdraw_empty_data iswordof $error
+ You have not modify the applet. Please complete it.
+ !exit
+!endif
+
+!msg $error

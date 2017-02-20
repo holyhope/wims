@@ -1,0 +1,18 @@
+
+   <td>
+    !if $(class_authidp[1;]) iswordof cas
+     !set url = $wims_ref_name?module=adm/class/classes&type=authsupervisor&class=$code
+     !read adm/codeurl $url
+     <a class="wims_button" href="$class_cas_auth/login?service=$script_out">$wims_name_Enter</a>
+    !endif
+    !if $(class_authidp[1;]) iswordof php
+      <a class="wims_button" href="$class_php_auth?enter=$code&authtype=teacher">$wims_name_Enter</a>
+    !endif
+    !if $(class_authidp[1;]) iswordof ldap
+     !set wims_ref_class=wims_button
+     !if $type=supervisor
+        !set authtype_=teacher
+     !endif
+     !href module=$module&type=authparticipant&class=$code&authtype_=$authtype_ $wims_name_Enter
+    !endif
+   </td>

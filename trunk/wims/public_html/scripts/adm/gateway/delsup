@@ -1,0 +1,22 @@
+# Remove supervise mark of a class from supervisor account.
+
+!if $wims_superclass=$empty or $wims_user!=supervisor or \
+	$wims_read_parm=$empty or \
+	$wims_class/ notin $wims_superclass/$wims_read_parm/
+ !exit
+!endif
+
+userdir=wimshome/log/classes/$wims_superclass/.users
+Supervisor=!defof class_Supervisor in wimshome/log/classes/$wims_superclass/$wims_read_parm/.def
+!if $Supervisor=$empty or $Supervisor=supervisor
+ !exit
+!endif
+
+suptest=!defof user_supervisable in $userdir/$Supervisor
+!if $suptest!=yes
+ !exit
+!endif
+
+suplist=!defof user_supervise in $userdir/$Supervisor
+suplist=!listcomplement $wims_superclass/$wims_read_parm in $suplist
+!setdef !set user_supervise=$suplist in $userdir/$Supervisor

@@ -1,0 +1,14 @@
+!set forum_policy=!defof mb_readpolicy in wimshome/log/classes/$wims_class/forum/.def
+!reset name_c
+!if $forum_policy!=owner
+ <!-- _widgets/userforum.phtml -->
+ !if $class_superclass!=
+  !set name_c=!defof class_description in wimshome/log/classes/$wims_class/.def
+  !set name_c=<small>($name_c)</small>
+ !endif
+ <$div1 class="menuitem">
+  !read ./adm/oneitem.phtml forum,1,module=adm/forum/mboard
+  $name_c
+ </$div1>
+ <!-- end _widgets/userforum.phtml -->
+!endif

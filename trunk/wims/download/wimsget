@@ -1,0 +1,93 @@
+#! /bin/sh
+#
+# This small script automatically downloads wims source distribution.
+# It can be executed periodically via cron (say once a week).
+# For example you may drop it into /etc/cron.weekly.
+# You may change the definition of wimssrc to fit your setup.
+#
+#
+#########################################
+#					#
+# 	SETUP configuration values	#
+#					#
+#########################################
+
+# WIMS source directory on the localhost.
+# You do not need to change these two lines if this script is in
+# the directory of the downloaded source.
+# wimssrc=/var/wims/download
+wimssrc=`dirname $0`
+
+# Architecture type of the system: i386
+arch=i386
+
+#########################################
+#					#
+# 	END of setup section		#
+#					#
+#########################################
+
+if [ -z "$loadversion" ]; then exit; fi
+
+cd $wimssrc
+rm -f ../update.sh
+wimsurl=`cat downloadsite | tr -d '[:space:]'`
+rm -r *.sh *.tgz *.rpm *.deb 2>/dev/null
+test=`cat ../public_html/bases/site/.rpm 2>/dev/null`
+list=
+if [ ! -z "$test" ] && [ "$loadtype" != "tgz" ]; then
+ dir=$wimsurl/rpm
+ list="
+$dir/wims-$loadversion-1.$arch.rpm
+$dir/README-rpm
+$dir/installrpm.sh
+$dir/uninstallrpm.sh
+"
+# for l in $loadlanguages
+# do
+#  list="$list $dir/wims-modules-$l-$loadversion-1.noarch.rpm"
+# done
+ download=rpm
+else
+ dir=$wimsurl/wims
+ list="$dir/wims-$loadversion.tgz
+$dir/README
+$dir/update.sh
+"
+# for l in $loadlanguages
+# do
+#  list="$list $dir/wims_modules-$l-$loadversion.tgz"
+# done
+ download=tgz
+fi
+
+export wims_exec_parm
+rm -f ../tmp/webget.log
+wims_exec_parm=$dir/filesizes
+../public_html/bin/webget >filesizes 2>>../tmp/webget.log
+for f in $list
+do
+ wims_exec_parm=$f
+ fname=`echo $f | sed "s@$dir/@@"`
+ ../public_html/bin/webget >$fname 2>>../tmp/webget.log
+ got=`stat -t $fname 2>/dev/null | cut -d ' ' -f 2`
+ comp=`awk '$1=="'$fname'" {print $2}' filesizes 2>/dev/null`
+ if [ ! -z "$got" ] && [ "$got" = "$comp" ]; then
+  echo $fname: $got bytes
+ else
+  echo $fname: Download failed
+  exit 1
+ fi
+done
+
+if [ "$download" = "tgz" ]; then
+ cp update.sh ..
+else
+ cat >../update.sh <<@
+#! /bin/sh
+cd download
+./installrpm.sh
+@
+chmod u+x ../update.sh
+fi
+

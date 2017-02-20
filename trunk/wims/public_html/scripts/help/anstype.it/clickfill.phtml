@@ -1,0 +1,53 @@
+<b>Campi da riempire tramite trascinamento.</b>
+(nomi: <span class="tt wims_code_words">clickfill</span> e <span class="tt wims_code_words">dragfill</span>)
+<br/>
+Il campo della risposta, di solito da inserire nell'enunciato, può essere
+riempito cliccando sull'oggetto dato (testo, formula o immagine) o 
+trascinando con il mouse da una lista di oggetti.
+
+<p>
+La risposta è una matrice di due righe (separate da ";") in cui la prima 
+riga è la risposta corretta e la secondoa riga è la lista degli elementi
+che costituiscono le risposte sbagliate/le risposte proposte.
+</p><p>
+La risposta corretta può essere una lista di più elementi. In questo
+caso, il campo da riempire avrà lunghezza L+1 (dove L è il numero di 
+elementi della risposta corretta).
+</p><p>
+Si possono anche definire più risposte corrette equivalenti nella
+prima riga, in questo caso tali risposte vanno separate con un
+carattere <span class="tt wims_code_words">|</span>. Se la prima riga
+della risposta è una variabile non definita, la risposta deve essere analizzata
+tramite <span class="tt wims_code_words">\condition{}</span>.
+</p><p>
+Si consiglia di utilizzare questo tipo di risposta tramite un 
+<span class="tt wims_code_words">\embed{}</span>, in questo caso è possibile 
+inserire la la dimensione dello spazio per le risposte nella forma <span class="tt wims_code_words">HxVxL</span>, dove <span class="tt">H</span> e <span class="tt">V</span>
+sono rispettivamente le dimensioni orizzontali e verticali (in pixel) di ogni
+oggetto e dove <span class="tt">L</span> è il numero di oggetti da contenere nello spazio per le risposte. Nella forma <span class="tt wims_code_words">HxVxLxl</span> gli <span class="tt">L</span> oggetti sono disposti in <span class="tt">l</span> righe.
+</p><p>
+Si possono anche avere più risposte di tipo <span class="tt wims_code_words">clickfill</span> o <span class="tt wims_code_words">dragfill</span> in 
+un esercizio, ma in questo caso devono avere la stessa dimensione e lo stesso tipo
+(tutte <span class="tt wims_code_words">clickfill</span> oppure tutte <span class="tt wims_code_words">dragfill</span>), e gli oggetti vengono quindi mescolati.
+</p><p>
+I tipi <span class="tt wims_code_words">clickfill</span> e <span class="tt wims_code_words">dragfill</span> dal punto di vista dell'utente sono simili
+(per entrambi è possibile sia cliccare che trascinare). La differenza principale
+è che un oggetto può essere selezionato più volte per il tipo <span class="tt wims_code_words">clickfill</span>
+mentre al più una volta per il tipo <span class="tt wims_code_words">dragfill</span>.
+</p><p>
+Il contenuto delle etichette di defalt è centrato. È possibile
+allinearlo a sinistra o a destra utilizzando le opzioni
+<span class="tt wims_code_words">align=left</span> o <span class="tt wims_code_words">align=right</span>
+(cioè <span class="tt wims_code_words">{option= align=left}</span>).
+</p><p>
+Se si utilizza l'opzione <span class="tt wims_code_words">noorder</span>, l'analisi della risposta non tiene conto
+dell'ordine in cui sono visualizzate le etichette. Questo permette di
+creare esercizi del 
+tipo <i>classificare per proprietà</i>.
+</p><p>
+Con l'opzione <span class="tt wims_code_words">transparent</span>, lo spazio in cui inserire le risposte è trasparente (può essere utile
+con il metodo speciale <span class="tt wims_code_words">imagefill</span>).
+</p>
+<p>
+Basato su DynAPI, potrebbe non funzionare con alcuni browser.
+

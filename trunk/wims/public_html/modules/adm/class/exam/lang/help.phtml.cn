@@ -1,0 +1,63 @@
+!goto $wims_read_parm
+
+
+:allowtype
+
+!read adm/title.phtml 1\
+调整取得成绩的时间段.
+
+ 你可以用添加以下语句
+ <span class="tt wims_code_words">
+&gt;yyyymmdd.hh:mm</span>
+ (开始时刻) 以及/或
+ <span class="tt wims_code_words">
+&lt;yyyymmdd.hh:mm</span>
+ (结束时刻) 以对获得成绩的时间加以限制. 这里的时间是服务器的当地时间,
+ 而且这些语句间用空格分隔.
+ <br />
+ 截断时间允许参加者在不同会话里通过考试.
+ 如果他在某个截断时间前参加了考试, 那么在这个截断时间后就不能再考了.
+ <br />
+ 截断时间的格式: <span class="tt wims_code_words">yyyymmdd.hh:mm</span> (多个时刻间用空格分隔).
+ </small>
+ 
+:variable
+<p>
+为了限制进入存取, 可以取一个变量名.
+这个变量应按照规则对每个参加者定义,
+或者在参加者的账户属性里手工定义, 或者通过上传文件 csv 的技术变量实现.
+如果限制是通过对参加者的限制实现的 (例如根据某些数据登入),
+也可以通过创建问题表来实现 (参见相应的帮助).
+</p>
+
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
+:dependency
+ <p class="wimscenter" style="font-weight:bold;">成绩间的关联</p>
+ 成绩关联是指参加者应该先在其它练习里得到足够分数后才能做这个练习.
+ 例如,
+  <span class="tt wims_code_words">1:50,2:30,3+4+5:60</span>
+意为参加者必须在第 1 题得到 50% 的分数, 第 2 题得 30%, 第 3, 4, 5 题平均得分 60%.
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
+:options
+  <p class="wimscenter" style="font-weight:bold;">选项.</p>
+目前可用的选项是
+  <ul>
+   <li><em>autogen</em> 意为自动生成练习, 那怕用户没有点击它. 这样在会话关闭后他仍能参看已记录的练习. 对非手工计分的练习不适用.</li>
+  </ul>
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
+:contenu
+  <p class="wimscenter" style="font-weight:bold;">练习的内容</p>
+这个练习可以从作业页的已有练习中随机选取.
+请从下表列出的练习里标出供考试用的候选练习.
+!if $wims_read_parm!=$empty
+ !exit
+!endif

@@ -1,0 +1,26 @@
+!goto $wims_read_parm
+
+:def
+title=Factorial
+input=integer
+!exit
+
+:proc
+result=!exec pari print(($formula)!);
+test=!varlist $formula
+!exit
+
+:output
+
+Factorial:
+!if + isin $formula or - isin $formula or * isin $formula or / isin $formula or \
+	^ isin $formula or $test!=$empty
+ !htmlmath ($formula)!
+!else
+ !htmlmath $formula!
+!endif
+ =
+!insmath $result
+ .
+!exit
+

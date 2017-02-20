@@ -1,0 +1,127 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Equation différentielle (par Runge-Kutta) experimental en faire une liste sans dessin
+slib_parms=6\
+,[f1,f2] or f1\
+0,t0 or [t0,..] initial value for t\
+0,y0  or [x0,y0] initial value at t=t0\
+0.1,h0, if h0 is negative, the curve is given for t < t0\
+10,N number of steps\
+html,option : url, html or data (points of the curve, one line by initial conditions)
+
+slib_author=Bernadette, Perrin-Riou
+slib_out=data for drawing or draw of the phasis diagram of x' = f1 , y' = f2 \
+  where f1 and f2 have x and y and t as variables where f=[f1,f2]. If only one \
+  function is given as a function of y and t, solve the equation y'=f(y,t).
+slib_comment=
+slib_example= y*(y-5)+t,0,3,0.5,20,html\
+y*(y-5),0,[-2,1,3,5,0],0.1,20,html\
+y+t,0,5,0.5,20,html\
+y*(y-1),0,0.5,0.5,20\
+y*(y-1),0,0.5,0.5,20,html\
+y*(y-1),0,-0.5,0.5,20\
+y*(y-1),0,-0.5,0.5,20,html\
+[1-x,x^2-y^2],0,[3,0],0.1,100,html\
+[1-x,x^2-y^2],0,[3,0],0.1,100,data
+
+!exit
+:proc
+!distribute items $wims_read_parm into slib_rk_f,slib_rk_t0,slib_rk_y0,slib_rk_h,slib_rk_N,slib_rk_option
+
+!if $slib_rk_h=NaN
+  !reset slib_rk_h
+!endif
+!default slib_rk_h=0.1
+!default slib_rk_N=10
+!default slib_rk_y0=0
+!default slib_rk_t0=0
+!reset slib_rk_out
+!set slib_rk_rangey= 1000000,-1000000
+!set slib_rk_rangex=1000000,-1000000
+!set test=1
+
+!if x isvarof $slib_rk_f
+ !set slib_rk_f=!mathsubst y=y[2] in $slib_rk_f
+ !set slib_rk_f=!mathsubst x=y[1] in $slib_rk_f
+ !set test=2
+!endif
+!set slib_rk_y0=!declosing $slib_rk_y0
+!if $test=1
+  slib_rk_y0=!replace , by ; in $slib_rk_y0
+!endif
+!set slib_rk_cnt=!itemcnt $(slib_rk_y0[;1])
+!for slib_rk_i=1 to $slib_rk_cnt
+  !if $test=1
+    slib_rk_tmp=$(slib_rk_y0[$slib_rk_i;])
+  !else
+    slib_rk_tmp=[$(slib_rk_y0[$slib_rk_i;])]
+  !endif
+  !!slib_rk_program=!record 0 of gp/rungekutta.gp
+ !set slib_rk_data=!exec pari rungekutta(f,t0,y0,h,N)=\
+{\
+  my(y,t,y1,t1);\
+  my(X,Y);\
+  y1=y0; t1=t0;\
+  X=vector(N); Y=vector(N);\
+  X[1]=t0; Y[1]=y0;\
+  for(j=2,N,\
+      my(k1,k2,k3,k4);\
+      y=y1; t=t1;\
+      k1 = h*f(t, y);\
+      k2 = h*f(t + h/2 , y + k1/2);\
+      k3 = h*f(t + h/2 , y + k2/2);\
+      k4 = h*f(t + h , y + k3);\
+      t1 = t + h;\
+      y1 = y + 1/6 * (k1 + 2*k2 + 2*k3 + k4);\
+      ;X[j]=t1;Y[j]=y1);\
+  [X,Y]\
+};\
+f(t,y)={$slib_rk_f}; \
+ rungekutta(f,$slib_rk_t0,$slib_rk_tmp,$slib_rk_h,$slib_rk_N)
+ !distribute item $slib_rk_data into slib_rk_datat, slib_rk_datay
+ !set slib_rk_datat=!declosing $slib_rk_datat
+ !set slib_rk_datay=!declosing $slib_rk_datay
+ !reset slib_rk_d
+ !if $test=1
+   !for slib_rk_j=1 to $slib_rk_N
+    !set slib_rk_d=!append item $(slib_rk_datat[$slib_rk_j]),$[floor(1000*$(slib_rk_datay[$slib_rk_j]))/1000] to $slib_rk_d
+   !next
+   !set slib_rk_range=!sort numeric item $slib_rk_datay
+   !set slib_rk_rangey=$[min($(slib_rk_range[1]),$(slib_rk_rangey[1]))],$[max($(slib_rk_rangey[2]),$(slib_rk_range[-1]))]
+   !set slib_rk_rangex=0,$[$slib_rk_N*$slib_rk_h]
+ !else
+     !set slib_rk_d=!replace internal ],[ by ; in $slib_rk_datay
+     !set slib_rk_d=!declosing $slib_rk_d
+     !set slib_rk_rx=!sort numeric item $(slib_rk_d[;1])
+     !set slib_rk_rangex=$[min($(slib_rk_rangex[1]),$(slib_rk_rx[1]))],$[max($(slib_rk_rangex[2]),$(slib_rk_rx[-1]))]
+      !set slib_rk_ry=!sort numeric item $(slib_rk_d[;2])
+     !set slib_rk_rangey=$[min($(slib_rk_rangey[1]),$(slib_rk_ry[1]))],$[max($(slib_rk_rangey[2]),$(slib_rk_ry[-1]))]
+     !set slib_rk_d=!replace internal ; by , in $slib_rk_d
+ !endif
+ !set slib_out=!append line $slib_rk_d to $slib_out
+!next
+!if data iswordof $slib_rk_option
+  slib_out=!values floor( 10000*x)/10000 for x in $slib_out
+  !exit
+!endif
+
+!set slib_rk_draw=xrange $(slib_rk_rangex[1])*1.1,$(slib_rk_rangex[2])*1.1\
+ yrange $(slib_rk_rangey[1])*1.1, $(slib_rk_rangey[2])*1.1
+!for slib_rk_i=1 to $slib_rk_cnt
+  slib_rk_draw=!append line polyline black,$(slib_out[$slib_rk_i;])\
+  fcircle $(slib_out[$slib_rk_i;1]),$(slib_out[$slib_rk_i;2]),10,blue to $slib_rk_draw
+!next
+slib_rk_draw=$slib_rk_draw\
+ arrow 0,$(slib_rk_rangey[1]),0,$(slib_rk_rangey[2]),6,black\
+ arrow $(slib_rk_rangex[1]),0,$(slib_rk_rangex[2]),0,6,black\
+
+!if url iswordof $slib_rk_option or html iswordof $slib_rk_option
+  !insdraw $slib_rk_draw
+  slib_out=$ins_url
+  !if html iswordof $slib_rk_option
+    slib_out=<img src="$ins_url" alt="" />
+ !else
+    slib_out=$slib_out
+ !endif
+!endif

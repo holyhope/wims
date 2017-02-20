@@ -1,0 +1,112 @@
+!read adm/language lang/names.phtml
+
+!if robot isin $session or _ isin $session
+ !exit
+!endif
+
+!if $error isitemof bad_password,bad_loginmail
+  !read js/chrono.phtml 5
+!endif
+!set wims_html_header=$wims_html_header $header_js
+
+!read adm/css.phtml
+
+!if $(module_title_$modu_lang)!=
+  !set module_title=$(module_title_$modu_lang)
+!endif
+!read adm/class/classname.phtml $class_description\
+$class_institution
+
+!if $class_description$class_institution!=$empty
+ !header1
+ !!read themes/_widgets/classtitle.phtml
+ !read adm/title.phtml 1\
+ \
+ $wims_classname\
+ $class_institution
+!else
+  !set wims_ariane = !append line n_$type,8 to $wims_ariane
+  !header
+  !read adm/title.phtml 3\
+\
+--- $(wims_name_n_$type) ---
+!endif
+
+!if $error!=$empty
+ <div class="wims_msg alert">
+ !read msg.phtml
+ </div>
+!! when you have the no_cgu error you do not want to show the rest
+!! of the page, do you? (it is shown e.g. when $(class_authidp[1;])=cas
+ !if $error=no_cgu
+!!  !goto end
+ !endif
+!endif
+
+!!! En fait cela devrait etre $idp_method=$empty Comment arrive-t-on ici ?
+!if OK iswordof $auth_test and $auth_method isitemof $auth_method_list and $exist_check notsametext yes
+!! we get here e.g. in case class_authidp=cas;php
+$name_new_participant_external
+
+ !if $type_class > 0 and $type!=authsupervisor and $authtype_!=teacher
+  !set tmp_=&subclass=yes
+ !else
+   !reset tmp_
+ !endif
+
+ <div class="wimscenter">
+!! this is probably the only place we need idp_method=php
+!! (e.g. if class_authidp=cas;php)
+ !if $(class_authidp[2;]) iswordof php and $class_php_auth!=$empty
+   !if $type=authsupervisor
+     !set ttmp_=&authtype=teacher
+   !else
+     !reset ttmp_
+   !endif
+   <a href="$class_php_auth?enter=$class$ttmp_" class="wims_button">$name_register</a>
+ !else
+   !set wims_ref_class=wims_button
+   !href module=adm/class/reguser&class=$class$tmp_&authtype_=$authtype_ $name_register
+ !endif
+ </div>
+ !reset tmp_ ttmp_
+ !goto end
+!endif
+
+!read $type.phtml
+:end
+!if $wims_user=$empty or $wims_user=supervisor or $wims_class=$superclass
+  !set list_menu=example,participant
+  !if $wims_user=$empty or $wims_user=supervisor
+    !set list_menu=example,participant,supervisor
+  !endif
+  !if $wims_user=supervisor and $class_type iswordof 1 2 3 4
+    !reset list_menu
+  !endif
+  !if $list_menu!=$empty
+    !set wims_menu_items=!append line itemsep,0,$wims_name_Classes\
+ to $wims_menu_items
+    !for t in $list_menu
+      !if $t!=$type or $wims_superclass!=$empty
+        !set wims_menu_items=!append line n_$t,1,module=$module&type=$t&keyword=$keyword\
+to $wims_menu_items
+  !! !href module=$module&type=$t&keyword=$keyword $(wims_name_n_$t)
+      !endif
+   !next t
+  !endif
+!endif
+!if $wims_user=$empty and $type iswordof supervisor example
+ !set wims_menu_items=!append line itemsep,0,$wims_name_Creation\
+ classcreate,1,module=adm/class/regclass\
+to $wims_menu_items
+!endif
+
+ !if $wims_theme_version=0 or $wims_theme_version=
+ <div class="wimscenter">
+  !href target=wims_help module=help/main&chapter=3 $wims_name_Explanations
+ </div>
+ !endif
+!endif
+!tail
+
+!reset auth_user,auth_password,superclass,keyword

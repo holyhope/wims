@@ -1,0 +1,26 @@
+!set authidp_method_list= ;,cas;, cas;ldap, ldap;ldap, cas;php, php;php
+
+!defread wimshome/log/classes/$wims_class/.def
+!for ld_ in authidp,cas_auth,php_auth,ldap_auth,ldap_port,ldap_version,ldap_base,ldap_branch,ldap_uid,ldap_login,\
+   ldap_regnum,ldap_photourl,ldap_email
+  !default up_$ld_=$(class_$ld_)
+!next
+
+!for ld_ in cas_auth,php_auth,ldap_auth,ldap_port,ldap_version,ldap_base,ldap_branch,ldap_uid,ldap_login,\
+   ldap_regnum,ldap_photourl,ldap_email
+   !default class_$ld_=!defof $ld_ in wimshome/log/wims.conf
+!next
+
+!if $save!=$empty
+ !read scripts/setdefa.proc
+ !defread wimshome/log/classes/$wims_class/.def
+ wims_class_log=Modify class authentification by $wims_realuser
+
+!! need to rebuild .index (for adm/raw)
+  !if $wims_superclass!=$empty
+    !sh $wims_home/log/classes/.build-index $wims_superclass
+  !else
+    !sh $wims_home/log/classes/.build-index $wims_class
+  !endif
+!!read adm/du $wims_home/log/classes/$wims_class
+!endif

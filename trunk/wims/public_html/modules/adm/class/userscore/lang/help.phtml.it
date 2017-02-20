@@ -1,0 +1,79 @@
+
+!if $special_parm!=$empty and $special_parm_!=$empty
+ !changeto lang/help.$moduclass_lang/$special_parm.phtml
+!endif
+
+!read adm/title.phtml 1\
+\
+Calcolo dei voti nei test di autovalutazione (livello di severità)
+!if $wims_user=supervisor
+<p>
+Il server calcola i voti a partire da due indicatori:
+<ul>
+<li>l'indicatore I, che tiene conto della <span class="bold">quantità</span> di esercizi svolti (e può essere scelto dal docente in tre modi diversi: I0, <span class="bold">$(name_affi[2])</span>, ovvero il numero di punti accumulati; I1, <span class="bold">$(name_affi[4])</span>, ovvero la media degli n migliori punteggi ottenuti, se 10n è il numero di punti richiesti; I2, <span class="bold">$(name_affi[5])</span>, ovvero il minimo degli n migliori voti precedenti),</li>
+<li>un <span class="bold">indice di qualità</span> Q dei voti ottenuti nei vari esercizi (che viene calcolato dal server effettuando una media pesata che riduce il peso degli esercizi vecchi)(maggiori informazioni su questo calcolo sono disponibili nel documento "DocAide Etudiants" help/student/docetud.fr).</li>
+</ul>
+<p>A seconda del livello di severità scelto dal docente per il test viene
+utilizzata una formula diversa per il calcolo del voto finale.
+Siano I e Q come sopra (entrambe normalizzate ad
+un numero tra 0 e 1).
+</p><p>
+Le formule disponibili per calcolare i voti sono allora:
+</p>
+
+!reset table_center
+$table_header
+$table_hdtr<th>Livello</th><th>Formula</th><th>$wims_name_Explanations</th></tr>
+$table_tr<td>0</td><td> \($scoremax * $(list[1;]) \)
+ </td><td>il voto è il massimo tra percentuale e qualità.</td></tr>
+$table_tr<td>1</td><td> \($scoremax * $(list[2;]) \)
+ </td><td>Si trascura l'indice di qualità. Lo studente ottiene il massimo
+ dei voti una volta che ha ottenuto i punti richiesti.</td></tr>
+$table_tr<td>2</td><td>\($scoremax * $(list[3;])\)
+ </td><td>L'indice di qualità influenza, ma solo parzialmente, il voto complessivo.</td></tr>
+$table_tr<td>3</td><td>\($scoremax * $(list[4;])\)
+ </td><td>Aumenta l'influenza dell'indice di qualità sul voto finale.</td></tr>
+$table_tr<td>4</td><td>\($scoremax * $(list[5;])\)
+ </td><td>Per ottenere un voto $scoremax, occorre effettuare tutti gli esecizi
+  (100%) senza fare alcun errore (qualità=10).</td></tr>
+$table_tr<td>5</td><td>$\($scoremax * $(list[6;])\)
+ </td><td></td></tr>
+$table_end
+
+Nota: Per i livelli 0 e 1, se l'indice di qualità per un esercizio è inferiore
+a 1, nel calcolo di I per questo esercizio la percentuale di completamento è
+impostata a 0%; se la qualità è tra 1 e 2, nel calcolo di I la percentuale
+effettiva è dimezzata.
+
+!else
+Per questo test di autovalutazione, il docente ha scelto il seguente
+metodo di calcolo del voto. Se per un esercizio il numero di punti
+richiesti è 10*n si considerano i seguenti indicatori:
+<ul>
+<li>
+!if $help_sw=0
+  il rapporto I tra i punti ottenuti e n,
+!endif
+!if $help_sw=1
+  la media I degli n voti migliori,
+!endif
+!if $help_sw=2
+  il minimo I degli n voti migliori
+!endif
+</li>
+<li>
+  l'indice di qualità Q dei punti ottenuti relativamente all'esercizio.
+</li>
+</ul>
+<p>
+Se l'indice di qualità Q è inferiore a 1 per un esercizio, allora si
+prende il valore 0 per I relativamente a tale esercizio; se l'indice
+di qualità Q è compresa tra 1 e 2, allora I viene diviso per 2 nel
+calcolo del voto del test.
+</p><p>
+Di questi indicatori si calcolano le medie (pesate) su tutto il test.
+</p><p>
+Tali medie sono normalizzate a un numero tra 0 e 1, dopo di che
+per il calcolo del voto del test è applicata la formula
+\($scoremax * $(list[$help_level+1;]) \)
+!endif

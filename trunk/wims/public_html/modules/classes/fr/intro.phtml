@@ -1,0 +1,36 @@
+!set proc=oef
+!header
+
+!if $wims_class=$empty
+ <p>
+  Ce module est un module interne à une classe virtuelle.<br/>
+  Comme vous n'êtes pas connecté en tant qu'un membre de cette classe, vous n'avez
+  pas le droit d'y accéder. Désolé.
+ </p>
+ <p class="wimscenter">
+  !href $ Retour à Wims
+ </p>
+ !tail
+ !exit
+!endif
+
+<p>Ce module recueille les exercices interactifs qui ont été créés dans la
+classe <span class="wims_classdesc">$wims_classname</span>
+(<span class="wims_institutiondesc">$wims_institutionname</span>).</p>
+!if $wims_user=supervisor
+ <p>
+  !set wims_ref_class=wims_button icon_button
+  !href module=adm/createxo <span class="add_exo">Créer un exercice</span>
+ </p>
+ !read oef/intromenu.phtml
+!else
+  <p>
+   Seul le superviseur a accès à la liste des exercices de cette classe.
+  </p>
+  <p class="wimscenter">
+   !href module=home Retour à la page d'accueil
+  </p>
+!endif
+
+!tail
+

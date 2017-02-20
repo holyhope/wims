@@ -1,0 +1,192 @@
+!set wims_backslash_insmath=yes
+# basic variable preparation.
+!if robot isin $session
+ !exit
+!endif
+!set classification_open=!defof classification_open in wimshome/log/wims.conf
+!if $classification_open=yes
+  !setdef wims_classification_open=yes in wimshome/sessions/$wims_session/var.stat
+!endif
+!if $wims_user=supervisor or $wims_supconnectshowed=yes
+ !readproc adm/whoconnect
+!endif
+
+!if $directworksheet!=$empty
+ !changeto launchseries.proc
+!endif
+
+wims_prefix=class user tmp cdt search m
+wims_writable=exolist titlelist exototal package lastsearch \
+    titb keyw datm prev next upbl dat1 dat2 front_exist
+wims_readable=session wims_session wims_class wims_user lang module cmd front_exist
+
+!read ./tabletheme
+!read ./formcolors
+!read names.$lang
+!read adm/search_engine/names.$lang
+module_language=$lang
+subclasscnt=0
+
+test=!record 0 of wimshome/public_html/modules/adm/browse/index
+!if $test!=$empty
+ has_browse=yes
+ browse_parm=job=$browse_job&parm=$browse_parm
+!endif
+
+!if $wims_user!=$empty and $wims_class!=$empty
+ !readdef ./wimshome/log/classes/$wims_class/.def
+ !default class_typename=class
+ !set class_authidp=!defof class_authidp in wimshome/log/classes/$wims_superclass/.def
+ !set auth_method_list=cas,ldap,php
+ !set auth_method=$(class_authidp[1;])
+ !if $(class_authidp[1;]) isitemof $auth_method_list
+   !set ext_login=$wims_external_auth
+ !endif
+ !if $wims_user!=supervisor
+   !default ext_login=$wims_user
+ !else
+   !default ext_login=$wims_realuser
+   !default ext_login=$wims_user
+   !default ext_login=supervisor
+ !endif
+!endif
+
+!if $wims_user=$empty or $wims_user=supervisor or _tool isin $wims_session
+ !read search.proc
+ s_lang=$search_lang
+ s_category=$search_category
+ s_keywords=$search_keywords
+ !if $s_keywords!=$empty and $s_category!=V and $readback!=yes
+  c=$gotcnt
+  !if $gottype!=search
+   c=0
+  !endif
+  !read wimshome/$s2dir/home_lastsearch
+  !if $s_lang,$s_category,$s_keywords!=$lastsearch
+   wims_module_log=$(s_lang)_$s_category=$c: $s_keywords
+   !writefile wimshome/$s2dir/home_lastsearch lastsearch=$s_lang,$s_category,$s_keywords
+  !endif
+ !endif
+!endif
+
+!if $wims_user=supervisor
+ docpubliccnt=!recordcnt wimshome/log/classes/$wims_class/doc/.docindex
+ doccnt=!recordcnt wimshome/log/classes/$wims_class/doc/.index
+ sheetcnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+ min_sheet_erasable=0
+ !for k=1 to $sheetcnt
+  t=!record $k of wimshome/log/classes/$wims_class/sheets/.sheets
+  t=!line 1 of $t
+  !if $t>0
+   min_sheet_erasable=$k
+  !endif
+ !next k
+ examcnt=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
+ min_exam_erasable=0
+ !for k=1 to $examcnt
+  t=!record $k of wimshome/log/classes/$wims_class/exams/.exams
+  t=!line 1 of $t
+  !if $t>0
+   min_exam_erasable=$k
+  !endif
+ !next k
+ votecnt=!recordcnt wimshome/log/classes/$wims_class/vote/.votes
+ !read wimshome/log/classes/$wims_class/Exindex
+ !read ./adm/du $wims_home/log/classes/$wims_class
+ !if $class_type=4 and $wims_superclass_quota!=$empty
+  quota_free=$[$wims_superclass_quota-$du]
+ !else
+  quota_free=$[$wims_class_quota-$du]
+ !endif
+!endif
+
+!if $wims_user!=$empty
+ !if $wims_class_refcolor!=$empty
+  wims_ref_bgcolor=$wims_class_refcolor
+ !endif
+ !read ./var.msgcnt
+ !default class_type=0
+ !if $class_type=2
+   !exchange wims_institutionname, wims_classname
+ !endif
+ !if $class_type=1
+  parentcheck=!defof user_class in wimshome/log/classes/$wims_class/.users/$wims_user
+  !if $parentcheck!=$empty
+   class_parent=$wims_superclass/$parentcheck
+  !endif
+ !endif
+ !default wims_realuser=$wims_user
+ !read adm/class/userdef logclasses,$wims_class,$wims_realuser
+ supervisable=!defof user_supervisable in $userdef
+ !if $class_type>=2
+  !if $class_type=4
+   subclasses=!record 0 of wimshome/log/classes/$wims_class/classes
+   subclasses=!column 1 of $subclasses
+   subclasses=!makelist $wims_class/x for x in $subclasses
+   subclasscnt=!itemcnt $subclasses
+   !if $wims_user=supervisor
+    subclasscnt=0
+   !endif
+   subclass1=$wims_participate
+  !endif
+  !if $class_type=3
+   subclasses=!record 0 of wimshome/log/classes/$wims_class/courses
+   split=!translate internal / to , in $wims_class
+   subclasset=!record 0 of wimshome/log/classes/$(split[1])/$(split[2])/icourses
+   subclasses=!append line $subclasset to $subclasses
+   subclasset=!record 0 of wimshome/log/classes/$(split[1])/icourses
+   subclasses=!append line $subclasset to $subclasses
+   subclasses=!column 1 of $subclasses
+   subclasses=!listuniq $subclasses
+   subclasses=!makelist $wims_superclass/x for x in $subclasses
+   subclasscnt=!itemcnt $subclasses
+   !if $wims_user=supervisor
+    subclasscnt=0
+   !endif
+   subclass1=$class_ocourses
+   subclass1=!makelist $wims_superclass/x for x in $subclass1
+   upart=!listcomplement $wims_class in $wims_participate
+   upart2=!defof user_courses in wimshome/log/classes/$wims_class/.users/$wims_user
+   !if $upart2!=$empty
+    upart2=!makelist $wims_superclass/x for x in $upart2
+    upart=!append item $upart2 to $upart
+   !endif
+   subclass1=!listunion $subclass1 and $upart
+  !endif
+  !if $class_type=2
+   subclasses=!sh cut -d, -f1 $wims_home/log/classes/$wims_class/.subclasses
+   subclasses=!replace internal : by $ in $subclasses
+   subclasses=!words2items $subclasses
+   subcnt=!recordcnt wimshome/log/classes/$wims_class/.subclasses
+   subclasscnt=!itemcnt $subclasses
+   subclass1=$wims_participate
+  !endif
+  subclass1=!sort items $subclass1
+  subclass2=!listcomplement $subclass1 in $subclasses
+  !if $class_type iswordof 4 2
+   subclass3=$wims_supervise
+  !endif
+  subclasscnt1=!itemcnt $subclass1
+  subclasscnt2=!itemcnt $subclass2
+  subclasscnt3=!itemcnt $subclass3
+ !endif
+ !readproc ./var.cdt
+!endif
+!read ./otherclass.proc
+!if $wims_sheet=$empty
+!!! should be on the complete home page
+  !!distribute items no,no into wims_ariane_self,wims_ariane_home
+  !set wims_ariane_self=no
+!endif
+!set tmp=!defof cdt_nbdate in wimshome/log/classes/$wims_class/cdt/.def
+!if $tmp>0
+ !set exist_cdt=yes
+!endif
+!if $(class_actcolor)!=$empty
+  !set class_actcolor_css=.wims_sheet_item, .wims_exam_item, .wims_doc_item, .wims_vote_item, .wims_exo_item {color:$(class_actcolor[1])}\
+.wims_sheet_item {background-color:$(class_actcolor[2])}\
+.wims_exam_item  {background-color:$(class_actcolor[3])}\
+.wims_doc_item   {background-color:$(class_actcolor[4])}\
+.wims_vote_item  {background-color:$(class_actcolor[5])}\
+.wims_exo_item   {background-color:$(class_actcolor[6])}
+!endif

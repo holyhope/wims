@@ -1,0 +1,125 @@
+!!INDEX
+!let module_translator=
+!let module_translator_address=
+!let module_title=設定  WIMS 的偏好
+!let module_description=define preferences for wims
+!let module_language=tw
+!!INDEXEND
+
+!let tip='<ul><li>FireFox&nbsp;<a target=\'new\' href=\'http://www.mozilla-europe.org/$module_language/\'><img src=\'gifs/mathml/getFireFox.gif\' alt=\'get FireFox\'/></a></li><li>Google Chrome&nbsp;<a target=\'new\' href=\'https://chrome.google.com/webstore/detail/mathjax-for-chrome/elbbpgnifnallkilnkofjcgjeallfcfa\'> MathJax Extension </a><li>Windows<ul><li>Internet Explorer: <a target=\'new\' href=\'http://www.dessci.com/en/products/mathplayer/\'><img src=\'gifs/mathml/dessci_logo.gif\' alt=\'dessci\'/> DESSCI MathPlayer plugin</a><li>Opera: <a target=\'new\' href=\'http://xml-maiden.com/userjs/mathml/\'>UserJS MathML plugin</a></ul></li><li>Safari</li></ul>'
+
+!read proc/useropts.proc
+
+!header
+<script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
+
+本頁讓您改變在 WIMS 伺服器上工作時的偏好設定。
+<p>
+設定偏好：
+</p>
+<ul>
+ <li>內定的語言。
+  !for l=1 to 3
+   !let la=!item $l of tw,en,fr
+   !let lb=!item $l of 中文(Big 5碼),英文,法文
+   !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src="gifs/$la.gif" alt="$la.gif" border=1/> $lb
+   &nbsp;&nbsp;
+  !next l
+ </li>
+!if $texalign=2
+<li>
+    !set zoom=!char 3 of $useropts
+    The server is currently set to MathML.<br />
+    !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{2} - 4 a c}}{2a}
+    <br />
+    !let ts1=!eval $texsize-1
+    !let ts2=!eval $texsize+1
+    !if $ts1<1
+!let ts1=1
+    !endif
+    !if $ts2>9
+!let ts2=9
+    !endif
+    !href cmd=resume&useropts=$ts1$texalign <b>decrease</b>
+    &nbsp;&nbsp;or&nbsp;&nbsp;
+    !href cmd=resume&useropts=$ts2$texalign <b>increase</b>
+     MathML fontsize.
+    <br />
+    If fontsize is adjusted, you may
+    !set zoom=1
+    !href cmd=resume&useropts=$texsize$texalign$zoom <b>use zoom</b>
+    !set zoom=0
+    &nbsp;&nbsp;or&nbsp;&nbsp;
+    !href cmd=resume&useropts=$texsize$texalign$zoom <b>don't use zoom</b>
+     for Mathml content. (mouse click)
+    <br />
+    If the formula is not correctly displayed,
+    !set arg=!nospace $texsize 1
+    use
+    !href cmd=resume&useropts=$arg &nbsp;"math with gifs"
+    &nbsp;
+    instead of MathML.<br />
+    !! no need to translate tooltip
+    Or try another <a onmouseover="return Tip('<ul><li>FireFox&nbsp;<a target=\'new\' href=\'http://www.mozilla-europe.org/$module_language/\'><img src=\'gifs/mathml/getFireFox.gif\' alt=\'get FireFox\'/></a></li><li>Windows<ul><li>Internet Explorer : <a target=\'new\' href=\'http://www.dessci.com/en/products/mathplayer/\'><img src=\'gifs/mathml/dessci_logo.gif\' alt=\'dessci\'/> DESSCI MathPlayer plugin</a><li>Opera : <a target=\'new\' href=\'http://xml-maiden.com/userjs/mathml/\'>UserJS MathML plugin</a></ul></li><li>Apple<ul><li></li></ul></li></ul>')">
+    <span class="wims_emph">browser...</span>
+    </a>
+</li>
+!else
+ <li>
+    The server is currently set to "math with gifs".<br />
+    If you have a suitable <a onmouseover="return Tip('<ul><li>FireFox&nbsp;<a target=\'new\' href=\'http://www.mozilla-europe.org/$module_language/\'><img src=\'gifs/mathml/getFireFox.gif\' alt=\'get FireFox\'/></a></li><li>Windows<ul><li>Internet Explorer : <a target=\'new\' href=\'http://www.dessci.com/en/products/mathplayer/\'><img src=\'gifs/mathml/dessci_logo.gif\' alt=\'dessci\'/> DESSCI MathPlayer plugin</a><li>Opera : <a target=\'new\' href=\'http://xml-maiden.com/userjs/mathml/\'>UserJS MathML plugin</a></ul></li><li>Apple<ul><li></li></ul></li></ul>')">
+    <span class="wims_emph">browser</span>
+    </a>
+    &nbsp;you may also use
+    !set arg=!nospace $texsize 2
+   !href cmd=resume&useropts=$arg MathML
+   &nbsp;
+    instead of "math with gifs".
+</li>
+ <li>
+改變數學符號及公式的大小：利用下一行比較符號與上下文的大小。<p>
+  希臘字母 $m_alpha ，$m_pi。數學式
+  !let ins_align=middle
+  !! we need to force dynamic insertion
+  !set pw=2
+  !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{$pw} - 4ac}}{2a}
+  不等式
+  </p><p class="wimscenter">| $m_a + $m_b | $m_le $m_varepsilon + 123.45 。</p>
+  <p>
+  您可以
+  !let ts1=!eval $texsize-1
+  !let ts2=!eval $texsize+1
+  !if $ts1<1
+	!let ts1=1
+  !endif
+  !if $ts2>9
+	!let ts2=9
+  !endif
+  !href cmd=resume&useropts=$ts1$texalign$useropt2 縮小
+  或
+  !href cmd=resume&useropts=$ts2$texalign$useropt2 放大
+  數學符號的大小以配合上下文。
+  If the expression
+  !insmath (x+y)/(x^$pw + y^2)
+  is
+  !if $texalign=1
+   too high with respect to the text line,
+   !href cmd=resume&useropts=$(texsize)0$useropt2 click here
+   to lower it.
+  !else
+   too low with respect to the text line,
+   !href cmd=resume&useropts=$(texsize)1$useropt2 click here
+   to raise it.
+  !endif
+  </p>
+!set zoom=$empty
+</li>
+!endif
+</ul>
+當符號與文字的大小對應達到您的需求時，請將這個
+<a href="$wims_ref_name?lang=$lang&+useropts=$texsize$texalign$useropt2$zoom"
+ title="WIMS">連結</a>
+放在書簽中以便在未來的連線中保持這些偏好。
+
+:end
+!tail

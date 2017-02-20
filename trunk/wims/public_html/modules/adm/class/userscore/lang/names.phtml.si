@@ -1,0 +1,139 @@
+!set lang_exists=yes
+
+!if $wims_read_parm!=
+ !goto $wims_read_parm
+!endif
+
+!set name_donchoose=Choix des données
+!set name_studentloc=!nosubst $user_firstname $user_lastname
+!set name_studentglo=!nosubst $wims_name_firstname $wims_name_lastname
+
+!distribute line Povpreèje uèilnice\
+Povpreèje\
+Povpreèje pozitivnih rezultatov\
+Celotno povpreèje\
+Group average\
+into name_classAverage,name_Average,name_posAverage,name_globalaverage,\
+name_groupAverage
+
+!set name_partdeleted=Zbrisani uporabniki
+!set wims_name_reg_ex=Seznam shranjenih nalog
+!!set name_transfer=Prenos aktivnosti uporabnika iz drugih uèilnic
+
+!!!set name_thsheet=No,Naslov,zahtevane,ute¾,dose¾ene<br />toèke,%,kvaliteta,stopnja resnosti,Rezultat,\
+  Best scores,Number of tries,Last result, Acquired level
+!set name_minmax=min/srednja/max razreda
+
+!set name_manualscore=Ocene uèitelja
+!set name_autoscore=Ocene stre¾nika
+!set name_manual_notes=globale,uèitelj,auto
+!set name_examnote=Ocene izpitov
+
+!set name_severitylevels=Worksheets severity levels
+!set name_formula=Serial,Weight,Level
+!set name_sheetstatut=prep,active,expired,hidden
+
+!distribute items Izpit,Sheet,Vaja,Zaèetek,Rezultat,Seansa,\
+Opravljeno,equiv.,Duration\
+into name_Exam,name_Sheet,name_Exercise,name_Start,name_Score,name_Session,\
+name_done,name_equiv,name_Duration
+
+!set name_formula_comment=Vous pouvez définir les niveaux de sévérité et les poids des feuilles de \
+travail dans le tableau suivant. Les notes seront calculées avec un maximum =
+!set name_formula2=!nosubst Grades computed over a maximum of $scoremax
+!set name_pickup=Izberite liste za izpis<br />povpreènih rezultatov posameznih listov
+!set name_warning= Va¹a zahteva ni dovoljena.
+
+!set name_click=Click on a name for the detail of his/her work
+!set name_affi=quality,carried out work,grades
+!set name_workdetail=Podrobnosti dela uporabnika
+!set name_activesession=Ta uporabnik ima trenutno aktivno izpitno delo
+
+!distribute items Naslov povezave, Preostali èas, Izpitno delo uporabnika ,minutes\
+into name_connecting,name_remaining_time,name_exam_session,name_minutes
+
+!set name_noyetparticipant= Ta uèilnica ¹e nima nobenega uporabnika.
+
+!set name_warning_no_sequence=You have configured the sequences to appear but have not defined any\
+sequences. So no score can appear.
+
+!if $manual>0
+!set name_manual_explanation=<b>Explanations.</b> In the <span class="tt">Average</span> columns, <span class="tt">auto</span>\
+ means average of grades computed from scores obtained in worksheets, <span class="tt">teacher</span> means \
+ average of grades attributed manually by the supervisor, and <span class="tt">global</span> is computed \
+ from the two other averages, by the formula
+!endif
+
+!set name_title_showsheet=!nosubst details of the work on worksheet $numshowsheet<br />$sh_title
+!set name_percentagegot=Percentage of carried out work
+!set name_qualitygot=Quality calculated out of 10
+!set name_percentagedone=Percentage of carried out work
+!set name_percentagebest=Average of the best required scores
+
+!set name_post=display
+!set name_Post=Display
+
+!if $job iswordof userprop teacher
+  !distribute items Spremeni,©tevilka registracije,Opombe,URL d'une photo,Spremenljivke (tehniène),\
+  Geslo uèilnice,Vpi¹ite geslo, ki bo zahtevano za registracijo novih uporabnikov.,\
+  Login for external authentification,Inscription,Gestion,\
+   Compulsory\
+  into name_change,name_regnum,name_comments,name_photourl,name_vars,\
+  name_classpassword,name_enterpassword,name_external_auth,name_inscript,name_gestion,\
+  name_userprop_warning
+  !goto end
+!endif
+
+!if $job=examcheck
+ !set name_title_examcheck=!nosubst Podrobnosti izpita uporabnika $name_studentloc
+ !set name_no_exampart=Ta uporabnik ¹e ni opravljal nobenega izpita.
+ !set name_exampart=Tu je seznam izpitov, ki jih je opravljal ta uporabnik. Kliknite na ime vaje za podrobnosti.
+ !goto end
+!endif
+!if $job=getraw
+  !set name_title_getraw=!nosubst Podrobnosti dela uporabnika z imenom $name_studentloc<br />(neobdelani podatki)
+  !goto end
+!endif
+
+!set name_direct_score=Neposredni prikaz rezultatov
+
+!if $job=csv
+  !distribute lines Datoteko\
+    lahko shranite in odprete v svojem najljub¹em programu za preglednice.\
+    Participant information changed\
+    Added new participants\
+    Addition of new participants ignored because there is no more available space.\
+    Participant information is not changed because grades have been uploaded.\
+    Server-computed scores (averages and worksheet/exam scores) are ignored in your data because they cannot be changed.\
+    Ignored data about erased participants\
+    The following login names are not added because the login is too short\
+    The following login names do not exist in the class and cannot be added, because of unsufficient/incorrect information in the data\
+    The following login names do not exist in the class and cannot be added (bad data, or no more space)\
+    Manual grades are registered only for existing columns.\
+    No change has been found in your spreadsheet data with respect to the class record.\
+    Check manual grades\
+    To download class data for your spreadsheet, please specify\
+    Format\
+    Columns\
+    To upload your spreadsheet data to the class, please specify\
+    Data file\
+    Accepted formats\
+    For the new participants, the password column is compulsory.\
+  into name_file,name_download,name_infochanged,name_added,name_warning1,name_warning2,\
+  name_warning3,name_warning4,name_badlogin,name_nologin1,name_nologin2,name_manual1,name_data1,\
+    name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2,\
+    name_passwarning
+
+  !set name_deposit=!nosubst Datoteka <span class="tt">$wims_deposit</span> successfully processed.
+  !set name_indicateur=Indicator
+  !set name_techvar=Technical variables
+  !set name_regvar=Registration variables
+  !set name_all=All
+  !set name_allscore=All score
+!endif
+
+!set name_topten=!nosubst Top $class_topscores of the class average
+
+:end
+!exit
+

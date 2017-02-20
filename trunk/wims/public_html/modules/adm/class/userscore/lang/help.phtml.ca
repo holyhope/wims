@@ -1,0 +1,74 @@
+
+!if $special_parm!=$empty and $special_parm_!=$empty
+ !changeto lang/help.$moduclass_lang/$special_parm.phtml
+!endif
+
+!read adm/title.phtml 1\
+\
+Nivell de severitat dels fulls de treball
+
+!if $wims_user=supervisor
+<p>
+El servidor calcula dues mitjanes per al treball de cada participant en
+cada full&nbsp;: un percentatge de punts obtinguts respecte al nombre de
+punts demanats, i la qualitat dels punts obtinguts en els exercicis
+del full. Sigui x el percentatge i y la qualitat, tots dos reduïts
+proporcionalment a valors entre 0 i 1. Aquestes són Les fórmules per
+calcular les puntuacions, d'acord amb el nivell de severitat establert pel professor.
+</p>
+$table_header
+$table_hdtr<th>Nivell</th><th>Fórmula</th><th>Explicació</th></tr>
+$table_tr<td>0</td><td>$scoremax max(x,y)
+ </td><td>Molt indulgent&nbsp;: màxim entre percentatge i qualitat.</td></tr>
+$table_tr<td>1</td><td>$scoremax x
+ </td><td>la qualitat no és tinguda en compte. Teniu la màxima puntuació
+ quan s'obtenen tots els punts requerits.</td></tr>
+$table_tr<td>2</td><td>$scoremax x y<sup>0.3</sup>
+ </td><td>La qualitat té poc efecte en la nota.</td></tr>
+$table_tr<td>3</td><td>$scoremax x y<sup>0.5</sup>
+ </td><td>Té molt efecte la qualitat.</td></tr>
+$table_tr<td>4</td><td>$scoremax x y
+ </td><td>Per a una nota de $scoremax, han de tenir tots els punts
+  demanats (100%), sense cometre errors (qualitat = 10).</td></tr>
+$table_tr<td>5</td><td>$scoremax x<sup>2</sup> y
+ </td><td>Feina inacabada és excessivament castigada</td></tr>
+$table_tr<td>6</td><td>$scoremax x<sup>2</sup> y<sup>2</sup>
+ </td><td>Qualsevol error és castigat.</td></tr>
+$table_end
+
+Remarque : En niveau 0 et 1, si la note de qualité est
+inférieure à 1 pour un exercice, le pourcentage de réussite (points obtenus)
+est mis à 0% pour cet exercice lors du calcul de x ; si la note de qualité est comprise entre 1 et 2,
+le pourcentage de réussite pour cet exercice est divisé par 2 lors du calcul de x.
+
+!else
+Pour cette feuille, votre enseignant a choisi le mode de calcul suivant
+de la note.
+Pour chacun des indicateurs suivants, on calcule la moyenne pour votre travail pour :
+<ul>
+<li>
+!if $help_sw=0
+  le quotient I des points cumulés par le nombre de points demandés 10*n
+!endif
+!if $help_sw=1
+la moyenne I des n meilleures notes,
+!endif
+!if $help_sw=2
+ le minimum I des n meilleures notes
+!endif
+</li>
+<li>
+la qualité Q des points obtenus sur les exercices.
+</li>
+</ul>
+
+Si la note de qualité est inférieure à 1 pour un exercice,
+I est mis à 0 pour cet exercice  ;
+si la note de qualité est comprise entre 1 et 2,
+I est divisé par 2 lors du calcul de la note de la feuille.
+
+</p><p>
+Ces moyennes sont ramenées entre 0 et 1 et
+ la note de la feuille est calculée comme
+\($scoremax * $(list[$help_level+1;]) \)
+!endif

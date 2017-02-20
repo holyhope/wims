@@ -1,0 +1,78 @@
+!set lang_exists=yes
+!if $wims_read_parm=$empty
+ !exit
+!endif
+
+!goto $wims_read_parm
+
+:file
+
+<p>Available files in this document:
+ !for f in $flist
+  !getfile doc/$f $f
+  &nbsp;
+ !next f
+ </p>
+ !form reply
+ <input type="hidden" name="job2" value="erase" />
+ Erase a file:
+ !formselect job2 list $flist
+ <input type="submit" value="$wims_name_erase" />
+
+ !formend
+ <p>
+ Files in the document can be accessed using the variable <span class="tt wims_code_variable">\filedir</span>
+in the document. For example,
+</p>
+<p class="wimscenter">
+ <span class="tt wims_address">&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</span>
+</p>
+ gives a link to the file <a href="$m_filedir/$f1" alt="$f1">$f1</a>.
+ Also, you can write
+<p class="wimscenter">
+ <span class="tt wims_address">&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</span>
+</p><p>
+to include an image file <span class="tt wims_fname">myfile.jpg</span> in the page.
+ Files deposited to this document are only accessible by people having
+ rights to read the document.
+
+</p><p>
+A new command <span class="tt wims_code_words">\href{}{}</span> is under testing. 
+To get a link to the file, it suffices to write
+<p class="wimscenter">
+<span class="tt wims_code_words">\href{$f1}</span> or <span class="tt wims_code_words">\href{$f1}{link}</span>.
+</p>
+!exit
+
+:readauth
+ If you are the author of the document, please remember that you need the
+ authorization of the
+ !mailurl $wims_site_manager webmaster\
+Ask to open WIMS document $doc
+ to put the document visible by the public.
+
+!exit
+
+:erase1
+ For security reasons, only webmasters can erase public documents.
+ <p>
+ Please
+ !mailurl $wims_site_manager ask the webmaster
+ to erase this document for you.
+ </p>
+!exit
+
+:erase2
+<span class="wims_warning">ATTENTION</span>. An erased document cannot be recovered!
+<p>
+Are you sure you want to erase the document <span class="tt wims_fname">$tit</span>?
+</p>
+!exit
+:public
+
+<b>Remark</b>. You must ask the approval of the
+ !mailurl $wims_site_manager webmaster\
+Ask to open WIMS document $doc
+ to make the document accessible by le public.
+
+!exit

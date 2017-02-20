@@ -1,0 +1,215 @@
+
+!! This script handle OEF embed{t, inputsize, [prompt]} instruction
+
+!! replace oef variables by their associated value
+!set parm=!replace internal \ by $$m_ in $wims_read_parm
+
+!set t_=!item 1 of $parm
+!set inputsize=!item 2 of $parm
+!! To let LaTeX instructions working, "\" must not be replaced in prompt.
+!set prompt_=!item 3 of $wims_read_parm
+
+!set inputsize1=!word 1 of $inputsize
+!if $(replytype$i) iswordof flashcard
+  !set inputsize1=!word 1 of $inputsize
+!else
+  !set inputsize1=$inputsize
+!endif
+!if $printing=yes or $cmd=hint
+!!i__ est le numero de la question
+ !set i__=!replace internal reply by in $t_
+ !set i__=!replace internal r by in $i__
+ !set i__=!trim $i__
+ !set replytype$i__=!item $i__ of $(Replytype$i)
+ !set replystyle$i__=!item $i__ of $(Replystyle$i)
+ !readproc anstype/$(replytype$i__).input def
+ !default replystyle$i__=$anstyle
+ !if mc iswordof $(replystyle$i__) or $(replytype$i__) iswordof dragfill clickfill
+  !if $inputsize1>0
+   !if $prompt_=$empty
+    !!set g_=!rows2lines $(replygood$i__)
+    !!set g_=!line 2 of $g_
+    !set prompt_=!line $i__ of $(Rg$i)
+    !set prompt_=!item $inputsize1 of $prompt_
+   !endif
+  !else
+   !if $prompt_=$empty
+    !set g_=!rows2lines $(replygood$i__)
+    !set g_=!line 2 of $g_
+    !set prompt_=$g_
+    !set prompt_=!line $i__ of $(Rg$i)
+    !set prompt_=!items2lines $prompt_
+    !set prompt_=!replace internal $\
+$ by  </span>$  $ <span style="color:blue">/</span> $ $<span style="text-decoration:underline"> in <span style="text-decoration:underline">$prompt_</span>
+   !endif
+  !endif
+  <div class="inline" style="font-style:italic">$prompt_</div>
+ !else
+  !if $(replytype$i__) iswordof compose correspond
+   !if $(replytype$i__)=compose
+    !set prompt_=!line $i__ of $(Rg$i)
+    !set prompt_cnt=!wordcnt $prompt
+    !set prompt_=!shuffle $prompt_
+    !set prompt_=!replace internal , by $ $ / $ $ in $prompt_
+   $prompt_
+   !endif
+   !if $(replytype$i__)=correspond
+    !set prompt_=!line $i__ of $(Rg$i)
+    $prompt_
+   !endif
+  !else
+   ___________
+  !endif
+ !endif
+ !exit
+!endif
+!!end of print section
+
+!if $wims_read_parm=$empty
+ !exit
+!endif
+
+!set n_=!char 2 to -1 of $t_
+!set t_=!char 1 of $t_
+!set t_=!lower $t_
+!set t_=!translate a to r in $t_
+!set n_=!text select 0123456789()+-* in $n_
+!set n_=$[$n_]
+!bound n_ between integer 1 and 100 default $
+!if $t_ notitemof r,c or $n_=$empty
+ !exit
+!endif
+
+!if $t_=c and $(choicelist$n_)=$empty or\
+	$t_=r and $(replygood$n_)=$empty
+ !exit
+!endif
+
+!if $t_$n_ notitemof $embedded
+ !set embedded=!append item $t_$n_ to $embedded
+ !set embcnt=!itemcnt $embedded
+!endif
+!set i=$n_
+
+!if $q_form=yes
+ !if $t_=c
+  !set p_=$ch_choose,$(choicelist$i)
+  !if $idontknow>0 and noidontknow notwordof $(choiceoption$i)
+   !set p_=$p_,$ch_noidea
+  !endif
+  !if $qcmgood<1
+   !set p_=$p_,$ch_none
+  !endif
+  !set N_=!itemcnt $p_
+  !set C_=$(choice$i)
+  !if debug iswordof $m_oefenv
+   !set replydefaulted=yes
+   !if $oef_default=yes
+    !set T_=!positionof item $(choicegood$i[1]) in $(choicelist$i)
+    !default choice$i=$(T_[1])
+   !endif
+  !endif
+  !formselect choice$i from 0 to $[$N_-1] prompt $p_
+  !set choice$i=$C_
+ !else
+  !read anstype/$(replytype$i).input noprompt
+ !endif
+!else
+ !distribute item oef_indgood, oef_indbad, oef_indforget, oef_indneutral, oef_empty, oef_indprec, oef_indpartial\
+   into colorr_good, colorr_bad, colorr_forget, colorr_neutral, colorr_none, colorr_prec, colorr_partial
+ !set cl=colorr_none
+ !if $t_=c
+  !set cl=$(colorr_$(diachoice$i))
+  !set p_=!item $(choice$i) of $(choicelist$i),$ch_noidea,$ch_none
+  !set choicename$i=[$embcnt]
+ !else
+  !default reply_$i=$(reply$i)
+  !set p_=$(reply_$i)
+  !if dprompt iswordof $(replystyle$i)
+   !set reply_$i=$(reply__$i)
+  !endif
+  !if mc iswordof $(replystyle$i) and $inputsize1!=$empty and $inputsize1 >= 1 and $inputsize1 <= 1000
+   !set tt=!rows2lines $(replygood$i)
+   !distribute lines $tt into ts,tt
+   !default prompt_=!item $inputsize1 of $tt
+   !set p_=$prompt_
+   !reset tv
+   !if $(replytype$i) iswordof mark flashcard
+     !set tv=$(reply$i)
+   !else
+    !for r_ in $(reply$i)
+     !set tu=!positionof item $r_ in $tt
+     !set tv=!append item $tu to $tv
+    !next r_
+   !endif
+
+   !set p_=!replace internal &#59; by ; in $p_
+   !if $inputsize1 notitemof $tv
+    !if $presentgood=0
+      !set cl= $colorr_none
+    !else
+      !if $inputsize1 isitemof $ts and $(replytype$i) iswordof mark flashcard checkbox
+        !set cl = $colorr_forget
+      !else
+        !set cl = $colorr_neutral
+      !endif
+    !endif
+    !imgrename <div class="inline $cl">$p_</div>
+    !exit
+   !endif
+  !endif
+  !if $(replytype$i) iswordof code
+   !set p_=!replace internal & by &amp; in $p_
+   !set p_=!replace internal &amp;#36; by &#36; in $p_
+   !set p_=!replace internal < by &lt; in $p_
+   !set p_=<pre>$p_</pre>
+  !endif
+  !set tt=!word 1 of $(replygood$i)
+  !if $tt!=?analyze
+   !set cl=$(colorr_$(diareply$i))
+   !if $(replytype$i) iswordof mark flashcard checkbox
+    !if $inputsize!=$empty
+      !if $inputsize isitemof $ts
+        !set cl = $colorr_good
+      !else
+        !set cl = $colorr_bad
+      !endif
+    !else
+      !set cl=$(colorr_$(diareply$i))
+      !default display_forget=no
+     !endif
+   !endif
+   !if $(partialgood$i)=yes
+     !set cl=$(colorr_partial)
+   !endif
+   !if $(precreply$i)=yes
+     !set cl=$(colorr_prec)
+   !endif
+  !else
+   !set embedded_analyze=!append item $i to $embedded_analyze
+   !if noanalyzeprint notwordof $(replyoption$i)
+    !set embedded_bracket=$embedded_bracket [$embcnt]
+   !endif
+  !endif
+  !set replyname$i=[$embcnt]
+ !endif
+ !set embcnt1=&nbsp;<sup><small>[$embcnt]</small></sup>
+ !if $(replytype$i) notwordof correspond crossword
+   !if bad isin $cl
+    !set instex_color=red
+   !endif
+   !if good isin $cl
+    !set instex_color=green
+   !endif
+   !if forget isin $cl
+    !set instex_color=blue
+   !endif
+  !imgrename <div class="inline $cl">$p_</div>$embcnt1
+  !else
+  !imgrename $p_ $embcnt1
+ !endif
+ !set instex_color=black
+ !if $(replytype$i) iswordof correspond
+  !set noshow$i=yes
+ !endif
+!endif

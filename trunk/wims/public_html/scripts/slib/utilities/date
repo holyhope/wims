@@ -1,0 +1,51 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+
+slib_author=Bernadette, Perrin-Riou
+slib_title=Date
+slib_parms=2\
+ ,first date (written in format ddmmyyyy)\
+ ,second date (written in format ddmmyyyy), or number of days to add\
+diff,option as diff, add
+
+slib_out=<ul><li>with parameter <code>diff</code> (default), returns the number of days between the two dates.</li>\
+  <li>with parameter <code>add</code>, returns the new date obtaining by adding the date plus the number of days</li>\
+  <li>with parameter <code>add</code>, you can also add the parameter <code>item</code> to return\
+   the date in a comma separated values format or the parameter <code>nospace</code> \
+   to return a compacted format date (ddmmyyyy).</li></ul>
+slib_example=12022013,18082013,diff\
+12022013,13022013,diff\
+12022013,18082013,diff\
+18082013,12022013\
+17012012,10092014\
+12022013,0,add\
+12022013,20,add\
+04032013,-20,add\
+12022013,3,add item\
+18082013,365,add nospace\
+!exit
+
+:proc
+!distribute item $wims_read_parm into slib_date1, slib_date2, slib_option
+!if add isin $slib_option
+  slib_date1=!nospace $slib_date1
+  slib_date1=!text expand $slib_date1 using 01101101111
+  slib_date1=!exec date.pl 1 $slib_date1
+  slib_date2=!exec pari $slib_date1 + ($slib_date2)*86400
+  slib_date2=!exec date.pl 2 $slib_date2
+  slib_out=!word 1 to 3 of $(slib_date2)
+  !if nospace isin $slib_option
+    slib_out=!nospace $slib_out
+  !endif
+  !if item isin $slib_option
+    slib_out=!words2items $slib_out
+  !endif
+!else
+  slib_date1=!text expand $slib_date1 using 01101101111
+  slib_date2=!text expand $slib_date2 using 01101101111
+  slib_date1=!exec date.pl 1 $slib_date1
+  slib_date2=!exec date.pl 1 $slib_date2
+!! not always an integer because of the time change
+  slib_out=$[round(($slib_date2 - $slib_date1)/86400)]
+!endif

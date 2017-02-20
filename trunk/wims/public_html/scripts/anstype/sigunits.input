@@ -1,0 +1,24 @@
+!set anstype=yes
+!set anstyle=symtext
+!set ans_require=units-filter
+!if $wims_read_parm=def
+ !exit
+!endif
+!if debug iswordof $m_oefenv and ?analyze notin $(replygood$i)
+ !set replydefaulted=yes
+ !if $oef_default=yes
+  !set tt=!row 1 of $(replygood$i)
+  !set units_option=o
+  !default reply$i=!exec units-filter $tt
+  !reset units_option
+ !endif
+!endif
+!if $wims_read_parm!=noprompt
+ <tr><td><label for="reply$i">$(replyname$i)</label>&nbsp;=</td><td>
+!endif
+!bound inputsize between integer 1 and 100 default 25
+<input id="reply$i" size="$inputsize" name="reply$i" value="$(reply$i)" />
+!if $wims_read_parm!=noprompt
+ </td></tr>
+!endif
+!reset inputsize

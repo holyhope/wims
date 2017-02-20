@@ -1,0 +1,73 @@
+
+$table_header
+<caption>Champs de données valables</caption>
+$table_hdtr<th scope="col">Nom</th><th scope="col">Signification</th>
+$table_tr<td class="tt wims_code_variable">login</td><td>$wims_name_Login</td></tr>
+!if $special_parm!=upload
+$table_tr<td class="tt wims_code_variable">name</td><td>nom de famille et prénom (dans cet ordre, deux colonnes)</td></tr>
+!endif
+$table_tr<td class="tt wims_code_variable">lastname</td><td>nom de famille</td></tr>
+$table_tr<td class="tt wims_code_variable">firstname</td><td>prénom</td></tr>
+$table_tr<td class="tt wims_code_variable">password</td><td>mot de passe du participant, téléchargé sous forme
+	cryptée spécifique, mais pouvant être envoyé au serveur en clair (pour une première inscription seulement).</td></tr>
+$table_tr<td class="tt wims_code_variable">email</td><td>adresse électronique</td></tr>
+$table_tr<td class="tt wims_code_variable">regnum</td><td>numéro d'inscription</td></tr>
+$table_tr<td class="tt wims_code_variable">photourl</td><td>URL d'une photo</td></tr>
+$table_tr<td class="tt wims_code_variable">comments</td><td>commentaire concernant le participant</td></tr>
+$table_tr<td class="tt wims_code_variable">external_auth</td><td>identifiant pour une authentification externe</td></tr>
+
+!if $special_parm!=upload
+$table_tr<td class="tt wims_code_variable">allscore</td><td>l'ensemble de notes et moyennes</td></tr>
+$table_tr<td class="tt wims_code_variable">averages</td><td>moyennes des notes (du serveur et manuelles)</td></tr>
+$table_tr<td class="tt wims_code_variable">average1</td><td>moyennes des notes attribuées par le serveur</td></tr>
+$table_tr<td class="tt wims_code_variable">average2</td><td>moyennes des notes envoyées par l'enseignant</td></tr>
+$table_tr<td class="tt wims_code_variable">sheets</td><td>notes de toutes les feuille d'exercices (l'une après l'autre)</td></tr>
+$table_tr<td class="tt wims_code_variable">sheet1,sheet2,...</td><td>notes de la feuille 1, feuille 2, ...</td></tr>
+$table_tr<td class="tt wims_code_variable">sheetexo1,sheetexo2,...</td><td>indicateurs des exercices de la feuille 1, feuille 2, ...
+  (actuellement, il y a deux indicateurs : pourcentage de points acquis, note de qualité)</td></tr>
+$table_tr<td class="tt wims_code_variable">exams</td><td>notes de tous les examens</td></tr>
+$table_tr<td class="tt wims_code_variable">exam1,exam2,...</td><td>notes de examen 1, examen 2, ...</td></tr>
+$table_tr<td class="tt wims_code_variable">manuals</td><td>toutes les notes de l'enseignant (l'une après l'autre)</td></tr>
+!endif
+$table_tr<td><span class="tt wims_code_variable">participate</span> (dans le cas d'un portail,
+réservé à son administrateur)</td><td>adresses des classes
+auxquelles est inscrit le participant écrites sous la forme <span class="tt">x/y/z</span>
+dans un établissement ou <span class="tt">x/y</span> dans un groupement de classes
+avec <span class="tt">x</span> le numéro du portail. S'il y a plusieurs classes, les séparer par des espaces.</td></tr>
+$table_tr<td><span class="tt wims_code_variable">supervisable</span> (dans le cas d'un portail,
+réservé à son administrateur)</td><td>"yes" pour que le participant soit un enseignant
+!if $special_parm=upload
+ (uniquement dans le cas
+ d'une nouvelle inscription)
+!endif
+.</td></tr>
+$table_tr<td><span class="tt wims_code_variable">supervise</span> (dans le cas d'un portail,
+réservé à son administrateur)</td><td>adresses des classes
+auxquelles le participant-enseignant a un accès de gestion écrites sous la forme <span class="tt">x/y/z</span>
+dans un établissement ou <span class="tt">x/z</span> dans un groupement de classes
+avec <span class="tt">x</span> le numéro du portail.
+S'il y a plusieurs classes, les séparer par des espaces.</td></tr>
+
+$table_tr<td class="tt wims_code_variable">manual1,manual2,...</td><td>notes attribuées par l'enseignant 1, 2, ...</td></tr>
+$table_tr<td class="tt wims_code_variable">var_xxx</td><td>la variable technique <span class="tt">xxx</span></td></tr>
+$table_tr<td class="tt wims_code_variable">regprop1,regprop2,...</td><td>variables d'inscriptions complémentaires<span class="tt">xxx</span></td></tr>
+
+$table_end
+
+Un champ non reconnu est ignoré. Les variables techniques peuvent être utilisées pour faire certaines
+actions sur un groupe d'élèves de la classe (par exemple, pour limiter de
+manière sélective la durée d'ouverture de feuilles d'exercices ou
+d'examens, envoyer un message à un groupe d'élèves ou
+faire apparaître un groupe d'élèves dans le tableau des résultats ...).
+
+!if $special_parm=upload
+<p>
+Dans le cas du champ <span class="tt wims_code_variable">participate</span>,
+il est possible de rajouter des classes mais pas d'en enlever.
+</p>
+<p>
+Dans le cas du champ <span class="tt wims_code_variable">var_xxx</span>,
+la variable technique doit déjà être créée et seules les valeurs définies
+lors de la création de la variable sont utilisables.
+</p>
+!endif

@@ -1,0 +1,45 @@
+!!
+!! update a field of an exo of a sheet
+!!
+!! needed information :
+!! sheet : num of modify sheet
+!! exo : num of exo modifiy in the sheet
+!! update_field : is the number of the field to be modified.
+!! update_content : new content of the line
+number_field=9
+ecnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+!for e=1 to $ecnt
+ exo_$e=!record $e of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+ exo_$e=!line 1 to $number_field of $(exo_$e)\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+
+!next e
+!if $update_field>=0
+ !if $update_field>0
+  tmp=!linecnt $(exo_$exo)
+  !if $update_field > $tmp
+   !for tmp2 = 1 to $[$update_field-$tmp]
+    exo_$exo=!append line $ $ to $(exo_$exo)
+   !next
+  !endif
+  exo_$exo=!replace line number $update_field by $update_content in $(exo_$exo)
+ !else
+  exo_$exo=$update_content
+ !endif
+!endif
+!writefile wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+!for e=1 to $ecnt
+ !if $e!=$exo or $update_field>=0
+  ef=!line 1 to $number_field of $(exo_$e)
+  !appendfile wimshome/log/classes/$wims_class/sheets/.sheet$sheet :$ef
+ !endif
+!next e
+

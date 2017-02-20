@@ -1,0 +1,160 @@
+
+!! menu definition file
+!set list_curve=circle,rectangle,polygon,brokenline
+!default step=1
+!read lang/names.phtml.fr
+$name_intro
+$name_exo0
+!set wims_ref_class=wims_button_help
+!href target=wims_mhelp cmd=help $wims_name_help
+
+!form reply
+<ol>
+!for a=1 to $[max(min(2,$step-1),1)]
+  <li>$(name_help$a)</li>
+!next
+!if $step=2
+      <li class="wims_emph">$(name_help$[min(3,$step)])</li>
+      </ol>
+!endif
+
+!if $step>=3
+    !if $type<=1
+      <li class="wims_emph">$(name_help$type$ext)</li>
+    !else
+     !if $ext=2
+      <li>$(name_help$type$[$ext-1])</li>
+     !endif
+      <li class="wims_emph">$(name_help$type$ext)</li>
+    !endif
+   !endif
+  !if $step>=3 and $ext=1
+  <li>
+  $name_else
+   !formcheckbox erase list yes prompt <b>$name_erase</b>
+  </li>
+   !if $step>=4
+   <li>
+     $name_end
+     !reset tindex
+     !for t in $listexo
+     !set p=!char 1 of $t
+     !if ($type >= $p and $type<=1) or $type=$p
+      !set titre=$(name_description$t)
+      !set titre=!line 1 of $titre
+      !set titre=!replace internal , by &#44; in $titre
+      !set tindex=!append item $titre to $tindex
+      !set lex=!append item $t to $lex
+     !endif
+    !next
+ !formselect end list 0,$lex prompt choisir,$tindex
+   </li>
+  !endif
+</ol>
+  !if $type!=2 or $ext=1
+  <p class="wimscenter wimsform">
+  <input type="submit" value="$wims_name_send" />
+  </p>
+  !endif
+!endif
+
+!if $step>=$limit
+  !changeto answer.phtml
+  !exit
+!endif
+
+!if $step=1
+</ol>
+<ul><li>
+   !set wims_ref_id=wims_deposit_old0
+   !formradio wims_deposit_old list 0 prompt $wims_name_download
+   <input type="file" name="wims_deposit" />
+   !if $already!=
+     $name_already
+     !formradio wims_deposit_old list $already
+   !endif
+  </li><li>
+  !default type=0
+  !formradio type list 0,1,2,3 prompt $name_0, $name_1,$name_2,$name_3
+  </li>
+</ul>
+  <p class="wimscenter wimsform">
+     !set wims_ref_class=wims_button
+   <input type="submit" value="$wims_name_send" />
+  </p>
+  !if $test=noimage
+    <span class="wims_warning">$wims_name_warning</span>. $name_noimage
+  !endif
+  !if $test=bad_image
+    <span class="wims_warning">$wims_name_warning</span>. $name_bad_image
+  !endif
+!endif
+!if $step=2
+</ol>
+!endif
+!if $step>=2
+
+ !distribute item alt="Click",1,form click into ins_attr,ins_border,ins_tag
+
+  <ul><li style="display: inline-block;vertical-align:top;max-width:$[max($(insdraw_size[1])+4,300)]px">
+  !if $step>=3
+    !if $type iswordof 2 3 and $ext=2
+     $(name_point$type$ext)
+      !read zone.phtml
+  </li></ul>
+      !exit
+    !endif
+       $(name_point$type$ext)
+       <br />
+       !set insdraw_filebase=!append word $wims_home/sessions/$wims_session/$sesdir to $insdraw_filebase
+       !set insdraw_filebase=!listuniq $insdraw_filebase
+      !! !set ins_border=4
+      !insdraw copy 0,0,-1,-1,-1,-1,$wims_deposit\
+     $dessin
+     !set imgsrc=$ins_url
+  !else
+    <input type="image" name="click" src="$imgsrc" border="1" />
+  !endif
+</li><li style="display: inline-block;vertical-align:top; padding-left:5em;">
+  !if $test=nosize and $begin>=1
+   <span class="wims_warning">$wims_name_warning</span>. $name_nosize
+  !endif
+  !reset begin
+  !if $step>=3
+  !!a modifier
+   !if $test iswordof nolegend noclick
+      <span class="wims_warning">$wims_name_warning</span>.
+      !if $test iswordof nolegend
+        $name_nolegend
+      !endif
+      !if $test=noclick
+       $name_noclick
+      !endif
+   !endif
+   !if $ext iswordof 2
+      !set readonly=readonly="readonly"
+   !else
+      !reset readonly
+   !endif
+     <br />
+      $name_legend
+      <input size="20" $readonly name="legend" value="$legend" />
+      !if $type=2 and $ext=1
+        !formradio javatype list $list_curve prompt $name_list_curve
+      !endif
+   !if $data!=
+     <pre style="text-align:left;">$data</pre>
+   !endif
+  !endif
+  </li>
+</ul>
+!if $type!=2 or $ext=1
+ <div class="wimscenter wimsform">
+  <input type="submit" value="$wims_name_send" />
+  </div>
+!endif
+
+!endif
+!formend
+
+!reset test error

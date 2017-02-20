@@ -1,0 +1,40 @@
+
+# Variable declaration file.
+#
+# Only those variables with possible user inputs or requiring inter-request
+# savings need to be declared in this file.
+#
+#Each non-comment line defines a variable. Format of the line:
+#
+#name	allow
+#
+#Or the condensed format
+#
+#allow: name name name ...
+#
+#name: name of the variable
+#allow: when allow the user to override the defined value.
+#       it maybe any, deny, init, config, reply.
+#
+#
+#name	allow
+
+status	deny
+
+any:refdir iniparm refdir0 exo search_lang
+reply:f_keywords_[10] taxon_keywords taxonfree_keywords\
+ f_commoncore_[10] taxon_commoncore\
+ f_physics_[10] taxon_physics\
+ f_mathematics_[10] taxon_mathematics\
+ f_informatics_[10] taxon_informatics\
+ f_geoscience_[10] taxon_geoscience\
+ f_biology_[10] taxon_biology\
+ f_chemistry_[10] taxon_chemistry\
+ f_ecogestion_[10] taxon_ecogestion\
+
+deny: ref1_keywords ref1_commoncore ref1_ecogestion\
+ ref1_mathematics ref1_physics ref1_biology ref1_chemistry ref1_geoscience ref1_informatics
+
+init: ref_keywords ref_commoncore ref_ecogestion\
+  ref_mathematics ref_physics ref_biology ref_chemistry ref_geoscience ref_informatics
+any:ref_list

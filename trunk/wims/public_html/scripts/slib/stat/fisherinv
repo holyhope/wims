@@ -1,0 +1,28 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+
+slib_parms=3\
+,[data]\
+,a\
+,b
+
+slib_author=Sophie, Lemaire; Bernadette, Perrin-Riou
+
+slib_example=[0.3,0.6,0.8],4,7
+slib_require=octave
+!exit
+
+:proc
+slib_out=
+
+!distribute  item $wims_read_parm into slib_data,slib_a,slib_b
+
+slib_data=!declosing $slib_data
+
+!!deprecated syntax
+!!slib_out=!exec octave f_inv([$slib_data],$slib_a,$slib_b)
+slib_out=!exec octave finv([$slib_data],$slib_a,$slib_b)
+
+slib_out=!words2items $slib_out
+slib_out=!trim $slib_out

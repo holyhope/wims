@@ -1,0 +1,28 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+
+slib_parms=2\
+,[data]\
+1,degree
+
+slib_author=Sophie, Lemaire; Bernadette, Perrin-Riou
+
+slib_example=[2,4,7] ,5
+slib_require=pari
+!exit
+
+:proc
+slib_out=
+
+!distribute  item $wims_read_parm into slib_data,slib_degree
+
+!default slib_degree=1
+slib_data=!declosing $slib_data
+
+slib_n=!itemcnt $slib_data
+
+slib_out=!exec pari {slib_u=gamma($slib_degree/2);\
+print(vector($slib_n,x,if([$slib_data][x]>0,incgamc($slib_degree/2,[$slib_data][x]/2)/slib_u,0)))}
+
+slib_out=!trim $slib_out

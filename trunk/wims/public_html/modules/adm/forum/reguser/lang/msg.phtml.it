@@ -1,0 +1,125 @@
+!set wims_module_log=error: $error
+
+!! no <p> as these are all included in <div class="wims_alertmsg">...</div>
+!if no_forum=$error
+ Manca il nome del forum per cui ci si vuole registrare.
+ <br />
+ !href module=adm/forum/forum Indice dei forum di discussione
+.
+ !exit
+!endif
+
+!if bad_forum=$error
+ Il forum scelto non esiste! Si può trattare di un errore del sistema, 
+ oppure il forum è terminato, oppure di un tentativo di accesso improprio 
+ al sito (in questo caso si ricorda che tutti i tentativi di accesso sono revistrati).
+ !exit
+!endif
+
+!if no_register=$error
+ Il forum di discussione <span class="wims_emph">$em_title</span> non 
+ accetta registrazioni automatiche. È necessario 
+ !mailurl $mb_email contattare l'owner
+ per essere autorizzati all'accesso.
+ !exit
+!endif
+
+!if no_real=$error
+ Manca il nome.
+ !exit
+!endif
+
+!if no_email=$error
+ Per la registrazione a questo forum è necessario dare
+ un undirizzo di posta elettronica funzionante (il server verificherà
+ la validità dell'indirizzo).
+ !exit
+!endif
+
+!if auth_fail=$error
+ Il codice di accesso inserito non è valido.
+ La registrazione non ha avuto buon fine.
+ !exit
+!endif
+
+!if bad_login=$error
+ Il login contiene caratteri non accettati dal server. <br />
+ Utilizzare solo lettere non accentate e numeri. Non
+ utilizzare spazi.
+ !exit
+!endif
+
+!if bad_pass=$error
+ La password contiene caratteri non accettati dal server. <br />
+ Utilizzare solo lettere non accentate e numeri. Non
+ utilizzare spazi.
+ !exit
+!endif
+
+!if login_size=$error
+ il login scelto è troppo 
+ !if $n<4
+  corto.
+ !else
+  lungo.
+ !endif
+ Deve contenere almeno 4 e non più di 16 caratteri.
+ !exit
+!endif
+
+!if pass_size=$error
+ la password scelta è troppo
+ !if $n<4
+  corta.
+ !else
+  lunga.
+ !endif
+ Deve contenere almeno 4 e non più di 16 caratteri.
+ !exit
+!endif
+
+!if bad_forumpass=$error
+ La password inserita per il forum 
+ <span class="wims_emph">$title</span>
+ non è corretta. Non è possibile procedere
+ con la registrazione.
+ !exit
+!endif
+
+!if login_double=$error
+ Il login <span class="tt wims_login">$login</span>
+ è già in uso nel forum
+ <p class="wimscenter">
+ <span class="wims_emph">$title</span>.
+ </p>
+ Verificate di non esservi già registrati, altrimenti 
+ scegliere un altro login.
+ !exit
+!endif
+
+!if pass_error=$error
+ La password inserita non corriponde con quella inserita in precedenza. 
+ È necessario ricominciare la registrazione da 
+ capo.
+ !exit
+!endif
+
+!if insert_fail=$error
+ Il server non è stato in grado di completare la registrazione.
+ Si tratta di un errore interno. Spiacenti!
+ !exit
+!endif
+
+!if site_complete=$error
+ Il numero di utenti registrati ha raggiunto il limite 
+ ($user_limit). Non è più possibile
+ registrarsi. 
+ !exit
+!endif
+
+!if internal_total=$error
+ Errore interno del server: non è stato possibile determinare il 
+ numero di utenti registrati.
+ !exit
+!endif
+

@@ -1,0 +1,26 @@
+!if $datacnt<1
+ !exit
+!endif
+
+deffile=wimshome/log/classes/$wims_class/.def
+!if class notwordof $wims_prefix
+ wims_prefix=$wims_prefix class
+!endif
+!readdef $deffile
+
+!for i=1 to $datacnt
+ l_=!line $i of $cn_data
+ l_=!translate = to $\
+$ in $l_
+ !distribute lines $l_ into n_,v_
+ !if $n_ iswordof password supervisor description institution email\
+	lang limit level secure expiration\
+	homepage bgcolor bgimg css refcolor\
+	and $v_!=$(class_$n_)
+  !setdef !set class_$n_=$v_ in $deffile
+ !endif
+ !if $n_ iswordof userlist usercount
+  class_$n_=$v_
+ !endif
+!next i
+

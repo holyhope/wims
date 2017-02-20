@@ -1,0 +1,37 @@
+!set wims_html_header=!append line \
+  <link rel="stylesheet" href="html/themes/_css/createqcm.css" type="text/css" />\
+to $wims_html_header
+
+!header
+
+!! La présentation de l'exercice.
+!read present.phtml
+
+<hr />
+
+!if $status=waiting
+ !if $error!=$empty
+  <div class="wims_msg alert">
+  !read msg.phtml
+  </div>
+ !endif
+ !! La forme de réponse
+ !!!read form.phtml
+!else
+ !if $error!=$empty
+ <div class="wims_msg alert">
+  !read msg.phtml
+ </div>
+ !endif
+ !read answer.phtml
+ <p>
+ !if $worksheet=$empty
+ !set wims_ref_class=wims_button
+  !href exo_Intro
+.
+</p>
+ !endif
+!endif
+
+:end
+!tail

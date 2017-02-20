@@ -1,0 +1,69 @@
+type=first
+textarea="explain"
+random="a b c d"
+computed="ans"
+
+:A numerical exercise with 4 random parameters.
+
+The numeric reply is computed with respect to random values of 4 parameters,
+according to various formulas.
+<p>
+Author of the model: Gang Xiao <qualite@wimsedu.info>
+
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Remove the above header if you destroy the model tags i.e.the lines starting
+with a ':'. Otherwise the exercise might not be recognised by Createxo.
+
+:%%%%%%%% Example parameters to be redefined %%%%%%%%%%%%%%%%%
+
+:\title{Four parameters}
+:\author{XIAO, Gang}
+:\email{qualite@wimsedu.info}
+:\credits{}
+
+:First parameter \a.
+\real{a=randint(-20..20)}
+
+:Second parameter \b.
+\real{b=randint(-20..20)}
+
+:Third parameter \c.
+\real{c=randint(-20..20)}
+
+:Fourth parameter \d.
+\real{d=randint(-20..20)}
+
+:The computed correct answer.
+All common functions are recognized. We use \a, \b, \c, \d to
+designate the random parameters defined above.
+\real{ans=(\a)*(\d) - (\b)*(\c)}
+
+:Text that explains what should be done.
+Note that the syntax \(...) shows a mathematical formula as it should be.
+$embraced_randitem
+\text{explain=
+Compute the determinant of the matrix \([\a,\b;\c,\d]).
+}
+
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
+\text{accolade=item(1,1 oui,
+2 non)}
+
+:%% Calculs à ne pas modifier
+\text{accolade=wims(word 1 of \accolade)}
+
+\text{explain=\accolade=1 ?wims(embraced randitem \explain)}
+
+:%%%%%%%%%%%%% Now the statement in html. %%%%%%%%%%%%%%%%%%%%
+
+::You don't need to modify this in general.
+
+\statement{\explain
+}
+
+:%%%%%%%%%%%%% Nothing to modify after. %%%%%%%%%%%%%%%%%5
+
+\answer{My reply}{\ans}{type=number}
+

@@ -1,0 +1,86 @@
+<p>
+Vous pouvez définir des variables dans vos documents puis les appeler dans la suite (d'une même page), 
+rendant ainsi le document plus dynamique.
+
+Par exemple, la ligne suivante définit une variable sous le nom de
+<span class="tt wims_variables">x1</span>, dont la valeur sera un entier aléatoire entre
+-10 et 10 (inclusif)&nbsp;:
+</p>
+<pre>
+\\def{integer x1=random(-10..10)}
+</pre>
+Cette valeur aléatoire peut ensuite être évoquée par le mot
+<span class="tt bold">\\x1</span>, dans la suite du bloc qui l'a définie.
+C'est-à-dire, chaque mot <span class="tt">\\x1</span> sera remplacé par la valeur aléatoire de la variable.
+Cette substitution prend aussi effet dans les définitions
+d'autres variables qui suivent celle de x1.
+
+\def{integer x1=random(10..50)}
+\def{integer y1=random(10..50)}
+\def{integer xy=\x1*\y1}
+Par exemple, dans cette page nous avons défini
+<pre>
+\\def{integer x1=random(10..50)}
+\\def{integer y1=random(10..50)}
+\\def{integer xy=\\x1*\\y1}
+</pre>
+Par conséquent, le texte <span class="tt">\\x1*\\y1=\\xy</span> donne
+\x1*\y1=\xy. Vous pouvez \reload{renouveler la page} pour voir les valeurs changer.
+
+<table class="wimsborder wimscenter">
+<caption>Quelques autres exemples de variables
+\help{module=adm/doc&job=help&help_subject=oefparm}{[Liste complète]}
+</caption>
+<tr><th>Définition</th><th>Effet</th></tr>
+<tr><td><span class="tt">\\def{real x=random(-5..5)}</span>
+    </td><td>\\x sera un nombre réel aléatoire<br/>entre -5 et 5</td></tr>
+<tr><td><span class="tt">\\def{real a=random(-5,-3,0.3,4)}</span>
+    </td><td>\\a sera un nombre réel pris aléatoirement<br/>parmis -5,-3,0.3 et 4</td></tr>
+<tr><td><span class="tt">\\def{complex z=(1+2*i)^3}</span>
+    </td><td>\\z sera le nombre complexe z=\((1+2*i)^3)</td></tr>
+<tr><td><span class="tt">\\def{text sign=random(+,-)}</span>
+    </td><td>\\sign sera un signe aléatoire: + ou -</td></tr>
+<tr><td><span class="tt">\\def{integer n=3*exp(\\a)}</span>
+    </td><td>\\n sera l'entier le plus proche de 3*e<sup>\\a</sup><br/>(il dépend de la valeur de \\a)</td></tr>
+<tr><td><span class="tt">\\def{function f=random<br/>(x^2+1,sin(x),log(x))}</span>
+    </td><td>\\f sera une fonction aléatoire: soit \(x^2+1),<br/>soit sin(x), soit log(x)</td></tr>
+<tr><td><span class="tt">\\def{text s=shuffle(6)}</span>
+    </td><td>\s sera une liste de 6 entiers 1,2,...,6, dans un ordre aléatoire.</td></tr>
+<tr><td><span class="tt">\\def{text s=shuffle(a,b,c,d,e)}</span>
+    </td><td>\s sera les lettres {a,b,c,d,e} dans un ordre aléatoire.</td></tr>
+<tr><td><span class="tt">\\def{real a=evalue(x^2+sin(y),x=3,y=4)}</span>
+    </td><td>Evaluation de la fonction \(x^2+sin(y)),<br/>
+    pour x=3, y=4</td></tr>
+<tr><td><span class="tt">\\def{real r=solve(x^3-3*x+1,x=0..1)}</span>
+    </td><td>\\r sera la racine simple de \(x^3-3x+1) entre 0 et 1</td></tr>
+<tr><td><span class="tt">\\def{function h=simplify(x^5*y^3*x^2/y)}</span>
+    </td><td>Expression simplifiée : \(x^7*y^2)</td></tr>
+<tr><td><span class="tt">\\def{function g=diff(sin(x)+cos(y),x)}</span>
+    </td><td>\\g sera la dérivée de sin(x)+cos(y) par rapport à x</td></tr>
+<tr><td><span class="tt">\\def{function F=int(x^2+3*x+1,x)}</span>
+    </td><td>\\F sera une primitive de \(x^2+3*x+1),<br/>
+     le terme constant n'étant pas garanti d'être toujours le même</td>
+\comment{<tr><td><span class="tt">\\def{function F=int(t^2+3*t+1,t=1..x)}</span>
+    <td>\\F sera la primitive de \(x^2+3*x+1) telle que F(1)=0}</td></tr>
+<tr><td><span class="tt">\\def{real a=int(t^2+3*t+1,t=0..1)}</span>
+    </td><td>\a sera l'intégrale numérique de \(x^2+3*x+1), de 0 à 1</td></tr>
+<tr><td><span class="tt">\\def{text f=htmlmath(2*x^2+3*x)}</span>
+    </td><td>\\f sera rendu en html comme: \(2x^2+3x)</td></tr>
+<tr><td><span class="tt">\\def{text f=texmath(2*x^2+3*x)}</span>
+    </td><td>\\f sera le source TeX de l'expression.</td></tr>
+<tr><td><span class="tt">\\def{matrix m=1,2,3<br/>4,5,6<br/>7,8,9}</span>
+    </td><td>\\m sera la matrice de 3 lignes et 3 colonnes.</td></tr>
+</table>
+<p>
+Paramètres conditionnels&nbsp; vous pouvez écrire<p>
+<span class="tt">\text{ttt=_condition?_def1}</span> ou <br/>
+<span class="tt">\text{ttt=_condition?_def1:_def2}</span>
+</p><p>
+Dans ce cas, <span class="tt">ttt</span> aura la valeur <span class="tt">_def1</span> si
+<span class="tt">_condition</span> s'avère vraie, ou <span class="tt">_def2</span> sinon (dans la seconde
+syntaxe).
+\help{module=adm/doc&cmd=new&job=help&help_subject=if}{Liste de conditions}.
+</p><p>
+Notons enfin que les blocs insérés via \link{fold}{<span class="tt">\fold</span>} ou 
+\link{embed}{<span class="tt">\embed</span>} héritent les définitions de variables avant l'insertion.
+</p>

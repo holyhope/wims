@@ -1,0 +1,84 @@
+!set precision=!getopt precision in $(replyoption$i)
+!default precision=6
+!if $wims_read_parm=nocompare
+  !if $m<2
+   Test=bad $i
+   !exit
+  !endif
+  m_reply$i =$rlist
+  !goto drawing
+!endif
+
+!if $n<2
+ :badrep
+ reply$i=
+ test=NaN
+ !exit
+!endif
+!if $m<2
+ Test=bad $i
+ !exit
+!endif
+
+!ifval $n!=$m
+ mean=1000
+ !goto diag
+!endif
+
+ecart1= $[sqrt(($(glist[1]) - ($(rlist[1])))^2 + ($(glist[2]) - ($(rlist[2])))^2)]
+ecart2= $[abs($(glist[3]) - ($(rlist[3])))]
+
+mean=$[max($ecart1,$ecart2)]
+!if $ecart1 < $precision
+  centre=1
+!else
+  centre=0
+!endif
+!if $ecart2 <$precision
+  rayon=1
+!else
+  rayon=0
+!endif
+
+!if NaN isin $mean or Inf isin $mean
+ !goto badrep
+!endif
+
+:diag
+test=$mean
+!if $mean<$precision
+  diareply$i=good
+  !advance freegot
+ !else
+  !if $mean<$[2*$precision]
+   precreply$i=yes
+   !advance precgood
+  !endif
+  diareply$i=bad
+ !endif
+
+##coordonnées du centre, rayon en pixels
+## test sur le centre, test sur le rayon (0 ou 1)
+m_reply$i =$rlist;$centre,$rayon
+
+:drawing
+!if $(replytype$i)=javacurve
+  primitive1=circle $(rlist[1..2]),$[2*$(rlist[3])],$color1
+  !if $wims_read_parm!=nocompare
+   primitive2=circle $(glist[1..2]),$[2*$(glist[3])],$color2
+  !endif
+  !exit
+!endif
+
+!! $(replytype$i)=jsxgraphcurve
+script$i=$(script$i)\
+var p;\
+var q;\
+
+
+!if $wims_read_parm!=nocompare
+ script$i=!append line p$i=brd$i.create('point',[$(glist[1]),$(glist[2])],{face:'+', size:'0',fixed:true,name:'',showInfobox:false,strokeColor:'$color2'});\
+  brd$i.create('circle',[p$i,$(glist[3])],{strokeColor:'$color2'}); to $(script$i)
+!endif
+  script$i=!append line q=brd$i.create('point',[$(rlist[1]),$(rlist[2])],{face:'+', size:'8',fixed:true,name:'',strokeColor:'$color1',showInfobox:false});\
+  brd$i.create('circle',[q,$(rlist[3])],{strokeColor:'$color1'}); to $(script$i)

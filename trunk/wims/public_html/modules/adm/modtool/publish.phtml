@@ -1,0 +1,123 @@
+
+!if $rep!=$empty
+ !if $status=ERROR
+  <div class="wims_msg alert">
+   !read lang/msgcl.phtml.$modu_lang $rep2
+  </div>
+  <hr style="width:50%" />
+ !else
+  <pre>$rep</pre>
+  !if $m1=local
+   <p>$name_local</p>
+   $name_error:
+   !mailurl $wims_site_manager $wims_name_manager
+  !else
+   <p>$name_emailsend</p>
+  !endif
+ !endif
+ !exit
+!endif
+
+!if $askcheat=yes
+ $name_cheat1
+ <div class="wimscenter">
+ !href cmd=help&special_parm=wimsversion $wims_name_Explanations
+.
+ !href cmd=reply&vcheat=no $name_goahead
+.
+ </div>
+ $name_cheat2 :
+ !href cmd=reply&vcheat=yes $name_goahead
+.
+ !exit
+!endif
+
+!if $pubprep=yes
+ !if $local!=yes
+  !href cmd=help&special_parm=publish $name_readhelp
+  $name_warning0
+!set sysadmin_mail=!getdef sysadmin in wimshome/public_html/bases/sys/publishcenter/$(mu_publish_site[1])
+  <div class="spacer">
+    $name_warning_keywords
+  <ul>
+ <li>$wims_name_Domain: <span class="tt">$i_domain</span></li>
+ <li>$wims_name_Keywords:
+ <span class="tt">$keywordsgood</span>
+ !if $keywordsbad!=$empty
+  <div>
+  $name_warning_keywords_unknown
+  <div class="tt wims_msg alert">$keywordsbad</div>
+   $name_warning_keywords2
+  </div>
+  !endif
+ </li>
+</ul>
+ !if $dombad!=$empty
+   <div class="wims_msg alert">
+    $name_warning_nodomain:
+    <span class="tt">$dombad</span>.
+    $name_warning_nodomain2
+   <br class="spacer" />
+    $name_warning_domain
+   !mailurl $sysadmin_mail $sysadmin_mail\
+[WIMS] keywords domain
+   </div>
+  !else
+    $name_warning_suggestion
+    !mailurl $sysadmin_mail $sysadmin_mail\
+[WIMS] keywords domain
+!endif
+</div>
+$name_warning01
+  !form reply
+  <input type="hidden" name="confirm" value="yes" />
+  <input type="hidden" name="vcheat" value="$vcheat" />
+  <fieldset class="property_fields blockcenter">
+      <legend>$wims_name_publish</legend>
+      <div class="field box">
+       <label for="submitpublish_site">$wims_name_publish_center</label>
+       !set wims_ref_class=wims_button_help float_right
+  !href cmd=help&special_parm=publication $wims_name_help
+       !formselect submitpublish_site list $mu_publish_site prompt $publishcentersname
+      </div>
+      <div class="field box">
+        <label for="submitauth">$name_publishaccount</label>
+        <input type="text" size="20" name="submitauth" id="submitauth" value="$submitauth" />
+      </div>
+      <div class="field box">
+        <label for="submitpass">$wims_name_Password</label>
+        <input type="password" size="20" name="submitpass" id="submitpass" value="$submitpass" />
+      </div>
+      <div class="field box">
+        <label for="submittype">$name_publishtype</label>
+      !set submittype=stable
+        !formselect submittype list devel,stable,new prompt $name_prompt
+      </div>
+      <div class="field box">
+        <label for="istranslate">$name_translation</label>
+  !set istranslate=no
+        !formselect istranslate list yes,no prompt $wims_name_yes,$wims_name_no
+      </div>
+      <div class="field box">
+        <label for="modifiers">$name_authorized</label>
+         !set wims_ref_class=wims_button_help float_right
+        !href cmd=help&special_parm=modifiers $wims_name_help
+        <input size="40" name="modifiers" id="modifiers" value="$modifiers" />
+      </div>
+     <div class="wimscenter wimsform">
+       <input type="submit" value="$wims_name_tosave" />
+     </div>
+     </fieldset>
+   $name_warning1
+ !else
+  $name_warning2
+    <div class="wimscenter">
+  !href cmd=reply&confirm=yes&vcheat=$vcheat $wims_name_yes
+  $
+  !set wims_ref_class=wims_button wims_secondary_button
+  !href cmd=reply&jobreq=flist $wims_name_giveup
+    </div>
+  $name_warning3
+ !endif
+ !formend
+!endif

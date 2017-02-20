@@ -1,0 +1,18 @@
+!if $wims_read_parm=help
+ !read help/$lang/special/editarea.phtml
+ !exit
+!endif
+!read js/edit_area.phtml wimsshow wimsoef
+
+!set t_=!translate $	$ to $\
+$ in $wims_read_parm
+!set td_=0
+!set tr_=!rowcnt $t_
+!for j=1 to $tr_
+  !set l_= !line $j of $t_
+  !set td__=!charcnt $l_
+  !set td_=$[max($td__,$td_)]
+!next
+
+<textarea id="wims_show" cols="$[$td_+20]" rows="$tr_" readonly="readonly">$t_</textarea>
+

@@ -1,0 +1,46 @@
+!goto $wims_read_parm
+
+:def
+title=Médiane de données
+synonyme=mediane statistique, donnee mediane
+input=data1d
+!exit
+
+:proc
+
+cnt=!itemcnt $formula
+fml=
+!for i=1 to $cnt
+ t=!item $i of $formula
+ fml=!append item $[$t] to $fml
+!next i
+fml=!sort numeric item $fml
+!if $[$cnt%2]=1
+ result=!item $[($cnt+1)/2] of $fml
+!else
+ t1=!item $[$cnt/2] of $fml
+ t2=!item $[$cnt/2+1] of $fml
+ result=$[($t1+$t2)/2]
+!endif
+
+!exit
+
+:output
+
+<p class="wimscenter">
+Médiane =
+!htmlmath $result
+</p>
+Données : $cnt nombres { $formula }
+<p>
+<b>Rappel.</b>
+La <em>médiane</em> des données triées 
+\(\{x_1, x_2, ..., x_n\}\) 
+est égale à
+!set ins_align=middle
+!insmath \frac{x_{n/2}+x_{n/2+1}}{2}
+ quand \(n\) est pair, ou à \(x_{\frac{n+1}{2}}\)
+quand \(n\) est impair.
+</p>
+!exit
+

@@ -1,0 +1,45 @@
+!nocache
+
+!if $job iswordof read print
+ !set wims_html_header=!append line $header to $wims_html_header
+!endif
+!read adm/css.phtml
+
+!if $job=help
+ !header1
+ !changeto ./docu/help.phtml
+!endif
+
+!if help isin $wims_session and $doc!=$helpd
+ !set wims_html_onload=!append word window.close(); to $wims_html_onload
+ !header1
+ $n_helpclose
+ !tail
+ !exit
+!endif
+
+!if $cmd=help and $special_parm=about
+ !changeto ./docu/about.phtml
+!endif
+
+!read docu/menu.phtml
+
+!read ./docu/$job.phtml
+
+!reset rEg,preview,abandon,Titb,Keyw,Next,Prev,Upbl,currcont,\
+       titr,authorr,descr,emailr,coder,coder1,coder2,copyrightr,docopenr,dlangr,\
+       foldin,foldout,readcntadv,job2
+
+!for i=1 to 20
+ !reset parm$i
+!next i
+
+!if robot isin $session
+ <p class="small">
+ $wims_name_Description $module_description
+ <br/>
+ $wims_name_Keywords: $module_keywords, $wims_site_keywords
+ </p>
+!endif
+
+!tail

@@ -1,0 +1,88 @@
+!if robot isin $session
+ !exit
+!endif
+!read adm/language lang/names.phtml
+
+!set list_taxo=!listfile $module_dir/taxoext
+!set list_taxo=!lines2items $list_taxo
+
+wims_prefix=class user tmp
+!bound job within home,type,subject,level,best,new,taxo,light default home
+!read tabletheme
+
+search_addr=!nosubst module=home&language=$lang&search_keywords=$key&search_category=$cat&search_and=$search_and&$browse_parm
+browse_parm=browse_job=$job&browse_parm=$parm
+
+!if $modu_lang notwordof en it fr ca es nl cn
+  !set dir_lang=wimshome/public_html/bases/sys/domain/domain.en
+!else
+  !set dir_lang=wimshome/public_html/bases/sys/domain/domain.$modu_lang
+!endif
+!set dir=wimshome/public_html/bases/sys/domain
+!set treefile=$dir/reversedomain
+!set dir=$dir/domain
+
+Tot_dom=!lookup domain in $dir
+Tot_dom=!sort items $Tot_dom
+!for d in $Tot_dom
+  tot_dom_$d=!lookup $d in $dir
+  !for l in  $(tot_dom_$d)
+     dom_$l=!lookup $l in $dir
+  !next
+!next
+!reset list_taxonomy
+
+!for taxo in $list_taxo
+  !if .$(lang)__ isin $(taxo)__
+   !set lang_exists=!defof lang_exists in taxoext/$taxo
+   !if $lang_exists=yes
+     !set script_taxo=yes
+     !set list_taxonomy=!append item taxoext/$taxo to $list_taxonomy
+   !endif
+  !endif
+!next
+!! take the english version
+!for taxo in $list_taxo
+   !set tmp=!replace internal . by , in $(taxo)
+   !if $(tmp[1]) notin $list_taxonomy
+     !set script_taxo=yes
+     !set list_taxonomy=!append item taxoext/$(tmp[1]).phtml.en to $list_taxonomy
+   !endif
+!next
+
+!set lang_exists=!defof lang_exists in keywords.phtml.$lang
+  !if $lang_exists=yes
+    !set script_keywords=yes
+  !endif
+
+!read $job.proc
+!set wims_ariane_self=no
+!if $job=home
+  !set wims_ariane=!append line browse,8\
+to $wims_ariane
+!else
+  !set wims_ariane=!append line browse,1,module=$module&cmd=new\
+to $wims_ariane
+!endif
+
+!if $job=subject
+  !set parm_father=!lookup $parm in $treefile
+  !if $parm_father!=$empty
+    !set wims_ariane=!append line back2 $parm_father,1,module=$module&cmd=new&job=subject&parm=$parm_father\
+to $wims_ariane
+  !else
+    !set wims_ariane=!append line "$(name_by_$job)",8 to $wims_ariane
+  !endif
+!else
+  !if $job isitemof subject,taxo,level,type
+    !set wims_ariane=!append line "$(name_by_$job)",8 to $wims_ariane
+  !else
+    !set wims_ariane=!append line "$(name_$job)",8 to $wims_ariane
+  !endif
+!endif
+
+!if $job!=home
+ wims_module_log=$job $parm
+!endif
+
+

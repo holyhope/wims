@@ -1,0 +1,56 @@
+
+$table_header
+<caption>Valid participant data fields</caption>
+$table_hdtr<th scope="col">$wims_name_name</th><th scope="col">Meaning</th></tr>
+$table_tr<td class="tt wims_code_variable">login</td><td>$wims_name_Login</td></tr>
+!if $special_parm!=upload
+$table_tr<td class="tt wims_code_variable">name</td><td>last name and first name (in that order, two columns)</td></tr>
+!endif
+$table_tr<td class="tt wims_code_variable">lastname</td><td>family name</td></tr>
+$table_tr<td class="tt wims_code_variable">firstname</td><td>first (given) name</td></tr>
+$table_tr<td class="tt wims_code_variable">password</td><td>password of the participant, download always in
+	special crypted form, but can be uploaded uncrypted.</td></tr>
+$table_tr<td class="tt wims_code_variable">email</td><td>email address</td></tr>
+$table_tr<td class="tt wims_code_variable">regnum</td><td>registration number</td></tr>
+$table_tr<td class="tt wims_code_variable">photourl</td><td>Photo URL</td></tr>
+$table_tr<td class="tt wims_code_variable">comments</td><td>comments about the participant</td></tr>
+$table_tr<td class="tt wims_code_variable">external_auth</td><td>login for an external authentification</td></tr>
+
+!if $special_parm!=upload
+$table_tr<td class="tt wims_code_variable">allscore</td><td>all scores and averages</td></tr>
+$table_tr<td class="tt wims_code_variable">averages</td><td>average score (server score and manual grades)</td></tr>
+$table_tr<td class="tt wims_code_variable">average1</td><td>average of server-attributed scores</td></tr>
+$table_tr<td class="tt wims_code_variable">average2</td><td>average of teacher-attributed grades</td></tr>
+$table_tr<td class="tt wims_code_variable">sheets</td><td>scores of all worksheets (one by one)</td></tr>
+$table_tr<td class="tt wims_code_variable">sheet1,sheet2,...</td><td>score of worksheet 1, worksheet 2, ...</td></tr>
+$table_tr<td class="tt wims_code_variable">sheetexo1,sheetexo2,...</td><td>indicators of the exercises of the sheet 1, of the sheet 2, ...
+  (there are two indicators : percentage of points, quality note)</td></tr>
+$table_tr<td class="tt wims_code_variable">exams</td><td>scores of all exams</td></tr>
+$table_tr<td class="tt wims_code_variable">exam1,exam2,...</td><td>scores of exam 1, exam 2, ...</td></tr>
+$table_tr<td class="tt wims_code_variable">manuals</td><td>all manual grades (one by one)</td></tr>
+!else
+$table_tr<td class="tt wims_code_variable">participate (in case of gateways only, reserved to the administrator)</td><td>number of classes
+as abcdefg/1/101
+where rabcdefg is the number of the gateway. If there are several classes,
+seperate them by spaces.</td></tr>
+!endif
+
+$table_tr<td class="tt wims_code_variable">manual1,manual2,...</td><td>manual grade 1, 2, ...</td></tr>
+$table_tr<td class="tt wims_code_variable">var_xxx</span></td><td>technical variable <span class="tt">xxx</td></tr>
+$table_tr<td class="tt wims_code_variable">regprop1,regprop2,...</td><td>variables d'inscriptions complémentaires<span class="tt">xxx</span></td></tr>
+
+$table_end
+<p>
+Unrecognized fields will be ignored. Technical variables can be used to make
+selective restrictions on worksheets and exams.
+</p>
+!if $special_parm=upload
+<p>
+In case of the field <span class="tt wims_code_variable">participate</span>, one may add classes but not suppress them.
+</p>
+<p>
+Dans le cas du champ <span class="tt wims_code_variable">var_xxx</span>,
+la variable technique doit déjà être créée et seules les valeurs définies lors de la création de la variable sont utilisables.
+</p>
+!endif
+

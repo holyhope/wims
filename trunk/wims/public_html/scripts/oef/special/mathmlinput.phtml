@@ -1,0 +1,103 @@
+!reset inputsize
+!set force_mathml=yes
+!if $wims_read_parm=$empty
+ !exit
+!endif
+!if $wims_read_parm=help
+ !read help/$lang/special/mathmlinput.phtml
+ !exit
+!endif
+!set parm=!replace internal ,	r by $	r in $wims_read_parm
+!set parm=!replace internal $	$ by $\
+$ in $parm
+
+!set code=!item 1 of $parm
+!set code=!declosing $code
+
+!set inputsize=!item 2 to -1 of $parm
+!set parm=!line 2 to -1 of $inputsize
+!set inputsize=!line 1 of $inputsize
+
+!if noanswer iswordof $inputsize
+   !set noanswer=1
+!endif
+!set inputsize=!item 1 of $inputsize
+!set inputsize=!text select 0123456789 in $inputsize
+!default inputsize=5
+!set inputsize=!items2words $inputsize
+
+!set parmcnt=!linecnt $parm
+!set parm=!sort reverse line $parm
+
+!set pretext=!replace internal reply by REPLY in $code
+
+!for tt = 1 to $parmcnt
+   !set ld=!line $tt of $parm
+   !set upcase=!uppercase $(ld[1])
+   !reset inputsize_tmp
+   !distribute item $ld into m_,inputsize_tmp,css
+   !default inputsize_tmp=$inputsize
+   !set reply_tmp=!nospace $m_
+   !set rep_tmp=!replace internal reply by r in $reply_tmp
+   !set n_=!text select 0123456789 in $reply_tmp
+   !set n_=$[$n_]
+   !bound n_ between integer 1 and 100 default $
+   !if $n_!=$empty and $(replytype$n_) iswordof numeric nocase case atext \
+     range litexp algexp formal equation function raw symtext default aset fset set numexp
+    !set embedded=!append item r$n_ to $embedded
+    !if debug iswordof $m_oefenv and ?analyze notin $(replygood$n_)
+      !read oef/special/debug.input $n_
+    !endif
+    !set pretext=!replace internal REPLY$n_ by $ \input{$(inputsize_tmp)}{$n_}{$(css)}{$(reply$n_)}{0} $ in $pretext
+    !set hlist=$hlist<input type="hidden" name="reply$n_" value="" />
+    !set formm=$formm document.forms['replyform'].reply$n_.value=document.getElementById("mathml"+$n_).value;
+    !set nrep=!append item $n_ to $nrep
+  !endif
+!next tt
+!if $q_form=yes
+<script type="text/javascript">\
+function read_mathml(){ $formm }\
+</script>
+\( $pretext )
+$hlist
+!set oef_js_submit=$oef_js_submit read_mathml();
+!else
+ !read themes/$wims_theme/oefcolors
+ !if $oef_indbad=$empty
+   !read themes/oefcolors
+ !endif
+ !distribute item $oef_indbad,$oef_indgood,$oef_indforget, $oef_indpartial, $oef_indprec\
+   into colorr_bad,colorr_good,colorr_forget,colorr_partial,colorr_prec
+ !set codegood=$code
+ !set codereply=$code
+ !set test=0
+ !for tt = 1 to $parmcnt
+     !reset inputsize_tmp
+     !set ld=!line $tt of $parm
+     !distribute item $ld into m_,inputsize_tmp,css
+     !default inputsize_tmp=$inputsize
+     !set m_=!text select 0123456789 in $m_
+     !set m_=$[$m_]
+     !if $m_ isitemof $nrep
+      !default reply_$m_=$(reply$m_)
+      !set tt=!word 1 of $(replygood$m_)
+      !if $tt!=?analyze
+       !set cl=$(colorr_$(diareply$m_))
+      !else
+       !set cl=$colorr_ana
+      !endif
+      !if $(diareply$m_)!=good
+       !set test=1
+      !endif
+     !set replytolatex=!texmath $(reply$m_)
+     !set rgoodtolatex=!texmath $(replyGood$m_)
+     !set codereply=!replace internal reply$m_ by $ \special{color=$cl}{$replytolatex} $ in $codereply
+     !set codegood=!replace internal reply$m_ by $ $(rgoodtolatex)$ in $codegood
+    !endif m_
+ !next tt
+ !if $test=1 and $noanswer!=1
+   \( $codereply \quad\) \(\quad $codegood\)
+ !else
+   \( $codereply \)
+ !endif
+!endif

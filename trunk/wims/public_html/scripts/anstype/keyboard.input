@@ -1,0 +1,246 @@
+!set anstype=yes
+!set anstyle=symtext
+!set ans_reaccent=yes
+!set ans_require=
+
+!if $wims_read_parm=def
+ !exit
+!endif
+
+!if debug iswordof $m_oefenv and ?analyze notin $(replygood$i)
+ !set replydefaulted=yes
+ !if $oef_default=yes
+  !set r_=!row 1 of $(replygood$i)
+  !set r_=!translate | to $\
+$ in $r_
+  !default reply$i=!line 1 of $r_
+ !endif
+!endif
+
+!if $wims_read_parm!=noprompt
+ <tr><td><label for="reply$i">$(replyname$i)</label></td><td>
+!endif
+!set keyboard=!getopt keyboard in $(replyoption$i)
+!set style=!getopt style in $(replyoption$i)
+!set style=!replace internal $ $ by ; in $style
+!set style=!replace internal @ by $ $ in $style
+
+!set inputoption=!replace internal $	$ by $\
+$ in $inputsize
+!set inputsize=!line 1 of $inputoption
+!set inputoption=!line 2 to -1 of $inputoption
+!set option=!line 1 of $inputoption
+!if $option issametext default
+  !set option=class="wims_oef_input"
+  !set inputoption=!line 2 to -1 of $inputoption
+!endif
+!if $inputoption!=
+!set inputoption=$option $inputoption
+!else
+!default inputoption=$option style="font-size:18px;background-color:#e8ffff;border:1px solid #3333CC;"\
+autocomplete="off"
+!endif
+!default style=color:black;border:1px solid grey;margin:1px;background-color:lightgrey;font-weight:bolder;font-size:100%
+
+!set inputsize=!translate x to , in $inputsize
+!set inputsize=!items2words $inputsize
+!distribute words $inputsize into sizeh,sizev
+!bound sizeh between integer 10 and 60 default 20
+!bound sizev between integer 1 and 20 default 1
+
+
+!if universal isin $keyboard
+ !set key_lang=!replace internal _ by , in $keyboard
+ !set key_lang=!item 2 of $key_lang
+!reset wims_html_header
+ !read js/keyboard.phtml $key_lang
+ $wims_html_header
+  !goto universal
+!endif
+!if $keyboard=si
+!set keyboard=&#193; &#260; &#196; &#201; &#280; &#282; &#205;\
+&#225; &#261; &#228; &#233; &#281; &#283; &#237;\
+&#211; &#244; &#250; &#366; &#221; &#268;\
+&#243; &#212; &#218; &#367; &#253; &#269;\
+&#271; &#313; &#327; &#340; &#344; &#352; &#381;\
+&#357; &#314; &#328; &#341; &#345; &#353;\
+
+!goto kb
+!endif
+
+!if $keyboard=es
+!set keyboard=&#193; &#201; &#205; &#209; &#211; &#218; &#220; &#191;\
+&#225; &#233; &#237; &#241; &#243; &#250; &#252; &#161;
+!goto kb
+!endif
+
+!if $keyboard=ru
+!set keyboard=&#1040; &#1072; &#1041; &#1073; &#1042; &#1074; &#1043; &#1075; &#1044; &#1076; \
+&#1045; &#1077; &#1025; &#1105; &#1046; &#1078; &#1047; &#1079; &#1048; &#1080;\
+&#1049; &#1081; &#1050; &#1082; &#1051; &#1083; &#1052; &#1084; &#1053; &#1085;\
+&#1054; &#1086; &#1055; &#1087; &#1056; &#1088; &#1057; &#1089; &#1058; &#1090;\
+&#1059; &#1091; &#1060; &#1092; &#1061; &#1093; &#1062; &#1094;\
+&#1063; &#1095; &#1064; &#1096; &#1065; &#1097; &#1066; &#1098; \
+&#1067; &#1099; &#1068; &#1100; &#1069; &#1101; &#1070; &#1102; &#1071; &#1103;
+!goto kb
+!endif
+
+!if $keyboard=de
+!set keyboard= &#196; &#228; &#201; &#233; &#214; &#246; &#220; &#252; &#223;
+!goto kb
+!endif
+
+!if $keyboard=el
+ !set keyboard= &#913; &#914; &#915; &#916; &#917; &#918; &#919; &#920; &#921; &#922;\
+ &#945; &#946; &#947; &#948; &#949; &#950; &#951; &#952; &#953; &#954;\
+&#923; &#924; &#925; &#926; &#927; &#960; &#961;  &#931; \
+&#955; &#956; &#957; &#958; &#959; &#929; &#963; &#932;\
+&#964; &#933; &#965; &#934; &#966; &#935; &#967; &#936; &#968; &#937; &#969;
+
+!!&#x3A0; &#x3A0; &#x3C4;\
+
+!endif
+!if $keyboard=pl
+ !set keyboard=&#260; &#280; &#211; &#262; &#321; &#323; &#346; &#377; &#379; \
+  &#261; &#281; &#243; &#263; &#322; &#324; &#347; &#378; &#380;
+!goto kb
+!endif
+
+!if $keyboard=it
+ !set keyboard=&#192; &#193; &#200; &#201; &#204; &#205; &#210; &#211; &#217; &#218;\
+ &#224; &#225; &#232; &#233; &#236; &#237; &#242; &#243; &#249; &#250;
+!goto kb
+!endif
+
+!if $keyboard=en_ipa
+ !set keyboard=&#593; &#230; &#601; &#618; &#650; &#652; e &#594; \
+ &#593;&#58; &#604; &#604;: &#594;: i: u: &#596;:\
+ &#331; &#643; &#952; &#240; &#658; &#734; &#679; &#676;\
+ e&#618; a&#618; &#596;&#618; a&#650; &#601;&#650; &#618;&#601; e&#601;
+
+!!&#171; &#187; &#128; &#649; &#248; &#592; &#655; &#231; &#946;
+!!&#611; &#654; &#626; &#641; &#613; &#660;
+!goto kb
+!endif
+!if $keyboard=ipa
+ !set keyboard= &#593; &#592; &#594; &#230; &#595; &#665; &#946; &#596; &#597; &#231; &#599; &#598; &#240; &#676; &#601; &#600; &#602; &#603; &#604; \
+&#605; &#606;&#607; &#644; &#609; &#608; &#610; &#610; &#667; &#614; &#615; &#295; &#613; &#668; &#616; &#618; &#669; &#621; &#620; &#619; &#622; &#671;\
+&#625; &#623; &#624; &#331; &#627; &#626; &#628; &#248; &#629; &#632; &#952; &#339; &#630; &#664; &#633; &#634; &#638; &#635; &#640; &#641; &#637;\
+&#642; &#643; &#648; &#679; &#649; &#651; &#650; &#652; &#611; &#612; &#653; &#967; &#654; &#655; &#657; &#656; &#658;\
+&#660; &#673; &#661; &#674; &#448; &#449; &#450; &#451;
+!goto kb
+!endif
+
+!if $keyboard=fr_ipa
+ !set keyboard= i e &#603; a &#593; &#596; o u y &#248;  &#339; &#601; \
+&#603;&#771; &#593;&#771; &#596;&#771; j w &#613; [ ]\
+p b t d k g v f\
+s z &#643; &#658; l m n &#626; &#640;      \
+
+!! &#627;
+!goto kb
+!endif
+!if $keyboard=braille
+ !set prefix=10
+ !set keyboard=&#241; &#243; &#249; &#265; &#257; &#251; &#267; &#259; &#250; &#266; \
+&#245; &#247; &#253; &#269; &#261; &#255; &#271; &#263; &#254; &#270; &#277; \
+&#279; &#298; &#285; &#301; &#293; &#300;&#241; &#300;&#243; &#300;&#249; &#300;&#265; &#300;&#257; &#300;&#251; &#300;&#267; \
+&#300;&#259; &#300;&#250; &#300;&#266; &#294; &#294; &#242; &#262; &#252; &#276; \
+&#290; &#278; &#246; &#278; &#244; &#290; &#290;
+
+!goto kb
+!endif
+
+:kb
+
+!set keyboard=!declosing $keyboard
+!set keyboard=!rows2lines $keyboard
+!set keyboard=!lines2rows $keyboard
+!set keyboard=!singlespace $keyboard
+!set keyboard=!rows2lines $keyboard
+!if $prefix!=
+  !set keyboard=!replace internal # by #$prefix in $keyboard
+!endif
+
+!set cnt_kb=!linecnt $keyboard
+
+<script type="text/javascript">
+/*<![CDATA[*/
+var browser="";
+var obj=new Object();
+!for u = 1 to $cnt_kb
+ !set l=!line $u of $keyboard
+ !set l=!trim $l
+ !set l$u = !items2words $l
+!next
+
+!if $cnt_kb= 0
+  !set cnt_kb=4
+!endif
+
+!for u = 1 to $cnt_kb
+ var l$u= "$(l$u)" ;
+!next
+
+function checkBrowser()
+	{
+	if(navigator.appName=='Microsoft Internet Explorer')
+		{browser='I';}
+	else if(navigator.appName=='Netscape')
+		{browser='N';}
+	return browser;
+	}
+function addText(text)
+	{
+	obj=document.forms['replyform'].elements['reply$i'];
+	if(checkBrowser()=="I")
+	 {
+		var start=obj.selectionStart;
+		var beg=obj.value.substring(0, start);
+		var end=obj.value.substring(start);
+		obj.value=end+text+beg;
+		obj.selectionStart=obj.selectionEnd=start+text.length;
+		}
+	else
+		{
+		var start=obj.selectionStart;
+		var beg=obj.value.substring(0, start);
+		var end=obj.value.substring(start);
+		obj.value=beg+text+end;
+		obj.selectionStart=obj.selectionEnd=start+text.length;
+		obj.focus();
+		}
+	}
+
+function writeChar(win,string)
+	{
+	var buttons=string.split(' ');
+	var i;
+	for(i=0;i<buttons.length;i++)
+		{
+		document.write('<input style="{$style}" type="button" value="'+buttons[i]+'" id="'+buttons[i]+'" onclick="addText(\''+buttons[i]+'\');" />');
+		}
+	}
+/*]]>*/
+</script>
+<div class="wimscenter">
+<script type="text/javascript">
+/*<![CDATA[*/
+!for a = 1 to $cnt_kb
+  writeChar(self,l$a);
+  document.write('<br />');
+!next
+/*]]>*/
+</script>
+</div>
+
+:universal
+<div class="wimscenter">
+<textarea name="reply$i" rows="$sizev" cols="$sizeh"  $wims_id $inputoption>$(reply$i)</textarea>
+</div>
+
+!!data= decodeURIComponent(data);
+!if $wims_read_parm!=noprompt
+ </td></tr>
+!endif
+!reset inputsize

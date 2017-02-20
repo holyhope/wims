@@ -1,0 +1,14 @@
+!! make list of local varfilter name and values for the participant $wims_read_parm (the adresse of def file not the login)
+!! process listvarfilter.proc should have been read before.
+!! output is in user_vars one line by technical variables (name,values)
+
+!reset user_vars
+!if $tv_listtechvar=$empty
+    !exit
+!endif
+nb_=!linecnt $tv_listtechvar
+!for k_=1 to $nb_
+    add_=!replace internal / by _ in $(tv_listtechvar[$k_;2])_$(tv_listtechvar[$k_;3])
+    s_=!defof user_techvar_$(tv_listcode[$k_]) in $wims_read_parm
+    user_vars=!append line $(tv_listtechvar[$k_;1]),$s_ to $user_vars
+!next k_

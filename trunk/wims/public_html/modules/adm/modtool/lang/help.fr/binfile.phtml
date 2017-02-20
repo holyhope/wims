@@ -1,0 +1,90 @@
+!read adm/title.phtml 2\
+
+!default special_parm2=$wims_read_parm
+!if $special_parm2 iswordof document oef
+  !goto $special_parm2
+!endif
+!exit
+
+:document
+
+Dans le cas d'un document, outre les fichiers créés à l'aide du gestionnaire
+de documents et qui correspondent aux blocs du document
+(suivre le lien <span class="wims_button disabled">$wims_name_docgestion</span>),
+il est possible de charger des fichiers
+dans deux types de répertoires pour des utilisations différentes.
+
+<ul>
+ <li>
+ Les fichiers à déposer dans <span class="tt wims_fname">doc/1/files</span>
+ ou dans
+ <span class="tt wims_fname">doc/files</span>
+ (vous devez alors avoir écrit
+ <span class="tt">common_files=yes</span>
+ dans le fichier
+ <span class="tt wims_fname">var.proc</span>)
+ peuvent être utilisés dans une page d'un document à condition de faire précéder
+ leur nom de
+ <span class="tt wims_code_variable">\filedir</span>
+ et d'utiliser la balise html
+ correcte ou pour les fichiers audio d'utiliser
+ <span class="tt wims_code_words">\audio{}</span>.
+ </li>
+ <li>
+ Les fichiers mis dans
+ <span class="tt wims_fname">srctex</span>
+ sont des fichiers en format latex qui seront transformés en document par
+ <span class="tt wims_fname">latex2wims</span>.
+ La transformation se fait en revenant sur la page de la liste  en cliquant
+ sur le bouton <span class="wims_button disabled">$name_compile</span> en revenant
+ à la page d'entrée du module en développement
+ (lien
+ <span class="wims_button disabled">$wims_name_otherfiles</span>).
+ </li>
+</ul>
+!exit
+
+:oef
+
+Dans le cas d'un module de type OEF, il y a plusieurs répertoires de dépôt de fichiers
+ayant des rôles spécifiques. Toute utilisation de l'un de ces répertoires
+impose de donner à la variable
+<span class="tt wims_code_variable">common_images</span>
+la valeur
+<span class="tt wims_code_variable">no</span>
+(ou l'adresse d'un module de données)
+dans le fichier
+<span class="tt wims_fname">var.proc</span>.
+
+<ul>
+<li>
+<span class="tt wims_fname">anstype</span> (pour expert) : dépôt de types de réponse
+ dans le format du noyau de WIMS
+</li>
+<li>
+<span class="tt wims_fname">binary</span> : rôle spécifique à chercher
+</li>
+<li>
+<span class="tt wims_fname">data</span> : fichiers sur lesquels il est possible
+d'utiliser les commandes wims
+<span class="tt wims_code_variable">record</span>
+et
+<span class="tt wims_code_variable">lookup</span>.
+</li>
+<li>
+<span class="tt wims_fname">images</span> : fichiers binaires comme des images,
+des audio. Ils peuvent être insérés dans un exercice  en faisant précéder leur nom de
+ <span class="tt wims_code_variable">\filedir</span> et en utilisant la balise html
+ correcte ou pour les fichiers audio la commande \
+ <span class="tt wims_code_words">\audio{}</span>.
+</li>
+<li>
+<span class="tt wims_fname">help</span> (pour expert) : à vérifier
+</li>
+
+<li>
+<span class="tt wims_fname">slib</span> (pour expert) : des macros dans la syntaxe
+des slib de la distribution.
+</li>
+</ul>
+

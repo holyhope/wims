@@ -1,0 +1,175 @@
+!if $noselect=1
+    <script type="text/javascript" src="$jsdir/nocut.js"></script>
+!endif
+
+<script type="text/javascript">
+//<![CDATA[
+<!-- no validator -->
+    var stickit = 0;
+    var xcalc_window = null;
+    function showimage() {MijnVenster1=window.open("$wims_ref_name?&session=$session&module=$module&cmd=getins&special_parm=insert-1.gif", "", "scrollbars=1,width=640,height=480,left=0,top=0");MijnVenster1.focus();}
+    function showScribble(){if(stickit == 0){stickit=1;document.getElementById('stickit_area').style.display = "block";}else{stickit=0;document.getElementById('stickit_area').style.display = "none";}}
+!if $time=1
+    var clps = 0;function update() {if(clps) {clearTimeout(clps);clps  = 0;}var t = new Date();document.getElementById('time').value = ""  + t.getHours() + ":"  + t.getMinutes() + ":" + t.getSeconds();clps = setTimeout("update()", 1000);}function startclock() {clps = setTimeout("update()", 500);} startclock();
+!endif
+//]]>
+</script>
+!set wims_texsize=$mytexsize
+<table id="myheader">
+    <tr>
+    <td id="header1">
+	!if $exotitle != $empty
+	    <kbd>$exotitle</kbd>
+	    <br />
+	!endif
+	!if $canvasimage != $empty
+	    !! quick fix to avoid the canvasdraw divs to overlap images, grrrr
+	    $canvasimage &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	!endif
+	!if exam notin $session
+	    !href  module=adm/light&session=$session&phtml=useropts.phtml.$lang <img src="$gifdir/use_mathml.png" alt="use_mathml" style="border:0px;" />
+	    !href target=wims_mhelp module=$module&session=$session&cmd=help <img src="$gifdir/help.png" alt="help" style="border:0px;" />
+	    !if $helptext=$empty
+		<a onmouseover="this.T_OPACITY=70;return escape('<img src=\'$gifdir/nohelp.jpg\' alt=\'no help today\' >')"><img src="$gifdir/tip.png" alt="tip" style="border:0px" /></a>
+	    !else
+		<a onmouseover="return escape('$helptext')"><img src="$gifdir/tip.png" alt="tip" style="border:0px" /></a>
+	    !endif
+	    <img style="display:none" id="wait_gif" src="$gifdir/wait.gif" alt="wait wait" />
+	    <br />
+	    <span class="schaersvoorde_alarm">
+		$no_back_button
+	    </span>
+	    <br />
+	!endif
+	!if $roundingtext!=$empty
+	    <span class="schaersvoorde_alarm">
+		$roundingtext
+	    </span>
+	!endif
+    </td><!-- end td class=header1 -->
+    <td class="header2">
+	!if $calculator=3
+	    <script type="text/javascript">
+	    //<![CDATA[
+	    <!-- no validator -->
+	    function Readxcalc(){
+		var calc=document.getElementById("javaxcalc").ReadApplet();
+		if(confirm("$send \n"+calc)){
+		    calc = encodeURIComponent(calc);
+		    URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+calc ;
+		    document.location.href = URL;
+		    document.getElementById("xcalc").destroy();
+		}
+	    }
+	    //]]>
+	    </script>
+	    <object id="javaxcalc" width="100px" height="60px" classid="java:Rekenmachien.class" type="application/x-java-applet;jpi-version=1.4">>
+		<param name="java_codebase" value="$appletdir" />
+		<param name="java_archive" value="Rekenmachien.jar" />
+		<param name="java_code" value="Rekenmachien.class" />
+		<param name="fontsize1" value="10" />
+		<param name="fontsize2" value="10" />
+		<param name="fontsize2" value="14" />
+		<param name="language" value="$taal" />
+		<param name="pencolor1" value="0,0,0" />
+		<param name="pencolor2" value="255,0,15" />
+		<param name="bgcolor1" value="200,250,255" />
+		<param name="#fffff0" value="200,210,210" />
+		<a onmouseover="return escape('<img src=\'$gifdir/java.jpg\' alt=\'Get JAVA\' />');" target="newwindow" href="http://www.java.com/$lang/download/manual.jsp?locale=$lang" >
+		    $nojava
+		</a>
+	    </object>
+	    <br />
+		<input style="font-size:tiny;background-color:#afceff;" type="button" onclick="javascript:Readxcalc();" value="$send" />
+	    <br />
+	!endif
+	<textarea id="stickit_area" cols="20" rows="3" style="display:none;background-color:yellow;font-size:12pt;border:1px solid red;"></textarea>
+	!if $debug=1
+	    !if $wims_exec_error != $empty
+    		<span style="schaersvoorde_alarm">$wims_exec_error</span>
+    		<br />
+    		<span style="schaersvoorde_alarm">$debug</span>
+    		<br />
+	    !endif
+	!endif
+    </td><!-- end td class=header2 -->
+
+    <td class="header3">
+	!if $debug=1
+	    !href target=wims_mhelp session=$session&+module=$module&+cmd=help
+	    <img src="$gifdir/exec.png" style="border:0px;;vertical-align:top" alt="debug-info" />
+	!endif
+	!if $viewlogo=1
+	    <a onmouseover="this.T_OPACITY=70;this.T_PADDING=10;this.T_BORDERCOLOR='red';this.T_BORDERWIDTH=1;return escape('$logotext')">
+		$logo
+	    </a>
+	!endif
+	!if $mathview isin 1,2,4
+	    <a onmouseover="return escape('$mathchecktext')" onclick="wims_help=window.open('$wims_ref_name?wims_window=new&+lang=nl&+session=$session&+module=$module&+cmd=help&+myvar4=$session','wims_help','status=no,toolbar=no,location=no,menubar=no,scrollbars=yes,resizable=yes')">
+		<img src="$gifdir/math.jpg" alt="mathematical inputfield" style="border:0px;;vertical-align:top" />
+	    </a>
+	!endif
+	!if $scribbling=1
+	    <a onclick="javascript:showScribble();" onmouseover="return escape('Post-It Memo')" >
+		<img src="$gifdir/pencil.png" style="width:50;height:70;border:0px;vertical-align:top" alt="scribling" />
+	    </a>
+	!endif
+	!if $calculator=2
+	    <a onclick="xcalc_window = window.open('$htmldir/mathcalc.html','xcalc','width=265px,height=400px,left=0px,top=0px')">
+		<img src="$gifdir/xcalc.png" style="border:0px;;vertical-align:top" alt="xcalc" />
+	    </a>
+	!else
+	    !if $calculator=1
+		<a onclick="xcalc_window = window.open('$htmldir/basicalc.html','xcalc','width=240px,height=240px,left=0px,top=0px')">
+		    <img src="$gifdir/xcalc.png" style="border:0px;;vertical-align:top" alt="xcalc" />
+		</a>
+	    !endif
+	!endif
+	!if $time=1
+	    </td>
+	    <td style="text-align:right;vertical-align:top;line-height:1px;width:110px;height:64px;">
+		<input style="width:110px;background-color:#c6e8ff;color:#ff0000;font-size:14pt;margin-right:0px;margin-top:0px;vertical-align:top;" type="text" id="time" size="7" />
+		<br />
+		<a onmouseover="this.T_OPACITY=80; return escape('<span style=\'color:red;font-size:12pt\'><tt>This exercise is written for the <i>Mozilla FireFox / Gecko</i> browser. Display and/or functionality on other browsers may be impaired. Use at your own peril ! <hr style=\'width:50%\' />2012<br/>j.m. evers </tt></span>')"  target="nieuw" href="http://www.mozilla-europe.org/$taal/" ><img src="$gifdir/getFireFox.gif" alt="get FIREFOX" style="border:0px;vertical-align:top;" /></a>
+	!endif
+    </td><!-- end td id=myheader3 -->
+    </tr>
+</table><!-- end table id=myheader -->
+<br />
+<!-- end class=myheader.phtml -->
+!if $try = $maxtry
+    !set alarm=!record 52 of $remarkdir/commonremarks.$taal
+!endif
+<div id="alarmtext" style="white-space:wrap;text-align:center;margin-left:auto;margin-right:auto;max-width:460px;min-width:120px;min-height:50px;display:none;top:0px;left:0px;background-color:#daf6a4;font-style:italic;border:solid 2px red">
+!if $goback = 1
+    $errortext
+!else
+    $(remark$[$n-1])
+!endif
+$alarm
+</div>
+
+!if $goback=1 or ($goodbadsign>0 and $counter>1) or $try>=$maxtry
+    <script type="text/javascript">
+    //<![CDATA[
+    <!-- no validator -->
+	var h = parseInt( (document.documentElement.clientHeight)/2);
+        var w = parseInt( (document.documentElement.clientWidth)/2 - 200);
+        document.getElementById('alarmtext').style.top = h+'px';
+        document.getElementById('alarmtext').style.left = w+'px';
+        document.getElementById('alarmtext').style.display = "block";
+        !if $try=$maxtry
+	    document.getElementById('alarmtext').style.backgroundColor = "#ffafdd";
+	!else
+	    document.getElementById('alarmtext').style.backgroundColor = "#ffc093";
+	!endif
+        window.scrollTo(w,h-120);
+        setTimeout('resetAlarm()',6000);
+        document.getElementById('alarmtext').style.backgroundColor = "#daf6a4";
+    //]]>
+    </script>
+!endif
+
+<kbd>$questionnumber $counter)</kbd>
+
+!exit

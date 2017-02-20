@@ -1,0 +1,539 @@
+# correct antwoordformat: number1 unit1,number2 unit2... number_n unit_n
+# var1=1,1,1...1 : we must have a unit in all answers 
+# var1=0,1,1,0 : number1,number2 unit2,number3 unit3,number4
+# var2 precision item list (in unit of answer$n):
+# answer -  var2 <= reply <= answer + var2 
+# adapted for use with sigdigits and vervoort physics exos
+# the answer$n is NOT the mathematically correct number (like in other checkfiles)
+# the answer$n is the physically correct number (e.g. in the correct precision and -optional- unit)
+# 1.23*10^3 m/s,0.451 V,
+# 3/2012
+
+math=0
+n=$counter
+errortext=$empty
+goback=0
+!if $(reply$n)=?
+    goback=0
+    maxscore=0
+    remark$n=$NOK
+    !exit
+!endif
+
+ta=!itemcnt $(reply$n)
+tg=!itemcnt $(answer$n)
+!if $ta != $tg
+    ex=!record 38 of $remarkdir/commonremarks.$taal
+    errortext=$(reply$n) ... <br />$ex
+    maxscore=$[$P6*$maxscore]
+    goback=1
+ !exit
+!endif
+
+yourreply=$empty
+extra=$empty
+reply$n=!singlespace $(reply$n)
+AAA=!lower $(reply$n)
+
+# not complete !!
+# convert common? mistakes into correct abreviations 
+# attention: sequence matters !!!
+nonsi=seconden,secondes,seconde,sec,minuten,minutes,minuut,minute,mins,meters,meter,metre,metres,joulen,joules,watts,grammen,grams,grm,hz
+si=s,s,s,s,min,min,min,min,min,m,m,m,m,j,j,w,gr,gr,gr,s^-1
+abbrev=!itemcnt $si
+
+# exclude important mathfunctions
+!for p in ln,log,sin,cos,tan,sqrt,pi
+    P=!toupper $p
+    AAA=!replace internal $p by $P in $AAA
+!next p
+
+# translate common SI "prefixes" into number notation...
+# this is also present in "precheck.js" [called prefix()]
+PREFIX=10^-1,10^1,10^6,10^12,10^15,10^24,10^21,10^18,10^15,10^12,10^9,10^6,10^3,10^2,10^1,10^-1,10^-2,10^-3,10^-6,10^-9,10^-12,10^-15,10^-18,10^-21,10^24
+prefix=déci,déca,méga,téra,péta,yotta,zetta,exa,peta,tera,giga,mega,kilo,hecto,deca,deci,centi,milli,micro,nano,pico,femto,atto,zepto,yocto
+
+!if $tg>1
+    li=<li>
+    end_li=</li>
+    ul=<ul>
+    end_ul=</ul>
+!else
+    li=$empty
+    end_li=$empty
+    ul=$empty
+    end_ul=$empty
+!endif
+
+ # var1 is units: 1,1,0,1
+!if $var1 != $empty
+    p=!itemcnt $var1
+    !if $p!=$tg
+	# als var2 perongeluk voor iets anders is bestemd
+	errortext=var1=1,1,1...1 : we must have a unit in all answers <br />var1=0,1,1,0 : number1,number2 unit2,number3 unit3,number4
+	goback=1
+	!exit
+    !endif
+!else
+    errortext=var1=1,1,1...1 : we must have a unit in all answers <br />var1=0,1,1,0 : number1,number2 unit2,number3 unit3,number4
+    goback=1
+    !exit
+!endif
+
+!if $var2 != $empty
+    p=!itemcnt $var2
+    !if $p!=$tg
+	# als var2 perongeluk voor iets anders is bestemd
+	errortext=answer -  var2 <= reply <= answer + var2 <br />dus net zoveel "items" als in't goede antwoord $(answer$$n) : let op gebruik dezelfde eenheid !!
+	goback=1
+	!exit
+    !endif
+    range=1
+!else
+    # use precision derived from sigdigits
+    range=0
+!endif
+
+digit_remarks=!record 109 of $remarkdir/commonremarks.$taal
+#@aantal significante cijfers,aantal cijfers voor de komma,aantal decimalen,het grondtal,de exponent,aantal cijfers
+# sig1,dec1,dec2,c_base,exponent,ok
+#6 items per line:
+#item 1) real number of significant digits in number_x (eg without leading zeros)
+#item 2) number of digits left from decimal point or if no decimals: total number of digits (length)
+#item 3) number of digits right from decimal point
+#item 4) exponent base (if not present : 1)
+#item 5) exponent (if not present : 0)
+#item 6) indication : is the number corr
+
+# let op: iets ander manier van scoren: beginnen bij 1 ---> wordt minder door strafpunten	
+score=0
+!for p=1 to $tg
+    score1=1
+    rem1=$empty
+    rem2=$empty
+    rem3=$empty
+    rem4=$empty
+    rem5=$empty
+    rem6=$empty
+    rem7=$empty
+    rem8=$empty
+    !if $range=1
+	diff=!item $p of $var2
+    !else
+	diff=0
+    !endif
+    k=$empty
+    found=0
+    correct_unit=1
+    ans=!item $p of $(answer$n)
+    unit=!item $p of $var1
+    !if $unit != 1
+	# optional answer$n=1.234 km , 2.444 , 3.444 cm
+	# var1 = 1,0,1
+	unit=0
+    !endif
+    org=!item $p of $AAA
+    # check on deduction... g=3m/s^2 
+    # javascript will handle arrow symbols -->,==>,->,=>
+    test=!replace internal = by , in $org
+    t=!itemcnt $test
+    !if $t>1
+	nw=!item -1 of $test
+	rem6=!record 95 of $remarkdir/commonremarks.$taal
+	rem6=$rem6 <br />$org ... $nw 
+	org=$nw
+    !endif
+    
+    !if ? isin $org
+	yourreply=!append line $li<span style="color:red">$dontknow</span>$end_li to $yourreply
+    !else	
+	!if $unit=1
+	    ans=!words2items $ans
+	    number_a=!item 1 of $ans 
+	    unit_a=!item 2 of $ans
+	    rep=$org
+	    !for q=1 to 25
+		# 26.0 centimeter/milliseconde -> (1/10^-3)* 26.0 *10^-2 m/s
+		o=!item $q of $prefix
+		r=!nospace / $o
+		!if $o isin $rep
+		    u1=1
+		!else
+		    u1=0
+		!endif
+		!if $r isin $rep
+		    u2=1
+		!else
+		    u2=0
+		!endif
+		!if $[$u1+$u2]>0
+		    O=!item $q of $PREFIX
+		    !if $[$u1+$u2]=2
+			# 1234 millimeter/milliseconde -> 1234 meter/seconde
+			rep=!replace internal $o by $empty in $rep
+		    !else
+			!if $u1=1
+			    # 1234 millimeter/seconde -> 1234 *10^-3meter/seconde
+			    rep=!replace internal $o by *$O in $rep
+			    rep=!nospace $AAA
+			!else
+			    # 1234 meter/milliseconde -> (1/10^-3)*1234 meter/seconde
+			    rep=!replace internal $o by $empty in $rep
+			    rep=(1/$O)*$rep
+			!endif
+		    !endif
+		!endif
+	    !next q
+	    
+	    !for q=1 to $abbrev
+		# convert common? mistakes into correct abreviations 
+		o=!item $q of $nonsi
+		O=!item $q of $si
+		rep=!replace internal $o by $O in $rep
+	    !next q
+	    # 1234 m/sec^2  or 1234 m / sec^2
+	    rep=!words2items $rep
+	    # 1234,m/sec^2  or 1234,m,/,sec^2
+	    t=!itemcnt $rep
+	    number_r=$empty
+	    unit_r=$empty
+	    !if $t=1
+		# 1234m/sec^2 
+	        # always assume: number unit
+	        rep3=!replace [a-z] by @ in $rep
+		# 1234@/@@@^2
+	        t1=!positionof char @ in $rep3
+		t1=!item 1 of $t1
+	        number_r=!char 1 to $[$t1-1] of $rep
+		unit_r=!char $t1 to -1 of $rep
+	    !else
+		# blah blah number unit -> blah,blah,number,unit
+		got=1
+		fnd=0
+		!for h=1 to $t
+		    thing=!item $h of $rep
+		    !for num in 0,1,2,3,4,5,6,7,8,9
+			!if $fnd=0
+			    !if $num isin $thing
+				got=$h
+				fnd=1
+			    !endif
+			!endif
+		    !next num
+		!next h
+		rep=!item $got to -1 of $rep
+		
+		# blah,blah,1.2345,unit -> 1.2345,unit
+		t=!itemcnt $rep
+		# 1234 mmol/gr or 1234mmol /gr  or 1234 mmol/ gr 
+	        !if $t=2	
+	    	    number_r=!item 1 of $rep
+		    unit_r=!item 2 of $rep
+		    # 1234mmol /gr 
+		    rep3=!replace [a-z] by @ in $number_r
+		    !if @ isin $rep3
+			t1=!positionof char @ in $rep3
+			t1=!item 1 of $t1
+			rest_unit=!char $t1 to -1 of $number_r
+			unit_r=!nospace $rest_unit $unit_r
+			number_r=!char 1 to $[$t1-1] of $number_r
+		    !endif
+		!else
+		    # hmmm 1234 mmol / gr  of 1234 m mol / gr 
+		    number_r=!item 1 of $rep
+		    unit_r=!item 2 to $t of $rep
+		    unit_r=!replace internal , by $empty in $unit_r
+		!endif
+	    !endif
+	    
+	    number_r=!nospace $number_r
+	    number_r=!replace internal , by $empty in $number_r
+	    # SQRT(12) -> sqrt(12)
+	    number_r=!lower $number_r
+	    unit_r=!nospace $unit_r
+	    !if $unit_r=$number_r
+	        # we need a unit in the answer
+		maxscore=$[$P1*$maxscore]
+		errortext=!record 91 of $remarkdir/commonremarks.$taal
+		goback=1
+		!exit
+	    !endif
+	    number_r=!rawmath $number_r
+	    number_r=$[1.0*($number_r)]
+	    number_a=$[1.0*($number_a)]
+	    !if NaN isin $number_r
+		errortext=!record 89 of $remarkdir/commonremarks.$taal
+	        goback=1
+		maxscore=$[$P3*$maxscore]
+		!exit
+	    !else
+		# problems with rpm [or Hz]  --> s^-1
+		!if $unit_r=rpm
+		    unit_r=s^-1
+		    number_r=$[$number_r/60]
+		!endif
+    		A=!exec units-filter $number_r $unit_r
+		!if ERROR isin $A
+		    errortext=!record 89 of $remarkdir/commonremarks.$taal
+		    #@Ik kan je antwoord <b>$rep</b> niet kontroleren<br />Geef je antwoord in een geldige <b>SI</b> eenheid...<br />Je "eenheid" <b>$unit ...</b> geeft natuurlijk problemen met nakijken.
+    	    	    maxscore=$[$P5*$maxscore]
+    		    goback=1
+		    !exit
+		!endif
+	    !endif
+	    G=!exec units-filter $[$number_a] $unit_a
+	    !if $range=1
+		# 0.5*10^-6 gives ERROR 0.5e-6 is OK
+		diff=!exec units-filter $[1*($diff)] $unit_a
+		diff=!word 1 of $diff
+	    !endif
+	    !if ERROR isin $G
+		errortext=Error in this exercise<br />The correct answer has a non SI unit $unit_a
+		goback=1
+		!exit
+	    !endif
+	    A1=!word 1 of $A
+    	    G1=!word 1 of $G
+	    !if e isin $A1
+		A1=!replace internal e+ by *10^ in $A1
+		A1=!replace internal e- by *10^- in $A1
+		G1=!replace internal e+ by *10^ in $G1
+		G1=!replace internal e- by *10^- in $G1
+	    !endif
+	!else
+########### no units required [unit=0] 
+########### $ans is !item $p of $(answer$n)
+########### $org is !item $p of $(reply$n)
+	    A1=!replace [a-z]*.[a-z] by $empty in $org
+	    B1=!replace [a-z] by $empty in $org
+	    A1=!lower $A1
+	    # SQRT(12) -> sqrt(12)
+	    ct=!charcnt $A1
+	    !if $ct>64
+		errortext=!record 36 of $remarkdir/commonremarks.$taal
+	        goback=1
+		maxscore=$[$P3*$maxscore]
+		!exit
+	    !endif
+	    !if NaN isin $[1*$A1]
+		B1=!lower $B1
+		!if NaN isin $[1*$B1]
+		    testvar=$org
+		    errortext=!record 26 of $remarkdir/commonremarks.$taal
+		    maxscore=$[$P4*$maxscore]
+		    goback=1
+		    !exit
+		!else
+		    A1=$B1
+		!endif
+	    !endif
+	    # maybe answer$n=1.234 km,2.4,3.12 cm ... avoid NaN
+	    # 		var1=0,0,0
+	    G1=!word 1 of $ans
+	    #G1=$[1.0*($ans)]
+	    unit_r=$empty
+	    number_r=$org
+	!endif
+	# end !if $unit=1
+	
+	
+	# find out about the numbers 
+	dtot=!exec sigdigits $G1 $A1
+	# sig1,dec1,dec2,c_base,exponent,ok
+	!if $wims_exec_error!=$empty
+	    errortext=Something went wrong...$wims_exec_error 
+	    goback=1
+	    !exit
+	!endif
+	dtot_g=!line 1 of $dtot
+	dtot_a=!line 2 of $dtot
+	!if $unit != 1
+	# unitsfilter will modify numbers : and will render the remarks generated below useless
+	    !if error notin $dtot_a
+		notation_err=0
+		# check only if both reply and  answer$n are scientiffic
+		!if $(dtot_a[6])>0 and $(dtot_g[6])>0
+		# sig1,dec1,dec2,c_base,exponent,ok
+		    !for di=1 to 6
+			a=$(dtot_a[$di])
+		        g=$(dtot_g[$di])
+			!if $a!=$g
+			    notation_err=1
+		    	    score1=$[0.99*$score1]
+			    rem8=!append line $ <br /><span style="color:red">$($digit_remarks[$di]) : $a</span> (<span style="color:green">$g</span>) $ to $rem8
+			!endif
+		    !next di
+		!else
+		    !if $(dtot_a[6])=0
+			!if $[$(dtot_a[3]) + $(dtot_a[4])] != $[$(dtot_g[3]) + $(dtot_g[4])] 
+			    score1=$[0.99*$score1]
+			    rem8=<br /><span style="color:red">$($digit_remarks[6]) = $(dtot_a[3]) + $(dtot_a[4])</span> &ne; $(dtot_g[3]) + $(dtot_g[4])   
+			!endif
+		    !endif
+		!endif
+	    !else
+		errortext=!record 36 of $remarkdir/commenremarks.$taal
+		goback=1
+		maxscore=$[$P3*$maxscore]
+		!exit
+	    !endif
+	!endif
+	# find precision : using answer$n ; what range for incorrect rounding?
+	dec=!item 3 of $dtot_g
+	c_base=!item 4 of $dtot_g
+	exponent=!item 5 of $dtot_g
+	!if $dec >0
+	    # 2.5*10^5 -> 2.45*10^5 - 2.55*10^5 --> prec = 0.1*10^5
+	    # 2.500*10^5 -> 2.495*10^5 - 2.505*10^5  --> prec =  0.01*10^5
+	    # 12345.50000*10^5 -> 12345.49995*10^5 - 12345.50005*10^5  --> prec =  0.0001*10^5
+	    prec = $[0.45*10^(-1*$dec)*($c_base^($exponent))]
+	!else
+	    # 15*10^5 -> 14.55*10^5 - 15.45*10^5 --> prec = 0.9*10^5
+	    # 15000 -> 14999.5 - 15000.5 --> prec = 1 
+	    prec = $[0.45*$c_base^($exponent)]
+	!endif
+	!if NaN isin $prec or $prec=1
+	    # flaw in program?
+	    prec = $diff
+	!endif
+	# now test the answer...
+	!if $range=1
+	    !if $[1*($A1)]=$[1*($G1)]
+		# answer -  var2 <= reply <= answer + var2 
+		k=green
+	    !else
+		!if $A1 >= $[$G1 - $diff] and $A1 <= $[$G1 + $diff]
+		    k=green
+		    rem1=!record 96 of $remarkdir/commonremarks.$taal
+		!else
+		    !if $A1 >= $[$G1 - $diff - $prec] and $A1 <= $[$G1 + $diff + $prec]
+			rem1=!record 29 of $remarkdir/commonremarks.$taal
+			#@je hebt een afrondingsfoutje gemaakt...
+		        k=#ffc900
+		        score1=$[$score1*$P7]
+		    !else
+			!if $A1 >= $[$G1 - $diff - 2*$prec] and $A1 <= $[$G1 + $diff + 2*$prec]
+			    rem1=!record 29 of $remarkdir/commonremarks.$taal
+			    #@je hebt een afrondingsfoutje gemaakt...
+			    k=#ff7c00
+			    score1=$[$score1*$P8]
+			!else
+			    !if $A1 >= $[$G1 - $diff - 4*$prec] and $A1 <= $[$G1 + $diff + 4*$prec]
+				rem1=!record 30 of $remarkdir/commonremarks.$taal
+			        #@je hebt een afrondingsfoutje gemaakt...
+				k=#ff3e00
+			        score1=$[$score1*$P9]
+			    !else
+				k=red
+			        score1=0
+			    !endif
+			!endif
+		    !endif
+		!endif
+	    !endif
+	!else
+	    # no range given.
+	    tot=!exec pari if(abs($A1 - $G1) < $prec,1,0)\
+	    if(abs($A1 - $G1) < 2*$prec,1,0)\
+	    if(abs($A1 - $G1) < 3*$prec,1,0)
+	    !if $wims_exec_error!=$empty
+		errortext=Something went wrong...contact the systems administrator
+		goback=1
+		!exit
+	    !endif
+	    r1=!line 1 of $tot
+	    r2=!line 2 of $tot
+	    r3=!line 3 of $tot
+	    !if $r1=1 
+		k=green
+	    !else
+		!if $r2=1
+		    rem1=!record 29 of $remarkdir/commonremarks.$taal
+		    #@je hebt een afrondingsfoutje gemaakt...
+		    score1=$[$score1*$P6]
+		    k=orange
+		!else
+		    !if $r3=1
+			score1=$[$score1*$P9]
+		        rem1=!record 30 of $remarkdir/commonremarks.$taal
+			#@je hebt een grote afrondingsfout gemaakt !
+		        k=orange
+		    !else
+			k=red
+			score1=0
+		    !endif
+		!endif
+	    !endif
+	!endif
+
+	!if $unit=1
+	    t1=!wordcnt $G
+	    !for ui=2 to $t1
+		a=!word $ui of $A
+		g=!word $ui of $G
+		!if $a != $g
+		    correct_unit=0
+		!endif
+	    !next ui
+	    !if $correct_unit=0
+		rem2=!record 92 of $remarkdir/commonremarks.$taal
+		#@<br />je hebt een verkeerde eenheid gebruikt !<br /><em>$unit_r</em> ipv <span style="color:green"><em>$unit_a</em></span>
+		# geen punten
+		score1=0
+		k=red
+	    !else
+		!if $unit_r != $unit_a
+		    k=green
+		    rem5=<br /> <kbd>$unit_a  != $unit_r</kbd>
+		    #@<br />je hebt een verkeerde eenheid gebruikt !<br /><em>$unit_r</em> ipv <span style="color:green"><em>$unit_a</em></span>
+		!endif
+	    !endif
+	!endif
+
+	!if $teaching=1 and $k=red
+	    !if $A1=$[-1*($G1)] and $correct_unit=1
+		rem3=!record 27 of $remarkdir/commonremarks.$taal
+		score1=$P8
+		k=orange
+	    !else
+		!for factor in 1/10000,1/1000,1/100,1/10,10,100,1000,10000,60,3600,1/60,1/3600
+		    !if $found=0
+			!ifval $[1.0*($A1)] = $[($factor)*($G1)]
+			    f=$factor
+			    rem3=!record 90 of $remarkdir/commonremarks.$taal
+			    #@<br />je zit er een factor <b>$f</b> naast !!
+			    score1=$[$P9*$score1]
+			    found=1
+			!endif
+		    !endif
+		!next factor
+	    !endif
+	!endif
+	#rep=!htmlmath $number_r $unit_r
+	yourreply=!append line $li <span style="color:$k"><kbd>$org</kbd></span><em>$rem1 $rem2 $rem3 $rem4 $rem6 $rem5 $rem7 $rem8</em> $end_li to $yourreply
+    !endif
+    score=$[$score+$score1]
+!next p
+
+
+maxscore=$[$maxscore*$score/$tg]
+modulescore=$[$modulescore+$maxscore]
+
+!if $maxscore>0.8
+    remark$n=$OK
+!else
+    !if $maxscore>0.5
+	remark$n=$BOK
+    !else
+	remark$n=$NOK
+    !endif
+!endif 
+
+goback=0
+math=0
+reply$n=$ul $yourreply $end_ul
+
+!if $extra != $empty
+    remark$n=!append line $extra to $(remark$n)
+!endif
+!exit

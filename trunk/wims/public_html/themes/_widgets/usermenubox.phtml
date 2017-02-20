@@ -1,0 +1,47 @@
+<!-- _widgets/usermenubox.phtml -->
+<div id="wimsmenubox" class="footer">
+ <$div0 class="wimsmenu">
+
+  <$div0 class="menublock">
+   <$div1 class="menuitem">
+    !if $wims_superclass!=$wims_class and $wims_superclass!=$empty and $auth_method isitemof $auth_method_list
+     !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=authparticipant&auth_user=$ext_login&class=$wims_superclass
+    !else
+     !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=participant
+    !endif
+   </$div1>
+  </$div0>
+
+  <$div0 class="menublock">
+   <$div1 class="menuitem">
+    $supmail
+   </$div1>
+  </$div0>
+
+  <$div0 class="menublock">
+   <$div1 class="menuitem">
+    !read ./adm/oneitem.phtml pref,1,module=adm/light&phtml=useropts.phtml.$lang
+   </$div1>
+  </$div0>
+   !if $auth_method notwordof cas ldap php
+  <$div0 class="menublock">
+   <$div1 class="menuitem">
+    !read ./adm/oneitem.phtml passwd,1,module=adm/class/passwd&job=user
+   </$div1>
+  </$div0>
+   !endif
+
+!! delete, it is in userprop.phtml
+!! supervisor can arrive here by clicking on "view from student"
+!! password of supervisor must be by the secure zone
+!! so one should define sure IP but no need to present the form
+!!  !if $auth_method notwordof cas ldap php and $wims_user notsametext supervisor
+!!  <div class="menublock">
+!!   <$div1 class="menuitem">
+!!    !href module=adm/class/passwd $wims_name_passwd
+!!   </$div1>
+!! </div>
+!! !endif
+ </$div0><!--end of wimsmenu-->
+</div><!--end of wimsmenubox-->
+<!-- end _widgets/usermenubox.phtml -->

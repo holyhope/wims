@@ -1,0 +1,47 @@
+<h1 class="wims_docu_title">$tit</h1>
+
+!if $error!=$empty
+ <div class="wims_msg alert">
+ !read docu/$modu_lang/msg.phtml
+ </div>
+
+!endif
+
+!if $erase!=$empty
+<p>
+ $name_have_been_erased
+ </p>
+!endif
+
+!if $quota_free<1
+$name_warning
+!else
+ !set wims_form_method=file
+ !form reply
+ <input type="hidden" name="job2" value="deposit" />
+ $name_upload:
+ <input type="file" size="35" name="wims_deposit" />
+ <input type="submit" value="$wims_name_tosave" />
+
+ !formend
+!endif
+
+!if $flist!=$empty
+ !read lang/names.phtml.$modu_lang file
+!endif
+
+<p>
+$n_freespace1 $quota_total Meg.
+$n_freespace2 $quota_free Meg.
+</p>
+!set wims_menu_items=!append line properties,1,cmd=reply&job=prop\
+  blocklist,1,cmd=reply&job=list\
+  doch_main,1,cmd=reply&job=read&block=main\
+to $wims_menu_items
+
+!if $(readhist[-1;2])!=main
+ !set wims_menu_items=!append line  "$(readhist[-1;2])",1,cmd=reply&job=read&block=$(readhist[-1;2])\
+to $wims_menu_items
+!endif
+
+

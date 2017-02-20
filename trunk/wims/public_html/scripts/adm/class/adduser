@@ -1,0 +1,266 @@
+!!! variables used (to check) : replacelist , up_xx for xx in replacelist and in firstname, lastname
+!!! regvars_cnt  techvarlist and ???
+
+uu=$wims_read_parm
+!if user notwordof $wims_prefix
+ wims_prefix=$wims_prefix user class
+!endif
+!default up_class=$wims_class
+class_type=!defof class_type in wimshome/log/classes/$up_class/.def
+!default class_type=0
+!read adm/class/authchars
+l=!text select $char_login in $uu
+t=!char 1 of $uu
+n=!charcnt $l
+!if $class_type isin 01 and $wims_superclass=$empty
+ regvarlist=!makelist regprop x for x=1 to $regvars_cnt
+ regvarlist=!nospace $regvarlist
+ replacelist=!append item $regvarlist to $replacelist
+!else
+ regvarlist=$empty
+!endif
+
+!if $l!=$uu or $t isin $char_punct or $n<$login_min or $n>$login_max
+ !exit
+!endif
+uu=!translate internal . to @ in $uu
+login_wims=$uu
+
+!reset user_lastname,user_firstname,user_password,user_email,user_comments,user_photourl,\
+    user_exists,user_participate,user_supervise,user_supervisable,user_external_auth
+!for j in $regvarlist
+   !if $(user_$j)!=$empty
+     !reset user_$j
+   !endif
+!next j
+!read adm/class/userdef classes,$up_class,$uu
+!defread $userdef
+
+!if $class_type isin 24 and $user_exists=yes and \
+	(($user_supervisable!=yes and $up_supervisable=yes) or \
+	 ($user_supervisable=yes and $up_supervisable!=yes and supervisable \
+	 isitemof $replacelist))
+ bad=!append item $uu to $bad
+ !exit
+!endif
+
+!if $class_type isin 13
+  !if $class_Supervisor=$wims_realuser
+    replacelist=!listcomplement participate,supervisable in $replacelist
+  !else
+    replacelist=!listcomplement supervise,participate,supervisable in $replacelist
+  !endif
+!!why ??
+ !if $wims_user=supervisor and yes isin $user_supervisable $up_supervisable and $class_Supervisor!=$wims_realuser
+   bad=!append item $uu to $bad
+  !exit
+ !endif
+ !if $adduser_replace iswordof none nopass and $user_password!=$empty
+  !if $wims_user iswordof supervisor $uu
+   !default up_password=$user_password
+  !endif
+  p1=!word 1 of $user_password
+  p1=!passcrypt $p1
+  p2=!word 1 of $up_password
+  p2=!passcrypt $p2
+  !if $p1!=$p2
+   bad=!append item $uu to $bad
+   !exit
+  !endif
+ !endif
+!endif
+
+!if $user_exists= and email notitemof $replacelist
+ replacelist=!append item email to $replacelist
+!endif
+
+up_exists=yes
+!default up_supervisable=$user_supervisable
+replace_=
+!if $adduser_replace=none
+ !goto next
+!endif
+!!!
+!for n in lastname,firstname,email,regnum,comments,exists,supervise,supervisable,participate,photourl,\
+  external_auth,agreecgu,$regvarlist,$techvarlist
+  !if $n isitemof $replacelist,lastname,firstname,exists,supervisable,agreecgu,external_auth
+   l_=!singlespace $(up_$n)
+   !if $n=comments
+	!readproc adm/class/mkcomment name
+	!let vname=$n$scriptout
+   !else
+	!let vname=$n
+   !endif
+   !if $(up_$n)!=$empty and $(up_$n)!=$(user_$vname)
+    l_=!singlespace $(up_$n)
+    !if $l_ issametext
+     l_=
+    !endif
+    !if $n iswordof participate supervise
+     l_=!words2items $l_
+     l__=
+     !for a_ in $l_
+       part_=!text select 1234567890/ in $a_
+       part_test=!replace internal / by , in $part_
+       !if $(part_test[1])=$wims_class or $(part_test[1])=$wims_superclass
+        l__=!append item $part_ to $l__
+       !endif
+     !next
+     !if $n iswordof participate
+       l_=!listuniq $l__,$(user_$n)
+     !else
+        l_=!listuniq $l__
+     !endif
+    !else
+      !if techvar isin $n
+!!!FIXME add a test for validity or add the value to the possible values
+      !endif
+!!FIXME one can do l_=!detag $l ???
+      !if $n isitemof $regvarlist
+        l_=!detag $l_
+      !endif
+      l_=!replace , by &#44; in $l_
+      l_=!replace < by &lt; in $l_
+      l_=!translate internal "#*!$$ to $.....$ in $l_
+    !endif
+    !if $n isitemof comments,photourl,$regvarlist
+     l_=!char 1 to 5000 of $l_
+    !else
+      !if $n iswordof participate supervise
+        l_=!char 1 to 500 of $l_
+      !else
+        l_=!char 1 to 100 of $l_
+      !endif
+    !endif
+    replace_=!append line !set user_$(vname)=$l_ to $replace_
+  !endif
+ !endif
+!next n
+
+!if $user_exists!=yes and \
+	($up_password=$empty or $up_lastname=$empty or $up_firstname=$empty)
+ bad=!append item $uu to $bad
+ !exit
+!endif
+
+:next
+!if $class_type isin 13 and $up_class notitemof $user_participate
+ typename=!defof class_typename in wimshome/log/classes/$up_class/.def
+ !if $typename != $empty and $typename notwordof class course
+  bad=!append item $uu to $bad
+  !exit
+ !endif
+ !if $typename issametext course
+  typename=!defof class_typename in wimshome/log/classes/$wims_class/.def
+  !if $wims_class!=$empty and $typename issametext course and \
+	$wims_class=$up_class and $wims_user=supervisor
+   au_1=!translate internal / to , in $wims_class
+   au_1=!translate internal , to / in $(au_1[1..-2])
+   au_1=!nospace $au_1
+   up_class=$au_1
+   typename=!defof class_typename in wimshome/log/classes/$au_1/.def
+  !endif
+  !if $wims_class=$empty or $typename!=class or \
+	../$wims_superclass/ notin ../$up_class
+   !exit
+  !endif
+  user_class=!replace internal ../$wims_superclass/ by in ../$wims_class
+  user_course=!replace internal ../$wims_superclass/ by in ../$up_class
+  au_test=!defof user_class in wimshome/log/classes/$up_class/.users/$uu
+  !if $au_test!=$empty
+   au_test=$wims_superclass/$au_test
+   user_courses=!getdef user_courses in wimshome/log/classes/$au_test/.users/$uu
+   user_courses=!listcomplement $user_course in $user_courses
+   !setdef !set user_courses=$user_courses in wimshome/log/classes/$au_test/.users/$uu
+  !endif
+  !setdef !set user_class=$user_class in wimshome/log/classes/$up_class/.users/$uu
+  user_courses=!getdef user_courses in wimshome/log/classes/$wims_class/.users/$uu
+  user_courses=!listunion $user_courses and $user_course
+  !setdef !set user_courses=$user_courses in wimshome/log/classes/$wims_class/.users/$uu
+  change=!listunion $change and $uu
+ !else
+   !!if participate isitemof $replace_list
+  !!change up_participate here
+     up_participate=!listunion $user_participate and $up_class
+     shclass=!defof sharing_user in wimshome/log/classes/$up_class/neighbors
+     !default shclass=$up_class
+     sharing=!defof sharable_user in wimshome/log/classes/$shclass/neighbors
+     sharing=!append item $shclass to $sharing
+     sharing=!listcomplement $up_participate in $sharing
+     !if $sharing!=$empty
+       !for sh in $sharing
+         test=!defof class_superclass in wimshome/log/classes/$sh/.def
+         !if $test!=$empty and $test=$wims_superclass
+           up_participate=!append item $sh to $up_participate
+         !endif
+       !next sh
+     !endif
+     !if $user_exists=yes
+       !setdef !set user_participate=$up_participate in $userdef
+       change=!listunion $change and $uu
+     !else
+       replace_=!append line !set user_participate=$up_participate to $replace_
+     !endif
+    !endif
+  !!endif
+!endif
+
+!if $adduser_replace=none
+ !exit
+!endif
+
+!if $up_password!=$empty and $up_password!=$user_password
+ c=!char 1 of $up_password
+ !if $c=* and $wims_priv_cryptpass=allow
+  p=!text select */$char_passwd in $up_password
+ !else
+  p=!text select $char_passwd in $up_password
+ !endif
+ n=!charcnt $p
+ !if $p!=$up_password or $n<$passwd_min or $n>$passwd_max
+  bad=!append item $uu to $bad
+  !exit
+ !endif
+ up_password=!passcrypt $up_password
+ replace_=!append line !set user_password=$up_password to $replace_
+!endif
+
+!if $up_vars!=$empty
+  up_vars=!nonempty lines $up_vars
+  up_vars=!replace internal ! by &#33; in $up_vars
+  up_vars=!rows2lines $up_vars
+  up_vars=!replace internal = by , in $up_vars
+  !if $tv_varfilterreaden!=yes
+   !readproc adm/vfilter/listvarfilter.proc
+  !endif
+  n=!linecnt $up_vars
+  !for i=1 to $n
+   llll=!line $i of $up_vars
+   llll=!trim $llll
+   !distribute item $llll into nv_,vv_
+   !if $nv_ isitemof $tv_listname
+	po_=!positionof item $nv_ in $tv_listname
+        !if $po_ isitemof $tv_listlocal
+    	    p_=!line $po_ of $tv_listtechvar
+	    val_=!record $(p_[3]) of wimshome/log/classes/$(p_[2])/.techvar
+	    val_=!line 2 of $val_
+    	    t_=!item $po_ of $tv_listcode
+	    !bound vv_ within $val_,$empty default $empty
+    	    replace_=!append line !set user_techvar_$(t_)=$vv_ to $replace_
+	!endif
+   !endif
+  !next i
+!endif
+!!FIXME even if there is no change in user_techvar, it is changed
+!! and add to the list of users.
+!if $replace_=$empty
+ !exit
+!endif
+
+change=!listunion $change and $uu
+
+!setdef $replace_ in $userdef
+
+!if $up_class=$wims_class
+ wims_class_log=User info $uu
+!endif

@@ -1,0 +1,134 @@
+!set lang_exists=yes
+
+!set name_remark_numstud=Vous pouvez saisir 0 dans la deuxième colonne pour indiquer qu'il n'y a pas de limite.
+!set name_introtext_group=Saisir l'effectif de chaque groupe ainsi qu'un commentaire (éventuel).
+!set name_cardinal=Effectif
+
+!set name_0=en preparació
+!set name_1=obert
+!set name_2=tancat
+!set name_3=ocult
+!set name_publish=public
+!set name_hide=ocult
+!set name_nominative=nominal
+!set name_anonymous=anònim
+!set name_trace=anònim registrat
+!set name_choice=Opció
+!set name_question=Question
+!set name_data=dades
+!set name_global=globals
+!set name_detail=detalls
+!set name_help=Ajudes
+!set name_yourchoice=Votre choix
+!set title_data=Dades dels qüestionaris per full de càlcul
+!set title_nominative=enregistrament
+!set title_vote=Qüestionari
+!set title_anonymous=qüestionari (anònim)
+!set name_choose=-- Tria --
+!set wims_name_vote=Llista de qüestionaris
+!set name_result=Résultat du questionnaire&nbsp;
+!set name_content=Contenu
+!set name_creation= Création d'un questionnaire ou enregistrement.
+!set name_edition=Edition d'un questionnaire ou enregistrement.
+!set name_remaining=places restantes
+!set name_untitled=Sans titre
+!set name_showresult=Tableaux de résultats
+!set name_nowritable=Questionnaire actif, il est impossible de modifier son contenu. En voici le source :
+!set name_novotant=Aucun vote
+!set name_notenough=Pas assez de votants pour publier la liste
+!set name_showlist=Résultats par question
+!set name_showglobal=Résultats globaux
+!set name_showlistbystudent=Résultats par votants
+!set name_showstudentbyitem=Liste par choix
+
+!distribute lines Votre classe n'a pas encore de questionnaire. \
+Vérifiez avec votre enseignant.\
+Il n'y a aucun questionnaire actif.\
+Voici les questionnaires / enregistrements de votre classe.\
+Nombre de votes\
+into name_novote,name_novotecheck,name_noactivevote,name_class_vote,\
+name_cnt_votes
+
+!distribute line Ce questionnaire est anonyme.\
+   Ce questionnaire est $name_trace.\
+   Cet enregistrement est $name_nominative.\
+   Il est fermé.\
+   Réponses\
+   Merci d'avoir voté.\
+   Vous avez déjà exprimé votre choix, mais vous pouvez encore changer d'avis.\
+   Exprimez votre choix&nbsp;\
+   Détail des enregistrements\
+   Textes des commentaires\
+   Si vous avez des commentaires, écrivez-les dans le forum.\
+into name_thisvote_anomymous,name_thisvote_trace,name_thisvote_nominatif,\
+   name_thisvote_closed,name_thisvote_answer,name_thisvote_already1,\
+   name_thisvote_already2,name_give_your_choice,name_details,\
+   name_comments,name_textarea
+
+!set name_textarea_limit=!nosubst limité à $limit_textarea caractères
+!set name_whovote=Liste des votants
+!set name_whodontvote=Liste des non-votants
+
+!set name_csv1=Voici le fichier que vous pouvez télécharger et ouvrir dans votre logiciel \
+ tableur préféré&nbsp;
+
+!set name_csv2=!nosubst Vous désirez télécharger les données du questionnaire numéro $vote &nbsp;
+!set name_format=format
+
+!set name_option=Options
+!set name_value=Values
+
+!! guided mode
+
+!set name_optionclosed=closed, will be opened only when other options will be full
+
+!distribute lines How many sessions?\
+How many groups?\
+at most\
+uservar name\
+Default host IP \
+can be changed in the following page\
+Introductory text \
+e.g. general instructions for the students\
+Num.Stud.\
+Date of<br />session\
+Beg. time<br />of session\
+End time<br />of session\
+Host IP\
+Extra info\
+Inscription cancellation\
+into name_howmany,name_howmanygroups,name_atmost,name_namevar,name_textconnip,\
+  name_textconnip2, name_introtext,name_introtext2,name_numstud,name_sessiondate,\
+  name_begintime,name_endtime,name_connip,name_extra,\
+  name_cancellation
+
+!set name_numsess=!nosubst $numsess sessions are available.
+!set name_session_select=!nosubst Select date and time of the $numsess available sessions\
+
+!set name_describesource=!nosubst Voici le code source du questionnaire. Vérifiez les données \
+et cliquez sur <span class="wims_button disabled">$wims_name_tosave</span>.
+!if $vote_mode!=free
+ !readproc adm/lang/sheetexam.phtml.$lang
+!endif
+!set name_yourvariable=!nosubst Le nom de la variable correspondant à ce questionnaire \
+  que vous avez choisi est <span class="tt wims_code_variable">$namevar</span>
+!set name_accessvar_instr=!nosubst <strong>Utilisation dans un examen ou dans une feuille</strong>: \
+dans une feuille ou un examen actif, dans <span class="tt wims_code_words">$(name_shinfo[6])</span>, sélectionnez \
+ <span class="tt wims_code_words">$(name_allowtype[4]).
+
+!set name_group_instr=!nosubst <strong>Utilisation dans la classe</strong>: vous pouvez filtrer \
+les participants selon cette variable pour certaines activités de la classe.
+
+!set name_group_help= permet de sélectionner les participants \
+selon les groupes (mail et trombinoscope pour l'instant).
+
+!set name_accessvar_help=permet d'individualiser l'accès des participants \
+à une feuille ou à un examen.
+
+!distribute items Free Mode ,Access to sheets or exams,Constitution of groups,Groups into name_free,name_accessvar, name_group,name_group1
+
+!set name_model=Model
+!set name_nextstep=Next Step
+
+!set name_getsource=Aquí tens el codi. Pots copiar aquest codi (entre les dues línies de `*'; \
+utilitzant el portapapers) en un arxiu, que et permetrà reutilitzar el contingut.

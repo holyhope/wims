@@ -1,0 +1,895 @@
+!shortout ,"job":"$job",\
+
+!goto $job
+
+
+:recuser
+:search
+!shortout "message":"job done. TODO : more explicit messages here..."
+
+!goto footer
+
+:repairclass
+!shortout "qclass":"$qclass",\
+  "action,":"$option",
+!if $deleted_users!=$empty
+  !shortout "delete_users":$deleted_users,\
+    "correct_users":$corrected_users,\
+    "correct_subclasses":$corrected_subclasses,
+
+  !if $[$deleted_users + $corrected_users]=0
+    message=job done. Nothing to repair. Congratulations !
+  !else
+    message=Some users modified. You're class is now fixed !
+  !endif
+!endif
+
+!if $mess_list!=$empty
+  !if $option issametext checkonly
+    message=Some corrections must be made. See mess_list for details, and use option 'checkandrepair' to auto repair.
+  !else
+    message=Some corrections made. See mess_list for details.
+  !endif
+  mess_list=!replace internal , by "," in $mess_list
+  !shortout "mess_list":["$mess_list"],
+!endif
+
+!shortout  "message":"$message"
+
+!goto footer
+
+:deluser
+
+!shortout "qclass":"$qclass",\
+"quser":"$quser",
+
+!if del_from_trash != $option
+  !shortout "message":"User $quser moved to trash."
+!else
+  !shortout "message":"User $quser permanently deleted from trash."
+!endif
+!goto footer
+
+:moduser
+!shortout "qclass":"$qclass",\
+"message":"Modifications done",\
+"nb_modifs":"$set"\
+
+!goto footer
+
+:modclass
+!shortout "qclass":"$qclass",\
+"message":"Modifications done",\
+"separator":"$separator"\
+
+!goto footer
+
+:checkident
+ !shortout "message":"Connection accepted",\
+"separator":"$separator"\
+
+!goto footer
+
+:checkclass
+ !shortout "message":"Class $qclass exists"\
+
+!goto footer
+
+:checksheet
+ !shortout "query_class":"$qclass",\
+"message":"sheet $qsheet exists"\
+
+!goto footer
+
+:checkexam
+ !shortout "query_class":"$qclass",\
+"message":"exam $qexam exists"\
+
+!goto footer
+
+:checkuser
+!shortout "message":"user $quser exists"\
+
+!goto footer
+
+:listexos
+exotitlelist = !replace internal  "  by \" in $exotitlelist
+exotitlelist = !replace internal  :  by title:" in $exotitlelist
+exotitlelist = !replace internal  ,  by "},{ "id": " in $exotitlelist
+exotitlelist = !replace internal  title:  by ","title": in $exotitlelist
+
+!shortout "query_class":"$qclass",\
+ "rclass":"$rclass",\
+ "exotitlelist":[{"id":"$exotitlelist"}],\
+ "exocount":$exocount
+
+!goto footer
+
+:listsheets
+nohidden= $[$cnt-$nb_hidden]
+titles=!replace internal "  by \" in $titles
+titles=!replace internal ,  by "," in $titles
+list=!replace internal  ,  by "," in $list
+
+!shortout "query_class":"$qclass",\
+"nbsheet":"$cnt",\
+"sheetlist":["$list"],\
+"sheettitlelist":["$titles"],\
+"separator":"$separator",\
+"hidden_sheets":"$nb_hidden",\
+"not_hidden_sheets":"$nohidden"\
+
+!goto footer
+
+:listexams
+titles=!replace internal "  by \" in $titles
+titles=!replace internal  ,  by "," in $titles
+list=!replace internal  ,  by "," in $list
+ !shortout "query_class":"$qclass",\
+"nbexam":"$cnt",\
+"examlist":["$list"],\
+"examtitlelist":["$titles"]\
+
+!goto footer
+
+:getinfoserver
+
+!shortout "server_version":"$wims_version",\
+"compilation_date":"$wims_version_date",\
+"wims_session":"$wims_session",\
+"format":"$format"
+
+!if $ident != $empty
+ !shortout ,\
+ "edesc_limit":"$edesc_limit",\
+ "etitle_limit":"$etitle_limit"\
+
+!endif
+!goto footer
+
+:getsheet
+!for i=1 to $exocnt
+ exo=!record $i of $qfile
+ exo_module=!line 1 of $exo
+ exo_params=!line 2 of $exo
+ exo_points=!line 3 of $exo
+ exo_weight=!line 4 of $exo
+ exo_title=!line 5 of $exo
+ exo_title=!replace internal "  by \" in $exo_title
+ exo_description=!line 6 of $exo
+
+ exo_defs={"module":"$exo_module","title":"$exo_title","params":"$exo_params","points":"$exo_points","weight":"$exo_weight","description":"$exo_description"}
+
+ !if $exolist!=$empty
+   exolist=$exolist,$exo_defs
+ !else
+   exolist=$exo_defs
+ !endif
+!next i
+
+sheet_properties = !replace internal " by $\"$ in $sheet_properties
+sheet_title = !replace internal " by $\"$ in $sheet_title
+sheet_description = !replace internal " by $\"$ in $sheet_description
+
+ !shortout "query_class":"$qclass",\
+"query_sheet":"$qsheet",\
+"exo_cnt":"$exocnt",\
+"sheet_properties":"$sheet_properties",\
+"sheet_status":"$sheet_status",\
+"sheet_expiration":"$sheet_expiration",\
+"sheet_title":"$sheet_title",\
+"sheet_description":"$sheet_description",\
+"exolist":[$exolist]\
+
+!goto footer
+
+:getexosheet
+!shortout "query_class":"$qclass",\
+"query_sheet":"$qsheet",\
+"query_exo":"$qsheet",\
+"exo_module":"$exo_module",\
+"exo_params":"$exo_params",\
+"exo_points":$exo_points,\
+"exo_weight":$exo_weight,\
+"exo_title":"$exo_title",\
+"exo_description":"$exo_description"\
+
+
+!goto footer
+
+:getexam
+exam_properties = !replace internal " by $\"$ in $exam_properties
+exam_title = !replace internal " by $\"$ in $exam_title
+exam_description = !replace internal " by $\"$ in $exam_description
+
+ !shortout "query_class":"$qclass",\
+"queryexam":"$qexam",\
+"exam_properties":"$exam_properties",\
+"exocnt":"$exocnt",\
+"exolist":"$exolist",\
+"exotitlelist":"$exotitlelist",\
+"exam_opening":"$exam_opening",\
+"exam_status":"$exam_status",\
+"exam_expiration":"$exam_expiration",\
+"exam_duration":"$exam_duration",\
+"exam_attempts":"$exam_attempts",\
+"exam_title":"$exam_title",\
+"exam_description":"$exam_description",\
+"exam_cut_hours":"$exam_cut_hours"\
+
+
+!goto footer
+
+
+:addexo
+ !shortout "message":"exercice $qexo successfully $action",\
+"exo_id":"$qexo",\
+"compilation_result":"$compilation"\
+
+!goto footer
+
+
+:testexo
+ !shortout "message":"exercice $qexo successfully compiled",\
+"session_id":"$sess_ID",\
+"compilation_result":"$compilation"\
+
+!goto footer
+
+:adduser
+ !shortout "message":"user $quser correctly added",\
+ "user_id":"$quser"\
+
+!goto footer
+
+:movexo
+ !shortout "message":"exercice $qexo successfully $action",\
+"exo_id":"$qexo",\
+"compil_src":"$compil_src",\
+"compil_dest":"$compil_dest",\
+"src_class":"$src_class",\
+"dest_class":"$qclass",\
+"log":"$log"\
+
+!goto footer
+
+:movexos
+ !shortout "message":"exercices successfully $action",\
+"compil_src":"$compil_src",\
+"compil_dest":"$compil_dest",\
+"src_class":"$src_class",\
+"dest_class":"$qclass",\
+"log":"$log"\
+
+!goto footer
+
+
+:sharecontent
+ !shortout "message":"content successfully shared",\
+"src_class":"$src_class",\
+"dest_class":"$qclass"
+
+!goto footer
+
+:addsheet
+ !shortout "query_class":"$qclass",\
+"sheet_id":$wims_sheet,\
+"sheet_count":$sheetcnt\
+
+!goto footer
+
+:addexam
+ !shortout "query_class":"$qclass",\
+"exam_id":$wims_exam,\
+"exam_count":$examcnt,\
+"message":"exam #$wims_exam correctly added"\
+
+!goto footer
+
+:delclass
+cd=!replace internal / by _ in $qclass
+ !shortout "class_id":"$cd",\
+ "message":"class $cd correctly deleted",\
+ "log":"$log"\
+
+!goto footer
+
+:addclass
+cd=!replace internal / by _ in $cd
+ !shortout "class_id":"$cd",\
+ "message":"class $cd correctly added",\
+ "log":"$log"\
+
+!goto footer
+
+:getclass
+!shortout "query_class":"$qclass",\
+  "rclass":"$rclass",\
+
+list_cnt=!itemcnt $option
+i=0
+
+!for d in $option
+
+ !if $d=userlist
+    newList=$(class_$d)
+    newList=!replace internal  ,  by "," in $newList
+ 	!shortout "$d":["$newList"]
+ !endif
+
+ !if list notin $d
+	!shortout "$d":"$(class_$d)"
+ !endif
+
+
+ !advance i
+
+ !if $i<$list_cnt
+  !shortout ,\
+
+ !endif
+
+
+!next d
+
+!goto footer
+
+
+
+:getclassmodif
+!shortout "modifs":"$modif"
+!goto footer
+
+:getuser
+!shortout "query_class":"$qclass",\
+"queryuser":"$quser",\
+
+list_cnt=!itemcnt $option
+i=0
+
+!for d in $option
+ !shortout "$d":"$(user_$d)"
+
+ !advance i
+
+ !if $i<$list_cnt
+  !shortout ,\
+
+ !endif
+
+
+!next d
+!goto footer
+
+:getclassscores
+:getscores
+
+titles = !replace internal $sep by "," in $tit
+longtitles = !replace internal "$sep" by "," in $dl3
+data_scores =!replace internal , by ],[ in $data_scores
+data_scores =!replace internal $sep$sep by $sep""$sep in $data_scores
+data_scores =!replace internal $sep by , in $data_scores
+data_scores =!replace internal NaN by "NaN" in $data_scores
+data_scores = [[$data_scores]]
+data_scores =!replace internal ,] by ] in $data_scores
+
+percents=!replace internal $\
+$ by "],[" in $percents
+
+!shortout "titles":["$titles"],\
+"longtitles":[$longtitles],\
+"scoremax":$scoremax,\
+"totweight":"$totweight",\
+"datas":$data_scores\
+
+!goto footer
+
+
+:getexamscores
+!for v in weights
+ $v=!trim $($v)
+ !if $v != $empty
+   $v=!wordstoitems $($v)
+   $v=[$($v)]
+ !else
+   $v=""
+ !endif
+!next v
+
+!if $data_scores != $empty
+   data_scores=!replace internal $\
+$ by },{ in $data_scores
+	data_scores =!replace internal NaN by "NaN" in $data_scores
+	data_scores=[{$data_scores}]
+!else
+	data_scores=""
+!endif
+
+!shortout "query_exam":$qexam,\
+"query_class":"$qclass",\
+"active_index":$active_index,\
+"score_status":"$score_status",\
+"class_scoremax":$scoremax,\
+"weights":$weights,\
+"class_user_cnt":$usercnt,\
+"user_cnt":$real_usercnt,\
+"score_max":$max_score,\
+"score_mean":$mean_score,\
+"data_scores":$data_scores\
+
+!goto footer
+
+
+:getsheetscores
+
+!for v in requires, weights
+ $v=!trim $($v)
+ !if $v != $empty
+   $v=!wordstoitems $($v)
+   $v=[$($v)]
+ !else
+   $v=""
+ !endif
+!next v
+
+sheet_mean_percent =!replace internal NaN by "NaN" in $sheet_mean_percent
+sheet_mean_quality =!replace internal NaN by "NaN" in $sheet_mean_quality
+
+!shortout "query_sheet":$qsheet,\
+"query_class":"$qclass",\
+"active_index":$active_index,\
+"requires":$requires,\
+"score_status":"$score_status",\
+"class_scoremax":$scoremax,\
+"weights":$weights,\
+"sheet_mean_quality":$sheet_mean_quality,\
+"sheet_mean_percent":$sheet_mean_percent,\
+"sheet_max_quality":$sheet_max_quality,\
+"sheet_max_percent":$sheet_max_percent,\
+"user_cnt":$usercnt,\
+"data_scores":
+
+
+
+!if $usercnt > 0
+   !shortout [
+   !for u=1 to $usercnt
+     data_scores = !record $u of wimshome/sessions/$wims_session/data.scores
+     data_scores =!replace internal NaN by "NaN" in $data_scores
+     !shortout {$data_scores}
+     !if $u < $usercnt
+        !shortout ,\
+
+     !endif
+   !next u
+   !shortout ]
+!else
+	!shortout ""\
+
+!endif
+
+
+!goto footer
+
+
+:getsheetstats
+
+weights = !wordstoitems $weights
+weights = [$weights]
+sheetgotdetail=[$sheetgotdetail]
+sheetqualitydetail=[$sheetqualitydetail]
+
+!for v in sheet_mean_percent, sheet_mean_quality, sheetmeandetail, sheetgotdetail
+   $v = !replace internal NaN by "NaN" in $($v)
+!next v
+
+!shortout "query_sheet":$qsheet,\
+"query_class":"$qclass",\
+"class_scoremax":$scoremax,\
+"weights":$weights,\
+"sheet_mean_quality":$sheet_mean_quality,\
+"sheet_mean_percent":$sheet_mean_percent,\
+"sheet_got_details":$sheetgotdetail,\
+"sheet_quality_details":$sheetqualitydetail,\
+"sheet_max_quality":$sheet_max_quality,\
+"sheet_max_percent":$sheet_max_percent,\
+"user_cnt":$usercnt,\
+"nb_exos":$nb_exos\
+
+!goto footer
+
+
+
+:getscore
+
+
+json_lists = examscore, weights, requires, summary, gotdetail, meandetail, remain, best_detail, level_detail
+double_lists = examscore
+
+!for v in $json_lists
+ $v=!trim $($v)
+ !if $v != $empty
+   $v=!replace internal $\
+$ by ],[ in $($v)
+   $v=!replace internal $ $ by , in $($v)
+   $v=!replace internal ,] by ] in $($v)
+   !if $v isitemof $double_lists or $qsheet = $empty
+     $v=[[$($v)]]
+   !else
+     $v=[$($v)]
+   !endif
+ !else
+   $v=""
+ !endif
+!next v
+
+!if $qsheet!=$empty
+  !shortout "query_sheet":"$qsheet",
+!endif
+
+!shortout "query_class":"$qclass",\
+"query_user":"$quser",\
+"score_max":"$scoremax",\
+"exam_scores":$examscore,\
+"weights":$weights,\
+"require_points":$requires,\
+"sheet_summaries":$summary,\
+"got_points":$gotdetail,\
+"remain":$remain,\
+"best_detail":$best_detail,\
+"level_detail":$level_detail,\
+"score_status":"$score_status",\
+"score_qualities":$meandetail\
+
+!if $qsheet != $empty
+    !shortout ,"query_sheet":"$qsheet"\
+
+!endif
+!goto footer
+
+:getlog
+
+!shortout "query_class":"$qclass",\
+"query_user":"$quser",\
+"query_sheet":"$qsheet",\
+"query_exam":"$qexam",\
+"log_size":"$export_size",\
+"user_log":
+
+!if $export_size > 0
+   !shortout [
+   !for i=1 to $export_size
+     current = !record $i of wimshome/sessions/$wims_session/user.log
+     current = !singlespace $current
+     current = !replace internal $ $ by "," in $current
+     !shortout ["$current"]
+     !if $i < $export_size
+        !shortout ,\
+
+     !endif
+   !next i
+   !shortout ]
+!else
+	!shortout ""\
+
+!endif
+
+!goto footer
+
+
+:getsession
+
+!shortout "session_id":"$wims_session",\
+"query_module":"$q_module",\
+"log":["$log","$log2"],\
+"r_":"$r_"
+
+!goto footer
+
+
+:getexamsessions
+
+!shortout "query_class":"$qclass",\
+"query_user":"$quser",\
+"sessions_list":"$sessionslist",\
+"nb_sessions":$nbsessions,\
+"user_log":"TODO"
+
+!goto footer
+
+
+:gettime
+ !shortout "server_time":"$now_year$now_month$now_day.$now_hour:$now_min:$now_sec"
+!goto footer
+
+:getexo
+!shortout "query_class":"$qclass",\
+"querysheet":"$qsheet",\
+"queryexo":"$qexo",\
+"exo_module":"$exo_module",\
+"exo_params":"$exo_params",\
+"exo_points":"$exo_points",\
+"exo_weight":"$exo_weight",\
+"exo_title":"$exo_title",\
+"exo_description":"$exo_description"\
+
+!goto footer
+
+
+:authuser
+ !shortout "wims_session":"$num_session",\
+"home_url":"$wims_ref_name?session=$num_session.1",\
+"user":"$quser",\
+"class_id":"$wims_class"\
+
+!goto footer
+
+:getcourse
+ !shortout "query_class":"$qprogram",\
+ "courses":"$wims_class"\
+
+
+:listclasses
+list_cnt=!itemcnt $listclasses
+!shortout "message":"Lists classes associated to specified rclass ($rclass) in your server",\
+"rclass":"$rclass",\
+"classes_list":[\
+
+!for i = 1 to $list_cnt
+   qclass=!item $i of $listclasses
+   rclass=!item $i of $list_rclasses
+   !read jobs/checkclass.proc
+   !if $error!=$empty
+     !exit
+   !endif
+   !readdef $classdeffile
+   !shortout  {"qclass":"$qclass"\
+
+   !for d in $options
+	!shortout   ,"$d":"$(class_$d)"\
+
+   !next d
+
+   !if  $i < $list_cnt
+	!shortout },\
+
+   !endif
+
+!next i
+!shortout }]\
+
+!goto footer
+
+
+:getclassesuser
+list_cnt=!itemcnt $listclassesuser
+
+!shortout "message":"Lists classes associated to specified user ($quser) and rclass ($rclass) in your server",\
+"rclass":"$rclass",\
+"quser":"$quser",\
+"classes_list":[\
+
+
+!for i = 1 to $list_cnt
+   qclass=!item $i of $listclassesuser
+   rclass=!item $i of $list_rclassesuser
+   !read jobs/checkclass.proc
+   !if $error!=$empty
+     !exit
+   !endif
+   !readdef $classdeffile
+   !shortout  {"qclass":"$qclass"\
+
+   !for d in $options
+	!shortout   ,"$d":"$(class_$d)"\
+
+   !next d
+
+   !if  $i < $list_cnt
+	!shortout },\
+
+   !endif
+
+!next i
+!shortout }]\
+
+!goto footer
+
+
+:listmodules
+base_directory=$option
+curent_dir=!replace / by , in $base_directory
+curent_dir=!item -1 of $curent_dir
+pos = !positionof item $curent_dir in $wims_listlevel
+title=!item $pos of $name_wims_listlevel
+
+
+!shortout "base_directory":"$base_directory",\
+	"nbelement":$nb_modules,\
+	"lang_exists":"$lang_exists",\
+	"lang":"$lang",\
+	"title":"$title",\
+	"listContent":[\
+
+!for i = 1 to $nb_modules
+	id=!item $i of $listContent
+	!if $base_directory notsametext /
+		option=$base_directory/$id
+	!else
+		option=$base_directory$id
+	!endif
+	pos = !positionof item $id in $wims_listlevel
+
+	!read jobs/getmodule.proc
+
+	!default title=!item $pos of $name_wims_listlevel
+
+	!shortout  {"id":"$id",\
+	"module_path":"$option",\
+	"title":"$title"
+
+	!if $description notsametext
+		!shortout ,"description":"$description",\
+		"index_url" : "$wims_ref_name?module=$option&lang=$language",\
+		"language":"$language",\
+		"category" : "$category",\
+		"domain" : "$domain",\
+		"level" : "$level",\
+		"keywords" : "$keywords",\
+		"require" : "$require",\
+		"scoring" : "$scoring",\
+		"copyright" : "$copyright",\
+		"author" : "$author",\
+		"author_address" : "$address",\
+		"version" : "$version",\
+		"required_wims_version" : "$required_wims_version",\
+		"vardef" : "$vardef",\
+		"translator" : "$translator",\
+		"translator_address" : "$translator_address",\
+		"data" : "$data",\
+		"maintainer" : "$maintainer",\
+		"maintainer_address" : "$maintainer_address",\
+		"translation_language" : "$translation_language"\
+
+	!endif
+
+!shortout }
+
+	!if  $i < $nb_modules
+		!shortout 	,
+	!endif
+
+!next i
+!shortout ]\
+
+!endif
+
+!goto footer
+
+:getmodule
+
+!shortout "index_url" : "$wims_ref_name?module=$option",\
+"module_metadatas" : "$module_metadatas",\
+"module_id" : "$option",\
+"title" : "$title",\
+"description" : "$description",\
+"language" : "$language",\
+"category" : "$category",\
+"domain" : "$domain",\
+"level" : "$level",\
+"keywords" : "$keywords",\
+"require" : "$require",\
+"scoring" : "$scoring",\
+"copyright" : "$copyright",\
+"author" : "$author",\
+"author_address" : "$address",\
+"version" : "$version",\
+"required_wims_version" : "$required_wims_version",\
+"vardef" : "$vardef",\
+"translator" : "$translator",\
+"translator_address" : "$translator_address",\
+"data" : "$data",\
+"maintainer" : "$maintainer",\
+"maintainer_address" : "$maintainer_address",\
+"translation_language" : "$translation_language"\
+
+!goto footer
+
+
+:modsheet
+!shortout "query_class":"$qclass",\
+"querysheet":"$qsheet",\
+"changes_requested":$n,\
+"changes_done":$nbdefs,\
+"message":"$nbdefs modifications done on sheet $qsheet."
+!goto footer
+
+:putexo
+ !shortout "message":"exercice correctly added in sheet #$wims_sheet",\
+"query_class":"$wims_class",\
+"exo_module":"$sh_module",\
+"querysheet":"$wims_sheet",\
+"exo_count":$exocnt
+
+!goto footer
+
+:modexosheet
+!shortout "query_class":"$qclass",\
+"queryexo":"$qexo",\
+"querysheet":"$qsheet",\
+"message":"$message"
+!goto footer
+
+:modexam
+!shortout "query_class":"$qclass",\
+"queryexam":"$qexam",\
+"nb_modifs":"$nbdefs",\
+"message":"$nbdefs modifications done on exam $qexam."
+!goto footer
+
+:listlinks
+listlinks=!replace internal  ,  by "," in $listlinks
+!shortout "nblinks":"$nblink",\
+"listlinks":["$listlinks"]\
+
+!goto footer
+
+:linksheet
+:linkexo
+ !shortout "message":"$exocnt exercice(s) correctly added in exam #$qexam from sheet #$qsheet",\
+"query_class":"$wims_class",\
+"querysheet":"$wims_sheet",\
+"queryexo":"$qexo",\
+"queryexam":"$qexam",\
+"exo_count":$exocnt\
+
+!goto footer
+
+
+
+:delexo
+!shortout "message":"exercice $qexo successfully deleted",\
+"exo_id":"$qexo",\
+"compilation_result":"$compilation",\
+"more_infos":"$more_infos"\
+
+!goto footer
+
+
+:delsheet
+ cnt=!recordcnt wimshome/log/classes/$qclass/sheets/.sheets
+ !shortout "message":"sheet #$qsheet of class $qclass correctly deleted",\
+"sheet_count":$cnt\
+
+!goto footer
+
+:delexam
+ cnt=!recordcnt wimshome/log/classes/$qclass/exams/.exams
+ !shortout "message":"Exam #$qexam of class $qclass correctly deleted",\
+"exam_count":$cnt\
+
+!goto footer
+
+:cleanclass
+ suppressed_users = !eval ($usercnt_before - $usercnt_after)
+ !shortout "message":"class $qclass correctly cleaned",\
+ "log":"$log",\
+ "usercnt_before":"$usercnt_before",\
+ "usercnt_after":"$usercnt_after",\
+ "suppressed_users":$suppressed_users,\
+ "qclass":"$qclass"\
+
+!goto footer
+
+:copyclass
+new_class=!replace internal / by _ in $new_class
+ !shortout "new_class":"$new_class",\
+ "query_class":"$qclass",\
+ "message":"class $qclass correctly copied as $new_class",\
+ "log":"$log"\
+
+!goto footer
+
+:footer
+!shortout    }
+!exit

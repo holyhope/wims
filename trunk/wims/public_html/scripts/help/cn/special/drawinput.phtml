@@ -1,0 +1,38 @@
+:signification
+ 把回答的类型设置成用 canvasdraw
+ (其语法与 flydraw 大致相容) 创建的图形.
+ 用在 OEF 练习的 <span class="tt wims_code_words">statement</span>.
+
+<p>
+第一行是图形的代码 (放在方括号内) 后接以像素为单位的图形大小
+以及回答栏的基本大小 (必需).
+后面的行有以下形式
+</p>
+ <pre>
+ reply <span class="tt">n</span>, p_X x p_Y,size, defaut, css
+ </pre>
+ 这里的 <span class="tt">p_X</span> 与 <span class="tt">p_Y</span>
+ 给出图形代码所在坐标系里的位置,
+ <span class="tt">size</span> 是回答栏的大小 (非必需)
+</p>
+:example
+ <span class="wims_help_example">例</span>
+<div>
+<textarea id="wims_show2" cols="100" rows="8" name="wims_show1" readonly="readonly">
+\text{dessin=xrange -10,10
+yrange -10,10
+hline 0,0,black}
+\statement{
+ \special{drawinput [\dessin], 200 x 200, 20
+ reply1,-3 x -3
+ reply2,3 x 3
+ }
+}
+\answer{}{au dessous}{type=case}
+\answer{}{au dessus}{type=case}
+</textarea>
+</div>
+
+注意 : 目前软件可能会有毛病出现,
+尤其是页里有其它回答栏 (分析中的数值计算),
+有待改进.

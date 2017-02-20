@@ -1,0 +1,187 @@
+# mkuserlist
+# Constructs .userlist file in specified class (wims_class by default)
+# constructs .usernextlist and .userprevlist
+# also constructs .userlist_external if needed
+
+uclass=$wims_read_parm
+!default uclass=$wims_class
+
+# What's the point of $wims_prefix ?
+!if user notwordof $wims_prefix
+  wims_prefix=$wims_prefix user
+!endif
+
+:mkstart
+supclass=!defof class_superclass in wimshome/log/classes/$uclass/.def
+reset class_lvl
+
+!if $supclass!=$empty and $supclass!=$uclass
+  supertype=!defof class_type in wimshome/log/classes/$supclass/.def
+  typename=!defof class_typename in wimshome/log/classes/$uclass/.def
+
+  !if $typename iswordof level program
+    !exit
+  !endif
+
+  !if $typename issametext course
+    class_parent=!defof class_parent in wimshome/log/classes/$uclass/.def
+    !if $class_parent!=$empty
+      i=!defof class_ocourses in wimshome/log/classes/$class_parent/.def
+      i=!makelist $wims_superclass/x for x in $i
+      !if $uclass isitemof $i
+        uclass=$class_parent
+        !goto mkstart
+      !endif
+    !endif
+    clist=$uclass
+  !else
+    !if / isin $uclass
+      class_lvl=!translate internal / to , in $uclass
+      class_lvl=$(class_lvl[1])/$(class_lvl[2])
+      !if $class_lvl=$uclass
+        class_lvl=
+        clist=$supclass,$uclass
+      !else
+        clist=$supclass,$class_lvl,$uclass
+      !endif
+    !else
+      clist=!listuniq $supclass,$uclass
+    !endif
+  !endif
+!else
+  typename=class
+  clist=$uclass
+  supclass=$uclass
+!endif
+
+mul_userdir=wimshome/log/classes/$supclass/.users
+mul_userdir2=$wims_home/log/classes/$supclass/.users
+
+pack_size = 500
+
+## On range la liste des utilisateurs par paquets de $pack_size (userlist_0, userlist_1, etc...)
+start=0
+userlist_$start=!sh cd $mul_userdir2; ls 2>/dev/null | head -$pack_size
+userlist_$start=!words2items $(userlist_$start)
+
+userlist_lastcnt=!itemcnt $(userlist_$start)
+
+!while $userlist_lastcnt>$[$pack_size-1]
+  !advance start
+  userlist_$start=!sh cd $mul_userdir2; ls 2>/dev/null | tail -n +$[$start*$pack_size+1] | head -$pack_size
+  userlist_$start=!words2items $(userlist_$start)
+  userlist_lastcnt=!itemcnt $(userlist_$start)
+!endwhile
+
+## On supprime une eventuelle liste temporaire "userlist*.raw" dans chaque classe
+## just junk
+!for c in $clist
+  !sh rm -f $wims_home/log/classes/$c/.userlist.raw 2>/dev/null\
+      rm -f $wims_home/log/classes/$c/.userlist_external.raw 2>/dev/null
+!next
+
+## On parcourt nos paquets de $pack_size users
+!for N=0 to $start
+  !for u in $(userlist_$N)
+    !reset user_firstname, user_lastname, user_supervisable,\
+      user_class, user_participate, user_exists, user_external_auth
+    !readdef $mul_userdir/$u
+
+    !!TODO  better to make a special list for user_supervisable who participates
+    !!(suppress to add supervisor who are registered as participant to appear in userlist)
+    !if $user_exists=yes and $user_supervisable!=yes
+      userline=:$user_lastname,$user_firstname,$u
+      !reset userline_external
+      !if $user_external_auth!=$empty
+        userline_external=$user_external_auth:$u
+      !endif
+      !if $typename=course
+        !readdef wimshome/log/classes/$uclass/.users/$u
+        !if $user_class!=$empty
+          !appendfile wimshome/log/classes/$uclass/.userlist.raw $userline,$user_class
+          !if $userline_external!=$empty
+            !appendfile wimshome/log/classes/$uclass/.userlist_external.raw $userline_external
+          !endif
+        !endif
+      !else
+        !if $supclass=$uclass or $uclass isitemof $user_participate
+          !appendfile wimshome/log/classes/$uclass/.userlist.raw $userline
+          !if $userline_external!=$empty
+            !appendfile wimshome/log/classes/$uclass/.userlist_external.raw $userline_external
+          !endif
+        !endif
+        ### do it for the $supclass ? could be done many times if not in a group ?
+        !if $supclass!=$uclass
+          !appendfile wimshome/log/classes/$supclass/.userlist.raw $userline
+          !if $userline_external!=$empty
+            !appendfile wimshome/log/classes/$supclass/.userlist_external.raw $userline_external
+          !endif
+          !if $class_lvl!=$empty and $class_lvl/ isin $user_participate
+            ## do it for the intermediaire class ? could be done many times
+            !appendfile wimshome/log/classes/$class_lvl/.userlist.raw $userline
+            !if $userline_external!=$empty
+              !appendfile wimshome/log/classes/$class_lvl/.userlist_external.raw $userline_external
+            !endif
+          !endif
+        !endif
+      !endif
+    !endif
+  !next u
+!next N
+
+basedir=$wims_home/log/classes
+basedir2=wimshome/log/classes
+
+!for c in $clist
+  !sh sort -f $basedir/$c/.userlist.raw >$basedir/$c/.userlist 2>/dev/null\
+  rm -f $basedir/$c/.userlist.raw 2>/dev/null\
+  sort -f $basedir/$c/.userlist_external.raw > $basedir/$c/.userlist_external 2>/dev/null\
+  rm -f $basedir/$c/.userlist_external.raw 2>/dev/null
+!next
+## Now the files .userlist and .userlist_external are created in the classes of $clist,
+## so in the sup classes of $uclass. Do we need to do that (it is done many times for
+## the portal ...
+
+## do now the .usernextlist and .userprevlist only in the class $uclass
+## in fact, there is only one class in $uclass. Leave the loop for the moment
+!for c in $uclass
+  !sh rm -f $basedir/$c/.usernextlist.raw 2>/dev/null\
+      rm -f $basedir/$c/.userprevlist.raw 2>/dev/null
+  !set nbuser_=!recordcnt $basedir2/$c/.userlist
+  !if $nbuser_=0
+    !break
+  !endif
+
+  record_start = 1
+  remaining = $nbuser_ - 1
+  ## On parcourt nos users par paquets de $pack_size
+  !while $remaining > 0
+    nb_processing = $[min($remaining, $pack_size)]
+    record_end = $[$record_start+$nb_processing]
+    list_n=!record $record_start to $record_end of $basedir2/$c/.userlist
+    list_n=!column 3 of $list_n
+    nextuser=!makelist $$(list_n[x]), $$(list_n[x+1]); for x=1 to $nb_processing
+    nextuser=!nospace $nextuser
+    nextuser=!replace internal ;, by ; in $nextuser
+
+    prevuser=!nospace $(nextuser[;2,1])
+
+    prevuser=!rows2lines $prevuser
+    prevuser=!replace internal , by : in $prevuser
+    nextuser=!rows2lines $nextuser
+    nextuser=!replace internal , by : in $nextuser
+
+    !appendfile $basedir2/$c/.usernextlist.raw $nextuser
+    !appendfile $basedir2/$c/.userprevlist.raw $prevuser
+    record_start = $record_start + $nb_processing
+    remaining = $remaining - $nb_processing
+  !endwhile
+  first_user = !record 1 of $basedir2/$c/.userlist
+  first_user = !item 3 of $first_user
+  last_user = !record -1 of $basedir2/$c/.userlist
+  last_user = !item 3 of $last_user
+  !appendfile $basedir2/$c/.usernextlist.raw $last_user:$first_user
+  !appendfile $basedir2/$c/.userprevlist.raw $first_user:$last_user
+  !sh mv $basedir/$c/.usernextlist.raw $basedir/$c/.usernextlist\
+      mv $basedir/$c/.userprevlist.raw $basedir/$c/.userprevlist
+!next c

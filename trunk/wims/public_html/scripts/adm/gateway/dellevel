@@ -1,0 +1,24 @@
+# Delete a level and everything below it.
+# Calling parameter: level address.
+
+thisclass=!translate internal / to , in $wims_read_parm
+thislevel=$(thisclass[2])
+
+!if $wims_superclass=$empty or $wims_superclass!=$(thisclass[1]) or\
+	$thislevel=$empty or $wims_user!=supervisor or\
+	$wims_class!=$wims_superclass
+ !exit
+!endif
+
+cls_=$wims_read_parm
+cls__=wimshome/log/classes/$cls_
+test=!defof class_defined in $cls__/.def
+!if $test!=yes
+ error=del_not_exist
+ !exit
+!endif
+
+!read adm/gateway/delsup $thislevel
+!sh cd $wims_home/log/classes\
+ rm -Rf $cls_
+

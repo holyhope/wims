@@ -1,0 +1,119 @@
+<script type="text/javascript"  src="$jsdir/geogebra2wims.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+<!-- no validator -->
+    function dontknow(){
+	myConfirm('$dontknow','?','$wims_ref_name','$session','$module','$counter','$nok_send_color');
+    }
+    <!-- do not use "' in description -->
+    var descr_list="$description";
+    var descr_cnt = 30;
+    var description = make_description(descr_list,descr_cnt);
+    
+    var list_of_things=new Array();
+    
+    !if $list_of_things=$empty 
+	!! A list of all possible object names
+	list_of_things=['text','point','line','segment','circle','function','polygon','conic','ellipse','polynomial','vector','number','angle'];
+    !else
+	list_of_things=$list_of_things
+    !endif
+    function sendanswer(){
+	var reply=geogebra2wims(list_of_things);
+	var test=reply.split(",");var found_nothing=0;
+	for(var p=0;p<test.length;p++){
+	    if(test[p] == 0){found_nothing++;}
+	}
+	if(found_nothing == test.length){setAlarm(r35+"<br /> hmmm ? ");return;}
+	!! geogebra2wims will send values from myinput0 as
+	!! text=input0@input1@input2....@input_n
+	!! quick fix for this horrible applet
+	!if $taal=nl
+	alert("SLUIT HET GEOGEBRA VENSTER\nVOORDAT JE HET ANTWOORD\nOPSTUURT NAAR WIMS !");
+	!else
+	alert("CLOSE GEOGEBRA WINDOW\nBEFORE SENDING YOUR ANSWER\nTO WIMS !");	
+	!endif
+	myConfirm("<br />$send ?<br />",reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
+    }
+//]]>
+</script>
+<table id="exercise" class="exercise">
+    <tr>
+    <td class="exercise_t">
+	!if $(question$n) != $empty
+	    $(question$n)
+	    <br />
+	!endif
+	!if $(formula$n) != $empty
+	    !if $display=1234
+		!insmath $$$$ $(formula$n) $$$$
+	    !else
+		!insmath $(formula$n)
+	    !endif
+	!endif
+	!if $exotext != $empty
+	    <br />
+	    $exotext
+	!endif
+	!if $inputs>0
+	    !set a_items=!itemcnt $(answer$n)
+	    !if $inputs != $a_items
+		!set use_lines=1
+	    !else
+		!set use_lines=0
+	    !endif
+	    <table class="zebra_table_h2">
+		!for i=1 to $inputs
+		    !if $wims_user=supervisor
+			!if $use_lines=1
+			    !set voorzeggen=!line $i of $(answer$n)
+			!else
+			    !set voorzeggen=!item $i of $(answer$n)
+			!endif
+			<tr><td>$(description[$i])</td><td>$m_rightarrow</td><td><input id="myinput$[$i-1]" class="schaersvoorde_textarea" size="$cols" value="$voorzeggen" /></td><td>&nbsp;$(ex$p)</td></tr>
+		    !else
+			<tr><td>$(description[$i])</td><td>$m_rightarrow</td><td><input id="myinput$[$i-1]" class="schaersvoorde_textarea" size="$cols" value="" /></td><td>&nbsp;$(ex$p)</td></tr>
+		    !endif
+		!next i
+	    </table>
+	!endif
+    </td>
+!if $make_tr=1
+    </tr>
+    <tr>
+!endif
+!set server=!replace internal /wims.cgi by $empty in $wims_ref_name
+    <td class="exercise_c"><!-- we use only the GeoGebra startbutton (12/2012) -->
+	<!-- attention wims variable customToolbar for "param customToolbar" should be like  " 0 | 3 | 5 " spaces matter !   -->
+	<object classid="java:geogebra.GeoGebraApplet.class" type="application/x-java-applet;jpi-version=1.4" id="ggbApplet" width="170px" height="48px" >
+	<param name="java_code" value="geogebra.GeoGebraApplet" />
+	<param name="java_codebase" value="java/geogebra3" />
+	<param name="java_archive" value="geogebra.jar" />
+	<param name="language" value="$taal" />
+	<param name="type" value="button" />
+	<param name="filename" value="$server/$module_dir/$ggb" />
+	<param name="showToolBar"  value="$showToolBar" />
+	<param name="showMenuBar"  value="$showMenuBar" />
+!!	<param name="framePossible" value="$framePossible" />
+	<param name="framePossible" value="false" />
+	<param name="customToolBar" value=$customToolBar />
+	<param name="showAlgebraInput" value="$showAlgebraInput" />
+	<param name="mayscript" value="true" />
+	<a onmouseover="return escape('<img src=\'$gifdir/java.jpg\' alt=\'Get JAVA\' />');" href="http://www.java.com/$lang/download/manual.jsp?locale=$lang" >$nojava</a></object>
+	!if $appletcommand != $empty
+	    <script type="text/javascript">
+	    //<![CDATA[
+		$appletcommand
+	    //]]>
+	    </script>
+	!endif
+    </td>
+    </tr>
+</table>
+
+<div id="send_buttons" class="embedded_central">
+    <input type="button" id="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
+    <input type="button" id="schaersvoorde_nok_button" onclick="javascript:dontknow();" value="$dontknow" />
+</div>
+
+!exit

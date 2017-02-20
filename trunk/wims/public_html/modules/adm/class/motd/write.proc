@@ -1,0 +1,44 @@
+listuser=!listintersect $listuser and $wims_connectedlogin
+nbconnecteduser=!itemcnt $wims_connectedlogin
+
+!if $listuser=$empty
+ error=user_notconnected
+ job=list
+ !reset action
+ !exit
+!endif
+
+pl=!positionof item $(listuser[1]) in $wims_connectedlogin
+don=!line $pl of $wims_whoconnect
+ses=!item 4 of $don
+test=!getdef wims_class\
+wims_alertmsg in wimshome/sessions/$ses/var.stat
+!distribute line $test into test,motdold
+!if $test=$empty
+ !readproc adm/whoconnect 1
+ !reset action
+ job=list
+ error=user_notconnected
+ !exit
+!endif
+
+!if $action=register
+ motd=!detag $motd
+ motd=!char 1 to $alertmsg_limit of $motd
+ !for user in $listuser
+   pl=!positionof item $user in $wims_connectedlogin
+   don=!line $pl of $wims_whoconnect
+   ses=!item 4 of $don
+   !reset test
+   test=!getdef wims_class in wimshome/sessions/$ses/var.stat
+   !if $test!=$empty
+      ses=!item 4 of $don
+      !for s in $ses
+           !setdef wims_alertmsg=$motd in wimshome/sessions/$s/var.stat
+     !next s
+   !endif
+ !next user
+ !reset user,listuser,action,motd,job
+!else
+ motd=$motdold
+!endif

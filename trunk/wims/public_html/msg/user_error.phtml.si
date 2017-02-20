@@ -1,0 +1,409 @@
+Status: 450 WIMS User Error
+Server: WIMS $wims_version (WWW Interactive Multipurpose Server)
+Content-type: text/html; charset=iso-8859-1
+Cache-Control: no-cache
+Pragma: no-cache
+
+<html>
+ <head>
+  <meta http-equiv=expires content="1 Jan 1990">
+  <meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
+  <meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+<!-- Style general du theme -->
+<link rel="stylesheet" href="html/themes/$wims_theme/css.css" type="text/css">
+<style type="text/css">
+ input[type="submit"],input[type="button"],.wims_button{ background-color:$wims_ref_button_bgcolor;color:$wims_ref_button_color;}
+ .wims_button_help{ background-color:$wims_ref_button_help_bgcolor;color:$wims_ref_button_help_color;}
+</style>
+
+!if exam_ isin $wims_user_error
+<style type="text/css"><!--
+body {text-align: justify;
+padding-left: 3%; padding-right: 3%;}
+--></style>
+</head>
+<body onload="window.resizeTo(500,200);window.moveTo(250,300);" class="user_error">
+ <h1 class="wims_center">ERROR</h1>
+!goto examerr
+!endif
+
+</head>
+<body class="user_error">
+
+!if threshold iswordof $wims_user_error
+ <hr width="1"/>
+ <h1 class="wims_center">We are too busy</h1>
+ <hr style="width:50%" />
+ <p>
+ WIMS strežnik <span class="color:blue">$httpd_HTTP_HOST</span> 
+ je trenutno preobremenjen. Prosim, vrnite se kasneje ali
+ obišèite katerega od zrcalnih strežnikov.
+ </p><p>
+ Opravièujemo se za to neprijetnost.
+ </p>
+ !read mirror.phtml.en
+ </body>
+ </html>
+ !exit
+!endif
+
+!if overload iswordof $wims_user_error
+
+ <h1 class="wims_center">SORRY</h1>
+ Strežnik WIMS je prepreèil izvajanje tega zahtevka: presežena dovoljena kvota povezav.
+ </body></html>
+ !exit
+!endif
+
+!if ++++missing_ isin ++++$wims_user_error
+  <hr width="1"/>
+ <h1 class="wims_center">Sorry</h1>
+ <hr style="width:50%" />
+ Za izvedbo tega zahtevka je potrebna programska oprema
+ !set miss=!upper $missing_software
+ <span class="wims_warning">$miss</span>, 
+ ki ni namešèena na tem WIMS strežniku.
+ <p>
+ Obvestite 
+ <a href="mailto:$wims_site_manager?subject=$missing_software unavailable on WIMS">skrbnika strežnika</a> ali izberite drug strežnik.
+<p><a href="wims.cgi">WIMS domaèa stran</a>.
+ </p>
+ !read mirror.phtml.en
+ </body></html>
+ !exit
+!endif
+
+!if trapped iswordof $wims_user_error
+ <h1 class="wims_center">Stop!</h1><hr/>
+!endif
+
+<h1 class="wims_center">WIMS napaka</h1>
+<hr/>
+<p>
+V vašem zahtevku je napaka.
+</p>
+
+!if module_change iswordof $wims_user_error
+ !if $wims_human_access=yes
+ <p>
+  Ne uporabljajte gumba `nazaj', saj uporabljate interaktivni strežnik..
+  </p>
+  <p class="wims_center">
+  !set tit=!module title $module
+  !default tit=$module
+  !href module=$module $tit
+  &nbsp;&nbsp;&nbsp;
+  !href $ WIMS home
+  !if $httpd_HTTP_REFERER!=$empty
+   &nbsp;&nbsp;&nbsp;<a href="$httpd_HTTP_REFERER">Exit WIMS</a>
+  !else
+   </p>
+   <p>
+   <small>
+   If you want to get out of the site, ignore this message and continue
+   to click on `Back'.
+   </small></p>
+  !endif
+  !exit
+ !endif
+ You have asked an illegal module change.
+ Are you using an automatic program to access this site?
+ :unblock
+ !form new
+ <input type="hidden" name="module" value="home"/>
+ <input type="hidden" name="deblockparm" value="$[randint(10000000)+1000000]"/>
+ If you have simply clicked on the `back' button of your browser,
+ please type the word `wims' here:
+ <input size="8" name="special_parm" /> then
+ <input type="submit" value="send to the server" />.
+ !formend
+ <p>
+ Please bear in mind that pages on this site are dynamically generated.
+ They can therefore only be used online, 
+ via a normal browser. It is useless for you to gather these pages
+ using a robot program.
+ </p>
+ !if robot_doubt iswordof $wims_user_error
+  <p class="small">
+  And beware that people trying to hacker on
+  this site will see their accesses definitely denied.
+  </p>
+ !endif
+ !exit
+!endif
+
+!if robot_doubt iswordof $wims_user_error
+ <p>
+ We block further access to this site for you, because you are suspected
+ of using an automatic program to gather pages.
+ </p>
+ !goto unblock
+!endif
+
+!if allow_violation iswordof $wims_user_error
+  <p>
+  You don't have the right to define the variable ``$wims_error_data''
+  with the command ``$cmd''.
+  </p>
+  !goto end
+!endif
+
+!if bad_command iswordof $wims_user_error
+  The command ``$cmd'' is not valid.
+  <p> Valid commands are: <pre>
+  new, renew, reply, hint, config </pre>
+!endif
+
+!if bad_host iswordof $wims_user_error
+  You have tried to access a session from another post. This is not allowed
+  for your virtual class.
+  <p>
+  Unfortunately, some internet providers give you dynamic host addresses
+  which MAY change within one connection. If this is the case, please write
+  to the supervisor of your class asking him/her to change the access lock
+  policy.
+  </p>
+  !goto end
+!endif
+
+!if need_https iswordof $wims_user_error
+ You should connect to your class via a https request.
+ !set refname=!replace http:// by https:// in $wims_ref_name
+ <a href="$refname?session=$wims_session&module=home&cmd=new">Try it</a>.
+ !exit
+!endif
+
+!if bad_insnum iswordof $wims_user_error
+ !if $cmd=getfile
+  The file you asked for does not exist.
+ !else
+  The file name for dynamic insertion is not valid.
+ !endif
+ !goto end
+!endif
+
+!if cmd_output_too_long iswordof $wims_user_error
+  The intermediate result of the computation has exceeded the length limit.
+  You have probably submitted a request which is unrealistically complicated.
+  Simplify your request, please.
+  !goto end
+!endif
+
+!if double_click iswordof $wims_user_error
+ This request arrived while the process of another request from you is 
+ still under way.<p>
+ If you have been double clicking, now please wait 
+ <span class="wims_warning">$wims_cpu_limit seconds</span>
+ for the process of your old request to terminate, then
+ !href cmd=resume click here
+ to get back to your work. (And please be more patient the next time
+ you ask wims to do lengthy computations.)
+ <p>
+ If you are using ``back'' button of your browser to get out of wims, you
+ may ignore this message and go ahead.
+ !exit
+!endif
+
+!if invalid_char_in_query_string iswordof $wims_user_error
+  The substitution ``$wims_error_data'' in the parameter string is illegal.
+  !goto end
+!endif
+
+!if name_conflict iswordof $wims_user_error
+  ``$wims_error_data'' is a reserved name for wims.
+  !goto end
+!endif
+
+!if no_command iswordof $wims_user_error
+  There is no command.
+  !goto end
+!endif
+
+!if no_insnum iswordof $wims_user_error
+ !if $cmd=getfile
+  You have asked for a file without giving its name.
+ !else
+  You have asked for a dynamic insertion without giving its number.
+ !endif
+ !goto end
+!endif
+
+!if no_module_name iswordof $wims_user_error
+  You have asked a new session without module name.
+  !goto end
+!endif
+
+!if no_session iswordof $wims_user_error
+  The session number is missing.
+  !goto end
+!endif
+
+!if parm_too_long iswordof $wims_user_error
+  Your parameter string has exceeded length limit. This is not allowed by
+  security reasons, sorry.
+  !goto end
+!endif
+
+!if string_too_long iswordof $wims_user_error
+  The definition of variable has a length which exceeds the limit.
+  !goto end
+!endif
+
+!if too_many_variables iswordof $wims_user_error
+  The number of parameters which you transmitted has exceeded the limit
+  authorized in this wims site.
+  !goto end
+!endif
+
+!if unmatched_parentheses iswordof $wims_user_error
+  We have detected unmatched parentheses in your request. You may correct the
+  error here:
+  !form $cmd
+  $(name$bad_parentheses) =
+  !for i in module,special_parm,worksheet
+   !if $($i)!=$empty
+    !set value=!translate " to $ $ in $($i)
+    <input type="hidden" name="$i" value="$value" />
+   !endif
+  !next i
+  !for i=0 to $user_var_no-1
+   !if $i!=$bad_parentheses
+    !set value=!translate " to $ $ in $(value$i)
+    <input type="hidden" name="$(name$i)" value="$value" />
+   !endif
+  !next i
+  !set value=!translate " to $ $ in $(value$bad_parentheses)
+  !set len=!charcnt $value
+  !if $len<55
+   !set len=$[$len+3]
+  !else
+   !set len=59
+  !endif
+  <input size="$len" name="$(name$bad_parentheses)" value="$value" />
+  <p>
+  Then
+  <input type="submit" value="send the corrected request."/>
+  </p>
+  !formend
+  <hr />
+  <p class="wimscenter">
+  !href cmd=resume Cancel the last request
+, or
+  !href $ wims home
+.</p>
+  !exit
+!endif
+  
+!if wrong_module iswordof $wims_user_error
+  !set tmp=!translate "!/<>;': to $         $ in $module
+  <p>The module <code>$tmp</code> which you asked for does not exist in this site.</p>
+  !goto end
+!endif
+
+!if wrong_session iswordof $wims_user_error
+  The session number ``$session'' is not (or no longer) valid.
+  <a href="wims.cgi">Create a new session</a>.
+  !goto end
+!endif  
+
+!if rafale iswordof $wims_user_error
+ Please don't play with the exercises!
+ <p>
+ You should take time to think carefully and try to solve the exercises
+ correctly, instead of ask new ones over and over again.
+ !href cmd=resume Cancel the last request
+.
+ !if $wims_user!=$empty and $wims_user!=supervisor
+  <p><span class="wims_warning">ATTENTION</span>! Don't repeat this error!
+  Irregular activities may give you bad scores even when score registration is
+  closed.
+ !endif
+ !goto end2
+!endif
+
+:examerr
+
+!if exam_dep iswordof $wims_user_error
+  This exercise is available only when you have successfully made
+  !if , isin $dep_list
+   exercises $dep_list.
+  !else
+   exercise $dep_list.
+  !endif
+  Please first try to do the latter.
+  !goto examend
+!endif
+
+!if bad_exam iswordof $wims_user_error
+  You have issued an illegal request within an examination session.
+  !goto examend
+!endif
+
+!if exam_exo_finished iswordof $wims_user_error
+  You have already done this exercise with a score of $wims_exo_lastscore.
+  You cannot do it again because this is an examination.
+  !goto examend
+!endif
+
+!if expired_exam iswordof $wims_user_error
+  You have no more time left to work on this exam.
+  :examend
+  !set pses=!translate _ to , in $wims_session
+  !set pses=!item 1 of $pses
+  !set pser=!randint 1,999
+  !set wims_opener=window.opener.location='$wims_ref_name?session=$pses.$pser&cmd=reply&job=student';
+  <p class="wimscenter">
+  <a href=# onclick="window.close();$wims_opener">Close this window</a>.
+  </p>
+  !exit
+!endif
+
+!if exam_closed iswordof $wims_user_error
+ This exam is not accessible for your connection at the time being. Please verify
+ with the supervisor of your class.
+ !goto examend
+!endif
+
+!if bad_ident iswordof $wims_user_error
+ Your request contains a user identification error. Are you trying to connect
+ to somebody else's session?
+ <p>
+ Please
+ <a href="wims.cgi?special_parm=ignorecookie&special_parm2=$[randint(10^8)]">make a new connection</a>.
+ </p></body></html>
+ !exit
+!endif
+
+!if no_access iswordof $wims_user_error
+  Your request is refused by the access policy of this site. Sorry.
+  !goto end
+!endif  
+
+!if class_closed iswordof $wims_user_error
+  Sorry.
+  <p>
+  Access to this virtual class is temporarily closed by its supervisor.
+  Come back later!
+  <div class="wimscenter">
+  !href cmd=close&module=home WIMS
+  </div>
+  </body></html>
+  !exit
+!endif  
+
+:end
+<p>If you see this message after following a link given by another page, it 
+probably is because the link is not well-prepared. In this case, please
+contact the author of that page, to inform him of the error. You may also
+write to the
+<a href="mailto:$wims_site_manager?subject=wims.cgi">manager of this
+site</a>, with as many details as possible about the circomstances
+under which the error has occurred.
+
+:end2
+<hr/><div class="wimscenter">
+!href module=home&cmd=new Home page
+</div>
+
+</body></html>
+

@@ -1,0 +1,130 @@
+
+!read js/examclock1.phtml
+!if $job=exo
+ !set js=!record 0 of js/chooselist.js
+ !set wims_html_header=!append line $js to $wims_html_header
+!endif
+!read adm/css.phtml
+!header1
+
+!if $job iswordof student score scorereg
+ !changeto $job.phtml
+!endif
+!read adm/class/classname.phtml $wims_classname\
+$wims_institutionname
+
+!read adm/title.phtml 1\
+$classname\
+$name_title $exam
+
+!if $error!=$empty
+ <div class="wims_msg alert">
+ !read lang/msg.phtml.$moduclass_lang
+ </div>
+
+ !if $error iswordof prep_noexercise
+  !set wims_menu_items=!append line back2,1,cmd=resume&error=$empty \
+   to $wims_menu_items
+   !reset save
+ !else
+  !set wims_menu_items=!append line back2,1,module=home \
+   to $wims_menu_items
+ !endif
+ !goto end
+!endif
+
+!if $msg_info!=$empty
+ <div class="wims_msg info">
+   !set error=$msg_info
+   !read lang/msg.phtml.$moduclass_lang
+ </div>
+!endif
+
+
+!if $job=exo or $job=cpsheet or $job=cpexam
+ !read $job.phtml
+ !goto end
+!endif
+
+<div id="exam_management">
+  !if $jquery_defined=yes
+      <script type="text/javascript">
+        /*<![CDATA[*/
+        jQuery(function($$) {
+          // Get in sessionStorage if a tab was previously selected, and activate it.
+          var selectedTabId = sessionStorage.getItem("exam_management_selectedTab");
+          selectedTabId = selectedTabId === null ? 0 : selectedTabId; //default tab = 0
+          $$("#exam_management").tabs({
+            active: selectedTabId,
+            activate : function( event, ui ) {
+                selectedTabId = $$("#exam_management").tabs("option", "active");
+                sessionStorage.setItem("exam_management_selectedTab", selectedTabId);
+            }
+          });
+        });
+        /*]]>*/
+      </script>
+      <ul>
+        <li><a href="#examinfo">$name_info</a></li>
+        !ifval $activetest!=-1
+          <li><a href="#examcontent">$name_content</a></li>
+        !endif
+      </ul>
+      <div id="examinfo">
+         !read examinfo.phtml
+      </div>
+  !else
+    !if $wims_infoshow=no
+     <fieldset class="property_fields blockcenter">
+     <legend> $name_info [
+     !href cmd=resume&infoshow=yes $wims_name_showall
+     ]
+     </legend>
+     </fieldset>
+    !else
+     !read examinfo.phtml
+    !endif
+  !endif
+
+!ifval $activetest=-1
+ !goto end
+!endif
+
+:end1
+<div id="examcontent">
+
+!if $exocnt=0
+ <p>$name_warning
+ !set nex=!itemcnt $aexams
+ !if $nex > 0
+  !set wims_ref_class=wims_button_help
+  !href cmd=reply&job=cpexam $wims_name_cpexam
+  !let wims_menu_items=!append line cpexam,1,cmd=reply&job=cpexam to $wims_menu_items
+ !endif
+ </p>
+!else
+  !read examcontent.phtml
+!endif
+
+!if $activetest=0
+ !let wims_menu_items=!append line addexo,1,cmd=reply&job=exo&exo=$[$exocnt+1]\
+addsexo,1,cmd=reply&job=cpsheet to $wims_menu_items
+!endif
+
+!if $wims_user=supervisor and $exocnt>0
+ !let wims_menu_items=!append line itemsep,0,\
+duplicateexam,1,cmd=reply&job=duplicate to $wims_menu_items
+!endif
+
+!if $activetest>=0
+ !let wims_menu_items=!append line itemsep,0,\
+participantview,1,cmd=reply&job=student to $wims_menu_items
+!endif
+</div>
+
+:end
+</div>
+!tail
+
+!reset job,echoose,eweight,ename,edep,eopt,source
+

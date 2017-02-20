@@ -1,0 +1,97 @@
+
+<b>Disegna una retta, un poligono, punti, un segmento, un vettore, un rettangolo.</b>
+(nome : <span class="tt wims_code_words">javacurve</span>)
+<br/>
+Questo tipo di risposta permette all'utente di disegnare una retta, un poligono,
+un segmento, un vettore, un rettangolo o un insieme di punti su un disegno.
+<p>
+La risposta corretta deve essere data come matrice (utilizzando un punto
+e virgola `;' come separatore tra le righe). La prima riga di tale matrice 
+è l'URL dell'immagine presentata all'utente. La seconda 
+riga è il criterio per valutare il disegno
+eseguito dall'utente, secondo le condizioni della tabella seguente.
+Se si desidera costruire una analisi ad hoc della risposta, come risposta 
+corretta mettere una variabile vuota (che potrà essere utilizzata dal 
+comando <span class="tt wims_code_words">condition</span>) e inserire invece 
+come argomenti del comando <span class="tt wims_code_words">embed</span> l'URL 
+dell'immagine e il tipo di risposta attesa, come nella tabella seguente. 
+Più precisamente nell'argomento del comando 
+<span class="tt wims_code_words">embed</span> la prima riga è quella 
+standard (come spiegato più avanti in questa pagina), la seconda riga 
+è l'URL dell'immagine e la terza riga è il 
+tipo di risposta (per esempio <span class="tt wims_code_words">points</span>,
+<span class="tt wims_code_words">line</span> ...).
+
+!set p=anstype.$lang/javacurve
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td class="tt wims_code_words">
+!line 1 of $l_
+    </td><td>
+!line 2 to -1 of $l_
+   </td>
+   </tr>
+  !next
+$table_end
+<p>
+Opzioni possibili: 
+<span class="tt wims_code_words">precision</span>,
+<span class="tt wims_code_words">color1</span (colore della risposta data),
+<span class="tt wims_code_words">color2</span> (colore della ripsosta corretta),
+per esempio
+</p>
+<pre>
+\answer{}{...}{type=jsxgraphcurve}{option=color1=black color2=#B4B4FF precision=8}
+</pre>
+
+Il parametro <span class="tt wims_code_words">precision</span> deve essere utilizzato con prudenza...
+
+<p>
+Questo campo di risposta dovrebbe essere inserito nell'enunciato 
+con un comando <span class="tt wims_code_words">embed</span>. 
+Non può essere utilizzato insieme ad altri campi di risposta per
+l'ovvio motivo che il click dell'utente invia immediatamente 
+l'esercizio al server per la verifica della correttezza. 
+Le dimensioni dell'immagine devono essere inseriti come
+opzioni di tale comando nella forma 
+<span class="tt wims_code_words">L x H</span>, 
+e.g. <span class="tt wims_code_words">\embed{reply</span><em>n</em>,
+<span class="tt wims_code_words">300 x 400}</span>.
+
+</p>
+In generale le informazioni del disegno effettuato dall'utente sono salvate 
+nella variabile <span class="tt wims_code_variable">\reply</span><em>n</em>, 
+dove <em>n</em> è il numero del campo di risposta, variabile che può essere
+utilizzata in un \feedback e in generale in tale variabile vengono salvate 
+le coordinate del click (x1,...) eccetto che nei casi seguenti:
+<ul><li>
+Nel caso di <span class="tt wims_code_words">points</span>,
+ la prima riga è la lista delle coordinate dei punti su cui si è cliccato in pixel,
+ la seconda riga è <span class="tt wims_code_words">n1,n2,n3</span> dove
+<span class="tt wims_code_words">n1</span> è il numero di punti corretti,
+<span class="tt wims_code_words">n2</span> è il numero di punti mancanti, 
+<span class="tt wims_code_words">n3</span> è il numero di punti non corretti/di troppo.
+La terza riga è l'elenco (?del numero) dei punti corretti. 
+</li><li>
+nel caso di <span class="tt wims_code_words">circle</span>, la prima riga è la 
+lista delle coordinate dei punti su cui si è cliccato e il raggio in pixel, la seconda riga
+è <span class="tt wims_code_words">n1,n2</span> con
+<span class="tt wims_code_words">n1</span> 1 se il centro è corretto, altrimenti è 0, e
+<span class="tt wims_code_words">n2</span> 1 se il reggio è corretto, altrimenti 0.
+</li>
+<li>
+nel caso di <span class="tt wims_code_words">sline</span>, la prima riga è la lista 
+delle coordinate dei punti su ci si è cliccato in pixel, la secona riga
+è <span class="tt wims_code_words">n1,n2,n3</span> con
+<span class="tt wims_code_words">n1</span> 1 se l'origine è corretta, altrimenti 0,
+<span class="tt wims_code_words">n2</span> 1 se la direzione è corretta, altrimenti 0,
+<span class="tt wims_code_words">n3</span>1 if se il verso è corretto, altrimenti 0.
+</li>
+</ul>

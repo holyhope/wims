@@ -1,0 +1,81 @@
+!set wims_module_log=error: $error
+
+<span class="wims_warning">$wims_name_Error</span>.
+
+!if not_supervisor=$error
+ Désolé, mais l'opération de préparation / modification d'une feuille de
+ travail est réservée aux enseignants enregistrés d'une classe.
+ !exit
+!endif
+
+!if not_superclass=$error
+ Opération interdite car vous faites partie d'un groupement de classes. Seul le
+gestionnaire du groupement peut faire cela.
+ !exit
+!endif
+
+!if no_login iswordof $error
+ Les données envoyées doivent obligatoirement avoir une colonne correspondant
+ aux noms de login des participants.
+ !exit
+!endif
+
+!if bad_filename iswordof $error
+ Votre fichier ne semble pas être un fichier de tableur sous format texte.
+ :csvformat
+ Veuillez sauvez vos données sous un format texte (séparateur virgule ou tab,
+ avec des extensions .csv, .tsv ou .txt), avant de l'envoyer à la classe.
+ !exit
+!endif
+
+!if binary_upload iswordof $error
+ Vos données de tableur sont dans un format binaire&nbsp;! Ceci n'est pas
+ reconnu, désolé.
+ <p>
+ !goto csvformat
+!endif
+
+!if no_manual iswordof $error
+ Veuillez d'abord
+ !href module=adm/class/grades créer une colonne de notes manuelles
+ avant d'envoyer des données dedans.
+ !exit
+!endif
+
+!if not_secure iswordof $error
+ La communication de données de tableurs est disponible uniquement pour
+ des connections à partir de postes sûrs. Veuillez vérifier la configuration
+ de votre classe.
+ !exit
+!endif
+
+!if bad_user=$error
+ Erreur d'appel : le participant <span class="tt wims_login">$checkuser</span> n'existe pas.
+ !exit
+!endif
+
+!if $error iswordof login_missing login_empty
+!! login_missing: not find in the ldap for example
+   Certains identifiants n'ont pu être trouvés.
+ !exit
+!endif
+
+!if bad_exo=$error
+ Article non existant à vérifier.
+ !exit
+!endif
+
+!if bad_op=$error
+ Mauvaise opération. Fermez la fenêtre.
+ !exit
+!endif
+!if too_big=$error
+  Le nombre de colonnes demandé pour le fichier tableur est trop grand
+  (supérieur à $TOO_BIG). Si vous désirez obtenir le détail des exercices,
+  faites-le feuille par feuille ou examen par examen.
+  Le fichier proposé à télécharger est certainement incomplet.
+ !exit
+!endif
+
+!msg $error
+

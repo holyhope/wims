@@ -1,0 +1,52 @@
+!read adm/class/classlang names.phtml
+
+wims_prefix=class user tmp n sharing sharable
+
+test=!defof class_defined in wimshome/log/classes/$wims_class/.def
+!if $test!=yes
+ error=bad_class
+ !reset job
+ !exit
+!endif
+
+!readproc tabletheme
+!if $wims_user!=supervisor
+ !bound job within hide,readen default hide
+ !if $job=readen
+  !setdef wims_alertmsg=$empty in wimshome/sessions/$wims_session/var.stat
+  !restart module=home
+ !endif
+!else
+ !readproc adm/vfilter/listvarfilter.proc
+ !readproc adm/vfilter/varfilter proc
+ !if $varfilterclear!=$empty
+  !reset varfilterclear,job
+ !endif
+ !bound job within modif,delete,reactivate,write,groupe default $empty
+ !if $listuser=__CLASS__
+  !reset listuser
+ !endif
+ !if $job=groupe
+    !if __ALL__ isitemof $listuser
+	listuser=$listiduser
+    !else
+	!if __FILTER__ isitemof $listuser
+	    !readproc varfilter
+	!else
+            listuser=!listintersect $listuser and $listiduser
+	!endif
+    !endif
+    !let n=!positionof item $action in $name_reactive,$name_change,$name_erase,$name_walertmsg
+    !if $n!=$empty and $listuser!=$empty
+	job=!item $n of reactivate,modif,delete,write
+    !else
+        !reset job
+    !endif
+ !else
+  listuser=!listintersect $listuser and $listiduser
+ !endif
+ !readproc adm/whoconnect 1
+!endif
+!if $job!=$empty
+ !read $job.proc
+!endif

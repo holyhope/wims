@@ -1,0 +1,86 @@
+!set anstype=yes
+!set anstyle=dprompt
+
+!if $wims_read_parm=def
+ !exit
+!endif
+
+!set color=!getopt color in $(replyoption$i)
+!default color=blue
+
+!set type=!text remove 0123456789. in $(replygood$i[2;1])
+!default type=points
+!set input_img=$(replygood$i[1;1])
+!set inputsize=!replace internal $	$ by $\
+$  in $inputsize
+
+!set inputsize=!nonempty lines $inputsize
+!if ?analyze isin $input_img
+  !set type=!line 2 of $inputsize
+  !set parm3=!line 3 to -1 of $inputsize
+!endif
+!set Inputsize=!line 1 of $inputsize
+!set test=!text remove 0123456789x in $Inputsize
+
+!if $test issametext $empty
+  !set Inputsize=!replace internal x by , in $Inputsize
+  !distribute items $Inputsize into xsize,ysize
+!endif
+!default xsize=400
+!default ysize=400
+
+!set replygood$i=!lines2rows $(replygood$i)
+!if ?analyze notin $input_img
+  !set parm3=$(replygood$i[1;])
+  !set type=$(replygood$i[2;1])
+!endif
+!set parm3=!declosing $parm3
+!set parm3=!replace internal $	$ by $\
+$ in $parm3
+!set parm3=!rows2lines $parm3
+!set arrow_head=!getopt arrow_head in $(replyoption$i)
+!default arrow_head=10
+
+!if $type iswordof arrows
+   !set option=$arrow_head,
+!endif
+
+!set oef_applet_option=$xsize,$ysize\
+$parm3\
+$type $color,$option
+
+!! première ligne : le code
+!! deuxième ligne : segments, liste des segments etc
+
+!! mettre couleur en option
+
+!if $type iswordof circles
+  !set replyformat=28
+!endif
+!if $type iswordof polyline
+  !set replyformat=23
+!endif
+!default replyformat=22
+
+!set parm3=$parm3\
+replyformat $replyformat\
+userdraw $type,$color
+
+<script type="text/javascript">
+/*<![CDATA[*/
+     function my_canvasdraw$i() {
+     fun = this['read_canvas'+canvas_scripts[0]];
+     var p = new Array(); p = fun();
+     if( p === undefined) { p[0] = '' };
+     document.getElementById('oefvar' + $i).value=p;
+     }
+/*]]>*/
+</script>
+<input type="hidden" id="oefvar$i" name="reply$i" value="" />
+
+!read oef/canvasdraw.phtml $xsize,$ysize\
+$parm3\
+inputstyle color:black;background-color:white;font-size:1.1em;\
+clearbutton $wims_name_erase
+
+!set oef_js_submit=$oef_js_submit my_canvasdraw$i();

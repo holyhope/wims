@@ -1,0 +1,180 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_author=Bernadette, Perrin-Riou
+
+slib_parms=11\
+,f1\
+,f2\
+400,size\
+-10,tmin\
+10,tmax\
+-10,xmin and ymin\
+ 10,xmax and ymax\
+[red,blue,green],color for draw of x(t), y(t), (x,y)\
+[x0,y0],initial point of the solution at t=tmin\
+,data (in brackets) for sliders separated by a semi-colon ; (for each one: symbol used in expressions f1 and f2, name of the slider, label for the slider, init values (min,default,max).\
+,a number to identify the applet in case of multiple ones.
+
+slib_example= CC-y^2, x-y,300,-10,10,-10,10,[red,yellow,orange],[2,1],[CC,c,variable T,0,5,10],2
+
+
+ x-y+sin(t), x+y,400,-10,10,-10,10,green,[2,1],,3\
+ CC*x-y, x+y,400,-10,10,-10,10,green,[0,2,0,4],[CC,c,nom de c,0,1,4],5
+
+!exit
+
+:proc
+!reset slib_size1 slib_out slib_number slib_script_main
+!distribute items $wims_read_parm into slib_f1,slib_f2,slib_size1,slib_tmin,slib_tmax,slib_ymin,slib_ymax,slib_color,slib_init,slib_cursor,slib_number,slib_option
+!default slib_size1=400
+!default slib_tmin=-10
+!default slib_tmax=10
+!default slib_ymin=-10
+!default slib_ymax=10
+!default slib_number=!randint 10000,30000
+
+!set slib_color=!declosing $slib_color
+!distribute items $slib_color into slib_colorx, slib_colory, slib_colorxy
+!default slib_colorx=red
+!default slib_colory=blue
+!default slib_colorxy=green
+!reset slib_dim
+slib_glider=glider
+!if $slib_f1=1
+  slib_dim=1
+  slib_glider=point
+!endif
+
+slib_N=$slib_xmax
+slib_init=!declosing $slib_init
+!default slib_init=0,0
+
+slib_cursorcnt=0
+slib_cursor=!declosing $slib_cursor
+!if $slib_cursor != $empty
+ !if ; isin $slib_cursor
+   slib_cursorcnt=!itemcnt $(slib_cursor[;1])
+ !else
+   slib_cursorcnt=1
+ !endif
+ slib_cursor_dec= $[($slib_ymax-($slib_ymin))/20]
+!endif
+!reset slib_script_cursor
+brd=brd$slib_number
+brd1=brdchild$slib_number
+
+slib_posx=$[round(($slib_tmax+($slib_tmin))/2)]
+slib_posxc=$[round((6*$slib_tmax+3*($slib_tmin))/9)]
+!for slib_j = 1 to $slib_cursorcnt
+  slib_posy=$[$slib_ymax-$slib_cursor_dec*$slib_j]
+  slib_script_cursor=$slib_script_cursor\
+   $(slib_cursor[$slib_j;2]) = $brd.createElement('slider', [[$[$slib_tmin+1],$slib_posy],[$slib_posx,$slib_posy],[$(slib_cursor[$slib_j;4..6])]],{name:'$(slib_cursor[$slib_j;2])',strokeColor:'black',fillColor:'black', snapWidth:0.1});\
+\
+   $(slib_cursor[$slib_j;2])_name=$brd.createElement('text', [$slib_posxc,$slib_posy, "$(slib_cursor[$slib_j;3])"]);
+  slib_f1=!replace internal $(slib_cursor[$slib_j;1]) by $(slib_cursor[$slib_j;2]) in $slib_f1
+  slib_f2=!replace internal $(slib_cursor[$slib_j;1]) by $(slib_cursor[$slib_j;2]) in $slib_f2
+!next
+
+slib_script_main=var $brd = JXG.JSXGraph.initBoard('jsxbox$slib_number', \
+  {boundingbox:[$[$(slib_tmin)-1],$slib_ymax,$slib_tmax,$slib_ymin],axis:true,grid:true,showCopyright:false});\
+\
+  $slib_script_cursor\
+  var L=$brd.createElement('line',[[$slib_tmin,0],[$slib_tmin,$slib_ymax]],{fixed:true});\
+    starty$slib_number = $brd.createElement('$slib_glider', [0, $(slib_init[2]), L], {name:'$slib_n_y',strokeColor:'$slib_colory',fillColor:'$slib_colory',snapWidth:1});\
+    startx$slib_number = $brd.createElement('$slib_glider', [0, $(slib_init[1]),L], {name:'$slib_n_x',strokeColor:'$slib_colorx',fillColor:'$slib_colorx'});\
+\
+    /* Variables for the JXG.Curves*/\
+    var gy$slib_number = null;\
+    var gx$slib_number = null;\
+  var txt1_$slib_number = $brd.jc.snippet('$slib_f1',true,'x,y,t');\
+  var txt2_$slib_number = $brd.jc.snippet('$slib_f2',true,'x,y,t');\
+  var f$slib_number = function (t, xx){return [txt1_$slib_number(xx[0], xx[1],t), txt2_$slib_number(xx[0], xx[1], t)]};\
+\
+    /* Initialise ODE and solve it with JXG.Math.Numerics.rungeKutta()*/\
+    function ode$slib_number(f) {\
+        /* evaluation interval*/\
+        var I = [$slib_tmin, $slib_tmax];\
+        /* Number of steps. 1000 should be enough*/\
+        var N = 1000;\
+ \
+        /* Initial value*/\
+        var x0 = [startx$slib_number.Y(), starty$slib_number.Y()];\
+ \
+        /* Solve ode*/\
+        var data = JXG.Math.Numerics.rungeKutta('euler', x0, I, N, f);\
+\
+        /* to plot the data against time we need the times where the equations were solved*/\
+        var t$slib_number = [];\
+        var q = I[0];\
+        var h = (I[1]-I[0])/N;\
+        for(var i=0; i<data.length; i++) {\
+            data[i].push(q);\
+            q += h;\
+        };\
+        return data;\
+    };\
+var data$slib_number = ode$slib_number(f$slib_number);\
+\
+    /* copy data to arrays so we can plot it using JXG.Curve*/\
+    var t$slib_number = [];\
+    var datax$slib_number = [];\
+    var datay$slib_number = [];\
+    for(var i=0; i<data$slib_number.length; i++) {\
+        t$slib_number[i] = data$slib_number[i][2];\
+        datay$slib_number[i] = data$slib_number[i][1];\
+        datax$slib_number[i] = data$slib_number[i][0];\
+    };\
+    /* Plot x*/\
+    gx$slib_number = $brd.createElement('curve', [t$slib_number, datax$slib_number], {strokeColor:'$slib_colorx', strokeWidth:'2px'});\
+    gx$slib_number.updateDataArray = function() {\
+        var data = ode$slib_number(f$slib_number);\
+        this.dataX = [];\
+        this.dataY = [];\
+        for(var i=0; i<data.length; i++) {\
+            this.dataX[i] = t$slib_number[i];\
+            this.dataY[i] = data[i][0];\
+        }\
+    };
+
+!if $slib_dim!=1
+   slib_script_main= $slib_script_main\
+   /* Plot y*/\
+    gy$slib_number = $brd.createElement('curve', [t$slib_number, datay$slib_number], {strokeColor:'$slib_colory', strokeWidth:'2px'});\
+    gy$slib_number.updateDataArray = function() {\
+        var data = ode$slib_number(f$slib_number);\
+        this.dataX = [];\
+        this.dataY = [];\
+        for(var i=0; i<data.length; i++) {\
+            this.dataX[i] = t$slib_number[i];\
+            this.dataY[i] = data[i][1];\
+        }\
+    };
+
+!endif
+
+!readproc slib/geo2D/jsxgraph jsxbox$slib_number, $slib_size1 x $slib_size1, $slib_script_main
+
+!if $slib_dim!=1
+ slib_out_main=$slib_out
+
+ slib_script_child=var $brd1 = JXG.JSXGraph.initBoard('jsxboxchild$slib_number', {boundingbox: [$slib_ymin,$slib_ymax,$slib_ymax,$slib_ymin], axis:true,grid:true,showCopyright:false});\
+ $brd1.renderer.container.style.backgroundColor ='white';\
+ var gxy$slib_number=$brd1.createElement('curve', [datax$slib_number, datay$slib_number], {strokeColor:'$slib_colorxy', strokeWidth:'2px'});\
+    gxy$slib_number.updateDataArray = function() {\
+        var data = ode$slib_number(f$slib_number);\
+        this.dataX = [];\
+        this.dataY = [];\
+        for(var i=0; i<data.length; i++) {\
+            this.dataX[i] = data[i][0];\
+            this.dataY[i] = data[i][1];\
+        }\
+    };\
+    $brd.addChild($brd1);
+
+ !reset slib_script_main slib_size
+ !readproc slib/geo2D/jsxgraph jsxboxchild$slib_number, $slib_size1 x $slib_size1, $slib_script_child
+ slib_out=!replace internal class="jxgbox" by class="jxgboxchild" in $slib_out
+ slib_out=$slib_out_main\
+ $slib_out
+!endif

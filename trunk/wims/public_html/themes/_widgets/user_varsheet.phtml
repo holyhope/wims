@@ -1,0 +1,24 @@
+!set t=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+!set wlist=!record 0 of wimshome/log/classes/$wims_class/sheets/.weight
+!set sevlist=!record 0 of wimshome/log/classes/$wims_class/sheets/.severity
+!set aclist=
+!set formula_list=!record 0 of adm/class/sheetformula
+!set scoremax=!line 1 of $sevlist
+!set tmp=!defof DF_SEVERITY in wimshome/public_html/bases/sys/define.conf
+!distribute words $tmp into bidon,tmp_s,tmp_ss
+!for i=1 to $t
+ !set s_$i=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+ !set sev_$i=!line $i + 1 of $sevlist
+ !distribute word $(sev_$i) into w_$i,s,ss
+ !default w_$i=1
+ !bound s between integer 0 and 6 default $tmp_s
+ !bound ss between integer 0 and 2 default $tmp_ss
+ !set f_$i=!item $s+1 of $formula_list
+ !set f_$i=!replace internal I by I$ss in $(f_$i)
+ !set a_=!line 1 of $(s_$i)
+ !if $a_>=1 and $a_<=2
+  !set aclist=!append item $i to $aclist
+ !endif
+!next i
+!reset tmp tmp_s tmp_ss
+!set n=!itemcnt $aclist

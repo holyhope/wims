@@ -1,0 +1,54 @@
+!if $error!=$empty
+<div class="wims_msg alert">
+ !read docu/$modu_lang/msg.phtml
+ </div>
+ !exit
+!endif
+<div id="docprint">
+<h1 class="wims_docu_title">$tit</h1>
+
+!if $titb=$empty
+ <p>
+$name_noncreate
+ </p>
+ !exit
+!endif
+
+!if $datetest<0
+ <p>
+$name_noread
+ </p>
+ !exit
+!endif
+
+!if $datetest>0
+ <p>
+ $name_expired
+ </p>
+ !exit
+!endif
+
+:newblock
+<a id="$block"></a>
+<h3>$titb</h3>
+
+!read $wims_priv_thisdoc/$block.def content
+
+!if $waitblock$(waitblock_$block)!=$empty
+ !set waitblock=$(waitblock_$block),$waitblock
+ !set waitblock=!nonempty items $waitblock
+ !set block=!item 1 of $waitblock
+ !set gotblock=!append item $block to $gotblock
+ !set waitblock=!item 2 to -1 of $waitblock
+ <div>
+ !read $wims_priv_thisdoc/$block.def
+ </div>
+ !goto newblock
+!endif
+
+</div><!-- end of docprint -->
+
+!if $doctoc=yes
+<hr />
+  !read $wims_priv_thisdoc/doctoc.def content
+!endif

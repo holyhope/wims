@@ -1,0 +1,57 @@
+!if robot isin $session
+ <html><body $wims_htmlbody>
+ This page is not accessible to robots.
+ </body></html>
+ !exit
+!endif
+
+!if $job iswordof taxo subject
+!set wims_html_header=!append line <link rel="stylesheet" href="html/themes/_css/browse.css">\
+<style type="text/css">\
+.tooltip:hover::after {\
+  border: 1px solid $wims_refcolor;\
+  border-left: 10px solid $wims_ref_bgcolor;\
+}\
+</style>\
+<!-- CSS for dynamic tree display -->\
+<link type="text/css" rel="stylesheet" href="scripts/js/tree_JS/tree.css" /> to $wims_html_header
+
+!set wims_html_header=!append line <script type="text/javascript">\
+  /*<![CDATA[*/ jQuery(function(jq) {jq( "#classifications" ).tabs();}); /*]]>*/\
+  </script> to $wims_html_header
+!endif
+
+!set wims_html_onload=!append word window.focus(); to $wims_html_onload
+!if $job notwordof light
+  !set wims_title_title=$(module_title_$lang)
+  !default wims_title_title=$(module_title)
+  !header
+
+  <div id="wims_title">
+    <h1 class="wims_title">
+      WWW Interactive Multipurpose Server
+    </h1>
+    <h2 class="wims_subtitle">
+      @ <a href="/">$httpd_HTTP_HOST</a>
+    </h2>
+  </div>
+!endif
+!read $job.phtml
+
+!if $job!=home and $wims_theme=default
+!!ARIANE
+ !set wims_menu_items=!append line browse,1,module=$module&cmd=new&job=home\
+to $wims_menu_items
+!endif
+
+!if $job=subject
+  !set parm_father=!lookup $parm in $treefile
+  !if $parm_father!=$empty
+    !set wims_menu_items=!append line back2,1,module=$module&cmd=new&job=subject&parm=$parm_father\
+to $wims_menu_items
+  !endif
+!endif
+
+!if $job notwordof light
+  !tail
+!endif

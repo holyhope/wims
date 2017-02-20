@@ -1,0 +1,29 @@
+<!-- supervisormenubox.proc -->
+!! Adds all Supervisor links in wims_rm_1 for footer navigation menus
+
+!if $class_typename notsametext program
+    !if $class_typename isitemof group,portal,level or ($wims_supertype=4 and $class_typename issametext class)
+        !set wims_rm_1 = $wims_rm_1\
+menublock,0,\
+participantview,1,style=student\
+SE_mod,1,module=adm/class/motd
+    !else
+        !set wims_rm_1 = $wims_rm_1\
+menublock,0,\
+participantview,1,style=student\
+SE_mod,1,module=adm/class/motd
+    !endif
+!endif
+!set wims_rm_1 = $wims_rm_1\
+menublock,0,\
+
+!if $exist_cdt=yes
+  !set wims_rm_1 = $wims_rm_1\
+cdt,1,module=adm/class/cdt
+!endif
+
+!read themes/_procs/supervisorforum.proc
+
+!set wims_rm_1 = $wims_rm_1\
+menublock,0,
+!read themes/_procs/supervisorconfig.proc 1

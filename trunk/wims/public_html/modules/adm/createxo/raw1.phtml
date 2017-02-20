@@ -1,0 +1,133 @@
+!if $lang iswordof fr en nl cn it ca
+ !read lang/js_editor.phtml.$lang
+!else
+ !read lang/js_editor.phtml.en
+!endif
+<span id="session_wims" style="display:none;">$session</span>
+<div id="editeur">
+!form reply name="replyform" id="replyform" onkeydown="change()" onkeypress="change()" onkeyup="change()"
+<input type="hidden" name="level" value="3" />
+
+!if $existing=$empty
+$name_brut<br />
+ !if $modeltest=yes
+!set wims_ref_class=wims_button
+  !href cmd=reply&mode=model&level=2 $wims_name_adapt
+ $name_try.
+ !set wims_ref_class=wims_button wims_secondary_button
+  !href cmd=reply&mode=none&level=0 $wims_name_giveup
+  <br />
+ !else
+ $name_allsource (
+  !href target=wims_mhelp cmd=help&special_parm=oef format OEF
+  ) ($name_copy).<br />
+ !endif
+!else
+
+ !if $catmodule=$empty
+  $name_source2
+ !else
+  $name_modify_window
+ !endif
+ !if $modeltest=yes
+  $name_public
+$wims_name_or
+!set wims_ref_class=wims_button
+!href cmd=reply&mode=model&level=2 $wims_name_adapt
+$name_try
+ $wims_name_or
+!set wims_ref_class=wims_button wims_secondary_button
+  !href cmd=reply&mode=none&level=0 $wims_name_giveup
+ !endif
+!endif
+<p>
+ $name_test_extern
+  !href target=wims_test module=tool/directexec&cmd=new $name_testerscript
+.
+</p>
+<ul id="enev_menu">
+ <li id="menu_html">HTML</li>
+ <li id="menu_avant">$name_before</li>
+ <li id="menu_pendant">$name_during</li>
+ <li id="menu_apres">$name_after</li>
+</ul>
+<a name="textarea"></a>
+<div id="textarea">
+ <div id="textDiv">
+  !mexec textarea2.sh
+ </div>
+ <div id="textarea_buttons">
+  <input type="submit" value="$name_sendsource" />
+ $
+ <a class="wims_button wims_secondary_button" href="#" onclick="document.forms['replyform'].wims_deposit.value=''">$name_clean</a>
+ $
+  !set wims_ref_class=wims_button wims_secondary_button
+  !href cmd=resume $wims_name_giveup
+ </div>
+</div>
+
+!formend
+
+
+<div id="bloc-droit" class="container">
+	<h4 id="name_list_instruction"> $name_instruction_list :</h4>
+    <div class="content">
+    	<a class="wims_button" onclick="changerListeInstruction()" href="javascript:void(0);">$name_changeList</a>
+        <div id="divoptions">$name_javascript_required</div>
+    </div>
+</div>
+
+<script type="text/javascript">
+		markdown_toolbar = new Control.TextArea.ToolBar.Markdown('wims_deposit_id');
+		markdown_toolbar.toolbar.container.id = 'markdown_toolbar';
+
+		function afficherHud(lId) {
+			clearInterval(chrono);
+			if (navigateurEstIncompatible()) return false;
+			element = document.getElementById(lId);
+			if (element) {
+				elementId = element.id;
+				hudCentrerElement(element);
+				this._setOverlay();
+				document.getElementById('overlay').style.opacity = '0.75';
+				document.getElementById('overlay').style.display = 'block';
+				setTimeout("hudAnimationOuverture(elementId)", 500);
+			}
+		}
+	 anime();
+</script>
+
+<div class="_spacer"><br /></div>
+
+<div id="help_container" class="container">
+    <h4 id="titre_aide">$wims_name_help :</h4>
+    <div id="aide" class="content">
+     <h3 style="margin-top:0;"><img src="gifs/editor/bouton_infos.gif" height="40" alt="help editor" /> $name_how_to_use_editor :</h3>
+      $name_editor_help
+    </div>
+    </div>
+    <div id="hud_video_intro" class="hud_element">
+    $name_choose_list
+      <ul>
+        <li><a onclick="changerListeInstruction2(oefcommand)" href="javascript:void(0);">$name_editor_command</a></li>
+        <li><a onclick="changerListeInstruction2(oefparm0)" href="javascript:void(0);">$name_editor_oefparm0</a> </li>
+        <li><a onclick="changerListeInstruction2(oefparm1)" href="javascript:void(0);">$name_editor_oefparm1</a></li>
+        <li><a onclick="changerListeInstruction2(oefparm2)" href="javascript:void(0);">$name_editor_oefparm2</a></li>
+        <li><a onclick="changerListeInstruction2(oefparm3)" href="javascript:void(0);">$name_editor_oefparm3</a></li>
+        <li><a onclick="changerListeInstruction2(oefparm4)" href="javascript:void(0);">$name_editor_oefparm4</a></li>
+        <li><a onclick="changerListeInstruction2(oefparm5)" href="javascript:void(0);">$name_editor_oefparm5</a> </li>
+        <li><a onclick="changerListeInstruction2(anstype)" href="javascript:void(0);">$name_editor_anstype</a></li>
+        <li><a onclick="changerListeInstruction2(special)" href="javascript:void(0);">$name_editor_special</a></li>
+        <li><a onclick="changerListeInstruction2(iff)" href="javascript:void(0);">$name_editor_iff</a> </li>
+        <li><a onclick="changerListeInstruction2(slib)" href="javascript:void(0);">$name_editor_slib</a> </li>
+        <li><a onclick="changerListeInstruction2(latex)" href="javascript:void(0);">LaTeX</a> </li>
+      </ul>
+    </div>
+    <div id="overlay" style="display:none"></div>
+    <script type="text/javascript">
+    	var wims_deposit_id_id = document.getElementById("wims_deposit_id");
+    	var redim_div=document.getElementById("wims_deposit_id");
+    	var textDiv = document.getElementById("textDiv");
+    	var enev_menu = document.getElementById("enev_menu");
+    </script>
+</div>

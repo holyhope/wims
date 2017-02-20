@@ -1,0 +1,80 @@
+
+!href cmd=reply&job2=def $nei_description
+ (<span class="wims_emph">$nei_institution</span>)
+!if $newcnt1+$newcnt2<1
+ $name_no_ressource.
+ !if $class_type!=3
+  !set wims_ref_class=wims_button
+  !href cmd=reply&job2=def $wims_name_back2
+ !endif
+ !exit
+!endif
+$name_importable.
+ $
+!set wims_ref_class=wims_button_help
+!href cmd=help&special_parm=import $wims_name_help
+
+
+!if $newcnt1>0
+ $table_header
+ <caption>$name_teaching</caption>
+ $table_hdtr<th>$wims_name_Type</th><th>$wims_name_title</th><th class="small">$wims_name_name</th>
+ <th class="small">$name_ressourceallowed</th>
+ <th>$name_same_title</th><th>$wims_name_action</th></tr>
+ !for i=1 to $newcnt1
+  !set l=!line $i of $newrec
+  !set ll=!words2items $l
+  $table_tr
+  <td>$(name_$(rtype$i))</td>
+  <td>$(rname$i)</td>
+  <td class="small">$(rName$i)</td>
+  <td>$(rcnt$i)</td>
+  <td>$(code$(rcode$i))</td>
+  <td>
+  !if $(rstat$i)=0 or $(rcnt$i)=0
+   !if $(rcnt$i)=0
+    $name_empty
+   !else
+    <span class="small">$name_inpreparation</span>
+   !endif
+  !else
+   !if $(rcode$i)!=2 or $(rtype$i) notwordof motd exo
+    !href cmd=reply&job2=import2&import=$ll&impmethod=add $wims_name_import
+   !endif
+   !if $(rcode$i)=2
+    &nbsp;
+    !href cmd=reply&job2=import2&import=$ll&impmethod=replace&replace=$(rmine$i) $name_replace
+   !endif
+  !endif
+  </td></tr>
+ !next i
+ $table_end
+!endif
+
+!if $newcnt2>0
+ $table_header
+ <caption>$wims_name_student
+ !if $newcnt2>2
+ [
+  !href cmd=reply&job2=import2&import=user,-all- $name_everybodyimport
+ ]
+ !endif
+ </caption>
+ $table_hdtr<th>login</th><th>$wims_name_lastname</th><th>$wims_name_firstname</th><th>$wims_name_action</th></tr>
+ !for i=1 to $newcnt2
+  $table_tr<td>$(ulogin$i)</td>
+  <td>$(uname2$i)<td>$(uname1$i)</td><td>
+  !if $(ucode$i)=1
+   !href cmd=reply&job2=import2&import=user,$(ulogin$i) $wims_name_import
+  !else
+   !if $(ucode$i)=2
+    $name_existinglogin
+   !else
+    $name_part_erased
+   !endif
+  !endif
+  </td></tr>
+ !next i
+ $table_end
+!endif
+

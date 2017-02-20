@@ -1,0 +1,49 @@
+!set methtit2=Multiply an equation by a non-zero number
+!set methtit=Multiply an equation by a number
+!set methenv=ZZ QQ RR CC
+!set methparmtype=number,parm equation
+!set methhelp=This method transforms an equation \(A = B)\
+ into the equivalent equation \(A*n = B*n), where \(n) is a number,\
+ which must be non-zero in order to guarantie the equivalence of the\
+ originating equation and the transformed one.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ Multiply the equation
+ !read deduc/methparm.phtml 2
+ by the number
+ !read deduc/methparm.phtml 1,10
+
+!exit
+:check
+ !distribute items $methparmobj2 into data,left,sign,right
+ !if $methparm1=0
+  error=Multiply an equation by 0 makes you lose information, and is therefore\
+   prohibited.
+  !advance penalty
+  !exit
+ !endif
+ methexp=Multiply \($left $sign $right) by \($methparm1)
+
+ !read deduc/sub/simplify ($left) * ($methparm1)\
+	($right) * ($methparm1)
+ !distribute lines $out into newleft,newright
+ !if $newleft=$empty or $newright=$empty
+  error=bad_data
+  !exit
+ !endif
+ newsign=$sign
+ newobject2=$newleft $newsign $newright
+ oldobject=2
+
+ contextlist=$ct_Onlywhen the multiplier is non-zero,\
+	$ct_Onlywhen the multiplier is positive,\
+	$ct_Onlywhen the two sides are positive,\
+	$ct_Onlywhen the two sides are of the same sign
+ 
+!exit
+

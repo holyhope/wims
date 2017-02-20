@@ -1,0 +1,36 @@
+!if $postvarcnt>0
+ !read $deffile postdef
+ thisstep_postdef=done
+!else
+ !exit
+!endif
+Nextstep=!trim $nextstep
+!if $Nextstep=$empty
+ !exit
+!endif
+Nextstep=!lower $Nextstep
+Nextstep=!replace replies by r in $Nextstep
+Nextstep=!replace choices by c in $Nextstep
+Nextstep=!replace reply by r in $Nextstep
+Nextstep=!replace choice by c in $Nextstep
+Nextstep=!nospace $Nextstep
+Nextstep=!rows2lines $Nextstep
+Nextstep=!nonempty lines $Nextstep
+Nextstep=!line 1 of $Nextstep
+rr=!text select r in $Nextstep
+cc=!text select c in $Nextstep
+rrcnt=!charcnt $rr
+cccnt=!charcnt $cc
+creplycnt=$[$creplycnt+$rrcnt]
+cchoicecnt=$[$cchoicecnt+$cccnt]
+!advance oefstepcnt
+oefsteps=!append line $Nextstep to $oefsteps
+
+vsave=
+!for v in $vsavelist
+ vv=!translate internal $\
+$ to $	$ in $(val$v)
+ vsave=$vsave$(vv)\
+
+!next v
+

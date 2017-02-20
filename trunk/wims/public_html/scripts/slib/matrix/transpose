@@ -1,0 +1,20 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+
+slib_author=Gang, XIAO
+
+slib_example=4,2,5;1,0,-3\
+4,4,5\
+3;6;7
+
+slib_require=pari
+!exit
+
+:proc
+slib_mat=!declosing $wims_read_parm
+!if $slib_mat=$empty
+ slib_out=
+!else
+ slib_out=!exec pari print(Mat([$slib_mat]~))
+!endif

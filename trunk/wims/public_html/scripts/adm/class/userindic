@@ -1,0 +1,82 @@
+!!no more use !
+!!input :user, class, sheet (optional), exo (optional)
+!!output:
+!! script_out: lines for each exo in sheet coming from exostat
+!!  should put only the best things ??
+!! script_best: best result (depending on the required points)
+!! script_p3 (average of best result, only in the case sheet and exo are empty
+!! should be the third word of the result of !getscorepercent
+
+!distribute items $wims_read_parm into sc_user,sc_class,sc_sheet,sc_exo
+!reset script_out script_best script_percent3
+!if $sc_exo!=$empty
+    !set script_out=!sh export exostat_dirbase exostat_types exostat_classes exostat_user exostat_sheet\
+	exostat_dirbase=$wims_home/log/classes\
+	exostat_types="score"\
+	exostat_classes="$sc_class"\
+	exostat_user="$sc_user"\
+	exostat_sheet="$sc_sheet"\
+	$wims_home/bin/exostat
+    !set sc_best_=!getopt $(sc_sheet)_$(sc_exo) in $script_out
+    !set sc_best_=!nonempty items $(sc_best_[2;])
+    !set sc_best_=!sort reverse numeric items $sc_best_
+    !if $sc_best_!=$empty
+      !set sc_req=!getscorerequire sheet=$sc_sheet exo=$(sc_exo)
+      !set sc_req=$[ceil(min(10,$sc_req/10))]
+      !set sc_best=!replace internal , by + in $(sc_best_[1..$sc_req])
+      !set script_best=$[$sc_best]
+    !endif
+  !goto end
+!endif
+
+!if $sc_sheet!=$empty
+
+  !reset script_out
+  !set sc_sheet=!words2items $sc_sheet
+  !reset sc_best
+  !set sc_sheet_cnt=!itemcnt $sc_sheet
+  !for sc_s=1 to $sc_sheet_cnt
+    !set sc_sh=$(sc_sheet[$sc_s])
+    !set script_out=!sh export exostat_dirbase exostat_types exostat_classes exostat_user exostat_sheet\
+	exostat_dirbase=$wims_home/log/classes\
+	exostat_types="score"\
+	exostat_classes="$sc_class"\
+	exostat_user="$sc_user"\
+	exostat_sheet="$sc_sh"\
+	$wims_home/bin/exostat
+
+    !if $script_out!=$empty
+     !set script_p3=0
+     !set sc_wg=0
+     !set sc_require=!getscorerequire sheet=$sc_sh
+     !set sc_weight=!getscoreweight sheet=$sc_sh
+     !set sc_d=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sc_sh
+     !reset script_best
+     !for sc_ex=1 to $sc_d
+      !set sc_best_=!getopt $(sc_sh)_$(sc_ex) in $script_out
+      !set sc_best_=!nonempty items $(sc_best_[2;])
+      !set sc_best_=!sort reverse numeric items $sc_best_
+      !if $sc_best_!=$empty
+       !set sc_req=!word $(sc_ex) of $sc_require
+       !set sc_req=$[ceil(min(10,$sc_req/10))]
+       !set sc_best_=!replace internal , by + in $(sc_best_[1..$sc_req])
+       !set sc_best_=$[round(10*($sc_best_)/$sc_req)/10]
+       !set sc_w=!word $(sc_ex) of $sc_weight
+       !set sc_wg=$[$sc_wg + $sc_w]
+       !set script_p3=$script_p3 + $sc_w*$sc_best_
+      !endif
+!!leave the empty items
+       !set sc_best=$sc_best$sc_best_,
+     !next exo
+
+     !set script_best=!append line $sc_best to $script_best
+     !set script_percent3=!append line $[ceil(100*($script_p3)/$sc_wg)/1000] to $script_percent3\
+     !set script_out=!append line $script_out_ to $script_out
+     !else
+       !set script_best=!append line 0 to $script_best
+     !set script_percent3=!append line 0 to $script_percent3
+    !endif
+  !next sheet
+!endif
+:end
+

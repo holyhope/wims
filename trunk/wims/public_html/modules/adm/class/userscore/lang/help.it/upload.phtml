@@ -1,0 +1,69 @@
+
+!read adm/title.phtml 1\
+\
+Caricare dati in formato csv
+
+<p>
+Per caricare sul server dati da un foglio eletronico, salvare i dati
+in un formato testo (txt, csv, o tsv), quindi inviare il file al server.
+</p><p>
+È possibile inserire informazioni sugli iscritti o voti. Per inserire
+informazioni sugli utenti, in fase di iscrizione, è necessario che il
+file non contenga voti.
+<p>
+Si possono inserire voti solo per colonne già esistenti, in altre parole
+prima di caricare i dati da un file occorre creare le colonne (non
+si possono modificare i dati assegnati dal server).
+</p><p>
+Il formato del file può variare a seconda che si utilizzi l'autenticazione
+via WIMS oppure l'autenticazione attraverso un server esterno (per
+esempio un ldap).
+</p>
+
+<h3>Autenticazione via WIMS</h3>
+<p>
+La prima riga della tabella deve contenere i nomi di ciascuna colonna
+(per esempio, <span class="tt wims_code_words">login</span>, <span class="tt wims_code_words">firstname</span>, ...).
+Nomi validi e relativo significato sono illustrati nella tabella che segue.
+È possibile scegliere ogni combinazione di colonne e inserirle in
+qualsiasi ordine, con l'unica condizione che deve essere presente
+una colonna <span class="tt wims_code_words">login</span> (WIMS utilizza questo campo per individuare
+ogni iscritto). Le righe che contengono <span class="tt wims_code_words">#</span>
+nel campo <span class="tt wims_code_words">login</span>
+vengono ignorate dal server.
+</p><p>
+È possibile utilizzare questo metodo per aggiungere iscritti (molti alla
+volta), ma in questo caso la tabella dei dati deve contenere informazioni
+suffcienti (in particolare nome, cognome, password).
+</p><p>
+Segue un esempio di file valdo per l'inserimento di nuovi studenti:
+</p><pre>
+login,firstname,lastname,password
+toto,Claude,Toto,1234
+</pre>
+
+<h3>Autenticazione esterna</h3>
+Il formato dei file è lo stesso, ma si può sostituire il campo <tt
+class="wims_code_words">login</tt> con il campo <tt
+class="wims_code_words">external_auth</tt> (in altre parole in questo
+caso il campo <span class="tt wims_code_words">login</span> non deve
+essere presente).
+È necessario inserire i campi nome e cognome (<tt
+class="wims_code_words">firstname</tt>, <tt
+class="wims_code_words">lastname</tt>) a meno che non si utilizzi un
+server di autenticazione ldap (cfr. pagine di configurazione del
+corso).
+In questo caso (e solo in questo caso) è sufficiente inserire
+l'identificativo per autenticazione esterna (<tt
+class="wims_code_words">external_auth</tt>).
+Ricordiamo che la modifica del tipo di autenticazione è fortemente
+sconsigliata una volta che gli studenti sono stati inseriti nel corso.
+
+<p>
+Segue un esempio di file valdo per l'inserimento di nuovi studenti:
+</p><pre>
+external_auth,firstname,lastname
+Claude.Toto,Claude,Toto
+</pre>
+
+!read lang/help.$moduclass_lang/fieldtab.phtml

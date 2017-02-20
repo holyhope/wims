@@ -1,0 +1,60 @@
+!!
+!! page edition to add exo to a sheet
+!!
+
+!if $step=0
+ $name_insert <span class="tt wims_fname">$dir</span>
+ !if $iniparm!=$empty
+  $name_parm
+ <p>
+ <span class="tt wims_parm">
+  !replace internal & by &amp; in $iniparm
+  </span>
+ </p> 
+ !endif
+
+ !form reply
+  <p>
+ $name_choose_helpexo <input type="text" name="note" value="$note" size="4" />.
+ </p>
+  $name_choose :
+  <select name="picksheet" onchange="submit()">
+   !for i=1 to $sheetcnt
+    !set sh=!line $i of $sheets
+    !set se=!item 1 of $sh
+    !set nb=!item 2 of $sh
+    !set ti=!item 3 to -1 of $sh
+    !if $i=$picksheet
+     <option value="$se" selected="selected">$wims_name_Sheet $se: $ti</option>
+    !else
+     <option value="$se">$wims_name_Sheet $se: $ti</option>
+    !endif
+   !next i
+  </select>
+  <p>
+  $name_choose_series :</p>
+  $table_header
+   $table_hdtr<th>$name_series</th><th>$name_actualhelp</th></tr>
+   !for i=1 to $(sheets[$picksheet;2])
+    !let don=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$picksheet
+    !let ti=!line 5 of $don
+    !let he=!line 9 of $don
+    $table_tr
+     <td>
+      !href cmd=reply&job=helpexo&picksheet=$picksheet&step=1&exo=$i $ti
+     </td>
+     <td>$he</td>
+    </tr>
+   !next i
+  $table_end
+  <div class="wimscenter wimsform"><input type="submit" value="$wims_name_Insert" />
+  <input type="hidden" value="helpexo" name="job" /></div>
+ 
+!formend
+ $name_clickhelp
+!else
+ $name_end
+ $picksheet.
+ !set wims_menu_items=!append line sheetcheck,1, module=adm/class/sheet&sheet=$picksheet\
+to $wims_menu_items
+!endif

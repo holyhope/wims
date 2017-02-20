@@ -1,0 +1,368 @@
+!default num_svg_images=1
+!default xsize = 300
+!default ysize = 300
+!default num_x = 10
+!default num_y = 10 
+!default svg_click_colors = #ff0000,#0000ff,#00ff00
+!default svg_bg_color = #ffffff
+!default svg_interactive = 1
+!default fill_opacity = 1
+!default stroke_opacity = 0.8
+!default svg_linewidth = 1
+!default stroke_color = grey
+!! set of coordinates in Quadrant I (fig_x:fig_y) fig_x --> 0...num_x fig_y -->0...num_y with colors from fig_color array
+!! fig_x = '1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5'                                                    
+!! fig_y = '1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5'
+!! all data will be mapped to integer 5.9 -> 5 !!
+!! this image will be protected from user clicks
+!default fig_x = null
+!default fig_y = null
+!default fig_color = #FF0000
+!! optional add objects: circle(s), line(s) or polyline; all coordinates are in px; not in 'QI grid'
+!! these objects are static; can not be (re)moved and will not be read by read_svg()
+!! circle (x,y,r in px) is js.array: 9 elements per circle ['xc_1','yc_1','r_1','linewidth_1','strokecolor_1','strokeopacity_1','filled_1','fillcolor_1','fillopacity_1',...] 
+!! line is (x,y in px) array: 7 elements per line [ 'x1_1','y1_1','x2_1','y2_1','linewidth_1','strokecolor_1','strokeopacity_1'] 
+!! poly : just one poly allowed 6 elements and x/y pairs in px ['linewidth','strokecolor','strokeopacity','filled','fillcolor',fillopacity','x_1','y_1',...,'x_n','y_n'] 
+
+<script type="text/javascript">
+    "use strict";
+    var descr_list="$description";
+    var description = make_description(descr_list,30);
+    
+    function dontknow(){
+	var reply = new Array()
+	reply[0] = read_svg();
+	for( var p = 1 ; p <= $inputs; p++){
+	    reply[p] = "?";
+	}
+	myConfirm('$dontknow',reply,'$wims_ref_name','$session','$module','$counter','$nok_send_color');
+	return;
+    }
+    
+    function sendanswer(){
+	var reply = new Array();
+	reply[0] = read_svg();
+	var p = 0;
+	if( document.getElementById('myinput0')){
+	    while( document.getElementById('myinput'+p) ){
+		reply[p+1] = document.getElementById('myinput'+p).value;
+	        p++;
+	    }
+	}
+        myConfirm('$send ?',reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
+	return;
+    }
+
+!if $wims_user=supervisor
+    function putanswer(){
+    !set wims_answer = !words2items $(answer$n)
+    !set num_answers = !itemcnt $wims_answer
+        var answer = make_description("$wims_answer",$num_answers);
+	for(var p=0;p<answer.length;p++){
+	    document.getElementById('myinput'+p).value = answer[p];
+	}
+    }
+!endif
+    
+    function color2hex(color_array){
+	var rgb2txt = {"aliceblue": "#f0f8ff", "antiquewhite": "#faebd7", "aqua": "#00ffff", "aquamarine": "#7fffd4", "azure": "#f0ffff", "beige": "#f5f5dc", "bisque": "#ffe4c4", "black": "#000000", "blanchedalmond": "#ffebcd", "blue": "#0000ff", "blueviolet": "#8a2be2", "brown": "#a52a2a", "burlywood": "#deb887", "cadetblue": "#5f9ea0", "chartreuse": "#7fff00", "chocolate": "#d2691e", "coral": "#ff7f50", "cornflowerblue": "#6495ed", "cornsilk": "#fff8dc", "crimson": "#dc143c", "cyan": "#00ffff", "darkblue": "#00008b", "darkcyan": "#008b8b", "darkgoldenrod": "#b8860b", "darkgray": "#a9a9a9", "darkgreen": "#006400", "darkkhaki": "#bdb76b", "darkmagenta": "#8b008b", "darkolivegreen": "#556b2f", "darkorange": "#ff8c00", "darkorchid": "#9932cc", "darkred": "#8b0000", "darksalmon": "#e9967a", "darkseagreen": "#8fbc8f", "darkslateblue": "#483d8b", "darkslategray": "#2f4f4f", "darkturquoise": "#00ced1", "darkviolet": "#9400d3", "deeppink": "#ff1493", "deepskyblue": "#00bfff", "dimgray": "#696969", "dodgerblue": "#1e90ff", "firebrick": "#b22222", "floralwhite": "#fffaf0", "forestgreen": "#228b22", "fuchsia": "#ff00ff", "gainsboro": "#dcdcdc", "ghostwhite": "#f8f8ff", "gold": "#ffd700", "goldenrod": "#daa520", "gray": "#808080", "green": "#008000", "greenyellow": "#adff2f", "honeydew": "#f0fff0", "hotpink": "#ff69b4", "indianred ": "#cd5c5c", "indigo ": "#4b0082", "ivory": "#fffff0", "khaki": "#f0e68c", "lavender": "#e6e6fa", "lavenderblush": "#fff0f5", "lawngreen": "#7cfc00", "lemonchiffon": "#fffacd", "lightblue": "#add8e6", "lightcoral": "#f08080", "lightcyan": "#e0ffff", "lightgoldenrodyellow": "#fafad2", "lightgrey": "#d3d3d3", "lightgreen": "#90ee90", "lightpink": "#ffb6c1", "lightsalmon": "#ffa07a", "lightseagreen": "#20b2aa", "lightskyblue": "#87cefa", "lightslategray": "#778899", "lightsteelblue": "#b0c4de", "lightyellow": "#ffffe0", "lime": "#00ff00", "limegreen": "#32cd32", "linen": "#faf0e6", "magenta": "#ff00ff", "maroon": "#800000", "mediumaquamarine": "#66cdaa", "mediumblue": "#0000cd", "mediumorchid": "#ba55d3", "mediumpurple": "#9370d8", "mediumseagreen": "#3cb371", "mediumslateblue": "#7b68ee", "mediumspringgreen": "#00fa9a", "mediumturquoise": "#48d1cc", "mediumvioletred": "#c71585", "midnightblue": "#191970", "mintcream": "#f5fffa", "mistyrose": "#ffe4e1", "moccasin": "#ffe4b5", "navajowhite": "#ffdead", "navy": "#000080", "oldlace": "#fdf5e6", "olive": "#808000", "olivedrab": "#6b8e23", "orange": "#ffa500", "orangered": "#ff4500", "orchid": "#da70d6", "palegoldenrod": "#eee8aa", "palegreen": "#98fb98", "paleturquoise": "#afeeee", "palevioletred": "#d87093", "papayawhip": "#ffefd5", "peachpuff": "#ffdab9", "peru": "#cd853f", "pink": "#ffc0cb", "plum": "#dda0dd", "powderblue": "#b0e0e6", "purple": "#800080", "red": "#ff0000", "rosybrown": "#bc8f8f", "royalblue": "#4169e1", "saddlebrown": "#8b4513", "salmon": "#fa8072", "sandybrown": "#f4a460", "seagreen": "#2e8b57", "seashell": "#fff5ee", "sienna": "#a0522d", "silver": "#c0c0c0", "skyblue": "#87ceeb", "slateblue": "#6a5acd", "slategray": "#708090", "snow": "#fffafa", "springgreen": "#00ff7f", "steelblue": "#4682b4", "tan": "#d2b48c", "teal": "#008080", "thistle": "#d8bfd8", "tomato": "#ff6347", "turquoise": "#40e0d0", "violet": "#ee82ee", "wheat": "#f5deb3", "white": "#ffffff", "whitesmoke": "#f5f5f5", "yellow": "#ffff00", "yellowgreen": "#9acd32", "darkgrey": "#a9a9a9", "darkslategrey": "#2f4f4f", "dimgrey": "#696969", "grey": "#808080", "lightgray": "#d3d3d3", "lightslategrey": "#778899", "slategrey": "#708090"};
+	var lx = color_array.length;
+	for(var i = 0 ; i < lx ; i++ ){
+	    if( rgb2txt[color_array[i].toLowerCase()] !== undefined ){
+		color_array[i] = rgb2txt[color_array[i].toLowerCase()];
+	    }
+	}     
+	return color_array;
+    }
+
+    function svg_mouse(action,myid,img){
+	try{action.preventDefault;action.stopPropagation();} catch(e){}
+	if( action.which != 1 ){ img.coloridx++;}
+	if( img.coloridx >= img.svg_click_colors.length ){ img.coloridx = 0; }
+	try{
+	    var obj = document.getElementById(myid);
+	    obj.setAttributeNS(null,"fill",img.svg_click_colors[img.coloridx]);
+	}catch(e){setAlarm(e);}
+    }
+
+    function svg_image(id,xsize,ysize,num_x,num_y,svg_click_colors,svg_bg_color,svg_interactive,fig_x,fig_y,fig_color,fill_opacity,stroke_opacity,svg_linewidth,stroke_color,circle,line,polyline){
+	this.circle = circle || null;
+	this.line = line || null;
+	this.polyline = polyline || null;
+	this.svg_id = 'wims_svg'+id || 'wims_svg0';
+	this.xsize = xsize || 300;
+        this.ysize = ysize || 300;
+        this.num_x = num_x || 10;
+        this.num_y = num_y || 10;
+        this.w = this.xsize / this.num_x;
+        this.h = this.ysize / this.num_y;
+        this.svg_click_colors = color2hex(svg_click_colors.split(',')) || ['#FF0000','#0000FF'];
+        this.svg_bg_color = svg_bg_color.toString() || '#0000FF';
+        this.svg_click_colors[this.svg_click_colors.length] = this.svg_bg_color; /* add bgcolor to click array */
+        this.svg_interactive = svg_interactive || 1;
+        this.fig_x = fig_x || null; /* integer array of x-coordinates of unchangable rects */
+        this.fig_y = fig_y || null; /* integer array of y-coordinates of unchangable rects */
+        if(this.fig_x != null){
+    	    this.fig_x = (this.fig_x).split(',').map(function(i){return parseInt(i, 10);});
+    	    this.fig_y = (this.fig_y).split(',').map(function(i){return parseInt(i, 10);});
+        }
+        this.fig_color = color2hex(fig_color.split(',')) || ['#FFFFFF']; /* color array of prefined object */
+        this.fill_opacity = fill_opacity || 1;
+        this.stroke_opacity = stroke_opacity || 1;
+        this.svg_linewidth = svg_linewidth || 1;
+        this.stroke_color = stroke_color || '#FFFFFF'; /* color of the grid lines */
+        this.coloridx = 0;
+	var wims_svg = document.getElementById(this.svg_id);
+	var data = (wims_svg.getAttribute("viewBox")).split(' ');
+	var sizex = data[2] - data[0];
+	var sizey = data[3] - data[1];
+	var idx=0;
+	var rect_id;
+	var found = 0;
+	var lx = 0;
+	if(this.fig_x != null){
+	    lx = (this.fig_x).length;
+	    if( lx != (this.fig_y).length ){ alert("mismatch between \"fig_x\" and \"fig_y\" !" );}
+	    var lc = (this.fig_color).length
+	    if( lx > lc ){
+		for(var p = lc; p < lx ; p++){
+		    this.fig_color[p] = this.fig_color[0]; /* use the first color in array repetitively if needed  */
+		}
+	    }
+	}
+	for(var y = 0 ; y < this.num_y ; y++){
+	    for(var x = 0 ; x < this.num_x ; x++){
+		var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+		rect_id = this.svg_id+"_"+idx;
+		rect.setAttributeNS(null,"width",this.w);
+		rect.setAttributeNS(null,"height",this.h);
+		rect.setAttributeNS(null,"stroke-width",this.svg_linewidth);
+		rect.setAttributeNS(null,"id",rect_id);
+		rect.setAttributeNS(null,"x",x*this.w);
+		rect.setAttributeNS(null,"y",y*this.h);
+		rect.setAttributeNS(null,"stroke",this.stroke_color);
+		rect.setAttributeNS(null,"stroke-opacity",this.stroke_opacity);
+		rect.setAttributeNS(null,"fill-opacity",this.fill_opacity);
+		found = 0;
+		if( this.fig_x != null){ /* create proctected squares from arrays fig_x / fig_y */
+		    for(var fx = 0; fx < lx && found == 0 ; fx++){
+			if(this.fig_x[fx] == x+1 && this.fig_y[fx] == this.num_y - y ){ /* data all in Quadrant I ... */
+			    rect.setAttributeNS(null,"fill",this.fig_color[fx]);
+			    found = 1;
+			}
+		    }
+		}
+		if( found == 0 ){
+		    rect.setAttributeNS(null,"fill",this.svg_bg_color );
+!!		    if("waiting" == "$status" || this.svg_interactive == 1 ){
+		    if(this.svg_interactive == 1 ){
+			(function(rect_id){
+			    rect.addEventListener("mousedown", function(action){
+			    svg_mouse(action,rect_id,eval('image'+id));}, false);
+		        }(rect_id));
+		    }
+		}
+		wims_svg.appendChild(rect);
+		idx++;
+	    }
+	}
+
+	if(this.circle != null){
+	    /* 
+		circle (x,y,r in px) is js.array: 9 elements per circle  
+		['xc_1','yc_1','r_1','linewidth_1','strokecolor_1','strokeopacity_1','filled_1','fillcolor_1','fillopacity_1',...] 
+	    */
+	    var len = (this.circle).length;
+	    for(var p = 0 ; p < len; p = p + 9){
+		var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+		circle.setAttributeNS(null,"cx",this.circle[p]);
+		circle.setAttributeNS(null,"cy",this.circle[p+1]);
+		circle.setAttributeNS(null,"r",this.circle[p+2]);
+		circle.setAttributeNS(null,"stroke-width",this.circle[p+3]);
+		circle.setAttributeNS(null,"stroke",this.circle[p+4]);
+		circle.setAttributeNS(null,"stroke-opacity",this.circle[p+5]);
+		if( this.circle[p+6] == 1 ){
+		    circle.setAttributeNS(null,"fill",this.circle[p+7]);
+		    circle.setAttributeNS(null,"fill-opacity",this.circle[p+8]);
+		}
+		wims_svg.appendChild(circle);
+	    }
+	}
+	if(this.line != null){
+	    /* 
+		line is (x,y in px) array: 7 elements per line 
+		[ 'x1_1','y1_1','x2_1','y2_1','linewidth_1','strokecolor_1','strokeopacity_1'] 
+	    */
+	    var len = (this.line).length;
+	    for(var p = 0 ; p < len; p = p + 7){
+		var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+		line.setAttributeNS(null,"x1",this.line[p]);
+		line.setAttributeNS(null,"y1",this.line[p+1]);
+		line.setAttributeNS(null,"x2",this.line[p+2]);
+		line.setAttributeNS(null,"y2",this.line[p+3]);
+		line.setAttributeNS(null,"stroke-width",this.line[p+4]);
+		line.setAttributeNS(null,"stroke",this.line[p+5]);
+		line.setAttributeNS(null,"stroke-opacity",this.line[p+6]);
+		wims_svg.appendChild(line);
+	    }
+	}
+	if(this.polyline != null){
+	    /* 
+		poly : just one poly allowed 6 elements and x/y pairs in px  
+	        ['linewidth','strokecolor','strokeopacity','filled','fillcolor',fillopacity','x_1','y_1',...,'x_n','y_n'] 
+	    */
+	    var len = (this.polyline).length;
+	    var points = (this.polyline).splice(6,len);
+	    var polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+	    polyline.setAttributeNS(null,"stroke-width",this.polyline[0]);
+	    polyline.setAttributeNS(null,"stroke",this.polyline[1]);
+	    polyline.setAttributeNS(null,"stroke-opacity",this.polyline[2]);
+	    polyline.setAttributeNS(null,"points",points);
+	    if(this.polyline[3] == 1 ){
+		polyline.setAttributeNS(null,"fill",this.polyline[4]);
+		polyline.setAttributeNS(null,"fill-opacity",this.polyline[5]);
+	    }
+	    wims_svg.appendChild(polyline);
+	}
+    }
+/* read all svg_images e.g. num_svg_images */
+!if $roosterapplet=0
+    function read_svg(){
+    	/* clicktile.jar ; vervanging ReadXY();*/
+	var total_reply = new Array($num_svg_images);
+	for(var img=0; img<$num_svg_images;img++){
+	    if( document.getElementById("wims_svg"+img).interactive == 1 ){ /* only read interactive svg images*/
+		var idx = 0;
+	        var tmp_idx = 0;
+		tmp_reply=new Array();
+		var svgimg = eval('image'+img);
+	        while( document.getElementById("wims_svg"+img+"_"+idx)){
+	    	    obj = document.getElementById("wims_svg"+img+"_"+idx);
+		    color = obj.getAttributeNS(null,"fill");
+		    if( color != svgimg.svg_bg_color ){/* e.g. colour is changed */
+			tmp_reply[tmp_idx] = obj.getAttributeNS(null,"x") / this.w+","+obj.getAttributeNS(null,"y") / this.h;
+		        tmp_idx++;
+		    }
+		    idx++;
+		}
+		total_reply[img]=tmp_reply+"\n";
+	    }
+	}
+    }
+!else
+    function read_svg(){
+	/* rooster.jar vervanging String S=total_aantal+","+onveranderd_aantal+","+veranderd_aantal+","+omtrek_van_geklikte_ruitjes;*/
+	var total_reply = new Array($num_svg_images);
+	for(var img=0; img<$num_svg_images;img++){
+	    var svgimg = eval('image'+img);
+	    var x;var y;var click_reply=new Array(4);var obj;var color;var myid;
+	    var xc = new Array();var yc = new Array();var cc = new Array();
+	    var idx = 0;
+	    var width = svgimg.xsize / svgimg.num_x;
+	    var height = svgimg.ysize / svgimg.num_y
+	    click_reply[1] = 0; /* unchanged */
+	    click_reply[2] = 0; /* changed */
+	    click_reply[3] = 0; /* total perimeter of changed rects */
+	    while( document.getElementById("wims_svg"+img+"_"+idx)){
+		obj = document.getElementById("wims_svg"+img+"_"+idx);
+		x = obj.getAttributeNS(null,"x");
+		y = obj.getAttributeNS(null,"y");
+		xc[idx] = x/width;
+		yc[idx] = y/height;
+		color = obj.getAttributeNS(null,"fill");
+		if( color != svgimg.svg_bg_color ){/* e.g. colour is changed */
+		    click_reply[2] = click_reply[2]+1;cc[idx] = 1;
+		}
+		else
+		{
+		    click_reply[1]=click_reply[1]+1;cc[idx] = 0;
+		}
+		idx++;
+	    }
+	    click_reply[0] = idx; /* sum */
+	    /* correct perimetre if size of rectangle != 1x1 */
+	    var fx;var fy;if( width < height ){ fx = 1 ; fy = height / width;} else { fx = width / height;fy = 1; }
+	    click_reply[3] = click_reply[2] * (2*fy + 2*fx);/* max perimetre */
+	    if( click_reply[2] > 1 ){
+		for( var i=0 ; i < idx ; i++){
+		    if( cc[i] == 1 ){ /* clicked */
+			for( var p=0; p < idx ; p++){ /* look for neighbours */
+			    if( cc[p] == 1 && p != i){ /* do not count the same rect */
+				if( xc[i] == xc[p] && yc[i] == yc[p] - 1 ){ click_reply[3] = click_reply[3] - fx;}
+			        else
+			        if( xc[i] == xc[p] && yc[i] == yc[p] + 1 ){ click_reply[3] = click_reply[3] - fx;}
+				else
+			        if( xc[i] == xc[p] - 1 && yc[i] == yc[p] ){ click_reply[3] = click_reply[3] - fy;}
+				else
+			        if( xc[i] == xc[p] + 1 && yc[i] == yc[p] ){ click_reply[3] = click_reply[3] - fy;}
+			    }
+			}
+		    }
+		}
+	    }
+	    total_reply[img] = click_reply+"\n";
+	}
+	return total_reply;
+    }
+    !endif
+!endif
+</script>
+
+
+<table id="exercise" class="exercise" >
+    <tr>
+    <td class="exercise_m">
+    !if $(question$n) != $empty
+     $(question$n)
+    !endif
+    !if $exotext != $empty
+     <br />
+     $exotext
+    !endif
+    !if $inputs > 0
+     <table class="exercise">
+      !for p=1 to $inputs
+       <tr>
+        <td class="exercise_c">
+         $(description[$p])
+         </td>
+         <td class="exercise_c">
+          &nbsp;$m_rightarrow&nbsp;
+         </td>
+         <td class="exercise_c">
+          <input class="schaersvoorde_input" size="$cols" type="text" id="myinput$[$p-1]" value="" />&nbsp;$(ex$p)
+         </td>
+	</tr>
+      !next p
+     </table>
+    !endif 
+    </td>
+    !if $make_tr=1
+    </tr>
+    <tr>
+    !endif
+    !for id=0 to $[$num_svg_images-1]
+    !! id = wims_svg$id
+    <td class="exercise_c" id="svg_td$id" >
+	<svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" id="wims_svg$id" width="$xsize" height="$ysize" viewBox="0 0 $xsize $ysize" >
+	    <g id="svg_transform$id" transform="scale(1)" >
+		<image preserveAspectRatio="none" xlink:href="$svg_bgimage" x="0" y="0" height="100%" width="100%"></image> 
+		<script type="text/javascript">
+		    !! var image$id = new svg_image($id,$xsize,$ysize,$num_x,$num_y,$svg_click_colors,$svg_bg_color,$svg_interactive,$fig_x,$fig_y,$fig_color,$fill_opacity,$stroke_opacity,$svg_linewidth,$stroke_color,$circle,$line,$polyline);
+		    var image$id = new svg_image('$id','$xsize','$ysize','$num_x','$num_y','$svg_click_colors','$svg_bg_color','$svg_interactive','$fig_x','$fig_y','$fig_color','$fill_opacity','$stroke_opacity','$svg_linewidth','$stroke_color');
+		</script>
+	    </g>
+	</svg>
+    </td>
+    !next id
+    </tr>
+</table>
+<div id="send_buttons" class="embedded_central">
+    <input type="button" id="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
+    <input type="button" id="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
+    !if $wims_user=supervisor
+	<input type="button" id="schaersvoorde_extra_button" onclick="javascript:putanswer();" value="$wims_firstname $wims_lastname" /> 
+    !endif
+</div>
+
+!exit

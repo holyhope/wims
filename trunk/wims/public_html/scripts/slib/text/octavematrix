@@ -1,0 +1,16 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+
+slib_author=Bernadette, Perrin-Riou
+
+!exit
+
+:proc
+
+slib_out=!trim $wims_read_parm
+slib_out=!rows2lines $slib_out
+slib_out=!replace internal $\
+$ by ; in $slib_out
+slib_out=!words2items $slib_out
+

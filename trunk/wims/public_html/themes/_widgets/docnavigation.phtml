@@ -1,0 +1,50 @@
+<!-- _widgets/docnavigation.phtml -->
+<div id="docnavigation" class="wimsmenu">
+  !default upbl=main
+  !if $block!=main and $job=read
+   <span class="menuitem">
+    !read $oneitem doch_up,1,cmd=reply&doc=$doc&block=$upbl
+   </span><!-- menuitem-->
+   !if $prev!=$empty and $prev!=$upbl
+    <span class="menuitem">
+     !read $oneitem doch_prev,1,cmd=reply&doc=$doc&block=$prev
+    </span><!-- menuitem-->
+   !endif
+   !if $next!=$empty and $next!=$upbl
+    <span class="menuitem">
+     !read $oneitem doch_next,1,cmd=reply&doc=$doc&block=$next
+    </span><!-- menuitem-->
+   !endif
+  !endif
+
+  !if $job=read
+   !set wims_name_nexthist=&gt;&gt;
+   !set wims_name_backhist=&lt;&lt;
+
+   !if $blocklast$blocknext!=$empty
+    <span class="menuitem">
+     [
+     !if $blocklast!=$empty
+      !read $oneitem backhist,1,cmd=reply&doc=$doclast&block=$blocklast&readcntadv=-1
+     !endif
+     &nbsp;$wims_name_doch_hist
+     !if $blocknext!=$empty
+      &nbsp;
+      !read $oneitem nexthist,1,cmd=reply&doc=$docnext&block=$blocknext&readcntadv=1
+     !endif
+     ]
+    </span><!-- menuitem-->
+   !endif
+   !if $doctoc=yes
+     <span class="menuitem">
+      !read $oneitem doch_toc,1,cmd=reply&job=read&block=doctoc
+     </span><!-- menuitem-->
+    !endif
+!!transfert in docmenumodu
+!!   <span class="menuitem">
+!!    !read $oneitem doch_reload,1,cmd=reply&job=read
+!!   </span><!-- menuitem-->
+
+  !endif
+</div><!--end id docnavigation  -->
+<!-- end _widgets/docnavigation.phtml -->

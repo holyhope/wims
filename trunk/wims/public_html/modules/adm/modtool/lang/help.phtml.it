@@ -1,0 +1,59 @@
+!if $special_parm!=$empty
+ !read help/$special_parm.phtml
+ !goto end
+!endif
+
+!if $login=$empty
+ <p>
+ Questo strumento permette la creazione e lo sviluppo di moduli WIMS.
+ </p><p>
+ È cioè possibile progettare esercizi sfruttando appieno le 
+ potenzialità del linguaggio di programmazione di WIMS (in confronto gli 
+ gli esercizi OEF sono più facili da scrivere ma hanno limiti, si veda 
+ per esempio la documentazione in
+ !href module=adm/createxo Createxo
+ ) o creare sofisticati strumenti di calcolo. Vanno creati utilizzando
+ il linguaggio WIMS, in particolare la struttura e i comandi descritti nella
+ !href target=wims_help module=help/wimsdoc Documentazione tecnica di WIMS
+.
+ </p><p>
+ Se siete interessati, scrivete al 
+ !mailurl $wims_site_manager responsabile di questo server WIMS \
+WIMS Modtool id
+ chiedendo un account specifico per lavorare con questo strumento.
+ </p>
+ !exit
+!endif
+
+!if $mod=$empty
+<p>
+ Per lavorare su un modulo occorre come prima cosa crearlo. Per creare un
+ nuovo modolo, cliccate sul link corrispondente e inserite i dati 
+ richiesti.
+ </p>
+!endif
+<p>
+Prima di procedere consultate la 
+ !href target=wims_help module=help/wimsdoc Documentazione tecnica di WIMS
+ in cui è descritta la struttura di un modulo WIMS e la sintassi dei comandi 
+ utilizzabili.
+</p><p>
+A questo link è invece disponibile la 
+!href target=wims_help module=adm/createxo $wims_name_docoef
+</p><p>
+Alcuni consigli:
+</p>
+<ol>
+<li>In order to debug a file, you can place a line
+<pre>
+$!debug ...
+</pre>
+in that file, where ... can be any text string. When you test your module, the
+execution will stop at this line, with the content of ... shown to you. If
+... includes variables, the latter will be substituted according to the usual
+WIMS variable substitution rules.
+
+</li></ol>
+
+:end
+

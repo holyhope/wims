@@ -1,0 +1,86 @@
+!let lang_exists=yes
+
+!read adm/lang/date.phtml.$lang
+
+!distribute items Compétence,\
+compétence,\
+Compétences,\
+compétences,\
+Palier,\
+Paliers,\
+palier,\
+paliers,\
+Toutes,\
+livret de compétences,\
+into name_Competence,name_competence,name_Competences,name_competences,name_n_Palier,name_n_Paliers,name_n_palier,name_n_paliers,name_All,name_livret
+
+!set name_no_competence=Il n'y a aucune $name_competence dans ce livret !
+!set name_noyetparticipant=Cette classe n'a pas encore de participant.
+!set name_info=Informations sur cette $name_competence&nbsp;
+!set name_param_change=Voici les paramètres que vous pouvez changer&nbsp;
+!set name_color=Couleur des fonds des cases en fonction du niveau de validation du $name_n_palier &nbsp;
+!set name_score_modify=Les scores des exercices des feuilles de travail suivantes ne sont pas utilisés pour le calcul des niveaux d'acquisition des $name_n_paliers &nbsp;
+!set name_cocher=Veuillez cocher les exercices que vous souhaitez utiliser pour ce $name_n_palier.
+!set name_selectsheet=Afficher seulement les exercices de la feuille
+!let name_nowork=Pas d'activité
+!let name_listscoreoption=de la classe,du livret
+!let name_listscoreview=pas d'affichage,entier,avec une décimale,avec deux décimales,avec trois décimales,avec quatre décimales
+
+
+ !distribute items Titre de la $name_competence&nbsp;,\
+Titre du $name_n_palier&nbsp;,\
+Nombre de $name_n_paliers&nbsp;,\
+de la classe,\
+Note minimale pour considérer l'exercice comme acquis,\
+Utilisation des couleurs pour les niveaux des $name_n_paliers,\
+Affichage des résultats chiffrés dans les paliers,\
+Afficher le livret pour les élèves,\
+Afficher les $name_competences sans contenu pour les élèves\
+into name_title_comp,name_title_palier,name_cnt_palier,name_configtext2,name_configtext3,name_configtext4,name_configtext5,name_configtext6,name_configtext7
+
+!!------------------------------- definition des noms de liens pour wims_menu_items
+!if $wims_user=supervisor
+ !let tmp=!defof wims_name_SE_list in wimshome/public_html/modules/home/names.$lang
+!else
+  !let tmp=$wims_name_myscore
+!endif
+
+!distribute line Nouvelle compétence\
+$tmp\
+ into wims_name_add_competence,wims_name_go_userlist
+
+!!FIXME wims_name_cls_livret=$wims_name_livret ??
+!if $job=addcomp
+ !set name_job=!nosubst Ajouter/Modifier la $name_competence $comp
+ !exit
+!endif
+
+!if $job=modpalier
+  !set name_job=!nosubst Modifier le $name_n_palier $palier (<span class="wims_emph">$name_palier</span>)\
+  de la $name_competence $comp (<span class="wims_emph">$name_comp</span>).
+  !exit
+!endif
+
+!if $job=user
+  !set name_job=!nosubst <span class="wims_emph">$user_firstname $user_lastname</span>
+!endif
+
+!if $job=delpalier
+ !let name_delpalier=!nosubst Êtes vous certain de vouloir supprimer le $name_n_palier $palier \
+ ( $mem_palier ) de la $name_competence $comp ( $mem_title ) du $name_livret ?
+ !exit
+!endif
+
+!if $job=delcomp
+ !let name_delcomp=!nosubst Êtes vous certain de vouloir supprimer la compétence $comp ( $mem_title ) du $name_livret ?
+ !exit
+!endif
+
+!if $job=save
+ name_get=Vous pouvez télécharger sur votre ordinateur le fichier suivant qui contient la structure de \
+ votre livret (sans les références d'exercices) pour le restaurer dans une autre classe.
+ name_put=Indiquez le nom d'un fichier de sauvegarde de livret sur votre disque dur. \
+ Les compétences trouvées seront ajoutées à la suite des compétences déjà présentes.
+!endif
+
+

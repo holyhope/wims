@@ -1,0 +1,120 @@
+!read adm/title.phtml 3\
+$name_neighbor_relation $name_with <span class="wims_emph">$nei_description</span> (<span class="wims_emph">$nei_institution</span>)\
+($wims_name_nameteacher: <a href="mailto:$nei_email?subject=Class neighboring relations">$nei_supervisor</a>)
+<p>
+<b>$name_neighbor_relation. </b>
+&nbsp;
+!set wims_ref_class=wims_button_help
+!href cmd=help&special_parm=neibordecl $wims_name_help
+</p>
+<p>
+!if $wims_class notitemof $nei_sup,$nei_part and all notwordof $nei_sup $nei_part
+ <span class="wims_emph">$nei_description</span> $name_text1.
+!else
+ <span class="wims_emph">$nei_description</span> $name_text2
+ !if ($wims_class isitemof $nei_sup and $wims_class isitemof $nei_part) or (all iswordof $nei_sup and all iswordof $nei_part)
+   $n_n3.
+ !else
+  !if $wims_class isitemof $nei_sup or all iswordof $nei_sup
+    $n_n1.
+  !else
+    $n_n2.
+  !endif
+ !endif
+!endif
+</p>
+
+!if all notwordof $nei_sup $nei_part
+!form reply
+<p>
+$name_accept
+!formselect nlevel from 0 to 3 prompt $wims_name_no, $n_n1, $n_n2, $n_n3
+<input type="submit" value="$wims_name_tosave" />
+&nbsp;
+!set wims_ref_class=wims_button_help
+!href cmd=help&special_parm=neibordecl $wims_name_help
+
+</p>
+!formend
+!endif
+
+
+!if ($nei isitemof $n_sup,$n_part and $wims_class isitemof $nei_sup,$nei_part) or \
+   all isitemof $nei_sup,$nei_part
+ <p><b>$name_info </b>
+ &nbsp;
+!set wims_ref_class=wims_button_help
+ !href cmd=help&special_parm=import $wims_name_help
+ </p>
+
+ <p>$name_youcan
+ !href cmd=reply&job2=import $name_import_resource
+ $name_fromtheclass <span class="wims_emph">$nei_description</span>.
+ </p>
+!endif
+
+!if  $nei isitemof $n_sup
+<p>
+<b>$name_declaration.</b>
+&nbsp;
+!set wims_ref_class=wims_button_help
+!href cmd=help&special_parm=share $wims_name_help
+</p>
+
+<ul>
+!endif
+
+!if $wims_class isitemof $nei_sup and $nei isitemof $n_sup
+ <li>
+ !if $nsharable=$empty
+  $name_nonewres
+ !else
+ $name_newres
+  !set names=!replace , by , $$name_ in $$name_$nsharable
+  <em>$names</em>.
+  !href cmd=reply&job2=addshare $name_click_ok
+.
+ !endif
+ </li>
+!endif
+
+!if $nei isitemof $sharing_all
+ $name_sharealready <span="wims_emph">$nei_description</span>&nbsp;:<ul>
+ !for r in $sharelist
+  !if $(sharing_$r)=$nei
+   <li><b><em>$(name_$r)</em></b>
+   !set wims_class_ref=wims_button.
+   !href cmd=reply&job2=stopshare&stoprec=$r $name_stopsharing
+. &nbsp;
+!set wims_ref_class=wims_button_help
+   !href cmd=help&special_parm=stopshare $wims_name_help
+   </li>
+  !endif
+ !next r
+ </ul>
+!endif
+ </li>
+!if $nei isitemof $n_sup and $sharablelist!=$empty
+<li>
+ !form reply
+ <input type="hidden" name="changeshare" value="yes" />
+$name_chooseres:
+&nbsp;
+!set wims_ref_class=wims_button_help
+ !href cmd=help&special_parm=sharable $wims_name_help
+<br />
+ !set sh=!nospace $sharablelist
+ !set sh=!replace internal , by , $$name_ in $$name_$sharablelist
+ !formcheckbox mksharable list $sharablelist prompt $sh
+ <input type="submit" value="$wims_name_tosave" />
+
+!formend
+!if $nsharable!=$empty
+<br /><span class="wims_warning">$wims_name_warning</span>: $name_warning_authorized
+!endif
+ </li>
+!endif
+
+</ul>
+
+!reset stoprec

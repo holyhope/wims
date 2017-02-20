@@ -1,0 +1,57 @@
+
+<h2 class="wimscenter">Feedback according to answers</h2>
+
+You may define conditions (on the values of user answers) under which a
+message will be printed on the page of results. A common use of this feature
+will be to give warnings when a typical error to the exercise is detected.
+<p>
+An arbitrary number of feedbacks can be added, on any kind of replies
+(freestyle or multiple choice). The syntax is as follows.
+</p><pre>
+\feedback{CONDITION}{MESSAGE}
+</pre>
+The line can be put into the field of parameters (under guided mode) or
+anywhere in the source (under raw mode).
+<p>
+When <span class="tt">CONDITION</span> is met,
+<span class="tt">MESSAGE</span> will be shown to the user in the result page. Values of
+user replies can be put into both via the variables <span class="tt wims_code_variable">\reply1</span>,
+<span class="tt wims_code_variable">\reply2</span>,... (for freestyle replies), <span class="tt wims_code_variable">\choice1</span>,
+<span class="tt wims_code_variable">\choice2</span>,... (for multiple choices). The order in the variables
+is the order of their appearance in the source (or in the form under the
+guided mode).
+</p><p>
+<span class="tt">MESSAGE</span> is a free text, accepting embedded html tags and
+mathematical symbols.
+
+</p><p>
+One can use also the variables <span class="tt wims_code_variable">\sc_reply1</span>, <span class="tt wims_code_variable">\sc_reply2</span>,
+... which are equal to  1 in case of good user reply, 0 in case of false
+user reply and 0.5 in case of good reply up to numerical precision. This variable
+does not take care of conditions and is empty in the case where the
+answer is analyzed only with conditions.
+</p>
+$table_header
+<caption>Examples of conditions
+<small>
+!href target=wims_mhelp cmd=help&special_parm=if complete list
+</small>
+</caption>
+$table_hdtr<th>condition</th><th>when it is met</th></tr>
+$table_tr<td class="tt wims_code_words">\reply1=5</td><td>first freestyle reply is exactly equal to 5</td></tr>
+$table_tr<td class="tt wims_code_words">\reply1&gt;\reply2+2</td><td>first freestyle reply is &gt; second one plus 2</td></tr>
+$table_tr<td class="tt wims_code_words">\choice1=Yes and \choice2=No</td>
+  <td>first multiple choice is Yes and second is No (<b>attention</b> the
+comparison in multiple choices is case-sensitive!)
+</td></tr>
+$table_tr<td class="tt wims_code_words">\reply1&lt;5 or \reply1&gt;8</td>
+  <td>first reply is outside the range from 5 to 8.
+</td></tr>$table_tr<td><tt class="wims_code_words">3 isitemof \reply1
+  <td>the first reply, of type "set" or "vector", contains a component "3".
+</td></tr>
+$table_end
+<p>
+<b>Known-bug</b>. You should avoid mixing <span class="tt wims_code_variable">\reply</span> and
+<span class="tt wims_code_variable">\choice</span> within one same condition. Otherwise the result will be
+unpredictable.
+</p>

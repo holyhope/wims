@@ -1,0 +1,52 @@
+!set cat=!nospace $wims_read_parm
+!if $(gotcnt$cat)>0
+ <ul class="wims_home_result_list">
+ !for i=1 to $(gotcnt$cat)
+  !set m_=!line $i of $(gotm$cat)
+  !set w_=!word $i of $(gotw$cat)
+  !set l_=!line $i of $(gotl$cat)
+  !set t_=!line $i of $(gott$cat)
+  !set d_=!line $i of $(gotd$cat)
+  !set a_=!line $i of $(gota$cat)
+  <li>
+  !if $wims_ismanager=2
+   <span class="small">$w_</span>
+  !endif
+  !if $l_!=$search_lang
+    !set ltrans=!module translation_language $m_
+    !if  $search_lang notin $ltrans
+      <img src="gifs/$l_.gif" alt="$l_.gif"/>
+    !endif
+    !set tit_=!module title_$search_lang $m_
+    !set desc_=!module description_$search_lang $m_
+    !set d_=$desc_
+  !endif
+  !if $t_=
+   !set t_=!module title $m_
+  !endif
+  !if $d_=
+   !set d_=!module description $m_
+  !endif
+  !set L=
+  !if ../local/ isin ../$m_
+   !set L=<sup>local</sup>
+  !endif
+  !if ../com/ isin ../$m_
+   !set L=<sup>com</sup>
+  !endif
+  !if ../contrib/ isin ../$m_
+   !set L=<sup>contrib</sup>
+  !endif
+  !set t_=!replace internal OEF by in $t_
+  !href module=$m_ $t_
+$L, $d_
+  !if $wims_show_author=yes
+   <span class="small">(
+   !replace internal , by $ $ in $a_
+)</span>
+  !endif
+  </li>
+  !reset d_ t_
+ !next i
+ </ul>
+!endif

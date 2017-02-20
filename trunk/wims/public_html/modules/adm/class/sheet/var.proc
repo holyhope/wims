@@ -1,0 +1,507 @@
+# Variable calculations should be done in this file.
+# It is read and interpreted by wims for all valid calls to the module.
+!read adm/class/classlang names.phtml
+!if $job!=$empty and $job notwordof text modify
+  job1=$job
+!!for the icon and the title
+  !if $job=getsource
+    job1=sheetsource
+  !endif
+  !if $job=prep_putsource
+    job1=putsource
+  !endif
+  !default name_$(job1)=$(wims_name_$job1)
+  wims_ariane=!append line sheetadmin,1,cmd=resume to $wims_ariane
+  !if $(name_$(job1))!=$empty or
+    wims_ariane=!append line "$(name_$(job1))",8, to $wims_ariane
+  !endif
+!else
+  !set wims_ariane=!append line sheetadmin,8 to $wims_ariane
+!endif
+!set wims_ariane_self=no
+
+scnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+!if $sheet>$scnt
+ wims_infoshow=yes
+ !setdef wims_infoshow=$wims_infoshow in wimshome/sessions/$wims_session/var.stat
+!endif
+!if $cmd=resume
+ !bound infoshow within yes,no default $wims_infoshow
+ wims_infoshow=$infoshow
+ !setdef wims_infoshow=$wims_infoshow in wimshome/sessions/$wims_session/var.stat
+!endif
+
+max_sheets=!defof MAX_SHEETS in wimshome/public_html/bases/sys/define.conf
+title_limit=80
+desc_limit=4000
+etitle_limit=100
+edesc_limit=400
+require_limit=!defof MAX_REQUIRE in wimshome/public_html/bases/sys/define.conf
+#### for transitional periode
+require_limit=200
+####
+require_limit=$[$require_limit/10]
+wims_prefix=class user tmp n sharing sharable techvar
+srcname=wimshome/$wims_sesdir/home_sheet.src
+wims_helper=chapter=3
+
+!readproc tabletheme
+!if $wims_user!=supervisor
+ error=not_supervisor
+ !exit
+!endif
+!if $job=chseries
+ !changeto chseries.proc
+!endif
+!readproc adm/search_engine/names.$lang
+!readproc adm/search_engine/mklist_form.proc
+
+
+today=!char 1 to 8 of $wims_now
+thisyear=!char 1 to 4 of $today
+
+!if $class_expiration=$empty
+ !defread wimshome/log/classes/$wims_class/.def
+ !if $wims_superclass!=$empty
+  class_expiration=!defof class_expiration in wimshome/log/classes/$wims_superclass/.def
+ !endif
+!endif
+
+!if $class_expiration=$empty
+ error=bad_class
+ !exit
+!endif
+
+sharers=
+sharing1=!defof sharable_sheet in wimshome/log/classes/$wims_class/neighbors
+!for c in $sharing1
+ d=!defof sharing_sheet in wimshome/log/classes/$c/neighbors
+ !if $d issametext $wims_class
+  sharers=!append item $c to $sharers
+ !endif
+!next c
+expmon=!char 2,3 of $[abs(floor($expmon))+100]
+expday=!char 2,3 of $[abs(floor($expday))+100]
+expyear=!char -4 to -1 of $[abs(floor($expyear))+100000]
+!if $expday>=1 and $expday<=31 and $expmon>=1 and $expmon<=12 \
+	and $expyear>=$thisyear and $expyear<=$thisyear+1 \
+	and $expyear$expmon$expday>$today \
+	and $expyear$expmon$expday<=$class_expiration
+	and N notin $expmon$expday$expyear
+ expiration=$expyear$expmon$expday
+ !else
+   !if $expyear$expmon$expday>$class_expiration
+     !readproc adm/date.phtml $class_expiration
+     error=toolate
+   !endif
+!endif
+!if $sheet>$max_sheets
+ error=bad_maxsheet
+ !exit
+!endif
+
+!if $sheet<1
+ error=bad_sheet
+ !exit
+!endif
+# menu preparation
+!if $job!=$empty and $job iswordof \
+	prep_activate prep_erase prep_expire prep_putsource prep_modify
+ data=!record $sheet of wimshome/log/classes/$wims_class/sheets/.sheets
+ !distribute lines $data into active,expire,title,desc,,comment
+ error=$job
+  !if $expire < $today
+    test_expire=$expire,$today
+  !endif
+ !exit
+!endif
+scnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+!if $job=erase and $sheet<=$scnt and $sheet>=1
+ test=
+ !for s=$sheet to $scnt
+  l=!record $s of wimshome/log/classes/$wims_class/sheets/.sheets
+  l=!line 1 of $l
+  !if $l>0
+   test=notclean
+  !endif
+ !next s
+ !if $test=$empty
+  update_field=0
+  !read proc/update.docindex
+  !read update.sheet
+ !endif
+ !restart module=home
+!endif
+
+!if $job=duplicate
+ !changeto $job.proc
+!endif
+
+!if $job=expire
+ !distribute item 1,2 into update_field,update_content
+ !read update.sheet
+ job=
+!endif
+
+!if $job=hide
+ !distribute item 1,3 into update_field,update_content
+ !read update.sheet
+ job=
+!endif
+
+!if $job=reactivate
+ !distribute item 1,1 into update_field,update_content
+ !read update.sheet
+ job=
+!endif
+
+!if $job=deactivate
+ !read var.proc.deactivate
+!else
+ confirmed=!replace word share by $ in $confirmed
+ confirmed=!singlespace $confirmed
+!endif
+
+activetest=!record $sheet of wimshome/log/classes/$wims_class/sheets/.sheets
+a_=!line 1 of $activetest
+a_=!trim $a_
+expp=!line 2 of $activetest
+!default expiration=$expp
+
+!if $expiration>$class_expiration or $test_expire!=$empty
+ expiration=$class_expiration
+!endif
+
+ecnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+!setdef wims_sheetmax=$ecnt in wimshome/sessions/$wims_session/var.stat
+activetest=!replace line number 3 by $ecnt in $activetest
+
+!if $job=putsource and $a_=0
+ source=!trim $source
+ !writefile $srcname $source
+ putcnt=!recordcnt $srcname
+ !for i=1 to $putcnt
+  s_=!record $i of $srcname
+  n_=!linecnt $s_
+  bad_source=$i
+  !if $n_>=5 and $n_<10
+   !distribute lines $s_ into di,pa,re,we,ti,de
+   !for k in re,we,di,pa,ti,de
+    $k=!trim $($k)
+    w$k=!wordcnt $($k)
+   !next k
+   !if NaN isin $[$re]$[$we] or $[$wre*$wwe*$wdi]!=1 or $wpa>1 or $ti=$empty or\
+	.. isin $di or $re<0 or $we<0 or ($re>0 and $we=0)
+    error=bad_source
+    !exit
+   !endif
+   ti=!char 1 to $etitle_limit of $ti
+   de=!char 1 to $edesc_limit of $de
+   source_$i=$s_
+   last=$i
+  !else
+   # last record may be empty
+   !if $i!=$putcnt
+    error=bad_source
+    !exit
+   !endif
+  !endif
+ !next i
+ !for i=1 to $last
+  !appendfile wimshome/log/classes/$wims_class/sheets/.sheet$sheet :$(source_$i)
+ !next i
+!endif
+
+!if $activetest!=$empty
+ sheet_exist=yes
+ !default expiration=!line 2 of $activetest
+ activetest=!line 1 of $activetest
+ exocnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+!else
+ sheet_exist=no
+ activetest=-1
+ exocnt=0
+ !default expiration=$class_expiration
+!endif
+
+!if $job=getsource and $sheet_exist=yes
+ !writefile $srcname <pre>
+ !for i=1 to $exocnt
+  l=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+  !appendfile $srcname $$:$l
+ !next i
+ !appendfile $srcname </pre>
+ !exit
+!endif
+
+!readproc adm/vfilter/listvarfilter.proc
+!if $allow=yes
+ !if $tv_listname=$empty
+  !bound allowtype within all,none,select default all
+ !else
+  !bound allowtype within all,none,select,techvar default all
+ !endif
+ IPlist=!translate ,;\
+* to $    $ in $IPlist
+ IPlist=!trim $IPlist
+ !if $allowtype=select and $IPlist=$empty and $save!=$empty
+  allowtype=all
+ !endif
+ !if $allowtype=all
+  allow_parm=
+ !endif
+ !if $allowtype=none
+  allow_parm=none
+ !endif
+ !if $allowtype=select
+  allow_parm=$IPlist
+ !endif
+
+ !if $allowtype=techvar
+   !readproc adm/vfilter/shexselect.proc $sheet
+ !endif
+!endif
+!! ---- save modification of allow parameters
+!if $save!=$empty
+  !if $sharers!=$empty and $allowshare=1
+   setclass=!items2words $wims_class,$sharers
+   setclass=!words2items $setclass
+  !else
+   setclass=$wims_class
+  !endif
+  !if $allow_parm=$empty
+   !sh for c in $setclass; do rm -f $wims_home/log/classes/$$c/.$sheet; done
+  !else
+   !for c in $setclass
+    !writefile wimshome/log/classes/$c/.$sheet $allow_parm
+   !next c
+  !endif
+  wims_class_log=sheet $sheet allow $allowtype $allowshare by $wims_realuser
+!endif
+!! ---- end of saving
+
+!if $allow=$empty or $save!=$empty
+!! --- read saving configuration for allow parameters initial time and after saving
+ !readproc adm/vfilter/shexread.proc $sheet
+!endif
+old_allowtype=$allowtype
+old_allowtechvar=$allowtechvar
+!reset allow,save
+!! --- end of reading
+
+expmon=!char 5,6 of $expiration
+expday=!char 7,8 of $expiration
+expyear=!char 1,2,3,4 of $expiration
+
+!if $job!=text
+ mod_desc=!replace internal $\
+$ by &#13;&#10; in $mod_desc
+ mod_comment=!replace internal $\
+$ by &#13;&#10; in $mod_comment
+ !if $title_save$desc_save=$empty
+  rec=!record $sheet of wimshome/log/classes/$wims_class/sheets/.sheets
+  !distribute lines $rec into bidon,bidon,title_save,desc_save,prpage_save,,comment_save
+ !endif
+ title=$title_save
+ desc=$desc_save
+ prpage=$prpage_save
+ comment=$comment_save
+!else
+ !if $title=$empty
+  error=no_title
+  !exit
+ !endif
+ desc=!replace internal $\
+$ by &#13;&#10; in $desc
+ comment=!replace internal $\
+$ by &#13;&#10; in $comment
+ title=!singlespace $title
+ desc=!singlespace $desc
+ comment=!singlespace $comment
+ title=!char 1 to $title_limit of $title
+ desc=!char 1 to $desc_limit of $desc
+ title=!replace internal : by &#58; in $title
+ desc=!replace internal : by &#58; in $desc
+ prpage=!word 1 of $prpage
+ prpage=!char 1 to 100 of $prpage
+ !if .. isin $prpage or / notin $prpage
+  prpage=
+ !endif
+ !if $prpage!=$empty
+  test=!defof titb in wimshome/log/classes/$wims_class/doc/$prpage.def
+  !if $test=$empty
+   prpage=
+  !endif
+ !endif
+ !if $sheet_exist=yes
+  !distribute lines 2\
+$expiration into update_field,update_content
+  !read update.sheet
+  !distribute lines 3\
+$title into update_field,update_content
+  !read update.sheet
+  !distribute lines 4\
+$desc into update_field,update_content
+  !read update.sheet
+  !distribute lines 5\
+$prpage into update_field,update_content
+  !read update.sheet
+  !distribute lines 6\
+$comment into update_field,update_content
+  !read update.sheet
+ !else
+  !appendfile wimshome/log/classes/$wims_class/sheets/.sheets :0\
+$expiration\
+$title\
+$desc\
+$prpage\
+$comment
+  sheet_exist=yes
+  activetest=0
+  sheet=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+  !writefile wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+ !endif
+ title_save=$title
+ desc_save=$desc
+ prpage_save=$prpage
+ comment_save=$comment
+!endif
+
+!if $job=activate and $[$activetest]=0
+ !read writeweights
+ !if $test_expire!=$empty
+     !distribute items 2,$expiration into update_field,update_content
+    !read update.sheet
+    !reset test_expire
+ !endif
+ !distribute item 1,1 into update_field,update_content
+ !read update.sheet
+ activetest=1
+ wims_class_log=activate sheet $sheet by $wims_realuser
+!endif
+
+# delete an item
+!if $job=delete and $delete>0 and $delete<=$exocnt
+ !distribute items -1,$delete into update_field,exo
+ !read adm/class/update.exo
+ delete=
+ exocnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+!endif
+
+# move up an item
+!if $job=moveup and $moveup>1 and $moveup<=$exocnt
+ x_=!record $moveup-1 of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+ y_=!record $moveup   of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+ !distribute items 0,$[$moveup-1] into update_field,exo
+ update_content=$y_
+ !read adm/class/update.exo
+ !distribute items 0,$moveup into update_field,exo
+ update_content=$x_
+ !read adm/class/update.exo
+!endif
+
+# modify an item
+!if $job=modify and $modif>0 and $modif<=$exocnt
+ !if $activetest=0
+   exo=!record $modif of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+   !distribute lines $exo into D_,p_
+####
+   iniparm=$p_
+   !read getparm $iniparm exo random qnum
+   exocnt_=!itemcnt $get_exo
+#### common with addmodule
+   !if $get_random=0
+   !for i=1 to $get_qnum
+    update_order=!append item $(update_ex$i) to $update_order
+   !next
+   get_exo=$(get_exo[$update_order])
+  iniparm2=!replace internal & by $\
+$ in $iniparm
+  iniparm2_cnt=!linecnt $iniparm2
+  new_iniparm=
+  equal==
+  !for v in $get_exo
+    new_iniparm=!append item exo=$v to $new_iniparm
+  !next
+  !for u=1 to $iniparm2_cnt
+    l=!line $u of $iniparm2
+    !if exo$equal notin $l
+     new_iniparm=!append item $l to $new_iniparm
+    !endif
+  !next
+  new_iniparm=!nospace $new_iniparm
+  new_iniparm=!replace internal , by & in $new_iniparm
+  p_=$new_iniparm
+!endif
+#####
+   !bound mod_weight between 0 and 10 default 0
+   !bound mod_require between 0 and $[10*$require_limit] default 0
+   mod_title=!singlespace $mod_title
+   mod_desc=!singlespace $mod_desc
+   mod_comment=!singlespace $mod_comment
+   mod_title=!char 1 to $etitle_limit of $mod_title
+   mod_desc=!char 1 to $edesc_limit of $mod_desc
+   mod_comment=!char 1 to $edesc_limit of $mod_comment
+ !endif
+ !if $mod_feedback notsametext $empty
+  mod_feedback_lim=$(mod_feedback[2])
+  mod_feedback_lim2=$(mod_feedback[3])
+  !bound mod_feedback_lim between 0 and 11 default 10
+  !bound mod_feedback_lim2 between 0 and $mod_feedback_lim default 0
+  mod_feedback=!nospace $(mod_feedback[1])
+  mod_feedback_test=!replace = by _ in $mod_feedback
+  !if cmd_new notin $mod_feedback_test
+   mod_feedback=!nospace $mod_feedback&cmd=new
+  !endif
+  !if adm/doc isin $mod_feedback and job_read notin $mod_feedback_test
+   mod_feedback=$mod_feedback&job=read
+  !endif
+  mod_feedback=$mod_feedback,$mod_feedback_lim,$mod_feedback_lim2
+ !endif
+
+ exo=$modif
+ !if $activetest=0
+   update_content=$D_\
+$p_\
+$mod_require\
+$mod_weight\
+$mod_title\
+$mod_desc\
+$mod_dep\
+$mod_comment\
+$mod_feedback
+   update_field=0
+   !read adm/class/update.exo
+ !else
+  !distribute lines 5\
+$mod_title into update_field,update_content
+  !read adm/class/update.exo
+  !distribute lines 6\
+$mod_desc into update_field,update_content
+  !read adm/class/update.exo
+  !distribute lines 8\
+$mod_comment into update_field,update_content
+  !read adm/class/update.exo
+  !distribute lines 9\
+$mod_feedback into update_field,update_content
+  !read adm/class/update.exo
+ !endif
+
+ !distribute items $ into mod_title,mod_desc,mod_weight,mod_require,mod_dep,mod_comment,mod_feedback
+!endif
+
+!if $[$activetest]=0
+ erasable=yes
+ scnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+ !for s=$sheet+1 to $scnt
+  l=!record $s of wimshome/log/classes/$wims_class/sheets/.sheets
+  l=!line 1 of $l
+  !if $l>0
+   erasable=no
+  !endif
+ !next s
+!endif
+
+!if $back=1 and $error=$empty
+ !restart module=home
+!endif

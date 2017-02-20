@@ -1,0 +1,55 @@
+!read adm/class/classname.phtml $wims_classname\
+$wims_institutionname
+
+!if $user isitemof $wims_connectedlogin and $wims_user=supervisor
+ !let name_job=!append word <span class="wims_connected" title="connected">$user</span> to $name_job
+!endif
+
+!read adm/title.phtml 1\
+$classname\
+$livret_title\
+$name_job
+
+!if $error!=$empty
+ <div class="wims_msg alert">
+ !read lang/msg.phtml.$moduclass_lang  $error
+ </div>
+ !exit
+!endif
+
+!if $livret_nbcomp==0
+ $name_no_competence
+ !exit
+!endif
+!read proc/legend.proc legend
+!reset table_center
+$table_header
+ $table_hdtr
+  <th>$name_Competences / $name_n_Paliers</th>
+  !for j=1 to $maxnbpalier
+   <th valign="middle">$(name_ipalier)$j</th>
+  !next j
+ </tr>
+ !for k=1 to $livret_nbcomp
+  !if $(nbit_$k)>0 or $livret_showempty!=no
+   $table_tr
+    <td>
+     <b>$k</b> : $(title_$k)
+    </td>
+    !for j=1 to $(nbpalier_$k)
+     !let desc=!record $j of wimshome/log/classes/$wims_class/livret/.comp$k
+     !let desc=!line 1 of $desc
+     !let desc=!replace internal ' by \' in $desc
+     !read adm/class/colors $(l_$(k)_$(j)),livret
+     <td style=$style_note>
+      <a onmouseover="Tip('$desc',$tooltip_parm)">$output_note</a>
+      !href cmd=reply&job=see&comp=$k&palier=$j $wims_name_detail
+     </td>
+    !next j
+    !for j=$(nbpalier_$k)+1 to $maxnbpalier
+      <td>&nbsp;</td>
+    !next j
+   </tr>
+  !endif
+ !next k
+$table_end

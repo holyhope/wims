@@ -1,0 +1,51 @@
+!! some variable are global as expyear, creyear,months, v, v1
+!distribute items $wims_read_parm into r_
+!if $r_ isitemof 5
+  !distribute items $wims_read_parm into r_,date_,option_
+  !goto $r_
+!endif
+!if $r_ isitemof 6
+  !distribute items $wims_read_parm into r_,parm_hour,parm_min
+  !goto $r_
+!endif
+
+!distribute items $wims_read_parm into r_,parm_day,parm_month,parm_year
+  !let jyear=!char 1 to 4 of $jour_begin
+  !let jmonth=!char 5 to 6 of $jour_begin
+  !let jday=!char 7 to 8 of $jour_begin
+
+
+!goto $r_
+:1
+!formselect $parm_year from $creyear to $expyear
+!formselect $parm_month from 1 to 12 prompt $months
+!formselect $parm_day from 1 to 31
+!exit
+
+:3
+!formselect $parm_year from $creyear to $expyear
+!formselect $parm_month from 1 to 12 prompt $months
+!formselect $parm_day list 0,$v prompt ---,$v
+!exit
+
+:4
+!formselect $parm_year list 0,$v1 prompt ---,$v1
+!formselect $parm_month from 0 to 12 prompt ---,$months
+!formselect $parm_day list 0,$v prompt ---,$v
+!exit
+
+:5
+!let day=!char 7 to 8 of $date_
+!let month=!char 5 to 6 of $date_
+!let year=!char 1 to 4 of $date_
+!if withyear isin $option_  
+ $year/$month/$day
+!else 
+ $month/$day
+!endif
+!exit
+
+:6
+!formselect $parm_hour list 08,09,10,11,12,13,14,15,16,17,18,19,20
+!formselect $parm_min list 00,05,10,15,20,25,30,35,40,45,50,55
+!exit

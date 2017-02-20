@@ -1,0 +1,66 @@
+:signification
+ 在栏里填入数学公式里的回答类型.
+ 用于 OEF 练习的 <span class="tt wims_code_words">statement</span>.
+
+<p>
+第一行使用 mathml 公式的格式, 并放在括号内, 接着是回答栏的大小 (必需).
+数学公式里应插入回答的地方请使用 reply<span class="tt">n</span>.
+接下去一行是如下形式
+ <pre>
+ reply<span class="tt">n</span>, size, defaut, css
+ </pre>
+ 其中 <span class="tt">size</span> 是回答占用的空间大小 (非必需),
+ <span class="tt">defaut</span> 是在相应栏目里显示的文字 (非必需), 
+ <span class="tt">css</span> 是 css 代码 (非必需).
+</p>
+:example
+ <span class="wims_help_example">例</span>
+<div>
+<textarea id="wims_show2" cols="100" rows="8" name="wims_show1" readonly="readonly">
+\statement{
+ \special{mathmlinput [\frac{reply1}{reply2}], 5,noanswer
+ reply 1
+ reply 2
+ }
+}
+\answer{}{x^2}{type=formal}
+\answer{}{2}{type=numeric}
+</textarea>
+</div>
+<p>
+这个例子给出一个分数, 有两个回答栏, 分别表示分子与分母.
+两个栏分别对应回答 1 和 2 
+(其类型可以是 <span class="tt wims_code_words">numeric</span>, <span class="tt wims_code_words">case</span>
+ <span class="tt wims_code_words">formal</span>, 等.)
+栏目大小是 5 个字符.
+</p><div>
+<textarea id="wims_show3" cols="100" rows="7" name="wims_show1" readonly="readonly">
+\statement{
+\special{mathmlinput [\frac{reply1}{reply2}], 4
+reply 1,10,??,color:blue;font-size:20px
+reply 2}
+}
+\answer{}{x^2}{type=formal}
+\answer{}{2}{type=numeric}
+</textarea>
+</div>
+<p>
+这个例子中第一栏的大小是 10 个字符, 
+包含在大小为 20 像素的红色问号中间.
+</p>
+当回答错误时, 会在旁边显示正确的答案.
+
+正确答案会按文字中的公式显示.
+如不想让它出现, 可在第一行的栏目大小之后加上 <span class="tt wims_code_words">noanswer</span>.
+
+<div>
+<textarea id="wims_show4" cols="100" rows="7" name="wims_show1" readonly="readonly">
+\statement{
+\special{mathmlinput [\frac{reply1}{reply2}], 4,noanswer
+reply 1,10,??,color:blue;font-size:20px
+reply 2}
+}
+\answer{}{x^2}{type=formal}
+\answer{}{2}{type=numeric}
+</textarea>
+</div>

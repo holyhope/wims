@@ -1,0 +1,72 @@
+ <b>Nombre.</b> (nom: <span class="tt wims_code_words">numeric</span>)<br/>
+ Comparaison de nombres réels à la précision définie par l'auteur.
+
+Le type <span class="tt wims_code_words">numeric</span> compare la réponse donnée par l'élève à la bonne réponse de l'enseignant avec une précision définie.
+<br />
+:syntaxe
+La syntaxe générale de ce type de réponse est :
+<pre>
+\answer{un commentaire}{0.42}{type=numeric}
+\answer{un commentaire}{\rep}{type=numeric}{option=comma}
+</pre>
+où <span class="tt">\rep</span> est la bonne réponse définie auparavant ou une variable n'ayant pas été définie dans le cas où l'on désire analyser soi-même la réponse.
+Si <span class="tt">\rep</span>n'a pas été définie, vous devez faire l'analyse vous-même en utilisant les conditions (<span class="tt wims_code_words">\condition</span>).
+Ce qui suit ne concerne que le cas d'une variable déjà définie et ayant une valeur.
+
+<div>
+La valeur numérique attendue est estimée par défaut avec une erreur relative :
+<div class="wimscenter">
+ !insmath |\mbox{reponse}-\mbox{bonne_reponse}| \le M(prec)
+ </div>
+ avec
+ <div class="wimscenter">
+!insmath M(prec)= \frac{max(|\mbox{reponse}|+|\mbox{bonne_reponse}|,\frac{1}{\mbox{prec}})}{\mbox{prec}}
+</div>
+Dans la formule précédente,
+<span class="tt">prec</span> est donnée dans le champ
+ <span class="tt wims_code_words">\precision</span>,
+ par défaut sa valeur est de 1000.
+Autrement dit, si la réponse est proche de la bonne réponse, le quotient de la différence
+par la bonne réponse (erreur relative) doit être inférieure à 2/prec.
+</div>
+<div>
+ Pour qu'une réponse soit considérée comme
+ <span class="oef_indprec"> bonne avec une mauvaise précision</span>, il faut remplacer <span class="tt">prec</span> par
+!insmath \sqrt{prec}.
+</div>
+
+:option
+Les options possibles sont les suivantes :
+<ul><li><span class="tt wims_code_words">comma</span> :
+l'écriture des nombres décimaux avec une virgule décimale est acceptée
+et la bonne réponse est donnée avec le même "séparateur" décimal
+que celui donné par l'élève.
+</li><li><span class="tt wims_code_words">absolute</span> :
+la précision est absolue et le calcul d'erreur s'effectue par la relation :
+<div class="wimscenter">
+!insmath | \mbox{reponse}-\mbox{bonne_reponse}|< \frac{1}{\mbox{prec}}.
+</div>
+Pour que la réponse soit considérée comme <span class="oef_indprec">
+bonne avec une mauvaise précision</span>, il faut remplacer
+!insmath \frac{1}{\mbox{prec}}
+  par
+!insmath \frac{10}{\mbox{prec}}.
+</li></ul>
+:example
+Un exemple de calcul est proposé pour illustrer les précisions absolues
+et relatives. La valeur numérique exacte attendue est 0.42 et
+la valeur <span class="tt">prec</span> du champ <span class="tt wims_code_words">\precision</span> est égale à 1000.
+
+!distribute items bon,faux,mauvaise précision into name_good,name_bad,name_prec
+!set name_header=Réponse,Précision <br />relative,Précision <br />absolue, Différence <br />avec
+!set example=0.42,0.4205,0.4192,0.4191,0.4190,0.4,0.39,500000
+!set nb_ex=!itemcnt $example
+!set precision=1000
+
+!read help/anstype/table_numeric.phtml
+
+!set example=505.42,505.4205,505.4192,505.4191,505.4190,505.4,505.39
+!set nb_ex=!itemcnt $example
+!set precision=1000
+
+!read help/anstype/table_numeric.phtml

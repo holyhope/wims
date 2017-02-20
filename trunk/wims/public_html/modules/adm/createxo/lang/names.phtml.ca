@@ -1,0 +1,178 @@
+!set lang_exists=yes
+
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
+
+!distribute lines Mode guiat\
+  Mode expert\
+  Mode fitxer\
+  models preparats\
+  Enviar el fitxer\
+  Codi del vostre exercici\
+  Tornar a la pàgina anterior\
+  Continuar amb el contingut de l'exercici\
+  Modificar un exercici existent de la classe\
+  Tornar a l'etapa precedent.\
+  Enviar el codi\
+  Netejar\
+  Demo\
+  Adaptar\
+  Provar el teu exercici\
+  Corregir l'error\
+  Tornar a\
+  L'exercici serà com segueix.\
+  Aquests són els models d'exercici disponibles. Trieu-ne un.\
+  Mòdul que conté temporalment l'exercici.\
+into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,\
+  name_model,name_sendfile,name_source,name_menuback,name_continue,name_modify,\
+  name_prevstep,name_sendsource,name_clean,name_demo,wims_name_adapt,name_testexo,\
+  name_correction,name_backmodule,name_realisation,name_availablemodels,name_temp_module
+
+!set name_normal=!lowercase $wims_name_normalmode
+!set name_raw=!lowercase $wims_name_rawmode
+!set name_file=!lowercase $wims_name_filemode
+
+!set name_modefile1=Esteu al mode fitxer per crear un exercici. En aquest mode,\
+  podeu enviar al servidor el codi OEF d'un fitxer local. Per la creació del \
+  primer exercici, és preferible el
+!set name_modefile2= Per editar en línia, també podeu utilitzar el
+
+!distribute line Exercicis bàsics\
+Exercicis amb una llista de dades\
+Exercicis de química\
+Jocs\
+Exercicis per a les Llengües\
+into name_first,name_datalist,name_chemistry,name_game,name_language
+
+!set name_save=!nosubst  Aquest és el codi de l'exercici <span class="wims_warning">$oef_title</span>,\
+  en format OEF (Open Exercice Format). Per desar-lo, copia el text entre les dues línies\
+   horitzontals, i enganxa-les a un fitxer.
+
+!distribute lines Nombre de paràmetres\
+  Nombre de respostes\
+  També pots enviar un fitxer amb una imatge per a l'exercici.\
+  O modificar el fitxer de codi de\
+   posar aquest exercici a la vostra classe\
+  per substituir l'antic\
+  per fer-ne un de nou\
+  tornar a enviar\
+  posar-lo al mòdul de desenvolupament\
+  desar el codi\
+  de l'exercici!\
+into name_parameter_cnt,name_answer_cnt,name_deposit,name_modify,name_putinclass,\
+name_replace,name_new,name_sendagain,name_developer,name_savesource,name_download
+
+!set name_success=El software ha reconegut satisfactòriament el teu exercici, amb les següents informacions. (Sisplau comprova que tot sigui correcte.)
+
+!if $level=1
+!distribute lines Poseu un títol a l'exercici que voleu crear\
+  Format de l'enunciat del problema\
+  Aquest exercici demanarà\
+  respostes d'estil lliure i\
+  respostes d'opció múltiple\
+  Les respostes numèriques no calculades (com <span class="tt">3*5-sin(pi/3)</span>) seran\
+  acceptades, refusades\
+  condicions seran utilitzades per avaluar les respostes d'estil lliure.\
+into name_givetitle,name_giveformat,name_exo,name_answer1,name_answer2,\
+name_nonnumeric,name_prompt,name_condition
+!endif
+
+!if $level=2
+ !set types=!sort nocase lines \
+auto,default\
+expressió literal,litexp\
+expressió algébrica,algexp\
+expressió formal,formal\
+text aproximat,atext\
+text convertit a minúscules,nocase\
+text exacte,case\
+text brut,raw\
+equació,equation\
+conjunt finit,set\
+matriu,matrix\
+nombre,numeric\
+nombre amb rang,range\
+nombre amb unitat,units\
+funció numérica,function\
+vector,vector\
+paraules d'una llista,wlist
+
+!distribute lines Sisplau entra ara el contingut del teu exercici  \
+  Pots definir ací els paràmetres aleatòris\
+  L'enunciat de l'exercici \
+  Les respostes d'estil lliure\
+  Solució correcta\
+  Precisió exigida a les respostes numèriques\
+  Les funcions (numèriques) seran comparades a l'interval\
+  Condicions per analitzar les respostes (numèriques)\
+  Nom de la condició\
+  Definició de la condició\
+  Opcions múltiples\
+  Opcions correctes\
+  Opcions errònies\
+  Pots donar una indicació i/o una solució\
+  Indicació\
+  Solució\
+into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision,name_function,\
+ name_condition_numeric,name_name_condition,name_definition,name_multiple,name_goodchoice,name_badchoice,\
+ name_option,name_indication,name_solution
+
+!endif
+
+!if $level=4
+  !set name_update1=!nosubst L'exercici <span class="tt">$existing.oef</span> s'ha actualitzat al mòdul
+  !set name_update2=!nosubst Ha fallat l'actualització de l'exercici <span class="tt">$existing</span> al mòdul
+  !set name_update3=L'exercici s'ha instal·lat amb èxit.
+  !set name_update4=Hem trobat un exercici idèntic a la vostra classe. Així doncs, aquest segon enregistrament s'ignora.
+  !set name_update5= Aquest exercici serà accessible únicament als participants de la vostra \
+     classe, i només si el poses en un full de treball.
+
+  !distribute lines  Ara podeu\
+    consultar els exercicis de la classe.\
+    i eventualment posar-los als vostres fulls de treball\
+ into name_youcan, name_consult,name_sheet
+!endif
+
+!if $level=7
+ name_warning_empty=Si us plau, trieu el nom del fitxer font.
+ name_choice_module=Seleccioneu un mòdul
+ name_choice_filename=Nom de l'arxiu font de l'exercici (utilitzar només símbols alfanumèrics)
+ name_register_dev=Deseu el fitxer de codi de l'exercici en el compte Modtool
+!endif
+
+!distribute lines Esteu al mode expert de creació d'exercicis.\
+  aquest exercici basat en un model estàndard\
+  Entreu el codi sencer\
+  per enregistrar un fitxer de codi existent, copieu el fitxer a la finestra.\
+  Aquest és el codi d'un exercici existent a la vostra classe.\
+  Podeu modificar-lo a la finestra d'aquí baix.\
+  Aquest és el codi d'un exercici públic que voleu importar. Podeu modificar-lo a la finestra d'aquí baix, abans de posar-lo a la classe.\
+  Podeu provar alguns programes externs amb el\
+  provador de script\
+ into name_brut,name_try,name_allsource,name_copy,name_source2,name_modify_window,name_public,name_test_extern,name_testerscript
+
+!exit
+:delete
+L'exercici <em>$deltitle</em> ha estat retirat de la llista d'exercicis de la vostra
+classe.
+Si heu fet alguna maniobra incorrecta i voleu reparar el vostre
+error, aquí teniu el codi d'aquest exercici que podeu desar com a mesura d'urgència,
+i més endavant copiar-lo  per reinstal·lar l'exercici a
+
+!exit
+:model
+<b>Nota</b>. Aquests models s'han preparat per permetre a la gent construir ràpidament els seus exercicis.
+Tenen, doncs, una estructura simple i estàndard, i no ofereixen totes les possibilitats
+de la sintaxi OEF. Però sempre podeu posar els exercicis en mode expert per tal d'afegir més
+funcionalitats o modificar-lo al vostre gust.
+!exit
+
+:register
+L'exercici s'ha enregistrat satisfactòriament al servidor. Volem agrair-te efusivament la teva contribució, en nom de tots els que en trauran profit.
+<p>
+L'administrador d'aquest lloc verificarà l'exercici, i decidirà
+si posar-lo a la categoria apropriada o no.
+Això pot tardar uns quants dies.
+</p>
+!exit

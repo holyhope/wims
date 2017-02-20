@@ -1,0 +1,86 @@
+!default Askcontext=0
+!default Askresult=0
+
+exo=!listintersect $exo and $exolist
+!default exo=$defaultlist
+wims_intro_parm=$exo
+!default exo=$exolist
+
+thisexo=!randitem $exo
+deffile=def/$thisexo.def
+
+givehint   =!item $qcmlevel of 1,1,1,1,1,1,0,0,0
+presentsol =!item $qcmlevel of 2,2,1,1,0,0,0,0,0
+scorepower =!item $qcmlevel of 1,1.1,1.2, 1.4,1.6,1.8, 2.1,2.4,2.7
+tolerance  =!item $qcmlevel of 6,4,3,2,2,1,1,0,0
+cutstep	   =!item $qcmlevel of 50,40,35, 30,25,20, 15,10,5
+ask	   =!item $qcmlevel of 2,3,3,4,4,5,6,7,8
+ecoeff	   =!item $qcmlevel of 0,0.2,0.3, 0.4,0.5,0.6, 0.8,0.9,1
+pcoeff	   =!item $qcmlevel of 1,1.2,1.3, 1.5,1.7,2,   2.3,2.6,3
+scoremin   =!item $qcmlevel of 0,0,0.05, 0.1,0.15,0.2, 0.25,0.3,0.35
+
+!distribute item 1,1,1,1 into activecase,casecnt,currstep,ustep
+!distribute item 0,0,0,0 into laststep,gotostep,penalty,oldpenalty
+!reset vsavelist, methparmcnt, statusline, statusLine, solution, hint, earlyscore,\
+	m_context,m_goal,m_equivalence,m_newobject,m_options,m_minsteps,\
+	allcases,stepcases,\
+	exo_has, stepcounting
+m_environ=QQ
+wims_module_log=$cmd: $thisexo level=$qcmlevel
+
+!read $deffile
+
+methparmlimit=32
+!default m_minsteps=1
+cutstep=$[min($maxstep,$m_minsteps+$tolerance+$cutstep)]
+!for s in help,hint,solution
+ !if $($s)!=$empty
+  exo_has=$exo_has $s
+ !endif
+!next s
+
+m_options=!items2words $m_options
+!for t in context,result
+ !if $(Ask$t)=0 and ask$t iswordof $m_options
+  Ask$t=1
+ !endif
+ !if $(Ask$t)>0
+  ask$t=$ask
+ !else
+  ask$t=0
+ !endif
+!next t
+
+!if $m_environ iswordof ZZ QQ and nofloat notwordof $m_options
+ m_options=$m_options nofloat
+!endif
+
+!if fixedgoal iswordof $m_options
+ m_goal=!translate internal $	$ to $\
+$ in $m_goal
+!endif
+
+!read oef/valsave.proc
+!read deduc/objects.combine
+!read deduc/objects.put 0
+variables=!varlist $objects
+v=!items2words $m_variables
+v=!words2items $v
+variables=!listunion $v and $variables
+
+!default methparmcnt=$methparmlimit
+!read deduc/methreset
+
+mtl=!items2words $m_methods
+mthlist=!words2items $mtl
+mtl=!words2lines $mtl
+dictionary=scripts/deduc/meth/index.$module_language
+translator_unknown=leave
+translator_switch=leavelines
+mtitles=!exec translator $mtl
+mtitles=!lines2items $mtitles
+
+question_url=
+status=waiting
+!default conditioncnt=0
+

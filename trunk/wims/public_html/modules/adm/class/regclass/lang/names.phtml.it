@@ -1,0 +1,102 @@
+!set lang_exists=yes
+
+!set name_passsup=password di amministrazione
+!set name_password_check=Password security check
+!set name_listclass=corso,corso,coordinamento di corsi,corso,portale di sede
+
+!default Cltype=$cltype
+!if $Cltype iswordof 2 4
+   !if $Cltype=2
+    !set name_classe=$(name_listclass[$Cltype+1])
+    !set name_sup=docente coordinatore
+   !else
+    !set name_classe=$(name_listclass[$Cltype+1])
+    !set name_sup=docente supervisore
+   !endif
+    !set name_classes= il $name_classe
+    !set name_classess= un $name_classe
+    !set name_classesss= del $name_classe
+    !set name_classessss= Il $name_classe
+   !else
+    !set name_classe=$(name_listclass[$Cltype+1])
+   !set name_classes=il $name_classe
+   !set name_classess=un $name_classe
+   !set name_classesss= del $name_classe
+   !set name_classessss= Il $name_classe
+   !set name_sup=docente
+ !endif
+
+!distribute lines Continua\
+  Ricomincia da capo\
+  Creazione di una struttura\
+  Nome dell'istituzione\
+al più \
+almeno\
+  Per utenti esperti\
+  caratteri\
+  Ricomincia da capo.\
+  Scegli il tipo di corso che vuoi creare.\
+almeno 4 e non più di 16 caratteri, numeri o lettere non accentate\
+ into name_continue,name_again,title,name_Name_portal,name_atmost,name_atleast,name_expert,\
+   name_characters,name_comeback,name_choose,name_warningpass
+
+!if $regpolicy=file
+  !set noright=Non hai i privilegi per farlo.
+ !else
+  !set noright=Solo il <em>site manager</em> può farlo.
+ !endif
+
+!set name_regpolicy=!nosubst La creazione $name_classesss può essere completata solo se si\
+  dispone di un indirizzo di posta elettronica funzionante.
+
+!set name_help1=Questa password permette di accedere alla gestione del $name_classe come $name_sup.\
+  Non va resa nota ad altri.
+
+!set name_help2=La password $name_classesss è necessaria per l'iscrizione degli studenti. \
+  Va comunicata a tutti gli studenti che devono accedere al corso.
+
+!set name_help3=La password $name_classesss è necessaria per l'iscrizione dei docenti.\
+   Va comunicata ai docenti $name_classesss; ma non agli studenti.
+
+!distribute lines Cioè la data in cui il corso sarà automaticamente chiuso e archiviato.\
+  Numero limite di partecipanti al $name_classe\
+  Accesso da IP sicuro\
+  Opzionale\
+  Questo codice serve solo in questa occasione. Non può essere utilizzato per accedere al $name_classe!\
+  Codice di attivazione\
+  Server CAS per autenticazione esterna\
+  into name_help_date,name_help_limit,name_secure,name_optional,name_warning_code,name_code,name_cas
+
+!set name_host=!nosubst Nome (o IP) dei pc da cui si effettueranno operazioni \
+ di gestione del $name_classe. Se non si mette nulla, ogni volta che \
+ effeettuerete una operazione sensibile vi sarà inviata una mail (opzione \
+ consigliata). Se si mette la parola <span class="tt wims_code_words">all</span> \
+ questo controllo di sicurezza viene disattivato.
+
+!set name_cas_help=Compilare questo campo se si desidera utilizzare una autenticazione esterna di tipo CAS (fornita dalla vostra struttura)
+
+!set name_cpexempleintro=!nosubst State creando una copia del corso <span class="tt wims_code_words">$source_title</span>
+!set name_choosemode=Scegliete il tipo di copia
+!distribute item Completa,Parziale into name_btcpexemplemeth0,name_btcpexemplemeth1
+
+!set name_cpexemplemeth0=Tutte le risorse saranno copiate. In un secondo momento potrete disattivare le risorse, per eliminarle o adattarle alle vostre necessità.
+!set name_cpexemplemeth1=non vengono copiati gli esami. Le altre risorse sono automaticamente disattivate. Potete quindi decidere cosa tenere o eliminare o adatatare.
+!set name_cpexemplecomment=In ogni caso, le date di termine sono modificate nella data di termine del corso creato.
+!set name_research1=Ci sono troppi corsi virtuali su questo sito. Inserire parte del nome del corso o del nome del docente per effettuare una ricerca.
+!set name_research2=Ci sono ancora troppi corsi corrispndenti alla ricerca. Provate a dare una descrizione più precisa.
+!set name_searchclass=Cerca un corso
+!set name_nofound=Non ci sono corsi corrispondenti alla ricerca.
+
+!distribute items Disponibile, Protetto, Non autorizzato, Copiabile, \
+Cliccare sul corso che si vuole copiare\
+into name_free,name_protected,name_disallowed,name_cloning,name_clickclone
+
+!set name_getcloningpwd=!nosubst State per creare una copia del corso \
+<span class="tt wims_code_words">$source_title</span>. \
+Per farlo avete bisogno della password di copia che \
+il docente del corso vi ha comunicato.
+!set name_subclass=Sous-classe de
+
+!distribute lines Luogo (città, nazione)\
+ Compilando questo campo date ci autorizzate a indicare che WIMS è utilizzanto nella vostra citta (senza alcun'altra menzione)\
+into name_location,name_location_help

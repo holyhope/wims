@@ -1,0 +1,84 @@
+!set lang_exists=yes
+!distribute item 请选择, 不知道, 都不对,\
+    正确的回答是,正确的回答是\
+    into ch_choose, ch_noidea, ch_none, ch_good1, ch_goodn
+
+!set name_badsize=(你的回答连维数都不正确.)
+!set name_empty=你发回的答案不完整, 请完成它.
+!set name_exo=练习
+!set name_sorry=对不起
+!set name_noprint=不可打印
+!set name_print=打印版
+!set name_send=发送
+!set name_sendanswer=发送回答
+!set name_enterreply=输入你的回答
+!set name_correctreply= <b>订正</b>你的回答
+!set name_step=步骤
+!set name_remark=<b>说明.</b> 如果你觉得被列举的选择没有一个是合适的, \
+你可选``$ch_none''
+!set name_answeranalysis=分析你的回答.
+!set name_Hint=提示
+!set name_answers=解答
+!set name_answer_i=!nosubst 练习$i的解答.
+!set name_Solution=解答
+!set name_Contribute=贡献者:
+
+!set name_lastname=姓
+!set name_firstname=名
+
+!!!!
+!set name_emptytitle=本模块是一组练习. 你想做练习, 但又没有指出你想做哪个练习.\
+可能是由于你点击了一个错误的链接, 也可能是软件的错误.
+
+ !distribute line 重新操作\
+  本组练习有时间限制.\
+  本练习有时间限制.\
+  换一个练习\
+  放弃本组练习, 要求一组新的练习\
+  继续下一个习题\
+  如果你需要成绩的话, 你必须做完本组练习的所有习题.\
+   (你已因超时而被扣分.)\
+  开发模式\
+  默认情形下正确答案被插入选择区域内.\
+  请把正确答案插入选择区域内.\
+  Clicking on $$wims_name_giveup brings up a new statement from the same exercise; the work already done on this exercise is then lost.\
+  Do you confirm?\
+ into name_restart,name_serie_limit,name_exo_limit,name_exo_renew,name_serie_renew,\
+  name_serie_nextexo,name_serie_new2,name_penalty,\
+  name_devel_mode,name_devel_warning,name_devel_insert,name_exo_giveup,name_giveup_confirm
+
+!set name_serie_giveup=The series of exercises is not finished; you have to finish it \
+  to obtain a score. If you confirm that you wish to to abandon, \
+  the work already made on the series will then be lost and there will be a new statement \
+  for the same series of exercises.
+!set name_serie_exo=!nosubst 这是本组 $qnum 个习题中的第 $[$reply_cnt+1] 个习题.
+!set name_serie_exo2=!nosubst 这是本组 $qnum 个习题中的第 $[$reply_cnt] 个习题.
+!set name_serie_score=!nosubst 你已做完了一组 $qnum 个习题, 成绩是 \
+   $module_score/10.
+!set name_exo_score=!nosubst 你的成绩是 $module_score/10.
+
+
+!!!!
+!if $cmd=intro
+  !read oef/cn/intronames
+!endif
+
+!distribute line  抱歉, 这个练习没有帮助的内容.\
+抱歉, 本练习没有提示. \
+into name_warning_help, name_warning_hint
+
+!if $special_parm=about
+  !distribute line 你目前做的练习的类型是\
+  本练习既包含带有解释的解答, 也包含提示.\
+  本练习包含带有解释的解答, 但没有提示.\
+  本练习包含提示, 但不含带有解释的解答.\
+  本练习既无带有解释的解答, 也无提示.\
+  关于这组练习的信息.\
+  练习的版权属于各作者.\
+  链接\
+into name_about1,name_hint1,name_hint2,name_hint3,name_hint4,\
+ name_collection,name_copyr,name_linkfor
+
+!endif
+
+!set name_latexprint=某些练习的 Latex 源码.

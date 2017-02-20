@@ -1,0 +1,46 @@
+!read adm/levelname.phtml
+!read adm/css.phtml
+!read tabletheme
+!header1
+
+<!-- Begin regclass/main.phtml -->
+
+<div class="title_box">
+	<h1 class="wims_title">
+		<!--WIMS $httpd_HTTP_HOST\-->
+		$title
+	</h1>
+</div>
+
+!if $toomany=yes
+ !read lang/toomany.phtml.$modu_lang
+ !goto end
+!endif
+
+!if $error!=$empty
+ <div class="wims_msg alert">
+ <span class="wims_warning">$wims_name_Error:</span>
+ !read lang/msg.phtml.$modu_lang
+ </div>
+ !if $restart!=no and $job=emptyclass
+  <p class="wimscenter">
+   !set wims_ref_class = wims_button
+   !href module=$module&cmd=reply&step=0 $name_again
+  </p>
+ !endif
+ !goto end
+!endif
+
+!read $job.phtml
+
+:end
+!if $step>=0 and $cmd=reply and $job=emptyclass
+  !if $wims_theme=default
+!!ARIANE
+    !set wims_menu_items=!append line back2,1,module=$module\
+to $wims_menu_items
+  !endif
+!endif
+
+!tail
+!reset job step

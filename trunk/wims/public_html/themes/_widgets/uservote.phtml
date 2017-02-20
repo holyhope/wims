@@ -1,0 +1,28 @@
+!read themes/_widgets/user_varvote.phtml
+
+!if $v>0
+ <!-- _widgets/uservote.phtml -->
+ <div class="wims_seq" id="wims_user_vote">
+ <div class="wims_title_seq" >$wims_name_Votes</div>
+ <ul class="wims_work_list">
+  !for i=1 to $v
+   !set sv=!item $i of $avlist
+   !distribute lines $(v_$sv) into ac,ti
+   <li class="wims_vote_item">
+    <span class="wims_user_vote_type">$wims_name_Vote $i</span>
+    <span class="wims_user_vote_desc">
+     !href module=adm/vote&job=read&vote=$sv $ti
+    </span>
+    <span class="wims_user_vote_expire">
+     !if $ac>=2
+      $U_expired
+     !else
+      &nbsp;
+     !endif
+    </span>
+   </li>
+  !next i
+ </ul>
+ </div>
+ <!-- end _widgets/uservote.phtml -->
+!endif

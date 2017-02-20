@@ -1,0 +1,63 @@
+!goto $wims_read_parm
+
+:def
+title=Limit
+synonyme=lim
+input=function
+!exit
+
+:proc
+x=!word 1 of $variable
+!if $x=$empty
+ t=!varlist nofn $formula
+ t=!sort reverse nocase item $t
+ x=!item 1 of $t
+!endif
+!default x=x
+formula2=!rawmath $formula2
+formula2=!trim $formula2
+formula2=!mathsubst inf=infinity in $formula2
+f2=!mathsubst infinity=inf in $formula2
+f2=!nospace $f2
+f2=!replace -inf by minf in $f2
+!default f2=0
+option=!lower $option
+option=!word 1 of $option
+!bound option within plus,minus default $
+!if $option!=$empty
+ op=,$option
+ !if $option=plus
+  sign=_{+}
+ !else
+  sign=_{-}
+ !endif
+!else
+ op=
+!endif
+
+result=!exec maxima limit($formula,$x,$f2 $op);
+result=!mathsubst inf=infinity in $result
+result=!mathsubst minf=-infinity in $result
+rs=!texmath $result
+fm=!texmath $formula
+fm2=!texmath $formula2
+!exit
+
+:output
+!if $result=$empty or limit isin $result or LIMIT isin $result
+ The computation of 
+ !set ins_align=middle
+ !instex $$$$ \lim_{$x \to $fm2 $sign}\left( $fm \right) $$$$
+ has failed. Sorry. (Are you sure that the limit exists?)
+ !exit
+!endif
+!if $result iswordof und ind
+ The function
+ !htmlmath $formula
+ has no limit for $x towards $formula2.
+!else
+ <p><center>
+ !instex $$$$ \lim_{$x \to $fm2 $sign}\left( $fm \right) = $rs $$$$
+ </center>
+!endif
+

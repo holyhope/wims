@@ -1,0 +1,52 @@
+# Modify properties of a class.
+# wims_read_parm: class address. Must exist.
+# Calling variables: modclass_list, list of class variables to modify
+# modclass_slist, list of supervisor variables to modify
+# cadd_...: class variable data. Defaults to class_...
+# sadd_...: supervisor variable data. Defaults to user_...
+
+modclass=!item 1 of $wims_read_parm
+!if $modclass=$empty or $modclass_list$modclass_slist=$empty
+ !exit
+!endif
+
+D_=wimshome/log/classes
+E_=$wims_home/log/classes
+
+test=!defof class_defined in $D_/$modclass/.def
+!if $test!=yes
+ !exit
+!endif
+
+clist=$modclass_list
+ulist=$modclass_slist
+
+csetlist=
+usetlist=
+!if $class_lang isin cn and lastname isitemof $ulist and firstname isitemof $ulist\
+	and supervisor isitemof $clist
+  cadd_supervisor=$sadd_lastname$sadd_firstname
+!else
+  cadd_supervisor=!trim $sadd_firstname $sadd_lastname
+!endif
+!for t in $ulist
+ !if $(sadd_$t)!=$empty and $(sadd_$t)!=$(user_$t)
+  usetlist=!append line !set user_$t=$(sadd_$t) to $usetlist
+ !endif
+ !reset sadd_$t
+!next t
+!for t in $clist
+ !if $(cadd_$t)!=$empty and $(cadd_$t)!=$(class_$t)
+  csetlist=!append line !set class_$t=$(cadd_$t) to $csetlist
+ !endif
+ !reset cadd_$t
+!next t
+
+!if $csetlist!=$empty
+ !setdef $csetlist in $D_/$modclass/.def
+!endif
+
+!if $usetlist!=$empty
+ !setdef $usetlist in $D_/$modclass/supervisor
+!endif
+

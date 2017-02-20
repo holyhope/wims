@@ -1,0 +1,37 @@
+!set p_=!trim $wims_read_parm
+!if $p_=$empty
+ !exit
+!endif
+!set p_=!items2words $p_
+!set p_=!words2items $p_
+
+!read lang/names.phtml.$lang
+!if $lang_script_exists!=yes
+ !read lang/names.phtml.en
+!endif
+
+!reset T_
+!for t in $p_
+  !set tit=!module title_$lang tool/$t
+  !if $tit=
+    !set tit=!module title tool/$t
+  !endif
+  !if $tit!=$empty and $tit!=$module_title
+   !set T_=!append line $t,$tit to $T_
+  !endif
+!next t
+!if $T_!=$empty
+ !set n_=!linecnt $T_
+ <p>$name_prompt_tool1
+ !for i=1 to $n_
+   !set l_=!line $i of $T_
+   !set t_=!item 1 of $l_
+   !set n__=!item 2 to -1 of $l_
+   !href target=wims_tool$i module=tool/$t_ $n__
+   &nbsp;
+ !next i
+ <span class="small">$name_prompt_tool2</span>
+ </p>
+!endif
+
+!reset lang_script_exists

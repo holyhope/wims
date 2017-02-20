@@ -1,0 +1,669 @@
+!set lang_exists=yes
+
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
+
+!distribute items Í¶Æ±,¼ÇÊÂ±¾,\
+	½ÌÊ¦ÕÊ»§,ÂÛÌ³,¼¼ÄÜ¼ÇÂ¼±¾,¼¼ÄÜ,\
+	½ÌÑ§ÏµÁĞ,ÂÛÌ³ĞÅÏ¢\
+	into name_vote,name_cdt,\
+	name_sup,name_forum,name_livret,name_competence,name_seq,name_forum_mesg
+
+!distribute items ·Ö°à,²Î¼ÓÕß,Á·Ï°,ÎÄ¼ş,½ÌÊ¦,×÷ÒµÒ³\
+into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers,\
+name_sheets
+
+!distribute item Ã¿ÈÕĞÅÏ¢,\
+	Á·Ï°,×÷ÒµÒ³,¿¼ÊÔ,ÎÄ¼ş,²Î¼ÓÕß\
+	into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user
+
+!distribute item Ã¿ÈÕĞÅÏ¢,\
+	Á·Ï°,×÷ÒµÒ³,¿¼ÊÔ,ÎÄ¼ş,²Î¼ÓÕß\
+	into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
+
+!if $job=grestrict
+ !set name_allowedsites=ÔÊĞíµÄÕ¾µã
+ !set name_excepted=ÀıÍâ
+!endif
+!if $job=connectlink
+  !set title=Connexion links
+!endif
+!if $job=arch
+ !set title=±¸·İÓë»Ö¸´
+ !set name_title_save=Sauvegarde de la classe
+ !set name_title_restore=Restauration de ressources à partir d'une sauvegarde
+ !set name_intro1=Sélectionner le fichier de sauvegarde à restaurer
+ !set name_intro=Äã¿ÉÒÔÓÃÏÂÁĞ¸ñÊ½ÏÂÔØÄãµÄ°à¼¶µÄ±¸·İ°æ±¾
+ !set name_tosend=ÎªÁË°Ñ±¸·İÎÄ¼şÉÏ´«µ½ÄãµÄ°à¼¶
+ !set name_namefile=Çë¸ø³ö±¸·İÎÄ¼şÃû
+ !set name_help=¹â±ê»áÌáÊ¾ÄãÑ¡È¡¹©»Ö¸´ÓÃµÄÔ´ÎÄ¼ş.
+
+ !set name_deposit=!nosubst ÄãµÄ±¸·İÎÄ¼ş <span class="tt wims_fname">$wims_deposit</span> °üº¬ÒÔÏÂÀ´Ô´. Çë¼ì²éÄÄĞ©ÊÇÄãÒª»Ö¸´µ½°à¼¶ÀïµÄ.
+
+ !set name_no_restore=ÒòÎªÄãÕıÔÚÓëÆäËü°à¼¶·ÖÏí×ÊÔ´, ²»ÄÜ±»»Ö¸´.\
+	Ö»ÓĞ·¢Æğ·ÖÏíµÄ°à¼¶²ÅÄÜ»Ö¸´.
+
+  !distribute lines Ã»ÓĞÑ¡¶¨»Ö¸´µÄÄÚÈİ.\
+   »Ö¸´³ı°à¼¶ÉèÖÃ¼°Ö÷³Ö½ÌÊ¦ÕÊ»§ÍâµÄËùÓĞÄÚÈİ.\
+ <span class="wims_warning">Î£ÏÕ!</span> <span class="small">¼ûÒÔÏÂËµÃ÷.</span>\
+   °à¼¶ÉèÖÃ.\
+   Ö÷³Ö½ÌÊ¦ÕÊ»§ (°üÀ¨ÄãµÄÃÜÂë)\
+   ²Î¼ÓÕßÕÊ»§\
+   ÒÑÓĞÕÊ»§\
+   ÎÄ¼ş\
+   ÒÑÓĞÎÄ¼ş\
+   Á·Ï°\
+   ÒÑÓĞÁ·Ï°\
+   ×÷ÒµÒ³\
+   °üÀ¨»Ö¸´°à¼¶Á·Ï°\
+   ÒÑÓĞ×÷ÒµÒ³\
+   ¿¼ÊÔÒ³\
+   °üÀ¨»Ö¸´×÷ÒµÒ³¼°Á·Ï°\
+   ÒÑÓĞ¿¼ÊÔ\
+   ÂÛÌ³ĞÅÏ¢\
+   ÒÑÓĞĞÅÏ¢\
+   ²Î¼ÓÕß»î¶¯¼ÍÂ¼ÒÔ¼°·şÎñÆ÷¼ÆËãµÄ·ÖÊı. °üº¬»Ö¸´²Î¼ÓÕßÕÊ»§.\
+   ½ÌÊ¦È·¶¨µÄ·ÖÊı\
+   ÒÑÓĞ·ÖÊı\
+   °à¼¶¼ÇÊÂ±¾\
+   ÒÑÓĞ¼ÇÊÂ±¾\
+   ¼¼ÄÜ¼ÇÂ¼±¾\
+   ÒÑÓĞ¼ÇÂ¼±¾\
+   ½ÌÑ§ÏµÁĞ\
+   °üº¬»Ö¸´×÷ÒµÒ³¡¢Á·Ï°¡¢¿¼ÊÔ¼°ÎÄ¼ş\
+   ÒÑÓĞÏµÁĞ\
+   »Ö¸´·½·¨\
+   Ìæ»»\
+   ÓÃ»Ö¸´µÄ×ÊÔ´Ìæ»»ÒÑÓĞ×ÊÔ´.\
+   »ìºÏ\
+   ³ı²Î¼ÓÕßÕÊºÅ¼°°à¼¶Á·Ï°Íâ, ¶¼ÓÃ»Ö¸´µÄ×ÊÔ´Ìæ´úÒÑÓĞµÄ×ÊÔ´. ÆäÓà²¿·ÖÈç¹ûÊÇÓĞÏàÍ¬Ãû³ÆµÄÄÚÈİ¼ÓÒÔÌæ»», ·ñÔòÎ¬³ÖÔ­×´.\
+   »Ö¸´Ñ¡ÖĞµÄ×ÊÔ´\
+   Existing message of the day\
+ into name_noselect,name_all,name_danger,name_config,name_teacher,name_user,name_user1,name_doc,\
+   name_doc1,name_exo,name_exo1,name_sheet,name_sheet0,name_sheet1,name_exam,name_exam0,name_exam1,name_forum,\
+   name_forum1,name_activity,name_manual,name_manual1,name_cdt,name_cdt1,name_livret,name_livret1,name_seq,\
+   name_seq0,name_seq1,name_method,name_replace,name_replace1,name_merge,name_merge1,\
+   name_selectrestore,name_motd1
+
+!!set name_cnil_warning=Nous vous rappelons que conformément aux déclarations faites à la CNIL, \
+  vous ne devez pas garder de données relatives à vos élèves plus d'un an. Vous devrez alors détruire\
+  toutes les sauvegardes contenant les données des élèves.\
+  Faites une sauvegarde sélective si vous désirez garder les ressources que vous\
+  avez créées (feuilles, examens, documents) ou utilisez la possibilité de duplication.
+
+!distribute lines ±¸·İµÄ×ÊÔ´»Ö¸´µ½°à¼¶\
+  ²Î¼ÓÕßÕÊ»§(ÒÔ¼°»î¶¯¼ÍÂ¼)µÄ»Ö¸´±»¾Ü¾ø, ÒòÎªÃ»ÓĞ×ã¹»Ê£Óà¿Õ¼ä.\
+  °à¼¶ÓĞĞ§ÆÚ¾­»Ö¸´ºóÒÑ¾­¸Ä±ä, ÒòÎªÉÏ´«µÄÈÕÆÚÊÇ\
+into name_restore1,name_restore2,name_restore3
+
+ !distribute items ÎŞ·¨Ê¶±ğ,Ì«Ôç,Ì«Íí into ebad,eearly,elate
+
+ !distribute lines ¶Ô²»Æğ, ÎÒÃÇ²»ÄÜ°ÑÄãµÄ°à¼¶´æµµ.\
+  ÕâÀïÊÇÄãµÄ°à¼¶µÄ±¸·İÎÄ¼ş\
+  µã»÷ÆäÉÏ¾Í¿ÉÒÔ´æ·Åµ½ÄãµÄ»úÆ÷ÉÏ.\
+  ÄãÒ²¿ÉÒÔÑ¡ÔñÓû±£´æµÄÊı¾İ\
+  ÄãÒ²¿ÉÒÔ\
+  Ñ¡ÔñĞÔ±¸·İ\
+  ÒÔĞŞ¸Ä±¸·İÎÄ¼ş²¢±£´æËü.\
+ into name_download1,name_download2,name_download3,name_download4,\
+   name_selective1,name_selective2,name_selective3
+
+ !set name_download5=±¸·İÎÄ¼ş¶Ô·şÎñÆ÷¶øÑÔÌ«´óÁË(ËüÄÜ½ÓÊÜÎÄ¼şµÄ´óĞ¡ÓĞÏŞÖÆ). \
+ ÎªÁË¼õĞ¡±¸·İµÄ´óĞ¡, Äã¿ÉÒÔ×öÑ¡ÔñĞÔ±¸·İ
+
+ !goto commun
+!endif
+
+!if $job=clean
+ !set title=Çå³ı°à¼¶
+ !set name_lines=²Î¼ÓÕß»î¶¯¼ÇÂ¼
+ !set name_empty=ÄãµÄ°à¼¶ÊÇ¿ÕµÄ! <br /> ÄãµÄ°à¼¶ÀïÃ»ÓĞÄÚÈİ¹©Çå³ı.
+ !set name_no_erase=²»ÄÜ±»É¾³ı, ÒòÎªÓĞÆäËû°à¼¶¹²Ïí.
+
+ !distribute lines Çå³ıËùÓĞÄÜÇå³ıµÄÄÚÈİ\
+   Ò²½«É¾³ı»î¶¯¼ÇÂ¼.\
+   Ò²½«É¾³ı¿¼ÊÔÒ³.\
+   ±¸·İ´Ë°à¼¶\
+   ÄãµÄ°à¼¶Ä¿Ç°ÓµÓĞµÄ×ÊÔ´\
+ into name_cleanall,name_erase1,name_warning_exam,name_saveclass,name_ressource
+  !set name_warning_clean=±»±¾Ò³É¾³ıµÄ×ÊÔ´²»ÄÜ»Ö¸´!
+ !goto commun
+!endif
+
+!if $job=neighbor
+ !set title=ÏàÁÚ°à
+ !set name_noclass=Äã²»ÄÜ¶¨ÒåÏàÁÚ°à, ÒòÎª·şÎñÆ÷ÉÏÃ»ÓĞÆäËü°à¼¶.
+ !set name_toomany=±¾ÍøÕ¾ÖĞÓĞĞí¶àĞéÄâ°à¼¶. ÎªÁËÕÒµ½ÄãµÄ°à¼¶, ÇëÊäÈëÒ»¸öËÑË÷¹Ø¼ü´Ê.
+ !set name_toomany2=ÈÔÈ»ÓĞĞí¶à°à¼¶¶ÔÓ¦ÓÚÄãµÄ¹Ø¼ü´Ê. Çë¸øÒ»¸ö¸ü¾«È·µÄ¹Ø¼ü´Ê.
+
+ !distribute lines Ñ°ÕÒ°à¼¶\
+  Ã»ÓĞÄãÒªËÑË÷µÄ°à¼¶. ÔÙÊÔÊÔ.\
+  ÏÔÊ¾·şÎñÆ÷µÄÊµÀı°à.\
+  ĞéÄâ°à¼äµÄÏàÁÚ¹ØÏµÔÊĞí×ÊÔ´½»»»ÒÔ¼°¿ç°àÂşÓÎ.\
+  µã»÷°àÃûÒÔ¸Ä±äÄãÓëÕâ¸ö°àµÄÏàÁÚ¹ØÏµ.\
+  ÓëÄãÍ¬ÓïÖÖµÄ°à¼¶\
+  ÆäËüÓïÖÖµÄ°à¼¶\
+  Àı\
+into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
+  name_samelanguage,name_otherlanguage,name_example
+
+ !distribute lines ÉùÃ÷ÏàÁÚ¹ØÏµ\
+   ×ÊÔ´¹²Ïí\
+   ±»Äã\
+   ±»ËûÈË\
+   ¼¤»î»¥Ïà¹²Ïí.\
+   ÄãÕıÔÚ¹²ÏíËüµÄ×ÊÔ´.\
+   ¹²ÏíÄãµÄ×ÊÔ´.\
+   »¥ÏàÔÊĞí¹²Ïí.\
+   ÔÊĞí¹²ÏíÄãµÄ×ÊÔ´.\
+   ÔÊĞíÄã¹²ÏíËüµÄ×ÊÔ´.\
+   Í£Ö¹´Ë¹²Ïí\
+   ¹²Ïí\
+   µ¼ÈëËùÓĞµÄÈË\
+   ½ÌÑ§×ÊÔ´\
+   ÊäÈëÆäËü×ÊÔ´\
+   ÔÊĞí¹²ÏíÄãµÄ×ÊÔ´µÄ°à¼¶\
+   ÔÊĞíµÄ×ÊÔ´\
+   ¼¤»îµÄ\
+   ÆäËü°à¼¶±í\
+   ×ÊÔ´¹²ÏíĞÅÏ¢\
+   ÏÔÊ¾·şÎñÆ÷µÄÊµÀı°à\
+   ÊäÈëÒÔÏÂ°à¼¶µÄ×ÊÔ´\
+   Äã¿ÉÒÔ\
+   \
+   µã»÷ÕâÀïÒÔ½ÓÊÜ\
+ into name_declaration,name_sharing,name_byyou,name_other,name_actif,name_share1,name_share2,\
+ name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching,\
+ name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,name_exampleclass,\
+ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
+
+ !set name_nonewres=!nosubst °à¼¶ <span class="wims_emph">$nei_description</span>\
+ ÀïÃ»ÓĞÔÊĞíÄã·ÖÏíµÄ(ĞÂ)×ÊÔ´.
+
+ !set name_newres=!nosubst °à¼¶ <span class="wims_emph">$nei_description</span>\
+ <b>ÔÊĞí</b>Äã·ÖÏíÒÔÏÂ×ÊÔ´
+
+ !set name_chooseres=!nosubst Çë´Ó°à¼¶ <span class="wims_emph">$nei_description</span>\
+ <b>ÔÊĞí</b>Äã·ÖÏíµÄ×ÊÔ´ÖĞÑ¡Ôñ&nbsp; (<i>Í¨¹ıµã»÷ <span class="wims_button disabled">$wims_name_tosave</span> À´Ñ¡Ôñ</i>)
+
+ !set name_warning_authorized=!nosubst °à¼¶ <span class="wims_emph">$nei_description</span>\
+  ÔÊĞíÄã·ÖÏíÄ³Ğ©×ÊÔ´. Äã²»ÒªÔÙÔÊĞí·ÖÏíÍ¬ÑùµÄ×ÊÔ´ÒÔÃâÔì³É»ìÂÒ.\
+  ÇëÓëÕâ¸ö°à¼¶ÒÔ¼°Óû·ÖÏí´Ë×ÊÔ´µÄÆäËü°à¼¶Ğ­ÉÌ´¦ÀíÈçºÎ·ÖÏí.
+
+ !distribute lines ÏàÁÚ¹ØÏµ\
+   Ã»ÓĞ°ÑÄãµÄ°à¼¶ÉùÃ÷ÎªËüµÄÏàÁÚ°à\
+   ½ÓÊÜÄãµÄ°à¼¶ÎªËüµÄÏàÁÚ°à\
+   , Óë\
+   ÄãÕıÔÚ·ÖÏíÀ´×ÔÒÔÏÂ°à¼¶µÄ×ÊÔ´\
+   Ã»ÓĞÄãĞèÒªµÄÖØÒª×ÊÔ´\
+   ÓĞÒÔÏÂÖØÒª×ÊÔ´\
+   ÓëÄãµÄ°à¼¶Í¬ÃûµÄ\
+   ¿ÕµÄ\
+   ×¼±¸ÖĞ\
+   Ìæ»»\
+   µÇÂ¼ÃûÒÑÔÚÄã°à¼¶Ê¹ÓÃ\
+   ÄãµÄ°à¼¶ÀïÓĞÒÑ¾­É¾³ıµÄÓÃ»§\
+   ´ÓÒÔÏÂ°à¼¶ÊäÈë\
+   ³É¹¦×ªÒÆ\
+   ¸öÏàÁÚ°àµÄ²Î¼ÓÕßÕÊ»§\
+   ¼ìÑéËùµÃ½á¹û\
+ into name_neighbor_relation,name_text1,name_text2,name_with,name_sharealready,\
+   name_no_ressource,name_importable,name_same_title,name_empty,name_inpreparation,\
+   name_replace,name_existinglogin,name_part_erased,name_import,name_transfered,\
+   name_neigh_account,name_verify
+
+ !set name_inactif=!nosubst ÊäÈëµÄ $(name_$itype) ÖÃÓÚ²»¼¤»î×´Ì¬, ÒÔ·½±ãĞŞ¸Ä.
+
+ !set name_accept=!nosubst ÄãÔ¸½ÓÊÜ°à¼¶ <span class="wims_emph">\
+   $nei_description</span> ×÷ÎªÄãµÄÏàÁÚ°àÂğ?
+
+ !if $job2=stopshare
+  !set title=Í£Ö¹·ÖÏí
+  !set name_warning=ÄãµÄ°à¼¶ÓĞ¼¤»îµÄµÃ·Ö¼ÇÂ¼, ÇÒ±»·ÖÏíµÄ×ÊÔ´·Ç¿Õ.\
+ Èç¹ûÄãÏÖÔÚÍ£Ö¹·ÖÏí, ÒÔºó²»ÄÜÔÙ¼ÌĞø·ÖÏí.\
+ </br>ÄãÊÇ·ñÈ·¶¨ÒªÍ£Ö¹´Ë·ÖÏí?
+
+ !set name_stop=Í£Ö¹.
+ !endif
+ !if $job2=sharelist
+  !set title=×ÊÔ´·ÖÏíĞÅÏ¢.
+  !set name_sharelist=!nosubst ÄãÕıÔÚ·ÖÏíÀ´×ÔÏÂÃæËùÊ¾µÄ $(name_$rec)
+  !distribute lines ÄãÃ»ÓĞ·ÖÏíÀ´×ÔÆäËü°à¼¶µÄ×ÊÔ´.\
+   ÄãÕıÔÚ·ÖÏíÆäËü°à¼¶µÄ×ÊÔ´\
+  into name_noresource,name_resource
+  !endif
+
+  !if $job2=addshare
+    !set title=·ÖÏí°à¼¶×ÊÔ´
+    !set name_class_share=Õâ¸ö°à¼¶ <span class="wims_emph">$nei_description</span>\
+      ÔÊĞíÄã·ÖÏíÏÂÁĞ×ÊÔ´.
+  !distribute lines ¿ÉÓÃµÄ\
+    ÄãÕıÔÚ·ÖÏíËüÃÇ.\
+    Äã²»ÄÜ·ÖÏíËüÃÇ, ÒòÎªÄãÒÑ¾­·ÖÏíÁËÆäËü°à¼¶µÄ.\
+    Çå³ıÄã×Ô¼ºµÄ×ÊÔ´\
+    Èç¹û¿ÉÄÜµÄ»°\
+    ·ÖÏíÖ÷³Ö½ÌÊ¦ÕÊ»§ÊÇ<b>·Ç³£</b>Î£ÏÕµÄ! \
+  into name_available,name_actually_sharing,name_nosharing,name_cleanup,name_ifpossible,\
+    name_dangerous
+
+  !set name_warning1=ÓÉÓÚÄãÔÊĞíÆäËü°à¼¶ÓëÄã¹²ÏíÕâÑùµÄ×ÊÔ´, Äã²»ÄÜÔÚ·ÖÏíËüÃÇ.\
+    Á¬´®·ÖÏí²»±»Ö§³Ö. Òò´ËÔÚÄãÓëËûÈË·ÖÏíÇ°±ØĞëÍ£Ö¹ÕâĞ©¹²Ïí.
+  !set name_warning2=!nosubst Äã²»ÄÜ·ÖÏíËüÃÇ, ÒòÎªÄã×Ô¼ºµÄ $(name_$r) ²»ÊÇ¿ÕµÄ.\
+   ÎªÁË·ÖÏí, ÄãÓ¦¸ÃÏÈ
+  !set name_warning_erase=!nosubst Õâ½«<b>É¾³ı</b>ÄãÒÑÓĞµÄ $(name_$r)! Èç¹ûÄãÃ»ÓĞ×ö¹ı±¸·İµÄ»°,\
+     ËüÃÇ»á±»³¹µ×É¾³ı.
+
+  !endif
+
+  !distribute items ---,<span class="small">¹ØÓÚÖ÷³Ö½ÌÊ¦</span>,\
+	<span class="small">¹ØÓÚ²Î¼ÓÕß</span>,\
+	<span class="small">¹ØÓÚËùÓĞµÄÈË</span>\
+  into n_n0, n_n1, n_n2, n_n3
+
+ !goto commun
+!endif
+
+!if $job=connect
+ !set title=Á¬½Óµ½ÆäËü·şÎñÆ÷/Æ½Ì¨
+ !set name_listserver=·şÎñÆ÷Á¬½Ó±í
+
+ !distribute lines ²âÊÔ·şÎñÆ÷µÄÁ¬½Ó\
+   ²âÊÔ°à¼¶µÄÁ¬½Ó\
+   Ìí¼ÓÁ¬½Ó°à¼¶\
+   ¹ÜÀíÁ¬½Ó°à¼¶\
+   ±¾µØ°à¼¶,Ô¶³Ì°à¼¶\
+   °à¼¶¶¨Òå,ÓÃ»§±í,Æ½¾ùµÃ·Ö,µÃ·ÖÏêÇé,³ı°à¼¶¶¨ÒåÍâËùÓĞÄÚÈİ\
+   Ê¹\
+   µÄÏÂÁĞÄÚÈİÓëÁíÒ»°à¼¶Í¬²½\
+   Ô¶³Ì°à¼¶\
+   Ô¶³Ì·şÎñÆ÷\
+   ¹ÜÀí\
+   Çå³ıÔ¶³Ì°à¼¶\
+   µ½Ô¶³Ì·şÎñÆ÷µÄÁ¬½Ó¹¤×÷Õı³£.\
+   Á´½ÓÒÑ±»¼ÓÈëµ½ÄãµÄ°à¼¶, µ«ÊÇÔ¶³Ì·şÎñÆ÷·µ»ØÒ»¸ö³ö´íĞÅÏ¢\
+   Ô¶³Ì·şÎñÆ÷Ã»ÓĞ»Ø´ğ. Çë·¢µçÓÊ¸ø\
+   Á¬½ÓÇëÇóÔâÔ¶³Ì·şÎñÆ÷¾Ü¾ø. ³ö´íĞÅÏ¢:\
+  ¼ì²éÔ¶³Ì°à¼¶\
+  ´ËÁ¬½ÓÕıÔÚ¹¤×÷. ´ÓÔ¶³Ì·şÎñÆ÷·µ»ØµÄÊı¾İ:\
+  ÎªÁËÁ¬½Óµ½ÉÏÊö·şÎñÆ÷µÄ°à¼¶, ÇëÌá¹©\
+  Ô¶³Ì°à¼¶µÄ±êÊ¶\
+  Èç¹ûÔ¶³Ì°à¼¶ÊÇ¿ÕµÄ, ·şÎñÆ÷½«ÔÚÔ¶³Ì·şÎñÆ÷ÉÏ´´½¨Ò»¸öĞÂ°à¼¶, ²¢¸´ÖÆ±¾µØ°à¼¶µÄÊôĞÔ.\
+  µ±ĞŞ¸Ä±¾µØ°à¼¶Ê±ÊÇ·ñ×Ô¶¯¸üĞÂÔ¶³Ì°à¼¶\
+  ÊÇ·ñÔÊĞíÔ¶³Ì°à¼¶ĞŞ¸Ä±¾µØ°à¼¶\
+  ±¾°à¼¶Ã»ÓĞµ½ÆäËü·şÎñÆ÷µÄÁ¬½Ó.\
+  ÄãÒÑ¾­ÉùÃ÷ÁËÒÔÏÂµ½ÆäËü·şÎñÆ÷µÄÁ¬½Ó.\
+  ·şÎñÆ÷\
+  ±¾WIMS·şÎñÆ÷µ±Ç°ÓĞÒÔÏÂ¿ÉÁ¬½ÓµÄ·şÎñÆ÷.\
+  ×÷ÓÃÔÚÁ¬½ÓÉÏ\
+ into wims_name_connecttest,wims_name_classtest,wims_name_addconnection,wims_name_connectmanage,name_prompt1,\
+   name_prompt2,name_synchronize,name_withotherone,name_remoteclass,name_remoteserver,wims_name_Manage,\
+   wims_name_destroy,name_working,name_error1,name_errornoreply,name_errorreject,name_check,name_data,\
+   name_toconnect,name_identifier,name_help,name_automatically,name_allow,name_noconnection,name_declaration,\
+   wims_name_server,name_listserver1,name_connexion_action
+
+ !goto commun
+!endif
+
+!if $job=access
+ !set title=×ÊÔ´´æÈ¡ÅäÖÃ
+ !goto commun
+!endif
+
+!if $job=grestrict
+ !set title=µÃ·ÖÏŞÖÆ
+ !goto commun
+!endif
+
+!if $job=present
+ !set title=°à¼¶Íâ¹ÛµÄÅäÖÃ
+ !goto commun
+!endif
+
+!if $job=oefdefault
+ !set title=OEF Ä£¿éµÄÄ¬ÈÏÉèÖÃ
+  !distribute lines Ò»¸öÏµÁĞ½«ÓĞ\
+   ÑÏÀ÷¶È\
+   Ê±¼äÏŞÖÆ\
+   Ãë\
+   ¶àÖØÑ¡ÔñÌâÖĞÏÔÊ¾µÄÑ¡ÏîÊı\
+   ¸ø³ö½â (Èç¹ûÓĞ¿ÉÄÜµÄ»°) ?\
+   ´Ó²»,Èç¹ûÃ»ÓĞµÃµ½Âú·Ö,×ÜÊÇ\
+   ×ÜÊÇ°üº¬ÕıÈ·´ğ°¸.\
+   ¶àÖØÑ¡ÔñÊ±´íÎóµÄ»Ø´ğÒªµ¹¿Û.\
+   ÏÔÊ¾ÕıÈ·µÄ´ğ°¸.\
+   ÔÊĞíÌáÊ¾ (Èç¹ûÓĞµÄ»°).\
+  into name_series,name_severity,name_chrono,name_secondes,name_qcm,\
+    name_solution,name_prompt,name_prompt1,name_prompt2,name_prompt3,name_prompt4
+
+   !set name_warning=!getdef name_remarkintro3 in oef/$lang/names
+
+ !goto commun
+!endif
+
+!if $job=security
+ !set title=¿ÉÓÃµÄ°²È«¹ÜÀí»î¶¯
+ !set name_see_activity2=ËùÓĞÕâĞ©»î¶¯¶¼Ó¦¸ÃÊÇÄã²Ù×÷µÄ; Èç¹û²»ÊÇÕâÑù, \
+ÄÇÃ´ÄãµÄÖ÷³Ö½ÌÊ¦ÃÜÂë¿ÉÄÜÒÑ¾­Ğ¹Â¶.
+ !set name_see_activity1=²é¿´ÄãµÄ°à¼¶µÄ¹ÜÀí»î¶¯µÄ¼ÇÂ¼ÎÄ¼ş.
+ !distribute lines ÉèÖÃ¶ÔÔÊĞíÈ¡µÃ·ÖÊıµÄÍøÕ¾\
+ µÄ°à¼¶·¶Î§µÄÏŞÖÆ.\
+ °à¼¶ÅäÖÃ·½ÃæµÄ\
+ ÆäËüÉèÖÃ.\
+ into name_restriction1,name_restriction2,name_otherrestriction1,name_otherrestriction2
+ !goto commun
+!endif
+
+!if $job=authtype
+  !set title=Íâ²¿Éí·İÑéÖ¤
+ !!!set name_intro_authtype=Èç¹ûÄãÊ¹ÓÃ ldap ÑéÖ¤,\
+ ÇëÑ¡ <span class="tt wims_code_words">ldap</span> ²¢ÌîĞ´´ËÒ³.
+ !set name_intro_authtype=¸ù¾İÉí·İ¼°ÑéÖ¤·½Ê½Ñ¡Ôñ²¢ÌîĞ´ÏàÓ¦µÄÀ¸Ä¿.
+ !set name_method_list=Í¨¹ı wims ÑéÖ¤, Í¨¹ı CAS ÑéÖ¤, \
+ Í¨¹ı CAS ÑéÖ¤¼°ÓÃ ldap È·ÈÏÉí·İ,\
+ Í¨¹ı ldap È·ÈÏÉí·İ¼°ÑéÖ¤,\
+ Í¨¹ı CAS ÑéÖ¤¼°ÓÃ php È·ÈÏÉí·İ,\
+ Í¨¹ı php È·ÈÏÉí·İ¼°ÑéÖ¤
+ !goto commun
+!endif
+
+!if $job=import
+ !set code1=ÎŞ
+ !set code2=$wims_name_yes µ«²»Í¬
+ !set code3=$wims_name_yes, ¼¤»îÇÒ²»Í¬
+!endif
+
+!if $job=propagate
+  !if $wims_supertype=2
+   !set name_thisclass=Ñ§Çø
+   !set name_subclasses=·Ö°à
+  !else
+   !set name_thisclass=µ±Ç°ÇøÓò
+   !set name_subclasses=×ÓÇøÓò
+  !endif
+
+ !distribute lines ÅäÖÃÒÑ³É¹¦µØ·¢ËÍµ½ $name_subclasses\
+  Äã¿ÉÒÔÑ¡Ôñ·¢ËÍ $name_thisclass µÄÏÂÁĞÅäÖÃµ½ËùÓĞµÄ $name_subclasses\
+ into name_propagate_succes,name_propagate_choose
+
+ !set name_warning=Çë×¢Òâ, $name_subclasses ²»»á×Ô¶¯¹²Ïí $name_thisclass ÒÔºó¶ÔÉèÖÃµÄĞŞ¸Ä.\
+Èç¹ûÄãÒª $name_subclasses ×÷Í¬ÑùĞŞ¸Ä, Äã±ØĞë·¢ËÍ¹ıÈ¥.
+
+!endif
+
+!if $job=log
+  !set name_warning_log=ÕâÊÇÄãµÄ°à¼¶µÄÄ³Ğ©¹ÜÀí»î¶¯µÄ¼ÇÂ¼. ¹©Äã²é¿´ÓĞÃ»ÓĞ¿ÉÒÉµÄ»î¶¯.
+!endif
+
+!if $job=index
+  !set title=!nosubst $tit
+  !set name_done=Íê³É.
+  !set name_result=½Å±¾Êä³ö
+
+  !if $job2=structure
+   !set tit=¸üĞÂ·Ö°àË÷Òı
+  !endif
+  !if $job2=userlist
+   !set tit=¸üĞÂ²Î¼ÓÕßË÷Òı
+  !endif
+  !if $job2=teacherlist
+   !set tit=¸üĞÂ½ÌÊ¦Ë÷Òı
+  !endif
+  !if $job2=oef
+   !set tit=¸üĞÂÁ·Ï°Ë÷Òı
+  !endif
+  !if $job2=doc
+    !set tit=¸üĞÂÎÄ¼şË÷Òı
+   !endif
+!endif
+
+!if $job iswordof list new or $job=
+  !distribute lines Ñ§Ğ£Ãû\
+    °à¼¶Ãû\
+    °à¼¶±àºÅ\
+    Ñ¡Ïî´Ê\
+    Ä£¿é¿ª·¢¹¤¾ß(Modtool)µÄÕÊºÅ\
+    Á¬½ÓËø¶¨\
+    ×î¼Ñ·ÖÊı (±àºÅ/ÄäÃû)\
+    ²Î¼ÓÕßÈËÊıÏŞÖÆ\
+    ÓĞĞ§ÆÚ\
+    Á·Ï°¼ÇÂ¼ÏŞÖÆ\
+    ¿¼ÊÔ¼ÇÂ¼ÏŞÖÆ\
+    Ñ§ÉúÄÜ¿´µ½\
+    ¸Ä±äÍâ¹Û\
+    ¸öÈËÏ²ºÃ\
+    °ÑÉèÖÃÀ©Õ¹µ½Ïà¹ØÇøÓò\
+    ¶¨ÒåÏàÁÚ°à\
+    ¶¨Òåµ½ÆäËü·şÎñÆ÷µÄÁ´½Ó\
+    Í¨¹ı ldap ºÅ²¾\
+    ÊµĞĞ²Î¼ÓÕßµÄÉí·İÑéÖ¤\
+    ÖØ½¨Ë÷Òı\
+    (ĞŞ¸Ä\
+    ±¸·İ»ò»Ö¸´°à¼¶\
+    ÏŞÖÆ×ÊÔ´µÄ´æÈ¡\
+    ÏŞÖÆ½øÈë\
+    ¼ÇÂ¼³É¼¨µÄÍøÕ¾\
+    Ñ¡ÔñĞÔÇå³ı\
+    ÉèÖÃ\
+    ´ÅÅÌ¿Õ¼äµ±Ç°Ê¹ÓÃÇé¿ö\
+    ÉÏÏŞÊÇ\
+    »ìºÏÑéÖ¤\
+    ÔÊĞí²Î¼ÓÕßÖĞ¶Ï¼Æ·Ö\
+    Ñ§ÉúÁ·Ï°µÄ±êÌâ¸ñÊ½\
+    ²Î¼ÓÕßÖªµÀ½ÌÊ¦ÊÇ·ñÔÚÏß\
+    Additional fields to fill in the inscription\
+    An eventual change of IP during an exam is taking in account
+paramètres définis lors de la création de la classe, configuration des feuilles et des examens notamment\
+  into name_name_institution,name_name_class,name_name_number,name_optionword,name_devaccount,name_lock_level,\
+    name_bestscore,name_limit,name_expirationdate,name_register_exo,name_register_exam,\
+    name_visible,name_apparence,name_pref,name_dependant_zone,name_neigh,name_link,name_useauth,name_ldap,name_index,\
+    name_change,name_load,name_restriction1,name_restriction2,name_score,name_clean,\
+    name_config,name_disk,name_limit2,name_mix_auth,name_config_authscoresuspend,\
+    name_config_exotitleform,name_config_supconnectshowed,name_regvars,\
+    name_examscore_withoutip,name_param
+
+ !set name_config_exotitleformoption=ÎŞ,Á·Ï°±êÌâ,Á·Ï°¼°Ò³µÄºÅÂë,Ò³µÄ±êÌâ¼°Á·Ï°ºÅÂë,Ò³µÄ±êÌâ¼°Ò³ÄÚÁ·Ï°µÄ±êÌâ
+ !set name_allowcloning=Autoriser la duplication
+ !set name_cloningpwd=Mot de passe de duplication
+!endif
+
+:commun
+!distribute lines Global configuration\
+Éí·İÑéÖ¤\
+ÎÒµÄ¸öÈËÏ²ºÃ\
+×ÊÔ´ÏŞÖÆ\
+OEF ²ÎÊı\
+ÏàÁÚ°à\
+°²È«¹ÜÀí\
+Ñ¡ÔñĞÔÇå³ı\
+ÖØ½¨Ë÷Òı\
+ÆäËü·şÎñÆ÷\
+ÃÜÂë\
+´«ËÍÅäÖÃµ½·Ö°à\
+Íâ¹Û\
+µÃ·ÖÏŞÖÆ\
+Æ½Ì¨µØÖ·\
+ÊôÓÚ\
+Íâ²¿Éí·İÑéÖ¤\
+into wims_name_config_list,wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
+wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
+wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
+wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
+
+!distribute lines °²È«Ö÷»ú\
+   ¸ñÊ½Ò³\
+   °à¼¶Í¼±ê\
+   Í¼±êÎ»ÖÃ\
+   ×óÉÏ½Ç,ÓÒÉÏ½Ç\
+   °à¼¶µÄ¸ñÊ½Ö÷Ìâ\
+   Í¼±ê\
+   ³Ì¶È\
+   ÊÚÈ¨¼ÇÂ¼·ÖÊıµÄÖ÷»ú\
+   ×¢²áÃÜÂë\
+   ½ÌÊ¦ÃÜÂë\
+   Á·Ï°Óë¿¼ÊÔµÄ×¢²áÏŞÖÆ\
+   µ½Æ½Ì¨»òÍøÒ³µÄÁ¬½Ó\
+   Ò³µÄ±³¾°É«\
+   ²Ëµ¥µÄ±³¾°É«\
+   ²Ëµ¥µÄÁ´½ÓµÄÑÕÉ«\
+   ±³¾°Í¼ÏñÎÄ¼ş\
+   ÏÂÔØ css ¸ñÊ½ÎÄ¼ş\
+   ·ÖÊıÑÕÉ«µÄ±ä»¯ÂÊ (´Ó 0 ÖÁ 10)\
+   °´Å¥±³¾°É«\
+   °´Å¥ÎÄ×ÖÉ«\
+   °ïÖú°´Å¥±³¾°É«\
+   °ïÖú°´Å¥ÎÄ×ÖÉ«\
+   Á¬½Ó\
+   ÎÄ±¾ÑÕÉ«\
+   »î¶¯Õ¹Ê¾µÄÑÕÉ«\
+Addresses of the connection links to the class:\
+   Configuration OEF par défault\
+  into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
+   name_theme_icon,name_level,name_security,name_password,name_supass,name_exolog,name_ent,\
+   name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,\
+   name_colorscore,name_button_bgcolor,name_button_color,name_button_help_bgcolor,\
+   name_button_help_color,name_connectlink,name_act_color,name_coloract,\
+   name_connectlinkhelp,name_oefdefault
+
+!set name_content_style = Äã¿ÉÒÔÔÚÕâÀï¶¨ÒåÄãµÄ°à¼¶·¶Î§µÄ¸ñÊ½Ò³\
+<br />(µ± <span class="tt wims_code_words">$name_css</span> ÊÇÔÚ <span class="tt wims_code_words">class</span>)&nbsp;:
+
+!set name_content_style2=»ò°Ñ¸ñÊ½Ò³¸´ÖÆÔÚÕâÀï
+
+!distribute lines Details on the other links\
+You can also configure the following activity outside the maintenance zone\
+la configuration peut se faire aussi en dehors de cette zone\
+paramètres par défaut pour l'insertion d'exercices dans une feuille\
+Accès aux ressources et à l'enregistrement des notes\
+Relation avec d'autres classes wims ou d'autres serveurs\
+Les liens ci-dessous vous permettent de modifier certains paramètres de la classe.\
+Sauvegarde et maintenance de la classe\
+into name_newrem1,name_newrem2,name_seqrem,name_oefrem,
+  name_title_access,name_title_other,name_configrem,name_title_saveman
+!exit
+:arch
+
+ÄãÒÑ¾­ÉÏ´«ÁËÆäËü°à¼¶µÄ×ÊÔ´.
+Èç¹ûÄãÏë»Ö¸´ÓëÄã°à¼¶²»ÏàÈİµÄ×ÊÔ´, Ëü½«»á±»ÆÆ»µ.
+ !href cmd=help&special_parm=dependencies ÎªÊ²Ã´?
+ <br />
+ !href cmd=reply&job=list Í£Ö¹
+ Èç¹ûÄãÇå³şÖªµÀÄãÕıÔÚ×öÊ²Ã´µÄ»°.
+ (ÔÚ¼ÌĞø×öÏÂÈ¥Ö®Ç°Çë±£Áôµ±Ç°×´Ì¬µÄÒ»¸ö±¸·İ.)
+!exit
+
+:arch_end
+ <span class="wims_warning">ÖØÒª</span>. <ul><li> ²»»á¶ÔÄãÉÏ´«µÄÊı¾İ×÷ÍêÕûĞÔ¼ì²é,
+¶øÇÒÏµÍ³²»Ö§³Ö¶Ô±¸·İÎÄ¼şµÄÈË¹¤ĞŞ¸Ä.
+ÈË¹¤ĞŞ¸ÄËùÒıÆğµÄ´íÎó»á¶ÔÄãµÄ°à¼¶»á²úÉú²»¿ÉÔ¤²âµÄºó¹û.
+
+<li> Çë¾¡¿ÉÄÜ±ÜÃâ»Ö¸´
+<span class="wims_warning">°à¼¶ÉèÖÃ</span> ¼°
+<span class="wims_warning">Ö÷³Ö½ÌÊ¦ÕÊ»§</span>.
+ÕâÁ½ÏîÄÚÈİµÄÉÏ´«Êı¾İ²úÉúµÄ´íÎó»áÊ¹ÄãÍêÈ«Ê§È¥¶Ô°à¼¶µÄ¿ØÖÆ.
+
+<li> Äã¿ÉÒÔÊ¹ÓÃ°à¼¶µÄ±¸·İ´´½¨ĞÂ°à¼¶.
+´ËÊ±Çë±ÜÃâ»Ö¸´µÃ·ÖÒÔ¼°µÈµÚ (²»¹Ü»úÆ÷ËãµÄ»¹ÊÇÈË¹¤¸øµÄ).
+ÉÏÊöÁ½²¿·ÖÄÚÈİ»Ö¸´ºó½«²»ÄÜÔÙÉ¾³ı (°²È«´ëÊ©).
+¶øÇÒÖ»ÒªÓĞ·Ç¿ÕµÄµÃ·Ö¼ÇÂ¼, °à¼¶µÄĞí¶àÎ¬»¤²Ù×÷¶¼²»ÄÜÔÙÊ©ĞĞ.
+</ul>
+!exit
+
+:clean
+<p>
+Ò»µ©²Î¼ÓÕßÒÑ¾­¿ªÊ¼»î¶¯, Äã¾Í²»ÄÜÉ¾³ı°à¼¶µÄ×ÊÔ´.
+ </p><p>
+ÕâÊÇÒ»¸öÖØÒªµÄ°²È«´ëÊ©. Èç¹ûÄã¾õµÃ²»·½±ã, Çë¿¼ÂÇÒÔÏÂÁ½ÖÖÇé¿ö:
+ </p><p>
+Ò»·½Ãæ, ¼Ù¶¨ÓĞÑ§ÉúÇÔÈ¡ÁËÄãµÄÃÜÂë. Èç¹ûËû½øÈë´ËÒ³²¢É¾È¥ËùÓĞÄÚÈİ,
+ÄÇÃ´ºÃÑ§Éú½«»áÊÜµ½ÖØ´óËğÊ§, ¶øÄãµÄ½ÌÑ§»î¶¯Ò²ÊÜµ½¼«´ó¸ÉÈÅ.
+ <p>
+ÁíÒ»·½Ãæ, °à¼¶µÄ²»Í¬×ÊÔ´ÊÇÏà»¥¹ØÁªµÄ. Èç¹ûÄãÉ¾È¥ÁËÒ»²¿·ÖÄÚÈİ,
+¶øÃ»ÓĞÉ¾È¥Ïà¹ØµÄÄÚÈİ, ÄÇÃ´ÄãµÄ°à¼¶¾Í²»ÄÜÕı³£ÔËĞĞÁË.
+ !href cmd=help&special_parm=dependencies Àı.
+ </p><p>
+Èç¹ûÄãÖ»ÊÇÏëÇå³ıÕâ¸ö°à¼¶, Äã×ÜÊÇ¿ÉÒÔÊ¹Õâ¸ö°à¼¶ÆÚÂúÖÕÖ¹
+(Ö»Òª°ÑÓĞĞ§ÆÚÉèÎª½ñÌì, ´ÓÃ÷ÌìÔç³¿ÆğÕâ¸ö°à¼¶¾ÍÏûÊ§ÁË), »òÕß
+ <a href="mailto:$wims_site_manager?subject=É¾³ıÎÒµÄ°à¼¶">ÒªÇóÍøÕ¾¹ÜÀíÔ±</a>
+É¾³ıËü.
+ </p>
+
+ !exit
+
+ :clean2
+<p><span class="wims_warning">¸½×¢</span>.</p><ul><li> ½öµ±°à¼¶½¨Á¢ºó±¾Ò³²ÅÆğ×÷ÓÃ.
+Ò»µ©Ñ§Éú¿ªÊ¼»î¶¯, ¾Í²»ÄÜÔÙÇå³ı.
+</li><li>
+ ¹²Ïí×ÊÔ´Ö»ÄÜ´Ó·¢Æğ¹²ÏíµÄ°à¼¶Çå³ı.
+ÆäËû°à¼¶Ó¦ÔÚÉ¾³ıÕâĞ©×ÊÔ´Ç°ÏÈ
+!href cmd=reply&job=neighbor&job2=sharelist  Í£Ö¹´Ë¹²Ïí
+</li></ul>
+!exit
+
+:connect_first_info
+·şÎñÆ÷/Æ½Ì¨Á¬½ÓÊ¹µÃÄãµÄ°à¼¶¿ÉÒÔÓëÆäËüWIMS·şÎñÆ÷»òÆäËüµÄÍøÉÏeÑ§Ï°Æ½Ì¨½¨Á¢Ö±½ÓÍ¨Ñ¶.
+²Î¼ÓÕß¿ÉÒÔÎŞÕÏ°­µØÔÚÁ¬½ÓµÄ°à¼¶¼äÂşÓÎ.
+<br />
+Äã»¹¿ÉÒÔÔÚÔ¶³ÌWIMS·şÎñÆ÷ÉÏ½¨Á¢±¾µØ°à¼¶µÄ¾µÏñ,
+ÕâÑùµ±±¾µØ·şÎñÆ÷Ò»Ê±²»ÄÜÊ¹ÓÃÊ±, ²Î¼ÓÕß¿ÉÒÔÔÚ¾µÏñ°à¼¶Àï¼ÌĞø¹¤×÷.
+µÃµ½µÄ·ÖÊı¿ÉÒÔÔÚÒÔºóÈÚºÏ½øÀ´.
+!exit
+:connect_first
+
+±¾WIMS·şÎñÆ÷ÉĞÎ´ÉùÃ÷ÈÎºÎ¿ÉÁ¬½ÓµÄÔ¶³Ì·şÎñÆ÷.
+ÎªÊ¹ÓÃ´ËÁ¬½Ó¹¦ÄÜ,
+ <a href="mailto:$wims_site_manager?subject=server connection">ÍøÕ¾¹ÜÀíÔ±</a>
+±ØĞëÉùÃ÷ÕâÑùµÄÔ¶³Ì·şÎñÆ÷, ¶ø¶Ô·½Ò²±ØĞëÉùÃ÷±¾WIMS·şÎñÆ÷ÊÇ¿ÉÁ¬½ÓµÄ.
+ (ÍøÕ¾¹ÜÀíÔ±¿É²Î¿´
+ <span class="tt wims_fname">$basedir/log/classes/.connections/myself</span> ÒÔÁË½âÈçºÎÉùÃ÷ÍøÕ¾µÄÁ¬½Ó.)
+
+ !exit
+
+:import2
+ <p>ÄãÒªÊäÈëµÄ×÷ÒµÒ³¿ÉÄÜÊ¹ÓÃÁËÏàÁÚ°àÀï¶¨ÒåµÄÁ·Ï°.
+   </p><p>
+   Èç¹ûÄãµÄ°à¼¶²»´æÔÚÍ¬ÑùµÄÁ·Ï°, ÊäÈëµÄ×÷ÒµÒ³½«²»ÄÜÕı³£¹¤×÷.
+   ÇëĞ¡ĞÄ¼ì²éÊÇ·ñÏàÁÚ°àµÄËùÓĞÁ·Ï°¶¼¸´ÖÆµ½ÁËÄãµÄ°à¼¶.
+  </p>
+!exit
+:import3
+   <p>¿¼ÊÔÒ³ÊÇÒÔ×÷ÒµÒ³µÄÄÚÈİÎª»ù´¡µÄ.
+   </p><p>
+   ½öµ±ÄãÓëÏàÁÚ°àÓĞÍêÈ«ÏàÍ¬µÄ¼¤»î×÷ÒµÒ³²¢ÇÒÕâĞ©Ò³ÔÚÁ½¸ö°à¼¶ÀïÓĞÏàÍ¬Ë³Ğò,
+   ²ÅÓĞ¿ÉÄÜÊäÈë¿¼ÊÔÒ³.
+   </p><p>
+   Èç¹û´ï²»µ½ÉÏÊöÌõ¼ş, ÊäÈëµÄ¿¼ÊÔÒ³ºÜ¿ÉÄÜ³öÎÊÌâ.
+   </p>
+!exit
+:import4
+
+Äã½«ÒªÓÃÊäÈëµÄ×ÊÔ´Ìæ»»Äã°à¼¶ÀïÒÑÓĞµÄ $(name_$itype).
+  Ö´ĞĞÕâ¸ö²Ù×÷ºó, ½«²»ÄÜÔÙ»Ö¸´, ¶øÇÒÏÖÓĞµÄ $(name_$itype)
+  ½«»á³¹µ×ÏûÊ§.
+!exit
+
+:import5
+ Ã»ÓĞ²Î¼ÓÕßÕÊ»§¼ÓÈëÄãµÄ°à¼¶.
+ Çë¼ì²éÄãµÄ°à¼¶ÊÇ·ñÂúÁË (²¢ÇÒ·şÎñÆ÷»¹ÓĞÔö¼ÓĞÂ²Î¼ÓÕßµÄ¿Õ¼ä).
+!exit
+
+:auth1
+<p>Ö»ÓĞ°²È«Ö÷»ú²ÅÄÜ½øÈë´ËÅäÖÃ¹¤¾ß.
+</p><p>
+ÓÉÓÚÄã»¹Ã»ÓĞ¶¨Òå°²È«Ö÷»ú, ÎÒÃÇ»á·¢Ò»¸öÃÜÂëµ½ÄãµÄµçÓÊµØÖ·, ÒÔ×÷Éí·İÑéÖ¤Ö®ÓÃ.
+Çë´ò¿ªÄãµÄÓÊÏä, È¡³öÃÜÂë, ÊäÈëµ½ÏÂÃæ
+</p>
+!exit
+:auth2
+<p>
+<span class="wims_warning">×¢Òâ</span>. Õâ¸ö°²È«ÑéÖ¤·½·¨ÊÇ±£Ö¤ÍòÒ»ÄãµÄÃÜÂë±»ÇÔ»òĞ¹Â¶,
+ÈÔÈ»¿É°ÑËğº¦¿ØÖÆ×¡. ¶ø¶¨ÒåºÏÊÊµÄ°²È«Ö÷»úÄÜ¹»¼ò»¯°à¼¶µÄÅäÖÃ³ÌĞò,
+Í¬Ê±ÓÖÄÜ±£³Ö¸ß¶ÈµÄ°²È«ĞÔ.
+</p>
+!exit
+
+:download
+<p><span class="wims_warning">ËµÃ÷</span>. ¸ù¾İ°à¼¶µÄ»î¶¯Çé¿ö, Í¨³£²Î¼ÓÕß»î¶¯¡¢ÂÛÌ³ĞÅÏ¢ÒÔ¼°°à¼¶ÎÄ¼ş±È½Ï´ó.
+Äã¿ÉÒÔ¿¼ÂÇ¶Ô²»Í¬×ÊÔ´×ö¼¸¸öÑ¡ÔñĞÔ±¸·İ.
+</p>
+!exit

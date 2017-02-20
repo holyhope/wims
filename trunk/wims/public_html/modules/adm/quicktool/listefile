@@ -1,0 +1,18 @@
+
+image_files=!sh findnoexec $dir/images
+
+data_files=!sh findnoexec $dir
+df=!words2items $data_files
+data_files=
+!for f in $df
+   !if .htaccess notin $f and $f!=INDEX and $f!=COPYING and\
+	      $ Ex notin $ $f and \
+	         (/ notin $f) and $ NEWS notin $ $f and $ README notin $ $f \
+	      and  .phtml notin $f  and  $ . notin $ $f and  content.html notin $f\
+	      and $ var.proc notin $ $f
+      data_files=!append line $f to $data_files
+    !endif
+!next f
+
+
+oef_files=!sh findnoexec $dir/src

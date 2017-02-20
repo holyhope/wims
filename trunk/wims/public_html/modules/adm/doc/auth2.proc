@@ -1,0 +1,46 @@
+
+!default jobsave=read
+!default block=main
+!if $noedit!=yes
+ coder=!text select $namechars in $coder
+ secret=!record 0 of $docdir/$doc/.code
+ secret=!line 1 of $secret
+ secret=!word 1 of $secret
+ !if $secret!=$coder
+  job=home
+  error=bad_code
+  coder=
+  !read home.proc
+  !exit
+ !endif
+  coder=
+  job=$jobsave
+  editable=yes
+  eddoc=!record 0 of wimshome/$wims_sesdir/doc.$module_language.editable
+  eddoc=$eddoc $doc
+  !writefile wimshome/$wims_sesdir/doc.$module_language.editable $eddoc
+  !read $job.proc
+ !exit
+!endif
+
+!if $noedit=yes
+ coder=!text select $namechars in $coderr
+ secret=!record 0 of $docdir/$doc/.code
+ secret=!line 2 of $secret
+ secret=!word 1 of $secret
+ !if $secret!=$coder
+  job=home
+  error=bad_code
+  coder=
+  !read home.proc
+  !exit
+ !endif
+  coder=
+  job=$jobsave
+  editable=no
+  eddoc=!record 0 of wimshome/$wims_sesdir/doc.$module_language.readable
+  eddoc=$eddoc $doc
+  !writefile wimshome/$wims_sesdir/doc.$module_language.readable $eddoc
+  !read $job.proc
+ !exit
+!endif

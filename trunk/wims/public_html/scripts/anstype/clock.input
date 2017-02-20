@@ -1,0 +1,92 @@
+!set anstype=yes
+
+!if $wims_read_parm=def
+ !exit
+!endif
+!set color=!getopt color in $(replyoption$i)
+!default color=!declosing $color
+!set color=!words2items $color
+!set type=!getopt clocktype in $(replyoption$i)
+!default type=2
+!set init=!getopt init in $(replyoption$i)
+!set init=!declosing $init
+!set init=!singlespace $init
+!set init=!words2items $init
+!set init=!replace internal : by , in $init
+!default init=0,0,0
+
+!set parmjs=!getopt button in $(replyoption$i)
+!set parmjs=!declosing $parmjs
+!set parmjs=!singlespace $parmjs
+!set parmjs=!words2items $parmjs
+!distribute item $parmjs into parm_h,parm_m,parm_s
+!set parm_h=!text select 0123456789 in $parm_h
+!set parm_m=!text select 0123456789 in $parm_m
+!set parm_s=!text select 0123456789 in $parm_s
+!default parm_h=1
+!default parm_m=1
+!default parm_s=1
+
+!set input_img=$(replygood$i[1;1])
+!set inputsize=!replace internal $	$ by $\
+$  in $inputsize
+
+!set inputsize=!nonempty lines $inputsize
+!set Inputsize=!line 1 of $inputsize
+!set test=!text remove 0123456789 in $Inputsize
+!if $test issametext $empty
+  !set size=$Inputsize
+!endif
+!default size=300
+!set replygood$i=!lines2rows $(replygood$i)
+
+!set parm3=xrange -10,10\
+yrange -10,10\
+opacity 250,120
+
+!set oef_applet_option=$size,$size\
+$parm3\
+$type,0,$color
+
+!set parm3=$parm3\
+clock 0,0,$[round($size/2)],$init,$type,3,$color
+
+<script type="text/javascript">
+/*<![CDATA[*/
+  function show_time$i(){
+  var script_len = canvas_scripts.length;
+  for(var p = 0 ; p < script_len ; p++){
+   var fun = eval("read_canvas"+canvas_scripts[p]);
+   if( typeof fun === 'function'){
+    var result = fun();
+    document.getElementById('oefvar' + $i).value=result;
+   }
+  }
+ }
+
+/*]]>*/
+</script>
+<input type="hidden" id="oefvar$i" name="reply$i" value="" />
+<div class="oef_clock">
+!read oef/canvasdraw.phtml $size,$size\
+$parm3
+!if $canvasdraw_idclass!=$empty
+<style type="text/css">
+#$canvasdraw_idclass {}
+</style>
+!endif
+
+!if $parm_h!=0
+  <input type="button" onclick="javascript:set_clock(0,1,-$parm_h);" value="-$parm_h h" />
+  <input type="button" onclick="javascript:set_clock(0,1,$parm_h);" value="+$parm_h h" />
+!endif
+!if $parm_m!=0
+<input type="button" onclick="javascript:set_clock(0,2,-$parm_m);" value="-$parm_m min" />
+<input type="button" onclick="javascript:set_clock(0,2,$parm_m);" value="+$parm_m min" />
+!endif
+!if $parm_s!=0
+<input type="button" onclick="javascript:set_clock(0,3,-$parm_s);" value="-$parm_s sec" />
+<input type="button" onclick="javascript:set_clock(0,3,$parm_s);" value="+$parm_s sec" />
+!endif
+</div>
+!set oef_js_submit=$oef_js_submit show_time$i();

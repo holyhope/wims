@@ -1,0 +1,55 @@
+!distribute items $wims_read_parm into t0_,tc_
+
+!set colorhexa=#FFF,#F00,#F00,#F00,#F92,#F92,#F92,#FFE338,#FFE338,#00B000,#008F00
+!set class_scorecolor=!nonempty items $class_scorecolor
+!if $class_scorecolor=$empty
+  !set class_scorecolor=!defof class_scorecolor in wimshome/log/classes/$wims_class/.def
+  !set class_scorecolor=!nonempty items $class_scorecolor
+  !default class_scorecolor=$colorhexa
+!endif
+!set class_scorecolor=!replace internal white  by $(colorhexa[1])  in $class_scorecolor
+!set class_scorecolor=!replace internal red    by $(colorhexa[2])  in $class_scorecolor
+!set class_scorecolor=!replace internal orange by $(colorhexa[5])  in $class_scorecolor
+!set class_scorecolor=!replace internal yellow by $(colorhexa[8])  in $class_scorecolor
+!set class_scorecolor=!replace internal green  by $(colorhexa[10]) in $class_scorecolor
+
+!default tc_=background
+
+!if $t0_=$empty
+  !exit
+!endif
+
+!goto $tc_
+
+:background
+
+!set style_note="background-color:$(class_scorecolor[$t0_+1]);" class="wims_sheet_score"
+
+!exit
+:color
+
+!set style_note="color:$(class_scorecolor[$t0_+1]);
+!if $(class_scorecolor[$t0_+1]) = #FFFFFF
+    !set style_note=$style_note;color:#666;border-color:#666;
+!else
+    !set style_note=$style_note;color:$(class_scorecolor[$t0_+1]);border-color:$(class_scorecolor[$t0_+1]);
+!endif
+!set style_note=$style_note" class="wims_sheet_score"
+
+!exit
+:livret
+
+ !let t_=!charcnt $t0_
+ !if $t_>1 or ($t_=1 and $t0_>0)
+  !let t_=$t0_+0.0000001
+ !else
+  !let t_=0
+ !endif
+ !set style_note="background-color:$(wims_scorecolor[$[ceil(min($t_,10))+1]]);"
+
+!! approximation of score in case of livret :
+ !if $wims_scoreview>=0 and $t_>0
+   !set output_note=$[rint(($t0_)*10^($wims_scoreview))/10^($wims_scoreview)]
+ !else
+   !set output_note=&nbsp;
+ !endif

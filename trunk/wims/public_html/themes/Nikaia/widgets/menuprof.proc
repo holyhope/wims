@@ -1,0 +1,41 @@
+!if $wims_zone=zone_prof and _ notin $wims_subsession
+
+    !distribute items ul,li into div0,div1
+
+    !! Sets all links to be displayed in menumodubox
+    !set wims_rm_0 = $wims_rm_0\
+itemsep,0,$wims_name_Classes\
+Searching,1,module=adm/class/classes&type=supervisor\
+Creation,1,module=adm/class/regclass\
+Samples,1,module=adm/class/classes&type=example\
+itemsep,0,$wims_name_Exercices
+
+    !read themes/_procs/devtools.proc
+
+    !set wims_rm_0 = $wims_rm_0\
+itemsep,0,$wims_name_Aid\
+
+    !read themes/_procs/documentation.proc
+
+    !set wims_rm_0 = $wims_rm_0\
+itemsep,0,$wims_name_Infos\
+mod_new,1,module=adm/new\
+browse,1,module=adm/browse&$browse_parm
+
+    !read themes/_procs/site.proc
+
+    !set wims_homeref_n0 = !linecnt $wims_rm_0
+    !read themes/Nikaia/menuprof.phtml
+
+     <!--
+     <ul class="wimsmenu">
+        <li class="itemsep">Wims books:</li>
+        <li class="menuitem classcreate">
+            !href module=adm/doc&+cmd=new&+job=creat Creation
+        </li>
+        <li class="menuitem test">
+        !href module=adm/doc Recherche
+        </li>
+     </ul>
+     -->
+!endif

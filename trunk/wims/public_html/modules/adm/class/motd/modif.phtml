@@ -1,0 +1,56 @@
+!form reply
+
+$name_intro1
+!if $listuser=$empty
+ $name_intro2
+!else
+ $name_intro3
+ <br/>
+ !let nbselect=!itemcnt $listuser
+ <span class="tt wims_login">
+ !if $nbselect=$nbuser
+  $name_all
+ !else
+  !for k in $listuser
+   !let p=!positionof item $k in $listiduser
+   $(listnameuser[$p]) &nbsp;
+  !next k
+ !endif
+ </span>
+ <br/>
+!endif
+$name_intro4
+!href style=student $name_home
+.
+<p>
+$name_write :
+(
+!if $speckedit!=no
+ !href cmd=reply&job=modif&speckedit=no $wims_name_desactive
+!else
+ !href cmd=reply&job=modif&speckedit=yes $wims_name_active
+!endif
+  <span class="small">$wims_name_speck_warning</span>)
+</p>
+
+ <input type="hidden" name="action" value="register" />
+ <input type="hidden" name="user" value="$user" />
+ <input type="hidden" name="job" value="$job" />
+
+!if $speckedit!=no
+ <textarea $wims_id name="motd" cols="70" rows="18">$motd</textarea>
+!else
+ <textarea name="motd" cols="70" rows="18">$motd</textarea>
+!endif
+
+!if $userlist!=$empty
+ <br />
+ $name_filter
+ <textarea name="varfilter" cols="20" rows="3">$varfilter</textarea>
+ !set wims_ref_class=wims_button_help float_right
+ !href cmd=help&special_parm=filter $wims_name_help
+
+!endif
+ <div class="wimscenter wimsform"><input type="submit" value="$wims_name_tosave" $wims_on_click/></div>
+
+!formend

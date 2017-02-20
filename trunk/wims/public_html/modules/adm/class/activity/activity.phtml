@@ -1,0 +1,160 @@
+
+!if $error!=$empty
+ <div class="wims_msg alert">
+ !read msg.phtml
+ </div><p>
+ !href module=home $wims_name_class_home
+ </p>
+ !goto end
+!endif
+!if $user!=$empty
+  !readdef wimshome/log/classes/$wims_class/.users/$user
+  !distribute item $user_lastname,$user_firstname into lastname,firstname
+!endif
+!default name_student=!nosubst $lastname, $firstname
+!readproc var.activity.proc
+!if $status!=OK
+  !form reply
+  <input type="hidden" name="job" value="select" />
+  <input type="hidden" name="status" value="OK" />
+  <fieldset class="property_fields halfwidth blockcenter">
+    <legend>$name_title
+      !if $user!=$empty
+        ($name_student)
+      !endif
+    </legend>
+   <div class="field box">
+       <label for="showsheet">$name_showsheet</label>
+       <br />
+    !set wims_formselect_switch=multiple size="$[min($activelist_cnt,10)]"
+    !formselect showsheet list $activlist prompt $(shs_title[$(activlist)])
+    </div>
+    <div class="wimscenter wimsform">
+      <input type="submit" value="$wims_name_Show" />
+    </div>
+       !read choix.phtml
+   </fieldset>
+  !formend
+!else
+!if $usercnt==0
+  $name_noparticipant
+!else
+ !default showsheet=$activlist
+ !default graphics=0
+ !if $graphics=1
+   !default choice=first
+   !if $choice=all
+     !set choice=first
+   !endif
+ !else
+   !if $choice!=login
+     !reset loginlist
+   !endif
+ !endif
+ !set nbth=4
+ !if $user=$empty
+  <p>$name_click</p>
+ !endif
+ $table_header
+ $table_hdtr<th>$wims_name_lastname, $wims_name_firstname</th>
+ <th>$name_lastconnexion</th><th>$name_nbsessions</th><th class="small">$wims_name_cnt_exo
+ <br /> ($nbexototal $name_exo)</th><th>$name_total</th>
+ !for j in $showsheet
+ !if $(activ[$j])>0
+  <th colspan="2" class="small">$wims_name_Sheet $j <br />$(shs_title[$j])<br />($(nbexo$j) $name_exo)</th>
+  !increase nbth
+  !increase nbth
+ !endif
+ !next j
+ </tr>
+ $table_hdtr
+ <th colspan="5"></th>
+ !for j in $showsheet
+ !if $(activ[$j])>0
+  <th class="small">$name_cnt_exo</th><th class="small">$name_time</th>
+ !endif
+ !next j
+  </tr>
+!!!no efficient !
+!set nbpart=0
+ !for m=1 to $usercnt
+  !if $nbpart > $limitpart and $choice!=all
+    !break
+  !endif
+  !set uu=!record $m of wimshome/log/classes/$wims_class/.userlist
+  !distribute items $uu into lastname,firstname,uu
+  !if $choice=first and $m=1
+    !default user=$uu
+  !endif
+ !if $choice=all or ($choice=login and $uu isitemof $loginlist and $user=$empty) \
+   or ($choice=select and $uu isitemof $select_user)\
+   or $uu=$user\
+   or ($choice=filter and $varfilter_!=$empty)
+  !if $varfilter_!=$empty
+    !reset var_filter_test
+    !readproc adm/vfilter/testfilter $uu\
+$varfilter_
+    !if $var_filter_test!=1
+      !goto enduser
+    !endif
+  !endif
+  !set getraw=$uu
+  !increase nbpart
+  !readproc raw.proc
+  $table_tr
+  <td>
+   !href module=adm/class/userscore&job=getuser&getuser=$uu#sheet$(showsheet[1]) $name_student
+  </td>
+  !for h = 1 to 2*$sheetcnt + 4
+    !set h1=$[($h+$h%2)/2-2]
+    !if $h <=4 or ($h>4 and $(activ[$h1])>0) and $h1 isitemof $showsheet
+  <td>$(data[$h])
+     !if $h=3 and $(data[$h])!=$empty and $(data[-1])>0
+        <span style="color:orange">+ $(data[-1])</span>
+     !endif
+     !set h2=$[$h%2]
+     !if $h1 isitemof $showsheet and $h2=1
+       !if , isin $showsheet
+         !set bb=!select $databyday where column 1=$h1
+       !else
+         !set bb=$(databyday[1;])
+       !endif
+       !if $bb!=$empty
+         !set bb=!exec pari vecsum($(bb[6]))
+         <span style="color:orange">+ $bb</span>
+       !endif
+     !endif
+  </td>
+    !endif
+  !next
+  </tr>
+ !if $graphics=1
+  $table_tr
+  <td colspan="$[$nbth+1]" style="text-align:left;">
+  !read exobyday.phtml
+  </td></tr>
+ !endif
+!endif
+:enduser
+!next
+$table_end
+
+!endif
+
+!if $user!=$empty and $choice!=all
+ !distribute item scores,livret1 into sc,li
+ !set parmuser1=&job=getuser&getuser=$user
+ !set parmuser2=&job=user&user=$user
+!else
+ !distribute item Score1,livret into sc,li
+!endif
+!set wims_menu_items=!append line itemsep,0,$wims_name_Evaluation $user\
+back2 $user,1,cmd=new&user=$user\
+$sc,1,module=adm/class/userscore&job_affi=notes$parmuser1\
+$li,1,module=adm/class/livret$parmuser2\
+to $wims_menu_items
+!if $choice!=all
+  !read adm/class/getnextuser $wims_class,$user,activity,user
+!endif
+:end
+!tail

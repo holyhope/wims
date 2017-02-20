@@ -1,0 +1,22 @@
+<p>
+!if $listuser=$empty
+ $name_erase1.
+!else
+ $name_erase2 
+ !for user in $listuser
+    !set n=!positionof item $user in $listiduser
+    $(listnameuser[$n]) 
+ !next user
+ .
+!endif
+</p>
+
+<div class="wimscenter">
+  <p><strong>$name_confirm</strong></p>
+  !set wims_ref_class=wims_button wims_warning
+  !href cmd=reply&action=register&job=$job $wims_name_yes
+  &nbsp; &nbsp; &nbsp; &nbsp;
+  !set wims_ref_class=wims_button
+  !href cmd=reply&job=$empty $wims_name_no
+  !reset listuser
+</div>

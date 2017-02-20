@@ -1,0 +1,68 @@
+!if $modifcnt+$newcnt<=0
+  <p class="wims_msg info">
+  $name_check1
+  </p>
+  !exit
+!endif
+<p>
+$name_click_adress
+</p>
+!if $modifcnt>0
+ $table_header
+ <caption>$name_foundv &nbsp;
+ !set wims_ref_class=wims_button
+ !href cmd=reply&job2=all&muauto=update $name_all_u
+ </caption>
+ $table_hdtr
+  <th>$wims_name_Address</th>
+  <th class="small">$name_updated</th>
+  <th class="small">$wims_name_download_center</th>
+  <th class="small">$name_newv</th>
+  <th class="small">$name_server</th>
+ </tr>
+ !for i=1 to $modifcnt
+
+  !set l=!line $i of $modif
+  !distribute items $l into w_,a_,v_,t_,f_
+  $table_tr
+   <td>
+    !href cmd=reply&job2=one&muauto=check&mupack=$w_~$a_&mudownload=$f_ $a_
+   </td>
+   <td>$t_</td>
+   <td>$f_</td>
+   <td>$v_</td>
+   <td>
+    !module version $a_
+   </td>
+  </tr>
+ !next i
+ $table_end
+!endif
+
+!if $newcnt>0
+ $table_header
+ <caption>$name_newm &nbsp;
+ !set wims_ref_class=wims_button
+ !href cmd=reply&job2=all&muauto=install $name_all_i
+ </caption>
+ $table_hdtr
+  <th>$wims_name_Address</th>
+  <th class="small">$name_published</th>
+  <th class="small">$wims_name_download_center</th>
+  <th class="small">$wims_name_Version</th>
+ </tr>
+ !for i=1 to $newcnt
+  !set l=!line $i of $new
+  !distribute items $l into w_,a_,v_,t_,f_
+  $table_tr
+   <td>
+    !href cmd=reply&job2=one&muauto=check&mupack=$w_~$a_&mudownload=$f_ $a_
+   </td>
+   <td>$t_</td>
+   <td>$f_</td>
+   <td>$v_</td>
+  </tr>
+ !next i
+ $table_end
+!endif
+

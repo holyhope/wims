@@ -1,0 +1,44 @@
+#! /bin/sh
+#
+# This script tries to fix the convert background compatibility problem.
+#
+
+[ -n "$1" ] || exit 1
+[ -f $1 ] || exit
+grep dispose $1 >/dev/null || exit
+
+cd `dirname $0`/../..
+
+cvdisp='insdraw..processor
+insplot..processor
+povray'
+
+############################################
+## Convert backward non-compatibility fix ##
+############################################
+
+cp public_html/gifs/en.gif tmp
+PATH=chroot/usr/bin:chroot/usr/local/bin:other/bin:$PATH
+if convert -dispose Background tmp/en.gif tmp/en.gif 2>/dev/null; then
+ for f in $cvdisp
+ do
+  grep CONVERT_DIS=2 public_html/bin/$f >/dev/null || continue
+  ed public_html/bin/$f <<@
+,s/CONVERT_DIS=2/CONVERT_DIS=Background/g
+,w
+@
+ done
+else
+ for f in $cvdisp
+ do
+  grep CONVERT_DIS=Background public_html/bin/$f >/dev/null || continue
+  ed public_html/bin/$f <<@
+,s/CONVERT_DIS=Background/CONVERT_DIS=2/g
+,w
+@
+ done
+fi
+
+rm -f tmp/*.gif 2>/dev/null
+exit 0
+

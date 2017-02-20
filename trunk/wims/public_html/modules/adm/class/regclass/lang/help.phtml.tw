@@ -1,0 +1,73 @@
+!goto $wims_read_parm
+
+:1
+<ul><li>
+In individual class, a single teacher manages a group of students.
+</li><span class="wims_emph">teachers</span> are allowed to create <span class="wims_emph">classes</span>
+<li>
+A group of classes with a same entrance point allows teachers to
+ exchange or share teaching materials, and help students to jump from one class to
+ another without having to retype the password.
+</li><li>
+ An institutional structure is a multi-level system of virtual classes
+ through which the needs of an entire teaching institution or whole school can be managed,
+ for example: students and teachers database,
+ different teaching levels, programs and subjects, teacher responsabilities, etc.
+ </li></ul>
+ Use the link below to create a group of classes or an institutional portal. You will then have
+ to create the classes they are to include.
+ !exit
+:2
+ <p>
+ !if $Cltype<2
+
+  Only <span class="wims_emph">teachers</span> are allowed to create <span class="wims_emph">classes</span>.
+ !else
+  Only <span class="wims_emph">supervisor</span> are allowed to create <span class="wims_emph">classes</span>.
+ !endif
+ A valid email address will be required for class operation. After creating a $name_classe,
+ you will be responsible for its maintainence. </p><p>
+ To create your $name_classe, please fill in the following information.
+</p>
+ !exit
+
+:step1
+
+ Hello, $supervisor!<p>
+ You are creating a  $name_classe $classname on the WIMS site $httpd_HTTP_HOST,
+ !if $Cltype iswordof 0 1
+ !let tmp=!positionof item $ilevel in $wims_listlevel
+  of level <span class="wims_emph">$(name_wims_listlevel[$tmp])</span>,
+ !endif
+ limited to $ilimit participants. Registration to this class is
+ !if $pword!=$empty
+  protected by the class password.
+ !else
+  open to everybody on the internet (are you sure? Please notice that
+  the webmaster may refuse and destroy unauthorized open classes!).
+ !endif
+ This class will expire on $exp_month-$exp_day-$exp_year. </p><p>
+ !href module=$module&cmd=reply&step=0 Click here
+  to correct any mistakes in the above information.
+ </p><p>Otherwise, in order to verify the exactness of your passwords,
+ please type them again.
+ </p>
+  !exit
+:step2
+
+  Hello, $supervisor!<p>
+ Now you need a code to finish the operation of creation of a new class
+ under WIMS at the site $http_HTTP_HOST. </p><p>
+ This code has just been sent to your email address
+ <span class="tt wims_address">$email</span>. Please verify your inbox (wait a little bit
+ for the email to be sent if necessary) and read the message.
+ Write the code received in the email here below.
+</p>
+!exit
+
+:step3
+Hello, $supervisor!<p>
+ Your $name_classe $classname has now been created. Congratulations, and enjoy!</p><p>
+ The number of participants is limited to $ilimit participants (including you)
+</p>
+!exit

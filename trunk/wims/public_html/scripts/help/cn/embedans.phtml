@@ -1,0 +1,36 @@
+<h4>把回答嵌入陈述中</h4>
+:signification
+在html格式下有可能把回答嵌入练习的陈述中.
+被嵌入的回答或选择应按通常方式定义.
+<p>
+
+:example
+  <span class="wims_help_example">例</span>
+  <ul>
+    <li><span class="tt">\embed{choice 1}</span>把第一个<i>多重选择</i> 插入正文.</li>
+    <li><span class="tt">\embed{reply 2}</span>把第二个<i>自由格式</i> 回答插入正文.</li>
+    <li><span class="tt">\embed{reply 1,5}</span>根据回答的类型可以有多重含义.
+      通常它的含义是插入第一个<i>自由格式</i> 回答, 其输入域的长度等于5.
+      反之, 如果 <span class="tt">reply 1</span> 的类型是 <span class="tt">checkbox</span>,
+      <span class="tt">click</span>, <span class="tt">radio</span> 之一, <span class="tt">\embed{reply 1,5}</span>
+      的含义就是选中第5个情形. 这可用于各种类型的选择问题.
+    </li>
+    <li><span class="tt">\embed{reply 1,AxBxC}</span>根据不同的类型可有多种含义:
+      <ul>
+        <li>当类型为 <span class="tt">clickfill</span> 或 <span class="tt">dragfill</span> 时,
+          是方框的水平及竖直大小(以像素为单位),
+          C 是这个回答区域包含的方框数.
+        </li><li>当类型为 <span class="tt">correspond</span> 时,
+          A 是竖直大小,
+          B 与 C 分别是柱型框水平方向的左、右端位置.
+        </li><li>当类型是自由格式时, 可以添加使回答区域更加个性化的描述行.
+          如果添加的第一行是 <span class="tt">default</span>, 那么此区域将是 css 的格式类 <span class="tt">wims_oef_input</span> :
+          管理者或教师可以对此作整体设置. 例如
+<pre>\embed{reply 1,12
+style="font-size:18px;background-color:#e8ffff;border:1px solid #3333CC;"
+autocomplete="off" }</pre>
+        </li>
+      </ul>
+    </li>
+  </ul>
+

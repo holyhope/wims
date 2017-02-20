@@ -1,0 +1,59 @@
+<div class="wims_content">
+!if $nblisttechvar=0
+  $name_notechvar
+!else
+  $name_ltuservalue
+  !if $tv_listlocal!=$empty
+    !form reply
+    <input type="hidden" name="job" value="userprop" />
+    $table_header
+      <caption>$name_listtechvarlocal</caption>
+      <thead>
+        $table_hdtr
+            <th>$wims_name_name</th>
+            <th>$name_value</th>
+        </tr>
+      </thead>
+      <tbody>
+    !for k in $tv_listlocal
+      $table_tr
+        <td>$(tv_listname[$k])</td>
+        <td>
+        !let techval$(num_$k)=$(old_$k)
+        !formselect techval$(num_$k) list $(ltval_$k) prompt $(ltprompt_$k)
+        </td>
+      </tr>
+    !next k
+     </tbody>
+    $table_end
+    <div class="wimscenter wimsform">
+      <input type="submit" name="tc_set" value="$wims_name_tosave" />
+ $
+      <input type="submit" name="tc_abandon" value="$wims_name_giveup" class="wims_secondary_button" />
+     </div>
+    !formend
+  !endif
+  !if $listglobal!=$empty
+    $table_header
+      <caption>$name_listtechvarglobal</caption>
+      <thead>
+        $table_hdtr
+            <th>$wims_name_name</th>
+            <th>$name_value</th>
+        </tr>
+      </thead>
+      <tbody>
+    !for k in $listglobal
+      $table_tr
+        !let don=!line $k of $tv_listtechvar
+        !distribute item $don into name,cls,num
+        !let id=!item $k of $tv_listcode
+        <td>$name</td>
+        <td>$(user_techvar_$(id))</td>
+      </tr>
+    !next k
+    </tbody>
+    $table_end
+  !endif
+!endif
+</div>

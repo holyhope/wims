@@ -1,0 +1,29 @@
+!read themes/_widgets/user_vardoc.phtml
+!read themes/_widgets/user_vardocp.phtml
+!if $dcnt + $dpcnt>0
+ <!-- _widgets/userdoc.phtml -->
+
+<div class="wims_seq" id="wims_user_doc">
+ <div class="wims_title_seq" >$wims_name_Docs</div>
+ <ul class="wims_work_list">
+  !for i=1 to $dcnt
+   !set s_=!line $i of $ds_list
+   !set t_=!line $i of $dt_list
+   <li class="wims_doc_item">
+    !!<span class="wims_user_doc_type">$wims_name_doc</span>
+     !href module=adm/doc&job=read&doc=$s_&block=main $t_
+   </li>
+  !next i
+  !for i=1 to $dpcnt
+   !set s_=!line $i of $dps_list
+   !set t_=!line $i of $dpt_list
+   !set w_=!line $i of $dpw_list
+   <li class="wims_doc_item">
+    !!<span class="wims_user_doc_type">$wims_name_doc</span>
+     !href module=$s_&$t_&wksheet=$w_ $(dpti_list[$i;])
+   </li>
+  !next i
+ </ul>
+</div>
+ <!-- end _widgets/userdoc.phtml -->
+!endif

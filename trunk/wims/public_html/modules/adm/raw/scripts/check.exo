@@ -1,0 +1,39 @@
+#Check Exo verifie l'exercice qexo de la feuille
+#Pour commencer, on verifie la feuille
+type=sheets
+!read scripts/check.proc
+!if $error!=$empty
+ !exit
+!endif
+
+#si le parametre qexo contient un caractere special, on abandonne
+qexo=!translate internal ./,;?* to $             $ in $qexo
+!if $ $ isin $qexo
+ qexo=
+!endif
+
+#On compte le nombre d'exercices de la feuille qsheet
+exocnt=!recordcnt $qfile
+
+
+#Si l'exo qexo n'existe pas, on abandonne
+!if $qexo=$empty
+ error=undefined qexo
+ !exit
+!else
+ !if  $qexo>$exocnt
+  error=exercice #$qexo does not exist
+  !exit
+ !endif
+!endif
+
+# L'exo existe. on initialise les variables
+
+exo=!record $qexo of $qfile
+
+exo_module=!line 1 of $exo
+exo_params=!line 2 of $exo
+exo_points=!line 3 of $exo
+exo_weight=!line 4 of $exo
+exo_title=!line 5 of $exo
+exo_description=!line 6 of $exo

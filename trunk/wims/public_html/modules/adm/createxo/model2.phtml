@@ -1,0 +1,99 @@
+!!useful ???
+!set name_title=$wims_name_title
+!set name_author=$wims_name_Author (<span class="tt">$wims_name_firstname, $wims_name_lastname</span>)
+!set name_email=$wims_name_email
+!set name_credits=$wims_name_credits
+!set name_css=CSS
+
+!form reply name="replyform" id="replyform"
+<input type="hidden" name="level" value="3" />
+!reset table_center
+$table_header
+<caption>$model_title
+<br />$desc
+!set wims_ref_class=wims_button_help
+!href target=wims_mhelp cmd=help&special_parm=model,1 $wims_name_help
+</caption>
+
+!set ta
+!for i in $sps,$parms
+ !reset reply$i
+ !if $(type$i)!=matrix and $(name$i) notwordof $model_textarea
+  !set val=!replace internal " by &#34; in $(val$i)
+  !if $i isitemof $sps
+   !set title$i=$(name_$(name$i))
+  !endif
+  !if $(type$i) iswordof integer int real and $i notitemof $sps and \
+	$(name$i) notwordof $model_random $model_computed
+   !set len=8
+  !else
+   !set len=40
+  !endif
+  $table_tr
+  <td>
+    <label for="reply$i">$(title$i)</label>
+    !if $(help$i)!=$empty or $(name$i) iswordof $model_helped
+      !set wims_ref_class=wims_button_help
+      !href target=wims_mhelp cmd=help&module=$module&special_parm=model,$i $wims_name_help
+    !endif
+  </td>
+  <td>
+  !if $(menu$i)!=$empty
+   !set t_=!itemcnt $(menu$i)
+   !set t_=!makelist x for x=1 to $t_
+   !set reply$i=$val
+   !formselect reply$i list $t_ prompt $(menu$i)
+  !else
+   !set l_=!charcnt $val
+   !if $l_ > 50
+    !set val=!reinput $val
+    <textarea name="reply$i" id="reply$i" cols="$len" rows="3">$val</textarea>
+   !else
+    <input size="$len" name="reply$i" id="reply$i" value="$val" />
+   !endif
+  !endif
+  </td>
+  </tr>
+ !else
+  !set ta=!append item $i to $ta
+ !endif
+!next i
+
+$table_end
+!if $ta!=$empty
+ !for i in $ta
+  <div class="field" id="textarea$i" style="text-align:center; padding:10px;">
+    <label for="reply$i">$(title$i)</label>
+    !set val=!reinput $(val$i)
+
+    !if $(name$i) iswordof $model_asis
+      !! Check if param value is set as "asis()", so it will not be printed to users
+      !set debut=!char 1..4 of $val
+      !if $debut issametext asis
+        !set val=!char 6..-2 of $val
+      !endif
+    !endif
+
+    <a class="wims_button smaller" href="#textarea$i" onclick="document.forms['replyform'].reply$i.value=''">$name_clean</a>
+    !if $(help$i)!=$empty
+      !set wims_ref_class=wims_button_help
+      !href target=wims_mhelp cmd=help&module=$module&special_parm=model,$i $wims_name_help
+    !endif
+    <br />
+    <textarea name="reply$i" id="reply$i" cols="120" rows="10" class="wims_model_textarea
+    !if $(type$i) iswordof matrix
+nowrap"
+    !endif
+    ">$val</textarea>
+  </div>
+ !next i
+!endif
+<div class="wimscenter">
+  <input type="submit" value="$name_sendsource" />
+  &nbsp;
+  &nbsp;
+  !set wims_ref_class=wims_button wims_secondary_button
+  !href cmd=reply&level=1 $wims_name_giveup
+</div>
+
+!formend

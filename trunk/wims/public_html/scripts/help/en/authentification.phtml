@@ -1,0 +1,110 @@
+<p>
+Several authentication methods are available in WIMS:
+</p>
+<ol><li>
+Authentication by WIMS.
+</li><li>
+CAS authentication to authenticate users with single sign on (SSO). 
+The teacher must know the URL address supplied to him by the organization 
+he belongs to as well as his students.
+</li><li>
+ Authentication by an ldap directory (depends on the permissions given 
+to the WIMS server by the directory).
+</li><li>
+Authentication by a php script (uses wims's raw module and needs for now 
+installing simpleSAMLphp).
+</li></ol>
+
+<p>
+On the other hand, at the time of registration, data concerning the 
+participant's identity (name, firstname, email address, etc.) can be 
+searched in an ldap directory (same restriction as above for the ldap).
+</p><p>
+Here is some information about the registration or authentication process for each case:
+</p>
+<h3>
+WIMS authentication (default)
+</h3>
+<p>This is the original authentication in WIMS.</p>
+<ul><li>
+Either the teacher registers all participants by choosing for each one his 
+username, identity and a password.
+</li><li>
+Or each participant enters the password for the class given by the teacher 
+and registers by choosing a username and stating his identity, and a password.
+</li></ul>
+<p>The participant then enters the class using this username and password.</p>
+
+<h3>
+CAS authentication
+</h3>
+<ul><li>
+The teacher must have configured his class by entering the address 
+of the CAS host he want to use, either when creating the class, 
+or using the <span class="tt wims_code_words">Configuration/Maintenance</span> 
+page (clic on <span class="tt wims_code_words">Authentication</span> in the 
+left menu) .
+</li><li>
+The teacher then gives the password of the class to future participants.
+</li><li>
+The participant clicks the enter button on the line showing his class. 
+The CAS authentication window appears. He enters his CAS login. 
+If he is not yet registered, the class password is requested. 
+If successful, he is asked for his username and password. 
+He should also accept the terms of use. 
+If he is already registered, he enters directly into the class.
+</li><li>
+The teacher can also register himself participants. In this case, 
+the participant only needs to accept the conditions of use.
+</li></ul>
+<h3>
+CAS authentication and ldap identification.
+</h3>
+<p>The teacher must have configured his class by entering the address 
+of the CAS host he want to use, using the 
+<span class="tt wims_code_words">Configuration/Maintenance</span> 
+page (clic on <span class="tt wims_code_words">Authentication</span> in the left 
+menu) and entering the technical ldap parameters. He must also verify that 
+the directory server accepts requests from WIMS server (contact the manager of the directory).
+</p><p>
+Everything goes as in the case of a simple authentication by CAS, 
+but the identifiers (name, ...) are automatically filled. 
+The CAS and ldap username must be the same.
+</p>
+
+<h3>
+ldap authentication and ldap identification.
+</h3>
+ 
+<p>Everything works as in CAS authentication and ldap identification.</p>
+
+<h3>Notes</h3>
+<ul><li>
+<span class="wims_warning">
+It is not advisable to change the authentication type when participants 
+are already registered.
+</span>
+</li><li>
+In the case of external (to WIMS) authentication, an <i>internal</i> 
+identifier is assigned automatically. It will not be used for authentication
+ but remains the identifier of the WIMS participant. 
+There is no more WIMS password (more precisely it is hidden).
+</li><li>
+Default settings may have been defined by the site manager if the 
+classes depend primarily on a single institution.
+You may redefine them for your own class.
+<br/>
+Here is an example of parameters for an ldap authentication :
+<pre>
+ldap_host: ldap.u-psud.fr
+ldap_port: 389
+ldap_version: 3
+ldap_base: ou=people,dc=u-psud,dc=fr
+ldap_branch: ou=people,dc=u-psud,dc=fr
+ldap_uid: uid
+ldap_login: supannAliasLogin
+</pre></li><li>
+
+If the ldap authentication fails, the default wims authentication
+is automatically proposed.
+</li></ul>

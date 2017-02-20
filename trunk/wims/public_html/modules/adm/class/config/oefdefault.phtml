@@ -1,0 +1,115 @@
+!form reply
+<fieldset class="property_fields blockcenter">
+  <legend>$title</legend>
+  <div class="field box">
+    <label for="nw_qnum">$name_series</label>
+   !set nw_qnum=$user_qnum
+   !set nw_qnum=$(default_choice[1])
+   !formselect nw_qnum from 1 to 9
+   $wims_name_exercises.
+  </div>
+    <div class="field box">
+   <label for="nw_scoredelay">$name_chrono </label>
+   <input size="7" name="nw_scoredelay" id="nw_scoredelay" value="$user_scoredelay" /> $name_secondes.
+  <div class="formHelp">$name_warning</div>
+  </div>
+  </fieldset>
+  <fieldset class="property_fields blockcenter">
+  <legend>$name_simplifiedmenu</legend>
+  <div class="field box">
+   <label for="nw_qcmlevel">$name_severity</label>
+   !set nw_qcmlevel=$user_qcmlevel
+   !default nw_qcmlevel=$(default_choice[2])
+   !formselect nw_qcmlevel from 1 to 9
+  </div>
+  </fieldset>
+   <fieldset class="property_fields blockcenter">
+  <legend>$name_expertmenu</legend>
+  <div class="field box">
+   <label for="nw_presentsol">$name_solution</label>
+   !set nw_presentsol=$user_presentsol
+   !default nw_presentsol=$(default_choice[3])
+   !formselect nw_presentsol list 0,1,2 prompt $name_prompt
+  </div>
+  <div class="field box">
+  !set wims_ref_class=wims_formradio
+  !set nw_check3=!listintersect $user_check and 3
+  !default nw_check3=0
+   $name_prompt3
+   !formradio nw_check3 list 3,0 prompt $wims_name_yes,$wims_name_no
+  </div>
+   <div class="field box">
+  !set wims_ref_class=wims_formradio
+  !set nw_check4=!listintersect $user_check and 4
+  !default nw_check4=0
+   $name_prompt4
+   !formradio nw_check4 list 4,0 prompt $wims_name_yes,$wims_name_no
+   </div>
+    !let tmp=!replace word expert by $ in $special_parm2
+    !set nw_sepow=$user_sepow
+    !set nw_expow=$user_expow
+    !set nw_precw=$user_precw
+    !default nw_sepow=$(list_sepow[1])
+    !default nw_expow=$(list_expow[1])
+    !default nw_precw=$(list_precw[1])
+    !set powercnt=!itemcnt $list_expow
+   !for j=1 to $powercnt
+     !set name_prompt_expower2=!append item $(name_prompt_expower[$j]) ($(list_expow[$j])) to $name_prompt_expower2
+     !set name_prompt_sepower2=!append item $(name_prompt_sepower[$j]) ($(list_sepow[$j])) to $name_prompt_sepower2
+   !next
+    <div class="field box">
+    $name_expower
+    <div>
+    !set wims_ref_class=wims_formradio
+    !formradio nw_expow list $list_expow prompt $name_prompt_expower2
+    </div>
+    </div>
+    <div class="field box">
+     $name_sepower
+      <div>
+    !set wims_ref_class=wims_formradio
+    !formradio nw_sepow list $list_sepow prompt $name_prompt_sepower2
+    </div>
+    <div class="formHelp">$name_warning_pow</div>
+    </div>
+    <div class="field box">
+    $name_precweight
+    !set wims_ref_class=wims_formradio
+    !formradio nw_precw list $list_precw
+    <div class="formHelp">
+      $name_help_precweight
+      </div>
+    </div>
+  <hr />
+  $name_qcm
+    <div class="field box">
+   <label for="nw_qcmpresent">$name_qcmanswer</label>
+   !set nw_qcmpresent=$user_qcmpresent
+   !default nw_qcmpresent=$(default_choice[4])
+   !formselect nw_qcmpresent list 2,3,4,5,6,7,8
+   <br />
+   !set wims_ref_class=wims_formradio
+   !set nw_check1=!listintersect $user_check and 1
+   !default nw_check1=0
+   $name_prompt1
+   !formradio nw_check1 list 1,0 prompt $wims_name_yes,$wims_name_no
+   !set wims_ref_class=wims_formradio
+   <br />
+   !set nw_check2=!listintersect $user_check and 2
+   !default nw_check2=0
+    $name_prompt2
+   !formradio nw_check2 list 2,0 prompt $wims_name_yes,$wims_name_no
+   </div>
+   </fieldset>
+  <div class="wimscenter wimsform">
+   <input type="submit" value="$wims_name_tosave" />
+   <input type="hidden" value="1" name="step" />
+  </div>
+
+!formend
+
+  <div class="formHelp">
+  $name_remarkseverity
+  !read oef/helpseverity
+  !read oef/helppenality
+ </div>

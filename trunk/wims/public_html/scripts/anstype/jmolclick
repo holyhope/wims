@@ -1,0 +1,125 @@
+option:eqweight split
+!reset appletdir
+!set applet_url1=http://chemapps.stolaf.edu/jmol/jsmol/jsmol.php
+!set applet_url2=https://cactus.nci.nih.gov
+!set appletType=!getopt type in $(replyoption$i)
+!set jmol_target=!getopt target in $(replyoption$i)
+!set appletdir=!getopt applet in $(replyoption$i)
+!if $appletdir issametext imagedir
+  !set appletdir=$imagedir
+!endif
+
+!default appletType=HTML5
+!default appletdir=java/jmol
+!default jmol_target=jmolApplet_0
+
+!distribute lines $(reply$i) into score,selgood,selbad,selforget,ans_sc1,ans_orient
+!for j in selgood,selbad,selforget
+  !set $j=!translate {()} to $ $ $ $ $ in $($j)
+  !set $j=!singlespace $($j)
+  !set $j=!words2items $($j)
+  !set $j=!values x+1 for x in $($j)
+!next
+!set for_feedback=$selgood;$selbad;$selforget
+
+nbsel=!getopt nb_select in $(replyoption$i)
+
+!distribute lines $oef_applet_option into size,file,ans_sc0,ans_sc2
+!distribute items $size into xsize,ysize
+!if __@ isin __$file
+ !set file=!char 2 to -1 of $file
+ !set dollar=1
+ !set appletType=HTML5
+!endif
+
+!if __http isin __$ans_sc0
+  ans_file0=$ans_sc0
+  !reset ans_sc0
+!endif
+
+!if __http isin __$ans_sc2
+  ans_file2=$ans_sc2
+  !reset ans_sc2
+!endif
+
+!if $wims_read_parm=nocompare
+  reply$i=$(m_reply$i)
+  !set for_feedback=$selbad
+  !goto applet
+!endif
+!!freegot must be advanced between 0 and 1
+score=$[round($score)/10]
+!if $score=1
+   diareply$i=good
+   !advance freegot
+!else
+   !if $score>0.4
+      diareply$i=good
+      freegot=$[$freegot+$score]
+      partialgood$i=yes
+   !else
+      diareply$i=bad
+   !endif
+!endif
+
+:applet
+
+reply_$i=<script type="text/javascript" src="$appletdir/JSmol.min.js"></script>\
+<script type="text/javascript" src="$appletdir/Jmol2.js"></script>\
+<script type="text/javascript">\
+/*<![CDATA[*/\
+jmol_isReady = function(applet) {\
+	Console.log(applet._id + " is ready")\
+}		\
+var Info = {\
+	width: $xsize,\
+	height: $ysize,\
+	debug: false,\
+	color: "white",\
+	addSelectionOptions: false,\
+	serverURL: "$applet_url1",\
+	use: "$appletType",\
+	j2sPath: "$appletdir/j2s",\
+	jarPath: "$appletdir",\
+	jarFile: "JmolApplet.jar",\
+	isSigned: false,\
+	memoryLimit: 512,\
+	readyFunction: jmol_isReady,\
+	disableJ2SLoadMonitor: false,\
+  disableInitialConsole: true\
+}\
+Jmol.getApplet("$jmol_target", Info)\
+var sc0='$ans_sc0';\
+var sc1='$ans_sc1';\
+var sc2='$ans_sc2';
+!if $dollar==1
+    reply_$i=$(reply_$i)\
+var jscr='set loadFormat "$applet_url2/chemical/structure/%FILE/file?format=sdf&get3d=True";load "=$file";';
+!else
+    reply_$i=$(reply_$i)\
+var jscr='load $file;';
+!endif
+    reply_$i=$(reply_$i)\
+    jscr= jscr +'set frank on;hover off; \n';\
+    jscr= jscr +'set picking off;console off;\n';\
+    jscr= jscr + sc0;\
+    jscr= jscr + sc1;\
+    jscr= jscr + sc2;\
+    jscr= jscr + '$ans_orient'\
+Jmol.script($jmol_target,jscr);
+
+!if $ans_file0!=$empty
+    reply_$i=$(reply_$i)\
+    Jmol.script($jmol_target,'script $ans_file0;');
+!endif
+!if $ans_file2!=$empty
+    reply_$i=$(reply_$i)\
+    $Jmol.script($jmol_target,'script $ans_file2;');
+!endif
+reply_$i=$(reply_$i)\
+/*]]>*/\
+</script>
+
+!set reply_$i=$(reply_$i)
+!set m_reply$i=$for_feedback
+!set reply$i=

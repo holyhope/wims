@@ -1,0 +1,110 @@
+<p>
+$wims_name_quick_QCM è un tipo tradizionale di esercizi con domande a scelta multipla.
+Potete stabilire da quanti passi sarà composto l'esercizio e quante domande
+devono essere poste a ogni passo (di default il numero di passi è 1).
+Ogni domanda può essere associata a una sola o a più risposte corrette. In
+quest'ultimo caso è necessario scegliere il formato <span class="tt">checkbox</span>. 
+In caso di domanda che prevede più risposte corrette il punteggio pieno
+viene assegnato solo se sono selezionate tutte le risposte corrette.
+</p><p>
+In fase di creazione si  può decidere se allo studente saranno mostrate
+le risposte corrette o se sarà data solo l'indicazione corretto/non corretto.
+
+</p><p>
+Se l'esercizio è suddiviso in passi è possibile stabilire una soglia
+per il passaggio al passo successivo. In questo modo lo studente non potrà
+adottare la tattica di ripetere in continuazione l'esercizio in modo da 
+imparare le risposte corrette per tentativi e errori.
+</p><p>
+Per ogni domanda possono essere previsti dei feedback, che saranno mostrati con il punteggio al termine dell'esercizio.
+</p>
+
+:format
+<pre>
+:How many colours are there in a rainbow? 
+
+1
+Seven
+Nine
+Fourteen
+
+:Which coulour(s) does the rainbow not have?
+The rainbow colours are red, orange, yellow, green, blue, indigo and violet 
+2,3
+orange
+pink
+black
+
+:When does a rainbow appear in the sky?
+When the Sun shines onto droplets of moisture.
+3
+When it's raining
+When it's sunny.
+When it's sunny and raining at the same time.
+</pre>
+La frase <span class="tt">When the Sun shines onto droplets of moisture.</span> è la 
+spiegazione data in caso di una risposta non corretta.
+
+<h3>$wims_name_Syntax</h3>
+
+<pre>
+:domanda
+feedback (se voluto), su una sola riga
+numero/numeri corrispondenti alle linee che contengono la/le risposte esatte
+prima risposta possibile
+seconda risposta possibile
+terza risposta possibile
+quarta risposta possibile
+</pre>
+
+Se non si vuole dare un feedback, la riga dopo la domanda deve essere lasciata 
+vuota (come nell'esempio dato sopra).
+
+<span class="wims_warning">$wims_name_remark</span>: la riga della domanda non
+può essere vuota (se non si vuole mettere niente, utilizzare il codice
+html per lo spazio bianco: \&\# nbsp;)
+
+<span class="wims_warning">$wims_name_remark</span>: Opzioni relative a file di dati.
+Dans le cas où on souhaite ajouter des documents audio, un titre, une introduction différents 
+pour chaque jeu de données, la première ligne doit être de la forme (champs facultatifs)
+<pre>
+:audio=nom.mp3 image=nomim.jpg title="titre" intro="ma consigne" 
+</pre>
+
+Dans le cas où il y a un enregistrement audio, il faut rajouter une ligne supplémentaire qui contiendra  
+audio=, puis mettre la question formatée comme précédement. 
+
+<pre>
+:audio=mother
+domanda
+spiegazione
+numero della risposta corretta
+risposta1
+risposta2
+risposta3
+</pre>
+
+oppure
+
+<pre>
+:audio=father
+domanda
+spiegazione
+numero della risposta corretta
+risposta1
+risposta2
+risposta3
+</pre>
+
+oppure
+
+<pre>
+:audio=brother.mp3
+domanda
+
+numero della risposta corretta
+risposta1
+risposta2
+risposta3
+</pre>
+

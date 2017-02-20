@@ -1,0 +1,856 @@
+# Format:
+# Line 1. type name_in_wims_conf variable_name
+# Line 2. prompt
+# Line 3. variable type
+# Line 4. selection range; prompts
+# Line 5 Small Help
+# Line 6 and up. More help
+
+:tech PATH
+PATH
+free
+
+Search path for binary executables. It is safe to leave it with the default
+value, unless you have a very special operating system setup.
+
+:tech aliased_cgi
+cgi to html address aliasing
+choice
+yes,no;$wims_name_yes,$wims_name_no
+Set to yes if you want internet robots to see some WIMS contents as html
+pages. Helps for making the site better referenced and better known, but
+you need Apache 1.3 or up to get this to work correctly.
+<p>
+If you have just updated Apache httpd and if you have trouble with unknown
+addresses when you activate this feature, run the script
+<code class="tt">bin/apache-config</code>.
+</p>
+:tech aliased_getfile
+getfile address rewriting
+choice
+yes,no;$wims_name_yes,$wims_name_no
+Activating this allows you to get correct file names when downloading
+wims-generated files: backup archives, student data in virtual classes, some
+image files, etc. Otherwise all file downloads will default to the name
+"wims.cgi" which has to be manually corrected when you save the file.
+<p>
+You may get into trouble downloading if your Apache httpd is not correctly
+configured. In this case, say "no".
+</p>
+:housekeep backup_hour
+Hour of daily backup
+choice
+-1,1,2,3,4,5,6,7,8,9,11,13,15,17,18,19,20,21,22; none,1,2,3,4,5,6,7,8,9,11,13,15,17,18,19,20,21,22
+This is the hour when daily data backup will take place.
+Choose an hour where the server is not busy, or pick none (-1) to disable daily backup.
+
+:resources busyhours wims_busyhours
+Busy hours of the server
+free
+
+You can list here the hours during which the server is most likely to be busy.
+Some activities such as local module publication will be prohibited during
+such periods. Give a list of words composed of two digits: for example,
+<code class="tt">08 09 13 14</code>.
+
+:graphics default_anim_format ins_format
+Format of dynamic animations*
+choice
+gif, mng
+Graphics format for dynamic animations. There are only two possibilities:
+gif or mng. You must be aware of the fact that many currently used browsers
+are unable to show inline mng animations.
+
+:graphics default_texposition
+Default formula position / MathML
+choice
+0,1,2; low,high,MathML
+TeX formulas are small graphics files that are middle-aligned with respect to the text line.
+<p>There is an ancient middle-alignment bug from the beginning days of
+Netscape, which aligns the middle of the picture against the base line of
+the text. This of course makes the formulas appear too low, and WIMS patches
+it by raising a bit the formulas. </p>
+<p>However, recent browsers no longer carry this alignment bug. And for these
+browsers, the patch makes the formulas too high with respect to text. This
+parameter allows you to choose whether or not to activate the patch by
+default. Note that users can define their own preferences. </p>
+<p>The parameter can be used also to activate MathML translation.</p>
+<p>If you change this value, do not think of your own browser,
+but of those of your average users!</p>
+
+:tech cgi_name
+Name of the main cgi program!
+free
+
+You can change this name only if you have correctly aliased things in the configuration file of your httpd.
+For example, if you have run the script
+in <code class="tt">bin/apache-config</code>,
+you may try the names <code class="tt">index.html</code> or <code class="tt">wims.html</code>.
+<p>
+Do not change this if you do not know what you are doing! If you make it
+wrong, you will have to manually recover your config.
+</p>
+:class class_limit wims_class_limit
+Limit of the number of virtual classes
+int
+0,1000
+
+:class class_regpass wims_class_regpass
+Rights to create virtual classes
+free
+
+This parameter defines your site's access right for the creation of virtual
+classes. It contains 3 comma-separated fields, defining respectively the
+access right for creating individual classes, class groups and institution
+portals. For each field, the following definitions are possible.
+<dl>
+<dt><code class="tt">all</code><dd>Every one can create classes.
+<dt><code class="tt">deny</code><dd>Nobody is allowed to create classes.
+<dt><code class="tt">email</code><dd>Every one can create classes, as long as he/she submits
+his/her working email address. The site will check the effectiveness of this
+email address.
+<dt><code class="tt">passwd ******</code><dd>The user must enter a password to access the
+creation of classes. You can define the password as the second word
+of the parameter (in replacement of <code class="tt">******</code> above), and
+communicate the password to those who you allow to create classes.
+<dt>Host names or IP numbers<dd>
+ Only people connecting from the defined hosts will be allowed to create
+classes.
+$sitehelp
+</dl>
+Please notice that the webmaster (that is, you) always has the right to create virtual classes of any kind.
+
+:class class_quota wims_class_quota
+Disk quota for virtual classes in Meg
+int
+1,1000
+This is the limit of disk space usage for each virtual class.
+If a virtual class' disk space use reaches or exceeds this number in Megabytes,
+the supervisor's homepage will get locked.
+
+:class superclass_quota wims_superclass_quota
+Disk quota for portal in Meg
+int
+1,2000
+This is the limit of disk space usage for each portal on the server.
+If a portal disk space use reaches or exceeds this number in Megabytes,
+the supervisor's homepage will get locked.
+
+:class class_user_limit wims_class_user_limit
+Limit of participants in each class
+int
+0,2000
+
+:housekeep backup_delete
+Délai de destruction des classes en jours
+int
+100,2000
+Mettre un nombre de jours entre 100 et 2000.
+Si vous indiquez un entier N, les classes archivées seront détruites N jours après la date de leur
+archivage ou plutôt le premier du mois suivant.
+
+:graphics default_ins_format ins_format
+Format of dynamic graphics*
+choice
+gif, jpeg, png
+Sorry for png advocates, but gif is the most compatible format
+especially if you can install softwares producing compressed gif files.
+The second choice is jpeg. png still have some compatibility problems.
+<p>Note also that animated graphics format is not affected by this setting.</p>
+
+:security,misc devel_modules
+Access policy for modules under development
+choice
+open,close
+If set to <code class="tt">close</code>, modules under development cannot be accessed without authentication.
+In particular exercises cannot be inserted into a
+worksheet of a class since a participant is not authenticated as modtool developper.
+<p>
+It is highly recommended that you choose <code class="tt">close</code>, in order
+to avoid future problems. Module developers should be encouraged to
+publish their modules into local space in order to make them usable by others.
+</p>
+:class examlog_limit
+Limit of registered exam sessions for each participant
+int
+0,100
+Please note that this is site-wide limitation.
+Setups of individual classes cannot exceed this limit.
+Registers of exam details may take up a lot of disk space,
+so if this limit is too high, some very active classes may run
+into disk quota problems.
+<p>
+If you set this limit to 0 or negative, no exam detail will be registered in
+any virtual class.
+</p>
+:tech tmp_debug wims_tmp_debug
+Debugging mode
+choice
+yes,no;$wims_name_yes,$wims_name_no
+Turning on debugging mode allows some basic information to be shown
+at the bottom of most pages, when the query is from localhost.
+At the same time, the temporary session directory
+(located down tmp/sessions/) will be conserved for examination. For
+development use, as well as for troubleshooting the installation.
+
+:graphics default_insplot_font insplot_font
+Font size of dynamic plot (gnuplot)
+choice
+small,medium,large
+This font size affects dynamic plots generated by gnuplot.
+Individual modules may change this setting.
+
+:doc doc_quota wims_class_quota
+Disk quota for Documents in Meg
+int
+1,1000
+This is the limit of disk space usage for each interactive document.
+If a document's disk space use reaches or exceeds this number in Megabytes,
+further modification of the document will no longer be allowed.
+
+:forum forum_limit wims_forum_limit
+Limit of the number of forums
+int
+0,1000
+
+:software gap_command
+Command name for GAP
+free
+
+GAP is a group theoretic calculator used by WIMS.
+If you install it in a directory according to its instructions, with an executable gap.sh within
+usual PATH, you do not need to touch this.
+
+:log general_log_limit
+Length limit (in bytes) of main log files
+int
+0,102400000
+Length limit of general log files (access.log, post.log, session.log).
+
+
+:graphics gnuplot_format
+Internal graphics format for gnuplot*
+choice
+gif,jpeg,png
+Choose a format known to your gnuplot.
+gnuplot is used for generating dynamic plottings. In
+most recent distributions, gnuplot is not compiled for gif format.
+
+:appearances home_module
+Home (default) module!
+free
+
+This module is the entry point of the site. You should not change this
+unless you have designed and put up your own home module.
+
+:appearances site_languages wims_site_languages
+Supported languages*
+free
+
+Available languages:
+ca (Catalan),
+cn (Chinese gb),
+de (German),
+en (English),
+es (Spanish),
+fr (French),
+it (Italian),
+nl (Dutch),
+si (Slovenian),
+tw (Chinese gib5).
+
+List them separated by white spaces.
+<p>
+The order of your listing is important: languages listed first will get more priority.
+</p>
+
+:tech idle_time
+Delay before an idle class session is killed
+choice
+600,1200,1800,2400,3600,5400,7200,10800,14400,18000;10 min,20 min, 30 min, 40 min, 1 hour,1.5 hours, 2 hours, 3 hours,4 hours, 5 hours
+Reducing this may increase performance but slow visitors will find their sessions expired.
+Usually an active user will touch his session at least once every 10 minutes, unless he is
+working on a very hard exercise (a fairly rare case). However, killing the
+session of the latter will result in huge frustration. So be careful!
+<p>
+If exams will be carried out on your installation, please note that this
+delay should exceed the time allowance of any exam sheet.</p>
+
+:tech idle_time2
+Delay before an idle anonymous session is killed
+choice
+600,900,1200,1800,2400,3600,5400,7200,10800,14400,18000;10 min,15 min,20 min, 30 min, 40 min, 1 hour,1.5 hours, 2 hours, 3 hours,4 hours, 5 hours
+Reducing this may increase performance but slow visitors will find their sessions expired.
+Usually an active user will touch his session at least once every 10 minutes, unless he is
+working on a very hard exercise (a fairly rare case). If killing the
+session of the latter will result in huge frustration, such activities
+are less important when they are not in a virtual class.
+<p>
+This delay only applies to sessions without authentication. It cannot be bigger than delay for class sessions.
+</p>
+:tech idle_time3
+Delay before an idle first-created session is killed
+choice
+300,360,480,600,720,900,1200,1800,2400,3600,7200;5 min,6 min,8 min,10 min,12 min,15 min,20 min, 30 min, 40 min, 1 hour,2 hours, 2 hours
+If one creates a session without reusing it during this amount of seconds, the newly-created session will be removed.
+<p>
+This delay only applies to sessions without authentication. Creating a
+session without reusing it is usually a behavior of internet robots.
+</p><p>
+This delay cannot be bigger than that for idle anonymous sessions.
+</p>
+:tech mail_opt
+Options for !mailto command
+free
+
+Add options to the system command "mail" when using the !mailto command.
+See the sytem's mail manual for details of possible options.
+<p>
+For example, if your system's mail command supports this, you can use
+<code class="tt">-a "User-Agent: WIMS"</code> to add a User-Agent header to the mail sent
+out by wims. Some providers require this to accept mails.
+</p>
+:tech mailback_opt
+Option to the system command !mailto for the back address.
+free
+
+
+For example, <code class="tt">-r</code>
+
+:security manager_https
+Site maintenance must use https connection*
+choice
+0,1;$wims_name_no,$wims_name_yes
+Whenever possible, choose https connection to increase security.
+An intrusion to your server as webmaster represents a great danger to your installation!
+<p>WIMS is compatible with https. All you have to do is to configure your
+httpd so that it accepts https requests.</p>
+
+:security manager_site
+Site maintenance connections must come from a site with this IP*!
+free
+
+You may put here several IP numbers.
+Partial numbers such as 134.59.10. are accepted, but be aware that the more there are allowed sites,
+the more will be your security risks.
+The most secure site is 127.0.0.1 (localhost).
+In any case, choose only site(s) you can trust.
+An intrusion to your server as webmaster represents a great danger to your installation!
+<p>
+If you put a `*' to this field, the next time you will not be
+able to use this online maintenance tool (and you can be sure that nobody
+else will).
+</p>
+:software maxima_command
+Command name for Maxima
+free
+
+You do not need to change this
+if Maxima is installed in a usual way with the starting executable in PATH.
+
+:log module_log
+Log individual module informations
+choice
+1,0;$wims_name_no,$wims_name_yes
+Many WIMS modules define their own log informations.
+If you want to see these module informations, you can activate this (see also the definition of
+module log file lengths).
+Attention however that these log files will end up by using up a fair amount of disk spaces,
+as there are hundreds of logging modules.
+
+:log module_log_limit
+Length limit (in bytes) of module log files
+int
+0,102400000
+Length limit of module log files.
+ There are some secondary general log files who also use this limit,
+  so even if module log is set to no, this number still makes sense.
+
+:housekeep site_accounting
+Activity accounting
+choice
+0,1;$wims_name_yes,$wims_name_no
+Enable or disable daily activity accounting.
+This is necessary for site activity statistics, as well as for virtual class connection time accounting.
+
+:housekeep mu_download_site
+Download site for module update
+checkbox
+$mu_downloadsites
+Choose a download site for module update.
+Known mirror sites:
+<pre>
+$help_downloadsites
+</pre>
+<p>If you choose automatic module update with very small delay (0 or 1 day),
+you should set the download site to the primary mirror <code class="tt">$(mu_sites[1])</code>.
+</p>
+
+:housekeep mu_publish_site
+$wims_name_publish_center
+checkbox
+$mu_publishsitesw
+You can here choose the publication centers for ressource modules.
+<pre>
+$help_publishsites
+</pre>
+
+:housekeep mu_delay
+Delay in automatic module update
+choice
+0,1,2,4,7,10,15,20,30,50,100
+The number of days between the publication of a module and the update by this site.
+<p>
+Choosing a bigger value here will allow you to reduce the risk of getting
+new bugs, because the latter will hopefully be discovered and corrected during
+your delay.
+</p>
+<p>
+If you choose a very small number here (0 or 1), you should set
+the download site to the primary mirror <code class="tt">$(mu_sites[1])</code>.
+</p>
+:housekeep mu_zone
+Zones for automatic module update
+free
+
+Limit the automatic module update to the given zones.
+<code class="tt">all</code> means everything.
+<p>
+Possible choices of zones: <dl>
+<dt><code class="tt">K</code>
+    <dd>Kindergarten (you can fine-tune with K1 K2 K3)
+<dt><code class="tt">E</code>
+    <dd>Elementary school materials (you can fine-tune with E1 E2 E3 E4 E5 E6)
+<dt><code class="tt">H</code>
+    <dd>Middle school materials (you can fine-tune with H1 H2 H3 H4 H5 H6)
+<dt><code class="tt">U</code>
+    <dd>University teaching materials (you can fine-tune with U1 U2 U3 U4 U5)
+<dt><code class="tt">Lang</code>
+    <dd>Foreign language-learning materials
+<dt><code class="tt">tool</code>
+    <dd>Online tools and helpers.
+</dl>
+</p><p>
+You can put several zones in this field, separated by white spaces.
+
+:housekeep mu_cat
+Categories for automatic module update
+free
+
+Limit the automatic module update to the given categories. "all" means everything.
+<p>
+Some choices of categories (non-exhaustive): <dl>
+<dt><code class="tt">math</code> resp. <code class="tt">physics chemistry language</code> etc.
+    <dd>Corresponding disciplines.
+<dt><code class="tt">cs</code>
+    <dd>Computer science.
+</dl>
+<p><p>
+You can put several categories in this field, separated by white spaces.
+</p>
+:log old_log_files
+Number of old log files*
+int
+0,20
+This is the number of rotated old log files.
+Increasing this number will give you more historic information, while proportionally increase disk space use.
+
+:software pari_command
+Command name for PARI/GP
+free
+
+PARI/GP is a number-theoretic calculator used by many WIMS modules.
+If you follow its installation procedure with binary executable within usual PATH,
+you do not need to touch this.
+
+:resources priority
+Sites with connection priority
+free
+
+Connections from these sites will not be refused when server load is above threshold.
+$sitehelp
+
+:appearances page_bgcolor wims_bgcolor
+Page background color
+color
+
+Background color of most WIMS pages.
+Use a color name or #rrggbb hexadecimal code (see html standard for detail).
+
+:appearances page_bgimg wims_bgimg
+Page background image file
+free
+
+Background image file (tile) for most WIMS pages. You may use any valid URL.
+Take also a look in the directory public_html/gifs/bg which contains
+some pre-defined background files. These files can be referenced simply by
+their names, without any directory prefix.
+<p>Here is the list of such directly usable background image files:</p>
+<pre>$bgimgs</pre>
+
+:tech,misc rafale_level
+Anti-rapidfire severity
+int
+0,100
+Rapid-fire requests of exercises without serious attempts to resolve them will generate errors.
+This is one of the anti-cheating measures of the system.
+Higher severity level results in more requirements in time before new
+exercises are allowed. Choosing the value of 0 or less for this severity will disable this measure.
+
+:appearances ref_bgcolor wims_ref_bgcolor
+Table background color
+color
+
+Background color appearing in head menus and many WIMS administration modules.
+Use a color name or #rrggbb hexadecimal code (see html standard for detail).
+
+:appearances ref_menucolor wims_ref_menucolor
+Link color in menus and reference table.
+color
+
+You can choose the color menu link  here.
+This is possible only for "new themes", so not for default theme.
+Choose it according to the table background color
+
+:appearances ref_button_bgcolor wims_ref_button_bgcolor
+Button background color
+color
+
+You can choose the background color action buttons here.
+This is possible only for "new themes", so not for default theme.
+Choose it according to the table background color
+
+:appearances ref_button_color wims_ref_button_color
+Button color
+color
+
+You can choose the color of the text of action buttons here.
+This is possible only for "new themes", it does not work perfectly for default theme.
+
+:appearances ref_button_help_bgcolor wims_ref_button_help_bgcolor
+Help button background color
+color
+
+You can choose the  background color of help link buttons here.
+This is possible only for "new themes", it does not work perfectly for default theme.
+
+:appearances ref_button_help_color wims_ref_button_help_color
+Help button color
+color
+
+You can choose the color of the text of most of help link buttons here.
+This is possible only for "new themes", it does not work perfectly for default theme.
+
+:appearances theme wims_theme
+Presentation theme
+choice
+$themelist
+You can choose the presentation theme here.
+<code class="tt">default</code> is the original theme.
+ The theme <code class="tt">standard</code> allows a more configurable css style and icon theme.
+
+:appearances theme_icon wims_theme_icon
+Icon theme
+choice
+$iconlist
+You can choose the icon presentation theme here.
+This is possible only for "new themes", so not for default theme.
+
+:appearances css wims_css
+Style sheet
+choice
+$csslist
+The style sheet affects almost all pages of the site.
+<p>
+The available stylesheet (css) files are in
+<code class="tt">public_html/html/css/$lang</code>.
+If you want more stylesheets, you can put new css files into this directory.
+</p>
+<p>If you choose css=<code class="tt">-theme-</code>, the stylesheet of the current theme
+will be used. No stylesheet will be loaded if css=<code class="tt">----</code>.
+</p>
+
+:resources rlimit_cpu
+Processing time allowance in seconds*
+int
+1,10000
+If a user request needs more time than this amount to process, the computation will be cut off and an error message will be sent back.
+It is useless to increase this number too much, because in normal
+circumstances few internet users will wait more than a few dozens of
+seconds for a page.
+<p>
+This is also a very important security measure to check denial-of-service attacks.
+</p>
+
+:appearances show_author wims_show_author
+Show author names in search results
+choice
+yes,no;$wims_name_yes,$wims_name_no
+Do you want the author names to show up behind each module in the search results?
+
+:appearances show_stat wims_show_stat
+Show site usage statistics
+choice
+yes,no;$wims_name_yes,$wims_name_no
+Log accounting must be activated before statistics can be shown.
+<p>To activate log accounting, you should run log/account.sh once every early
+morning, by putting it into crontab.</p>
+
+:housekeep mu_auto
+Module update method
+choice
+none,check,install,update,all
+Method of automatic daily module update.
+<dl>
+<dt><code class="tt">none</code>
+   <dd>Disable automatic module update.
+<dt><code class="tt">check</code>
+   <dd>Check what should be updated, and send a mail to webmaster (that
+   is, you). Do not install or update anything.
+<dt><code class="tt">install</code>
+   <dd>Install new modules, but not update existing modules.
+<dt><code class="tt">update</code>
+   <dd>Update existing modules, but not install new modules. <br />
+   This will let you benefit from bug fixes, as well as suffer from
+   newly introduced ones.
+<dt><code class="tt">all</code>
+   <dd>Install new modules and update existing ones.
+</dl>
+
+:misc site_description wims_site_description
+Site description
+free
+
+This description text is put in the header of every page rendered by the server.
+Its main purpose is to inform internet robots.
+<p>
+Modules will also have access to this text via the variable
+$$wims_site_description.
+</p>
+
+:misc site_keywords site_keywords wims_site_keywords
+Site keywords
+free
+
+This is a general keyword list which will be put to the header of every page
+rendered by the server, appended by the keyword list of the module. Its main
+purpose is to make the server better referenced by internet robots (hence
+search engines).
+<p>
+Modules will also have access to this text via the variable
+$$wims_site_keywords.
+</p>
+
+:appearances site_manager wims_site_manager
+Your email address*
+free
+
+This will be given as the email address of the webmaster. It is to this
+address that visitors and users of the server will report server problems.
+<p>
+You must change the default value $DF_site_manager to YOUR email address, if
+you do not read messages sent to $DF_site_manager.
+</p>
+<p>Modules will also have access to this text via the variable $$wims_site_manager.</p>
+
+:graphics texbasesize
+Default TeX font size step*
+choice
+0,1,2,3,4,5,6,7,8,9,10
+This is the defaut font size in the graphics pictures generated by TeX
+(that is, mathematics formulas).
+This default size should be set to meet the text
+font size of the browser of average visitors. The latter can change this
+size to better fit their situation, but this change is not saved from one
+session to another, except for virtual class users.
+<p>
+Do not adjust this font size only according to your own browser! Think of
+others who may have different font sizes in their browsers.
+</p>
+<p>Each step increases (decreases) 9% of the linear size of the font.</p>
+
+:resources threshold1
+First load threshold
+int
+10,500
+If the server load average (as reported by `w', `uptime' or `top') exceeds this value times 0.01, visitors outside a virtual class will be refused access.
+<p>The time allowance for each request will also be reduced if the server load approaches this value.</p>
+
+:resources threshold2
+Second load threshold
+int
+10,500
+If the server load average (as reported by `w', `uptime' or `top') exceeds this value times 0.01, visitors not from priority sites will be refused access.
+<p>This value should normally be larger than the first load threshold.</p>
+
+:security trusted_modules
+List of trusted modules
+free
+
+A trusted module may use administrative commands prohibited to usual modules.
+These commands allow the module to modify or view server informations
+usually hidden to the public. For security reasons, only administration
+modules and modules written
+by trusted authors can have access to these commands.
+<p>
+Administration modules (in the subdirectory adm/) and the home module are
+automatically trusted. If you want to add other modules to this list, add
+their addresses (the part after `module=' in the http request string) into
+this field, separated by white spaces.
+</p>
+<p>Avoid defining trusted modules unless you are really sure of what you are doing.</p>
+
+:class user_limit wims_user_limit
+Limit of the total number of users in all classes
+int
+10,100000
+Each time a new participant registration occurs, the sum of existing participants to all the virtual classes will be computed.
+If this sum exceeds the limit, registration will fail.
+
+:resources workfile_limit
+Length limit of data files
+int
+10000,100000000
+This limit applies to many files, including script files in modules
+as well as data file for participant works. So do not set it too small.
+
+:misc usecookie wims_usecookie
+Cookie for anonymous visitors
+choice
+yes,no;$wims_name_yes,$wims_name_no
+If you choose `yes', the server will send cookies to anonymous visitors, which helps tracking the user.
+<p>
+Note that cookies are not mandatory: even if
+the visitor disables cookies, he will still be able to work normally on WIMS.
+The main difference is that cookies can help them to keep their
+personal preferences longer, and can improve server performance by
+eliminating unnecessary session creations.
+</p>
+<p>The use of cookies for works in virtual classes is not affected by this parameter.</p>
+
+:log show_ip
+Show userIP to supervisor in class logfile
+choice
+yes,no;$wims_name_yes,$wims_name_no
+if no, supervisor cannot see IP in logfile.
+
+:software scilab_command
+Command name for Scilab
+free
+
+Scilab
+
+:auth cas_auth
+Hôte CAS
+free
+
+These values will be used as default in classes allowing CAS authentication.
+
+:auth php_auth
+Adresse d'un script PHP
+free
+
+These values will be used as default in classes allowing PHP script authentication.
+
+:auth ldap_auth
+LDAP host
+free
+
+These values will be used as default in classes allowing LDAP authentication.
+
+:auth ldap_port
+LDAP Port
+free
+
+These values will be used as default in classes allowing LDAP authentication.
+
+:auth ldap_version
+LDAP Version
+free
+
+These values will be used as default in classes allowing LDAP authentication.
+
+:auth ldap_base
+LDAP Base
+free
+
+These values will be used as default in classes allowing LDAP authentication.
+
+:auth ldap_branch
+LDAP Branch
+free
+
+These values will be used as default in classes allowing LDAP authentication.
+
+:auth ldap_uid
+LDAP identifier
+free
+
+It is the login used by the ldap. The participant must enter it as login.
+These values will be used as default in classes allowing LDAP authentication.
+
+:auth ldap_login
+WIMS login
+free
+
+The login will be used by wims in its internal structure (must be alphanumeric and with less 8 characters)
+These values will be used as default in classes allowing LDAP authentication.
+
+:auth ldap_email
+LDAP email
+free
+
+These values will be used as default in classes allowing LDAP registration.
+
+:auth ldap_photourl
+LDAP Photo
+free
+
+These values will be used as default in classes allowing LDAP registration.
+
+:auth ldap_regnum
+LDAP Inscription number
+free
+
+These values will be used as default in classes allowing LDAP registration.
+
+:appearances site_logo
+Address of an institutional logo
+free
+
+:appearances site_logolink
+External link on the institutional logo
+free
+
+:tech validator_address
+Address of a w3c-validator
+free
+
+For example, http://validator.w3.org/check
+
+:software octave_command
+Commande d'accès à Octave
+free
+
+GNU Octave is a high-level language, primarily intended for numerical computations.
+It provides a convenient command line interface for solving linear
+and nonlinear problems numerically,
+and for performing other numerical experiments using a language
+that is mostly compatible with Matlab.
+
+:software QRencode_command
+command for QRcode picture
+free
+
+generate QRcode.
+
+:tech classification_open
+Possibilité pour un enseignant de classifier les exercices OEF.
+choice
+no,yes;$wims_name_no,$wims_name_yes
+Si vous activez cette possibilité, il sera possible aux enseignants d'une
+classe de mettre des mots clés libres ou selon une taxonomie à des exercices afin
+d'améliorer les moteurs de recherche. Vous devez vous mettre en contact avec
+l'association WIMS EDU
+referencement@wimsedu.info
+pour que ces données puissent être ensuite exploitées.

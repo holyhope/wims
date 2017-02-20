@@ -1,0 +1,36 @@
+!set wims_module_log=error: $error
+
+!if $error iswordof already_exist baddocnumber not_supervisor insert_fail maxdoc toomuchsheet noexo
+  !goto $error
+!else
+ !msg $error
+ !exit
+!endif
+
+:already_exist=$error
+ Il documento che voi volete inserire è già contenuto nel corso.
+!exit
+
+:baddocnumber
+ Le informazioni inserite non corrispondono a alcuno documento disponibile nel corso.
+!exit
+
+:not_supervisor
+ Solo il docente può compiere questa azione.
+!exit
+
+:insert_fail
+state cercando di inserire un modulo per cui non avete l'autorizzazione.
+!exit
+
+:maxdoc
+Il numero massimo di documenti è $max_doc.
+!exit
+
+:toomuchsheet
+Il numero massimo di test di autovalutazione consentiti è $max_sheets. Non è possibile creare altri test di autovalutazione.
+ !exit
+
+:noexo
+Questo documento non contiene alcun esercizio.
+!exit

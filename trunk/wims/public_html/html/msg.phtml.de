@@ -1,0 +1,76 @@
+
+!if empty_data iswordof $wims_error
+ Sie haben eine unvollständige Antwort übergeben. Vervollständigen Sie bitte
+ Ihre Angaben, bevor Sie sie übergeben.
+ !exit
+!endif
+
+!if double_reply iswordof $wims_error
+ Sie haben für dieses Problem bereits eine Antwort übergeben, die analysiert
+ und benotet wurde.
+ Mehrfachantworten werden ignoriert. (Verwenden Sie nicht die Taste
+ 'Aktualisieren' Ihres Browsers, um Ihre Antworten erneut zu übergeben!)
+ !exit
+!endif
+
+!if bad_data iswordof $wims_error
+  I have failed to evaluate the values you have submitted. A typo?
+ !exit
+!endif
+
+!if no_ldap_parameter iswordof $wims_error
+Die mit einem Asterisk gekennzeichneten Felder müssen ausgefüllt werden. Wenden 
+Sie sich diesbezüglich an den Verwalter Ihres LDAP-Verzeichnisses
+!exit
+!endif
+
+!if bad_class iswordof $wims_error
+ Etrange, mais je trouve que votre classe n'est pas valide!
+ !exit
+!endif
+
+!if bad_day iswordof $wims_error or day_dontexist iswordof $wims_error
+ La date que vous avez saisie n'est pas valide.
+!exit
+!endif
+
+
+!if not_supervisor iswordof $wims_error
+ Désolé, ce module est accessible uniquement à l'enseignant d'une classe
+ virtuelle.
+ !exit
+!endif
+
+!if nouser iswordof $wims_error or bad_user iswordof $wims_error \
+  or bad_usercls iswordof $wims_error
+ Etrange, mais je ne trouve pas ce participant dans cette classe !
+!exit
+!endif
+
+!if insert_fail iswordof $wims_error
+ Le logiciel n'a pas pu insérer votre travail dans la classe. Veuillez
+ vérifier vos données.
+ !exit
+!endif
+
+!if bad_pass iswordof $wims_error
+ Mauvais mot de passe : il doit avoir entre 4 et 16 caractères, lettres et
+ chiffres uniquement. Et le mot de passe répété doit être identique au
+ premier ! Essayez encore.
+ !exit
+!endif
+
+!if bad_auth iswordof $wims_error
+ Echec d'authentification. Veuillez réessayer.
+ !exit
+!endif
+
+!if bad_login iswordof $wims_error
+ Your login name contains illegal characters.
+ Please use a word containing only digits or letters without accents, and 
+ without space between them.
+ !exit
+!endif
+
+Fehlertyp: $wims_error $wims_error_parm.
+

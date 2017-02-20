@@ -1,0 +1,22 @@
+!if $casecnt<3
+ 操作错误: 只剩下一种情况.
+ !href cmd=resume 继续
+.
+ !exit
+!endif
+
+你有以下的 $[$casecnt-1] 种情况待处理. 
+点击其中之一.
+<p><ul>
+!for i=1 to $casecnt-1
+ !set l=!line $i+1 of $caseline
+ <li>
+ !href cmd=reply&opt=gotocase&gotocase=$i 第 $i 中情况
+.
+ !insmath $l
+ !if $i=$activecase
+  (目前的情况)
+ !endif
+!next i
+</ul>
+

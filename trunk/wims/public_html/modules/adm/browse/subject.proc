@@ -1,0 +1,33 @@
+
+!if $parm=$empty
+ !exit
+!endif
+
+list=!lookup $parm in $dir
+!if $list=$empty
+  list=$parm
+!endif
+listcnt=!itemcnt $list
+name=!lookup $(parm[1]) in $dir_lang
+
+!! need to check this is not breaking anything
+!! !if $list=$empty
+!!  parm=
+!!  !exit
+!! !endif
+
+!exit
+!! use to have all subdomain ...
+!for d in $list
+ l=!lookup $d in $dir
+ list=!append item $l to $list
+!next d
+
+list=!sort nocase items $list
+!if $parm!=misc
+ list=!nonempty items $parm,$list
+!else
+ list=!nonempty items $list
+!endif
+list=!listuniq $list
+

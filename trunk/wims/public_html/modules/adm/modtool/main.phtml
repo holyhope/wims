@@ -1,0 +1,137 @@
+
+!read adm/css.phtml
+!if $(module_title_$modu_lang)!=
+   !set module_title=$(module_title_$modu_lang)
+!endif
+!read lang/names.phtml.$modu_lang
+!if $job iswordof edfile showfile diff restore
+  !set typetest=!module category devel/$auth_login/$mod
+  !if doc notitemof $typetest
+    !if .oef_ isin $(fname)_ or .cpp_ isin $(fname)_
+      !set edit_area_syntax=wimsoef
+    !else
+      !if .phtml_ isin $(fname)_ or .proc_ isin $(fname)_
+        !set edit_area_syntax=wims
+      !else
+        !set edit_area_syntax=wimsdata
+      !endif
+    !endif
+  !endif
+  !if $job iswordof diff or ($job=restore and $confirm=diffcheck)
+     !set edit_area_syntax=diff
+  !endif
+  !if $job=edfile
+    !read js/edit_area.phtml wims_deposit $edit_area_syntax
+  !else
+    !read js/edit_area.phtml wims_show $edit_area_syntax
+  !endif
+!endif
+!header
+
+!if $error!=$empty
+ <div class="wims_msg alert">
+ !read lang/msg.phtml.$modu_lang
+ </div>
+!endif
+!read $job.phtml
+
+!if $auth_login!=$empty and $job notwordof modname copy
+  !if $wims_theme=default
+!!ARIANE
+    !set wims_menu_items=!append line itemsep,0,$wims_name_navigation\
+modlist,1,cmd=reply&jobreq=modname\
+to $wims_menu_items
+  !else
+    !set wims_menu_items=!append line itemsep,0,$wims_name_navigation\
+to $wims_menu_items
+  !endif
+  !if $job iswordof index publish diff edfile showfile
+    !set wims_menu_items=!append line binfile,1,cmd=reply&jobreq=binfile\
+    modcontent,1,cmd=reply&jobreq=flist\
+to $wims_menu_items
+  !endif
+  !if $job iswordof flist and $modreq!=.new
+    !set wims_menu_items=!append line binfile,1,cmd=reply&jobreq=binfile\
+to $wims_menu_items
+  !endif
+  !if $job iswordof binfile
+    !set wims_menu_items=!append line otherfiles,1,cmd=reply&jobreq=flist\
+     to $wims_menu_items
+  !endif
+  !if $job iswordof flist edfile showfile binfile
+    !if .oef isin $fname
+      !set tmp_f=!replace internal src/ by in $fname
+      !set tmp_f=!replace internal .oef by in &exo=$tmp_f&cmd=new
+    !else
+      !reset tmp_f
+    !endif
+    !if $job notwordof publish prop diff
+     !set wims_menu_items=!append line itemsep,0, $wims_name_action\
+test,4,module=devel/$auth_login/$mod$tmp_f,test\
+ to $wims_menu_items
+    !endif
+    !set doctest=!module category devel/$auth_login/$mod
+    !if document isin $doctest
+      !set doclist=!defof doclist in wimshome/public_html/$devdir/$mod/var.proc
+      !set doclist=!words2items $doclist
+      !set test=!itemcnt $doclist
+      !if $test<=1
+        !set wims_menu_items=!append line docgestion,1,module=adm/doc&devdoc=$mod&doc=1&job=read\
+      to $wims_menu_items
+      !else
+        !for d_=1 to $test
+        !set wims_menu_items=!append line docgestion ($(doclist[$d_])),1,module=adm/doc&devdoc=$mod&doc=$(doclist[$d_])&job=read\
+     to $wims_menu_items
+        !next
+      !endif
+    !endif
+    !set wims_menu_items=!append line modsave,1,cmd=reply&jobreq=backup\
+  to $wims_menu_items
+    !if $job=showfile
+      !set wims_menu_items=!append line edfile,1,cmd=reply&jobreq=edfile\
+to $wims_menu_items
+    !endif
+    !if $job=edfile
+      !if $wims_theme=default
+!!ARIANE
+        !set wims_menu_items=!append line back3,1,cmd=reply&jobreq=flist\
+to $wims_menu_items
+      !endif
+    !endif
+  !endif
+!endif
+!if $job iswordof flist index showfile edfile
+    !if $wims_menu_items!=
+      !set wims_menu_items=!append line itemsep,0,$wims_name_whelp\
+to $wims_menu_items
+    !endif
+    !set wims_menu_items=!append line docoef,4,module=adm/createxo&modtoolhelp=yes,help\
+docslib,4, module=help/wimsdoc&subject=slib#slib,help\
+   docanswer,4,module=adm/createxo&modtoolhelp=yes&special_parm=reply,help\
+   doctec,4,module=help/wimsdoc.en,help\
+  to $wims_menu_items
+!endif
+
+!if $job iswordof flist index publish diff binfile
+  !set wims_menu_items=!append line itemsep,0,$name_publication\
+to $wims_menu_items
+  !if $job iswordof flist publish diff binfile
+    !set wims_menu_items=!append line properties,1,cmd=reply&jobreq=index\
+  to $wims_menu_items
+    !if $pubtit!=$empty
+      !set wims_menu_items=!append line checkdiff,1,cmd=reply&jobreq=diff\
+  ,01,local: $version / pub: $pubversion\
+    to $wims_menu_items
+    !endif
+  !endif
+  !if $job notwordof publish
+    !set wims_menu_items=!append line publish,1,cmd=reply&jobreq=publish\
+to $wims_menu_items
+  !endif
+!endif
+
+!tail
+
+!reset confirm target1 target2 target3 target4 vcheat \
+      i_translator i_translator_address, modifiers \
+      p_name p_email p_pass1 p_pass2 bin_job

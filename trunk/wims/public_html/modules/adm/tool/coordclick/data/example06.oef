@@ -1,0 +1,40 @@
+type=image
+textarea="data"
+
+:$name_description
+:%%%%%%%%
+:\title{$name_title}
+:\author{$wims_firstname,$wims_lastname}
+:\email{$wims_email}
+:\credits{}
+:$name_instruction
+\text{instruction=$name_instruction21}
+:$name_image
+\text{image=$wims_deposit}
+
+:$name_data
+$name_help_data
+\matrix{data=$data}
+
+:%%%%%%%%%%%%%%%%%%%%%%%%
+\text{cache=\image}
+\text{size= \data[1;]}
+\text{rubrique=wims(column 1 of \data[2..-1;])}
+\text{rubrique=wims(listuniq \rubrique)}
+\text{rubrique=randitem(\rubrique)}
+\matrix{coord = wims(select \data where column 1 = \rubrique)}
+\matrix{coord = \coord[;2,3]}
+\text{zone=wims(replace internal ; by , in  \coord)}
+
+\text{dessin=\imagedir/\image}
+\text{cache=draw(\size[1],\size[2]
+copy 0,0,-1,-1,-1,-1,\cache)}
+\text{cache = slib(oef/insfilename)}
+
+\statement{
+\instruction \rubrique.
+&lt;div class="wimscenter">
+\embed{r1,\size[1] x \size[2]}
+&lt;/div>
+}
+\answer{}{\imagedir/\image;bound,\cache,\zone}{type=jsxgraphcurve}{option= precision=12 color1=blue color2=green}

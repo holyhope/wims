@@ -1,0 +1,36 @@
+#! /bin/sh
+##Script to use some programs for a bioinfo module.
+
+echo "$wims_exec_parm" > $tmp_dir/test
+
+[ -s $tmp_dir/test ] || exit
+
+ulimit -f 64
+a="$wims_exec_parm"
+
+SUCCES=0
+grep -q "C_etat_civil" $tmp_dir/test
+if [ $? -eq $SUCCES ]
+then
+   ./bin/wrap..exec ../other/bin/C_etat_civil $a
+fi
+SUCCES=0
+grep -q "test_cond" $tmp_dir/test
+if [ $? -eq $SUCCES ]
+then
+   ./bin/wrap..exec ../other/bin/test_cond $a
+fi
+SUCCES=0
+grep -q "tab1d" $tmp_dir/test
+if [ $? -eq $SUCCES ]
+then
+   ./bin/wrap..exec ../other/bin/tab1d $a
+fi
+
+SUCCES=0
+grep -q "tab2d" $tmp_dir/test
+if [ $? -eq $SUCCES ]
+then
+   ./bin/wrap..exec ../other/bin/tab2d $a
+fi
+

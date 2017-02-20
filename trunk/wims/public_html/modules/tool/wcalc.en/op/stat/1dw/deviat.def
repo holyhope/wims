@@ -1,0 +1,31 @@
+!goto $wims_read_parm
+
+:def
+title=Weighted standard deviation
+synonyme=weighted deviation, deviation weighted, weighted data deviation, standard deviation weighted
+input=data2d
+!exit
+
+:proc
+
+pari_header=dmat=Mat([$fml2]);w=sum(x=1,$cnt,dmat[x,2]);\
+	mean=(dmat[,1]~*dmat[,2])/w;\
+	dev=sqrt(sum(x=1,$cnt,dmat[x,2]*(dmat[x,1]-mean)^2)/(w));
+result=!exec pari print(dev);\
+	print(w);
+!distribute lines $result into result, totweight
+
+!exit
+
+:output
+
+<center>
+Weighted deviation =
+!htmlmath $result
+</center> <p>
+Data: $cnt weighted numbers { $fml3 } (total weight = $totweight).
+<p>
+(Deviation of the whole population.)
+<p>
+!exit
+

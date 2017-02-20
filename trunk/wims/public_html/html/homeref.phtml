@@ -1,0 +1,238 @@
+!!************** homeref.phtml  ****************
+!! This File creates 2 sets of links, to put in the left menu or tail menu of Wims.
+!! 1st set contains up to 6 links
+!! 2nd set contains informations about author(s), and mail links to them.
+!! **********************************************
+<!-- begin of html/homeref.phtml -->
+
+!if yes isin $wims_lightpopup
+ !if $wims_lightpopup_option=$empty
+  !set 1_=!append line itemsep,0, $wims_name_devwims to $1_
+  !set 1_=!append line itemsep,0, $wims_name_Author: $module_author to $1_
+  !set wims_rm_2=$1_
+  !goto rmend
+ !else
+  !if about isitemof $wims_lightpopup_option
+   !set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
+  !endif
+  !set wims_rm_1=$1_
+  !goto rmend
+ !endif
+!endif
+
+!if robot isin $session or _check isin $session
+ !if robot isin $session and wims.unice.fr notin $httpd_SERVER_NAME\
+	and $cmd iswordof new intro
+  !set wims_c1=!char 1 of $module
+  !if $wims_c1 isin ABCDEFGHIJKLMNOPQRSTUVWXYZ or ../tool isin ../$module
+   !set wims_md=!translate . to , in $module
+   !set wims_md=!item -1 of $wims_md
+   !set wims_mdcnt=!charcnt $wims_md
+   !if $wims_mdcnt=2
+    !set wims_ff=!translate / to ~ in $module
+    <small><a href="http://wims.unice.fr/wims/$(wims_md)_$wims_ff.html">The most recent version</a></small><br/>
+   !endif
+  !endif
+ !endif
+ !changeto robotref.phtml
+!endif
+
+!if $wims_mode=popup
+ <div class="wimstail">
+ 	<hr/>
+ 	<table border="0" width="100%">
+ 		<tr><td align="left">
+ 		<small>
+ 		 <a target="wims" href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME">WIMS @ $httpd_HTTP_HOST</a>
+ 		</small>
+ 		</td></tr>
+ 	</table>
+ </div>
+ !exit
+!endif
+
+!if _test isin $session and $wims_hacked_variables!=$empty
+ <p><span class="wims_warning">WIMS WARNING</span>. The following variables of your module could be hacked
+ by students using manually modified http addresses! You might want to put more
+ strict permissions to them in var.def, in order to build a secure exercise module.
+ </p>
+ <pre>$wims_hacked_variables</pre>
+!endif
+
+!read name.phtml.$module_language
+!read themes/$wims_theme/lang/name.phtml.$lang
+!default wims_homeref_bgcolor=$wims_ref_bgcolor
+
+!if $wims_rm_1=no
+ !reset wims_rm_1
+ !goto local
+!endif
+!if $wims_rm_1!=$empty
+ !goto rm2
+!endif
+!reset 1_
+
+!!********* Link #1 : "Close Window" or "Home" (Not Shown if Embedded)
+!if _ isin $wims_subsession
+ !set 1_=!append line back,3,window.close() to $1_
+!else
+ !if $window != embeded
+  !!set 1_=!append line home,1,session=$wims_session.1 to $1_
+ !endif
+!endif
+
+!!********* Link #2 : "Sheet"
+!if $wims_sheet>0 or P isin $wims_sheet
+ !if $wims_sequence>0
+  !set tmp_=sheet,1,module=adm/sheet&sh=$wims_sheet&seq=$wims_sequence
+ !else
+  !set tmp_=sheet,1,module=adm/sheet&sh=$wims_sheet&
+ !endif
+ !set 1_=!append line $tmp_ to $1_
+ !let wims_menu_items=!append line $tmp_ to $wims_menu_items
+ !if $wims_exo>1
+  !let wims_menu_items=!append line previousseries,1,module=home&directworksheet=$wims_sheet.$[$wims_exo-1] to $wims_menu_items
+ !endif
+ !if $wims_exo<$wims_sheetmax
+  !let wims_menu_items=!append line nextseries,1,module=home&directworksheet=$wims_sheet.$[$wims_exo+1] to $wims_menu_items
+ !endif
+!endif
+
+!if ($wims_user=$empty or $wims_developer!=$empty or $wims_user=supervisor)\
+  and $exoprev$exonext != $empty and $wims_sheet=$empty
+   !set wims_menu_items=!append line itemsep,0\
+prev,1,cmd=new&module=$module&exo=$exoprev&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4 \
+     to $wims_menu_items
+   !set wims_menu_items=!append line next,1,cmd=new&module=$module&exo=$exonext&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4 \
+to $wims_menu_items
+  !reset exoprev exonext
+!endif
+
+!!********* Link #3 : "Resume"
+!if $cmd=help or $cmd=hint
+ !set 1_=!append line resume,1,cmd=resume to $1_
+!endif
+
+!!********* Link #4 : "Introduction" (Not Shown if Embedded)
+!if $window != embeded and $module_has_intro=yes and $cmd notwordof intro help
+ !set 1_=!append line intro,1,module=$module&cmd=intro&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3 to $1_
+!endif
+
+!if _ notin $wims_session and adm/ notin $module and home notin $module\
+	and $cmd notwordof help ref
+ !!!set 1_=!append line reference,4,module=$module&cmd=ref&special_parm=$cmd,ref to $1_
+!endif
+
+!!********* Link #5 : "Help"
+!if $module_help!=$empty and $module_has_help=yes and $cmd notwordof intro help
+ !if $module_help=popup
+  !set 1_=!append line help,4,module=$module&cmd=help&special_parm=$wims_help_parm,mhelp to $1_
+ !else
+  !set 1_=!append line help,1,module=$module&cmd=help&special_parm=$wims_help_parm to $1_
+ !endif
+!endif
+
+!!********* Link #6 : "About"
+!if $module_has_about=yes and $cmd notwordof help
+  !!set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
+!endif
+
+!set wims_rm_1=$1_
+:local
+!reset 1_
+!if $wims_menu_items!=$empty
+  !set 1_=!append line itemsep,0,\
+$wims_menu_items to $1_
+!endif
+!set wims_rm_0=$1_
+!!wims_menu_tabs not used - to delete
+!set wims_rm_3=!append line $wims_menu_tabs to $wims_rm_3
+:rm2
+!if $wims_rm_2!=$empty
+ !goto rmend
+!endif
+!reset 2_
+
+!!********* Link #8 : "Author(s)"
+
+!if $module_author!=$empty and (@ isin $module_address or $module_address=$empty)
+ !read namewriting.phtml $module_author
+ !set module_address=!replace internal ; by , in $module_address
+ !set wims_homeref_author_num=$script_cnt
+ !if $wims_homeref_author_num>1
+  !set 3_=$wims_name_authors:
+ !else
+  !set 3_=$wims_name_author:
+ !endif
+ !set 4_=
+ !for ad=1 to $wims_homeref_author_num
+   !set adreplace=$(module_address[$ad])
+   !if $adreplace=$empty
+      !set adreplace=$module_maintainer_address
+   !endif
+   !if $adreplace!= and @ isin $adreplace
+!!!#### xiao treatment - should disappear when modules are republished
+     !if xiao isin $adreplace
+       !set adreplace=qualite@wimsedu.info
+     !endif
+!!!####
+     !set 4__=!mailurl $adreplace $(script_out[$ad])\
+WIMS $module_title [$module_language]
+   !else
+     !set 4__=$(script_out[$ad])
+   !endif
+    !set 4_=!append item $4__ to $4_
+  !next
+  !set 2_=!append line author,0,$3_ $4_ to $2_
+!endif
+
+!!********* Link #9 : "Translator(s)"
+!set mod_transl=$(module_translator_$lang)
+!if $module_transl!=$empty
+   !set module_translator=$mod_transl
+   !set module_translator_address=$(module_translator_address_$lang)
+!endif
+
+!if $module_translator!=$empty and $module_translator_address!=$empty
+ !read namewriting.phtml $module_translator
+ !set module_translator_address=!replace internal ; by , in $module_translator_address
+ !set module_translator=$(script_out[1])
+ !set wims_homeref_translator_num=$script_cnt
+ !for ad=1 to $wims_homeref_translator_num
+   !set 3_=!mailurl $(module_translator_address[$ad]) $(module_translator[$ad])\
+WIMS $module_title [$module_language]
+   !set 2_=!append line trans,0,$wims_name_translatedby $3_ to $2_
+ !next
+!endif
+
+!!********* Link #10 : "Version & Copyright"
+!if $module_version$module_copyright!=$empty
+ !set 2_=!append line version,0,$wims_name_Version $module_version, $module_copyright to $2_
+!endif
+
+!!********* Link #11 : "Modify"
+!if $wims_developer!=$empty and COPYING isin $module_copyright
+ !set V_=!char 1 of $module
+ !set M_=!translate internal / to , in $module
+ !set M_=!item 1 of $M_
+ !if $V_ isin ABCDEFGHIJKLMNOPQRTSUVWXYZ or $M_ iswordof local contrib tool
+  !set  wims_rm_0=!append line modify,1,module=adm/modtool&original=$module to $wims_rm_0
+ !endif
+!endif
+
+!!********* Link #12 : "Server Time"
+!if $wims_ismanager>=2
+ !set 2_=!append line time,0,$wims_name_server_time: $wims_now to $2_
+!endif
+
+!set wims_rm_2=$2_
+
+:rmend
+!set wims_homeref_n0=!linecnt $wims_rm_0
+!set wims_homeref_n1=!linecnt $wims_rm_1
+!set wims_homeref_n2=!linecnt $wims_rm_2
+!!!set wims_homeref_n3=!linecnt $wims_rm_3
+
+<!-- END of html/homeref.phtml -->
+!read themes.phtml tail
+!robottrap

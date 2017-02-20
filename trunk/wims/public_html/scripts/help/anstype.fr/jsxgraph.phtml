@@ -1,0 +1,82 @@
+<b>Géométrie avec jsxgraph</b>
+(nom : <span class="tt wims_code_words">jsxgraph</span>).
+<br/>
+:option:precision=" "
+Une applet de géométrie dynamique jsxgraph est affichée. L'utilisateur
+peut déplacer des points. Les nouvelles coordonnées des points sont analysées.
+
+Ce type de réponse est technique car le développeur doit connaître et utiliser le langage
+javascript de jsxgraph afin de dessiner la figure.
+<p>Il est obligatoire d'utiliser la commande <span class="tt wims_code_words">\embed</span>
+pour insérer le champ de réponse dans le texte :
+</p>
+<pre>
+\embed{reply1,option}
+</pre>
+Description de <span class="tt wims_code_words">option</span> :
+<ul><li>
+La première ligne est la taille de l'applet en pixels (Largeur x Hauteur).
+</li><li>
+La deuxième ligne est le mot permettant de définir le "board" de JSXGraph
+(dans l'exemple suivant, c'est <span class="tt">jxgbox</span>). Ce mot doit se retrouver dans le nom
+des variables dans ce qui suit.
+</li><li>
+La troisième ligne est le script permettant l'affichage de l'applet. Les points qui doivent
+être modifiés par l'utilisateur doivent être définis sous la forme
+<pre>
+jxgbox_rep1 = brd.create('point',jxgbox_var1 );
+</pre>
+</li><li>
+La quatrième ligne donne les positions initiales des variables
+<span class="tt">jxgbox_var1</span> (séparées par des
+points virgules).
+</li></ul>
+La bonne réponse est formée des positions <span class="tt">x,y</span> des points
+<span class="tt">jxgbox_var1</span>, ... séparées
+par des points virgules. Si un de ces points doit rester une réponse libre,
+il suffit de la remplacer par la valeur d'une variable non encore définie
+(dans l'exemple suivant, <span class="tt">\c</span>). Il est alors possible de
+compléter l'analyse par des conditions supplémentaires en utilisant la
+commande <span class="tt wims_code_words">\condition{}{}</span>.
+<p>
+On peut aussi permettre de modifier la position d'un curseur. Dans ce cas,
+la réponse est simplement un nombre. Dans le cas d'une réponse libre, il est nécessaire
+de préciser qu'il ne s'agit pas d'un point mais d'un nombre en faisant suivre
+la variable du nombre de réels attendus (séparée par
+<span class="tt wims_code_words">:</span>), par exemple,
+</p>
+<pre>
+\answer{}{\rep1:1;\rep2:2}{type=jsxgraph}
+</pre>
+Par défaut, le nombre est 2.
+
+<p>
+Les options possibles sont pour l'instant la précision (absolue).
+</p><p>
+<textarea id="wims_show" cols="100" rows="30" name="wims_show" readonly="readonly">
+\title{Exemple de jsxgraph}
+\precision{100}
+\text{a=randint(1..5), randint(1..5)}
+\text{b=randint(1..5), randint(1..5)}
+\text{script= var brd = JXG.JSXGraph.initBoard('jxgbox', {
+ axis:true,boundingbox: [-6, 6, 6, -6], grid:true});
+jxgbox_rep1 = brd.create('point',jxgbox_var1 );
+jxgbox_rep2 = brd.create('point',jxgbox_var2 );
+jxgbox_rep3 = brd.create('point',jxgbox_var3 )}
+
+\statement{Mettre le point A en (\a). Mettre le point B en (\b).
+Mettre le point C sur la droite AB.
+ \embed{r1,400x400
+jxgbox brd
+\script
+jxgbox_var1=[0,0] ; jxgbox_var2=[1,0]; jxgbox_var3=[0,1]
+  }
+}
+
+\answer{}{\a;\b;\c}{type=jsxgraph}{option=precision=10}
+
+\matrix{rep=\reply1}
+\real{test=abs((\rep[3;1]-\a[1])*(\b[2]-\a[2]) - (\rep[3;2]-\a[2])*(\b[1]-\a[1]))}
+\condition{C est sur AB}{ \test < 0.1}
+</textarea>
+</p>

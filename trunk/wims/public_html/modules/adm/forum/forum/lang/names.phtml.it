@@ -1,0 +1,47 @@
+!set lang_exists=yes
+
+!distribute line Indice dei forum\
+	Login come owner\
+	Login come utente\
+	Registrazione\
+	into n_list,n_authowner,n_authuser,n_register
+
+!distribute line visitatore\
+  utente\
+  owner\
+  registrazione\
+  Su questo sito non ci sono forum di discussione.\
+  Password di gestione\
+into name_visitor,name_user,name_owner,name_register,name_noforum,\
+ name_pass_owner
+
+!set name_number_message=!nosubst Su questo sito sono presenti $ccnt forum di discussione.\
+Selezionare quello di interesse nella tabella seguente.
+
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
+
+!exit
+
+:create
+Selezionare il modo di accesso al forum o procedere alla <span class="wims_button disabled">$name_register</span>
+seguendo il link apposito. È anche possibile
+!href module=adm/forum/regforum creare 
+ un nuovo forum di discussione.
+
+!exit
+
+:enter
+Per accedere a <span class="wims_emph">$mb_title</span>
+come <em>utente registrato</em>, inserire il proprio 
+login e la propria password.
+
+!exit
+
+:owner
+
+Per accedere a <span class="wims_emph">$mb_title</span> come 
+`<em>owner</em>', inserire la password appropriata.
+
+!exit

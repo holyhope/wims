@@ -1,0 +1,25 @@
+!for ld_ in cas_auth,php_auth,connections,ldap_auth,ldap_port,ldap_version,ldap_base,ldap_branch,ldap_uid,ldap_login,\
+   ldap_regnum,ldap_photourl,ldap_email
+  !default up_$ld_=!defof $ld_ in wimshome/log/wims.conf
+!next
+
+!if  ldap isin $up_authidp and ($up_ldap_auth issametext  or $up_ldap_branch issametext or $up_ldap_base issametext )
+  error=no_ldap_parameter
+  !exit
+!endif
+
+!setdef !set class_authidp=$up_authidp\
+!set class_cas_auth=$up_cas_auth\
+!set class_php_auth=$up_php_auth\
+!set class_connections=$up_connections\
+!set class_ldap_auth=$up_ldap_auth\
+!set class_ldap_port=$up_ldap_port\
+!set class_ldap_version=$up_ldap_version\
+!set class_ldap_base=$up_ldap_base\
+!set class_ldap_branch=$up_ldap_branch\
+!set class_ldap_uid=$up_ldap_uid\
+!set class_ldap_login=$up_ldap_login\
+!set class_ldap_photourl=$up_ldap_photourl\
+!set class_ldap_regnum=$up_ldap_regnum\
+!set class_ldap_email=$up_ldap_email\
+in wimshome/log/classes/$wims_class/.def

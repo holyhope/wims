@@ -1,0 +1,48 @@
+!set wims_module_log=ERROR $error
+
+!if $error=bad_password
+ 密码不被认可. 请过几秒后再试一次.
+ <form action="#" name="chrono">
+ <span class="wims_warning">$wims_name_warning</span>! 不到 5 秒钟内输入的任何密码均不予考虑!
+ <input size="1" name="clock" /> </form>
+ !exit
+!endif
+
+!if $error=in_exam
+ 你在参加考试时不能改变班级.
+ !exit
+!endif
+
+!if $error=recent_rafale
+ 由于不正常的活动, 此帐号将闭锁 10 分钟.
+ !exit
+!endif
+
+!if $error=no_cgu
+ 你还没有接受本服务器的使用条件.
+ 只有接受了此条件后才能做身份认证.
+ !form reply
+  !formcheckbox agreecgu list yes prompt $name_acceptcgu
+  [
+  !href cmd=help $name_seecgu
+  ]
+  !let save_logincgu=$auth_user
+  <div class="wimscenter wimsform">
+  <input type="submit" value="$wims_name_tosave" />
+  </div>
+
+!formend
+ !exit
+!endif
+
+!if $error=bad_loginmail
+ 不认识你的身份或者你在注册时没有规定电子地址.
+ <br />
+ 请你的教师为你提供一个新密码.
+ <form action="#" name="chrono">
+ <span class="wims_warning">$wims_name_warning</span> ! 这个重新取回密码的过程将在5秒后停止 &nbsp;!
+ <input size=1 name="clock" /> </form>
+ !exit
+!endif
+
+!msg $error

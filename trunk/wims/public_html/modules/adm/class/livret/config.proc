@@ -1,0 +1,57 @@
+
+!if $cf_abandon!=$empty
+ !reset cf_abandon
+ job=userlist
+ !read userlist.proc
+ !exit
+!endif
+
+!if $cf_set!=$empty
+ !reset cf_set
+ cf_title=!trim $cf_title
+ !if $cf_title=$empty
+  cf_title=$wims_name_livret
+ !endif
+ cf_description=!singlespace $cf_description
+ cf_title=!singlespace $cf_title
+ cf_title=!char 1 to 50 of $cf_title
+ cf_description=!char 1 to 1024 of $cf_description
+ !readproc proc/legend.proc save
+ cf_nonactivesheet=!nospace $cf_nonactivesheet
+ cf_nonactivesheet=!listintersect $cf_nonactivesheet and $asheets
+ !bound cf_scoreoption within class,livret default $livret_scoreoption
+ !bound cf_show2user within yes,no default $class_showlivret
+ !bound cf_showempty within yes,no default $livret_showempty
+ cf_scoreview=$[rint($cf_scoreview)]
+ !bound cf_scoreview between -1 and 4 default $livret_scoreview
+ !bound cf_minac between 0 and 10 default 9
+ !setdef !set livret_title=$cf_title\
+!set livret_description=$cf_description\
+!set livret_nonactivesheet=$cf_nonactivesheet\
+!set livret_scoreview=$cf_scoreview\
+!set livret_scorecolor=$cf_scorecolor1,$cf_scorecolor2,$cf_scorecolor3,$cf_scorecolor4,$cf_scorecolor5,$cf_scorecolor6,$cf_scorecolor7,$cf_scorecolor8,$cf_scorecolor9,$cf_scorecolor10,$cf_scorecolor11\
+!set livret_scoreoption=$cf_scoreoption\
+!set livret_minac=$cf_minac\
+!set livret_showempty=$cf_showempty\
+!set livret_legende2=$cf_legend2\
+!set livret_legende3=$cf_legend3\
+!set livret_legende4=$cf_legend4\
+!set livret_legende5=$cf_legend5\
+!set livret_legende6=$cf_legend6\
+!set livret_legende7=$cf_legend7\
+!set livret_legende8=$cf_legend8\
+!set livret_legende9=$cf_legend9\
+!set livret_legende10=$cf_legend10\
+!set livret_legende11=$cf_legend11 in $livret_dir/.def
+ !setdef !set class_showlivret=$cf_show2user in wimshome/log/classes/$wims_class/.def
+ !readdef $livret_dir/.def
+ !set class_showlivret=$cf_show2user
+!else
+ !for k in title,description,nonactivesheet,minacquis,scoreoption,scoreview,\
+   scorecolor1,scorecolor2,scorecolor3,scorecolor4,scorecolor5,scorecolor6,scorecolor7,\
+   scorecolor8,scorecolor9,scorecolor10,scorecolor11,legend1,legend2,legend3,legend4,legend5,legend6,legend7,legend8,legend9,legend10
+  cf_$k=$(livret_$k)
+ !next k
+!endif
+
+

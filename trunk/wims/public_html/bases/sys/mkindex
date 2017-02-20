@@ -1,0 +1,51 @@
+#! /bin/sh
+
+## cleaning (erase xxx.src file if xxx.src_orig exists)
+for i in src/*.src_orig
+do
+  j=`basename $i .src_orig`
+  rm -f $j
+done
+
+## Sort and copy each files of src/*.src to upper directory after
+## adding content of table_domain to words.*.src.  Use tmp names during this job.
+for i in src/*.src
+do
+ cp $i $i.tmp
+done
+for i in src/words.*.src
+do
+ cat src/table_domain >> $i.tmp
+done
+
+for i in src/*.tmp
+do
+ ##j=`echo $i | sed 's!^src/!!g;s/\.src//g'`
+ j=`basename $i .src.tmp`
+ if [ ! -e $j ] || [ $i -nt $j ]; then
+  ../../../bin/dicsort $i 1>/dev/null
+  mv $i.sorted $j
+  #  cp $j $i
+ fi
+done
+rm src/*.tmp
+
+## make list of domains
+perl ./mkdomain.pl  1>/dev/null
+## sort as wims needs ...
+
+for i in domain/domaindic.*.tmp
+do
+ j=`basename $i .tmp`
+ if [ ! -e $j ] || [ $i -nt $j ]; then
+  ../../../bin/dicsort $i 1>/dev/null
+  mv $i.sorted $j
+ fi
+done
+
+## use the files generated at the previous script
+mkdir -p tmp
+perl ./mkwgrp.pl 1>/dev/null
+
+## create class index
+perl ./modindclass.pl

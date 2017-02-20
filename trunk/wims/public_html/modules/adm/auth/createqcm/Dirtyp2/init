@@ -1,0 +1,104 @@
+!!! fichier d'initialisation de l'exo de type 2 !!!
+
+!if $titre=$empty 
+  auteur=Joachim YAMEOGO
+  imel=yameogo@math.unice.fr
+  titre=test
+  enonceR=!record 2 of comsDir/enonces
+!endif
+
+rfmat=$foncsrepList
+obsList=
+foncsList=
+
+!if $obsrecord!=$empty
+  obsnb=!linecnt $obsrecord
+  !for i=1 to $obsnb
+    obsList=!append line $(obsrecord[$i;]), to $obsList
+  !next i
+   obsList=!replace line number $obsnb by $(obsrecord[$obsnb;]) in $obsList
+!endif
+
+!if $foncsrecord!=$empty
+  foncsnb=!linecnt $foncsrecord
+  !for i=1 to $foncsnb
+    fonc=!trim $(foncsrecord[$i;])
+    foncsList=!append line $fonc, to $foncsList
+  !next i
+  fonc=!char 1 to -2 of $(foncsList[$foncsnb;])
+  foncsList=!replace line number $foncsnb by $fonc in $foncsList
+!endif
+
+!if $demo=oui
+  obsList=!record 1 of demosDir/demo2data
+  foncsList=!record 2 of demosDir/demo2data
+  obsnb=!itemcnt $obsList
+  foncsnb=!itemcnt $foncsList
+  foncstypList=!record 3 of demosDir/demo2data
+  foncsrepList=!record 4 of demosDir/demo2data
+  enonceR=!record 5 of demosDir/demo2data
+  indicList_fonc=!record 6 of demosDir/demo2data
+!endif
+
+chronobs=0
+chronfoncs=0
+
+af1=nombre&nbsp;entier
+af2=nombre&nbsp;réel
+af3=nombre&nbsp;complexe
+af4=texte
+af5=ensemble&nbsp;fini
+af6=ensemble&nbsp;formel
+af7=vecteur
+af8=fonction
+af9=expression&nbsp;algébrique
+af10=expression&nbsp;formelle
+af11=matrice
+
+typ1=default
+typ2=default
+typ3=default
+typ4=default
+typ5=set
+typ6=fset
+typ7=vector
+typ8=function
+typ9=algexp
+typ10=formal
+typ11=matrix
+
+typafList=
+ftypList=
+!for i=1 to 11
+  typafList=!append line $(af$(i)) to $typafList
+  ftypList=!append line $(typ$(i)) to $ftypList
+!next i
+
+
+Nbtyp=11
+
+etapesnb=7
+
+typvarcnt=11
+
+
+!if $indicList_fonc!=$empty
+  !for i=1 to $obsnb
+    !for j=1 to $foncsnb
+      hlp=!trim $(indicList_fonc[$i;$j])
+      hlp=!char 2 of $hlp
+      !if $hlp=0
+        hlp=!replace item number $j by (0,$ $) in $(indicList_fonc[$i;])
+	indicList_fonc=!replace line number $i by $hlp in $indicList_fonc
+      !endif
+    !next j
+    Lnb=!itemcnt $(indicList_fonc[$i;])
+    !if $Lnb<$foncsnb
+      !for j=1 to $[$foncsnb-$Lnb]
+        hlp=!append item (0,$ $) to $(indicList_fonc[$i;])
+      !next j
+      indicList_fonc=!replace line number $i by $hlp in $indicList_fonc
+    !endif
+  !next i
+!endif
+

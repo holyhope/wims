@@ -1,0 +1,139 @@
+type=datalist
+textarea="data"
+
+:Classificare tutte le parole di una frase secondo un attributo (per esempio la natura).
+Questo esercizio differisce dagli altri esercizi di classificazione
+nel modo in cui i dati sono inseriti, in questo caso occorre inserire
+una frase e non semplicemente una lista di parole.
+<p>
+Autore del modello: Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+</p>
+:%%%%%%%%%%%%%%%%%      ATTENZIONE      %%%%%%%%%%%%%%%%%%%%
+
+Se si rimuovono le indicazioni del modulo modelli (le righe che
+cominciano con ':') è necessario rimuovere tutta questa parte
+introduttiva del file. Altrimenti Createxo potrebbe non accettare il
+codice dell'esercizio.
+
+:%%%%%%%% Parametri che possono essere ridefiniti %%%%%%%%%%%%%%%%%
+:\title{Classifica le parole di una frase}
+:\author{Bernadette, Perrin-Riou}
+:\email{}
+:\credits{}
+:Consegna
+\text{instruction=Classificare le parole secondo la loro natura o le loro proprietà}
+
+:Nome del file
+Compilare solo se si desidera inserire questo esercizio in un modulo OEF
+in Modtool e utilizzare un file di dati di tipo
+<pre>
+ V,N,Art,Adj,Prep
+ Verbe,Nom,Article,Adjectif,Préposition
+ &#58;Le|Art,petit|Adj,chat|N,boit|V,du|Art,lait.|N
+ &#58;Le|Art,chat|N,boit|V,du|Art,lait|N,dans|Prep,un|Art,bol.|N
+</pre>
+In questo caso le righe seguenti non saranno prese in considerazione.
+Altrimenti compilare anche tutto il resto.
+
+\text{file=}
+
+:Natura degli oggetti
+\text{nom_nature=Verbo,Nome,Articolo,Aggettivo,Preposizione}
+
+:Natura delle parole (codice)
+C'est ce code qui sera utilisé dans les données principales.
+\text{Nature=V,N,Art,Adj,Prep}
+
+:Dati principali
+Una frase per riga: le parole (o gruppi di parole) della frase devono
+essere separati da virgole. Dopo ogni parola, separata dalla parola
+tramite una barra verticale <span class="tt">|</span>, deve essere scritta la natura
+o l'attributo della parola, utilizzando le parole chiave inserite nel
+campo <span class="tt">Natura delle parole (codice)</span>. Se la parola (o il gruppo
+di parole) non è seguita dalla barra verticale e da un attributo
+allora non sarà mostrata dalle opzioni da cui scegliere nella consegna
+dell'esercizio.
+
+\text{data=Il|Art,piccolo|Adj,gatto|N,beve|V,il|Art,latte|N
+Il|Art,gatto|N,beve|V,il|Art,latte|N,in|Prep,una|Art,ciotola|N
+Il,gatto|N,beve|V,del,latte|N,in|Prep,una,ciotola|N}
+
+:Layout casuale inseribile tra parentesi graffe
+$embraced_randitem
+\text{accolade=item(1,1 si,
+2 no)}
+
+:%%%%%%%%%%%%%% Nulla da modificare fino all'enunciato %%%%%%%%%%%%%%%%
+\css{<style type="text/css">
+   .question {background-color: #FFFFCC;margin: 2% 2%;padding: 1%;}
+   .reponse {background-color: #FFCC99;color: black;margin: 2% 2%;padding: 0%;}
+   .oefstatement{}
+   ol li {list-style: upper-alpha; }
+ </style>}
+ ##s'il y a un nom de fichier dans file, utilise le fichier, sinon utilise data
+\if{\file notsametext}{
+  \text{data=wims(randrecord \file)}
+  \text{Nature=wims(record 0 of \file)}
+  \text{nom_nature=row(2,\Nature)}
+  \text{Nature=row(1,\Nature)}
+  }{
+  \text{data=randomrow(\data)}
+  }
+\text{accolade=wims(word 1 of \accolade)}
+
+\text{data=\accolade=1 ? wims(embraced randitem \data)}
+\integer{cnt=items(\data)}
+\integer{Nat_cnt=items(\Nature)}
+\text{phrase=}
+\text{nature=}
+\text{tableau=wims(makelist videxxx for x = 1 to \Nat_cnt)}
+\text{tableau=wims(items2lines \tableau)}
+\for{u=1 to \cnt}{
+  \text{w=\data[\u]}
+  \text{w=wims(replace internal | by , in \w)}
+  \text{phrase=\phrase \w[1]}
+  \for{h = 1 to \Nat_cnt}{
+    \if{\w[2] issametext \Nature[\h]}{
+       \text{ligne=row(\h,\tableau)}
+       \text{ligne=videxxx isitemof \ligne ? \w[1]:\ligne,\w[1]}
+       \text{tableau=wims(replace line number \h by \ligne in \tableau)}
+       \text{nature=wims(append item \w[2] to \nature)}
+    }
+   }
+}
+\matrix{tableau=\tableau}
+\text{nature1=wims(listuniq \nature)}
+\text{nature=}
+\for{ a in \Nature}{
+   \text{nature=\a isin \nature1 ? wims(append item \a to \nature)}
+}
+\text{question=}
+\text{nom_question=}
+\text{Step=}
+\for{a in \nature}{
+   \text{qu=position(\a,\Nature)}
+   \text{Step=wims(append item r \qu to \Step)}
+   \text{question=wims(append item \qu to \question)}
+   \text{nom_question=wims(append item \nom_nature[\qu] to \nom_question)}
+}
+\integer{question_cnt=items(\question)}
+\steps{\Step}
+
+\statement{\instruction
+<div class="question">\phrase.</div>
+<table class="wimsnoborder">
+\for{ s = 1 to \question_cnt}{
+  <tr><th>\nom_question[\s]</th><td>\embed{\Step[\s],80 x 30 x \cnt}</td></tr>
+}
+</table>
+}
+\answer{\nom_question[1]}{\tableau[1;]}{type=dragfill}{option=noorder}
+\answer{\nom_question[2]}{\tableau[2;]}{type=dragfill}{option=noorder}
+\answer{\nom_question[3]}{\tableau[3;]}{type=dragfill}{option=noorder}
+\answer{\nom_question[4]}{\tableau[4;]}{type=dragfill}{option=noorder}
+\answer{\nom_question[5]}{\tableau[5;]}{type=dragfill}{option=noorder}
+\answer{\nom_question[6]}{\tableau[6;]}{type=dragfill}{option=noorder}
+\answer{\nom_question[7]}{\tableau[7;]}{type=dragfill}{option=noorder}
+\answer{\nom_question[8]}{\tableau[8;]}{type=dragfill}{option=noorder}
+\answer{\nom_question[9]}{\tableau[9;]}{type=dragfill}{option=noorder}
+\answer{\nom_question[10]}{\tableau[10;]}{type=dragfill}{option=noorder}

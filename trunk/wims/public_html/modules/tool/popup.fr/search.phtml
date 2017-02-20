@@ -1,0 +1,98 @@
+
+!if $gotcnt=0
+ !if $srch=$empty
+  !exit
+ !endif
+ !if $module!=home
+  Désolé, rien n'est trouvé pour <span class="wims_emph">
+  $search</span>.
+ !endif
+ <p>
+ Aucun outil rapide n'existe encore sur ce sujet.
+ </p>
+ !exit
+!endif
+!set gotm=!lines2items $gotm
+!set gotm=!item 1 to 20 of $gotm
+!if .. isin $gotm
+ !reset gotm
+!endif
+!for s in $gotm
+ !set vars=!record 5 of $formdir/$s.def
+ !set vars=!nonempty lines $vars
+ !if $vars!=$empty
+  !set n_=!linecnt $vars
+  !for i=1 to $n_
+   !set l_=!line $i of $vars
+   !set var_$i=!randitem $l_
+  !next i
+ !endif
+ !set ops=!record 2 of $formdir/$s.def
+ !set submits=!record 3 of $formdir/$s.def
+ !set content=!record 4 of $formdir/$s.def
+ !set ops=!nonempty lines $ops
+ !set ocnt=!linecnt $ops
+ !reset oplist
+ !for op=1 to $ocnt
+  !set ol=!line $op of $ops
+  !distribute items $ol into n_,v_,w_
+  !set n_=!word 1 of $n_
+  !if $n_!=$empty and $w_$v_!=$empty
+   !set op_$n_=$v_
+   !if $w_!=
+     !set op_$n_=$(op_n_),$w_
+   !endif
+   !set oplist=!append item $n_ to $oplist
+  !endif
+ !next op
+ !set oplist=!listcomplement module,size,color,precision in $oplist
+ !set submits=!translate internal " to $ $ in $submits
+ !set submits=!nonempty lines $submits
+ !set scnt=!linecnt $submits
+ !for su=1 to $scnt
+  !set sl=!line $su of $submits
+  !distribute items $sl into n_,v_,w_
+  !set n_=!word 1 of $n_
+  !if $v_!=$empty
+   !if $n_!=$empty
+    !set N_=name="$n_"
+   !else
+    !reset N_
+   !endif
+   !set submit$su=<input type="submit" value="$v_" $jsdef />
+   !if $w_!=$empty
+    !set submit$su=$(submit$su)\
+     <input type="hidden" $N_ value="$v_,$w_" />
+   !endif 
+  !endif
+ !next su
+ !default op_size=$default_size
+ !default op_module=$default_module
+ !default op_color=$default_color
+ !default op_precision=$default_precision
+ !set content=!nonempty lines $content
+ <!--     Independent calculator form: $s     -->
+ <form target="$winname" name="calcform" action="$wims_ref_name">
+ <div style="background-color:$op_color;padding:10pt;
+	border-collapse:collapse; border:1px solid gray;margin:10px;width:90%">
+ <input type="hidden" name="session" value="popup" /> $sizeinput
+ <input type="hidden" name="module" value="$op_module" />
+ <input type="hidden" name="precision" value="$op_precision" />
+ !for o in $oplist
+ <input type="hidden" name="$o" value="$(op_$o)" />
+ !next o
+  $content
+ </div></form>
+ !reset op_module, op_color, op_size, op_precision
+!next s
+<!--     End of Independent calculator form     -->
+
+!if noremark notwordof $wims_read_parm
+ <span class="wims_warning">Remarque.</span> 
+ Tous les formulaires ci-dessus sont indépendants l'un de l'autre. Ils
+ peuvent aussi fonctionner dans vos propres pages web (mais seulement
+ en ligne) : recopiez la partie correspondante du texte source de
+ cette page et collez-la dans votre propre page, avec ou sans
+ modifications.
+
+!endif

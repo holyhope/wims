@@ -1,0 +1,20 @@
+
+<h3 class="wimscenter">$title
+&nbsp;
+!set wims_ref_class=wims_button_help
+!href cmd=help&special_parm=stopshare $wims_name_help
+</h3>
+
+!if $stoprec!=$empty and $(sharing_$stoprec)=$nei and \
+	$(me_$(stoprec)cnt)>0 and $me_testcnt>0 and confirm!=yes and \
+	$stoprec isitemof $nosharelist
+ <span class="wims_warning">$wims_name_warning</span>. $name_warning
+ <p class="wimscenter wimsform">
+ !href cmd=reply&stoprec=$stoprec&confirm=yes $wims_name_yes&nbsp;;$name_stop
+ &nbsp;&nbsp;
+ !href cmd=reply&job2=def $wims_name_no&nbsp;; $wims_name_giveup
+ </p>
+!else
+ Manipulation error: You should never land here.
+!endif
+

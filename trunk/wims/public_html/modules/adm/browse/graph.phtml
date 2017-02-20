@@ -1,0 +1,67 @@
+!if $wims_read_parm=$empty
+  !exit
+!endif
+
+!set cat=A
+
+!for a in $wims_read_parm
+ !set t_dom=!lookup $a in $dir.$lang
+ !set draw$a=digraph bar {\
+	rankdir=LR;\
+	node [fontsize=12,width=".3", height=".3", margin=0.1 shape=ellipse color=blue];
+  !set t_dom=!lookup $a in $dir.$lang
+   !set draw$a=$(draw$a)\
+    "$a" [ label= "$t_dom"];
+   !set t1=!lookup $a in $dir
+   !for t2l in $t1
+     !set t2n=!lookup $t2l in $dir.$lang
+     !default t2n=$t2l
+!!!!!
+     !set key=!lookup $t2l in $dir
+     !default key=$t2l
+     !set key_l=!lookup $t2l in $dir_lang
+     !set key=!replace internal _ by $ $  in $t2l
+     !set key=$key,$key_l
+!!!!!
+     !!set more=!lookup $t in $dir
+     !set draw$a=$(draw$a)\
+        "$t2n" [ URL="$wims_ref_name?session=$wims_session&$search_addr" ];\
+        "$a"-> "$t2n";
+     !set t3=!lookup $t2l in $dir
+     !set cnt=!itemcnt $t3
+     !if $cnt > 1
+        !for t3l in $t3
+          !set t3n=!lookup $t3l in $dir.$lang
+          !default t3n=$t3l
+!!!!!
+     !set key=!lookup $t3l in $dir
+     !default key=$t3l
+     !set key_l=!lookup $t3l in $dir_lang
+     !set key=!replace internal _ by $ $  in $t3l
+     !set key=$key,$key_l
+!!!!!
+         !set draw$a=$(draw$a)\
+         "$t3n" [ URL="$wims_ref_name?session=$wims_session&$search_addr" ];\
+         "$t2n" -> "$t3n";
+         !set more=!lookup $t3l in $dir
+         !if $more !=$empty
+          !set draw$a=$(draw$a)\
+         "suite$t3n" [ label="suite" URL="$wims_ref_name?session=$wims_session&module=$module&job=$job&parm=$t3l" ];\
+         "$t3n" -> "suite$t3n";
+         !endif
+        !next
+     !endif
+   !next
+  !set draw$a=$(draw$a)\
+}
+!set graphviz_format=dot
+!set graphviz_output=svg
+!set draw1=!exec graphviz $(draw$a)
+
+$(draw1)
+
+!!<object type="image/svg+xml" data="$(draw1[1;])">
+!!    Le navigateur ne supporte pas les fichiers SVG !
+!!</object>
+!next
+

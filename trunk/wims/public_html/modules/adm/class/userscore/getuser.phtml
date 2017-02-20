@@ -1,0 +1,353 @@
+!set tmp=!defof DF_SEVERITY in wimshome/public_html/bases/sys/define.conf
+ !distribute words $tmp into tmp_w,tmp_s,tmp_ss
+
+!read adm/title.phtml 1\
+$classname\
+$name_workdetail $name_studentloc
+
+<div class="center"><span class="wims_emph">
+!if $wims_user=supervisor
+  !reset css_connected
+  !if $getuser isitemof $wims_connectedlogin
+    !set css_connected=class="wims_connected"
+    !set wims_ref_title=connected
+  !endif
+  <span $css_connected>
+ !href module=adm/class/usermanage/&job=userprop&getuser=$getuser $name_studentloc
+  </span>
+!endif
+</span><br /><span class="small">$wims_name_Login: <span class="tt">$getuser</span>
+!if $user_external_auth!=$empty
+(<span class="tt">$user_external_auth</span>)
+!endif
+!if $user_email!=$empty
+<br />
+$wims_name_email: <a href="mailto:$user_email">$user_email</a>
+!endif
+</span>
+</div>
+  !if $user_photourl!=
+   <img src="$user_photourl" width="100px" style="position:absolute;top:50px;right:5%;" alt="$name_student2" />
+  !endif
+!if $eremain>0
+ <br class="spacer" />
+ $name_activesession:
+ !href cmd=reply&job=userexam&getuser=$getuser $esession
+!!!else
+!! ----- transfere dans usermanage (il s'agit d'un lien de transfert de score pour deplacer des eleves d'une classe a l'autre (dans un portail ou un groupement)
+!! !if $wims_user=supervisor and $wims_supertype iswordof 2 4
+!!  !readproc adm/gateway/transfer $getuser test
+!!  !if $transfer_test>0
+!!   !href module=adm/class/usermanage&job=transfer&getuser=$getuser $name_transfer
+!!  !endif
+!! !endif
+!endif
+
+ <br class="spacer" />
+
+!if $manual>0 and $gcnt>0 and $teacher!=$empty
+ $table_header
+ <caption><span class="small">
+ $name_minmax:
+ $min_glob/$mean_glob/$max_glob</span></caption>
+ $table_hdtr<th>$wims_name_name</th><th>$(wims_name_thsheet[6])</th><th>$(wims_name_thsheet[9])</th></tr>
+ $table_tr<th>$name_manualscore</th>
+     <td>$manual%</td>
+     !read adm/class/colors $[ceil(10*$mav/$scoremax)]
+     <td style=$style_note>$mav</td></tr>
+ $table_tr<th>$name_autoscore</th>
+     <td>$[100-$manual]%</td>
+     !read adm/class/colors $[ceil(10*$per/$scoremax)]
+     <td style=$style_note>$per</td></tr>
+ $table_tr<th>$name_globalaverage / $scoremax</th>
+     <td>100%</td>
+     !read adm/class/colors $[ceil(10*$globalav/$scoremax)]
+     <td style=$style_note>$globalav</td></tr>
+ $table_end
+ $table_header
+ $table_hdtr<th colspan="3">$name_manualscore
+ !if $wims_user=supervisor
+  <br />
+  !href lang=$lang&module=adm/class/grades&method=user&un=$getuser $wims_name_change
+ !endif
+ </th></tr>
+ $table_hdtr<th>$(wims_name_thsheet[2])</th><th>$(wims_name_thsheet[4])</th><th>$(wims_name_thsheet[9])</th></tr>
+ !set v_=0
+ !for i=1 to $gcnt
+  $table_tr<td>$(titles[2+$i])</td><td>$(w$i)</td>
+  !read adm/class/colors $[10*ceil($(g_$i))/$scoremax]
+  <td style=$style_note>$(g_$i)</td></tr>
+ !next i
+ $table_hdtr<th colspan="2">$name_Average</th>
+ !read adm/class/colors $[ceil(10*$mav/$scoremax)]
+ <td style=$style_note>$mav</td></tr>
+ $table_end
+!else
+ <div class="wimscenter">
+ $name_globalaverage: <b>$per</b> / $scoremax.
+ !if $min_glob<$scoremax
+  <br /><span class="small">$name_minmax:
+  $min_glob/$mean_glob/$max_glob</span>
+ !endif
+ </div>
+!endif
+
+
+!!readdef wimshome/log/classes/$wims_class/.def
+!!default class_topscores=0
+!if $class_topscores>0
+
+ $table_header$table_hdtr<th colspan="2">$name_topten</td></tr>
+ !for i=1 to $class_topscores
+  !set L=!line $i of $TT
+  !if $class_anonymtopscores=yes
+   !set name=$i
+  !else
+   !set name=!item 1 of $L
+   !set firstname=!item 2 of $L
+   !set name=$name $firstname
+  !endif
+  !set avg=!item 4 of $L
+$table_tr<td class="small" style="text-align:right;font-weight:bold">
+  $name &nbsp;</td>
+<td style="text-align:left" class="small">&nbsp;$avg</td></tr>
+ !next i
+ $table_end
+
+!endif
+
+!if $eactivecnt>0
+ $table_header$table_hdtr<th colspan="4">$name_examnote
+ !if $wims_user=supervisor or $class_examshow!=no
+  <span class="small">
+  !href cmd=reply&job=examcheck&checkuser=$getuser [$wims_name_detail]
+  </span>
+ !endif
+ </th></tr>
+ $table_hdtr
+  <th>$(wims_name_thsheet[1])</th>
+  <th>$(wims_name_thsheet[2])</th>
+  <th>$(wims_name_thsheet[9])/$scoremax</th>
+ </tr>
+ !for i in $activexams
+  !set l=!record $i of wimshome/log/classes/$wims_class/exams/.exams
+  !set t=!line 4 of $l
+
+  $table_tr<td>$i</td>
+  <td>$t</td>
+  !if $[rint(10*$(es_$i)*$scoremax)/100]>0
+   !read adm/class/colors $[ceil($(es_$i))]
+   <td style=$style_note>$[rint(10*$(es_$i)*$scoremax)/100]</td>
+  !else
+   <td>--</td>
+  !endif
+  </tr>
+ !next i
+ $table_end
+!endif
+!for i=1 to $activecnt
+ !set l_=!line $i of $activesheets
+ !distribute items $l_ into n_,e_
+ !set L_=!line $n_ of $defaultformula
+ !reset A_ B_ C_
+ !distribute word $L_ into A_,B_,C_
+ !default A_=1
+ !default B_=2
+ !default C_=0
+ !set t_=!item 3 to -1 of $l_
+ !set t_=!char 1 to $title_limit of $t_
+ !set v_=!getscorerequire sheet=$n_ user=$getuser
+ !set w_=!wordcnt $v_
+ !set S_=0
+ !for k=1 to $w_
+  !set a_=!word $k of $v_
+  !set S_=$[$S_+$a_]
+ !next k
+ !set sw=!line $[$n_+1] of $shweights
+ !set q=!word 2 of $sw
+ !set sw=!word 3 of $sw
+ !bound sw between integer 0 and 2 default $tmp_ss
+ !bound q between integer 0 and 6 default $tmp_s
+ !if $S_<=0
+  !goto next
+ !endif
+ !set seq_open=!defof sequence_open in wimshome/log/classes/$wims_class/seq/.def
+ !if $seq_open!=yes
+   !set hat=$name_Sheet $n_&nbsp;: $t_
+ !else
+  !set hat=$wims_name_sequence $(t_[1])&nbsp;: $(t_[2..-1])
+ !endif
+ <a id="sheet$n_"></a>
+ <br class="spacer" />
+  !if $wims_user=supervisor
+    !set nb_indic=5
+  !else
+    !set nb_indic=3
+    !endif
+  !endif
+
+  !endif
+  !set P_=!line $n_ of $percents
+ !distribute words $P_ into p1,p2,p3,p4
+  !if $p2!=$empty
+   !distribute item $[$p1/100],$[$p2/10],$[$p3/100],$[$p4/100] into x0_,y_,x1_,x2_
+   !set ff_$n_=!mathsubst Q=$y_ in $(f_$n_)
+   !for sev=0 to 2
+     !set ff_$n_=!mathsubst I$sev=$(x$(sev)_) in $(ff_$n_)
+   !next
+   !set p_=$[rint(100*$scoremax*$(ff_$n_))/100]
+  !endif
+ $table_header$table_hdtr<th colspan="$[$nb_indic+5]" style="text-align:left">
+ !if $p2!=$empty
+   !href module=adm/sheet&sh=$n_ $hat
+   <br />
+   $(wims_name_thsheet[4]): $A_
+   <br />
+   !set wims_ref_class=wims_button_help
+   !href cmd=help&special_parm=$n_ $(wims_name_thsheet[8])
+   !!!lowercase $(f_$n_)
+!!global note
+  !if $(min_$n_)<$scoremax
+    <br />$name_minmax: $(min_$n_)/$(mean_$n_)/$(max_$n_)
+   !endif
+!!
+   <div class="float_right">
+!!!FIXME should put a list ?
+    $(wims_name_thsheet[9]): $p_ / $scoremax.
+     <br />
+    !if $wims_user=supervisor or $q!=1
+      $(wims_name_thsheet[7]): $p2/10
+      <br />
+    !endif
+    !if $wims_user=supervisor or $sw=0
+   !! $(wims_name_thsheet[5])
+     $(wims_name_thsheet[5]): $p1%
+     <br />
+    !endif
+    !if $wims_user=supervisor or $sw=1
+   !! $(wims_name_thsheet[10])
+     $(wims_name_thsheet[10]): $p3%
+     <br />
+    !endif
+    !if $wims_user=supervisor or $sw=2
+   !! $(wims_name_thsheet[13])
+    $(wims_name_thsheet[13]): $[$p4/10]/10
+    !endif
+ !else
+  !href module=adm/sheet&sh=$n_ $hat
+ !endif
+  </div>
+ </th></tr>
+ $table_hdtr
+     <th>$(wims_name_thsheet[1])</th><th>$(wims_name_thsheet[2])</th>
+     <th>$(wims_name_thsheet[3])</th><th>$(wims_name_thsheet[4])</th>
+!!qualite
+      <th>$(wims_name_thsheet[7])</th>
+    !if $wims_user=supervisor or $sw=0
+!!I0: percentage work (related to cumul)
+    <th>$(wims_name_thsheet[5])</th>
+    !endif
+    !if $wims_user=supervisor or $sw=1
+!!I1: best percentage
+     <th>$(wims_name_thsheet[10])</th>
+    !endif
+    !if $wims_user=supervisor or $sw=2
+!!I2: level
+     <th>$(wims_name_thsheet[13])</th>
+    !endif
+!!last
+     <th>$(wims_name_thsheet[12])</th>
+!!number try
+     <th>$(wims_name_thsheet[11])</th></tr>
+ !for j=1 to $e_
+  !let d=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$n_
+  !distribute line $d into t,t,req_,weight_,title_,t
+  $table_tr<td>$j</td>
+  <td>$(title_)</td>
+  <td>$(req_)</td>
+  <td>$(weight_)</td>
+  !set try=!getscoretry user=$getuser sheet=$n_ work=$j
+  !if $try<=0
+   !set makelist=!makelist <td>--</td> for j=1 to $nb_indic
+   !replace , by in $makelist
+  !else
+!!!quality in exercise will always appear.
+    !set d_=!getscorequality user=$getuser sheet=$n_ work=$j
+    !default d_=0
+    !read adm/class/colors $[ceil($d_)]
+     <td style=$style_note>$d_</td>
+   !!endif
+!!cumul
+    !if $wims_user=supervisor or $sw=0
+     !set d_=!getscore user=$getuser sheet=$n_ work=$j
+     !default d_=0
+!!percentage
+    !if $(req_)>0
+     !read adm/class/colors $[ceil(10*$d_/$(req_))]
+     <td style=$style_note>$[ceil(100*$d_/$(req_))]%</td>
+    !else
+     <td>--</td>
+    !endif
+   !endif
+   !if $wims_user=supervisor or $sw=1
+!!best percentage
+   !set best=!getscorebest user=$getuser sheet=$n_ work=$j
+   !read adm/class/colors $[ceil(10*$best/$req_)]
+   <td style=$style_note>$[ceil($[$best*100/$req_])]%</td>
+   !endif
+   !if $wims_user=supervisor or $sw=2
+!!level
+    !set level=!getscorelevel user=$getuser sheet=$n_ work=$j
+    !read adm/class/colors $[min(ceil($level+0.1),10)]
+    <td style=$style_note>$level</td>
+   !endif
+!!last
+   !set last=!getscorelast user=$getuser sheet=$n_ work=$j
+   !read adm/class/colors $[ceil($last)]
+   <td style=$style_note>$last</td>
+
+!endif try
+!!try
+   <td>
+    $try
+   </td>
+  </tr>
+ !next j
+ $table_end
+:next
+!next i
+!read wimshome/public_html/themes/_widgets/topback.phtml
+
+!if $exologs!=$empty
+ !set wims_menu_items=!append line itemsep,0,\
+ reg_ex,1,module=adm/class/exolog&cmd=new&job=list&checkuser=$getuser\
+ to $wims_menu_items
+!endif
+!set wims_menu_items=!append line rawdata,1,cmd=reply&job=getraw&getraw=$getuser\
+to $wims_menu_items
+
+!if $wims_user=supervisor
+ !set wims_menu_items=!append line \
+ account,1,module=adm/class/usermanage&job=userprop&getuser=$getuser\
+to $wims_menu_items
+ !if (($wims_supertype<3 and $wims_typename=class) or ($wims_supertype=4 and $wims_typename=course)) and $wims_showlivret!=no
+  !set wims_menu_items=!append line livret1,1,module=adm/class/livret&job=user&user=$getuser\
+ to $wims_menu_items
+  !set wims_menu_items=!append line activity1,1,module=adm/class/activity&job=exobyday&user=$getuser\
+ to $wims_menu_items
+ !endif
+  !set wims_menu_items=!append line itemsep,0, \
+  part_list,1,cmd=resume\
+ to $wims_menu_items
+  !read adm/class/getnextuser $wims_class,$getuser,getuser,getuser
+!else
+ !if $wims_showlivret!=no
+  !set livret_nbcomp=!recordcnt wimshome/log/classes/$wims_class/livret/.comps
+  !if $livret_nbcomp >0
+   !set wims_menu_items=!append line livret,1,module=adm/class/livret to $wims_menu_items
+  !endif
+ !endif
+!endif
+ <br class="spacer" />
+
+ !reset tmp tmp_w tmp_s tmp_ss

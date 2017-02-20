@@ -1,0 +1,70 @@
+
+!if $special_parm!=$empty and $special_parm_!=$empty
+ !changeto lang/help.$moduclass_lang/$special_parm.phtml
+!endif
+
+!read adm/title.phtml 1\
+\
+作业页的严厉度
+!if $wims_user=supervisor
+<p>
+对于每个参加者在每个作业页上的工作, 服务器计算两个平均值:
+一个是实际得分关于应得分的百分比, 另一个是页面练习的得分质量.
+设 x 是百分数, y 是质量, 两者均取 0 与 1 之间的值.
+则计算总评分的公式如下所示.
+</p>
+
+!reset table_center
+$table_header
+$table_hdtr<th>严厉度</th><th>公式</th><th>解释</th></tr>
+$table_tr<td>0</td><td>$scoremax max(x,y)
+ </td><td>非常宽松: 取百分比与质量的极大值.</td></tr>
+$table_tr<td>1</td><td>$scoremax x
+ </td><td>不考虑质量. 只要完成所有作业就能得到最高的总评分.</td></tr>
+$table_tr<td>2</td><td>$scoremax x y<sup>0.3</sup>
+ </td><td>质量对总评分只有很小的影响.</td></tr>
+$table_tr<td>3</td><td>$scoremax x y<sup>0.5</sup>
+ </td><td>质量影响更多..</td></tr>
+$table_tr<td>4</td><td>$scoremax x y
+ </td><td>为得到总评的最高分, 你必须取得满分(100%), 而且不犯错(质量=1).
+$table_tr<td>5</td><td>$scoremax x<sup>2</sup> y
+ </td><td>未完成的作业将被倒扣分.</td></tr>
+$table_tr<td>6</td><td>$scoremax x<sup>2</sup> y<sup>2</sup>
+ </td><td>任何错误都被严惩.</td></tr>
+$table_end
+
+注意 : 对于严厉度 0 与 1, 如果一个练习的质量分小于 1,
+那么在计算 x 时这个练习的得分百分率变成 0% ;
+如果质量分在 1 与 2 之间,
+那么在计算 x 时这个练习的得分百分率被除以 2.
+
+!else
+你的教师已对于这一页选取了计分方式.
+对于以下所列, 计算你的工作的平均值 :
+<ul>
+<li>
+!if $help_sw=0
+I 是累计分除以要求得分 10*n 的商
+!endif
+!if $help_sw=1
+I 是 n 个最佳得分的平均,
+!endif
+!if $help_sw=2
+I 是 n 个最佳得分的最小值
+!endif
+</li>
+<li>
+Q 是练习中得分的质量.
+</li>
+</ul>
+
+如果一个练习的质量分小于 1,
+这个练习的 I 取成 0;
+如果质量分介于 1 和 2 之间,
+则在计算页面的得分时把 I 除以 2.
+
+</p><p>
+这些平均值取在 0 与 1 之间,
+页面得分的计算公式是
+\($scoremax * $(list[$help_level+1;]) \)
+!endif

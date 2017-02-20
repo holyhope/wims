@@ -1,0 +1,114 @@
+<!-- adm/class/exam/score.phtml BEGIN -->
+
+!if $job=score
+ !read adm/class/classname.phtml $wims_classname\
+$wims_institutionname
+
+ !read adm/title.phtml 1\
+ $classname\
+ $title
+
+ !if $wims_user=supervisor
+  <p class="wimscenter">($name_presentation)</p>
+ !endif
+ <div>$desc</div>
+!endif
+
+!if $error!=$empty
+ <div class="wims_msg alert">
+  !read lang/msg.phtml.$moduclass_lang
+ </div>
+ <p>
+ !href module=home $wims_name_back2
+. </p>
+ !goto end
+!endif
+
+!if $exocnt=0
+ $name_empty
+!else
+ $table_header
+
+ <caption>$name_scoreexam</caption>
+  <thead>
+   $table_tr
+    <th>$wims_name_Exercise</th>
+    <th>$wims_name_title</th>
+    <th>$name_coeff</th>
+    <th>$name_Score</th>
+   </tr>
+  </thead>
+  <tbody>
+  !for i=1 to $exocnt
+  !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
+  !distribute lines $ex into we,li,ti
+   $table_tr
+    <td>$i</td>
+    <td>$ti</td>
+    <td>$we</td>
+    <td>
+      !if $(replied$i)>0
+       $(got$i)
+      !else
+       <span class="small">$name_pending</span>
+      !endif
+    </td>
+   </tr>
+  !next i
+  </tbody>
+  <tfoot>
+   $table_tr
+    <td colspan="4" class="wims_average">
+     !default score=$sprime
+     $name_scoreexam2: <strong>$[$score*$scoremax/10]/$scoremax</strong>.
+    </td>
+   </tr>
+  </tfoot>
+ $table_end
+!endif
+
+!if $wims_exam_remain > 0
+  <p id="exam_clock">$wims_name_examremain $wims_hr_rm:$wims_hr_rs.</p>
+!endif
+
+!if $registered=$empty
+ $name_begin1.
+ !href cmd=reply&job=student $name_begin2
+!else
+ !if $timeleft<=0
+ <div class="wims_msg warning">
+  $name_timeleft
+ </div>
+ !endif
+ !if $allowtype=simulation
+  $name_simulation2
+  !if $lastscore>0
+   ($name_realscore)
+  !endif
+ !else
+  $name_bestscore
+ !endif
+ !set wims_menu_items=!append line backexam,1,cmd=reply&job=student\
+to $wims_menu_items
+ !set test=!recordcnt wimshome/$wims_sesdir/examscore.$exam
+ !if $test>=2
+  !set wims_menu_items=!append line endexam,1,cmd=reply&job=scorereg\
+to $wims_menu_items
+ !endif
+!endif
+
+!if $wims_user=supervisor
+  !set wims_menu_items=!append line itemsep,0,\
+backteacher,1,cmd=resume\
+to $wims_menu_items
+
+!endif
+
+
+:end
+<!-- adm/class/exam/score.phtml END -->
+!tail
+
+!reset job
+
+

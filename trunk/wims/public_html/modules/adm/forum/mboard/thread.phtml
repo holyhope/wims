@@ -1,0 +1,24 @@
+
+!read desc.phtml
+<div class="wimscenter">
+!set wims_ref_class=wims_button
+!href cmd=reply&job=threadlist $n_bysubject
+  $ $
+ !set wims_ref_class=wims_button
+!href cmd=reply&job=list&mlist=.newlist $n_bydate
+ $ $
+ !set wims_ref_class=wims_button
+!href cmd=reply&job=list $n_recent
+</div>
+<div>
+!set l_=!record $o2 of $forumdir/$o1/.msglist
+!set lh=
+$n_following
+!read listone.phtml $l_
+!set level=0
+!set lh=<li class="wims_forum_list">
+!read thsub.phtml $startnum
+
+</div>
+!read listarch.phtml
+

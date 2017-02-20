@@ -1,0 +1,35 @@
+
+<hr />
+!form reply
+
+!reset table_center
+<table class="wimsborder wimscenter">
+<caption>$name_enter (/ $maxscore): </caption>
+!set t_=!item $cc of $titles
+!set w_=!item $cc of $weights
+!default w_=1
+<tr><td style="text-align:right">
+<label for="">
+$wims_name_title
+</label>
+=<input size="15" name="title" value="$t_" id="title" /></td>
+<td>$name_weight=<input size="3" name="weight" value="$w_" /></td></tr>
+!for u=1 to $ucnt
+ !set n_=!item $u of $ulist
+ !set u_=!positionof item $n_ in $uulist
+ !if $u_>0
+  !set s_=!record $u_+1 of wimshome/log/classes/$wims_class/.grades
+  !set c_=!item $cc+2 of $s_
+ !else
+  !set c_=
+ !endif
+ !set f_=!item $u of $flist
+ !set l_=!item $u of $llist
+ <tr><td><label for="c$u">$l_, $f_</label>
+ </td><td><input size="6" name="c$u" value="$c_" id="c$u" /></td></tr>
+!next u
+</table>
+<p class="wimscenter wimsform">
+<input type="submit" name="reg" value="$wims_name_tosave" />
+</p>
+!formend

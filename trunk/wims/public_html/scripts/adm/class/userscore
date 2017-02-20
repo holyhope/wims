@@ -1,0 +1,43 @@
+!default uu=$wims_read_parm
+!!one line by sheet : points quality best level
+percents=!getscorepercent user=$uu
+
+percnt=!linecnt $percents
+!distribute items 0,0 into per,av
+
+!! w_$i etc are defined in sheetweights
+!! give an average for all sheets and for the user $uu - even not seen in sequences ??
+
+!for i=1 to $percnt
+ !if  $(f_$i)=$empty or $(w_$i)=$empty
+   !read adm/class/sheetweights
+ !endif
+ perc=!line $i of $percents
+ !distribute words $perc into p1,p2,p3,p4
+ !if $p2!=$empty and $(w_$i)!=$empty
+  !distribute item $[$p1/100],$[$p2/10],$[$p3/100],$[$p4/100] into x0_,y_,x1_,x2_
+  !set ff_$i=!mathsubst Q=$y_ in $(f_$i)
+  !for sev=0 to 2
+     !set ff_$i=!mathsubst I$sev=$(x$(sev)_) in $(ff_$i)
+  !next
+   per=$[$per+($(w_$i))*$(ff_$i)]
+ !endif
+!next i
+
+examout=!examscore user=$uu
+
+!for i in $activexams
+  es_$i=!line 1 of $examout
+  es__$i=!word $i of $(es_$i)
+  !!it happens that es__$i is empty, so we calculate per with 0 instead
+  es_$i=$(es__$i)
+  !default es_$i=0
+   per=$[$per+$(ew_$i)*$(es_$i)/10]
+   es_$i=$(es__$i)
+!next i
+
+!if $totweight>0
+ per=$[rint($scoremax*100*$per/$totweight)/100]
+!else
+ per=0
+!endif

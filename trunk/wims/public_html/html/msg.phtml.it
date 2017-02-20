@@ -1,0 +1,77 @@
+
+!if empty_data iswordof $wims_error
+ Risposta incompleta. Inserire tutti i dati richiesti e 
+ riprovare.
+ !exit
+!endif
+
+!if double_reply iswordof $wims_error
+ Avete già risposto a questa domanda (e il punteggio è
+ già stato registrato. Le risposte doppie sono ignorate. (Non
+ utilizzare il tasto `ricarica' del browser per reinviare le risposte!)
+ !exit
+!endif
+
+!if bad_data iswordof $wims_error
+ Il server non è stato in grado di interpretare la risposta. Errore di battitura?
+ !exit
+!endif
+
+!if no_ldap_parameter iswordof $wims_error
+ I campi con asterisco sono obbligatori. Consultare il responsabile
+ del vostro servizio ldap.
+ !exit
+!endif
+
+!if bad_class iswordof $wims_error
+  Il codice del corso non sembra valido.
+ !exit
+!endif
+
+!if bad_day iswordof $wims_error or day_dontexist iswordof $wims_error
+
+ la data inserita non è valida.
+!exit
+!endif
+
+
+!if not_supervisor iswordof $wims_error
+ Spiacente, questa operazione non è valida, non siete il docente.
+ !exit
+!endif
+
+!if nouser iswordof $wims_error or bad_user iswordof $wims_error \
+  or bad_usercls iswordof $wims_error
+ Strano, non è possibile trovare questo studente in questo corso ($wims_class)!
+!exit
+!endif
+
+!if insert_fail iswordof $wims_error
+  Il server non ha potuto inserire il vostro lavoro nel corso. Verificare i 
+ dati inseriti.
+ !exit
+!endif
+
+!if bad_pass iswordof $wims_error
+ Password non accettata: utilizzare almeno 4 e non più di 16 caratteri 
+ (lettere o numeri). Inoltre la password deve essere digitata (uguale!) 
+ due volte! Riprovare.
+ !exit
+!endif
+
+!if bad_auth iswordof $wims_error
+ Accesso non riuscito. Riprovare.
+ !exit
+!endif
+
+!if bad_login iswordof $wims_error
+ Il `login' scelto contiene dei caratteri non accettati dal server. 
+ <p>
+ Utilizzate solo caratteri alfanumerici, in particolare non utilizzate 
+ lettere accentate o spazi.
+ </p>
+ !exit
+!endif
+
+
+Tipo d'errore&nbsp;: $wims_error $wims_error_parm.

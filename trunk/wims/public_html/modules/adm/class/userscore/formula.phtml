@@ -1,0 +1,65 @@
+!set wims_form_method=post
+!set tmp=!defof DF_SEVERITY in wimshome/public_html/bases/sys/define.conf
+!distribute words $tmp into tmp_w,tmp_s,tmp_ss
+
+!read adm/title.phtml 1\
+$classname\
+$name_severitylevels
+
+!form reply
+<input type="hidden" name="job" value="formula" />
+$name_formula_comment
+<input type="number" min="$min_maxscore" max="$max_maxscore" size="5" name="maxscore" value="$scoremax" />.
+$table_header
+<caption>$wims_name_Sheets</caption>
+$table_hdtr<th scope="col">$(name_formula[1])</th><th scope="col">$wims_name_title</th><th scope="col">$wims_name_Status</th>
+  <th scope="col">$(name_formula[2])</th><th scope="col">$(name_formula[3])</th></tr>
+!for i=1 to $totsheets
+ !set t_=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+ !set k_=!line $i of $defaultformula
+ !distribute word $k_ into w$i,s$i,ss$i
+ !bound w$i between $min_weight and $max_weight default $tmp_w
+ !bound s$i between integer 0 and 6 default $tmp_s
+ !bound ss$i between integer 0 and 2 default $tmp_ss
+ !distribute line $t_ into a_,b_,c_,d_
+ !set a_=!char 1 of $a_
+ !set S_=!item $a_+1 of $name_sheetstatut
+
+ $table_tr<td>$i</td>
+ <td>$c_</td><td>$S_</td>
+ <td><input type="number" min="$min_weight" max="$max_weight" step="any" size="5" name="w$i" value="$(w$i)" /></td>
+ <td>
+ !set formula_list=!record 0 of adm/class/sheetformula
+ !formselect s$i list 0,1,2,3,4,5,6 prompt $formula_list
+ I=
+!formselect ss$i list 0,1,2 prompt I0,I1,I2
+ </td></tr>
+!next i
+$table_end
+$table_header
+<caption>$wims_name_Examens</caption>
+$table_hdtr<th>$(name_formula[1])</th><th>$wims_name_title</th><th>$wims_name_Status</th>
+  <th>$(name_formula[2])</th></tr>
+!for i=1 to $totexams
+ !set ew$i=!line $i of $examweights
+ !default ew$i=1
+ !set t_=!record $i of wimshome/log/classes/$wims_class/exams/.exams
+ !set a_=!word 1 of $t_
+ !set c_=!line 4 of $t_
+ !set S_=!item $a_+1 of $name_sheetstatut
+
+ $table_tr<td>$name_Exam $i</td>
+ <td>$c_</td><td>$S_</td>
+ <td><input type="number" min="$min_weight" max="$max_weight" step="any" size="5" name="ew$i" value="$(ew$i)" /></td>
+ </tr>
+!next i
+$table_end
+<div class="wimscenter wimsform">
+<input type="submit" name="formula" value="$wims_name_tosave" />
+&nbsp;<input class="wims_secondary_button" type="submit" value="$wims_name_giveup" />
+</div>
+
+!formend
+!set wims_menu_items=!append line back2,1,cmd=resume\
+to $wims_menu_items
+!reset formula tmp tmp_w tmp_s tmp_ss

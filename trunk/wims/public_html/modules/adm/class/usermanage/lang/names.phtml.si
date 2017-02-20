@@ -1,0 +1,74 @@
+!set lang_exists=yes
+
+!if $wims_read_parm!=
+ !goto $wims_read_parm
+!endif
+
+!set name_studentloc=!nosubst $user_firstname $user_lastname
+!set name_studentglo=!nosubst $wims_name_firstname $wims_name_lastname
+
+!set name_click=Click on a name for the detail of his/her work
+!set name_noyetparticipant= Ta uèilnica ¹e nima nobenega uporabnika.
+!set name_transfer=Prenos aktivnosti uporabnika iz drugih uèilnic
+!set name_filter=Variables techniques
+
+!if $job=regmanage
+	!set name_all=Tous les participants
+	!set name_reguser=Inscrire les participants
+	!set name_unreguser=Supprimer l'inscription des participants
+        !set name_display=Afficher
+        !set name_techvardisplay=Sélection par variables techniques
+	!set name_description=Utiliser les cases à cocher pour sélectionner les participants et les classes de votre choix puis appuyez sur l'un des deux boutons pour changer leurs droits d'accès.
+!endif
+
+!if $job iswordof userprop teacher userlist
+  !distribute items Spremeni,©tevilka registracije,Opombe,URL d'une photo,Spremenljivke (tehniène),\
+  Geslo uèilnice,Vpi¹ite geslo, ki bo zahtevano za registracijo novih uporabnikov.,\
+  Login for external authentification,Inscription,Gestion,\
+   Compulsory\
+  into name_change,name_regnum,name_comments,name_photourl,name_vars,\
+  name_classpassword,name_enterpassword,name_external_auth,name_inscript,name_gestion,\
+  name_userprop_warning
+  !exit
+!endif
+
+!if $job=transfer
+   !set name_title_transfer=Activity transfer
+   !distribute items Merge, Replace,Examine\
+   into name_merge, name_replace,name_show
+
+ !set name_error1=The participant has no registration in a corresponding\
+ course in the current class to receive the transfer from
+ !set name_error2=<b>Error</b> of class identification. Wrong manoeuvre or bug of the\
+  software?
+ !set name_activities=!nosubst Detail of activities in $i (limited to 1000 lines).
+ !set name_totransfer=Here are the other courses in which the participant has activities. \
+   Click on an action to transfer them
+ !exit
+!endif
+
+!if $job=recover
+  !set name_empty= V tej uèilnici ni zbrisanih uporabnikov.
+  !set name_click=Kliknite na uporabni¹ko ime za obnovo.
+  !exit
+!endif
+
+!if $job=delprep
+  !set name_delete=!nosubst AAli res ¾elite izbrisati uporabnika z imenom \
+    <b><em>$name_studentloc</em></b> iz va¹e uèilnice?
+  !exit
+!endif
+
+!exit
+
+:transfer
+<b>Remarks</b>. <ol>
+<li>"$name_merge" means putting together the activities in two courses.</li>
+<li>"$name_replace" means that the activities in the other cours will replace
+that of this one. This will occur only if the former is not empty.</li>
+<li>Exam records and non-scoring activities are always merged.</li>
+<li>Registration of details of exercises or exams is not transfered.</li>
+<li>After the action ($name_merge ou $name_replace), the records of the participant
+in the other course will be cleaned.</li>
+</ol>
+!exit

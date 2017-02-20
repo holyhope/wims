@@ -1,0 +1,10 @@
+
+!set sitemanager=!defof site_manager in wimshome/log/wims.conf
+!read wimshome/public_html/html/cgu.phtml.$lang $sitemanager
+
+!! help_isread is never defined ??
+!if $help_isread!=yes and $lang notwordof ca cn en fr it nl
+ !read wimshome/public_html/html/cgu.phtml.en $sitemanager
+!endif
+
+!reset help_isread

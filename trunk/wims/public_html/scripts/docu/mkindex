@@ -1,0 +1,160 @@
+#! /bin/sh
+
+## global variable
+thisdir=`pwd`
+lastdir=$thisdir
+if [ -z "$wims_home" ]; then wims_home=$1; fi;
+if [ -z "$wims_home" ]; then wims_home=$w_wims_home; fi
+## use in bin/mkindex
+if [ -z "$w_wims_class" ] ; then wims_doc=$2 ; fi
+
+while [ -z "$wims_home" ] && [ "$lastdir" != "/" ]
+do
+ wims_home=`cat $lastdir/.wimshome 2>/dev/null`
+ lastdir=`dirname $lastdir`
+done
+if [ -z "$wims_home" ]; then
+ echo WIMS home directory not found.
+ exit;
+fi
+
+w_msg2wims_primitives="if ifval for while
+    reload fold ref link docform form resource calcform embed
+    exercise tool doc example help adm tooltip href slib
+    def define comment draw canvasdraw audio"
+export w_msg2wims_primitives
+### macro : structure of the document : define $def and $src
+### the parameter is the name of the directory in doc (not used in a class)
+doc_type () {
+ test=
+ if [ ! -z "$w_wims_class" ]; then
+  test=`echo $thisdir | grep '/classes/..$'`
+ fi
+ if [ ! -z "$test" ] && [ -d $wims_home/log/classes/$w_wims_class ]; then
+  class_header=$wims_home/log/classes/$w_wims_class
+  ntest=`awk -F'=' '$1=="sharing_doc" {print $2}' $class_header/neighbors`
+  if [ ! -z "$ntest" ] && [ -d "$wims_home/log/classes/$ntest/src" ]; then
+   class_header=$wims_home/log/classes/$ntest
+  fi
+### no document like that - come from oef ?
+  def=$class_header/def
+  src=$class_header/src
+  mkdir -p $def
+ else
+  class_header=
+  def=doc/$1
+  src=$def/src
+ fi
+
+ if [ -z "$class_header" ]  && [ ! -z "$wims_doc" ]
+  then
+   class_header=$wims_doc
+   def=$class_header
+   src=$class_header/src
+ fi
+}
+
+clean_doc ( ) {
+  deff=`cd $1; ls *.def 2>/dev/null`
+  for i in $deff
+   do
+   dd=${i%.def}
+   if [ ! -f $2/$dd ]; then
+    echo Removing $def/$i.
+    rm -f $1/$i >/dev/null;
+   fi
+  done
+}
+
+## generation des .def
+gen_doc ( ) {
+  def=$1
+  src=$2
+  srcf=`cd $src; ls 2>/dev/null | grep -v '.hd$'`
+  for i in $srcf
+  do
+   dd=$i.def
+   dh=$i.hd
+   if [ ! -f $src/$dh ]; then
+    awk '/^!if/ {exit}; {print}' $def/$dd >$src/$dh 2>/dev/null
+   fi
+   if [ ! -f $def/$dd ] || [ $src/$i -nt $def/$dd ]; then
+    rm -f $def/$dd 2>/dev/null
+    $wims_home/bin/msg2wims $src/$i tmp
+    cat $src/$dh >$def/$dd 2>/dev/null
+## make here some perl conversions on the file tmp
+## as s:</li>\s*<p>\s*<li>:\n</li><li>\n:g;
+    $wims_home/public_html/scripts/docu/conversion.pl tmp
+    cat <<@ >>$def/$dd
+!if \$wims_read_parm!=\$empty
+ !goto \$wims_read_parm
+!endif
+!exit
+
+:content
+@
+   cat tmp >>$def/$dd
+  fi
+ done
+ rm -f tmp
+}
+
+index_file () {
+cd $1
+filelist=`ls *.def 2>/dev/null`
+echo >.index
+for f in $filelist
+do
+ fs=${f%.def}
+ tit=`awk -F= '/titb.*=/ {print $2; exit}' $f`
+ if [ -n "$tit" ]; then
+  echo ":$fs
+$tit" >>.index
+ fi
+done
+}
+
+latex2wims ( ) {
+    perl $wims_home/public_html/modules/adm/latex2wims/latex2wims.pl --subdir=$1 --docdir=$lastdir --embed=document $2.tex
+}
+
+## on cherche les parametres $def $src
+
+mk_doc ( ) {
+ cd $lastdir
+ doc_type $1
+ if [ ! -d $def ]; then
+  echo Directory $def not found.
+  exit;
+ fi
+ if [ ! -d $src ]; then
+  echo Directory $src not found.
+  exit;
+ fi
+ ##latex2wims
+ if [ -f "$lastdir/doc/srctex/0index" ]; then
+  cd "$lastdir/doc/srctex"
+  cat 0index | while read dd
+   do
+     if [ ! -z "${dd}" ] ; then latex2wims ${dd}; fi
+   done
+fi
+cd $lastdir
+## cleaning file.def where file has been deleted
+ clean_doc $def $src
+## generated file *.def
+  gen_doc $def $src
+##definition files
+  index_file $def
+}
+
+## main program !
+
+if [ -f $lastdir/doc/.def ] ; then
+ doclist=`awk -F'=' '$1=="doclist" {print $2}' $lastdir/var.proc`
+fi
+if [ -z "$doclist" ]; then doclist="1" ; fi
+for l in $doclist; do mk_doc $l; echo "" ; echo "$l done"; done
+
+### in case of a class, the parameter of doc ()  do not mind !
+### many global variables yet

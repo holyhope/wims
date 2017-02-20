@@ -1,0 +1,47 @@
+
+$name_prop <span class="wims_emph">$class_description</span>
+$name_of
+<span class="wims_emph">$class_institution</span> ($name_serial $jobclass).
+!if $jobclass<10000
+ $name_distrib
+!endif
+
+!form reply
+<fieldset class="property_fields halfwidth blockcenter">
+  <legend>$jobclass</legend>
+  <div class="field box">
+   <label for="clpass">$name_supervisor_p:</label>
+   <input type="password" size="20" name="clpass" />
+  </div>
+  <div class="field box">
+    <label for="clpass2">$name_supervisor_r</label>
+    <input type="password" size="20" name="clpass2" value="$class_password" />
+    <div class="wims_warning">$name_warning</div>
+  </div>
+  <div class="field box">
+    <label for="clsecure">$name_secure</label>
+    <input size="50" name="clsecure" value="$class_secure" />
+  </div>
+  <div class="field box">
+    <label for="clexp">$name_expire</label>
+    <input size="10" name="clexp" value="$class_expiration" />
+  </div>
+  <div class="wimsform wimscenter">
+    <input type="submit" name="save" value="$wims_name_tosave" />&nbsp;&nbsp;
+    <input type="submit" name="abandon" value="$wims_name_giveup" class="wims_secondary_button" />
+  </div>
+</fieldset>
+
+!formend
+
+<p>$name_remark
+<a href="mailto:$class_email?subject=$name_yourclassmod">$name_notify</a>
+$name_change
+</p>
+ <div class="wimscenter">
+!href cmd=reply&job2=first $name_other
+</div>
+!set wims_menu_items=!append line classlist,1,cmd=reply&job2=first\
+  itemsep,0,\
+  to $wims_menu_items
+

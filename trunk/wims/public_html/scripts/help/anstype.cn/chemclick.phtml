@@ -1,0 +1,32 @@
+<b>点击 2D 分子里的原子</b> (需要 java) (名称 : <span class="tt">chemclick</span>)
+
+java 小工具 WIMSChem 显示一个分子, 要求在某些原子或键上点击.
+
+这个回答类型必须与命令 <span class="tt">\embed{}</span> 合用. 
+命令 <span class="tt">\embed</span> 的第一行是小工具的像素多少 
+X x Y . 第二行则是一些选项 (参见 <span class="tt">chemdraw</span>).
+
+正确答案是
+ <ul>
+ <li>第一行. 原子编号表及如同文件 MDMol 里的键数
+ : <span class="tt">atoms:1,2 bonds:4,1</span>.
+ <li>第二行. 描述分子的文件 MDMol (扩展名 <span class="tt">.mol</span>) 的地址.
+ 这个文件必须在模块的 <span class="tt">data</span> 目录里, 
+或在 wims 的数据目录里 (地址 <span class="tt">data/xxx</span>) , 或在 WIMS
+的目录 modules/data 里 (在这种情形的地址形如 
+datamodule/xxx) 或在模块目录 <span class="tt">images</span> 里 (地址 <span class="tt">\imagedir/xxx</span>). 
+也可以放置文件的内容 (遵循 MDMol 的格式).
+</ul>
+
+用右键点击选择原子, 然后被涂成不同颜色.
+
+变量 <span class="tt">\reply</span>n 具有如下形式 <span class="tt">atoms:1,2 bonds:2</span>
+
+<p>
+可以使用选项 <span class="tt">help</span>, 它会自动添加 applet 的帮助
+(目前只用于选择的图标).
+</p>
+
+<pre>
+\answer{}{atoms:1,2 bonds:1;data/file.mol}{type=chemclick}
+</pre>

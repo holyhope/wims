@@ -1,0 +1,15 @@
+filter=yes
+!reset listuser
+!for id in $listiduser
+    !reset var_filter_test
+    !read adm/vfilter/testfilter $id\
+$varfilter_
+    !if $var_filter_test=1
+      listuser=!append item $id to $listuser
+    !endif
+!next id
+!if $listuser=$empty
+    !reset job
+    !exit
+!endif
+

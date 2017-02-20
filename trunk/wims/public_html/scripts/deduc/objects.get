@@ -1,0 +1,20 @@
+!if $wims_read_parm!=$empty
+ !bound wims_read_parm between integer 0 and $currstep-1 default $[$currstep-1]
+ allcases=$(object$wims_read_parm)
+!endif
+casecnt=!linecnt $allcases
+!if $casecnt<=1
+ objects=!translate internal $	$ to $\
+$ in $allcases
+ !exit
+!endif
+
+caseline=!line 1 of $allcases
+caseline=!translate $	$ to $\
+$ in $caseline
+activecase=!line 1 of $caseline
+caseid=!line $activecase+1 of $caseline
+caseobj=!line $activecase+1 of $allcases
+objects=!translate internal $	$ to $\
+$ in $caseobj
+

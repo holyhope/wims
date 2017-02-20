@@ -1,0 +1,25 @@
+!set anstype=yes
+!set anstyle=numeric
+!set ans_require=
+!if $wims_read_parm=def
+ !exit
+!endif
+!if debug iswordof $m_oefenv and ?analyze notin $(replygood$i)
+ !set replydefaulted=yes
+ !if $oef_default=yes
+  !set tt=!row 1 of $(replygood$i)
+  !default reply$i=!item 1 of $tt
+ !endif
+!endif
+!if $wims_read_parm!=noprompt
+ <tr><td><label for="reply$i">$(replyname$i)</label>&nbsp;=</td><td>
+!endif
+
+!read anstype/inputcss.inc
+
+!bound inputsize between integer 1 and 100 default 30
+<input id="reply$i" size="$inputsize" name="reply$i" value="$(reply$i)" $inputoption />
+!if $wims_read_parm!=noprompt
+ </td></tr>
+!endif
+!reset inputsize inputoption option

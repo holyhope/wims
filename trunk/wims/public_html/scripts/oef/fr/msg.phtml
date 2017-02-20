@@ -1,0 +1,104 @@
+
+!if empty_out iswordof $error
+ Votre code n'a pas donné de résultat. Veuillez le corriger.
+ !if $m_reply_err!=$empty
+  <pre><span class="wims_warning">$m_reply_err</span></pre>
+ !endif
+ !exit
+!endif
+
+!! empty_data bad_data double_reply  are in html/msg.phtml.fr - suppress on test
+
+!if bad_answer iswordof $error
+ !if illegalname iswordof $test
+  Votre code contient un mot non autorisé <span class="tt">$illegal_name</span>. Veuillez corriger.
+  !exit
+ !endif
+ !if lengthoverflow iswordof $test
+  Votre code a dépassé la limite de longueur. Veuillez le réécrire.
+  !exit
+ !endif
+ La réponse
+ <span class="tt">$bad_value</span> que vous avez donnée
+ !if unknownword iswordof $test
+  !set w=!word 3 of $test
+  n'est pas compréhensible&nbsp;:
+  le mot <span class="tt">$w</span>
+  n'a pas de rapport avec ce problème ou n'est pas autorisé.
+  Veuillez corriger ou choisir une phrase plus simple.
+  !exit
+ !endif
+ !if nocompute iswordof $test
+  n'est pas permise. Veuillez faire le calcul et soumettre la valeur qui en résulte.
+  !exit
+ !endif
+ !if nocomputecomplex iswordof $test
+   n'est pas permise.
+   Donnez votre réponse sous forme algébrique <span class="tt">a + b i</span>
+   avec <span class="tt">a</span> et <span class="tt">b</span> calculés et validez de nouveau.
+   Par exemple, <span class="tt">-1/5 + 2/5*i</span> ou <span class="tt">2/3 - 5*i/3</span>.
+   !exit
+ !endif
+ !if badform iswordof $test
+  !if noreduced iswordof $test
+   n'est pas une écriture irréductible. Veuillez réduire la fraction.
+   !exit
+  !endif
+  n'est pas écrite comme il faut. Veuillez la réécrire correctement.
+  !exit
+ !endif
+ !if notunit iswordof $test
+  n'est qu'un nombre&nbsp;:
+  veuillez préciser l'unité dans votre réponse.
+  !exit
+ !endif
+ !if bad_variable iswordof $test
+   n'est pas compréhensible. Elle contient certainement des variables non autorisées.
+   !exit
+ !endif
+ n'est pas compréhensible. Veuillez corriger l'erreur et soumettre de nouveau la réponse.
+ !exit
+!endif
+
+!if bad_exo iswordof $error
+ !for j=1 to 50
+   !if bad_exo $j isin $error
+     !set whichexo=!nosubst (la bonne réponse pour la question $j \
+     <span class="tt">$(replyname$j)</span>
+     n'est pas valable)
+     !!goto end_bad
+     !break
+   !endif
+ !next
+:end_bad
+ A cause d'une erreur dans l'exercice $whichexo, il est impossible d'analyser
+ votre réponse. La seule solution pour vous est de changer d'exercice&nbsp;;
+ toutes nos excuses.
+ <p>
+ Veuillez
+  !if $email!=$empty
+   !mailurl $email contacter l'auteur
+  !else
+   contacter l'auteur
+  !endif
+ de l'exercice afin de signaler cette erreur.
+ </p>
+ !exit
+!endif
+
+!if too_many_print iswordof $error
+ Vos requêtes pour la version imprimable sont excessives.
+ !exit
+!endif
+
+!if chemclick_empty_data iswordof $error
+ Vous n'avez sélectionné aucun atome ou liaison. Consultez l'aide.
+ !exit
+!endif
+
+!if chemdraw_empty_data iswordof $error
+ Vous n'avez pas modifié l'applet. Complétez votre réponse.
+ !exit
+!endif
+
+!msg $error

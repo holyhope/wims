@@ -1,0 +1,53 @@
+
+
+!if $realtest=yes
+ !changeto oef/help.phtml
+!endif
+<div class="wims_content">
+!set helplist=oef,examples,format,parameters,oefparm,reply,embedans,\
+	feedback,math,draw,draw_example,oefadv,if,symtext,model,slib,command,css
+
+!set s_=!item 1 of $special_parm
+!if $s_=all
+ !for sj in $helplist
+ <br class="spacer" />
+  !read help/$sj.phtml
+ !next sj
+ </div><!-- end wims_content -->
+ !exit
+!endif
+!if $s_!=$empty
+ !if $s_=symtext
+   !read help/symtext/symtext.phtml
+   !exit
+ !endif
+ !if $s_ iswordof slib model
+  !read help/$s_.phtml $special_parm
+ !else
+   !if $s_ iswordof reply and $modtoolhelp=yes
+     !read help/$s_.phtml $(special_parm[2])
+   !else
+     !read help/$s_.phtml
+   !endif
+ !endif
+ !if $modtoolhelp!=yes
+  !set wims_menu_items=!append line back2,1,cmd=help\
+ to $wims_menu_items
+ !endif
+ </div> <!-- end wims_content -->
+ !exit
+!endif
+
+!set record_cnt=!recordcnt lang/help.phtml.$modu_lang
+<ul>
+!for s_=2 to $record_cnt
+  !set ss_=!record $s_ of lang/help.phtml.$modu_lang
+<li>
+!href cmd=help&special_parm=$(ss_[1]) $(ss_[2])
+ $(ss_[3])
+</li>
+!next s_
+</ul>
+!endif
+
+</div> <!-- end wims_content -->

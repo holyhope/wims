@@ -1,0 +1,93 @@
+
+!bound cparent within class,prog default class
+parent=$cparent
+!if $cancel!=$empty
+ :back
+ !reset title,sup,passs,pass
+ job=$parent
+ !changeto jobs/$job.proc
+!endif
+
+!if $confirm!=$empty and $courseclass!=$empty and $courseprog!=$empty
+ !if .. isin $courseclass$courseprog
+  error=illegal
+  !exit
+ !endif
+ courseclass=!replace $wims_superclass/ by in $courseclass
+ courseprog=!replace $wims_superclass/ by in $courseprog
+ !read adm/gateway/addcourse $courseprog,$courseclass
+ !if $error!=$empty
+  !goto just
+ !endif
+ course=$ac_class/$ac_course
+ !read adm/gateway/mkindex
+ !reset confirm
+ job=course
+ !changeto jobs/$job.proc
+!endif
+
+:just
+clist=
+class_password=
+lvl=!translate internal / to , in $($parent)
+lvl=$(lvl[1])
+
+!if $parent=class
+ ll=!record 0 of $classdir1/$lvl/programs
+ ll=!column 1 of $ll
+ ll=!nonempty items $ll
+ !if $ll=$empty
+  !goto end
+ !endif
+ ll=!makelist $wims_superclass/xx for xx in $ll
+ cc=!record 0 of $classdir1/$class/courses
+ cc=!column 1 of $cc
+ cc=!nonempty items $cc
+ oc=!defof class_ocourses in $classdir1/$class/.def
+ c_=
+ d_=
+ !for c in $cc
+  e_=!defof sharing_exo in $classdir1/$c/neighbors
+  !if $e_!=$empty
+   !if $c isitemof $oc
+    d_=!append item $e_ to $d_
+   !else
+    c_=!append item $e_ to $c_
+   !endif
+  !endif
+ !next c
+ clist=!listcomplement $d_ in $ll
+ clist2=$c_
+!endif
+
+!if $parent=prog
+ ll=!record 0 of $classdir1/$lvl/classes
+ ll=!column 1 of $ll
+ ll=!nonempty items $ll
+ !if $ll=$empty
+  !goto end
+ !endif
+ ll=!makelist $wims_superclass/xx for xx in $ll
+ cc=!record 0 of $classdir1/$prog/courses
+ cc=!column 1 of $cc
+ cc=!nonempty items $cc
+ c_=
+ d_=
+ !for c in $cc
+  ctest=!defof sharing_user\
+sharing_exo in $classdir1/$c/neighbors
+  !distribute lines $ctest into u_,e_
+  !if $u_!=$empty
+   d_=!append item $u_ to $d_
+  !else
+   C=!translate internal / to , in $c
+   c_=!append item $(C[1])/$(C[2]) to $c_
+  !endif
+ !next c
+ clist=!listcomplement $d_ in $ll
+ clist2=$c_
+!endif
+
+:end
+ccnt=!itemcnt $clist
+

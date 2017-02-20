@@ -1,0 +1,21 @@
+!set p_=!trim $wims_read_parm
+!if $p_=$empty or ($wims_user!=$empty and $wims_user!=supervisor)
+ !exit
+!endif
+
+!read lang/names.phtml.$lang
+!if $lang_script_exists!=yes
+ !read lang/names.phtml.en
+!endif
+
+!set cat_=!listintersect $module_category and exercise,tool,recreation
+!for c in $cat_
+ <p>$name_prompt_related
+ !for t in $p_
+  !set t_=!lookup $t in bases/sys/domain/domain.$lang
+  !default t_=$t
+  !href module=home&search_category=$c&search_keywords=$t_ $t_
+  &nbsp;
+ !next t
+</p>
+!next c

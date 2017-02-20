@@ -1,0 +1,32 @@
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!else
+ Non sono disponibili istruzioni per questa pagina.
+ !exit
+!endif
+
+:listvar
+Questo modulo permette di amministrare le variabili tecniche, in particolare permette di:
+<ul>
+ <li>creare nuove variabili tecniche (numero massimo $MAXtechvar);</li>
+ <li>modificare l'elenco dei valori possibili per ciascuna variabile;</li>
+ <li>visualizzazione/modifica dei valori delle variabili per ciascuno studente.</li>
+</ul>
+Le variabili tecniche possono essere utilizzate per compiere determinate azioni su un gruppo di studenti del corso (per esempio, per controllare l'acquisizione dei punteggi per test e esami su determinati intervalli di tempo, per inviare un messaggio a un gruppo di studenti o per mostrare un gruppo di studenti nella tabella dei risultati ...).
+<br/>
+Ci sono due tipi di variabili tecniche:
+<ul>
+ <li>Variabili tecniche locali: sono quelle definibili e modificabili all'interno di ogni corso (il loro numero massimo è $MAXtechvar).</li>
+ <li>Variabili tecniche globali: sono quelle definite a livello della struttura (coordinamento di corsi o portale di sede) in cui il corso è inserito. Queste variabili sono modificabili solo a livello di struttura (dal docente coordinatore), ma possono essere utilizzate per filtrare gli studenti all'interno del corso.</li>
+</ul>
+<h3>Creazione di una variabile tecnica locale</h3>
+Potete utilizzare il menu <span class="tt wims_code_words">$name_addvar</span> per definire
+il nome della variabile e impostarne i possibili valori
+(per i nomi delle variabili possono essere utilizzate solo lettere minuscole, il server effettuerà una conversione automatica).
+<h3>Definizione o modifica dei valori di una varibile tecnica per uno studente</h3>
+Per definire o modificare il valore di una variabile tecnica per uno studente è sufficiente cliccare su <span class="tt wims_code_words">$wims_name_part_list</span> nella pagina <span class="tt wims_code_words">$wims_name_techvar</span>, quindi cliccare sul nome dello studente nell'elenco che compare.
+<br/>
+È anche possibile modificare e inserire i valori di una variabile tecnica per tutti gli studenti attraverso un file csv (si vedano le istruzioni nella pagina <span class="tt wims_code_words">$wims_name_csv</span> per il formato di tale file).
+
+!exit
+

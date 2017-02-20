@@ -1,0 +1,44 @@
+!set p_=!word 1 of $wims_read_parm
+!bound p_ within none,header,source,html default none
+!goto $p_
+:none
+!exit
+:header
+!set m_subject=Animations in messages, documents and exercises
+!set m_date=20020414
+!set m_time=09:03:38
+!set m_from=Gang XIAO
+!set m_sender_ip=127.0.0.1
+!set m_sender_id=
+!set m_sender_class=
+!set m_email=xiao@unice.fr
+!set m_to=
+!set m_prec=O200204/4
+!set m_exists=yes
+!exit
+:source
+<pre>
+We give here a simple example of dynamic animation in a message. You can read this message unformatted to see the source.
+
+The same animation is also available in documents and OEF exercises.
+
+&lt;center>
+\draw{250,250}{
+animate 30,0.15,0
+xrange -1.1,1.1
+yrange -1.1,1.1
+linewidth 2
+triangle 0,0,cos(2*pi*s),0,cos(2*pi*s),sin(2*pi*s),blue
+}
+&lt;/center></pre>
+!exit
+:html
+We give here a simple example of dynamic animation in a message. You can read this message unformatted to see the source.
+<p>
+The same animation is also available in documents and OEF exercises.
+<p>
+<center>
+
+!read primitives.phtml 1, draw, 250,250, animate 30,0.15,0	xrange -1.1,1.1	yrange -1.1,1.1	linewidth 2	triangle 0,0,cos(2*pi*s),0,cos(2*pi*s),sin(2*pi*s),blue	 
+
+</center>

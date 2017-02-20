@@ -1,0 +1,51 @@
+!set wims_module_log=ERROR $error
+
+!if $error=bad_password
+ Contrasenya no reconeguda. Sisplau torna a provar passats uns segons.
+ <form action="#" name="chrono">
+ <span class="wims_warning">$wims_name_warning</span>! Qualsevol contrasenya enviada els propers 5
+ segons serà rebutjada!
+ <input size="1" name="clock" /> </form>
+ !exit
+!endif
+
+!if $error=in_exam
+ No pots canviar de classe quan estàs fent exàmens.
+ !exit
+!endif
+
+!if $error=recent_rafale
+ S'ha bloquejat aquest compte durant 10 minuts per activitats irregulars.
+ !exit
+!endif
+
+
+!if $error=no_cgu
+ Encara no has acceptat les condicions generals d'ús d'aquest servidor (CGU).
+ S'han d'acceptar les CGU abans de identificar-vos.
+ !form reply
+  !formcheckbox agreecgu list yes prompt $name_acceptcgu
+  [
+  !href cmd=help $name_seecgu
+  ]
+  !let save_logincgu=$auth_user
+  <div class="wimscenter wimsform">
+  <input type="submit" value="$wims_name_tosave" />
+  </div>
+
+!formend
+ !exit
+!endif
+
+!if $error=bad_loginmail
+ El nom d'usuari no es reconeix o no es va configurar cap adreça de correu electrònic al registrar-se.
+ <br />
+ Demana al teu professor que t'assigni una nova contrasenya.
+ <form action="#" name="chrono">
+ <span class="wims_warning">$wims_name_warning</span> ! Aquest procediment de recuperació de contrasenya està desactivat durant 5
+ segons &nbsp;!
+ <input size="1" name="clock" /> </form>
+ !exit
+!endif
+
+!msg $error

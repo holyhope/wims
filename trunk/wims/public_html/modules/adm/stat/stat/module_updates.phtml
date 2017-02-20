@@ -1,0 +1,103 @@
+
+!set wims_name_job = Modules Créés ou Actualisés par année
+!set wims_name_graph = Évolution des publications de modules par année
+!set wims_name_table = Fréquence de création ou d’actualisation des modules publiés
+
+
+!! Les informations ci-dessous ont été obtenues en parcourant l'ensemble des modules publiés.
+!! Les dates de creation et de mise à jour viennent de l'information "COPYRIGHT" de l'INDEX de chaque module.
+
+!! Informations obtenues via le script python ModulesStats.py > statsWIMS.txt
+
+!!<script src="themes/_packages/bower_components/Chart.js/dist/Chart.bundle.js"></script>
+<script src="scripts/js/bower_components/Chart.js/dist/Chart.bundle.min.js"></script>
+
+
+<div style="max-width: 50em;margin:auto;">
+    <h1 class="wims_title">$wims_name_job</h1>
+    <canvas id="canvas"></canvas>
+</div>
+    <p class="wimscenter">Pour les actualisations, nous prenons en compte la date de dernière mise à jour de chaque module.</p>
+<table class="wimstable" style="width:100%;max-width: 90em;font-size:75%;">
+    <caption>$wims_name_table</caption>
+    <thead>
+        <tr>
+            <th>&nbsp;</th>
+            !for _tmp= 1997 to 2016
+                <th scope="col">$_tmp</th>
+            !next
+            <th scope="col">Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">
+                Cr&eacute;ations
+                <!--div class="wims_credits">Source : feed://wims.unice.fr/wims/rss/new.xml</div-->
+            </th>
+            !reset totmodules
+            !set modules_created = 54,133,155,103,71,135,198,116,75,121,208,69,32,18,74,36,23,22,21,9
+            !for _tmp in $modules_created
+                <td>$_tmp</td>
+                !set totmodules = $totmodules + $_tmp
+            !next
+            <td><strong>$[$totmodules]</strong></th>
+        </tr>
+        <tr>
+            <th scope="row">
+                Dernières Actualisations
+                <!--div class="wims_credits">Source : feed://wims.unice.fr/wims/rss/modif.xml</div-->
+            </th>
+            !reset totmodules
+            !set modules_updated = 3,50,54,60,20,34,60,89,26,53,108,78,55,61,72,136,166,88,244,216
+            !for _tmp in $modules_updated
+                <td>$_tmp</td>
+                !set totmodules = $totmodules + $_tmp
+            !next
+            <td><strong>$[$totmodules]</strong></th>
+        </tr>
+    </tbody>
+</table>
+<script>
+
+
+    var barChartData = {
+        labels: ["1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016"],
+        datasets: [{
+            label: 'Créations',
+            backgroundColor: "rgba(54, 162, 235, 0.8)",
+            data: [$modules_created]
+        }, {
+            label: 'Dernières Actualisations',
+            backgroundColor: "rgba(75, 192, 192, 0.8)",
+            data: [$modules_updated]
+        }]
+
+    };
+    window.onload = function() {
+        var ctx = document.getElementById("canvas").getContext("2d");
+        window.myBar = new Chart(ctx, {
+            type: 'bar',
+            data: barChartData,
+            options: {
+                title:{
+                    display:true,
+                    text:"$wims_name_graph"
+                },
+                tooltips: {
+                    mode: 'label'
+                },
+                responsive: true,
+                scales: {
+                    xAxes: [{
+                        stacked: true,
+                    }],
+                    yAxes: [{
+                        stacked: true
+                    }]
+                }
+            }
+        });
+    };
+</script>
+

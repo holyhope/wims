@@ -1,0 +1,12 @@
+!!!### language independant
+!!
+!set idle_time=!defof idle_time in wimshome/log/wims.conf
+!default idle_time=!defof DF_idle_time in wimshome/public_html/bases/sys/defaults.conf
+!set list_specialparm=general,allowtype,dependency,options,\
+  contenu,session,cutt
+!read lang/names.phtml.$moduclass_lang
+!if $special_parm!=$empty
+ !bound special_parm within $list_specialparm  default contenu
+!endif
+
+!changeto lang/help.phtml.$moduclass_lang $special_parm

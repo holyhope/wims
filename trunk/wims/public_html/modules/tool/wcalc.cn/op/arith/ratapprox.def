@@ -1,0 +1,45 @@
+!goto $wims_read_parm
+
+:def
+title=Rational approximation
+synonyme=approximation by a rational
+input=function
+!exit
+
+:proc
+
+cnt=!itemcnt $formula
+!if $cnt>1
+ error=bad_formula
+ !exit
+!endif
+
+range=!rawmath $range
+range=!trim $range
+!if $range=$empty
+ error=empty_data
+ !exit
+!endif
+range=$[floor($range)]
+!if NaN isin $range or Inf isin $range or $range<2
+ error=bad_formula
+ !exit
+!endif
+
+result=!exec pari bestappr($formula,$range)
+
+!exit
+
+:output
+
+Best approximation by a rational number
+with denominator at most $range&nbsp;:
+<p><center>
+!htmlmath $formula
+ $m_approx $result
+</center>
+
+
+
+!exit
+

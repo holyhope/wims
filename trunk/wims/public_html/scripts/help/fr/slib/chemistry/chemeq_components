@@ -1,0 +1,37 @@
+slib_lang_exists_tmp=yes
+
+slib_title=Composants chimiques
+slib_parms=4\
+ , équation chimique\
+ , [optionnel] le mot <span class="tt">htmlbuttons</span> suivi d'une espace et d'un nombre\
+ , [optionnel] le mot <span class="tt">shuffle</span>\
+ , [optionnel] une liste de mots à ajouter, encadrés par des crochets. Certains mots sont magiques :\
+ <span class="tt">extra</span> se développe en '+,->' ; <span class="tt">redox_extra</span> se développe en 'H^+_aq,OH^-_aq,H2O,e^-'.
+
+slib_out= Renvoie une matrice des réactifs en première ligne \
+et des produits en seconde ligne. <br/>Si le paramètre <span class="tt">htmlbuttons</span> \
+est spécifié, La sortie est un code pour faire des bouttons cliquables.\
+Puis, le nombre fait référence à un champ de réponse qui recevra les \
+résultats des évènements du bouton. <br/>Si le paramètre <span class="tt">shuffle</span> est\
+spécifié, les boutons sont mélangés. <br/>Ces boutons peuvent être \
+rendus actifs à l'aide du code javascript ci-dessous, à ajouter à la page : \
+<pre style="color:green;">\
+&lt;script type="text/javascript"&gt;\
+function getInput(n){\
+  f=window.document.forms[0];\
+  for(i=0; i&lt;f.elements.length; i=i+1){\
+    if (f.elements[i].name=="reply"+n) { \
+      return f.elements[i];\
+    }\
+  }\
+  return null;\
+}\
+function appendToInput(n,msg){\
+  var i=getInput(n);\
+  i.value=i.value+msg+' ';\
+  i.focus();\
+}\
+&lt;/script&gt;\
+</pre>
+
+slib_comment=Utiliser la syntaxe acceptée par la commande chemeq

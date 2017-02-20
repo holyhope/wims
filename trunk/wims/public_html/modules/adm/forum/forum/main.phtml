@@ -1,0 +1,37 @@
+!if robot isin $session
+ !exit
+!endif
+
+!if $wims_class=
+  !read adm/language lang/names.phtml
+!else
+  !read adm/class/classlang names.phtml
+  !set modu_lang=$moduclass_lang
+!endif
+
+!if $(module_title_$modu_lang)!=
+  !set module_title=$(module_title_$modu_lang)
+!endif
+!read lang/names.phtml.$modu_lang
+
+!header
+
+<h3 class="wimscenter">--- $(n_$type) ---</h3>
+!if $error!=$empty
+<div class="wims_msg alert">
+ !read lang/msg.phtml.$modu_lang
+</div>
+!else
+ !read $type.phtml
+!endif
+ <div class="wimscenter">
+!for t in list
+ !if $t!=$type
+  !href module=$module&type=$t $(n_$t)
+&nbsp;&nbsp;
+ !endif
+!next t
+!!href target=wims_help module=help/main&chapter=3 $wims_name_Explanations
+</div>
+
+!tail

@@ -1,0 +1,78 @@
+limit_class=300
+!if $stepcl=$empty
+  listyear=!listfile -t $wims_home/backup/oldclasses
+  listyear=!lines2items $listyear
+  listyear=!words2items $listyear
+  !if $listyear=$empty
+    error=noyear
+    !exit
+  !endif
+  !set cnt=0
+  !for j in $listyear
+    cnt_=!sh cd $wims_home/backup/oldclasses/$j; find . -maxdepth 1 -type f | wc -l | awk '{print $1}'
+    !if $cnt_ < $limit_class
+     listclass$j=!listfile -t $wims_home/backup/oldclasses/$j/*.tgz
+     listclass$j=!replace internal .tgz by in $(listclass$j)
+     listclass$j=!replace internal $wims_home/backup/oldclasses/$j/ by in $(listclass$j)
+     listclass$j=!words2items $(listclass$j)
+     listclass$j=!sort numeric items $(listclass$j)
+     cnt_=!itemcnt $(listclass$j)
+    !else
+      listclass$j=toomuch
+    !endif
+      cnt=$[$cnt_+$cnt]
+  !next
+!else
+  !if $clrestore=$empty
+    error=noclass
+    !reset stepcl test
+    !exit
+  !endif
+  !if $stepcl=1
+    date=!char 1 to 8 of $wims_now
+    month=!char 5 to 6 of $date
+    !if $month=12
+      date=$[$date+10000 - 1100]
+    !else
+      date=$[$date+100]
+    !endif
+    class=!replace internal _ by , in $clrestore
+    !distribute item $class into year,class
+    class=!nospace $class
+    !if $class=$empty
+      !if $clrestore1=$empty
+        error=noclass
+        !exit
+      !else
+        class=$clrestore1
+        class=!text select 1234567890 in $class
+        !if $class=$empty
+          error=noclass
+          !exit
+        !endif
+      !endif
+    !endif
+    test=!sh cd $wims_home/backup/oldclasses/$year; ls $class.tgz
+    !if $test!=$class.tgz
+      error=classnotexists
+      !exit
+    !endif
+    test=!sh cd $wims_home\
+    cp backup/oldclasses/$year/$class.tgz log/classes/\
+    cd $wims_home/log/classes/\
+    if [ ! `ls -d $class | wc -c` -eq 0 ] ; then echo "class already existing; nothing is done" ; exit ; fi ;\
+    tar xzf $class.tgz\
+    perl -np -i -e "s:class_expiration=.*:class_expiration=$date:g" $class/.def\
+    rm $class.tgz\
+    cd $wims_home; mkdir -p backup2; mv backup/oldclasses/$year/$class.tgz backup2
+    !if $test!=$empty
+      error=$test
+      !reset test stepcl
+      !sh cd $wims_home/log/classes/ ; rm -f $class.tgz
+      !exit
+    !else
+      !increase stepcl
+    !endif
+  !endif
+!endif
+

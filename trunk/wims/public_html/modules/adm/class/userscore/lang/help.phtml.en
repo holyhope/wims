@@ -1,0 +1,79 @@
+
+!if $special_parm!=$empty and $special_parm_!=$empty
+ !changeto lang/help.$moduclass_lang/$special_parm.phtml
+!endif
+
+!read adm/title.phtml 1\
+\
+Severity levels of worksheets
+
+!if $wims_user=supervisor
+<p>
+The server computes some averages for each sheet of each participant on each
+sheet: the  percentage I0 of points obtained with respect to the number 10*n of points
+required, the average I1 of the n best scores, the minimum I2 of the n best scores
+together with the quality Q of points obtained on the exercises of the worksheet.
+</p><p>
+ Here are the formulas for the computation of the grades, according
+ to the teacher choice (severity level and indicator I).
+</p>
+
+!reset table_center
+$table_header
+$table_hdtr<th>Level</th><th>Formula</th><th>Explanation</th></tr>
+$table_tr<td>0</td><td>$scoremax max(x,y)
+ </td><td>Very lenient: maximum between percentage and quality.</td></tr>
+$table_tr<td>1</td><td>$scoremax x
+ </td><td>Quality is not taken into account. You get maximum of grade
+ once all the required work is done.</td></tr>
+$table_tr<td>2</td><td>$scoremax x y<sup>0.3</sup>
+ </td><td>Quality has only slight effect over the grade.
+$table_tr<td>3</td><td>$scoremax x y<sup>0.5</sup>
+ </td><td>More effect of quality.</td></tr>
+$table_tr<td>4</td><td>$scoremax x y
+ </td><td>To have a grade of $scoremax, you must gather all required points
+  (100%) without making any error (quality=10).</td></tr>
+$table_tr<td>5</td><td>$scoremax x<sup>2</sup> y
+ </td><td>Unfinished work is over-punished.</td></tr>
+$table_tr<td>6</td><td>$scoremax x<sup>2</sup> y<sup>2</sup>
+ </td><td>Any mistake is over-punished.</td></tr>
+$table_end
+
+Remark : For level 0 and 1, if the quality of points is less than 1 for an
+exercise, the percentage of points obtained
+become 0% for this exercise when x is computed ; if the quality of points is betwwen 1 and 2,
+the percentage of points obtained for this exercise is divided by 2
+when I is computed.
+
+!else
+Pour cette feuille, votre enseignant a choisi le mode de calcul suivant
+de la note.
+Pour chacun des indicateurs suivants, on calcule la moyenne pour votre travail pour :
+<ul>
+<li>
+!if $help_sw=0
+  le quotient I des points cumulés par le nombre de points demandés 10*n
+!endif
+!if $help_sw=1
+la moyenne I des n meilleures notes,
+!endif
+!if $help_sw=2
+ le minimum I des n meilleures notes
+!endif
+</li>
+<li>
+la qualité Q des points obtenus sur les exercices.
+</li>
+</ul>
+
+Si la note de qualité est inférieure à 1 pour un exercice,
+I est mis à 0 pour cet exercice  ;
+si la note de qualité est comprise entre 1 et 2,
+I est divisé par 2 lors du calcul de la note de la feuille.
+
+</p><p>
+Ces moyennes sont ramenées entre 0 et 1 et
+ la note de la feuille est calculée comme
+\($scoremax * $(list[$help_level+1;]) \)
+!endif
+

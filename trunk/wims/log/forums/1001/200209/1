@@ -1,0 +1,32 @@
+!set p_=!word 1 of $wims_read_parm
+!bound p_ within none,header,source,html default none
+!goto $p_
+:none
+!exit
+:header
+!set m_subject=Performance bug in 3.20
+!set m_date=20020916
+!set m_time=09:44:53
+!set m_from=Gang XIAO
+!set m_sender_ip=127.0.0.1
+!set m_sender_id=
+!set m_sender_class=
+!set m_email=xiao@unice.fr
+!set m_to=
+!set m_prec=O200209/1
+!set m_exists=yes
+!exit
+:source
+<pre>
+There is an important performance bug in WIMS-3.20:
+
+Since 3.20, the spawning of child processes makes use of non-blocking waiting loop to keep runaway processes in check. This loop consumes quite a lot of CPU time (the parent process is always running whatever the child is doing), and slows down the response time.
+
+This bug will be fixed in the next (bugfix) release due out in a few days, with the waiting loop replaced by an alarm based on the signal SIGALRM.</pre>
+!exit
+:html
+There is an important performance bug in WIMS-3.20&#58;
+<p>
+Since 3.20, the spawning of child processes makes use of non-blocking waiting loop to keep runaway processes in check. This loop consumes quite a lot of CPU time (the parent process is always running whatever the child is doing), and slows down the response time.
+<p>
+This bug will be fixed in the next (bugfix) release due out in a few days, with the waiting loop replaced by an alarm based on the signal SIGALRM.

@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xml:lang="nl" xmlns="http://www.w3.org/1999/xhtml" xmlns:mathml="http://www.w3.org/1998/Math/MathML">
+ <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="keywords" content="Javascript wims calculator" />
+    <meta name="description" content="Simple Javascript wims calculator" />
+     <title>WIMS Simple Javascript Calculator</title>
+  </head>
+<body>
+
+<script language="javascript" type="text/javascript">
+//<![CDATA[
+    function rekenuit(){
+	var input=document.Calc.Input.value;
+	var result;
+	if(input.indexOf("^")!=-1 || input.indexOf("sqrt")!=-1 ){
+	    if( input.indexOf("+")>0 ||  input.indexOf("-")>0 ||  input.indexOf("*")>0  ||  input.indexOf("/")>0  ){
+		alert("Nee,\n deze rekenmachine is alleen voor een enkele berekening.");
+		document.Calc.Input.value="" ;return;
+	    }
+	    if(input.indexOf("^")!=-1){
+		input=input.split("^");
+		if(input.length>2){alert("Nee,\n deze rekenmachine is alleen voor enkele berekeningen.");document.Calc.Input.value="";return;}
+		result=Math.pow(input[0],input[1]);
+	    }
+	    else
+	    {
+		input=input.replace(/[a-z\(\)]/g,'');
+		result=Math.sqrt(input);
+	    }
+	}
+	else
+	{
+	    var result=eval(input);
+	}
+	document.Calc.Input.value=result;
+	<!-- setTimeout("window.close()", 50000); -->
+    }
+//]]>
+</script>
+<form name="Calc" action="">
+
+<table summary="" border="1" bgcolor="black">
+    <tr>
+    <th>
+	<input type="text"   name="Input" size="12" style="font-size:22px;background-color:lightgreen" />
+    </th>
+    </tr>
+    <tr>
+    <th>
+	<table summary="">
+	    <tr>
+	    <th>
+		<table summary="">
+		    <tr>
+		    <th bgcolor="black" align="center">
+	    		<input style="font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px" type="button" name="one"   value="1" onclick="Calc.Input.value += '1'" />
+		        <input style="font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px" type="button" name="two"   value="2" onclick="Calc.Input.value += '2'" />
+			<input style="font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px" type="button" name="three" value="3" onclick="Calc.Input.value += '3'" />
+		    </th>
+		    </tr><tr>
+		    <th>
+			<input style="font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px" type="button" name="four"  value="4" onclick="Calc.Input.value += '4'" />
+		        <input style="font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px" type="button" name="five"  value="5" onclick="Calc.Input.value += '5'" />
+		        <input style="font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px" type="button" name="six"   value="6" onclick="Calc.Input.value += '6'" />
+		    </th>
+		    </tr><tr>
+		    <th>
+			<input style="font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px" type="button" name="seven" value="7" onclick="Calc.Input.value += '7'" />
+		        <input style="font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px" type="button" name="eight" value="8" onclick="Calc.Input.value += '8'" />
+		        <input style="font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px" type="button" name="nine"  value="9" onclick="Calc.Input.value += '9'" />
+		    </th>
+		    </tr><tr>
+		    <th>
+			<input style="font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px" type="button" name="zero"  value="0" onclick="Calc.Input.value += '0'" />
+		        <input style="font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px" type="button" name="punt"  value="." onclick="Calc.Input.value += '.'" />
+		        <input style="background-color:orange;font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px" type="button" name="clear" value="C" onclick="Calc.Input.value = ''" />
+		    </th>
+		    </tr>
+		</table>
+    	    </th>
+	    <th valign="top">
+		<table summary="">
+		    <tr>
+		    <th bgcolor="black" valign="top" align="center">
+			<input style="font-weight:normal;text-align:center;font-size:17px;width:40px;height:30px" type="button" name="plus"  value="+" 	onclick="Calc.Input.value += '+'" />
+			<input style="font-weight:normal;text-align:center;font-size:17px;width:40px;height:30px"  type="button" name="minus" value="&minus;" onclick="Calc.Input.value += '-'" />
+		    </th>
+		    </tr><tr>
+		    <th>
+			<input style="font-weight:normal;text-align:center;font-size:17px;width:40px;height:30px"  type="button" name="times" value="x" onclick="Calc.Input.value += '*'" />
+			<input style="font-weight:normal;text-align:center;font-size:17px;width:40px;height:30px"  type="button" name="div"   value="&frasl;" onclick="Calc.Input.value += '/'" />
+	    	    </th>
+		    </tr><tr>
+		    <th>
+			<input style="font-weight:normal;text-align:center;font-size:17px;width:40px;height:30px"  type="button" name="pwr"  value="^" 	onclick="Calc.Input.value += '^'" />
+			<input style="font-weight:normal;text-align:center;font-size:17px;width:40px;height:30px"  type="button" name="sqrt"  value="&#8730;" 	onclick="Calc.Input.value = 'sqrt('+Calc.Input.value+')'" />
+		    </th>
+		    </tr><tr>
+		    <th>
+			<input style="font-weight:normal;text-align:center;font-size:17px;width:40px;height:30px" type="button" name="DoIt"  value="=" onclick="javascript:rekenuit();" />
+			<input style="background-color:red;font-weight:normal;text-align:center;font-size:14px;width:40px;height:30px" type="button" name="exit"  value="EXIT" onclick="javascript:window.close();" />
+		    </th>
+		    </tr>
+		</table>
+	    </th>
+	    </tr>
+	</table>
+    </th>
+    </tr>
+</table>
+</form>
+</body>
+</html>

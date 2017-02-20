@@ -1,0 +1,49 @@
+!!! fichier de présentation de l'étape 3 !!!
+<div class="wimscenter">
+  <span class="bold larger" style="color:darkcyan"> Etape $etape: <u>saisie des types des fonctions</u> </span>
+  <br />
+  </div>
+<table class="wimscenter">
+  <tr>
+    <td bgcolor=lightblue>
+      Indiquez le type de la valeur rendue
+      pour chacune des fonctions précédemment saisies.
+    </td>
+  </tr>
+</table>
+
+<br />
+
+  <table class="wimscenter wimsborder" style="width:80%">
+    <tr>
+      <th bgcolor=white>
+        Fonction
+      </th>
+      <th bgcolor=white>
+        Type de la valeur rendue
+      </th>
+    </tr>
+    !for i=1 to $foncsnb
+    !set fonc=!trim $(foncsrecord[$i;])
+    !set fonc=!char 2 to -2 of $fonc
+      <tr>
+        <td style="background-color:$(coulors[$i%3+1;])">
+	  $fonc
+	</td>
+	<td style="background-color:$(coulors[$i%3+1;])">
+	  <select name="typnb">
+            !for j=1 to $Nbtyp
+              <option value="$j"
+                 !if $(foncstypList[$i])=$j
+		   selected="selected"
+                 !endif
+               >$(typafList[$j;])
+               </option>
+	    !next j
+          </select>
+	</td>
+      </tr>
+    !next i
+  </table>
+
+!read comsDir/valideb

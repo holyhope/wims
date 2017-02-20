@@ -1,0 +1,147 @@
+!reset inputsize
+!if $wims_read_parm=$empty
+ !exit
+!endif
+!if $wims_read_parm=help
+ !read help/$lang/special/drawinput.phtml
+ !exit
+!endif
+
+!set parm=!replace internal $	$ by $\
+$ in $wims_read_parm
+
+!set code=!item 1 of $parm
+!set code=!declosing $code
+!set code=!rows2lines $code
+!set code=!trim $code
+
+!set inputsize=!item 2 to -1 of $parm
+!set parm=!line 2 to -1 of $inputsize
+!set inputsize=!line 1 of $inputsize
+
+!distribute items $inputsize into bigsize,inputsize,option
+
+!set bigsize=!translate x, to $  $ in $bigsize
+!distribute words $bigsize into bigsizex,bigsizey
+
+!set inputsize=!item 1 of $inputsize
+!default inputsize=1x5
+!set inputsize=!translate x to , in $inputsize
+!!set inputsize=!items2words $inputsize
+
+!if $printing=yes or $cmd=hint
+ !read oef/canvasdraw.phtml $bigsizex,$bigsizey\
+$code
+ !exit
+!endif
+
+!! one parse the data for canvadraw to find the number of the line
+!! where input are written.
+!set parmcnt=!linecnt $parm
+
+!reset hlist positionlist
+!set m__=0
+!reset codeinput
+
+!for tt = 1 to $parmcnt
+   !set ld=!line $tt of $parm
+   !reset inputsize_tmp
+   !distribute item $ld into m_,xy_,inputsize_tmp,css
+   !if $css!=$empty and $tt=1
+     !set codeinputcss=inputstyle $css
+   !endif
+   !set xy_=!replace internal x by , in $xy_
+   !distribute items $xy_ into x_,y_
+   !default inputsize_tmp=$inputsize
+   !set reply_tmp=!nospace $m_
+   !set rep_tmp=!replace internal reply by r in $reply_tmp
+   !set n_=!text select 0123456789 in $reply_tmp
+   !set n_=$[$n_]
+   !if debug iswordof $m_oefenv and ?analyze notin $(replygood$n_)
+     !read oef/special/debug.input $n_
+   !endif
+   !set inputsize_tmp=!translate x to , in $inputsize_tmp
+   !if $(inputsize_tmp[2])=$empty and $(inputsize_tmp[1])!=$empty
+       !set inputsize_tmp=1,$inputsize_tmp
+   !endif
+   !set inputsize_tmp=!nospace $inputsize_tmp
+   !default inputsize_tmp=$inputsize
+
+   !if $n_!=$empty and $(replytype$n_) iswordof numeric nocase case atext \
+     range litexp algexp formal equation function default raw symtext set aset fset
+    !set embedded=!append item r$n_ to $embedded
+    !increase m__
+    !set codeinput=!append line input $[$x_],$[$y_],$(inputsize_tmp[2]),1,$(reply$n_)$ $ to $codeinput
+    !set hlist=$hlist<input type="hidden" id="oefvar$[$m__]" name="reply$n_" value="" />
+    !set oef_js_submit=!append word my_canvasdraw$m__(); to $oef_js_submit
+    !set list_$n_=$m__
+  !endif
+!next
+!default codeinputcss=inputstyle background-color:white;font-size:1.1em;
+
+!set oef_js_submit=!append word my_canvasdraw(); to $oef_js_submit
+<script type="text/javascript">
+/*<![CDATA[*/
+!for m = 1 to $m__
+   function my_canvasdraw$m() {
+     fun = eval('read_canvas'+canvas_scripts[0]);
+     var p= new Array(); p = fun();
+     document.getElementById('oefvar' + $m).value=p[$m-1];
+   }
+!next
+/*]]>*/
+</script>
+!set code_=!nonempty lines $bigsizex,$bigsizey\
+$code\
+$codeinputcss\
+$codeinput
+
+!if $q_form=yes
+ $hlist
+ !read oef/canvasdraw.phtml $code_ $ $
+!else
+ !reset code_r
+ !read themes/$wims_theme/oefcolors
+ !if $oef_indbad=$empty
+   !read themes/oefcolors
+ !endif
+ !distribute item $oef_indbad,$oef_indgood,$oef_indforget, $oef_indpartial, $oef_indprec\
+   into colorr_bad, colorr_good, colorr_forget, colorr_partial, colorr_prec
+ !for c in $embedded
+   !set ii=!replace internal r by in $c
+   !set rep$ii=!replace internal $\
+$  by , in $(reply$ii)
+   !default reply_$ii=$(reply$ii)
+   !set tt=!word 1 of $(replygood$ii)
+   !if $tt!=?analyze
+    !set cl=$(colorr_$(diareply$ii))
+    !if $(precreply$ii)=yes
+       !set cl=$(colorr_prec)
+    !endif
+    !if $(partialgood$ii)=yes
+       !set cl=$(colorr_partial)
+    !endif
+   !else
+    !set cl=$colorr_ana
+   !endif
+   !!  if nextline is decommented, no analyze at the end.
+   !!set embedded_analyze=!append item $i to $embedded_analyze
+   !set embedded_bracket=$embedded_bracket [$ii]
+   !set replyname$ii=[$ii]
+   !set code_r_=!line $(list_$ii) of $codeinput
+   !set code_r_=!item 1 to 3 of $code_r_
+
+   !set code_r=$code_r\
+inputstyle color:$cl;\
+$code_r_,0,$(reply_$ii) $(replyname$ii)
+   !set replyname$m_=[$m_]
+ !next
+
+!set code_r_=!nonempty lines $bigsizex,$bigsizey\
+$code\
+$code_r
+
+ !read oef/canvasdraw.phtml $bigsizex,$bigsizey\
+$code_r_
+
+!endif

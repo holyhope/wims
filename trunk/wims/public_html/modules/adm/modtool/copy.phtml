@@ -1,0 +1,44 @@
+!if $error!=$empty
+ !goto end
+!endif
+
+!if $originheader!=$empty and $job=move
+ <span class="wims_warning">$wims_name_warning</span> ! $name_warning1 $wims_name_or
+ !href cmd=reply&jobreq=copy $name_copy
+.
+!endif
+
+!if $target=$empty
+ !form reply
+ <input type="hidden" name="jobreq" value="$job" />
+ !distribute item $name_choice into P_copy,P_move,L_copy,L_move
+ !if $originheader!=$empty
+  $(L_$job) <span class="wims_mod_title">$otit</span> (<span class="tt wims_fname">$original2</span>):
+ !else
+  $(P_$job) $name_public_module
+ !endif
+ !set wims_ref_class=wims_button_help
+!href cmd=help&special_parm=addressing $wims_name_help
+ !read scripts/addressform.phtml
+ !formend
+ !if $originheader!=$empty and $o1 isitemof $zonelist,local
+  <p>
+  <span class="wims_warning">$wims_name_warning</span>. $name_warning2
+  </p>
+ !endif
+ !if $originheader!=$empty and ~ notin $original2
+  <p>
+  <span class="wims_warning">$wims_name_warning</span>. $name_warning3
+  </p>
+ !endif
+!endif
+
+:end
+!if $original2!=$empty and $originheader=$empty
+ !default otit=!module title $original2
+ <p>
+ !href module=$original2 $name_backto
+ <p>
+!endif
+
+

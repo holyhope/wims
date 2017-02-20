@@ -1,0 +1,111 @@
+!if class = $doctype
+ !defread wimshome/log/classes/$wims_class/.def
+ !default author=$class_supervisor
+ !default email=$class_email
+!endif
+
+!set wims_form_method=post
+!form reply
+<fieldset class="property_fields halfwidth blockcenter">
+    <legend>$n_properties</legend>
+    <div class="field box">
+        <label for="titr">$wims_name_title</label>
+        <input type="text" size="40" id="titr" name="titr" value="$tit" />
+    </div>
+    <div class="field box">
+        <label for="descr">$wims_name_Description</label>
+        <input type="text" size="40" id="descr" name="descr" value="$desc" />
+    </div>
+    <div class="field box">
+        <label for="authorr">$wims_name_Author</label>
+        <input type="text" size="40" id="authorr" name="authorr" value="$author"
+          placeHolder="$wims_name_firstname, $wims_name_lastname" />
+        <div class="formHelp">$wims_name_firstname, $wims_name_lastname</div>
+    </div>
+    <div class="field box">
+        <label for="emailr">$wims_name_email</label>
+        <input type="text" size="40" id="emailr" name="emailr" value="$email" />
+    </div>
+    <div class="field box fullwidth">
+        <label for="headerr">$n_header</label>
+        !set header=!translate internal $   $ to $\
+$ in $header
+        !set hl=!linecnt $header
+        !set hr=$[max(3,min($hl+2,10))]
+        !set header=!reinput $header
+        <div class="formHelp">css, js, etc.</div>
+        <textarea cols="40" rows="$hr" id="headerr" name="headerr">$header</textarea>
+    </div>
+
+    !reset headerr
+    !set doctocr=$doctoc
+    <div class="field box">
+        <strong class="radio_label">$n_doctoc</strong>
+            !set wims_ref_target=wims_internal
+            !set wims_ref_class=wims_button_help float_right
+            !href cmd=reply&doc=$helpd&job=read&block=doctochelp $wims_name_help
+            !reset wims_ref_target
+            !set wims_ref_class=wims_formradio
+            !formradio doctocr list yes,no prompt $wims_name_yes,$wims_name_no
+    </div>
+    !set docopenr=$docopen
+    !default docopenr=0
+!if class != $doctype
+    <div class="field box">
+        <label for="copyrightr">$wims_name_Copyright:</label>
+        !set copyrightr=$copyright
+        !default copyrightr=gnu
+        !formselect copyrightr list gnu,opl,private prompt\
+            GNU Free Documentation License,\
+            Open Publication License,\
+            $n_copyright2
+    </div>
+    <div class="field box">
+        <label for="docopenr">$name_public</label>
+        !formselect docopenr list yes,no prompt $wims_name_yes, $wims_name_no
+    </div>
+    <div class="field box">
+        <label for="dlangr">$wims_name_Language:</label>
+        <div class="formHelp">(all en fr es it de cn ca nl)</div>
+        !default dlang=all
+        <input size="14" id="dlangr" name="dlangr" value="$dlang" />
+    </div>
+    !if $job=creat
+        <div class="field box">
+            <label for="coder">$n_codedoc:</label>
+            <input type="password" size="$codemax" maxlength="$codemax" id="coder" name="coder" />
+            <label for="coder2">$name_code5:</label>
+            <input type="password" size="$codemax" maxlength="$codemax" id="coder2" name="coder2" />
+            <div class="formHelp">$name_code4</div>
+        </div>
+        <div class="field box">
+            <label for="coderr">$n_codedocr:</label>
+            <input type="password" size="$codemax" maxlength="$codemax" id="coderr" name="coderr" />
+            <label for="coder2">$name_code5:</label>
+            <input type="password" size="$codemax" maxlength="$codemax" id="coderr2" name="coderr2" />
+            <div class="formHelp">$name_coder4</div>
+        </div>
+    !endif
+!else
+    <div class="field box">
+        <label for="docopenr">$name_participant</label>
+        !formselect docopenr list 0,1,2 prompt \
+$wims_name_Docstatus
+    </div>
+!endif
+    <div class="wimscenter wimsform">
+        <input type="submit" id="rEg" name="rEg" value="$wims_name_tosave" />&nbsp;
+        <input type="submit" id="abandon" name="abandon" value="$wims_name_giveup" class="wims_secondary_button" />
+    </div>
+
+</fieldset>
+
+!formend
+
+<p>
+    !if class != $doctype
+        !read lang/names.phtml.$modu_lang public
+    !else
+        $name_visible
+    !endif
+</p>

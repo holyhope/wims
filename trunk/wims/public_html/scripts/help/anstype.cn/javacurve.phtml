@@ -1,0 +1,76 @@
+
+<b>画直线、多边形、点、线段、向量、矩形.</b>
+(名称: <span class="tt">javacurve</span>)
+<br/>
+这种回答类型允许用户在一个图形上画直线、多边形、线段、向量、矩形
+或点.
+
+<p>
+标准答案用矩阵形式给出 (行分隔符是分号 `;').
+第一行是图形的 URL(所在地址).
+第二行是对用户图形的测试条件, 见下表. 如果想要根据条件来分析回答,
+那么用一个空变量作为正确答案,
+在栏目 <span class="tt wims_code_words">embed</span>
+的第 2 行填入图形的地址 URL, 第 3 行填入下表所示的类型
+(例如 <span class="tt wims_code_words">points</span>,
+<span class="tt wims_code_words">line</span> ...).
+</p>
+!set p=anstype.$lang/javacurve
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td class="tt">
+!line 1 of $l_
+    </td><td>
+!line 2 to -1 of $l_
+   </td>
+   </tr>
+  !next
+$table_end
+可把选项加到 :
+<span class="tt wims_code_words">precision</span>,
+<span class="tt wims_code_words">color1</span> (回答的颜色),
+<span class="tt wims_code_words">color2</span> (正确答案的颜色).
+例如
+<pre>
+\answer{}{...}{type=jsxgraphcurve}{option=color1=black color2=#B4B4FF precision=8}
+</pre>
+对精度 <span class="tt wims_code_words">precision</span> 的选取要多加小心 ...
+
+<p>
+建议把输入栏嵌入陈述中. 它不能与其它输入栏共存,
+因为任何用户点击图像都会把表格发送出去.
+图像的大小记录在 <span class="tt">\embed</span> 的第二个变量内， 格式是 <span class="tt">L x H</span>,
+例如 <span class="tt">\embed{reply</span><em>n</em>, <span class="tt">300 x 400}</span>.
+
+</p>
+一般说来, 变量
+<span class="tt">\reply</span><em>n</em> 被用于 \feedback 记录了回答时的点击 (x1,...),
+其中 <em>n</em> 是输入栏的号码.
+不过以下情形是例外:
+<ul><li>
+在 <span class="tt">points</span> 的情形,
+第一行是点击坐标(以点素pixel为单位)的表,
+第二行是 <span class="tt">n1,n2,n3</span>, 其中
+<span class="tt">n1</span> 正确点的个数, <span class="tt">n2</span> 是散失点的个数,
+<span class="tt">n3</span> 是错误点的个数. 第三行是找对的点的个数表.
+</li><li>
+在 <span class="tt">circle</span> 的情形, 第一行是点击坐标以及半径的表,
+第二行是 <span class="tt">n1,n2</span>,
+当中心正确时 <span class="tt">n1</span> 取 1, 否则取 0,
+当半径正确时 <span class="tt">n2</span> 取 1, 否则取 0.
+</li>
+<li>
+在 <span class="tt">sline</span> 的情形, 第一行是点击坐标表,
+第二行是 <span class="tt">n1,n2,n3</span>,
+当起点正确时 <span class="tt">n1</span> 取 1, 否则取 0,
+当斜率正确时 <span class="tt">n2</span> 取 1, 否则取 0,
+当指向正确时 <span class="tt">n3</span> 取 1, 否则取 0.
+</li>
+</ul>

@@ -1,0 +1,37 @@
+!! test if test_id satisfies the condition given in test_filter
+!! one of the line must be filled
+!! script adm/vfilter/listvarfilter.proc have to be executed before this script.
+!!output : var_filter_test
+
+!reset var_filter_test
+!set test_user=!line 1 of $wims_read_parm
+!set test_filter_=!line 2 to -1 of $wims_read_parm
+!set test_id=!line 1 of $wims_read_parm
+!set test_filter_cnt=!linecnt $test_filter_
+
+!if $tv_Sclass=$empty
+ !exit
+!endif
+
+!for u=1 to $test_filter_cnt
+   !set testf=1
+   !set sel=$(test_filter_[$u;])
+   !set sel_cnt=!itemcnt $(test_filter_[$u;])
+   !for j=1 to $sel_cnt
+     !set sel1=!replace internal = by , in $(sel[$j])
+     !set num_=!positionof item $(sel1[1]) in $tv_listname
+     !set don_=!line $num_ of $tv_listtechvar
+     !distribute item $don_ into name_,clsid_,lnum_
+     !set clsid_=!item $num_ of $tv_listcode
+     !set val_=!defof user_techvar_$(clsid_) in wimshome/log/classes/$tv_Sclass/.users/$test_user
+     !if $val_ issametext $(sel1[2])
+       !set testf=!append item 1 to $testf
+     !else
+       !set testf=!append item 0 to $testf
+     !endif
+     !reset val_
+   !next j
+   !if 0 notin $testf
+     !set var_filter_test=1
+   !endif
+!next u

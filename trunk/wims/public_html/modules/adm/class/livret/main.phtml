@@ -1,0 +1,74 @@
+!!##!! language independant
+!if $job2=print and $job isitemof todo,work
+ !changeto print$job.phtml
+!endif
+!if $job=modpalier
+ !let js=!record 0 of js/chooselist.js
+ !let wims_html_header=!append line $js to $wims_html_header
+!endif
+!read adm/css.phtml
+!header1
+<script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>\
+
+!if $cmd=help
+ !changeto help.phtml
+!endif
+
+!headmenu
+
+!if $error!=$empty
+ <div class="wims_msg alert">
+ !read lang/msg.phtml.$moduclass_lang  $error
+ </div>
+ !reset job
+!endif
+
+!read $job.phtml
+
+!if $wims_user=supervisor
+ !if config notin $job
+  !set wims_menu_items=!append line config,1,cmd=renew&job=config to $wims_menu_items
+ !endif
+ !if save notin $job
+  !set wims_menu_items=!append line save,1,cmd=renew&job=save to $wims_menu_items
+ !endif
+ !if $livret_nbcomp<$maxcomp
+  !set wims_menu_items=!append line add_competence,1,cmd=renew&job=addcomp&comp=$[$livret_nbcomp+1] to $wims_menu_items
+ !endif
+ !set wims_menu_items=!append line itemsep,0,\
+ refresh,1,cmd=reply\
+to $wims_menu_items
+ !reset parmuser1 parmuser3
+ !if $user!=$empty and $job!=userlist
+    !set parmuser1=&job=getuser&getuser=$user
+    !set parmuser3=&job=userprop&getuser=$user
+    !set parmuser4=&job=exobyday&user=$user
+    !set sc=scores
+    !set ac=activity1
+ !else
+    !set sc=Score1
+    !set ac=activity
+ !endif
+ !set wims_menu_items=!append line itemsep,0,\
+ account,1,module=adm/class/usermanage$parmuser3\
+ $sc,1,cmd=new&module=adm/class/userscore$parmuser1\
+ $ac,1,cmd=new&module=adm/class/activity$parmuser4\
+ to $wims_menu_items
+!endif
+
+!if $wims_user=supervisor
+  !if userlist notin $job
+   !set wims_menu_items=!append line itemsep,0,\
+  part_list,1,cmd=renew&job=userlist\
+to $wims_menu_items
+
+  !endif
+  !set wims_menu_items=!append line itemsep,0,\
+  usermanage,1,cmd=new&module=adm/class/usermanage\
+to $wims_menu_items
+!else
+  !set wims_menu_items=!append line myscore,1,cmd=new&module=adm/class/userscore\
+to $wims_menu_items
+!endif
+
+!tail

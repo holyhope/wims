@@ -1,0 +1,16 @@
+!if $wims_user!=supervisor and $wims_class!=$empty and $wims_alertmsg!=$empty
+ <!-- _widgets/alertchat.phtml -->
+ <div>
+    !!Ici le nom de l'enseignant ?
+</div>
+ <div class="wims_alertchat talk-bubble triangle shadow round left-top">
+    <div class="talktext">
+     !if adm isin $module or $module=home
+       !set wims_ref_class=wims_button small float_right
+       !href module=adm/class/motd&job=readen $wims_name_readen
+     !endif
+     <p>$wims_alertmsg</p>
+    </div>
+ </div>
+ <!-- end _widgets/alertchat.phtml -->
+!endif

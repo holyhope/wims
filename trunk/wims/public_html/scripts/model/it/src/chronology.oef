@@ -1,0 +1,137 @@
+type=game
+textarea="data"
+
+:Linea del tempo
+Eventi da ordinare secondo l'ordine cronologico.
+<p>
+Autore del modello: Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+</p>
+:%%%%%%%%%%%%%%%%%      ATTENZIONE      %%%%%%%%%%%%%%%%%%%%
+
+Se si rimuovono le indicazioni del modulo modelli (le righe che
+cominciano con ':') è necessario rimuovere tutta questa parte
+introduttiva del file. Altrimenti Createxo potrebbe non accettare il
+codice dell'esercizio.
+
+:%%%%%%%% Parametri che possono essere ridefiniti %%%%%%%%%%%%%%%%%
+:\title{Linea del tempo}
+:\author{Bernadette, Perrin-Riou}
+:\email{}
+:\credits{}
+:Consegna
+\text{instruction=Nella parte in basso inserire, in ordine, le date. In
+corrispondenza, nella parte in alto inserire gli eventi.}
+:Numero di eventi (massimo 10)
+\text{N=5}
+:Colore della freccia
+\text{couleur=orange}
+:Larghezza delle etichette
+\text{facteur=100}
+:Altezza delle etichette
+\integer{height=100}
+:Larghezza della freccia
+Un intero tra 1 e 3
+\integer{wi=1}
+:utilizza i due elementi di dati (0), solo la prima colonna (1), solo la seconda colonna (2)
+\text{choix=0}
+:Contenuto effettivo dell'esercizio.
+Inserire i dati nell'ordine in cui devono apparire.
+\text{data=1515,Bataille de Marignan
+1680,Création de la Comédie Française
+1789,Révolution française
+1830,Les Trois Glorieuses
+1831,Révolte des Canuts à Lyon
+1848,Décret abolissant l'esclavage
+1889,Inauguration de la tour Eiffel à Paris
+1944,Les femmes acquièrent le droit de vote
+1981,Abolition de la peine de mort}
+
+:Layout casuale inseribile tra parentesi graffe
+$embraced_randitem
+\text{accolade=item(1,1 si,
+2 no)}
+
+:%%%%%%%%%%%%%% Nulla da modificare da qui in poi %%%%%%%%%%%%%%%%
+\text{accolade=wims(word 1 of \accolade)}
+\real{M=\N-0.3}
+\text{xrange=-1,\N+1}
+\text{yrange=\choix iswordof 0 ? -5,5:-2,5}
+\text{yrange=\choix=1 ? -5,2}
+\text{yrange=\choix=3 ? -5,4}
+\text{cnt=rows(\data)}
+\text{shu=shuffle(\cnt)}
+\text{shu=\shu[1..\N]}
+\text{shu=wims(sort numeric item \shu)}
+\text{data=row([\shu],\data)}
+\text{data=\accolade=1 ? wims(embraced randitem \data)}
+\matrix{rep=\data}
+\integer{size=(1.5*\facteur)*(\M+1)}
+\integer{height2=4*\height}
+\text{size=\size,\height2}
+\text{fleche=xrange \xrange
+yrange \yrange
+lines \couleur,\M,\wi/2,-1,\wi/2,-1,-\wi/2,\M,-\wi/2,\M,-\wi,\N+0.5,0,\M,\wi,\M,\wi/2
+fill 0,0,\couleur
+}
+
+\text{STEP=\choix=0 ? wims(values x for x=1 to 2*\N)}
+\text{STEP=\choix=1 ? wims(values 2*x-1 for x=1 to \N)}
+\text{STEP=\choix=2 or \choix=3? wims(values 2*x for x=1 to \N)}
+\text{STEP=wims(makelist r x for x in  \STEP)}
+\steps{\STEP}
+\text{positionbas=}
+\text{positionhaut=}
+\text{positionbas2=}
+\for{j=0 to \N-1}{
+  \text{fleche=\choix=0 or \choix=1 or \choix=3 ? \fleche
+  line \j-0.1,-\wi/2,\j-0.1,-2*\wi,\couleur}
+  \text{fleche=\choix=0 or \choix=2 or \choix=3? \fleche
+  line \j-0.1,\wi/2,\j-0.1,2*\wi,\couleur}
+  \text{ans=pari([2*\j+1,2*\j+2])}
+  \text{v=slib(draw/convpixel \j-0.5,-2,\size,\xrange,\yrange,0,pixels)}
+  \text{positionbas=\positionbas
+ r\ans[1],\v[1] x \v[2]}
+ \text{v=slib(draw/convpixel \j-0.5,-2,\size,\xrange,\yrange,0,pixels)}
+ \text{positionbas2=\positionbas2
+ r\ans[2],\v[1] x \v[2]}
+  \text{v=slib(draw/convpixel \j-0.5,4,\size,\xrange,\yrange,0,pixels)}
+  \text{positionhaut=\positionhaut
+r\ans[2],\v[1] x \v[2]}
+
+ \text{fleche=\choix=3? \fleche
+ text black, \j-0.2,3,medium,\data[\j+1;1]}
+ }
+  \text{position=\choix=1 or \choix=0? \positionbas}
+  \text{position=\choix=2 or \choix=0? \position
+ \positionhaut}
+ \text{position=\choix=3? \positionbas2}
+ \text{urlfleche=draw(\size
+\fleche)}
+\statement{
+\instruction
+<div class="wimscenter">
+\special{imagefill \urlfleche,\size[1]x\size[2],\facteur x \height
+\position}
+</div>
+}
+
+\answer{}{\rep[1;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[1;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[2;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[2;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[3;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[3;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[4;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[4;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[5;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[5;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[6;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[6;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[7;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[7;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[8;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[8;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[9;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[9;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[10;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[10;2]}{type=clickfill}{option=shuffle}

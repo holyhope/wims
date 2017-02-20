@@ -1,0 +1,25 @@
+<!-- _widgets/motd.phtml -->
+
+!readproc wimshome/log/classes/$wims_class/.users/$wims_user
+!set mot_=!record 0 of wimshome/log/classes/$wims_class/.motd
+!set mot_=!replace internal \var_ by $$user__ in $mot_
+!if $mot_!=$empty and $mot_ notsametext <br/>
+ <div class="wims_class_motd">
+   $mot_
+!! !read ./wimshome/log/classes/$wims_class/.motd
+ </div><!--end of wims_class_motd-->
+!endif
+!let test2=!record 0 of wimshome/log/classes/$wims_class/motd/$wims_user
+!let test=!record 0 of wimshome/log/classes/$wims_class/motd/.$wims_user
+!if # notin $test and $test2!=$empty
+ <div class="wims_class_pmotd">
+   !set mot_=!record 0 of wimshome/log/classes/$wims_class/motd/$wims_user
+   !set mot_=!replace internal \var_ by $$user__ in $mot_
+   $mot_
+ !!  !read ./wimshome/log/classes/$wims_class/motd/$wims_user
+  &nbsp; [
+  !href module=adm/class/motd $(wims_name_actionlist[4])
+  ] 
+ </div><!-- end of wims_class_pmotd-->
+!endif
+<!-- end _widgets/motd.phtml -->

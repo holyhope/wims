@@ -1,0 +1,143 @@
+!set lang_exists=yes
+
+!if $wims_read_parm!=
+ !goto $wims_read_parm
+!endif
+!set name_donchoose=Choix des donn閑s
+!set name_studentloc=!nosubst $user_lastname $user_firstname
+!set name_studentglo=!nosubst $wims_name_lastname $wims_name_firstname
+
+!set classname=<span class="wims_emph">$wims_classname</span>,\
+ <span class="wims_emph">$wims_institutionname</span>
+
+!set months=一月,二月,三月,四月,五月,六月,七月,八月,九月,十月,十一月,十二月
+
+!distribute line 班级平均\
+平均\
+零分除外的平均\
+总平均\
+按组平均\
+into name_classAverage,name_Average,name_posAverage,name_globalaverage,\
+name_groupAverage
+
+!set name_partdeleted=被删的参加者
+!set wims_name_reg_ex=记录练习表
+!!set name_transfer=从其它班级转移他的活动
+
+!!!set name_thsheet=系列号,名称,分数<br />要求,权重,分数<br />得到,%,质量,严厉度,得分,\
+  最高分,尝试次数,最新结果,取得的严厉度
+!set name_minmax=班级的最低/中间/最高分
+
+!set name_manualscore=教师评分
+!set name_autoscore=WIMS记录的评分
+!set name_manual_notes=总分,其他分,WIMS分
+!set name_examnote=考试得分
+
+!set name_severitylevels=作业页严厉度
+!set name_formula=序列号,权重,严厉度
+!set name_sheetstatut=准备中,已激活,已过期,隐藏
+
+!distribute items 考试,页,练习,开始,得分,会话,\
+ 完成,等价于,Duration\
+into name_Exam,name_Sheet,name_Exercise,name_Start,name_Score,name_Session,\
+name_done,name_equiv,name_Duration
+
+!set name_formula_comment=你可在以下表格里定义作业页的严厉度与权重. \
+总评分的计算将取极大值 =
+!set name_formula2=!nosubst 从 $scoremax 计算的教师评分
+!set name_pickup=挑出欲显示的页<br />页平均分:
+!set name_warning=你提出了一个非法的请求.
+
+!set name_click=在名字上点击以了解学生工作的详情
+!set name_affi=质量,已做的工作,得分
+!set name_workdetail=的作业的详细情况
+!set name_activesession=此参加者有一个活动中的考试对话
+
+!distribute items 连接主机,剩余时间, 的考试对话,分\
+into name_connecting,name_remaining_time,name_exam_session,name_minutes
+
+!set name_noyetparticipant=此班级尚无参加者.
+
+!set name_warning_no_sequence=你已经设置了系列, 但是你还没有定义过系列. 因此没有分数可供显示.
+
+!if $manual>0
+!set name_manual_explanation=<b>说明.</b> 在 `Average' (平均)栏里, `auto' 是指作业页分数的平均,\
+ `teacher' 是主持教师手工评分的平均, `global' 是根据这两个平均用以下公式算出来的:
+
+!endif
+
+!set name_title_showsheet=!nosubst 第 $numshowsheet 页的作业详情<br />$sh_title
+!set name_percentagegot=已做作业的百分比
+!set name_qualitygot=质量 (最大值 10)
+!set name_percentagedone=已做作业的百分比
+!set name_percentagebest=平均最佳得分
+
+!set name_post=显示
+!set name_Post=显示
+
+!set name_sheetdetail=点击列的头部\
+可以看到相应页的所有练习的所有结果.
+!if $job iswordof userprop teacher
+  !distribute items 修改,注册号,注解,照片的url,变量 (技术的),\
+  班级口令,输入参加者注册的口令,\
+  外部验证的登录,注册,管理,\
+   必须的\
+  into name_change,name_regnum,name_comments,name_photourl,name_vars,\
+  name_classpassword,name_enterpassword,name_external_auth,name_inscript,name_gestion,\
+  name_userprop_warning
+  !goto end
+!endif
+
+!if $job=examcheck
+ !set name_title_examcheck=!nosubst $name_studentloc 的考试详情
+ !set name_no_exampart=此参加者没有参加任何考试.
+ !set name_exampart=  这里是此参加者的考试对话. 在练习上点击以看它的内容.
+ !goto end
+!endif
+!if $job=getraw
+  !set name_title_getraw=!nosubst $name_studentloc 的作业的详细情况<br />(原始数据)
+  !goto end
+!endif
+
+!set name_direct_score= 直接得分表
+
+!if $job=csv
+  !distribute lines 你可以下载下列文件\
+     并用你喜欢的电子表格软件打开它.\
+    参加者信息已改变\
+    添加新参加者\
+    不能添加新参加者, 因为没有可用空间了.\
+    参加者信息没有改变, 因为总评分已经上传.\
+    在你的数据里, 服务器计算的得分(平均分以及作业页/考试的得分)将被忽略, 因为它们不能修改.\
+    被删除的参加者的不被考虑的数据\
+    下列登录名因为太短而不能添加\
+    班级内没有以下的登录名, 而且不能添加, 这是因为数据内有不充分/不正确的信息\
+    班级内没有以下的登录名, 而且不能添加,  这是因为数据损坏或没有空间了\
+    只对已有的栏目记录人工总评分.\
+    你的电子表格数据与班级的记录相比没有发现改变.\
+    检查人工评分\
+    为你的电子表格下载班级数据, 请选定\
+    格式\
+    栏目\
+    为把你的电子表格数据上传到班级, 请选定\
+    数据文件\
+    可接受的格式\
+    For the new participants, the password column is compulsory.\
+  into name_file,name_download,name_infochanged,name_added,name_warning1,name_warning2,\
+  name_warning3,name_warning4,name_badlogin,name_nologin1,name_nologin2,name_manual1,name_data1,\
+    name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2,\
+    name_passwarning
+
+  !set name_deposit=!nosubst 电子表格文件 <span class="tt">$wims_deposit</span> 处理成功.
+  !set name_indicateur=指示器
+  !set name_techvar=其它关键词
+  !set name_regpropvar=Registration variables
+  !set name_all=所有
+  !set name_allscore=所有得分
+!endif
+
+!set name_topten=!nosubst 班级的平均分最高 $class_topscores 人
+:end
+!exit
+
+

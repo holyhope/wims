@@ -1,0 +1,232 @@
+!set wims_html_header=$wims_html_header\
+<style type="text/css">\
+.frame {background-color :green;\
+        border-style: solid;\
+        border-width: 1pt;\
+        margin: 3% 3% 3% 3%;\
+        padding : 3%;\
+        font-size:95%;\
+        text-align:justify;}\
+  }\
+  .hr {}\
+.hh{color:$wims_ref_menucolor; \
+background-color: $wims_ref_bgcolor;\
+text-align:center;}\
+\
+prel {\
+    background-color :#FFFFCC;\
+    font-weight: bold ;\
+        font-size: 12px;\
+        border-style: solid;\
+        border-width: 2pt;\
+        margin: 3% 3% 3% 3%;\
+        padding : 2%;\
+}\
+</style>
+
+!if robot isin $session
+  !exit
+!endif
+!header
+
+!if $wims_developer=$empty
+
+
+<div class="wims_content">
+
+<b>$module_title</b>
+!read lang/names.phtml.$modu_lang 1
+!href cmd=help&special_parm=doc $name_documentation
+ $wims_name_or
+ !getfile latex2wimsdoc.pdf $name_pdf
+.
+
+!read lang/names.phtml.$modu_lang 2
+
+ !form reply
+ $name_modtool
+
+
+<fieldset class="property_fields halfwidth blockcenter">
+    <legend>$wims_name_connexion</legend>
+    <div class="field box">
+      <label for="login">$wims_name_Login</label>
+      <input type="text" name="login" id="login"
+        required="required" placeholder="$wims_name_Login" />
+    </div>
+    <div class="field box">
+      <label for="passwd">$wims_name_Password</label>
+      <input type="password" name="passwd" id="passwd"
+        required="required" placeholder="$wims_name_Password" />
+    </div>
+    <div class="wimscenter">
+      <input type="submit" value="$wims_name_tosave" />
+    </div>
+ </fieldset>
+  !formend
+</div> <!--end content 1-->
+  !tail
+  !exit
+
+!endif
+
+
+!if $error!=$empty
+  <div class="wims_msg alert">
+ !read lang/msg.phtml.$modu_lang
+  </div>
+!endif
+
+
+<div class="wims_content">
+
+<b>$module_title</b>
+!read lang/names.phtml.$modu_lang 3
+
+!href cmd=help&special_parm=doc $name_documentation
+.
+
+!set wims_form_method=file
+!default !set execut=0
+!form reply
+!if $execut!=3
+$name_select_example
+  !getfile fichier_test.tex $name_latex
+,
+  !getfile style.css $name_css
+,
+  !getfile wims.sty $name_latex2wims
+,
+  !getfile latex2wimsdoc.pdf $name_pdf
+.
+ !if $exemple!=1
+    $name_example
+      !formradio exemple list 1,2 prompt $wims_name_yes,$wims_name_no
+  !endif
+!endif
+
+
+!if $execut=0
+  <h2 class="hh"> $name_step 1</h2>
+  $name_transfer_wims
+  <input type="file" name="wims_deposit" />
+
+!if $test!=$empty and ($execut=0 or $cnt_fichier=1)
+  $name_filet:
+  <pre class="prel">
+  !for i = 1 to $cnt_fichier
+    $(fichiers[$i]) ($(date[$i]))
+   !next
+   </pre>
+!endif
+
+  <ul>
+    <li>
+
+   !formradio execut list 0 prompt $name_newtransfer
+   </li><li>
+   !formradio execut list 1 prompt $name_newstep
+   </li>
+   </ul>
+!endif
+
+
+
+
+!if $execut=1
+
+<h2 class="hh"> $name_step 1</h2>
+!if $cnt_fichier >0
+   $name_youcan
+    !formcheckbox execut list 0 prompt $name_newtransfer
+ !else
+   $name_youmust
+   !default !set execut=0
+   !formradio execut list 0 prompt $name_atleast
+
+   <p class="wimscenter">
+<input type="submit" value="$wims_name_tosave" />
+</p>
+
+!formend
+</div> <!--end content 2-->
+   !exit
+ !endif
+<h2 class="hh"> $name_step 2</h2>
+  $name_selectmain
+  <ul>
+    !for i = 1 to $cnt_fichier
+      !set l=!item $i of $fichiers
+      <li>
+        !formradio principal list $i prompt $(fichiers[$i]) ($name_transferdate $(date[$i]))
+      </li>
+   !next
+  </ul>
+ !! $name_sheet
+ !! !formradio wksheet list 1,2,3,4,5,6,7,8,9
+ <h2 class="hh"> $name_step 3</h2>
+
+!if $list_module!=$empty
+   $name_namedocument:
+           <p class="wimscenter">
+           !formselect document list $choix,$list_module
+         </p>
+       $name_newmodule
+!else
+<i>$name_createfirst</i>
+!endif
+     !href target=wims_test module=adm/modtool&cmd=reply&jobreq=create Modtool
+
+!if $document notsametext $choix
+ <p><span class="wims_warning">$wims_name_warning</span> : $name_warning</p>
+!else
+<p><span class="wims_warning">$wims_name_warning</span> : $name_select_warning.</p>
+!endif
+  <h2 class="hh"> $name_step 4</h2>
+     !formradio execut list 2 prompt $name_exec
+
+!endif
+
+!if $execut=3
+  !if $confirm=
+   !read lang/names.phtml.$modu_lang 4
+   !formradio confirm list 0,1 prompt $wims_name_yes,$wims_name_no
+    <ul>
+  !else
+    !if $confirm=0
+ !reset confirm
+ <ul><li>
+     !href target=wims_internal module=devel/$wims_developer/$document $name_test
+ (<i> $name_gotomodtool
+!href target=wims_internal module=adm/modtool&jobreq=flist&modreq=$document $wims_name_modtool
+</i>)
+  </li>
+   !endif
+  !endif
+   <li>
+    !formradio execut list 1 prompt $name_comeback
+  </li>
+  <li>
+    !formradio execut list 0 prompt $name_transfer
+  </li>
+  </ul>
+!endif
+<p class="wimscenter wimsform">
+<input type="submit" value="$wims_name_tosave" />
+</p>
+
+
+!formend
+
+</div><!--end content 3-->
+
+!if $wims_exec_error!=$empty
+ <div class="wims_warning"><pre>$wims_exec_error</pre></div>
+!endif
+
+
+!tail
+
+!reset wims_exec_error wims_deposit
+
+

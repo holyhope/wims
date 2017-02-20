@@ -1,0 +1,535 @@
+!!!!WARNING If you have to put "into" in the translation, write into$  ...
+
+!if $wims_name_home!=$empty
+ !exit
+!endif
+
+!! **** Default Names ***
+!distribute items 搜索,\
+开始工作,返回工作,\
+WIMS主页,介绍/配置,帮助,关于本模块/练习,About WIMS,\
+介绍,关闭,\
+关闭本窗口,返回,Start of page,\
+网站管理员,网页作者,网页作者,\
+翻译者,退出,\
+WIMS 使用说明,参考资料,论坛,论坛,\
+作业页,工具,\
+复制到模块开发工具,\
+打印,\
+把本练习插入到你的班级,\
+供打印的版本,\
+更新,进入测试区,\
+刷新,\
+保存,\
+是,\
+否,\
+下载,\
+发送,\
+详情,\
+显示,\
+编辑,\
+注意,\
+祝贺你!,\
+或,\
+解释,\
+练习,\
+作业页,\
+帐户,\
+进入,\
+得分,得分,\
+我的分数,\
+考试,\
+其它浏览方法,\
+返回菜单,\
+失效日期,失效日期,\
+错误,\
+下一个系列,上一个系列,\
+例,\
+投票,\
+使用条件,\
+需要帮助吗 ?,\
+很好!,很好!,\
+CAS 退出登录,\
+参与创作人员,\
+新增内容,\
+给出答案,\
+Gestion des participants,\
+返回模块,\
+Legend,\
+Dupliquer la feuille,\
+Dupliquer l'examen,\
+Manage technical variable,\
+Anciennes variables,\
+Global results,\
+ into wims_name_search,\
+   wims_name_work,wims_name_resume,\
+   wims_name_home,wims_name_intro,wims_name_help,wims_name_about,wims_name_aboutw,\
+   wims_name_titleintro,wims_name_Close,\
+   wims_name_back,wims_name_back2,wims_name_top_page,\
+   wims_name_manager,wims_name_author,wims_name_authors,\
+   wims_name_translatedby,wims_name_exit,\
+   wims_name_whelp,wims_name_reference,wims_name_forum,wims_name_forums,\
+   wims_name_sheet,wims_name_tools,\
+   wims_name_modify,wims_name_print,wims_name_import,\
+   wims_name_printable,wims_name_renew,wims_name_testgo,\
+   wims_name_refresh,wims_name_tosave,\
+   wims_name_yes,wims_name_no,wims_name_download,wims_name_send,wims_name_start,wims_name_detail,\
+   wims_name_Show,wims_name_Edit,wims_name_warning,wims_name_Congratulations,wims_name_or,\
+   wims_name_Explanations,wims_name_Exercise,wims_name_Sheet,wims_name_Sheets,wims_name_account,wims_name_Enter,\
+   wims_name_Score1,wims_name_myscore,wims_name_Examen,wims_name_Examens,wims_name_browse,wims_name_menuback,\
+   wims_name_expiration,wims_name_Error,wims_name_nextseries,wims_name_previousseries,\
+   wims_name_Example,wims_name_Vote,wims_name_Votes,wims_name_cgu,wims_name_feedbackexo,wims_name_feedbackplus,\
+   wims_name_cas_logout,wims_name_credits,wims_name_mod_new,wims_name_answer,wims_name_usermanage,\
+   wims_name_moduback,wims_name_legend,wims_name_duplicatesheet,wims_name_duplicateexam,wims_name_techvar,wims_name_oldvar,\
+   wims_name_Evaluation
+!! **** Menuprof Names ***
+!distribute items 班级, 搜索,\
+创建, 例子,\
+练习, 帮助,\
+问与答, 帮助文件,\
+信息,\
+其它方式,\
+Site,\
+	into wims_name_Classes, wims_name_Searching,\
+	wims_name_Creation, wims_name_Samples,\
+	wims_name_Exercices, wims_name_Aid,\
+    wims_name_faq, wims_name_dochelp,\
+    wims_name_Infos, wims_name_othermethods,\
+    wims_name_Site
+
+!! **** Permalink Names ***
+!distribute items 本模块, 本练习,\
+显示,在你的网站上,\
+屏蔽这些选项,\
+持久链接,可嵌入代码,\
+复制与粘贴,本链接,以下代码,或,在电邮里,\
+的,仅仅,\
+当前设置\
+	into wims_name_this_module, wims_name_this_exercice,\
+	wims_name_display,wims_name_on_your_site,\
+	wims_name_mask_this,\
+	wims_name_permalink,wims_name_embeddable,\
+	wims_name_copy_and_paste,wims_name_the_link,wims_name_the_code,wims_name_or,wims_name_in_a_mail,\
+	wims_name_for,wims_name_only,\
+	wims_name_this_config
+
+!set wims_name_Share =共享
+!set wims_name_to_embed_it =将其嵌入
+!set wims_name_permalink_desc =为方便共享 (通过电邮或书签等) 复制以下链接之一.
+!set wims_name_hide=Hide
+!set wims_name_showall=Show
+
+!! the following sentences can be changed according to language if needed
+!set wims_name_display1=!nosubst $wims_name_on_your_site$wims_name_display$wims_name_this_module
+!set wims_name_display2=!nosubst $wims_name_on_your_site$wims_name_or$wims_name_in_a_mail$wims_name_copy_and_paste$wims_name_the_link
+!set wims_name_display3=!nosubst $wims_name_on_your_site$wims_name_copy_and_paste$wims_name_the_code
+!set wims_name_permalink1=!nosubst $wims_name_this_module$wims_name_for$wims_name_permalink
+
+
+!! **** Module About Names ***
+!distribute items 名称,\
+关于图标,\
+模块信息,\
+练习信息,\
+地址,\
+书签,\
+描述,\
+版本,\
+需要 WIMS 版本,\
+语言,\
+作者,\
+维护人,\
+译者,\
+一般事项,\
+此模块属于,\
+网上互动式多功能服务站,\
+版权,\
+关键词,\
+译者电邮,\
+作者电邮,\
+维护人电邮,\
+领域,\
+类型,\
+程度,\
+得分,\
+练习 / 娱乐,\
+需要的 支持软件,\
+服务器时间,\
+数据模块,\
+在 WIMS 上开发,\
+发布中心,\
+下载中心,\
+语法,\
+含义,\
+索引,\
+改变设置,\
+	into wims_name_name,\
+	wims_name_iconabout,\
+	wims_name_module_infos,\
+	wims_name_exo_infos,\
+	wims_name_Address,\
+	wims_name_Link_for_bookmark,\
+	wims_name_Description,\
+	wims_name_Version,\
+	wims_name_Required_WIMS_version,\
+	wims_name_Language,\
+	wims_name_Author,\
+	wims_name_Maintainer,\
+	wims_name_Translator,\
+	wims_name_General,\
+	wims_name_This_is_a_module,\
+	wims_name_WIMS_subtitle,\
+	wims_name_Copyright,wims_name_Keywords,\
+	wims_name_tr_email,wims_name_auth_email,wims_name_maint_email,\
+	wims_name_Domain,wims_name_Type,wims_name_Levels,\
+	wims_name_Scoring,wims_name_Scoringhelp,\
+	wims_name_require,wims_name_server_time,wims_name_datamodule,\
+	wims_name_devwims,wims_name_publish_center,wims_name_download_center,\
+	wims_name_Syntax,wims_name_Meaning,wims_name_Indexation,\
+    wims_name_pref
+
+!! Titles of menus
+!distribute items Vie de la classe,Configuration,\
+   Outils de la classe,Liens externes,\
+   Navigation, My infos\
+into wims_name_classactivity,wims_name_configuration,\
+  wims_name_classtools,wims_name_otherclasses,\
+   wims_name_navigation,wims_name_myinfo
+
+
+!! **** Class Relative Names ***
+!if $wims_class!=$empty
+ !distribute items 班级主页,插入作业页,插入作为页面练习的帮助,\
+发电邮给主持教师,退出,\
+成绩纪录已关闭,\
+你暂停了成绩纪录,\
+开启成绩记录,关闭成绩记录,\
+你是班级的主持教师,\
+记录本练习的详情,\
+页面管理,\
+增加一个系列,\
+已读,\
+已测试练习的详情,\
+把所有练习插入工作页,\
+参加者看到的页面,\
+	into wims_name_class_home,wims_name_add,wims_name_addh,\
+	wims_name_wsup,wims_name_visitor,\
+	wims_name_scoreclose,\
+	wims_name_scoresuspend,\
+	wims_name_scorereopen,wims_name_scoreclose2,\
+	wims_name_syou,\
+	wims_name_exolog,\
+	wims_name_sheetmanagement,\
+	wims_name_add_sequence,\
+    wims_name_readen,\
+    wims_name_save_ex,wims_name_addallexo,\
+    wims_name_participantview
+
+!! !set wims_name_score=!nosubst 本次作业中你得到了 $[$wims_homeref_req] \
+分中的 $[$wims_homeref_got]. <br/>质量是 $[$wims_homeref_mean]/10.
+!set wims_name_thsheet=系列号,名称,分数<br />要求,权重,分数<br />得到,%,质量,严厉度,得分,\
+  最高分,尝试次数,最新结果,所得等第
+
+ !set wims_name_you=你是<b>$wims_lastname$wims_firstname</b>, 属于
+ !if _exam isin $session
+  !distribute items 其余试题,\
+   本考试所剩时间:,\
+   This exam will automaticaly be closed at:,\
+   当本页装入时\
+   into wims_name_back,wims_name_examremain,wims_name_exam_ending,wims_name_whenloaded
+ !endif
+ !if _check isin $session
+  !let wims_page_name=页
+ !endif
+ !default wims_name_sequence=系列
+ !set wims_name_sequences=系列
+
+ !set wims_name_exceeded=你的班级已经超过服务器预分配的盘空间. \
+  不能再做班级管理. 抱歉!<p>\
+  建议你与系统管理员联系增加你的虚拟班的盘空间定额.
+
+ !set wims_name_reaching_limit=你的班级已经接近可用盘空间的极限.\
+  一旦超过此极限, 班级管理将被锁定!
+
+ !set wims_name_chseries=!nosubst 记录对系列 $(special_parm4[2]) 页 $(special_parm4[1]) 的修改
+!endif
+
+!!!if adm/class isin $module or adm/manage isin $module
+ !distribute line 教师区域\
+学生区域\
+实例班级\
+主持教师身份验证\
+参加者身份验证\
+份验证\
+忘记密码\
+小学\
+中学\
+大学\
+班级表\
+班级与学区表\
+个别班级\
+班级组\
+学区\
+被删的参加者\
+	into wims_name_n_supervisor,wims_name_n_participant,wims_name_n_example,\
+	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_connexion,\
+	wims_name_n_forgetpwd,wims_name_n_E,wims_name_n_H,wims_name_n_U,\
+	wims_name_classlist,wims_name_portal_list,\
+	wims_name_create_class,wims_name_create_superclass,wims_name_create_portal,wims_name_recover
+!!!endif
+
+!if adm/new isin $module
+  !distribute line 新模块\
+更新模块\
+最新系统\
+RSS 新模块\
+RSS 更新模块\
+  into wims_name_mod_new,wims_name_mod_modif,wims_name_mod_sys,wims_name_rss_new,wims_name_rss_modif
+!endif
+
+  !distribute line 创建班级\
+into wims_name_classcreate
+
+!if adm/modtool isin $module or adm/createxo isin $module or $wims_user!=$empty or $module!=
+  !distribute line 测试模块\
+文件管理者\
+模块内容\
+其它文件\
+性质\
+保存\
+检查差别\
+发布\
+新模块\
+模块表\
+二进制文件\
+从备份恢复\
+参加者帐户的性质\
+脚本测试\
+ OEF 文件\
+脚本库\
+回答类型\
+技术文件\
+返回文件表\
+编辑\
+修改\
+向上\
+删除\
+动作\
+为了使用这个功能, 请激活你的浏览器的 java\
+日期\
+添加\
+删除\
+源码\
+退出\
+ into wims_name_test,wims_name_docgestion,wims_name_modcontent,wims_name_otherfiles,\
+wims_name_properties,wims_name_modsave,wims_name_checkdiff,wims_name_publish,wims_name_createnew,\
+wims_name_modlist,wims_name_binfile,wims_name_restore,\
+wims_name_account_property,\
+wims_name_scripttest,wims_name_docoef,wims_name_docslib,wims_name_docanswer,wims_name_doctec,\
+wims_name_back3,wims_name_edfile,wims_name_change,wims_name_up,wims_name_erase,wims_name_action,\
+wims_name_nojava,wims_name_date,wims_name_add0,wims_name_delete,wims_name_source,\
+wims_name_visitor
+
+!distribute line 返回创建练习\
+模型表\
+现成模块\
+into wims_name_backcreatexo,wims_name_modellist,wims_name_model
+
+!distribute line 测试\
+返回 confia2qcm\
+返回 createqcm\
+修改源码\
+保存为开发中模块\
+保存到班级\
+保存为新练习\
+发送图形文件\
+替换旧文件\
+删除此练习\
+into wims_name_testexo,wims_name_backconfia2qcm,wims_name_backcreateqcm,wims_name_exomodify,\
+wims_name_putmodtool,wims_name_putclass,wims_name_newversion,\
+wims_name_downloadbinary,wims_name_replace,wims_name_exoerase
+
+!endif
+
+!distribute line 新文件\
+新作业页\
+新考试\
+新班级\
+创建新的投票/登记\
+新练习\
+Mes questionnaires\
+班级练习\
+页面的练习\
+Next exercise\
+Previous exercise\
+into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,wims_name_myvote,\
+wims_name_add_exo,wims_name_classexo,wims_name_sheet_exos,wims_name_next,wims_name_prev
+
+
+!distribute items untry,undone,done,congratulations,已完成 \
+  into wims_name_exo_untry,wims_name_exo_undone,wims_name_exo_done,wims_name_exo_congratulation,wims_name_exo_tried
+
+!!! for documents...
+
+!distribute item WIMS,班级,文件,向上,前一个,后一个,历史,重新装入,\
+    互动版,打印版,\
+    返回文件,帮助,关于,\
+    文档存放,\
+	返回文件表,\
+	进入文件,\
+	转移,\
+	into wims_name_doch_wims,wims_name_doch_class,wims_name_doch_docs,wims_name_doch_up,\
+	wims_name_doch_prev,wims_name_doch_next,wims_name_doch_hist,wims_name_doch_reload,\
+	wims_name_doch_interactive,wims_name_doch_printable,\
+	wims_name_doch_back,wims_name_doch_help,wims_name_doch_about,\
+	wims_name_doch_upload,wims_name_doch_filelist,wims_name_doch_main,wims_name_doch_transfer
+
+!! for sequence et document
+
+!distribute line 文件\
+文件\
+隐藏,可见\
+标题\
+系列重组\
+插入此班级\
+创建新文件\
+写入草稿文件\
+状态\
+插入\
+正在准备中,已激活, 已过期, 过期且隐藏\
+既不能读也不能写,能读不能写,能读能写\
+编号\
+练习数\
+into wims_name_doc,wims_name_Docs,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
+wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert,wims_name_shstatus,\
+wims_name_Docstatus,wims_name_number,wims_name_cnt_exo
+
+ !distribute line 添加数据\
+添加文件\
+添加任务\
+设置\
+放弃\
+记事本\
+  into wims_name_adddate,wims_name_addfile,wims_name_addtodo,wims_name_config,wims_name_giveup,\
+  wims_name_cdt
+
+!set wims_name_supervisor=主持教师
+!set wims_name_Supervisor=主持教师
+!set wims_name_namestudent=学生
+!set wims_name_nameteacher=教师
+!set wims_name_teacher=教师帐户
+!set wims_name_addteacher=新教师
+!set wims_name_modteacher=教师属性
+!set wims_name_delteacher=删除一位教师
+!set wims_name_student=参加者帐户
+!set wims_name_addstudent=新参加者
+!set wims_name_modstudent=参加者属性
+!set wims_name_delstudent=删除一位参加者
+!set wims_name_delstudent1=Delete the participant
+!set wims_name_group=组
+!set wims_name_portal=学区
+!set wims_name_level=程度
+!set wims_name_class=班级
+!set wims_name_program=计划
+!set wims_name_course=课程
+!set wims_name_icourse=班际课程
+!set wims_name_backstruct=结构管理
+
+!if config isin $module or $module=home or $module=adm/class/userscore
+ !distribute line $wims_name_config\
+ 主配置页\
+结构管理\
+Management\
+into wims_name_configb,wims_name_config,wims_name_struct,wims_name_manage
+!endif
+
+!set wims_name_save=备份与恢复
+!set wims_name_backgateway=管理
+
+!distribute line 添加别的课程\
+添加班际课程\
+添加班级到此年级\
+向年级添加教学计划\
+添加年级\
+管理登录\
+改变区域\
+Ajouter des classes (csv)\
+into wims_name_addcourse,wims_name_addicourse,wims_name_addclass,wims_name_addprog,wims_name_addlevel,\
+wims_name_login,wims_name_chzone,wims_name_addcsvclass
+
+!distribute line 学生活动的统计\
+参加者的整体活动\
+改变严厉度\
+手工评分\
+电子表格数据\
+Stat. du participant\
+into wims_name_class_stat,wims_name_activity,wims_name_formula,wims_name_grades,\
+wims_name_csv,wims_name_activity1
+
+!if adm/class isin $module or reguser isin $module or $wims_class!=$empty
+!distribute line 参加者名单\
+教师名单\
+用户得分\
+关闭\
+原始工作详情\
+删除本参加者\
+原始数据\
+改变他的密码\
+处理后数据\
+能力评价\
+后一个\
+前一个\
+过滤&nbsp;\
+Livret du participant\
+Add technical variable\
+into wims_name_part_list,wims_name_teacherlist,wims_name_scores,wims_name_partexamclose,wims_name_workdetail,\
+wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_livret,\
+ wims_name_next_participant,wims_name_prev_participant,wims_name_filter,\
+ wims_name_livret1,wims_name_add_techvar
+!endif
+
+!if adm/manage isin $module
+  !distribute line 网站管理\
+  into wims_name_sitegestion
+!endif
+
+!if $wims_user=supervisor
+ !distribute line 返回主持教师的主页面\
+ into wims_name_backteacher
+!endif
+
+!distribute lines 模块开发工具(modtool)\
+创建练习(createxo)\
+Quicktool\
+Latex2wims\
+Imageclick\
+Other tools\
+   into wims_name_modtool,wims_name_createxo,wims_name_quicktool,wims_name_latex2wims,\
+   wims_name_coordclick,wims_name_othertools
+
+!distribute line 激活 html 编辑器\
+停止 html 编辑器\
+小心, 如果你改动了这个参数, 你做的修改不会被保存\
+into wims_name_active, wims_name_desactive,wims_name_speck_warning
+
+!distribute items 姓,名,密码,电邮,登录名,重输密码以核对,评论\
+into wims_name_lastname, wims_name_firstname,wims_name_Password,wims_name_email,\
+wims_name_Login,wims_name_repeat_pass,wims_name_comment
+
+!distribute line 照相簿\
+发送电邮\
+into wims_name_photoboard,wims_name_sendmail
+
+!distribute items 教师,主持教师,学生\
+into wims_name_nameteacher,wims_name_Supervisor,wims_name_namestudent
+
+!if $module isitemof home,adm/class/sheet,adm/class/exam
+ !set wims_name_actionlist=激活,使失效,取消激活,隐藏,显示,$wims_name_erase
+!endif
+
+!if $module=adm/class/usermanage
+    !set wims_name_regmanage=Gestion des acc鑣
+!endif
+!set wims_name_cloneclass  =Clone an existing class
+!set SU_partconnected      =This participant is connected now
+!set wims_name_SE_config = 配置/维护

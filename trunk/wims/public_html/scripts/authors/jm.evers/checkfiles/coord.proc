@@ -1,0 +1,429 @@
+# this file expects reply$n as input and gives modulescore as output
+# general checking file
+# the answer $(reply$n)
+# is a set of coordinates, written
+# by the student like (1,2) (3;4) (5:6)  (7:sin(3/2)) (9:sqrt(3))
+# the answer$n=1,2,3,4,5,6,7,sin(3/2),9,sqrt(3)
+# this file produces a modulescore
+# and a remark$n
+# bif there are NO POINTS as correct answer: no intersection points 
+# set answer$n=nil
+# 19/1/2009 : revised to allow multiple parenthesis within coordinates ((1)/(1+pi);(1)/(2)sqrt(2))
+# 5/10/2010 : removed some useless features...
+goback=0
+errortext=$empty
+n=$counter
+
+!if ? isin $(reply$n)
+    remark$n=$NOK
+    goback=0
+    maxscore=0
+    !exit
+!endif
+
+
+!if $(answer$n)=nil
+    # the good answer is: "no intersectionpoints" or "zero" or "nihil" or "none"
+    !readproc $checkdir/nocoord.proc
+    !exit
+!else
+    AAA=!singlespace $(reply$n)
+    AAA=$ $ $AAA
+    AAA=!lower $AAA
+    nothing=!record 71 of $remarkdir/commonremarks.$taal
+    #@ 0,nul,zero,zip,nop,niks,nada,geen,niente
+    A=1
+    !for p in $nothing
+	!if $A !=0
+	    !if $p isin $AAA
+		A=0
+	    !endif
+	!endif
+    !next p
+    !if $A=0
+	ex=!record 83 of $remarkdir/commonremarks.$taal
+	remark$n=$NOK<br />$ex
+	goback=0
+	maxscore=0
+	!exit
+    !endif
+!endif
+goback=0
+errortext=$empty
+test=!wordcnt $(reply$n)
+!if $test=0
+    goback=1
+    maxscore=$[$P9*$maxscore]
+    errortext=!record 37 of $remarkdir/commonremarks.$taal
+    !exit
+!endif
+
+
+AAA=!lower $AAA
+# check if the student thinks there are no real roots/coordinates
+test=!replace internal ( by @ in $AAA
+test=!replace internal : by # in $test
+test=!replace internal ; by # in $test
+test=!replace internal , by # in $test
+!if (# notin $test) or (@ notin $test)
+    nothing=!record 71 of $remarkdir/commonremarks.$taal
+    #@ 0,nul,zero,zip,nop,niks,nada,geen,niente
+    A=1
+    !for p in $nothing
+	!if $A !=0
+	    !if $p isin $AAA
+		A=0
+	    !endif
+	!endif
+    !next p
+    !if $A=0
+	# eg the answer was not a coordinate pair
+	ex=!record 83 of $remarkdir/commonremarks.$taal
+	#@ er zijn weldegelijk oplossingen
+	remark$n=$NOK <br /> $ex
+	maxscore=0
+	goback=0
+	!exit
+    !endif
+!endif
+
+
+AAA=!lower $AAA
+
+# checking syntax
+test=!replace internal ) by @ in $AAA
+!if @ isin $test
+    test=!replace internal , by # in $test
+    !if # isin $test
+	tt=!positionof char # in $test
+	nummers=0123456789
+	!for p in $tt
+	    tt1=!char $[$p-1] of $test
+	    tt2=!char $[$p+1] of $test
+	    !if $tt1 isin $nummers and $tt1 isin $nummers
+		!if $teaching=1 
+		    errortext=!record 11 of $remarkdir/commonremarks.$taal
+		    maxscore=$[$P1*$maxscore]
+		    goback=1
+		 !exit
+    		!else
+		    # we replace a comma 
+		    AAA=!replace internal char number $p by : in $AAA
+		!endif
+	    !endif
+	!next p
+    !else    
+	test=!replace internal : by @ in $AAA
+	test=!replace internal ; by @ in $test
+	!if @ notin $test
+	    errortext=!record 11 of $remarkdir/commonremarks.$taal
+	    maxscore=$[$P1*$maxscore]
+	    goback=1
+	 !exit
+	!endif	
+    !endif
+!else	   
+    errortext=!record 12 of $remarkdir/commonremarks.$taal
+    maxscore=$[$P1*$maxscore]
+    goback=1
+ !exit
+!endif
+
+	
+
+# check for scientific notation
+AAA=!replace internal ** by ^ in $AAA
+AAA=!replace internal e+ by *10^ in $AAA
+AAA=!replace internal e- by *10^- in $AAA
+!for p=1 to 3
+    AAA=!replace internal ** by * in $AAA
+!next p
+t=!char 1 of $AAA
+!if $t=*
+    AAA=!char 2 to -1 of $AAA
+!endif
+    
+# check for a 'o' as "0"
+t=!positionof char o in $AAA
+!if $t != $empty
+    nummers=0.:;,123456789
+    !for p in $t
+	t1=!char $[$p-1] of $AAA
+    	t2=!char $[$p+1] of $AAA
+	!if $t1 isin $nummers or $t1 isin $nummers
+	    # so 123o 123.o 12.o/3
+	    !if $teaching=1 
+		errortext=!record 13 of $remarkdir/commonremarks.$taal
+		maxscore=$[$P1*$maxscore]
+		goback=1
+	     !exit
+	    !else
+		# we correct o -> 0 ! 
+		AAA=!replace internal char number $p by 0 in $AAA
+		maxscore=$[$P1*$maxscore]
+		extra=!record 13 of $remarkdir/commonremarks.$taal
+	    !endif
+	!endif
+    !next p
+!endif
+
+    
+
+
+# checken on sin(x) sin(|x|) sin|x| etc
+calccheck=0    
+!for i in sqrt,log,sin,ln,cos,tan,sec,abs
+    !if $i isin $AAA
+	calccheck=1
+	# first check on absolute bars |x|
+	test1=!replace internal $i| by # in $AAA
+	!if # isin $test1
+	    # so ln|x| ===> ln(|x|) 
+	    # rawmath gives |x| => abs(x)    
+	    pos=!positionof char | in $AAA
+	    tot=!itemcnt $pos
+	    !if $[gcd($tot,2)] != 2
+		# uneven number of |-strepen 
+		errortext=!record 15 of $remarkdir/commonremarks.$taal
+		maxscore=$[$P1*$maxscore]
+		goback=1
+	     !exit
+	    !endif
+	    !for r=1 to $[$tot-1]
+		p1=!item $r of $pos
+		p2=!item $[$r+1] of $pos
+		AAA=!replace internal char number $p1 by ~ in $AAA
+		AAA=!replace internal char number $p2 by # in $AAA
+		AAA=!replace internal ~ by (| in $AAA
+		AAA=!replace internal # by |) in $AAA
+	    !next r
+	!endif
+	test2=!replace internal $i( by # in $AAA
+	!if # notin $test2
+	    testvar1=!nospace $i ( x )
+	    testvar2=!nospace $i x
+	    errortext=!record 19 of $remarkdir/commonremarks.$taal
+	    maxscore=$[$P1*$maxscore]
+	    goback=1
+	    !exit
+	!endif
+	I=!toupper $i
+	AAA=!replace internal $i by $I in $AAA
+    !endif
+!next i
+
+# check on a '+' or '-' sign as operator
+!if $calccheck=0
+    !if + isin $AAA or - isin $AAA
+	nummers=01234567-8+9
+	!for s in +,-
+	    t=!positionof char $s in $AAA
+	    !if $t != $empty
+		!for p in $t
+		    t1=!char $[$p-1] of $AAA
+		    t2=!char $[$p+1] of $AAA
+		    !if $t1 isin $nummers and $t2 isin $nummers
+			!if $teaching=1
+			    maxscore=$[$P1*$maxscore]
+			    errortext=!record 14 of $remarkdir/commonremarks.$taal
+			    goback=1
+		    	    !exit
+			!else
+			# a small penalty for not giving a solid answer.
+			    maxscore=$[$P2*$maxscore]
+			!endif
+		    !endif
+		!next p
+	    !endif
+	!next s
+    !endif
+!endif
+
+AAA=!replace internal pi by PI in $AAA
+# probeer getal "e" te conserveren...weet je nog meer woordjes met niet significante "e's" vermeld ze dan hier
+!for p in de,ee,en,et
+    AAA=!replace internal $p by $empty in $AAA
+!next p
+
+AAA=!replace internal e by E in $AAA
+AAA=!replace [a-z\~\!\@\#\$\=\%\&\_] by $empty in $AAA
+AAA=!tolower $AAA
+AAA=!nospace $AAA 
+# AAA=(1:5)(sqrt(3);log(4))(3:5))
+t=!charcnt $AAA
+LL=!positionof char ( in $AAA
+RR=!positionof char ) in $AAA
+left=0
+right=0
+aaa=$empty
+# identify coords by matching parenthesis 
+# 2 coords like: (1/(1+pi)sin(pi/4):3/(7))(1213:1212/(sqrt(7)) ==> 1/(1+pi)sin(pi/4):3/(7),1213:1212/(sqrt(7) 
+!for p=1 to $t
+    !if $left=0
+	begin=$p
+    !endif
+    !if $p isitemof $LL
+	!increase left
+    !endif
+    !if $p isitemof $RR
+	!increase right
+    !endif
+    !if $left!=0
+	!if $left = $right
+	    end=$p
+	    c=!char $[$begin+1] to $[$end-1] of $AAA
+	    aaa=!append item $c to $aaa
+	    left=0
+	    right=0
+	!endif
+    !endif 
+!next p
+
+AAA=!nospace $aaa
+AAA=!replace internal : by , in $AAA
+AAA=!replace internal ; by , in $AAA
+t2=!itemcnt $AAA
+    
+!if $t2<2
+    # less than a pair of coordinates. No good
+    ex=!record 12 of $remarkdir/commonremarks.$taal
+    !if $teaching=1
+	errortext=$ex
+	maxscore=$[$P5*$maxscore]
+	goback=1
+    !else
+	# the answer can not be correct.
+	maxscore=0
+	remark$n=$NOK<br />$ex
+	goback=0
+    !endif
+ !exit
+!endif
+
+
+!if $[gcd($t2,2)] != 2
+    ex=!record 12 of $remarkdir/commonremarks.$taal
+    !if $teaching=1
+	errortext=$ex
+	maxscore=$[0.7*$maxscore]
+	# oneven number of coordinates 
+	goback=1
+    !else
+	# the answer can not be correct.
+	maxscore=0
+	remark$n=$NOK<br />$ex
+	goback=0
+    !endif
+ !exit
+!endif    
+
+    
+aaa=$empty
+!for p in $AAA
+    p=!rawmath $p
+    !if $rounding >0
+	p=$[(round($rounding*($p)))/$rounding]
+    !endif    
+    !if NaN isin $[1*($p)]
+	errortext=!record 18 of $remarkdir/commonremarks.$taal
+	maxscore=$[$P7*$maxscore]
+	goback=1
+	!exit
+    !endif
+    aaa=!append item $p to $aaa
+!next p
+
+AAA=!nospace $aaa
+
+# AAA is now a list x1,y1,x2,y2,x3,y3,...,xn,yn
+# the correct answer is also a list x1,y1,x2,y2...
+t1=!itemcnt $(answer$n)
+Xa=$empty
+Ya=$empty
+    
+!for p=1 to $t2 step 2
+    x=!item $p of $AAA
+    y=!item $[$p+1] of $AAA
+    Xa=!append item $x to $Xa
+    Ya=!append item $y to $Ya
+!next p	
+    
+paritest1=$empty
+#paritest2=$empty
+
+!for p=1 to $t1 step 2
+    x=!item $p of $(answer$n)
+    y=!item $[$p+1] of $(answer$n)
+    !if $rounding >0
+	x=$[(round($rounding*($x)))/$rounding]
+	y=$[(round($rounding*($y)))/$rounding]
+    !endif    
+    !for s=1 to $[$t2/2]
+	xa=!item $s of $Xa
+	ya=!item $s of $Ya
+#	paritest1=!append line if( ((1.0*($x)) == (1.0*($xa))) && ((1.0*($y) == (1.0*($ya)))),1,0) to $paritest1
+# 12/2011 ivm 3/8*pi != 0.375*pi
+	paritest1=!append line if( abs((1.0*($x)) - (1.0*($xa))) < 10^(-15) && abs((1.0*($y) - (1.0*($ya)))) < 10^(-15),1,0) to $paritest1
+    !next s
+!next p
+    
+tot1=!exec pari $paritest1
+coord=$[$t1/2]
+tt=!linecnt $tot1
+totaal=0
+!for p=1 to $tt
+    s=!line $p of $tot1
+    totaal=$[$totaal+$s]
+!next p
+
+factor=1
+!if $t1 != $t2
+    # minder coordinaten/punten ingevuld, of meer?
+    !if $t1 > $t2
+	factor=$t2/$t1
+	testvar1=$[($t1-$t2)/2]
+	ex=!record 21 of $remarkdir/commonremarks.$taal
+    !else
+	testvar1=$[($t2-$t1)/2]
+	ex=!record 20 of $remarkdir/commonremarks.$taal
+	factor=$t1/$t2
+    !endif
+    !if $extra=$empty
+	extra=$ex
+    !else
+	extra=!append line $ <br />$ex $ to $extra
+    !endif
+!endif
+
+!if ($totaal != $coord) and ($factor=1)
+    # niet alles was goed :alleen als het juiste aantal coordinaten paren is ingevuld [factor=1]
+    testvar2=$coord
+    testvar1=$[$coord - $totaal]
+	ex=!record 22 of $remarkdir/commonremarks.$taal
+	!if $extra=$empty
+	    extra=$ex
+	!else
+	    extra=!append line $ <br />$ex $ to $extra
+	!endif
+    !endif	
+!endif
+
+score=$[$totaal*($factor)/$coord]
+maxscore=$[$maxscore*$score]
+modulescore=$[$modulescore+$maxscore]
+
+!if $maxscore>0.9
+    remark$n=$OK
+!else
+    !if $maxscore>0.4
+	remark$n=$BOK
+    !else
+	remark$n=$NOK
+    !endif
+!endif 
+
+goback=0
+!if $extra != $empty
+    remark$n=!append line $ <br />$extra $ to $(remark$n)
+!endif
+!exit

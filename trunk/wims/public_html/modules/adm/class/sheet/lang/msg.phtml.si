@@ -1,0 +1,198 @@
+!set wims_module_log=error: $error
+
+!if not_supervisor=$error
+ Spreminjanje delovnih listov je dovoljeno le skrbniku!
+ !exit
+!endif
+
+!if bad_class=$error
+ Èudno, va¹a uèilnica se zdi neveljavna.
+ !exit
+!endif
+
+!if bad_series=$error
+Strange, but I do not find the exercise series to modify !!
+ !exit
+!endif
+
+!if bad_source=$error
+ Element ¹tevilka $bad_source v va¹em delovnem listu je neveljaven.
+ !href cmd=reply&job=prep_putsource&source=$source $name_correctsource
+.
+ !exit
+!endif
+
+!if active_sheet=$error
+ Cette feuille est active. Son contenu ne peut pas être modifié.
+ !exit
+!endif
+
+!if bad_sheet=$error
+ ©tevilka va¹ega delovnega lista je neveljavna. Hro¹è v programski opremi?
+ !exit
+!endif
+
+!if bad_maxsheet=$error
+ The number of worksheets is limited to $max_sheets. You may not create another worksheet.
+ !exit
+!endif
+
+!if no_title=$error
+ Posku¹ate registrirati delovni list brez naslova, kar ni priporoèljivo.
+ Gre za pomoto?
+ !exit
+!endif
+
+!if $error=not_secure
+ This action can only be done from a secure host.
+ !if $sec=$empty
+  You have not defined a secure host. Access denied. You may ask the webmaster
+  to do it for you.
+ !else
+  Access denied.
+ !endif
+ !exit
+!endif
+
+!if $error=sharing_sheet
+ You are sharing worksheets with other classes!
+ !if $wims_ismanager<2
+  You must ask the webmaster to deactivate the worksheet for you.
+  !exit
+ !endif
+ Deactivating this worksheet may disrupted neighboring classes.
+ This action is therefore <b>strongly discouraged</b>.
+ <p>
+ Do you still want to deactivate the worksheet?
+ </p><div class="wimscenter">
+ !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
+ .&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ . </div>
+ <b>Before continuing, ask at least the supervisors of your class neighbors to
+ save their classes!</b>
+ !exit
+!endif
+
+!if $error=sheet_in_exam
+ Impossible to deactivate this worksheet, because you have exams based on its
+ content.
+ !exit
+!endif
+
+!if $error=non_empty_activities
+ You want to deactivate worksheet $sheet, although participants have already
+ started to work on it!
+
+ !if share iswordof $confirmed
+  Moreover, the worksheet is shared with other classes where there may be scores too.
+  It is therefore not allowed to deactivate it.
+  !exit
+ !endif
+ All scores obtained on this worksheet will be <b>erased</b>, if you deactivate it.
+ Do you still want to proceed?
+  <div class="wimscenter">
+ !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
+ .&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ . </div>
+ List of students having worked on this worksheet:
+ <p>
+ <span class="tt">$worktest</span>
+ </p>
+ <b>Note</b>. Only deactivate if you are using this class as a test.
+ !exit
+!endif
+
+!if prep_activate=$error
+ You want to activate worksheet $sheet.
+ By activating a worksheet, you make it visible to the participants of the class.  Once activated,
+ a worksheet cannot be modified, unless deactivated first. However, deactiviting an activated
+ worksheet will result in losing the scores and grades of the participants.
+!if $test_expire!=$empty
+  <div class="wims_warning">
+   The expiration date of the sheet is previous to today, it will be
+   updated at the expiration date of your class.
+  </div>
+ !endif
+  <p>
+ Ali ¾elite nadaljevati?
+ </p> <div class="wimscenter">
+ !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
+ .&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ .</div>
+ !exit
+!endif
+
+!if prep_erase=$error
+ Ali res ¾elite izbrisati ta list #$sheet ($title)?
+  <div class="wimscenter">
+ !set wims_ref_class=wims_button wims_warning
+ !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
+!set wims_ref_class=wims_button
+ !href cmd=resume $wims_name_no ; $wims_name_giveup
+</div>
+ !exit
+!endif
+
+!if prep_expire=$error
+ Ta list #$sheet ($title) naj bi bil zakljuèen na dan $expday
+ !item $expmon $months
+ $expyear. Ali ga ¾elite zakljuèiti takoj?
+  <div class="wimscenter">
+ !href cmd=reply&job=expire $wims_name_yes ; $(wims_name_actionlist[2])
+ .&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no ; $wims_name_giveup
+ . </div><b>Opomba.</b> Uporabniki na zakljuèenem delovnem listu ne morejo veè pridobivati toèk. ®e dose¾eni rezultati pa bodo ostali shranjeni in upo¹tevani v statistiki.
+ !exit
+!endif
+
+!if prep_putsource=$error
+ If you have a source of a worksheet saved earlier, you can insert this source
+ into the current worksheet, by copying this source into the window below,
+ then clicking on the button <span class="wims_button disabled">$wims_name_send</span>.
+ This form also allows you to insert the
+ source of a public worksheet using cut-and-paste.
+
+ !set wims_menu_items=!append line sheetadmin,1,cmd=resume \
+to $wims_menu_items
+
+ !form reply
+ <input type="hidden" name="job" value="putsource" /><p class="wimscenter">
+ <textarea cols="55" rows="10" name="source">$source</textarea></p>
+ <p class="wimscenter"><input type="submit" value="$wims_name_send" />
+ </p>
+!formend
+ <span class="wims_warning">$wims_name_warning</span>.
+ It is advised not to modify the source code of the worksheet as it may abort the
+ worksheet.
+ !exit
+!endif
+
+!if prep_modify=$error
+ !set cnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+ !if $modif>$cnt or $modif<1
+  You have sent an invalid request. Ignored.
+ !else
+  !set exo=!record $modif of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+  !read exomodify.phtml $exo
+ !endif
+ !exit
+!endif
+
+!if $error=toolate
+!read adm/lang/date.phtml.$moduclass_lang $class_expiration
+ <p>$name_expiration1 ($l_date_out). $name_expiration2 </p>
+ !set wims_ref_class=wims_button
+ !href cmd=resume $wims_name_back2
+ ($wims_name_sheetmanagement)
+ !exit
+!endif
+
+!if $error=srcnoexo
+ Cette feuille ne contient aucun exercice, donc son source est vide.<br />
+ !href cmd=resume retour à la page de préparation
+ !exit
+!endif
+!msg $error

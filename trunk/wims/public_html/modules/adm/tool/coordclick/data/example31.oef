@@ -1,0 +1,43 @@
+type=image
+textarea="data"
+
+:$name_description
+:%%%%%%%%
+:\title{$name_title}
+:\author{$wims_firstname,$wims_lastname}
+:\email{$wims_email}
+:\credits{}
+:$name_instruction
+\text{instruction=$name_instruction31}
+:$name_image
+\text{image=$wims_deposit}
+
+:$name_data
+$name_help_data
+\matrix{data=$data}
+
+:%%%%%%%%%%%%%%%%%%%%%%%%
+\text{size= \data[1;]}
+\text{coord = \data[2..-1;]}
+\text{coord=randrow(\coord)}
+\text{coord=wims(nonempty items \coord)}
+\text{coord=\coord[3..-1]}
+\text{ncoord=items(\coord/2)}
+\text{nombre=}
+\for{j=1 to \ncoord}{
+  \text{nombre=\nombre
+fcircle \coord[\2*\j-1,2*\j],3,black
+text black, \coord[\2*\j-1,2*\j],,\j
+}
+}
+\text{dessin=draw(\size[1],\size[2]
+copy 0,0,-1,-1,-1,-1,\image
+\nombre)}
+
+\statement{
+\instruction \rubrique.
+&lt;div class="wimscenter">
+\embed{r1,\size[1] x \size[2]}
+&lt;/div>
+}
+\answer{}{\dessin; brokenline,\coord}{type=jsxgraphcurve}{option= precision=12 color1=blue color2=green}

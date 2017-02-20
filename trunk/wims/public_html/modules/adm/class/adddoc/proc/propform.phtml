@@ -1,0 +1,55 @@
+
+!form reply
+ !set iniparm1=!replace internal & by $ $ in $iniparm
+ !set block=!getopt block in $iniparm1
+ <fieldset class="property_fields halfwidth blockcenter">
+    <legend>$propform_legend</legend>
+    <div class="field box">
+      <label for="title">$wims_name_title</label>
+      <code>
+      !replace internal & by &amp; in $dir
+      !if $iniparm!=$empty
+       !replace internal & by &amp; in &$iniparm
+      !endif
+     </code>
+      <input size="50" name="title" value="$title" id="title" />
+    </div>
+    <div class="field box">
+      <label for="status">$wims_name_Status</label>
+     !formselect status list 0,1 prompt $wims_name_status
+    </div>
+    !if $job!=add
+     <div class="field box">
+      !if $autosheet!=$empty
+        $name_autosheet: <span class="bold">$autosheet</span>
+      !else
+       !! $name_nogenerated
+       !set wims_ref_class=wims_button
+       !href cmd=reply&job=adddocsh $name_generate
+       $name_generate1
+      !endif
+      !set wims_ref_class=wims_button_help float_right
+      !href target=wims_mhelp cmd=help&special_parm=autogenerate $wims_name_help
+     </div>
+     <div class="field box">
+      <label for="wksheet">$name_wksheet</label>
+       !formselect wksheet from 0 to $nbsheet prompt $name_noone,$listsheetname
+       !set wims_ref_class=wims_button_help float_right
+       !href target=wims_mhelp cmd=help&special_parm=linksh $wims_name_help
+     </div>
+    !endif
+    <div class="field box">
+      <label for="desc">$wims_name_Description</label>
+     <textarea name="desc" rows="5" cols="50" id="desc">$desc</textarea>
+    </div>
+    <input type="hidden" name="job" value="$job" />
+    <input type="hidden" name="step" value="1" />
+    <div class="wimscenter wimsform"><input type="submit" value="$wims_name_tosave" />
+     !if $job!=add
+       <input type="submit" name="update" value="$wims_name_erase" />
+     !endif
+    </div>
+ </fieldset>
+!formend
+
+

@@ -1,0 +1,75 @@
+!nocache
+varcnt=$[min($varcnt,$limit_var)]
+replycnt=$[min($replycnt,$limit_reply)]
+choicecnt=$[min($choicecnt,$limit_choice)]
+!reset fill_check fill_checked
+
+!for i=1 to $choicecnt
+ choice$i=
+ cbad=!listuniq $(choicebad$i)
+ cgood=!listuniq $(choicegood$i)
+ cbad=!listcomplement $cgood in $cbad
+ choicebad$i=$cbad
+ itemg=!itemcnt $cgood
+ itemb=!itemcnt $cbad
+ !if $itemg<=1 and $qcmgood>0 and $itemb>1
+  shf=!shuffle $itemb-1
+  ccbad=!item 2 to -1 of $cbad
+  tmp=!item 1 of $cbad
+  ccbad=!item $shf of $ccbad
+  cbad=$tmp,$ccbad
+  cli=!item 1 to $qcmpresent of $cgood,$cbad
+ !else
+  shf=!shuffle $cgood,$cbad
+  cli=!item 1 to $qcmpresent of $shf
+  !if $qcmpresent<=$itemb
+   qcmgood=0
+  !endif
+ !endif
+ choiceitems$i=!itemcnt $cli
+ num=yes
+ !for j=1 to $(choiceitems$i)
+  t=!item $j of $cli
+  t=$[$t]
+  !if NaN isin $t
+   num=no
+  !endif
+ !next j
+ !if shuffle iswordof $(choiceoption$i)
+  choicelist$i=!shuffle $cli
+ !else
+  !if $num=yes
+   choicelist$i=!sort numeric list $cli
+  !else
+   choicelist$i=!sort nocase list $cli
+  !endif
+ !endif
+ choicegood$i=!listintersect $cgood and $cli
+!next i
+
+!for i=1 to $replycnt
+ reply$i=
+ replygood$i=!trim $(replygood$i)
+!next i
+
+!read oef/valsave.proc
+
+!if $ansorder=$empty
+ !for i=1 to $choicecnt
+  ansorder=!append item c to $ansorder
+ !next i
+ !for i=1 to $replycnt
+  ansorder=!append item r to $ansorder
+ !next i
+!endif
+
+!bound precision between integer 20 and 100000000 default 10000
+!default leftrange=-5
+!default rightrange=5
+!default cchoicecnt=$choicecnt
+!default creplycnt=$replycnt
+wims_compare_precision=$precision
+question_url=
+status=waiting
+!default conditioncnt=0
+

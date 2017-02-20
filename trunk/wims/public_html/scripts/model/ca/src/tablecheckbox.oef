@@ -1,0 +1,149 @@
+type=datalist
+textarea="data"
+
+:Classer les objets selon leurs propriétés dans un tableau.
+
+On présente une liste d'objets et une liste d'attributs (propriétés). Il faut remplir 
+un tableau selon que les objets vérifient ou non les propriétés en cochant ou non dans la case.
+
+<p>
+Pour construire un exercice avec ce modèle, il suffit d'entrer la liste
+des attributs et une liste d'objets en indiquant s'ils vérifient ou non
+les propriétés dans le même ordre que les attributs (avec un 0 ou un 1)
+<p>
+Cet exercice peut facilement être transformé pour être inclus dans un module OEF
+si l'on désire mettre les données dans un fichier auxiliaire.
+<p>
+Auteur du modèle : Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Enlevez l'en-tête ci-dessus si vous détruisez les balises pour le modèle !
+(Ce sont les lignes qui commencent par un ':'.)
+Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
+
+:%%%%%%%% Paramètres d'exemples à redéfinir %%%%%%%%%%%%%%%%%
+
+:\title{Tableau à remplir (checkbox)}
+:\author{Bernadette, Perrin-Riou}
+:\email{bpr@math.u-psud.fr}
+:\credits{}
+:Instruction
+\text{instruction= Remplir le tableau.}
+
+:Nombre d'objets tirés au sort
+\integer{N=3}
+
+:Nom du fichier
+ne remplir que si vous désirez utiliser un fichier de données (dans un module OEF).
+\text{file=}
+du type
+<pre>
+ poils,plumes,quatre membres,ailes
+ :pie,0,1,1,1
+ :boeuf,1,0,1,0
+</pre>
+Dans ce cas, les données suivantes ne seront pas prises en compte. 
+Sinon, remplissez les données.
+
+:Liste des attributs
+\text{attribut=poils,plumes,quatre membres,ailes}
+:Données
+une ligne par objets.
+\text{data=pie,0,1,1,1
+boeuf,1,0,1,0
+chat,1,0,1,0
+moustique,0,0,0,1}
+:Texte ou images pour indiquer une bonne ou mauvaise réponse
+ce texte est affiché au moment de la réponse, par défaut des images apparaissent.
+\text{nonoui=}
+
+:%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
+
+\text{size=50,50}
+\integer{w=\size[1]+10}
+\text{couleur=#FFFFCC}
+\css{<style type="text/css">
+   .question {background-color: #FFFFCC;margin: 2% 2%;padding: 1%;}
+   table.tableau {border:solid 1px;
+    border-collapse:collapse;margin-left:auto;margin-right:auto;}
+    table.tableau td, th {background-color:#FFFFCC;text-align:left;border:solid 1px;width:55px;
+    padding-left:10px;margin-left:20px;}
+   ol li {list-style: upper-alpha; }
+    table.tableau th { background-color:#CCCFFF;}
+    table.tableau tr > th:first-child {width:400px;}
+ </style>}
+ \text{nonoui=\nonoui issametext ? <img src="scripts/authors/jm.evers/gifs/ok.gif" width="15"/>,<img src="scripts/authors/jm.evers/gifs/nok.gif" width="15"/>}
+\if{\file notsametext}{
+  \text{file=randitem(\file)}
+  \text{attribut=wims(record 0 of \file)}
+  \integer{datacnt=wims(recordcnt \file)}
+  \integer{N=min(\N,\datacnt)}
+  \text{choix=shuffle(\datacnt)}
+  \text{choix=\choix[1..\N]}
+  \text{data=}
+  \for{s in \choix}{
+    \text{data=\data
+wims(record \s of \file)}
+  }
+  \matrix{data=\data}
+  \text{data=wims(replace internal ;; by ; in \data)}
+}{
+  \text{objet_cnt=rows(\data)}
+  \integer{N=min(\N,\objet_cnt)}
+  \text{bat=shuffle(\objet_cnt)}
+  \text{bat=\bat[1..\N]}
+  \matrix{data=\data}
+  \matrix{data=\data[\bat;]}
+}
+\integer{attribut_cnt=items(\attribut)}
+\text{Data=}
+\text{R=}
+\for{u=1 to \N}{
+  \for{v=2 to \attribut_cnt+1}{
+    \integer{uu=(\u-1)*\attribut_cnt + \v -1}
+    \text{Data=\data[\u;\v]=1? wims(append item \uu to \Data)}
+  }
+}
+\text{C=wims(makelist x for x=1 to \N*\attribut_cnt)}
+\text{C1=wims(makelist x for x=1 to \N*\attribut_cnt)}
+\text{nstep=r1}
+\nextstep{\nstep}
+\text{col=1}
+\statement{
+<div class="question"> \instruction
+
+<table class="tableau"><tr> <th></th>
+\for{k=1 to \attribut_cnt}{<th colspan="\col">\attribut[\k]</th>}
+</tr>
+\for{j=1 to \N}{ 
+  <tr><th>\data[\j;1]</th>
+   \for{k=1 to \attribut_cnt}{
+    \if{\step=1}{<td style="color:\couleur">\embed{r1,\C[(\attribut_cnt)*(\j-1)+\k]}</td>}{<td>\C[(\attribut_cnt)*(\j-1)+\k]</td>}
+    }
+  </tr>
+}
+</table>
+</div>
+}
+\answer{}{\Data;\C1}{type=checkbox}{option=split noanalyzeprint nonstop}
+\text{nstep=}
+\text{C=}
+\text{col=2}
+\text{croix=<span style="color:black; font-size:20pt;font-style:bold;">X</span></td>}
+\text{nocroix=<span style="color:black; font-size:20pt;font-style:bold;">&nbsp;&nbsp;</span></td>}
+\text{croix=X}
+\text{nocroix=}
+\for{u=1 to \N}{
+  \for{v=2 to \attribut_cnt+1}{
+    \integer{uu=(\u-1)*\attribut_cnt + \v -1}
+    \text{C=\uu isitemof \reply1 and \uu isitemof \Data ? wims(append item  \croix <td>\nonoui[1]  to \C)}
+    \text{C=\uu isitemof \reply1 and \uu notitemof \Data ? wims(append item \croix <td>\nonoui[2]  to \C)}
+    \text{C=\uu notitemof \reply1 and \uu isitemof \Data ? wims(append item \nocroix <td>\nonoui[2] to \C)}
+    \text{C=\uu notitemof \reply1 and \uu notitemof \Data ? wims(append item \nocroix <td>\nonoui[1] to \C)}
+  }
+}
+
+\feedback{1=1}{\nonoui[1] : bonne réponse, \nonoui[2] : mauvaise réponse 
+
+}

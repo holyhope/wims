@@ -1,0 +1,34 @@
+!if $error!=$empty
+ !exit
+!endif
+
+!if $condtest1<0
+ Non ! Vous avez fait de mauvaises manipulations qui vous ont conduit à 
+ une situation où la démonstration de l'exercice n'est plus possible.
+ L'exercice est donc avorté, score=0.
+ <p>
+ !exit
+!endif
+
+!if $cutstop=yes
+ Non ! Vous avez dépassé la limite d'étapes autorisées. L'opération est
+ avortée, score=0.
+ <p>
+ !exit
+!endif
+
+!if nostatus notwordof $m_options
+ !read deduc/$module_language/status.phtml
+!endif
+
+!item floor($score/2)+1 of Enfin, Voilà, Oui, Bien, Bravo, Félicitations
+$ ! Vous avez résolu l'exercice en $ctstep étapes.
+!if $ctstep>$m_minsteps
+ (Ça peut se faire en $m_minsteps étapes.)
+!endif
+Score&nbsp;: $score/10. <small>
+($[$ustep-$currstep] étapes égarées,
+$penalty pénalités pour erreurs graves)</small>
+
+<p>
+

@@ -1,0 +1,57 @@
+!set contextcnt=!linecnt $m_context
+!set goalcnt=!linecnt $m_goal
+!set equivcnt=!linecnt $m_equivalence
+!set casecnt=!linecnt $allcases
+
+<p><center><h4>本练习目前的状况</h4></center> <p>
+
+!if $tolerance<=0
+ 为得到最高分, 你应该在 $m_minsteps 步内解决问题.
+!else
+ 本练习可在 $m_minsteps 步内解决,
+但在目前状况下你可以做到 $[$m_minsteps+$tolerance] 步仍能得到最高分.
+!endif
+!if $status=waiting
+ 现在你是第 $currstep 步.
+!else
+ 你在第 $[$currstep-1] 步后完成了.
+!endif
+<p>
+
+!if $casecnt>1
+ !if $casecnt>2
+  你还有 $[$casecnt-1] 种情况待处理. 目前的情况: <p>
+  \($caseid).
+ !else
+  这是你要处理的最后一种情况: \($caseid).
+ !endif
+ <p>
+!endif
+
+!if $goalcnt>0
+ 仍然要证: <ol>
+ !for i=1 to $goalcnt
+  !set l=!line $i of $m_goal
+  <li>\($l).
+ !next i
+ </ol> <p>
+!else
+ !if $equivcnt>0
+  变换的对象: <ol>
+  !for i=1 to $equivcnt
+   !set l=!line $i of $m_equivalence
+   <li>\($l).
+  !next i
+  </ol> <p>
+ !endif
+!endif
+
+!if $contextcnt>0
+ 可用的假设: <ol>
+ !for i=1 to $contextcnt
+  !set l=!line $i of $m_context
+  <li>\($l).
+ !next i
+ </ol> <p>
+!endif
+

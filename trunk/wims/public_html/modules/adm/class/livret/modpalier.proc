@@ -1,0 +1,34 @@
+!bound comp between integer 1 and $livret_nbcomp default 1
+
+t=!record $comp of $livret_dir/.comps
+!distribute line $t into name_comp,nbpalier_comp
+!bound palier between 1 and $nbpalier_comp default 1
+t=!record $palier of $livret_dir/.comp$comp
+!distribute lines $t into name_palier,eold
+
+ltsheets=!listintersect $asheets and $ltsheets
+!if $ltsheets=$empty
+ ltsheets=$asheets
+!endif
+!if $cf_set!=$empty
+ !if $echoose=$empty
+  echoose=$eold
+ !endif
+ eopt=!listintersect $eopt and $optionlist
+ cf_title=!trim $cf_title
+ !default cf_title=$name_palier
+ donnees=$empty
+ !for k=1 to $nbpalier_comp
+  !if $k!=$palier
+   d=!record $k of $livret_dir/.comp$comp
+  !else
+   d=$cf_title\
+$echoose
+  !endif 
+  donnees=!append line :$d to $donnees
+ !next k
+ !writefile $livret_dir/.comp$comp $donnees
+ !reset cf_set
+ job=addcomp
+ !read $job.proc
+!endif

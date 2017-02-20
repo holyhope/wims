@@ -1,0 +1,22 @@
+
+test=!record 0 of wimshome/backup/backdate
+
+!if $test=$empty
+ !exit
+!endif
+list=!sh cd $wims_home/backup; ls WIMSdat*.tgz 2>/dev/null
+wlist=!singlespace $list
+
+nlist=!sh mkdir -p $wims_home/$wims_sesdir/getfile\
+for f in $wlist\
+do\
+ fdate=`date -r $wims_home/backup/$$f '+%Y%m%d'`\
+ echo WIMSdata-$$fdate.tgz\
+ ln -s $wims_home/backup/$$f $wims_home/$wims_sesdir/getfile/WIMSdata-$$fdate.tgz\
+done
+
+nlist=!trim $nlist
+nlist=!words2items $nlist
+nlist=!listuniq $nlist
+nlist=!sort reverse items $nlist
+

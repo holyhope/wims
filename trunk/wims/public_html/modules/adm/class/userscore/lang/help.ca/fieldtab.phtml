@@ -1,0 +1,55 @@
+$table_header
+<caption>Camps de dades vàlides</caption>
+$table_hdtr<th scope="col">Nom</th><th scope="col">Significat</th></tr>
+$table_tr<td class="tt wims_code_variable">login</td><td>$wims_name_Login</td></tr>
+!if $special_parm!=upload
+$table_tr<td class="tt wims_code_variable">name</td><td>cognom i nom (en aquest ordre, dues columnes)</td></tr>
+!endif
+$table_tr<td class="tt wims_code_variable">lastname</td><td>cognom</td></tr>
+$table_tr<td class="tt wims_code_variable">firstname</td><td>nom</td></tr>
+$table_tr<td class="tt wims_code_variable">password</td><td>contrasenya del participant, descarregada en forma
+	encriptada, però pot enviar-se al servidor sense encriptar.</td></tr>
+$table_tr<td class="tt wims_code_variable">email</td><td>adreça electrònica</td></tr>
+$table_tr<td class="tt wims_code_variable">regnum</td><td>numéro de registre</td></tr>
+$table_tr<td class="tt wims_code_variable">photourl</td><td>URL d'una foto</td></tr>
+$table_tr<td class="tt wims_code_variable">comments</td><td>comentaris referents al participant</td></tr>
+$table_tr<td class="tt wims_code_variable">external_auth</td><td>login for an external authentification</td></tr>
+
+!if $special_parm!=upload
+$table_tr<td class="tt wims_code_variable">allscore</td><td>totes les notes i mitjanes</td></tr>
+$table_tr<td class="tt wims_code_variable">averages</td><td>mitjanes de notes (del servidor i manuals)</td></tr>
+$table_tr<td class="tt wims_code_variable">average1</td><td>mitjanes de notes atribuides pel servidor</td></tr>
+$table_tr<td class="tt wims_code_variable">average2</td><td>mitjanes de notes enviades pel professor</td></tr>
+$table_tr<td class="tt wims_code_variable">sheets</td><td>notes de tots els fulls de treball (un després de l'altre)</td></tr>
+$table_tr<td class="tt wims_code_variable">sheet1,sheet2,...</td><td>notes del full 1, full 2, ...</td></tr>
+$table_tr<td class="tt wims_code_variable">sheetexo1,sheetexo2,...</td><td>indicators of the exercises of the sheet 1, of the sheet 2, ...
+  (there are two indicators : percentage of points, quality note)</td></tr>
+$table_tr<td class="tt wims_code_variable">exams</td><td>notes de tots els exàmens</td></tr>
+$table_tr<td class="tt wims_code_variable">exam1,exam2,...</td><td>notes de l'examen 1, examen 2, ...</td></tr>
+$table_tr<td class="tt wims_code_variable">manuals</td><td>totes les notes del professor (una després de l'altra)</td></tr>
+!else
+$table_tr<td><span class="tt wims_code_variable">participate</span> (en el cas de portal d'una institució únicament,
+reservat al seu administrador)</td><td>número de classes
+en les quals està registrat el participant en la forma abcdefg/1/101
+on abcdefg és el número del portal. Si hi ha diverses classes, separeu-les amb espais.</td></tr>
+!endif
+
+$table_tr<td class="tt wims_code_variable">manual1,manual2,...</td><td>notes atribuides pel professor 1, 2, ...</td></tr>
+$table_tr<td class="tt wims_code_variable">var_xxx</td><td>la variable tècnica <span class="tt">xxx</span></td></tr>
+$table_tr<td class="tt wims_code_variable">regprop1,regprop2,...</td><td>variables d'inscriptions complémentaires<span class="tt">xxx</span></td></tr>
+
+
+$table_end
+
+Un camp no reconegut és ignorat. Les variables tècniques poden usar-se per limitar
+de manera selectiva la durada d'obertura dels fulls de treball o dels exàmens.
+
+!if $special_parm=upload
+<p>
+En el cas del camp <span class="tt wims_code_variable">participate</span>, és possible afegir classes, però no eliminar-ne.
+</p><p>
+Dans le cas du champ <span class="tt wims_code_variable">var_xxx</span>,
+la variable technique doit déjà être créée et seules les valeurs définies lors de la création de la variable sont utilisables.
+</p>
+!endif
+

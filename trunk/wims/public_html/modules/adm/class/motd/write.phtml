@@ -1,0 +1,30 @@
+<hr style="width:40%" />
+
+!form reply
+!let local_name=!positionof item $user in $listiduser
+!let local_name=$(listnameuser[$(local_name)])
+ $name_Introalertmsg1
+ <br/> 
+ !let nbselect=!itemcnt $listuser
+ <span class="tt wims_login">
+ !if $nbselect=$nbconnecteduser
+  $name_allconnected
+ !else
+  !for k in $listuser
+   !let p=!positionof item $k in $listiduser
+   $(listnameuser[$p]) &nbsp;
+  !next k
+ !endif
+ </span>
+ <br />
+ $name_Introalertmsg2
+ <br />
+ <input type="hidden" name="action" value="register" />
+ <input type="hidden" name="user" value="$user" />
+ <input type="hidden" name="job" value="write" />
+ <textarea name="motd" cols="60" rows="5" maxlength="$motd_limit"></textarea>
+
+ <div class="wimscenter wimsform"><input type="submit" value="$wims_name_tosave" $wims_on_click/></div>
+
+!formend
+

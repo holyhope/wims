@@ -1,0 +1,34 @@
+!set methtit=交换不等式的两边
+!set methenv=ZZ QQ RR
+!set methparmtype=parm inequality
+!set methhelp=此方法把不等式 \(A < B) 改写成 \(B > A),\
+ 或反之.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ 交换不等式的两边
+ !read deduc/methparm.phtml 1
+
+!exit
+:check
+ !distribute items $methparmobj1 into data,left,sign,right
+ methexp=交换 \($left $sign $right) 的两边
+
+ newsign=!translate internal <> to >< in $sign
+ newobject1=$right $newsign $left
+ oldobject=1
+
+ contextlist=$ct_Always,\
+    $ct_Onlywhen两边是正的,\
+    $ct_Onlywhen两边同号,\
+    $ct_Onlywhen不等式是严格的
+
+ resultlist=$newobject1,\
+  $right $sign $left
+
+!exit
+

@@ -1,0 +1,92 @@
+----------------------------------------------------------------------------
+				New features and modifications
+----------------------------------------------------------------------------
+4.10-r.11100 (2016-11-23) :
+	* Adds 2 scripts used in modexosheet job (check.worksheet & clean.worksheet). They should have been already here since r.5665 :/
+4.09-r.11095 (2016-10-31) :
+	* corrects a bug introduced in r.10935 in addsheet and modsheet jobs. (!singlespace is replacing returns by simple spaces)
+	* introduces a new job in ALPHA state : "repairclass"
+	* corrects a small bug in getsheet
+	* getcsv & getclass now call "mkuserlist" script, just to be sure the userlist contains all the users.
+4.08-r.10935 (2016-08-29) : removes unwanted spaces/tabs in sheet properties in addsheet, getsheet and modsheet jobs.
+4.07-r.10778 (2016-07-12) : ./build-index now is called on the superclass ID when present. (addclass, copyclass, delclass, modclass)
+4.06-r.9963 (2016-03-23) : "delsheet" and "delexam" jobs now can't delete a sheet/exam if there is at least one more recent active of same type. (jobs still in BETA) + adjust some WIMS limits (MAX_EXOS, MAX_EXAMS, MAX_SHEETS) : now you cant add more than MAX_SHEETS sheets and MAX_EXAMS exams.
+4.05-r.9912 (2016-02-08) : "getscores" job is only calling "getcsv". The only difference between this job and getcsv, is that this one returns a usual response formatted, not a directly downloadable file. No more duplicated code : this one will also directly benefits from updates in userscore module.
+4.04-r.9909 (2016-02-05) : "getcsv" job calls directly scripts from "adm/class/userscore", to avoid duplicated code. + delete job "download", which was only a duplicata of "getcsv"
+4.03-r.9896 (2016-01-27) : now "getscore" and "getsheetscores" jobs send also user's bests and levels
+
+4.02-r.9627 (2015-10-13) : now "getsheetscores" and "getexamscores" jobs send also user's full names
+
+4.01-r.6628 (2013-05-27) : now verify wims exam and sheet limits (64 exercices max)
+4.00-r.6514 (2013-04-19) : now cleanClass can clean a sublclass in a superclass
+
+r.6364 (2013-02-12) : getlog can now give log connexions for exams. (option = exams)
+r.6026 (2013-04-19) : optimizing getlog job, now it can render more than 500 lines of a user log
+r.5967 (2012-11-13) : 2 new jobs :
+    - copyclass
+    - and getsheetstats + multiple bugs corrections
+r.5802 (2012-10-18) : Correction d'un bug empechant l'ajout d'un exercice contenant des virgules dans une feuille.
+r.5678 (2012-09-21) : Adds new script "adm/urldecode" : exact opposite of "adm/codeurl" script. (converts an URI string into normal string) + Corrects a bug in adm/raw putexo : now module url is well converted if sended in URI format. nb : for urldecode/codeurl works, you have to install a perl libray (liburi-perl on debian // p5-uri on Mac)
+r.5672 (2012-09-19) : corrections on "getlog" job
+r.5591 (2012-07-11) : Corrects a bug causing malformed single class creation
+r.5305 (2012-05-25) : Udpate "Listmodules" job in json, adding translated titles for levels.   + small css update
+r.5303 (2012-05-16) : Corrects a bug causing variable $wims_supertype not set on user session + minor improvement on job "listmodules"
+r.5273 (2012-04-25) : bug correction on Json format
+r.5263 (2012-04-21) : loggin when users are created (like in the standard reguser)
+r.5174 (2012-03-20) : trying to get the "class connection with other servers" working
+r.5156 (2012-03-13) : let authuser accept external identification
+r.5142 (2012-03-13) : adding missing variables,needed for ipd_method=php
+r.5017 (2012-02-17) : Variable names changes: cas_host becomes cas_auth. Added
+r.4999 (2012-02) : adds  auth, cas_host param for class
+r.4998 (2012-02) : adds "external_auth" param for users
+r.4794 (2011-12) : correction bug sur addexam + ajout d'infos sur delclass
+r.4783 (2011-12) : correction bug divers (doubles quotes maintenant autorisées dans getsheet et getexam)
+r.4746 (2011-11) : correcting bug on "listmodules" export in json + html correction in oef/Main
+r.4687 (2011-10) : getclassesuser n'est plus lancé lorsque listclass a généré une erreur ==> messages d'erreurs plus clairs ainsi.
+r.4668 (2011-10) : correcting bug on "getclassesuser"
+r.4658 (2011-10) : allowing for class setup via adm/raw
+r.4653 (2011-10) : listclasses does not need the list of participants
+
+3.32-r.4641 (09/2011) :
+	- New Jobs : linksheet (adds all exercices from sheet $qsheet to exam $qexam)
+				 getsheetscores (gets all score from sheet $qsheet - JSON only)
+				 getexamscores (gets all score from exam $qexam - JSON only)
+
+3.31 (06/2011) :
+	- New jobs : getexosheet, modexosheet
+	- New script : update.exo
+	GetSheet has also been modified. to get exercise list from this Job, now you have
+	  to make a script in the response type.
+----------------------------------------------------------------------------
+
+3.30 (05/2011) :
+	- New jobs : listexos, movexo, movexos, sharecontent
+	- New script : check.exoclass
+	- New output type : JSON
+	GetClass has also been modified for optimization. It is no longer possible
+	  to get exercise list from this job.
+	Use "listexos" instead
+-----------------------------------------------------------------------------
+
+3.23 (06/2010) :
+	- New jobs : addexam, addexo, checkexam, delexam, delexo, download, getexam,
+				 getexamlog, getexo, getexofile, getmodule, getscores, linkexo,
+				 listmodules, modexam, modsheet, putexo, search
+				 (some jobs are currently in beta only)
+	- XML format improved (still needs work)
+-----------------------------------------------------------------------------
+
+3.22  (06/2009) :
+   - bugs in getcvs due to !hex in scoring
+   - New options for getclass (program, subcourse,. ..)
+   - New job : listclasses which gives listclasses with connection with some ident
+   and rclass
+-----------------------------------------------------------------------------
+
+3.21  (03/2008) :
+	-All outputs can be formatted according to the desire of the querying software.
+	-few bugs corrected (i.e., a wrong expiration date on job addclass)
+	-File jobs (getcsv, getclassfile, getclasstgz) are not sending an "Ok status" anymore,
+		they just send directly the file
+	-New jobs added : checksheet,addsheet,delsheet,getsheet,listsheets
+_____________________________________________________________________________

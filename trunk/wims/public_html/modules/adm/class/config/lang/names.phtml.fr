@@ -1,0 +1,706 @@
+!set lang_exists=yes
+
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
+
+!distribute items zones,participants,exercices,documents,enseignants,feuilles d'exercices\
+into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers,\
+name_sheets
+
+!distribute item message du jour,exercice,feuilles d'exercices,examens,documents,\
+    participants,séquences pédagogiques,livret de compétences,compétence(s),questionnaires,\
+    cahier de texte,compte d'enseignant,forum de discussion,message(s) du forum\
+	into name_motd,name_exo,name_sheet,name_exam,name_doc,\
+	name_user,name_seq,name_livret,name_competence,name_vote,\
+	name_cdt,name_sup,name_forum,name_forum_mesg
+
+!distribute item messages du jour,\
+	exercices,feuilles d'exercices,examens,documents,participants\
+	into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
+
+!if $job=grestrict
+ !set name_allowedsites=Sites admis aux scores
+ !set name_excepted=Exceptés
+!endif
+!if $job=connectlink
+  !set title=Liens de connexion
+!endif
+!if $job=arch
+ !set title=Sauvegarde et restauration
+ !set name_title_save=Sauvegarde de la classe
+ !set name_title_restore=Restauration de ressources à partir d'une sauvegarde
+ !set name_intro1=Sélectionnez le fichier de sauvegarde à restaurer
+ !set name_intro=Cliquez sur le format de sauvegarde choisi
+ !set name_tosend=Sélectionner le fichier de sauvegarde à restaurer
+ !set name_namefile=veuillez donner le nom du fichier de sauvegarde&nbsp;
+ !set name_help=Vous pourrez alors sélectionner les ressources de la classe à restaurer.
+ !set name_deposit=!nosubst Votre fichier de sauvegarde <span class="tt wims_fname">$wims_deposit</span> contient les ressources\
+  suivantes. Marquez ce que vous voulez restaurer dans votre classe.title
+ !set name_no_restore=Impossible de restaurer car vous partagez les ressources d'une autre\
+	classe. La restauration ne peut être faite que par la classe maître du partage.
+
+ !distribute lines Aucune ressource à restaurer n'est sélectionnée.\
+   Restaurer tout sauf la configuration de la classe et le compte d'enseignant.\
+   <span class="wims_warning">Danger&nbsp;!</span> <span class="small">Voir ci-dessous.</span>\
+   Configuration de la classe.\
+   Compte d'enseignant (y compris votre mot de passe)\
+   comptes de participants\
+   Comptes existants\
+   documents\
+   Documents existants\
+   exercices\
+   exercices existants\
+   feuilles d'exercices\
+   Implique la restauration des exercices\
+   Feuilles existantes\
+   feuilles d'examen\
+   Implique la restauration de feuilles d'exercices et d'exercices\
+   Examens existants\
+   messages de discussion\
+   Messages existants\
+   Registre d'activités de participants et scores automatiques. Implique la restauration de comptes de participants.\
+   Notes entrées par l'enseignant\
+   Notes existantes\
+   Un agenda de la classe\
+   un agenda existant\
+   Un livret de compétences\
+   un livret existant\
+   Séquences pédagogiques\
+   Implique la restauration des exercices, des feuilles d'exercices, des examens et des documents\
+   Séquences existantes\
+   Méthode de restauration\
+   Remplacement\
+   remplace les ressources existantes par les ressources restaurées\
+   Fusion\
+   fusionne les comptes des participants ; fusionne les exercices de la classe en remplacant les exercices de même nom ; <span class="wims_warning">remplace les autres ressources existantes</span>\
+   Restaurer les ressources sélectionnées\
+   Mot du jour existant\
+ into name_noselect,name_all,name_danger,name_config,name_teacher,name_user,name_user1,name_doc,\
+   name_doc1,name_exo,name_exo1,name_sheet,name_sheet0,name_sheet1,name_exam,name_exam0,name_exam1,name_forum,\
+   name_forum1,name_activity,name_manual,name_manual1,name_cdt,name_cdt1,name_livret,name_livret1,name_seq,\
+   name_seq0,name_seq1,name_method,name_replace,name_replace1,name_merge,name_merge1,\
+   name_selectrestore,name_motd1
+
+!set name_cnil_warning=Nous vous rappelons que conformément aux déclarations faites à la CNIL, \
+  vous ne devez pas garder de données relatives à vos élèves plus d'un an. Vous devrez alors détruire\
+  toutes les sauvegardes contenant les données des élèves.\
+  Faites une sauvegarde sélective si vous désirez garder les ressources que vous\
+  avez créées (feuilles, examens, documents) ou utilisez la possibilité de duplication.
+
+!distribute lines Ressources de sauvegarde restaurées dans la classe&nbsp;\
+   La restauration des comptes de participants (et des registres d'activité) est refusée car il n'y a plus d'espace disponible.\
+   La date d'expiration de la classe a été modifiée après la restauration, car la date restaurée est\
+   Compte(s) de participant non restauré car l'identifiant est déjà en utilisation dans le groupement/portail\
+   La restauration est impossible car votre classe a autorisé des partages de ressources\
+   La sauvegarde et la restauration ne sont pas utiles à ce niveau de la structure\
+ into name_restore1,name_restore2,name_restore3,name_restore4,name_forbiddenrestore,name_restore5
+
+ !distribute items méconnaissable, trop tôt, trop tard into ebad,eearly,elate
+
+ !distribute lines Désolé, l'archivage de votre classe n'a pas abouti. Erreur interne.\
+  Cliquez sur le fichier de sauvegarde de votre classe\
+  pour l'enregistrer sur votre ordinateur.\
+  Vous pouvez aussi sélectionner les données à sauvegarder. Cochez les données que vous voulez sauvegarder\
+  puis cliquez sur le bouton \
+  Sauvegarde sélective\
+  pour modifier le fichier de sauvegarde ci-dessus et enregistrez le fichier sur votre ordinateur.\
+ into name_download1,name_download2,name_download3,name_download4,\
+   name_selective1,name_selective2,name_selective3
+
+ !set name_download5=Ce fichier de sauvegarde a une taille qui peut dépasser la limite autorisée\
+  pour un envoi au serveur. Pour réduire la taille du fichier, vous pouvez aussi\
+  sélectionner les données à sauvegarder
+
+ !goto commun
+!endif
+
+!if $job=clean
+ !set title=Nettoyage de la classe
+ !set name_lines=lignes dans les registres d'activité de participants.
+ !set name_empty=Votre classe est vide&nbsp;!<br />\
+ Il n'y a pas de ressources dans votre classe pouvant être effacées.
+ !set name_no_erase=Ne peuvent pas être nettoyés car vous partagez ceux d'une autre classe.
+
+ !distribute lines Nettoyer tout ce qui peut être nettoyé\
+   Les registres d'activité seront aussi effacés\
+   Les feuilles d'examen seront aussi effacées\
+   sauvegardez la classe\
+   Les ressources actuelles de votre classe\
+ into name_cleanall,name_erase1,name_warning_exam,name_saveclass,name_ressource
+  !set name_warning_clean=Les ressources effacées par cette page ne peuvent pas être \
+ récupérées&nbsp;! Avant d'effacer quoi que ce soit,
+ !goto commun
+!endif
+
+!if $job=neighbor
+ !set title=Classes voisines
+  !set name_noclass=Vous ne pouvez pas définir des classes voisines car il n'y a aucune autre\
+ classe sur ce site.
+ !set name_toomany=Il y a trop de classes virtuelles sur le site. Donnez un mot clé pour\
+  rechercher les classes qui vous concernent&nbsp;
+ !set name_toomany2=Il y a encore trop de classes correspondant à votre recherche. Veuillez\
+  donner un mot clé plus précis.
+
+ !distribute lines Rechercher une classe\
+  Aucune classe n'est trouvée pour votre recherche. Réessayez.\
+  Afficher les classes ouvertes du serveur\
+  Les relations de voisinage entre des classes virtuelles permettent l'échange de ressources et/ou déplacement entre les classes.\
+  Cliquez sur le nom d'une classe pour changer vos relations de voisinage avec elle.\
+  Classes dans la même langue que la vôtre\
+  Classes dans une autre langue\
+  Exemples\
+into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
+  name_samelanguage,name_otherlanguage,name_example
+
+ !distribute lines Déclaration de voisinage\
+   Partage de ressources\
+   par vous\
+   par l'autre\
+   Partages mutuels actifs.\
+   Vous partagez ses ressources.\
+   Partage vos ressources.\
+   Permissions mutuelles de partage.\
+   A le droit de partager vos ressources.\
+   Vous permet de partager ses ressources.\
+   Arrêter le partage\
+   Partager\
+   les importer tous\
+   Ressources d'enseignement\
+   Importer d'autres ressources\
+   Classes pouvant partager vos ressources\
+   Ressources permises\
+   actif\
+   Liste de toutes les classes\
+   Information partage de ressources\
+   Classes ouvertes du serveur\
+   importer des ressources\
+   Vous pouvez\
+   de la classe\
+   Cliquez ici pour accepter\
+ into name_declaration,name_sharing,name_byyou,name_other,name_actif,name_share1,name_share2,\
+ name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching,\
+ name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,name_exampleclass,\
+ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
+
+ !set name_nonewres=!nosubst Il n'y a aucun (nouveau) type de ressources dans la classe \
+  <span class="wims_emph">$nei_description</span> qu'elle vous autorise à partager.
+
+ !set name_newres=!nosubst La classe <span class="wims_emph">$nei_description</span> \
+ vous <b>autorise</b> à partager ses
+
+ !set name_chooseres=!nosubst Choisissez les ressources que vous <b>autorisez</b> la classe <span class="wims_emph">\
+  $nei_description</span> à partager&nbsp; (<i>sélectionnez puis cliquez sur <span class="wims_button disabled">$wims_name_tosave</span></i>)
+
+ !set name_warning_authorized=!nosubst La classe <span class="wims_emph">$nei_description</span>\
+  vous autorise à partager certaines ressources. Vous ne devez pas l'autoriser à partager les mêmes types de ressources \
+  sous peine de confusion. Commencez par décider quelle classe, parmi celles avec lesquelles vous\
+  voulez partager des ressources, autorise le partage de tel type de ressource\
+  et quelles classes acceptent ce partage.
+
+ !distribute lines Relation de voisinage\
+   n'a pas déclaré votre classe comme voisine\
+   vous accepte comme classe voisine pour\
+   avec\
+   Vous partagez déjà les ressources suivantes de la classe\
+   n'a pas de ressources que vous pouvez importer\
+   a les ressources importables suivantes\
+   Même titre dans votre classe\
+   Vide\
+   en préparation\
+   Remplacer\
+   Login déjà utilisé dans votre classe\
+   Participant effacé existant dans votre classe\
+   Importation à partir de la classe\
+   Transféré avec succès\
+   comptes de participants de la classe voisine\
+   Vérifier le résultat\
+ into name_neighbor_relation,name_text1,name_text2,name_with,name_sharealready,\
+   name_no_ressource,name_importable,name_same_title,name_empty,name_inpreparation,\
+   name_replace,name_existinglogin,name_part_erased,name_import,name_transfered,\
+   name_neigh_account,name_verify
+
+ !set name_inactif=!nosubst Le(a) $(name_$itype) est mis(e) en état inactif pour en permettre la\
+  modification.
+
+ !set name_accept=!nosubst Acceptez-vous la classe <span class="wims_emph"> $nei_description</span> comme votre voisine pour
+
+ !if $job2=stopshare
+  !set title=Arrêter un partage
+  !set name_warning=Votre classe a un registre d'activités actif et les\
+ ressources partagées ne sont pas vides. Si vous arrêtez ce partage\
+ maintenant, vous ne pourrez plus les repartager plus tard.\
+ <br /> Êtes-vous sûr de vouloir définitivement arrêter ce partage&nbsp;?
+
+ !set name_stop=arrêter.
+ !endif
+ !if $job2=sharelist
+  !set title=Information de partages de ressources.
+  !set name_sharelist=!nosubst Vous partagez $(name_$rec) de
+  !distribute lines Vous ne partagez pas de ressource.\
+  Vous partagez des ressources d'autres classes\
+  into name_noresource,name_resource
+  !endif
+
+  !if $job2=addshare
+  !set title=Partager les ressources d'une classe
+  !set name_class_share=La classe <span class="wims_emph">$nei_description</span> \
+      vous permet de partager ses ressources suivantes.
+  !distribute lines disponible(s)\
+    Vous êtes en cours de partage.\
+    Vous ne pouvez pas les partager car vous partagez déjà celles d'une autre classe.\
+    nettoyer vos propres ressources\
+    si c'est possible.\
+    Il est très dangereux de partager le compte d'enseignant&nbsp;!\
+  into name_available,name_actually_sharing,name_nosharing,name_cleanup,name_ifpossible,\
+    name_dangerous
+
+  !set name_warning1=Vous ne pouvez pas les partager car vous permettez à d'autres classes\
+   de partager VOS ressources du même type. Les partages en cascade ne sont pas\
+   autorisés. Donc vous devez d'abord arrêter les permissions de partage\
+   avec l'autre classe avant de pouvoir partager celles de la classe
+  !set name_warning2=!nosubst Vous ne pouvez pas les partager car vos propres $(name_$r) ne sont pas\
+   vides. Avant le partage, vous devez d'abord
+  !set name_warning_erase=!nosubst Le partage va EFFACER vos $(name_$r) existant(es)&nbsp;! \
+     Elles seront définitivement perdues si vous n'avez pas de sauvegarde.
+
+  !endif
+
+  !distribute items ---,<span class="small">enseignant</span>,\
+	<span class="small">participants</span>,\
+	<span class="small">enseignant et participants</span>\
+  into n_n0, n_n1, n_n2, n_n3
+
+ !goto commun
+!endif
+
+!if $job=connect
+ !set title=Se connecter à d'autres serveurs / plate-formes
+ !set name_listserver=Liste des serveurs
+
+ !distribute lines Tester une connexion avec un serveur\
+   Tester la connexion avec la classe distante\
+   Ajouter une classe distante\
+   Gérer une classe distante\
+   classe locale, classe distante\
+   définition de la classe,liste des participants, moyenne de notes, détails des notes,tout sauf la definition de la classe\
+   Synchroniser\
+   (with the other one) for\
+   Classe distante\
+   Serveur distant\
+   Gérer\
+   Détruire une classe distante\
+   La connexion avec le serveur distant est établie.\
+   Une connexion a été ajoutée à votre classe, mais le serveur distant a renvoyé un message d'erreur\
+   Le serveur distant ne répond pas. Faire un rapport à\
+   La connexion a été rejetée par le serveur distant. Message d'erreur\
+   Classe distante vérifiée\
+   La connexion a été établie. Données envoyées par la classe distante\
+   Pour se connecter à une classe sur le serveur choisi, indiquer\
+   Identifiant de la classe distante\
+   Si la classe distante n'existe pas, le serveur créera une nouvelle classe sur le serveur distant, en utilisant les propriétés de votre classe.\
+   Mettre à jour automatiquement la classe distante en cas de changements dans votre classe\
+   Permettre à la classe distante de modifier votre classe\
+   Cette classe n'a pas de connexion avec l'un de ces serveurs.\
+   Vous avez établi les connexions suivantes avec d'autres serveurs.\
+   Serveur\
+   Ce serveur WIMS peut établir des connexions avec les serveurs suivants.\
+   Actions sur la connexion\
+ into wims_name_connecttest,wims_name_classtest,wims_name_addconnection,wims_name_connectmanage,name_prompt1,\
+   name_prompt2,name_synchronize,name_withotherone,name_remoteclass,name_remoteserver,wims_name_Manage,\
+   wims_name_destroy,name_working,name_error1,name_errornoreply,name_errorreject,name_check,name_data,\
+   name_toconnect,name_identifier,name_help,name_automatically,name_allow,name_noconnection,name_declaration,\
+   wims_name_server,name_listserver1,name_connexion_action
+
+ !goto commun
+!endif
+
+!if $job=access
+ !set title=Configuration de l'accès aux ressources
+ !goto commun
+!endif
+
+!if $job=grestrict
+ !set title=Restriction de l'accès aux scores
+ !goto commun
+!endif
+
+!if $job=present
+ !set title=Configuration de l'apparence de la classe.
+ !goto commun
+!endif
+
+!if $job=oefdefault
+ !set title=Paramétrage par défaut des modules OEF
+ !read oef/fr/intronames
+
+ !distribute lines $name_oneserie\
+   $name_levelseverity\
+   $name_chrono\
+   $name_secondes\
+   $name_qcmanswer\
+   $name_solutiongiven\
+   $name_choice\
+   $(name_choice_check[1])\
+   $(name_choice_check[2])\
+   $(name_choice_check[3])\
+   $(name_choice_check[4])\
+  into name_series,name_severity,name_chrono,name_secondes,name_qcmanswer,\
+    name_solution,name_prompt,name_prompt1,name_prompt2,name_prompt3,name_prompt4
+   !set name_warning=$(name_remarkintro3)
+ !goto commun
+!endif
+
+!if $job=security
+ !set title=Activités de gestion de sécurité disponibles
+ !set name_see_activity2=Vous devez être à l'origine de toutes ces activités&nbsp;; si ce \
+   n'est pas le cas, il faut vérifier s'il n'y a pas une fuite de votre mot de passe d'enseignant.
+ !set name_see_activity1=Voir l'enregistrement d'activité de gestion de votre classe
+ !distribute lines Configurer la restriction par classe\
+ des sites ayant accès aux scores.\
+ Autres définitions de sécurité dans\
+ la configuration de la classe\
+ into name_restriction1,name_restriction2,name_otherrestriction1,name_otherrestriction2
+ !goto commun
+!endif
+
+!if $job=authtype
+ !set title=Authentification externe
+ !set name_intro_authtype=Choisissez l'authentification et l'identification désirées\
+ et remplissez les champs utiles correspondants.
+ !set name_method_list= authentification par wims, authentification via CAS, \
+ authentification via CAS et identification par un ldap,\
+ authentification et identification par un ldap,\
+ authentification via CAS et identification via php,\
+ authentification et identification via php
+ !goto commun
+!endif
+
+!if $job=import
+ !set code1=Aucun
+ !set code2=$wims_name_yes mais différent
+ !set code3=$wims_name_yes, actif et différent
+!endif
+
+!if $job=propagate
+  !if $wims_supertype=2
+   !set name_thisclass=du portail
+   !set name_subclasses=sous-classes
+  !else
+   !set name_thisclass=de la zone actuelle
+   !set name_subclasses=zones dépendantes
+  !endif
+
+ !distribute lines Configurations envoyées aux $name_subclasses avec succès&nbsp;\
+  Vous pouvez choisir d'envoyer les configurations suivantes $name_thisclass à toutes ses $name_subclasses&nbsp;\
+ into name_propagate_succes,name_propagate_choose
+
+ !set name_warning=Notez que cela ne concerne que les $name_subclasses déjà créées et que \
+  les $name_subclasses ne répercuteront pas les changements ultérieurs \
+   des configurations $name_thisclass. Vous devez réenvoyer les changements chaque fois \
+   que vous voulez les répercuter dans les $name_subclasses.
+
+!endif
+
+!if $job=log
+  !set name_warning_log=Voici l'enregistrement de certaines activités de gestion de votre classe.\
+    Cet enregistrement vous permet de vérifier s'il y a des activités suspectes.
+!endif
+
+!if $job=index
+ !set title=!nosubst Actualisation de l'index $tit
+ !set name_done=Fait.
+ !set name_result=Résultat du script
+
+  !if $job2=structure
+   !set tit=des zones
+  !endif
+  !if $job2=userlist
+   !set tit=des participants
+  !endif
+  !if $job2=teacherlist
+   !set tit=des enseignants
+  !endif
+  !if $job2=oef
+   !set tit=des exercices
+  !endif
+  !if $job2=doc
+   !set tit=des documents
+  !endif
+!endif
+
+!if $job iswordof list new or $job=
+!! pas d'espace en début de ligne
+  !distribute line Nom de l'établissement\
+Nom de la classe\
+Numéro de la classe\
+Mots d'option\
+Compte développeur Modtool\
+Verrou de connexion\
+Meilleures notes (nombre / anonymat)\
+Limite du nombre de participants\
+Date d'expiration\
+Enregistrement d'exercices\
+Enregistrement d'examens\
+visibles par les élèves\
+pour modifier le style des pages de la classe comme les couleurs, ajouter un logo .. \
+préférences personnelles, ne modifie pas l'aspect de la classe pour les participants\
+Répercuter les configurations aux zones dépendantes\
+définir des relations de voisinages avec d'autres classes de ce serveur\
+définir des relations avec d'autres serveurs\
+définir une authentification externe à WIMS; la configuration doit se faire avant l'inscription des participants\
+des participants\
+Actualiser les index\
+dont le changement de\
+faire une sauvegarde de la classe sur son ordinateur ou restaurer des ressources dans la classe à partir d'une sauvegarde\
+restreindre les ressources accessibles par un participant connecté dans la classe\
+restreindre les conditions dans lesquelles les scores obtenus par un participant sont enregistrés\
+pour lequels les scores sont enregistrés\
+Faire un nettoyage sélectif\
+Configurer\
+Utilisation actuelle d'espace disque\
+La limite est\
+Mix\
+Autoriser les participants à désactiver les scores\
+Titre des exercices OEF pour les élèves\
+Les participants savent si l'enseignant est connecté\
+Montrer l'IP de l'utilisateur à l'administrateur dans une classe\
+Champs supplémentaires à remplir à l'inscription\
+Tenir compte du changement éventuel d'IP lors d'un examen\
+paramètres définis lors de la création de la classe, configuration des feuilles et des examens notamment\
+  into name_name_institution,name_name_class,name_name_number,name_optionword,name_devaccount,name_lock_level,\
+    name_bestscore,name_limit,name_expirationdate,name_register_exo,name_register_exam,\
+    name_visible,name_apparence,name_pref,name_dependant_zone,name_neigh,name_link,name_useauth,name_ldap,name_index,\
+    name_change,name_load,name_restriction1,name_restriction2,name_score,name_clean,\
+    name_config,name_disk,name_limit2,name_mix_auth,name_config_authscoresuspend,\
+    name_config_exotitleform,name_config_supconnectshowed,name_config_show_IP,name_regvars,\
+    name_examscore_withoutip,name_param
+
+ !set name_config_exotitleformoption=Aucun,Titre de l'exercice,Numéro de la feuille et de l'exercice,Titre de la feuille et numéro de l'exercice,Titre de la feuille et titre de l'exercice dans la feuille
+ !set name_allowcloning=Autoriser la duplication
+ !set name_cloningpwd=Mot de passe de duplication
+!endif
+
+:commun
+!distribute line Configuration globale\
+Authentification\
+Préférences\
+Restriction d'accès\
+Paramétrage OEF\
+Classes voisines\
+Gestion de sécurité\
+Nettoyage sélectif\
+Actualiser\
+Autres serveurs\
+Mots de passe\
+Zones dépendantes\
+Apparence\
+Restriction des scores\
+Adresse d'une plateforme\
+de\
+Authentification externe\
+into wims_name_config_list,wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
+wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
+wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
+wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
+
+!distribute lines Postes sûrs\
+   Feuille de style\
+   Logo\
+   Position du logo\
+   en haut à gauche, en haut à droite\
+   Thème\
+   Jeu d'icones\
+   Niveau académique\
+   Postes autorisés aux notes\
+   Mot de passe d'inscription\
+   Mot de passe d'enseignant\
+   Limites d'enregistrement d'exercices et d'examens\
+   Liens sur une plateforme ou une page web\
+   Couleur de fond des pages\
+   Couleur de fond des menus\
+   Couleur des liens dans les menus\
+   Image de fond des pages\
+   Transférer un fichier css\
+   Dégradé de couleurs des scores (de 0 à 10)\
+   Couleur de fond des boutons\
+   Couleur du texte dans les boutons\
+   Couleur de fond des boutons d'aide\
+   Couleur du texte dans les boutons d'aide\
+   Liens de connexion\
+   Couleur du texte\
+   Couleurs dans la présentation des activités\
+adresses des liens de connexion directe à la classe\
+   Configuration OEF par défault\
+  into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
+   name_theme_icon,name_level,name_security,name_password,name_supass,name_exolog,name_ent,\
+   name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,\
+   name_colorscore,name_button_bgcolor,name_button_color,name_button_help_bgcolor,\
+   name_button_help_color,name_connectlink,name_act_color,name_coloract,\
+   name_connectlinkhelp,name_oefdefault
+
+!set name_content_style =<span class="tt wims_code_words">$name_css</span> doit être sur <span class="tt wims_code_words">class</span>
+
+!set name_content_style2=Insérer des définitions de style css
+
+!distribute lines Présentation de la classe et de ses ressources\
+la configuration des outils suivants peut aussi être faite à partir de la page d'accueil\
+la configuration peut se faire aussi en dehors de cette zone\
+paramètres par défaut pour l'insertion d'exercices dans une feuille\
+Accès aux ressources et à l'enregistrement des notes\
+Relation avec d'autres classes wims ou d'autres serveurs\
+Les liens ci-dessous vous permettent de modifier certains paramètres de la classe.\
+Sauvegarde et maintenance de la classe\
+into name_newrem1,name_newrem2,name_seqrem,name_oefrem,\
+  name_title_access,name_title_other,name_configrem,name_title_saveman
+!exit
+:arch
+
+ Vous avez envoyé des ressources sauvegardées à partir d'une autre classe.
+ Si vous restaurez des ressources incompatibles avec votre classe, elle va
+ être simplement détruite.
+ !href cmd=help&special_parm=dependencies Pourquoi&nbsp;?
+ <br />
+ !href cmd=reply&job=list Arrêtez
+ si vous n'êtes pas complètement sûr de ce que vous faites. Dans tous les
+ cas, gardez une sauvegarde de l'état actuel avant de continuer.
+!exit
+
+:arch_end
+ <span class="wims_warning">IMPORTANT</span>. <ul><li>Il n'y a pas de vérification des données que vous avez
+envoyées et le système n'autorise pas la modification manuelle des archives
+de sauvegarde. Les erreurs introduites par une modification manuelle des
+archives peuvent entraîner des comportements imprévisibles de votre classe.
+</li>
+<li> Sauf dans des cas d'absolue nécessité, évitez de restaurer
+<span class="wims_warning">la configuration de la classe</span> et
+<span class="wims_warning">le compte d'enseignant</span>.
+Les erreurs dans les données envoyées pour ces deux champs peuvent vous faire
+perdre complètement le contrôle de votre classe.
+</li><li> Vous pouvez utiliser la sauvegarde d'une classe pour en installer une
+nouvelle. Dans ce cas, évitez de restaurer les registres d'activités et les
+notes (manuelles et automatiques). Ces deux types de ressources ne peuvent
+pas être effacés une fois installés (mesure de sécurité). Et beaucoup
+d'opérations de maintenance de la classe sont impossibles quand la
+classe contient des notes.
+</li></ul>
+!exit
+
+:clean
+ <p>
+Vous ne pouvez pas effacer des ressources de la classe
+ quand les activités de participants ont déjà commencé.
+ </p><p>
+ Ceci est une mesure de sécurité importante. Si vous avez envie
+ d'outrepasser cette restriction, pensez aux deux aspects suivants.
+ </p><p>
+ D'un côté, supposons qu'un étudiant vole votre mot de passe. S'il vient dans
+ cette page pour tout effacer, les étudiants honnêtes vont beaucoup souffrir,
+ et vos activités d'enseignement seront considérablement perturbées.
+ </p><p>
+ D'un autre côté, les différentes ressources de la classe sont inter-dépendantes.
+ Si vous effacez certaines ressources sans effacer celles qui en dépendent,
+ votre classe ne fonctionnera plus.
+ !href cmd=help&special_parm=dependencies Exemples.
+ </p><p>
+ De toute façon, si vous voulez vraiment nettoyer cette classe, vous pouvez
+ toujours l'effacer (en mettant sa date d'expiration à aujourd'hui&nbsp;
+ la classe disparaîtra demain matin), ou
+ <a href="mailto:$wims_site_manager?subject=Please erase my class">demander
+ au gestionnaire du site</a> de l'effacer pour vous.
+ </p>
+ !exit
+
+ :clean2
+ <span class="wims_warning">Remarques</span>. <ul><li> Cette page est accessible seulement au moment où la
+classe est en préparation. Une fois que les activités de participants ont
+commencé, il  n'est plus possible d'effacer des ressources.
+</li><li>
+Les ressources partagées par plusieurs classes peuvent seulement être
+effacées à partir de la classe maître du partage. Les autres classes doivent
+d'abord
+!href cmd=reply&job=neighbor&job2=sharelist arrêter le partage
+ des ressources avant de les effacer.
+ </li></ul>
+!exit
+
+:connect_first_info
+La connexion avec d'autres serveurs / platformes permet à votre classe de communiquer directement avec
+une autre classe sur un autre serveur WIMS ou sur une autre plateforme e-learning. Les participants
+peuvent alors naviguer de manière transparente entre les classes connectées.
+<br />
+Par exemple, vous pouvez faire un miroir de cette classe sur un autre serveur WIMS distant,
+de manière à ce que si ce serveur est momentanément indisponible, le travail puisse continuer sur le
+miroir. Les notes sur le miroir seront ensuite rassemblées plus tard.
+!exit
+
+:connect_first
+
+Ce serveur WIMS n'a pas établi de connexion avec un serveur distant. Pour utiliser la possibilité
+de connexion, le
+ <a href="mailto:$wims_site_manager?subject=server connection">gestionnaire du site</a>
+ doit déclarer un serveur distant et le serveur distant doit aussi déclarer ce serveur WIMS
+ comme pouvant être connecté.
+ (Le gestionnaire du site peut se référer au fichier
+ <span class="tt wims_fname">$basedir/log/classes/.connections/myself</span> pour les détails sur la manière de déclarer des
+ serveurs distants.)
+
+ !exit
+
+:import2
+ <p>La feuille d'exercices que vous voulez importer peut utiliser des exercices
+   définis dans la classe voisine.
+   </p><p>
+   Si les mêmes exercices n'existent pas dans votre classe, la feuille importée
+   ne fonctionnera pas correctement. Veuillez vérifier soigneusement que tous
+   les exercices de la classe voisine ont un duplicata dans la vôtre.
+   </p>
+!exit
+:import3
+  <p>Les feuilles d'examen sont basées sur les feuilles d'exercices.
+   </p><p>
+   Importer une feuille d'examen n'a de sens que si vous avez exactement les
+   mêmes feuilles d'exercices que la classe voisine et si ces feuilles sont
+   rangées dans le même ordre dans les deux classes.
+   </p><p>
+   Si ce n'est pas le cas, la feuille d'examen importée ne pourra qu'avoir
+   des comportements erratiques.
+   </p>
+!exit
+:import4
+
+Vous êtes sur le point de remplacer un(e) $(name_$itype)
+  existant(e) de votre classe par la ressource importée. Il n'y aura aucune
+  possibilité de retour en arrière après cette opération.
+!exit
+
+:import5
+ Aucun compte de participant n'est ajouté à votre classe. Vérifiez si votre
+ classe est pleine (et s'il y a encore de la place dans le site pour ajouter
+ de nouveaux participants).
+!exit
+
+:auth1
+<p>Cet outil de configuration est seulement accessible aux postes sûrs.
+</p><p>
+Comme vous n'avez pas défini de poste sûr, nous vérifions votre
+authentification en vous envoyant un code secret à votre adresse électronique.
+Veuillez lire vos mails, prendre le code et le taper ci-dessous&nbsp;:
+</p>
+!exit
+:auth2
+<p>
+<b>Notes</b>. Cette authentification sert à assurer que même si votre mot
+de passe est volé ou perdu, les dommages à votre classe seront limités.
+La procédure d'authentification est simplifiée si vous définissez des
+postes sûrs correctement, tout en gardant un haut niveau de sécurité.
+</p>
+!exit
+
+:download
+<p><b>Remarque</b>. Ce sont d'habitude les
+registres d'activités de participants, messages de discussion et les
+documents de la classe qui forment l'essentiel de la taille du fichier. Vous pouvez
+faire plusieurs sauvegardes sélectives pour différentes ressources.
+</p>
+!exit

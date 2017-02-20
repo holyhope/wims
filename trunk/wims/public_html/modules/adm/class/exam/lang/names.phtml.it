@@ -1,0 +1,101 @@
+!set lang_exists=yes
+
+!set name_duplicateok=Examen dupliqué correctement.
+!set name_title=Preparazione del tema d'esame
+!set wims_name_mainpage=Copertina del tema d'esame
+
+!if $activetest<=0
+ !set name_title=!nosubst Preparazione del tema d'esame
+!else
+ !set name_title=!nosubst Modifica dell'esame
+!endif
+
+!read adm/lang/date.phtml.$lang
+!read adm/lang/sheetexam.phtml.$lang
+!set wims_name_scoreexam=!nosubst $wims_name_myscore
+
+!set name_Options=Opzioni
+!set name_All=Tutti
+
+!set name_done=completato
+
+!set name_instructions=Istruzioni
+
+!distribute lines Termina questa sessione d'esame\
+Torna a lavorare sull'esame\
+Tema d'esame (pagina del docente)\
+Pagina pubblica del tema d'esame\
+Punteggio ottenuto\
+Questo tema d'esame &egrave; vuoto. Non ci sono esercizi da svolgere.  Si tratta probabilmente di un errore del docente.\
+Contenuti\
+Accesso negato.\
+Puoi sostenere l'esame una sola volta.\
+Non puoi pi&ugrave; migliorare il punteggio fin qui ottenuto.\
+ATTENZIONE: questo &egrave; l'ultimo tentativo a disposizione.\
+il conto alla rovescia sarà avviato e il tentativo sar&agrave; conteggiato\
+il conto alla rovescia sarà avviato.\
+È necessario aver svolto con successo altri esercizi\
+Punteggio globale ottenuto in questa sessione d'esame\
+into wims_name_endexam,wims_name_backexam,wims_name_teacherview,name_presentation,\
+name_scoreexam,name_empty,name_content,name_examclosed,name_exam1,name_exam5,\
+name_lasttry,name_exam7,name_exam8,name_depend,name_scoreexam2
+
+!set name_exam2=!nosubst Hai un massimo di $stries possibilità per questo esame.
+!set name_exam3=!nosubst Hai già terminato il tuo esame, con $tried tentativi.
+!set name_exam4=!nosubst Hai gi&agrave; esaurito le tue <strong>$tried possibilità</strong>.
+!set name_exam6=!nosubst Hai ancora <strong>$tryremain possibilità</strong>.
+
+!set name_exam9=!nosubst Hai <strong>$sdure minuti</strong> per completare questo esame. \
+Quando cliccherete su uno degli esercizi
+
+!set name_simulation=<strong>Questa &egrave; la simulazione di un esame.</strong> A differenza del <em>vero</em>\
+esame il server non terr&agrave; alcun conto del tentativo.
+
+!set wims_name_examremain=Tempo rimanente per completare il tema d'esame: $
+
+!distribute lines provvisorio\
+  Non hai ancora cominciato a lavorare sul tema d'esame\
+  Comincia.\
+  Il punteggio ottenuto non &egrave; stato preso in considerazione, perch&eacute; si trattava di una sessione di prova.\
+  into name_pending,name_begin1,name_begin2,name_simulation2
+
+!set name_timeleft=!nosubst Il tempo &egrave; scaduto! Hai utilizzato tutti i $sdure\
+  minuti disponibili. You must logout now.
+!set name_realscore=!nosubst Il punteggio reale ottenuto è $lastscore.
+!set name_bestscore =!nosubst Il punteggio per questo esame migliore è $lastscore.  (Si terrà conto solo del punteggio migliore.)
+
+!! ---------------------------
+!! nouvelle partie
+
+!set statutname=$(wims_name_shstatus[1]),$wims_name_shstatus
+
+!set name_desc_duration=in minuti
+!let name_mkexam=Crea il tema d'esame
+
+!let name_shinfo_cutt=Orari sessioni multiple (cut-off)
+
+!! différents commentaires de la page de gestion
+!distribute lines Informazioni generali\
+Contenuti\
+Questo tema d'esame non contine ancora nulla.\
+into name_info,name_content,name_warning
+
+!! titre du tableau de contenu de l'examen (file examcontent.phtml)
+!let name_extab=!nosubst $wims_name_number,$wims_name_title,Contenu,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
+
+!set name_contenu=Scelta dei contenuti
+!let name_cpsheet1=Stai per aggiungere tutti gli esercizi del test di autovalutazione in fondo all'esame. Ogni esercizio sarà aggiunto con peso 1 e avrà come titolo il titolo che ha nel test a meno che non compiliate il campo sopra.<br />
+
+!let name_cpsheet3=Titolo di default per l'esercizio
+!let name_cpsheet4=gli esercizi saranno numerati
+
+!set name_warning_nonfinished=Non hai svolto tutti gli esercizi richiesti. Terminare la sessione ora\
+  significa salvare questo punteggio e perdere una delle possibilità\
+  di sostenere l'esame, la prossima volta dovrai infatti ricominciare da capo.\
+  <br />Sei sicuro/a di voler smettere ora?
+
+!! wims_ ?
+!set wims_name_cpexam=Copia un esame attivo
+
+!set name_cpexam1=Stai per copiare un tema d'esame attivo già presente nel corso. I contenuti saranno poi modificabili fino a quando questa tema d'esame non sarà reso Attivo
+

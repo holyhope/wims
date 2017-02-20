@@ -1,0 +1,50 @@
+
+!set wims_warn_header=<p><span class="wims_warning">$wims_name_warning.</span>
+
+!if ambiguous iswordof $wims_warn_rawmath
+ $wims_warn_header
+ Vous avez entré une formule ambigue, dont l'interprétation
+ par wims pourrait ne pas correspondre à ce que vous vouliez. Vérifiez la
+ formule.
+ </p>
+ !set wims_warn_rmremark=yes
+!endif
+
+!if unknown iswordof $wims_warn_rawmath
+ $wims_warn_header
+ Wims a détecté dans votre formule un nom de variable ou de fonction non connu 
+ <span class="bold tt wims_warning">$wims_warn_rawmath_parm</span>. Erreur de frappe?
+ </p>
+ !set wims_warn_rmremark=yes
+!endif
+
+!if flatpower iswordof $wims_warn_rawmath
+ <p><span class="wims_warning">Indication.</span>
+ Vous voulez entrer <span class="wims_emph">x<sup>2</sup></span>? Tapez
+ <span class="tt">x^2</span> ou <span class="tt">x**2</span>.
+ </p>
+!endif
+
+!if badprec iswordof $wims_warn_rawmath
+ $wims_warn_header
+ ``<span class="tt">x^1/2</span>'' signifie <span class="wims_emph">x/2</span>! Il faut taper
+ ``<span class="tt">x^(1/2)</span>'' pour <span class="wims_emph">x<sup>1/2</sup></span>.
+ </p>
+!endif
+
+!if unmatched_parentheses iswordof $wims_warn_rawmath
+ $wims_warn_header
+ Nous avons détecté des parenthèses mal fermées dans votre formule. Veuillez
+ la vérifier.
+ </p>
+!endif
+
+!if $wims_warn_rmremark=yes
+<p>
+ Utilisez toujours ``<span class="tt">*</span>'' pour la multiplication, et entourez toujours
+ les arguments d'une fonction par une paire de parenthèses.
+ <span class="small">Pour experts. Si vous ne voulez pas que wims interprète votre
+ expression, commencez-la avec la chaîne ``<span class="tt">1-1+</span>''.</span>
+ </p>
+!endif
+

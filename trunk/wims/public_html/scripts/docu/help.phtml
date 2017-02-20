@@ -1,0 +1,20 @@
+!nocache
+!headmenu
+
+!if $help_subject!=$empty
+ !read docu/$module_language/help/$help_subject.phtml
+ !reset help_subject
+ !tail
+ !exit
+!endif
+
+<h1 class="wimscenter">$module_title<br/>
+<span class="small">--- $n_authorhelp ---</span></h1>
+
+<p class="wimscenter">
+!set wims_ref_class=wims_button
+!href cmd=reply&doc=$helpd&block=main&job=read $wims_name_help
+</p>
+
+!tail
+

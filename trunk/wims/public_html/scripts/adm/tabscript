@@ -1,0 +1,39 @@
+!! tabscript
+!! Adds a javascript to activate tabs and memorize last selcted tab in user browser.
+!! INPUT : name of tag ID (it must be like #widget_$INPUT )
+
+!! NB : You must be sure your ID is unique in the whole site to avoid activating wrong previously selected tag.
+
+!! Put this in your .phtml to use it (sample):
+!!
+!!  <div id="widget_ID">
+!!    <ul class="wims_summary">
+!!        <li><a href="#wims_user_doc">$wims_name_Docs</a></li>
+!!        <li><a href="#wims_user_sheet">$wims_name_Sheets</a></li>
+!!    </ul>
+!!    <div id="wims_user_doc">user docs</div>
+!!    <div id="wims_user_sheet">user sheets</div>
+!!  </div>
+!!
+!!  !if $jquery_defined=yes
+!!    !read adm/tabscript ID
+!!  !endif
+
+!set tmp=!word 1 of $wims_read_parm
+ <script type="text/javascript">
+     /*<![CDATA[*/
+     jQuery(function($$) {
+       // Get in sessionStorage if a tab was previously selected, and activate it.
+       var selectedTabId = sessionStorage.getItem("$(tmp)_selectedTab");
+       selectedTabId = selectedTabId === null ? 0 : selectedTabId; //default tab = 0
+       $$("#widget_$tmp").tabs({
+         active: selectedTabId,
+         activate : function( event, ui ) {
+             selectedTabId = $$("#widget_$tmp").tabs("option", "active");
+             sessionStorage.setItem("$(tmp)_selectedTab", selectedTabId);
+         }
+       });
+     });
+     /*]]>*/
+ </script>
+!reset tmp

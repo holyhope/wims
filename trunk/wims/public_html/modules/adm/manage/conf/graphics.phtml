@@ -1,0 +1,108 @@
+
+!if $save!=$empty and $changed>0
+ !href cmd=reply#check $name_click
+ $name_refresh
+ !exit
+!endif
+
+<hr />
+<p><a id="check"></a>
+!if new.png notin $cvtest
+<span class="wims_warning">$wims_name_Error</span>. $name_imagemagick
+ </p>
+ !exit
+!endif
+!distribute char $useropts into us,up
+!if $us!=$empty and $us>=0 and $us<=9
+ !set wims_texsize=$[$wims_texbasesize-$us+1]
+!endif
+$table_header
+$table_tr <td>$name_dynamic
+!set t=1
+!set ins_align=middle
+
+!set formula=\sqrt{x^2+y^2}=\sin(t^3)
+
+<p>
+!if $conf_7<=1
+$name_tex
+!else
+$name_mathml
+!endif
+$name_size
+
+!set wims_ref_class=wims_button_help
+!href cmd=help&help_subject=conf&help_conf=texbasesize $wims_name_help
+</p>
+</td><td>
+!insmath $$$$ $formula $$$$
+
+</td></tr>$table_tr<td>$name_drawing</td>
+
+<td>
+<table><tr><td>
+!set insdraw_size=200,200
+!insdraw fill 0,0,white\
+transparent white\
+xrange -1,1\
+yrange -1,1\
+disk 0,0,240,grey\
+disk 0,0,200,red\
+disk 0,0,160,cyan\
+disk 0,0,120,green\
+disk 0,0,80,blue\
+disk 0,0,40,yellow
+</td><td>&nbsp;&nbsp;&nbsp;</td><td>
+!set insdraw_size=200,200
+!set ins_anim_frames=15
+!set ins_anim_delay =0.3
+!set ins_anim_loop  =0
+!insdraw fill 0,0,white\
+transparent white\
+v=1.3\
+xrange -v,v\
+yrange -v,v\
+arrow -v,0,v,0,10,grey\
+arrow 0,-v,0,v,10,grey\
+linewidth 2\
+levelcurve green,x^4+y^4+(cos(s*pi)*x-sin(s*pi)*y)*(sin(s*pi)*x+cos(s*pi)*y),0,-0.06,0.2,0.6,1
+</td></tr>$table_end
+</td></tr>
+$table_tr <td>
+$name_gnuplot1 (
+!exec insplot_about
+). $name_gnuplot2
+ </td><td>
+!set ins_border=2
+!set insplot_set=size 0.6,0.6
+!set insplot_colors= xffffff x000000 x404040 \
+ x$color_1 x$color_2 x$color_3 x$color_4 x$color_5 x$color_6 x$color_7 x$color_8 x$color_9 x$color_10
+!insplot [-5:5] [-1.4:1.4] sin(x),cos(x),-sin(x),-cos(x)
+</td></tr>
+$table_tr <td>
+$name_graphviz1
+!!!! no space after about ...
+!exec graphviz about
+ $name_graphviz2
+</td><td>
+!set graphviz_dot=neato
+!set graph=!exec graphviz digraph test {rankdir=LR ; a->b [color=red] ; b-> c; a-> é ; c-> é}
+!set graph=!line 1 of $graph
+ <img src="$graph" alt="graphviz" />
+</td></tr>
+$table_tr<td>
+$name_povray1
+!exec povray about
+ $name_povray2
+ !set wims_ref_class=wims_button_help
+ !href cmd=help&help_subject=soft&help_conf=povray $wims_name_help
+</td>
+<td>
+!set povray_width=200
+!set povray_height=200
+!set povsrc=!record 0 of conf/pov.src
+!set rayout=!exec povray $povsrc
+!line 1 of $rayout
+</td></tr>
+$table_end
+

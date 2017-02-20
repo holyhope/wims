@@ -1,0 +1,303 @@
+!set phtmldir=authors/jm.evers/phtml
+!set jsdir=scripts/authors/jm.evers/js
+!set gifdir=scripts/authors/jm.evers/gifs
+
+
+!header
+!form new
+!set s=0
+!for p=1 to 100
+    !set competence=!record $[-1*$p] of lang/remarks.$taal
+    !if $competence=$empty
+	!goto READY
+    !else
+	!increase s
+	!if # isin $competence
+	    !set competence=!replace internal # by $empty in $competence
+	    !set selecttext=!append line <option value="$s"></option> to $selecttext
+	!endif
+	!set sum=!append word <li>$competence</li> to $sum
+	!set selecttext=!append line <option value="$s">$competence</option> to $selecttext
+    !endif
+!next p
+:READY
+    <input type="hidden" name="module" value="$module" />
+    <hr width="50%" />
+	<p style="text-align:center">
+	    <span style="color:red">
+		<em>
+		    <a onmouseover="return escape('$module_title<br /> is een WIMS module gemaakt door <em>SCHAERSVOORDE AALTEN</em></b><br /><img src=$gifdir/schaersvoorde.jpg alt=schaersvoorde />')">
+			Configuratie 
+		    </a>
+		</em>
+	    </span>
+	</p>
+    <hr width="50%" />
+    <div style="vertical-align:top;margin-left:20%;margin-right:auto;width:100%;background-color:#fffff0;">
+	<table>
+	    <tr>
+	    <td>
+		<p style="text-align:left">
+		    <a onmouseover="return escape('<ol>$sum</ol><br />Deze module heeft op dit moment $s verschillende onderdelen<br />elk onderdeel heeft normaal 4 moeilijkheidsgraden')">
+	    		Welk <span style="color:blue">onderwerp</span> ?:
+		    </a>
+		    <select name="subject">
+			!for p=1 to $s
+			    !line $p of $selecttext
+			!next p
+		    </select>
+		</p>
+		<p style="text-align:left">
+		    <a onmouseover="return escape('Elk onderdeel kan tot 4 verschillende moeilijkheidsgraden hebben<br />de default is <em>oplopend</em>')">
+			Welke <span style="color:blue">moeilijkheidsgraad</span> voor deze oefening:
+		    </a>
+		    <select name="level">
+	    		<option value="0">oplopend</option>
+			<option value="1">gemakkelijk</option>
+	    		<option value="2">normaal</option>
+	    		<option value="3">moeilijk</option>
+	    		<option value="4">moeilijkst</option>
+		    </select>
+		</p>
+		<p style="text-align:left">
+		    <a onmouseover="return escape('De oefeningen kan maximaal 10 opdrachten bevatten voor 1 cijfer')">
+			Welk <span style="color:blue">aantal</span> sommen:
+		    </a>
+		    <input size="10" name="total_exos" value="3" />
+		</p>
+		<p style="text-align:left">
+		    <a onmouseover="return escape('Welke <em>nauwkeurigheid</em> willen we in het antwoord?<br /><em>Wiskundig exact</em> betekend dat <em>1.4142</em> niet zonder puntenaftrek<br /> wordt geaccepteerd als gelijk aan <em>&radic;2</em><br />De default is <em>niet van toepassing</em> en dat wil zeggen: laat het deze som zelf bepalen ...<br />maar let op: de module kan in sommige gevallen Uw instelling negeren !')">
+			<span style="color:blue">nauwkeurigheid</span> van het antwoord?
+		    </a>
+		    <select name="rounding">
+			<option value="-1">niet van toepassing</option>
+			<option value="0">wiskundig exact</option>
+	    		<option value="100000">5 decimalen</option>
+	    	    	<option value="10000">4 decimalen</option>
+			<option value="1000">3 decimalen</option>
+	    		<option value="100">2 decimalen</option>
+	    		<option value="10">1 decimaal</option>
+	    		<option value="1">integer</option>
+		    </select>
+		</p>
+		!if $usage=$empty
+		<p style="text-align:left">
+		    <a onmouseover="return escape('Dit menu geeft enkele <em>standaard instellingen</em><ul><li>echte digitoets wil zeggen: zeer strikte antwoordcontrole <br />en <em>geen inzage</em> in het goede antwoord na de test<li>test digitoets wil zeggen: een iets mildere controle en enige feedback<br />Maar nog steeds geen inzage in het goede antwoord<li>training geeft alle beschikbare support en <em>volledige inzage in het goede antwoord</em><br />met soms zelfs enige uitleg (dit is de default instelling)<li>bepaal zelf geeft toegang tot een <em>nieuw menu</em> met <em>alle</em> instel opties<br />Als <b>extra</b> ook de optie om html-hyperlinks te genereren voor het verwerken van <br />de wims_som -met al Uw specifieke instellingen- voor gebruik in webpagina of school-elo<li>printer versie geeft ook een nieuw menu voor het samenstellen van een papieren toets uit deze module<br /><em>Echter alleen als de module daarvoor geschikt is: applets en andere ongemakken uitgesloten...</em> <br /><em>De printbare pagina wordt gemaakt met DHTML <br />hierdoor zijn alle objecten verplaatsbaar en in grootte instelbaar...</em></ul> ')">
+			Waarvoor wordt <span style="color:blue">deze oefening</span> gebruikt ?:
+		    </a>
+		    <select name="usage">
+			<option value="2"> training :) </option>
+			<option value="4"> alles zelf instellen </option>
+			<option value="3"> papieren toets</option>
+			<option value="1"> test digitoets </option>
+	    		<option value="0"> echte digitoets </option>
+	    		<option value="6"> alle diepe html-links op 1 pagina </option>
+		    </select>
+		</p>
+		!endif
+		<input type="hidden" name="taal" value="$taal" />
+		<p style="text-align:center">
+		    <input style="background-color:#afceff;color:black;font-weight:normal;font-size:16px;text-align:center;" type="submit"  value="CONFIGURATION IS OK" />
+		</p>
+	    </td>
+	    !if $usage=3 or $usage=4
+	    <input type="hidden" name="usage" value="5" />
+	    </tr><tr>
+	    <td>
+	    <hr width="50%" />
+		!if devel isin $module_dir
+		<p style="text-align:left">
+		    Freestyle ,Multiplechoice ,Drag&Drop? 
+		    <a onmouseover="return escape('This variable can be set differently <br />or individually in a exo files.<br />Not every freestyle module can be made multiplechoice by choosing this $$questiontype here<br /><br />A module using GeoGebra for a certain $$subject will do so<br />independant of what you set here...')">
+		     GeoGebra
+		    </a>
+		    <select name="questiontype">
+			<option value="0">Freestyle answers</option>
+		    	<option value="1">Multiplechoice</option>
+		    	<option value="2">Drag & Drop</option>
+		    	<option value="3">Hotspot</option>
+			<option value="0"></option>
+			<option value="0"></option>
+			<option value="0"></option>
+		    	<option value="4">GeoGebra</option>
+		    	<option value="5">GeoGebra+image</option>
+		    	<option value="6">Roll your own
+			(some howto info included)
+			</option>
+		    </select>
+		</p>
+		<p style="text-align:left">
+		    <a onmouseover="return escape('If You are using this template for development of a jm.evers module<br />Would you like some info on the variables <br />used by the module<br />This info is available through the help-pages')">
+			<span style="color:blue">Development debug</span> information in the help-pages
+		    </a>
+		    <select name="debug">
+			<option value="0">no</option>
+			<option value="1">yes</option>
+		    </select>
+		</p>
+		!endif
+		<p style="text-align:left">
+		    <a onmouseover="return escape('Het maximum is 100.<br />Dit is het aantal keer dat de som wordt geretourneerd bij kleine syntax foutjes<br />Bij elke teruggave van de som worden wel strafpunten in rekening gebracht<br />Is het aantal teruggaves gelijk aan de ingestelde waarde is de score <b>1</b>')">
+			Het <span style="color:blue">maximum aantal</span> retours by kleine foutjes :
+		    </a>
+		    <input size="5" name="maxtry" value="5" />
+		</p>
+		<p style="text-align:left">
+		    <a onmouseover="return escape('Dit geeft toegang tot wat extra voorzieningen (mits aanwezig)<br />Als de som voorziet in het maken van een illustratie,animatie of functieplot,<br />dan is deze <em>altijd</em> ter lering &amp; vermaak beschikbaar')">
+			Extra <span style="color:blue">support</span> voor de leerling
+		    </a>
+		    <select name="teaching">
+			<option value="1">ja</option>
+			<option value="0">nee</option>
+		    </select>
+		</p>
+		<p style="text-align:left">
+		    <a onmouseover="return escape('Als de oefening een plaatje of functieplot bevat -en deze is niet van vitaal belang- zullen we het dan toch laten zien ?<br />Default is <b>ja</b>')">
+			Mits aanwezig en interessant <span style="color:blue">een illustratie</span> ?
+		    </a>
+		    <select name="image">
+	    		<option value="1">ja</option>
+			<option value="0">nee</option>
+		    </select>
+		</p>
+		!if $usage=3
+		    <input type="hidden" name="printexo" value="1" />
+		!endif
+		!if $usage=4
+		<p style="text-align:left">
+		    <a onmouseover="return escape('Bepaald hoeveel keuzes er zijn bij een multiplechoice-achtige vraag<br /><em>Ook kunnen opdrachten soms enkele open_sub_vraagjes bevatten, het aantal sub_vraagjes kun je ook hiermee instellen</em><br />Deze instelling <em>kan</em> worden genegeerd door de module , en er is natuurlijk een maximum en minimum...')">
+			Bij Multiplechoice , Drag&Drop of Multiple Items, <span style="color:blue">hoeveel items</span>
+		    </a>
+		    <input size="5" name="options" value="4" />
+		</p>
+		<p style="text-align:left">
+		    <a onmouseover="return escape('Met <b>ja</b> wordt een krul getoond <img src=\'$gifdir/ok.gif\' alt=\'ok\' /> <img src=\'$gifdir/bok.gif\' alt=\'bok\' /> <img src=\'$gifdir/nok.gif\' alt=\'nok\' /><br />Eventueel met een kleine random opmerking? ')">
+			Een <span style="color:blue">krul (OK) (NOK)</span> voor een goed of fout antwoord?
+		    </a>
+		    <select name="goodbadsign">
+			<option value="2">ja en een opmerking</option>
+			<option value="1">ja</option>
+			<option value="0">nee</option>
+		    </select>
+		</p>
+		<p style="text-align:left">
+		    <a onmouseover="return escape('Met <em>ja</em> wordt het goede antwoord aan het einde van de opdracht<br />samen met het ingevulde leerling antwoorden en eventuele feedback in een overzichtelijke tabel getoond.<br />Default is <em>ja</em>')">
+		    Het <span style="color:blue">goede antwoord</span> aan het eind van de sommen?
+		    </a>
+		    <select name="showanswer">
+	    		<option value="1">ja</option>
+			<option value="0">nee</option>
+		    </select>
+		</p>
+		<p style="text-align:left">
+		    <a onmouseover="return escape('Met <em>ja</em> krijgt de leerling een rekenmachine ter beschikking<br /><img src=\'$gifdir/basic.jpg\' alt=\'basic\' /><img src=\'$gifdir/science.jpg\' alt=\'science\' />')">
+			Een PopUp javascript<span style="color:blue"> Rekenmachine?</span>
+		    </a>
+		    <select name="calculator">
+			<option value="1">zeer simpele rekenmachine</option>
+			<option value="2">"wetenschappelijk" model</option>
+			<option value="3">Command line applet</option>
+			<option value="0">geen rekenmachines</option>
+		    </select>
+		</p>
+		<p style="text-align:left">
+		    <a onmouseover="return escape('Met <em>ja</em> krijgt de leerling een popup textarea voor berekeningen ter beschikking? ')">
+			Een PopUp <span style="color:blue">Kladblok?</span>
+		    </a>
+		    <select name="scribbling">
+			<option value="1">ja</option>
+			<option value="0">nee</option>
+		    </select>
+		</p>
+		<p style="text-align:left">
+		    <a onmouseover="return escape('Met <em>ja</em> komt er een klein klokje inbeeld')">
+			Een simpele <span style="color:blue">Javascript klok?</span>
+		    </a>
+		    <select name="time">
+			<option value="1">ja</option>
+			<option value="0">nee</option>
+		    </select>
+		</p>
+		<p style="text-align:left">
+		    <a onmouseover="return escape('De tijdlimiet is nog niet geactiveerd<br />binnenkort...')">
+			<span style="color:blue">Tijdslimiet</span> per oefening
+		    </a>
+		    <input size="15" name="duration" value="nog niet klaar" /> minuten
+		</p>
+		<p style="text-align:left">
+		    <a onmouseover="return escape('Deze optie is alleen effectueerbaar voor docenten van een echte digiklas<br />We kunnen alles -dus vraag,antwoord,plaatjes,feedback- opslaan op hardschrijf<br />Zodat een nauwkeurige analyse van het cijfer/antwoord mogelijk wordt voor de docent<br />Let op: <em>dit kost vrij veel opslag-capaciteit en er is een maximum voor elke klas...</em><br />Let op: als deze som wordt ingebonden in een <em>wims digitoets</em> dan wordt de dataopslag geregeld door de instellingen van uw klas<br />Default is <em>nee</em> ')">
+			Zullen we het complete leerling antwoord <span style="color:blue">opslaan op hardeschijf</span>?
+		    </a>
+		    <select name="storedata">
+			<option value="0">nee</option>
+			<option value="1">ja</option>
+		    </select>
+		</p>
+		<p style="text-align:left">
+		    <a onmouseover="return escape('<img src=$gifdir/math.jpg alt=math /><br />Ingewikkelde formules ,zoals breuken <em>kunnen als extraatje</em> ook ingevoerd worden in<br /> een popupvenster met <ol><li><em>java applet</em><br />(iets langzamer met versturen)<li>of een <em>WIMS</em> math-input <br />(de server maakt eerst een plaatje van de formule)</li></ol>De applet/popup stuurt het antwoord gelijk door naar de server <br />Voor modules met meerdere invoervelden of andere incomptibiliteiten<br />wordt dit automatisch uitgeschakeld...')">
+		    <span style="color:blue">Ingewikkelde Wiskundige Formules</span> invoeren en opsturen ?
+		    </a>
+		    <select name="mathview">
+			<option value="4">Optioneel: HTML5 javascript mathinput</option>
+			<option value="5">Ja, alleen HTML5 javascript mathinput</option>
+			<option value="2">Optioneel: JAVA Applet</option>
+			<option value="3">Ja, alleen JAVA Applet</option>
+			<option value="0">Nee, alleen tekst invulveld</option>
+			<option value="1">Optioneel: WIMS popup venster</option>
+		    </select>
+		</p>
+		<p style="text-align:left">
+		    <a onmouseover="return escape('Hier kun je de grootte instellen van de wiskundige LaTeX formules (plaatjes)<ul><li><img src=$gifdir/4.gif alt=4 />+4</li><li><img src=$gifdir/3.gif alt=3 />+3</li><li><img src=$gifdir/2.gif alt=2 />+2</li><li><img src=$gifdir/1.gif alt=1 />+1</li><li><img src=$gifdir/0.gif alt=0 />0</li><li><img src=$gifdir/-1.gif alt=-1 />-1</li><li><img src=$gifdir/-2.gif alt=-2 />-2</li><li><img src=$gifdir/-3.gif alt=-3 />-3</li><li><img src=$gifdir/-4.gif alt=-4 />-4</li></ul>')">
+			Afstelling van de <span style="color:blue">LaTeX </span> wiskunde formules ?
+		    </a>
+		    <select name="mytexsize">
+			<option value="0">niet veranderen</option>
+			<option value="+4">+4</option>
+			<option value="+3">+3</option>
+			<option value="+2">+2</option>
+			<option value="+1">+1</option>
+			<option value="-1">-1</option>
+			<option value="-2">-2</option>
+			<option value="-3">-3</option>
+			<option value="-4">-4</option>
+		    </select>
+		</p>
+		<p style="text-align:left">
+		    <a onmouseover="return escape('Met <em>ja</em> schakelen we de mogelijkheid van <em>cut & paste</em> in het invulveld uit<br />Soms is dit handig als je wilt dat leerlingen zelf het antwoord intypen... ')">
+			Zullen we <span style="color:blue">Text selectie</span> door de muis uitschakelen ?
+		    </a>
+		    <select name="noselect">
+			<option value="1">ja</option>
+			<option value="0">nee</option>
+		    </select>
+		</p>
+		<p style="text-align:left">
+		    <a onmouseover="return escape('Met <em>ja</em> wordt er <b>geen interactieve som</b> getoond,<br />maar worden al Uw bovenstaande specifieke instellingen in een hyperlink verwerkt<br />Deze links zijn dan via Cut&Paste gemakkelijk te gebruiken op eigen homepage,school website of ELO ? ')">
+			Een <span style="color:blue">HTML pagina</span> met hyperlinks van deze instellingen  ?
+		    </a>
+		    <select name="printexo">
+			<option value="0">nee</option>
+			<option value="2">ja</option>
+		    </select>
+		</p>
+		!endif
+	    </td>
+	    !endif
+	    !if $usage=6
+		</tr><tr>
+		<td>
+		    <hr />
+		    <hr />
+		    !changeto lang/module.$taal.phtml
+		    <hr />
+		    <hr />
+		</td>
+	    !endif
+	</tr>
+    </table>
+    </div>
+    <script type="text/javascript" src="$jsdir/wz_tooltip.js"></script>
+!formend
+
+
+

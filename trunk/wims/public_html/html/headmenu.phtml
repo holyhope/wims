@@ -1,0 +1,148 @@
+
+!!************** headmenu.phtml  ****************
+
+!! This File creates a set of 1 to 11 links, to put in the head menu of Wims, for anonymous users.
+
+!! **********************************************
+!if robot isin $session or $wims_mode=popup or _check isin $session or $module=help/main.$lang
+ !exit
+!endif
+
+!! la variable window=embeded est utilisee dans le cadre d'un appel depuis le lecteur exportable
+!! window=embeded is used for embedded players
+!if embededwindow isin $module_init_parm
+	!set window=embeded
+!endif
+!! Don't succeed to use script/language for the moment
+!! translated. FIXME
+!!!read language name.phtml
+!read name.phtml.$lang
+!read themes/$wims_theme/lang/name.phtml.$lang
+!if $class_theme!=$empty
+  !read themes/$class_theme/lang/$(script_file).$modu_lang
+!endif
+!if $theme_class!=$empty
+  !read themes/$theme_class/lang/$(script_file).$modu_lang
+!endif
+
+!default wims_name_bgcolor=$wims_ref_bgcolor
+!if $wims_hm!=$empty or $wims_lightpopup=yes
+ !goto defend
+!endif
+!if $job=print or $printing=yes
+ !goto defend
+!endif
+!reset 1_ home_
+
+!!********* Link #1 : "Close Window" or "Home"
+
+!if _ isin $wims_subsession
+ !set 1_=!append line back,3,window.close() to $1_
+!else
+ !if $window != embeded and $module!=home
+   !set home_=!append line home,1,session=$wims_session.1 to $home_
+ !endif
+!endif
+
+!!********* Link #2 : "Quit"
+!if $httpd_HTTP_REFERER!=$empty and $window != embeded
+ !set 1_=!append line exit,2,$httpd_HTTP_REFERER to $1_
+!endif
+
+!!********* Link #3 : "Work"
+!!if $cmd=intro
+!! !set 1_=!append line work,1,module=$module&cmd=new to $1_
+!!endif
+
+!!********* Link #4 : "Sheet"
+!if $wims_sheet>0 or P isin $wims_sheet
+ !set 1_=!append line sheet,1,module=adm/sheet&sh=$wims_sheet to $1_
+!endif
+
+!!********* Link #5 : "Intro"
+!if $window != embeded and $module_has_intro=yes and $cmd notwordof intro help
+  !if $wims_theme!=default
+    !set wims_ariane=!append line intro,1,module=$module&cmd=intro&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4 to $wims_ariane
+    !set wims_ariane_self=no
+  !else
+    !set 1_=!append line intro,1,module=$module&cmd=intro&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4 to $1_
+  !endif
+!endif
+!!********* Link #6 : "References"
+!if _ notin $wims_session and adm/ notin $module and home notin $module\
+	and $cmd notwordof help ref
+!! !set 1_=!append line reference,4,module=$module&cmd=ref&special_parm=$cmd,ref to $1_
+!endif
+
+!!********* Link #7 : "Help"
+!if $module_has_help=yes and $cmd notwordof intro help
+ !if $module_help=nopop
+   !set 1_=!append line help,1,module=$module&cmd=help&special_parm=$wims_help_parm,mhelp to $1_
+ !else
+   !set 1_=!append line help,4,module=$module&cmd=help&special_parm=$wims_help_parm,mhelp to $1_
+ !endif
+!endif
+
+!!********* Link #8 : "Resume"
+!if $cmd=help or $cmd=hint
+ !if _test isin $session
+   !set 1_=!append line resume,1,cmd=resume to $1_
+ !else
+    !if _help isin $session
+      !set 1_=!append line back2,1,cmd=resume to $1_
+    !endif
+ !endif
+ !if $module_category!=adm
+   !set wims_ariane=!append line resume,1,cmd=resume\
+ to $wims_ariane
+ !endif
+!endif
+
+!!********* Link #9 : "About"
+!if $window != embeded \
+	and $module_has_about=yes \
+	and _tool notin $module and home notin $module \
+	and $cmd notwordof help and _exam notin $session\
+	and (adm notin $module or $wims_user iswordof supervisor developper or $wims_user=$empty)
+		!set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp,,$wims_name_module_infos ($module) to $1_
+!endif
+
+!!********* Link #10 : "WIMS Help"
+!if $module!=home and _exam notin $session and $wims_version_theme=0
+ !set 1_=!append line whelp,4,module=help/main&$wims_helper,help to $1_
+!endif
+
+!!********* Link #11 : "Other Languages"
+!if $wims_ref_otherlangs=yes and $wims_otherlangs!=$empty
+ !if $wims_light_module=yes
+  !set wims_name_pagebase=!char 1 to -4 of $phtml
+  !for i_ in $wims_headmenu_languages
+   !set 1_=!append line $i_,0,<a href="wims.cgi?session=$session&+lang=$i_&+useropts=$useropts&+module=$module&+phtml=$wims_name_pagebase.$i_&+parm1=$parm1&+parm2=$parm2&+parm3=$parm3&+parm4=$parm4&+parm5=$parm5"><img src="gifs/$i_.gif" border="1" alt="$i_"/></a> to $1_
+  !next i_
+ !else
+  !set wims_name_mbase=!char 1 to -4 of $module
+  !for i_ in $wims_otherlangs
+   !set 1_=!append line $i_,0,<a href="wims.cgi?session=$session&+lang=$i_&+useropts=$useropts&+module=$wims_name_mbase"><img src="gifs/$i_.gif" border=1 alt="$i_" /></a> to $1_
+  !next i_
+ !endif
+!endif
+
+!if $wims_user$wims_developer!=$empty and _ notin $session
+  !set wims_link_close=!append line visitor,1,cmd=close&module=home\
+  to $wims_link_close
+!endif
+
+!set wims_hm=$1_
+!set wims_home_items=$home_
+:defend
+!set wims_hm_cnt=!linecnt $wims_hm
+!set wims_home_items_cnt=!linecnt $wims_home_items
+!set wims_link_close_cnt=!linecnt $wims_link_close
+!read themes.phtml header
+!if $module=home
+  <div class="wimstrap">
+!else
+
+  <div class="wimsbody">
+!endif
+<!-- END of headmenu -->

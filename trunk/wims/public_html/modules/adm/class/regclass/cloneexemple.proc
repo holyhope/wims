@@ -1,0 +1,158 @@
+sjob=$job
+
+!if $step=$empty
+    !if $sourcecls=$empty
+	step=-3
+    !else
+	step=-1
+    !endif
+!endif
+
+!if $wims_class=$empty
+    cltype=0
+!else
+	!read adm/class/userdef classes,$wims_class,$wims_user
+	supervisable=!defof user_supervisable in $userdef
+	!if $wims_supertype!=2 or ($wims_user!=supervisor and $supervisable!=yes) or $wims_class!=$wims_superclass
+		error=no_subclass
+		!exit
+	!endif
+!endif
+
+
+!if $step=-3
+!! search if exists at less one cloneable class (verifying keywords)
+	keyword=!items2words $keyword
+	keyword=!trim $keyword
+	kw=!words2items $keyword
+	kw=!deaccent $kw
+	kw=!tolower $kw
+	ccnt=!recordcnt wimshome/log/classes/.index
+	i=1
+	debcls=$empty
+	!while $i<=$ccnt and $debcls=$empty
+		l=!record $i of wimshome/log/classes/.index
+		!distribute items $l into code,expire,inst,cl,la,ty
+		!if $ty!=4
+			l1=!deaccent $l
+			l1=!tolower $l1
+			c1=!text extract 0123456789 in $code
+			k=yes
+			!if $kw!=$empty
+				!for w in $kw
+					!if $w notin $l1
+						!let k=no
+						!break
+					!endif
+				!next w
+			!endif
+                        !if $k=no and $kw!=$empty and $ty=2
+		            !! find of keyword in subclasses
+		            sbcnt=!recordcnt wimshome/log/classes/$code/.subclasses
+			    sb=1
+		            !while $sb<=$sbcnt and $k=no
+               			ksb=yes
+               			l1sb=!record $sb of wimshome/log/classes/$code/.subclasses
+				l1sb=!deaccent $l1sb
+				l1sb=!tolower $l1sb
+               			!for w in $kw
+				  !if $w notin $l1sb
+					ksb=no
+					!!break
+				  !endif
+	       		        !next w
+	       	                !if $ksb=yes
+		                 k=yes
+                                !endif
+	                        !increase sb
+                            !endwhile                        
+                        !endif
+			!if $k=yes
+				debcls=$i
+			!endif
+		!endif
+		!increase i
+	!endwhile
+!endif
+
+!if $step=-2
+!! checking allowed clonage + ask for cloning pwd
+    sourcecls=!text select /0123456789 in $sourcecls
+    tmp=!defof class_defined\
+class_allowcloning\
+class_type\
+class_typename in wimshome/log/classes/$sourcecls/.def
+    testneighbors=!defof sharing_all in wimshome/log/classes/$sourcecls/neighbors
+    !distribute line $tmp into tmp1,tmp3,tmp6,tmp7
+    !if yes!=$tmp1
+	error=classdontexists
+	!exit
+    !endif
+    !if $sourcecls<=9999
+	step=-1
+    !else
+	!! only single class can be cloned (waiting other improvment)
+	!! class with sharing can't be cloned.
+	!if (($tmp6!=1 or $tmp7!=class) and 0!=$tmp6) or $testneighbors!=$empty
+	    error=disallowcloning
+	    !exit
+	!endif
+	!if yes!=$tmp3
+	    error=cloningnotallow
+	    !exit
+	!endif
+    !endif
+    ssourcecls=$sourcecls
+!endif
+
+!if $step=-1
+    !!checking pwd or exampleclass
+!!    !if $passe!=1
+!! manage of directlink from "classes ouvertes page" no more in use
+!!	!if $ssourcecls=$empty
+!!	    sourcecls=!text select /0123456789 in $sourcecls
+!!	    tmp=!defof class_defined in wimshome/log/classes/$sourcecls/.def
+!!	    !distribute line $tmp into tmp1
+!!	    !if yes!=$tmp1
+!!		error=classdontexists
+!!		!exit
+!!	    !endif
+!!	    !if $sourcecls<=9999
+!!		ssourcecls=$sourcecls
+!!		tmp2=yes
+!!	    !endif
+!!	!else
+!!	    tmp2=no
+!!	!endif
+!!    !endif
+    !if $ssourcecls>9999
+	!! check cloningpwd
+	!! --------------------------------------- attention il faut rajouter la temporisation pour badpwd
+	pwd=!defof class_cloningpwd in wimshome/log/classes/$ssourcecls/.def
+	!if $pwd!=$clonepwd
+	    error=badcloningpwd
+	    step=-2
+	    !exit
+	!endif
+    !endif
+!endif
+
+source_title=!defof class_institution,class_description in wimshome/log/classes/$ssourcecls/.def
+
+!if $step=0
+    !if $methodecp!=0 and $methodecp!=1
+	error=badcpmethod
+	!exit
+    !endif
+    smethodecp=$methodecp
+!endif
+
+!read proc/newclass.proc
+
+!! ajout des ressources de la classe d'exemple
+!if $step=3
+    !read proc/cloning.proc
+    !if $wims_class!=$empty
+	!restart module=home
+    !endif
+!endif

@@ -1,0 +1,53 @@
+#This is the variable definition file of the wims module
+# `coincidence-polynome'.
+# Author: XIAO Gang
+
+#Each non-comment line defines a variable. Format of the line:
+#
+#name	allow	log	default	llim	ulim
+#
+#name: name of the variable
+#log: log priority. 0: no log. 1: little log. 2: more log. etc.
+#allow: when allow the user to override the defined value.
+#       it maybe any, deny, init, config, reply.
+#llim, ulim: lower and upper limits. (Not valid for string variable)
+#
+#
+#name	allow	log	llim	    ulim
+
+# order of the finite field
+q       init    10      2           11
+model   init    2
+photoname deny  1
+photoright deny 1
+help_subject help 1
+
+# 4 elements of the transformation matrix
+a11     deny    1
+a12     deny    1
+a21     deny    1
+a22     deny    1
+
+# and the coordinate of the affine translation
+xt      deny    1
+yt      deny    1
+
+# matrix of reply
+r11     reply   1      0   $q-1
+r12     reply   1      0   $q-1
+r21     reply   1      0   $q-1
+r22     reply   1      0   $q-1
+
+#and translation of the reply
+xr      reply   1      0   $q-1
+yr      reply   1      0   $q-1
+
+# difference between original and reply
+diff	deny    1
+
+reply_cnt deny  3	0	    65535
+hint_cnt  deny  3	0	    65535
+status	deny	0
+found	deny	0
+
+

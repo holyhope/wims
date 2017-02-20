@@ -1,0 +1,138 @@
+!set lang_exists=yes
+
+!set name_remark_numstud=Potete inserire 0 nella seconda colonna per indicare che non c'è alcun limite nel numero di posti disponibili.
+!set name_introtext_group=Inserire il numero di posti disponibili in ogni gruppo e un eventuale commento.
+!set name_cardinal=Numero
+
+!set name_0=in preparazione
+!set name_1=aperto
+!set name_2=chiuso
+!set name_3=nascosto
+!set name_publish=pubblico
+!set name_publish2=pubblico
+!set name_hide=nascosto
+!set name_hide2=nascosto
+!set name_nominative=nominale
+!set name_anonymous=anonimo
+!set name_trace=anonimo registrato
+!set name_choice=Scelta
+!set name_question=Domanda
+!set name_data=Dati
+!set name_global=risultato globale
+!set name_detail=dettagli
+!set name_yourchoice=La tua scelta:&nbsp;
+!set title_data=Esporta i dati
+!set title_nominative=registrazione
+!set title_vote=Questionario
+!set title_anonymous=questionario (anonimo)
+!set name_choose=-- Scegli --
+!set wims_name_vote=Elenco dei questionari
+!set name_result=Risultato del questionario
+!set name_content=Testo
+!set name_creation=Creazione di un questionario o di un modulo di iscrizione.
+!set name_edition=Modifica di di un questionario o di un modulo di iscrizione.
+!set name_remaining=posti rimanenti
+!set name_untitled=Senza titolo
+!set name_showresult=Mostra risultati
+!set name_nowritable=non è possibile modificare un questionario attivo. Di seguito il codice che definisce il questionario:
+!set name_novotant=Nessuna risposta
+!set name_notenough=Non abbastanza risposte per poter pubblicare l'elenco
+!set name_showlist=Dettaglio risultati
+!set name_showglobal=Risultati globali
+!set name_showlistbystudent=Elenco per studente
+!set name_showstudentbyitem=Elenco per scelte
+
+!distribute lines Non sono definiti questionari. \
+Verifica con il docente.\
+Non ci sono questionari attivi.\
+Elenco dei questionari definiti per il corso.\
+Numero di risposte\
+into name_novote,name_novotecheck,name_noactivevote,name_class_vote,\
+name_cnt_votes
+
+!distribute line Questo è un questionario $name_anonymous.\
+   Questo è un questionario $name_trace.\
+   Questo è un questionario $name_nominative.\
+   &Egrave; $name_2.\
+   risposte\
+   Hai già risposto al questionario.\
+   Hai già risposto al questionario, ma puoi modificare le tue risposte.\
+   Leggi le istruzioni e fai le tue scelte.\
+   Dettagli delle risposte.\
+   Commenti\
+   Per commenti si prega di utilizzare il forum.\
+into name_thisvote_anomymous,name_thisvote_trace,name_thisvote_nominatif,\
+   name_thisvote_closed,name_thisvote_answer,name_thisvote_already1,\
+   name_thisvote_already2,name_give_your_choice,name_details,\
+   name_comments,name_textarea
+
+!set name_textarea_limit=!nosubst massimo $limit_textarea caratteri
+!set name_whovote=Elenco di chi ha risposto
+!set name_whodontvote=Elenco di chi non ha risposto
+
+!set name_csv1=Questo è il file che una volta salvato può essere aperto con un qualsiasi\
+  foglio eletronico (tipo <em>excel</em>).
+
+!set name_csv2=!nosubst State per salvare i dati del questionario numero $vote
+!set name_format=Formato
+
+!set name_option=Opzioni
+!set name_value=Valori
+
+!! guided mode
+
+!set name_optionclosed=non disponibile, attivato solo in caso di completamento degli altri turni
+
+!distribute lines Quante sessioni?\
+Quanti gruppi?\
+massimo\
+Nome della variabile\
+Default IP di connessione \
+può essere modificato nella pagina successiva\
+Testo introduttivo del questionario \
+eventuali istruzioni per gli studenti\
+Num.Stud.\
+Data<br />sessione\
+Orario<br />inizio sessione\
+Orario<br />termine sessione\
+Conn. IP\
+Event. indicazioni<br />aggiuntive\
+cancella iscrizione\
+into name_howmany,name_howmanygroups,name_atmost,name_namevar,name_textconnip,\
+  name_textconnip2, name_introtext,name_introtext2,name_numstud,name_sessiondate,\
+  name_begintime,name_endtime,name_connip,name_extra,\
+  name_cancellation
+
+!set name_numsess=!nosubst Sono previste $numsess sessioni d'esame.
+!set name_session_select =!nosubst Selezionare date e orari delle $numsess sessioni.
+
+!set name_describesource=!nosubst Quello che segue è il codice sorgente del questionario. Dopo aver verificato i dati cliccare su <span class="wims_button disabled">$wims_name_tosave</span>.
+
+!if $vote_mode!=free
+ !readproc adm/lang/sheetexam.phtml.$lang
+!endif
+
+!set name_yourvariable=!nosubst Il nome della variabile da voi impostata \
+  corrispondente a questo questionario è <span class="tt wims_code_variable">$namevar</span>
+!set name_accessvar_instr=!nosubst <strong>Configurazione test di autovalutazione o esame</strong>: \
+dopo aver attivato il test o l'esame, in <span class="tt wims_code_words">$(name_shinfo[6])</span>, selezonare \
+ <span class="tt wims_code_words">$(name_allowtype[4])</span>.
+
+!set name_group_instr=!nosubst <strong>Utilizzo nel corso</strong>: questa variabile vi permette di filtrare \
+gli iscritti per alcune attività del corso.
+
+!set name_group_help=permette di filtrare gli iscritti \
+secondo i gruppi di appartenensa (utilizzabile per ora per inviare una mail o \
+visualizzare la galleria fotografica).
+
+!set name_accessvar_help=permette di costruire accessi personalizzati \
+ai test di autovalutazione o agli esami.
+
+!distribute items Modo libero,Accessi individualizzati,Costruzione di gruppi,Gruppi into name_free,name_accessvar, name_group,name_group1
+
+!set name_model=Modello
+!set name_nextstep=Prosegui
+
+!set name_getsource=Questo è il codice sorgente. Il testo comporeso tra le \
+  due righe di `*' può essere copiato nella finestra di creazione di un\
+  nuovo questionario (in modo libero).

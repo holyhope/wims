@@ -1,0 +1,59 @@
+
+!read adm/title.phtml 1\
+\
+Enviar los datos de una hoja de cálculo a la clase
+
+Para enviar los datos de su hoja de cálculo a la clase guarde los datos en
+un fichero en formato de texto (txt, csv o tsv) y después suba el fichero
+al servidor.
+<p>
+También puede enviar así informaciones sobre los participantes o las notas.
+Para enviar las informaciones en el momento de la inscripción por ejemplo
+no debe aparecer ninguna puntuación entre los datos.
+</p><p>
+Si le añade puntuaciones a la clase la columna correspondiente a estas notas
+debe existir ya en la clase. En caso contrario deberá crearla antes de enviar
+las notas.
+</p>
+<h3>Authentification via WIMS</h3>
+<p>La primera línea de la hoja debe estar formada por los nombres de cada columna
+(por ejemplo, <span class="tt wims_code_words">login</span>, <span class="tt wims_code_words">firstname</span>, ...). Los nombres
+de columna válidos y su significado aparecen en la tabla de abajo.
+Puede elegir una combinación arbitraria de estas columnas y colocarlas
+en cualquier orden, con la única condición de que el campo <span class="tt wims_code_words">login</span>
+debe estar presente obligatoriamente (WIMS utiliza este campo para identificar
+a los participantes). Si desea que una línea sea ignorada ponga un carácter <span class="tt wims_code_words">#</span>
+en el campo <span class="tt wims_code_words">login</span>.
+</p><p>
+Puede utilizar este método para añadir participantes (muchos de una sola vez):
+en este caso la hoja de cálculo debe contener suficiente información válida
+sobre cada participante que se vaya a añadir (apellidos, nombre, contraseña).
+</p><p>
+Ejemplo de fichero válido para una inscripción:
+</p>
+<pre>
+login,firstname,lastname,password
+menganez,Claudio,Menganez,1234
+</pre>
+
+<h3>Cas d'une authentification externe</h3>
+Le format du fichier est le même, mais vous devez remplacer le champ
+<span class="tt wims_code_words">login</span> par le champ
+<span class="tt wims_code_words">external_auth</span> (le champ <span class="tt wims_code_words">login</span>
+ne doit pas apparaître).
+Vous devez compléter obligatoirement avec le nom et le prénom (<span class="tt wims_code_words">lastname</span>,
+<span class="tt wims_code_words">firstname</span>) à moins que vous ne bénéficiez
+d'une liaison avec un annuaire, ldap par exemple (déclarée dans la configuration de la classe).
+Dans ce cas, et dans ce cas seulement, seul l'identifiant externe
+(<span class="tt wims_code_words">external_auth</span>) doit être mis.
+Rappelons qu'il est totalement déconseillé de changer de procédure d'authentification
+une fois que des participants sont inscrits.
+
+<p>
+Ejemplo de fichero válido para una inscripción:
+</p><pre>
+external_auth,firstname,lastname
+menganez,Claudio,Menganez,1234
+</pre>
+
+!read lang/help.$moduclass_lang/fieldtab.phtml

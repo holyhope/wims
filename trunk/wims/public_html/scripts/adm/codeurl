@@ -1,0 +1,14 @@
+!set url=$wims_read_parm
+!set url=!nospace $url
+
+!! On utilise une librairie perl pour convertir au format URI correct : liburi-perl
+!! Au besoin, installez celle-ci : apt-get install liburi-perl
+!set url=!sh echo "$url" | perl -e 'use URI::Escape; print uri_escape(<>)';
+!set url=!replace internal %0A by in $url
+
+!! Ancienne méthode :
+!!set url = !replace internal & by %26 in $url
+!!set url = !replace internal / by %2F in $url
+!!set url = !replace internal : by %3A in $url
+
+!set script_out=$url

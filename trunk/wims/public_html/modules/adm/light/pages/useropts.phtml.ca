@@ -1,0 +1,194 @@
+!!INDEX
+!let module_translator=Manel Querol
+!let module_translator_address=mquerol@xtec.cat
+!let module_title=Configuració de les preferències a WIMS
+!let module_description=defineix les teues preferències a WIMS
+!let module_language=ca
+!!INDEXEND
+
+!let tip='<ul><li>FireFox&nbsp;<a target=\'new\' href=\'http://www.mozilla-europe.org/$module_language/\'><img src=\'gifs/mathml/getFireFox.gif\' alt=\'get FireFox\'/></a></li><li>Google Chrome&nbsp;<a target=\'new\' href=\'https://chrome.google.com/webstore/detail/mathjax-for-chrome/elbbpgnifnallkilnkofjcgjeallfcfa\'> MathJax Extension </a><li>Windows<ul><li>Internet Explorer: <a target=\'new\' href=\'http://www.dessci.com/en/products/mathplayer/\'><img src=\'gifs/mathml/dessci_logo.gif\' alt=\'dessci\'/> DESSCI MathPlayer plugin</a><li>Opera: <a target=\'new\' href=\'http://xml-maiden.com/userjs/mathml/\'>UserJS MathML plugin</a></ul></li><li>Safari</li></ul>'
+
+!read proc/useropts.proc
+
+!header
+<script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
+<p>Aquesta pàgina permet canviar algunes preferències a WIMS.</p>
+
+<div id="widget_useropts">
+  <ul>
+    <li><a href="#formula">Fórmules matemàtique</a></li>
+    !if $wims_user=$empty
+      <li><a href="#language_selector">La llengua per defecte</a></li>
+    !endif
+    <li><a href="#accessibility">Accessibilitat</a></li>
+  </ul>
+
+  !if $wims_user=$empty
+  <div id="language_selector">
+    <h2>La llengua per defecte</h2>
+    <p>
+      Trieu la llengua de visualització del lloc :
+      !read themes/_widgets/language_selector.phtml
+    </p>
+  </div>
+  !endif
+
+  <div id="formula">
+    <h2>Fórmules matemàtiques</h2>
+    <p>El servidor permet dos modes de visualització de fórmules: el Mode imatge, o fent ús de MathML (si el vostre navegador ho suporta).</p>
+    Alguns exemples :
+    <ul>
+      <li>
+        Lletres gregues:
+        <pre>
+         !insmath alpha != pi
+        </pre>
+      </li>
+      <li>
+        Expressió matemàtica
+        !let ins_align=middle
+        !! we need to force dynamic insertion
+        !set pw=2
+        <pre>
+        !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{$pw} - 4a c}}{2a}
+        </pre>
+      </li>
+      <li>
+        Una desigualtat:
+        <pre>
+        !insmath | a + b | <= epsilon + 123.45
+        </pre>
+      </li>
+    </ul>
+
+    !if $texalign=2
+      <p>
+        Ara el servidor està configurat per a MathML.
+        Si no es mostra correctament l'expressió matemàtica, podeu utilitzar un altre
+        <a onmouseover="return Tip($tip)" class="wims_emph" style="cursor:help;">
+        navegador
+        </a>
+        o utilitzar el servidor amb "Mode imatge".
+      </p>
+      <ul>
+        <li>
+          Canviar el mode de visualització :
+          !set wims_ref_class=wims_button
+          !href cmd=resume&useropts=$(arg)0$font Mode imatge
+
+          !set arg=!nospace $texsize 2
+          !set wims_ref_class=wims_button
+          !href cmd=resume&useropts=$(arg)0$font MathML
+        </li>
+        <li>
+          !let ts1=!eval $texsize-1
+          !let ts2=!eval $texsize+1
+          !if $ts1<1
+            !let ts1=1
+          !endif
+          !if $ts2>9
+            !let ts2=9
+          !endif
+          Ajusta la mida de les expressions matemàtiques.
+          !set wims_ref_class=wims_button
+          !href cmd=resume&useropts=$ts1$texalign$zoom$font <img src="gifs/doc/dgauche.gif" alt="gauche" style="width:1em" />
+          !set wims_ref_class=wims_button
+          !href cmd=resume&useropts=$default Defecte
+          !set wims_ref_class=wims_button
+          !href cmd=resume&useropts=$ts2$texalign$zoom$font <img src="gifs/doc/ddroite.gif" alt="droite" style="width:1em" />
+        </li><li>
+          Utilitzar el zoom en expressions matemàtiques amb un clic del ratolí.
+          !set wims_ref_class=wims_button
+          !href cmd=resume&useropts=$texsize$(texalign)1$font $wims_name_yes
+          &nbsp;
+          !set wims_ref_class=wims_button
+          !href cmd=resume&useropts=$texsize$(texalign)0$font $wims_name_no
+        </li>
+      </ul>
+    !else
+      <p>
+        Ara el servidor està configurat en "Mode imatge". Si utilitzeu un
+        <a onmouseover="return Tip($tip)" class="wims_emph" style="cursor:help;">
+        navegador
+        </a>
+        que ho permeti també podeu utilitzar MathML.
+      </p>
+
+      <ul>
+        <li>Canviar el mode de visualització :
+          !set wims_ref_class=wims_button
+          !href cmd=resume&useropts=$(arg)0$font Mode imatge
+
+          !set arg=!nospace $texsize 2
+          !set wims_ref_class=wims_button
+          !href cmd=resume&useropts=$(arg)0$font MathML
+        </li>
+        <li>
+          Mida dels símbols i expressions matemàtiques .
+          !let ts1=!eval $texsize-1
+          !let ts2=!eval $texsize+1
+          !if $ts1<1
+            !let ts1=1
+          !endif
+          !if $ts2>9
+            !let ts2=9
+          !endif
+          !set wims_ref_class=wims_button
+          !href cmd=resume&useropts=$ts1$texalign$zoom$font <img src="gifs/doc/dgauche.gif" style="width:1em" />
+          !set wims_ref_class=wims_button
+          !href cmd=resume&useropts=$[$wims_texbasesize-1]$texalign$zoom$font Defecte
+          !set wims_ref_class=wims_button
+          !href cmd=resume&useropts=$ts2$texalign$zoom$font <img src="gifs/doc/ddroite.gif" style="width:1em" />
+        </li><li>
+          Posició de les expressions matemàtiques. Si l'expressió
+          !insmath (x+y)/(x^$pw + y^2)
+          és
+          !if $texalign=1
+           massa alta respecte a la línia de text,
+           !set wims_ref_class=wims_button
+           !href cmd=resume&useropts=$(texsize)0$zoom$font clica aquí
+           per baixar-la.
+          !else
+           massa baixa respecte a la línia de text,
+           !set wims_ref_class=wims_button
+           !href cmd=resume&useropts=$(texsize)1$zoom$font clica aquí
+           per pujar-la.
+          !endif
+        !endif
+      </li>
+    </ul>
+  </div>
+
+  <div id="accessibility">
+    <h2>Accessibilitat</h2>
+
+    <p>Podeu ajustar l'espaiat entre lletres i paraules
+        !set wims_ref_class=wims_button
+        !href cmd=resume&useropts=$(texsize)$texalign$(zoom)0 Normal
+
+        !set wims_ref_class=wims_button
+        !href cmd=resume&useropts=$(texsize)$texalign$(zoom)1 Espaiat
+    </p><p>
+    El mode espaiat és especialment adequat en el cas d'un lector  dislèxic.</p>
+  </div>
+
+</div>
+!if $jquery_defined=yes
+  !read adm/tabscript useropts
+!endif
+
+<p class="spacer">
+  !if $wims_user=$empty
+   Quan tot correspon exactament al que voleu, poseu
+    !set wims_ref_class=wims_button
+   <a href="$wims_ref_name?lang=$lang&+useropts=$texsize$texalign$zoom$font" title="WIMS">
+   aquest enllaç
+  </a>
+   a les Adreces d'interés, per mantenir aquestes preferències per les properes connexions.
+  !else
+   Les preferències es mantindran en les connexions futures en aquesta classe.
+  !endif
+</p>
+
+!tail
+

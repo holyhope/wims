@@ -1,0 +1,48 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+
+slib_author=Fabrice, Guerimand
+
+!exit
+
+
+:proc
+slib_input=$wims_read_parm
+
+!distribute items $slib_input into a,b,mx,my,Mx,My
+slib_out=$slib_input
+
+liste=$empty
+tmp=$[$mx*($a)+($b)]
+!ifval $tmp<=$My and $tmp>=$my
+ liste=!append line $mx,$tmp to $liste
+!endif
+tmp=$[$Mx*($a)+($b)]
+!ifval $tmp<=$My and $tmp>=$my
+ liste=!append line $Mx,$tmp to $liste
+!endif
+tmp=!linecnt $liste
+!if $tmp=2
+ !goto end
+!endif
+
+tmp=$[($my-($b))/($a)]
+!ifval $tmp<=$Mx and $tmp>=$mx
+ liste=!append line $tmp,$my to $liste
+!endif
+
+tmp=$[($My-($b))/($a)]
+!ifval $tmp<=$Mx and $tmp>=$mx
+ liste=!append line $tmp,$My to $liste
+!endif
+
+:end
+
+
+tmp=!linecnt $liste
+!if $tmp<2
+ slib_out=error
+!else
+ slib_out=!line 1 to 2 of $liste
+!endif

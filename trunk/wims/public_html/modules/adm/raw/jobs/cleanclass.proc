@@ -1,0 +1,55 @@
+!!CleanClass
+!! permet de nettoyer sa classe de toute trace des travaux effectues par les apprenants.
+!! On peut ainsi reutiliser une meme classe facilement.
+
+!read scripts/check.class
+!if $error!=$empty
+  !exit
+!endif
+
+!read adm/class/mkuserlist $qclass
+
+usercnt_before=!recordcnt wimshome/log/classes/$qclass/.userlist
+
+class_superclass = !defof class_superclass in $classdeffile
+!if $class_superclass != $empty
+  # Il faut pour chaque etudiant de la classe retirer cette derniere de la variable "user_participate" de l'utilisateur dans le groupement de classe.
+  !for i=1 to $usercnt_before
+    current_user = !record $i of wimshome/log/classes/$qclass/.userlist
+    user_id = !item 3 of $current_user
+    userdeffile =  wimshome/log/classes/$class_superclass/.users/$user_id
+    participate = !defof user_participate in $userdeffile
+    new_participate = !listcomplement $qclass in $participate
+    !if $new_participate == $empty
+      # Si l'utilisateur ne participe a aucune autre classe, on le supprime aussi de la superclasse.
+      !sh rm -f $wims_home/log/classes/$class_superclass/.users/$user_id
+    !else
+      !setdef !set user_participate=$new_participate in $userdeffile
+    !endif
+  !next
+!endif
+
+backup_file = $wims_home/log/classes/$qclass.tgz
+
+log = !sh cd $wims_home/log/classes\
+  tar -czf $backup_file $qclass\
+  cd $qclass\
+  rm -f .log.auth\
+  rm -f .userlist\
+  rm -f .userlist_external\
+  rm -f .scoreavg\
+  rm -f scoreavg\
+  rm -f .grades\
+  rm -f .users/*\
+  rm -f score/*\
+  rm -f noscore/*\
+
+
+!! bizarrement, cette ligne ne fonctionne pas bien si elle est ajoutee aux precedentes
+!sh cd $wims_home/log/classes/$qclass\
+  rm -Rf examlog
+
+
+!read adm/class/mkuserlist $qclass
+usercnt_after=!recordcnt wimshome/log/classes/$qclass/.userlist
+!read adm/class/stat

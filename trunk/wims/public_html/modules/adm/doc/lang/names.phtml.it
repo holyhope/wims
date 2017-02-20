@@ -1,0 +1,82 @@
+!set lang_exists=yes
+!if $wims_read_parm=$empty
+ !exit
+!endif
+
+!goto $wims_read_parm
+
+:file
+
+<p>File disponibili in questo documento:
+ !for f in $flist
+  !getfile doc/$f $f
+  &nbsp;
+ !next f
+</p>
+ !form reply
+ <input type="hidden" name="job2" value="erase" />
+ Cancella un file:
+ !formselect job2 list $flist
+ <input type="submit" value="$wims_name_erase" />
+
+ !formend
+ <p>
+ I file legati al documento possono essere resi visibili tramite la 
+ variabile <span class="tt wims_code_variable">\filedir</span>. Per esempio il comando
+</p>
+<p class="wimscenter">
+ <span class="tt wims_address">&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</span>
+</p><p>
+ (<b>copiate questo testo dopo aver caricato il file</b>)
+ inserisce un link al file <a href="$m_filedir/$f1">$f1</a>.
+
+ È anche possibile scrivere
+</p><p class="wimscenter">
+ <span class="tt wims_address">&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</span>
+</p><p>
+per inserire nella pagina l'immagine contenuta nel file <span class="tt wims_fname">myfile.jpg</span>.
+ I file inseriti in questo documento sono visibili solo da chi 
+ può accedere al documento.
+
+</p><p>
+Un nuovo comando <span class="tt wims_code_words">\href{}{}</span> è in fase di test.
+Per ottenere un link verso il file è sufficiente scrivere
+</p><p class="wimscenter">
+<span class="tt wims_code_words">\href{$f1}</span> o <span class="tt wims_code_words">\href{$f1}{testo}</span>.
+</p>
+!exit
+
+:readauth
+Se sei l'autore del documento, ricorda che è necessario chiedere
+ autorizzazione al 
+ !mailurl $wims_site_manager <em>Site manager</em>\
+Richiesta di pubblicare il documento WIMS $doc
+ per rendere il documento accessibile a tutti.
+!exit
+
+:erase1
+  Per ragioni di sicurezza, solo il <em>Site manager</em> può
+ cancellare documenti pubblici.
+ <p>
+ Puoi 
+ !mailurl $wims_site_manager chiedere direttamente al webmaster
+ di cancellare il documento.
+ </p>
+!exit
+
+:erase2
+<span class="wims_warning">ATTENZIONE</span>. Un documento cancellato non può
+ più essere recuperato!
+<p>
+Sei sicuro di voler cancellare il documento <span class="tt wims_fname">$tit</span>?
+</p>
+!exit
+
+:public
+
+<b>NOTA</b>. È necessario chiedere autorizzazione al 
+ !mailurl $wims_site_manager webmaster\
+Richiesta di pubblicare il documento WIMS $doc
+ per rendere il documento accessibile a tutti.
+
+!exit

@@ -1,0 +1,187 @@
+!!for the documentation
+option:color=" " eqweight nolegend shuffle show sort split
+
+good=!rows2lines $(replygood$i)
+!if $(replytype$i) iswordof flashcard
+ !set option1=!line 1 of $oef_fill_option
+ !set option2=!line 2 of $oef_fill_option
+ good=!line 1 to 2 of $good
+!endif
+menulist=!line 2 to -1 of $good
+menulist=!translate internal $\
+$ to ; in $menulist
+good=!line 1 of $good
+replyGood$i=!item $good of $menulist
+replyGood$i=!replace internal \\( by \( in $(replyGood$i)
+!if $(replytype$i) iswordof flashcard
+ replygood$i=
+ !for x in $menulist
+   replygood1$i=!append item <span $option2>$x</span> to $(replygood1$i)
+ !next
+ replygood$i=$good\
+$(replygood1$i)
+ replyGood$i=!makelist <span $option2>x</span> for x in $(replyGood$i)
+ replygood$i=!replace internal ; by &#59; in $(replygood$i)
+!endif
+!if $wims_read_parm=nocompare
+   reply$i=!replace internal \\( by \( in $(reply$i)
+   !default m_reply$i=$(reply$i)
+ !exit
+!endif
+
+!if $(replyGood$i)=$empty
+ Test=bad $i
+ !exit
+!endif
+
+!reset menupos
+!if $(replytype$i) iswordof mark flashcard multipleclick
+  menupos=$(reply$i)
+  !if  $(replytype$i) iswordof flashcard
+    click=$(menupos[2;])
+    menupos=$(menupos[1;])
+    reply$i=$menupos
+  !endif
+  m_reply$i=!item $menupos of $menulist
+  reply_$i=$(m_reply$i)
+  !if  $(replytype$i) iswordof flashcard
+    m_reply$i=$(m_reply$i)\
+$click
+    reply$i=$(reply$i)
+    reply_$i= !makelist <div $option2>x</div> for x in $(reply_$i)
+    reply_$i=!items2words $(reply_$i)
+  !endif
+!else
+ reply$i=!replace internal \\( by \( in $(reply$i)
+ m_reply$i=$(reply$i)
+ !if $(replytype$i) notwordof checkbox menu
+  !if &#39; isin $menulist
+   reply$i=!replace internal ' by &#39; in $(reply$i)
+  !endif
+  !if &#44; isin $menulist
+   reply$i=!replace internal , by &#44; in $(reply$i)
+  !endif
+ !endif
+ cnti_ = !itemcnt $(reply$i)
+ !for u_ = 1 to $cnti_
+  ri_ =!item $u_ of $(reply$i)
+  mp_=!positionof item $ri_ in $menulist
+  menupos=!append item $mp_ to $menupos
+ !next u_
+!endif
+menupos=!nonempty items $menupos
+!if $menupos=$empty
+ test=NaN
+ !exit
+!endif
+!!!should be in the file oef/embed.phtml ??
+!if  $(replytype$i) iswordof multipleclick
+    image=$(oef_answer_option$i)
+    image=!line 1 of $image
+    legende=!line 3 of $(oef_answer_option$i)
+    2_=!line 2 of $(oef_answer_option$i)
+    !distribute items $2_ into ny, nx, width, height
+   reply_$i= <table style="width:$width; height:$(height);" class="ans_multipleclick$i">
+   replyGood$i= <table style="width:$width; height:$(height);" class="ans_multipleclick$i">
+  !for y=1 to $ny
+    reply_$i=$(reply_$i)<tr>
+    replyGood$i=$(replyGood$i)<tr>
+    !if $(legende[2;])!=
+      reply_$i=$(reply_$i)\
+      <th>$(legende[2;$y])</th>
+      replyGood$i=$(replyGood$i)\
+      <th>$(legende[2;$y])</th>
+    !endif
+    !for x=1 to $nx
+     !set t=$[$x+($y-1)*($nx)]
+     !set cc=transparent
+     !set cc1=transparent
+     !if $t isitemof $menupos and $t isitemof $good
+       !set cc=green
+    !endif
+    !if $t isitemof $menupos and $t notitemof $good
+     !set cc=red
+    !endif
+    !if $t isitemof $good and $t notitemof $menupos
+      !set cc=blue
+    !endif
+    !if $t isitemof $good
+     !set cc1=green
+    !endif
+    !if $cc!=$empty
+      cc=style="border:2px solid $cc;color:black;width:100%"
+    !endif
+    !if $cc1!=$empty
+     cc1=style="border:2px solid $cc1;color:black;width:100%"
+    !endif
+    reply_$i=$(reply_$i)\
+     <td id="r$(i)_$t">\
+     <div id="img$(i)_$(x)_$(y)" $cc>$(image[$t])</div>\
+    </td>
+    replyGood$i=$(replyGood$i)\
+    <td id="g$(i)_$t">\
+    <div id="img$(i)_$(x)_$(y)" $cc1>$(image[$t])</div>\
+    </td>
+  !next x
+  reply_$i=$(reply_$i)\
+  </tr>
+  replyGood$i=$(replyGood$i)\
+  </tr>
+ !next y
+ !if $(legende[1;])!=
+  reply_$i=$(reply_$i)\
+  <tr><th></th>
+  replyGood$i=$(replyGood$i)\
+  <tr><th></th>
+  !for x=1 to $nx
+   reply_$i=$(reply_$i)\
+   <th>$(legende[1;$x])</th>
+   replyGood$i=$(replyGood$i)\
+   <th>$(legende[1;$x])</th>
+  !next
+  reply_$i=$(reply_$i)\
+</tr>
+  replyGood$i=$(replyGood$i)\
+</tr>
+!endif
+ reply_$i=$(reply_$i)\
+ </table>
+ replyGood$i=$(replyGood$i)\
+ </table>
+
+ reply$i=
+ m_reply$i=$menupos
+!endif multipleclick
+
+poscnt1=!itemcnt $menupos
+menupos=!listintersect $menupos and $good
+poscnt2=!itemcnt $menupos
+poscnt3=!itemcnt $good
+!if split iswordof $(replyoption$i) or partialscore iswordof $(replyoption$i)
+ !if $poscnt1=$poscnt2 and $poscnt1=$poscnt3
+  diareply$i=good
+  !advance freegot
+ !else
+  !if eqweight iswordof $(replyoption$i)
+   diaratio=$[2*$poscnt2 - $poscnt1]
+  !else
+   diaratio=$[3*$poscnt2 - 2*$poscnt1]
+  !endif
+  !if $diaratio > 0
+   diareply$i=good
+   partialgood$i=yes
+   freegot=$[$freegot+ max(0,$diaratio/max($poscnt3,1))]
+  !else
+   diareply$i=bad
+  !endif
+ !endif
+!else
+ !if $poscnt1=$poscnt2 and $poscnt1=$poscnt3
+  diareply$i=good
+  !advance freegot
+ !else
+  diareply$i=bad
+ !endif
+!endif
+
+!reset anstype_shuffle_$i

@@ -1,0 +1,181 @@
+<!-- BEGIN of html/headmenu_* -->
+!read name.phtml.$lang
+!read themes/$wims_theme/lang/name.phtml.$lang
+!default wims_name_bgcolor=$wims_ref_bgcolor
+!if $wims_hm$wims_home_items$wims_link_close!=$empty
+ !goto defend
+!endif
+
+!reset 1_ home_
+!if _ isin $wims_session
+ !if _exam isin $wims_session
+  !set wims_pses=!translate _ to , in $wims_session
+  !set wims_pses=!item 1 of $wims_pses
+  !set wims_pser=!randint 1,99999
+  !set wims_href_opener=window.opener.location='$wims_ref_name?session=$wims_pses.1&+cmd=reply&+job=student&+randomizer=$wims_pser';
+ !endif
+ !set 1_=!append line back,3,window.close();$wims_href_opener to $1_
+!else
+  !if $module!=home or ($module=home and $seq!=$empty)
+   !set home_=!append line class_home,1,session=$wims_session.1 to $home_
+  !else
+   !set home_=!append line class_home,8, to $home_
+  !endif
+!endif
+
+!!! deconnexion link
+
+!if _ notin $wims_session
+ !if $class_cas_auth!=$empty
+  !if $wims_user=supervisor
+     !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=supervisor&class_auth=$class_cas_auth to $wims_link_close
+  !else
+   !if $wims_class!=$empty
+     !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=participant&class_auth=$class_cas_auth to $wims_link_close
+   !else
+    !set wims_link_close=!append line visitor,1,cmd=close&class_auth=$wims_cas_auth to $wims_link_close
+   !endif
+  !endif
+ !else
+  !if $wims_user=supervisor
+    !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=supervisor to $wims_link_close
+  !else
+     !if $wims_user=anonymous
+       !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=example to $wims_link_close
+     !else
+!! FIXME this never happens as _ is not in $wims_session !
+       !if _exam notin $wims_session
+         !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=participant to $wims_link_close
+       !endif
+    !endif
+  !endif
+ !endif
+!endif
+
+!if _check isin $wims_session
+!! it is the case for examlog or exolog
+ !set ckstep=$special_parm
+ !distribute item $wims_check into ckmodule,ckuser,cksession,ckexo,cksteps,score
+ !set qstr=module=$ckmodule&+cmd=new&+job=examcheck&+checkuser=$ckuser&+checksession=$cksession&+checkexo=$ckexo
+ !set 2_=$wims_page_name : &nbsp;
+ !ifval $ckstep>1
+  !set 2_=$2_<a href="$wims_ref_name?session=$session&+$qstr&+checkstep=1">1</a>&nbsp;
+  !if $ckstep=2
+   !set 2_=$(2_)2&nbsp;
+  !else
+   !if $ckstep=3
+    !set 2_=$(2_)<a href="$wims_ref_name?session=$session&+$qstr&+checkstep=2">2</a>&nbsp;3&nbsp;
+   !else
+    !set 2_=$(2_)&nbsp;...&nbsp;<a href="$wims_ref_name?session=$session&+$qstr&+checkstep=$[$ckstep-1]">$[$ckstep-1]</a>&nbsp;$ckstep&nbsp;
+   !endif
+  !endif
+ !else
+  !set 2_=$2_ 1 &nbsp;
+ !endif
+ !if $ckstep<$cksteps
+  !ifval $ckstep<$cksteps-2
+   !set 2_=$2_<a href="$wims_ref_name?session=$session&+$qstr&+checkstep=$[$ckstep+1]">$[$ckstep+1]</a>&nbsp;...&nbsp;<a href="$wims_ref_name?session=$session&+$qstr&+checkstep=$cksteps">$cksteps</a>
+  !else
+   !ifval $ckstep=$cksteps-2
+    !set 2_=$2_<a href="$wims_ref_name?session=$session&+$qstr&+checkstep=$[$ckstep+1]">$[$ckstep+1]</a>&nbsp;<a href="$wims_ref_name?session=$session&+$qstr&+checkstep=$cksteps">$cksteps</a>
+   !else
+    !ifval $ckstep=$cksteps-1
+     !set 2_=$2_<a href="$wims_ref_name?session=$session&+$qstr&+checkstep=$[$ckstep+1]">$[$ckstep+1]</a>
+    !endif
+   !endif
+  !endif
+ !endif
+ !set 1_=!append line nav,0,$2_ to $1_
+ !set 3_=!translate internal - to , in $ckexo
+ !set 3_=!item -1 of $3_
+ !set 2_=<small>$ckuser: $3_=$module. $cksteps steps, $score/10.</small>
+ !set wims_hm=!append line score,0,$2_ to $1_
+ !goto defend
+!endif
+!!!if adm/forum notin $module and _ notin $wims_session \
+!!	and $wims_sheet=$empty
+ !!!set 1_=!append line forum,1,module=adm/forum/mboard to $1_
+!!!endif
+!!if $cmd=intro
+!! !set 1_=!append line work,1,module=$module&cmd=new to $1_
+!!endif
+!if _exam isin $wims_session
+ !set 1_=!append line tools,4,module=home,tool to $1_
+!endif
+!!!if _ notin $wims_session and adm/ notin $module and $cmd notwordof help ref
+ !!!set 1_=!append line reference,4,module=$module&cmd=ref&special_parm=$cmd,ref to $1_
+!!!endif
+:ariane_sheet
+!if ($wims_sequence>0 or $m_wims_sequence>0) and (adm/sheet isin $module or $module_category!=adm or $module=adm/doc)
+  !set tmp_=$m_wims_sequence
+  !default tmp_=$wims_sequence
+  !if $wims_user=supervisor
+    !set wims_ariane=!append line sequence,1,module=adm/class/sequence&seq=$tmp_\
+to $wims_ariane
+  !else
+    !set wims_ariane=!append line sequence,1,module=home&seq=$tmp_ to $wims_ariane
+  !endif
+  !reset tmp_
+  !set wims_ariane_self=no
+!else
+  !if adm/doc isin $module and $wims_user!=supervisor
+    !set wims_ariane=!append line doc,8 to $wims_ariane
+    !set wims_ariane_self=no
+  !endif
+!endif
+!if $wims_sheet>0 or P isin $wims_sheet
+   !set wims_ariane=!append line sheet,1,module=adm/sheet&sh=$wims_sheet to $wims_ariane
+   !set wims_ariane_self=no
+!else
+   !if adm/sheet isin $module
+     !set wims_ariane=!append line sheet,8 to $wims_ariane
+     !set wims_ariane_self=no
+   !endif
+!endif
+
+!if $job=print or $printing=yes
+ !!goto defend
+!endif
+!if $cmd=help or $cmd=hint
+ !set 1_=!append line resume,1,cmd=resume to $1_
+!endif
+!if $module_has_intro=yes and $cmd notwordof intro help and \
+	$wims_sheet=$empty and exam notin $wims_session and mfeed notin $wims_session
+   !if $wims_theme!=default
+     !set wims_ariane=!append line intro,1,module=$module&cmd=intro&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4 to $wims_ariane
+     !set wims_ariane_self=no
+   !else
+     !set 1_=!append line intro,1,module=$module&cmd=intro&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4 to $1_
+   !endif
+!endif
+!if $module_has_help=yes and $cmd notwordof intro help and _exam notin $wims_session
+ !if $module_help=$empty or $module_help=popup
+   !set 1_=!append line help,4,module=$module&cmd=help&special_parm=$wims_help_parm,mhelp to $1_
+ !else
+   !set 1_=!append line help,1,module=$module&cmd=help&special_parm=$wims_help_parm to $1_
+ !endif
+!endif
+
+!if $wims_theme_version=0
+  !if _ notin $wims_session
+    !set 1_=!append line whelp,4,module=help/main&$wims_helper,help to $1_
+  !endif
+!endif
+
+!!********* Link: "About"
+!if $module_has_about=yes and $cmd notwordof help and $module!=home \
+  and _exam notin $wims_session and _mfeed notin $wims_session \
+  and (adm notin $module or $wims_user iswordof supervisor developper or $wims_user=$empty)
+  !set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp,,$wims_name_module_infos ($module) to $1_
+!endif
+
+!set wims_hm=$1_
+!set wims_home_items=$home_
+:defend
+!set wims_hm_cnt=!linecnt $wims_hm
+!set wims_home_items_cnt=!linecnt $wims_home_items
+!set wims_link_close_cnt=!linecnt $wims_link_close
+!set wims_ariane_cnt=!linecnt $wims_ariane
+!read themes.phtml header
+<div class="wimsbody">
+<!-- END of html/headmenu_* -->

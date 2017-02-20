@@ -1,0 +1,71 @@
+!set lang_exists=yes
+
+!set name_A=tots els recursos
+!set name_X=exercicis
+!set name_T=eines
+!set name_R=entreteniments
+!set name_L=referències
+!set name_S=fulls de treball
+!set name_P=eines ràpides
+
+!set name_M=modul/s
+
+!set wims_name_credits=Crèdits
+
+!if $job=subject
+  !set title=Explorar per tema
+  !set name_domain=Sisplau tria un dels dominis següents.
+  !set job_desc=Cada mòdul educatiu té associades unes paraules clau. \
+   Trobareu a sota totes aquestes paraules clau, organitzades en arbre. \
+<br class="spacer"/>\
+No obstant això, les xifres no tenen en compte les subbranques. \
+Cada punt indica el nombre de mòduls als quals s'assigna la paraula clau corresponent.
+
+  !set name_available=!nosubst Del domini <span class="wims_emph">$name</span>, hi ha disponibles els\
+   següents apartats.
+ !set wims_name_other=Altres dominis
+!endif
+
+!if $job=taxo
+  !set title=Exploració per taxonomia
+  !set job_desc=Una part dels mòduls de WIMS s'han classificat en algunes taxonomies \
+   clàssiques, les podeu trobar a continuació.\
+  <br class="spacer" />\
+  Aquí, els nombres que apareixen representen el nombre de\
+   mòduls continguts en les subbranques.
+!endif
+
+!if $job=level
+ !set title=Explorar per nivell
+ !distribute lines Curs\
+   Categoria\
+   Primària\
+   Secundària i Batxillerat\
+   Universitat\
+   Estudis de Postgrau\
+   Recerca\
+   Nivells\
+ into name_year,name_category,name_primary,name_secondary,name_university,name_graduate,\
+ name_research,name_levels
+
+!endif
+
+!distribute lines Podeu explorar el contingut d'aquest lloc de diferents maneres.\
+  Per tema\
+  Per nivell educatiu\
+  educació primària, educació secundària, universitat, etc.\
+  Per data\
+  les darreres incorporacions al servidor.\
+  I podeu igualment utilitzar les seleccions fetes per a vosaltres \
+  Per tipus de recurs\
+  documents, calculadors i graficadors, exercicis, etc.\
+  Una breu introducció\
+  d'alguna de les millors activitats del servidor. \
+  Correspondència indicativa\
+  amb els programes de l'ensenyament francès\
+  Reduir / Ampliar\
+  Per taxonomia\
+  aplicacions populars\
+into name_h_browse,name_by_subject,name_by_level,name_by_level2,name_by_date,name_news,\
+  name_selected,name_by_type,name_by_type2,name_introduction,name_thebest,name_french1,\
+  name_french2,name_fold,name_by_taxo,name_best

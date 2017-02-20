@@ -1,0 +1,40 @@
+!read adm/class/classlang names.phtml
+wims_prefix=class user livret
+!if $wims_user=supervisor
+ !readproc adm/whoconnect
+!endif
+
+!if $wims_class=$empty or ($wims_supertype!=0 and \
+ ($wims_supertype!=2 or $wims_typename!=class) and\
+ ($wims_supertype!=4 or ($wims_typename notwordof course and /0// notin $wims_class//)))
+ error=bad_class
+ !exit
+!endif
+
+!defread wimshome/log/classes/$wims_class/.def
+!defread $livret_dir/.def
+
+!default livret_minac=9
+
+livret_nonactivesheet=!listunion $livret_nonactivesheet and $nasheets
+
+!read lang/names.phtml.$moduclass_lang
+
+!read tabletheme
+name_icompetence=!char 1 of $name_Competences
+name_ipalier=!char 1 of $name_n_Palier
+
+!if $livret_supervise=yes
+ !bound job within see,modpalier,userlist,config,addcomp,user,delpalier,delcomp,save default userlist
+!else
+ !bound job within user,see default user
+ user=$wims_user
+!endif
+
+livret_nbcomp=!recordcnt $livret_dir/.comps
+!for k=1 to $livret_nbcomp
+  t=!record $k of $livret_dir/.comps
+  !distribute line $t into title_$k,nbpalier_$k
+!next k
+
+!read $job.proc

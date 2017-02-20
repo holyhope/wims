@@ -1,0 +1,37 @@
+
+!read adm/class/authchars
+fuser=!text select $char_login in $fuser
+fpassword=!text select $char_passwd in $fpassword
+fuser=!char 1 to $login_max of $fuser
+fpassword=!char 1 to $passwd_max of $fpassword
+
+!if $forum=$empty or / isin $forum or $fuser=$empty or $fpassword=$empty
+ error=auth_failure
+ !exit
+!endif
+
+!if classes isin $forum
+ !if $fuser=supervisor
+  !defread wimshome/log/$forum/supervisor
+ !else
+  !defread wimshome/log/$forum/.users/$fuser
+ !endif
+!else
+ !defread $forumdir/.users/$fuser
+!endif
+user_password=!passcrypt $user_password
+fpassword=!passcrypt $fpassword
+!if $user_exists!=yes or $user_password!=$fpassword
+ error=auth_failure
+ !exit
+!endif
+
+forumuser=$fuser
+!reset fuser
+
+!writefile wimshome/$wims_sesdir/mb_user.$forum !set forumuser=$forumuser\
+!set user_firstname=$user_firstname\
+!set user_lastname=$user_lastname\
+!set user_email=$user_email\
+!set user_exists=yes
+

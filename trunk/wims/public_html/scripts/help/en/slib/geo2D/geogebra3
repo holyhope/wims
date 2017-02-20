@@ -1,0 +1,62 @@
+slib_lang_exists_tmp=yes
+
+slib_title=Geogebra Applet
+slib_parms=1\
+,option or applet command for javascript, one by line or joined by a semicolon 
+slib_out=Applet GeoGebra
+slib_comment=the available applet commands are either the definition of an object\
+<br/>or javascript methods. For syntax details on how to create objects, you can report to the GeoGebra help page : \
+<br/><a target="wims_external" href="http://www.geogebra.org/help/docufr/"> www.geogebra.org/help/docufr</a>\
+<br/>There are a lot of available javascript methods: for example, \
+<br/>\
+<pre class="wims_code_words">evalCommand setValue setColor setVisible \
+  setLabelVisible setFixed setTrace\
+  setAxesVisible setGridVisible setCoordSystem\
+  deleteObject renameObject setLayerVisible\
+  setLineStyle setAnimationSpeed startAnimation\
+</pre>\
+The complete list <a target="wims_external" href="http://www.geogebra.org/en/wiki/index.php/GeoGebra_JavaScript_Methods"> is here.</a>\
+<br/>Allowed options are the followings (see <a target="wims_external" href="http://www.geogebra.org/en/wiki/index.php/GeoGebra_Applet_Parameters"> \
+here</a> for details).\
+<br/><span class="tt wims_code_words">height</span> default <span class="tt wims_code_words">300</span>\
+<br/><span class="tt wims_code_words">width</span> default <span class="tt wims_code_words">300</span>\
+<br/><span class="tt wims_code_words">file</span> default <span class="tt wims_code_words">none</span>&#46; Be careful &#58; the &#46;ggb file must be in the "image" \
+directory if you use the slib in an OEF exercise, \
+<br/>in the "files" directory if you use the slib in a document ;\
+<br/>otherwise you have to use relative adress from module directory.\
+<br/><span class="tt wims_code_words">showToolBar</span> default <span class="tt wims_code_words">false</span>\
+<br/><span class="tt wims_code_words">customToolBar</span> default <span class="tt wims_code_words">none</span>. Be careful : no comma is allowed and if you want \
+<br/>to separate two integers by a space-character, type a <span class="tt wims_code_words">@</span> instead of this space-character ! \
+The list of the icones <a target="wims_external" href="http://www.geogebra.org/source/program/doc/geogebra_modes.html">is here</a>\
+<br/><span class="tt wims_code_words">showMenuBar</span> default <span class="tt wims_code_words">false</span>\
+<br/><span class="tt wims_code_words">showAlgebraInput</span> default <span class="tt wims_code_words">false</span>\
+<br/><span class="tt wims_code_words">showAlgebraView</span> default <span class="tt wims_code_words">true</span>\
+<br/><span class="tt wims_code_words">showResetIcon</span> default <span class="tt wims_code_words">false</span> (Be careful : this option enable to \
+reset the applet, but without the construction done from wims)\
+<br/><span class="tt wims_code_words">showToolBarHelp</span> default <span class="tt wims_code_words">true</span>\
+<br/><span class="tt wims_code_words">enableRightClick</span> default <span class="tt wims_code_words">true</span> (Be careful : by right-clicking \
+on an object, the student can modify all the objects in the construction !)\
+<br/><span class="tt wims_code_words">language</span> default <span class="tt wims_code_words">fr</span>\
+<br/><span class="tt wims_code_words">enableLabelDrags</span> default <span class="tt wims_code_words">true</span>\
+<br/><span class="tt wims_code_words">enableShiftDragZoom</span> default <span class="tt wims_code_words">true</span>\
+<br/><span class="tt wims_code_words">errorDialogsActive</span> default <span class="tt wims_code_words">true</span>\
+<br/><span class="tt wims_code_words">debug</span> default <span class="tt wims_code_words">false</span>\
+<br/><span class="tt wims_code_words">number</span> number of the applet in the html page (default <span class="tt wims_code_words">1</span>)\
+<br/> In case of filestring, write <span class="tt wims_code_words">ggbBase64=the_filestring</span>\
+without space and on the first line.\
+<p>EXAMPLE\
+<pre>&#92;integer{x=random(3)}\
+&#92;text{appletcommand= Z=(&#92;x,3.78)&#92;\
+W=(6.2,2.8)&#92;\
+Ellipse[Z,W,5]&#92;\
+u=Line[W,Z]}\
+#the language can be setted in the options\
+&#92;text{option= showToolBar=true\
+language=en\
+customToolBar="0|5@40 10||1|2"\
+width=600\
+height=500\
+number=1</tt>\
+&#92;text{applet=slib(geo2D/geogebra3  &#92;appletcommand ; &#92;option)}\
+&#92;statement{&#92;applet}\
+</pre>

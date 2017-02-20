@@ -1,0 +1,65 @@
+##create teacherlist and .teacherlist_external at all levels
+## le parametre est la classe
+
+uclass=$wims_read_parm
+!if $uclass!=$empty
+  superclass=!defof class_superclass in wimshome/log/classes/$uclass/.def
+!endif
+!default superclass=$wims_superclass
+!default uclass=$wims_superclass
+!!! je ne comprends pas : l'indexation ne se fait pas sinon lorsqu'un enseignant s'inscrit
+!default superclass=$uclass
+!default wims_superclass=$class
+!!!
+!if $superclass=$empty
+ !exit
+!endif
+!if $wims_superclass!=$empty and $superclass!=$wims_superclass and $wims_ismanager<2
+ !exit
+!endif
+
+basedir=wimshome/log/classes/$superclass
+basedir2=$wims_home/log/classes/$superclass
+basedirr=wimshome/log/classes/$uclass
+basedirr2=$wims_home/log/classes/$uclass
+basedir0=wimshome/log/classes
+basedir02=$wims_home/log/classes
+
+tlist=!sh cd $basedir2/.users\
+	grep -l user_supervisable=yes *
+tlist=!words2items $tlist
+!set tmp=
+!writefile $basedirr/.teacherlist.1
+!writefile $basedirr/.teacherlist_external.1
+!for t in $tlist
+  US_=!defof user_supervise in $basedir/.users/$t
+  EXT_=!defof user_external_auth in $basedir/.users/$t
+  !if $superclass=$uclass or $uclass isitemof $US_
+   U_=!defof user_lastname,user_firstname in $basedir/.users/$t
+   !appendfile $basedirr/.teacherlist.1 $U_,$t
+   !if $EXT_!=$empty
+     !appendfile $basedirr/.teacherlist_external.1 $EXT_:$t
+   !endif
+   !for l in $US_
+!!teacherlist has not the same status in the superclass (every teacher)
+!! and in the subclasses (supervise teachers )
+     !if $l notwordof $superclass $uclass
+       !appendfile $basedir0/$l/.teacherlist.1 $U_,$t
+       !if $EXT_!=$empty
+         !appendfile $basedir0/$l/.teacherlist_external.1 $EXT_:$t
+       !endif
+       !set tmp=!append item $l to $tmp
+     !endif
+   !next
+ !endif
+!next t
+!set tmp=!listuniq $tmp,$uclass
+!set tmp=!nonempty items $tmp
+!for t in $tmp
+    !sh sort -f $basedir02/$t/.teacherlist.1 | uniq | grep . >$basedir02/$t/.teacherlist\
+       rm -f $basedir02/$t/.teacherlist.1 >/dev/null
+     !sh [ -f $basedir02/$t/.teacherlist_external.1 ] && sort -f $basedir02/$t/.teacherlist_external.1 | uniq | grep . >$basedir02/$t/.teacherlist_external\
+  rm -f $basedir02/$t/.teacherlist_external.1 >/dev/null
+!next
+
+!reset tmp

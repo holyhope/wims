@@ -1,0 +1,346 @@
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+!if $job=student
+  !goto student
+ !exit
+!endif
+!if $wims_read_parm=$empty
+ !goto general
+!endif
+:student
+Un examen est constitué d'exercices WIMS  qu'il faut faire en un temps
+limité défini par l'enseignant.<p>
+Contrairement à une feuille WIMS,
+<ul><li>
+il n'est pas possible  de renouveler un exercice de l'examen,
+ni de désactiver l'enregistrement des notes.
+</li><li>
+lorsqu'on clique sur un exercice, l'énoncé apparaît dans une autre
+fenêtre du navigateur. Un lien <span class="tt wims_code_words">Retour à la liste des exercices</span>
+permet de
+passer à un autre exercice.
+</li><li>
+Il n'est pas nécessaire d'avoir répondu à un exercice
+pour passer à l'exercice suivant de l'examen, l'énoncé obtenu est conservé.
+</li></ul>
+</p><p>
+L'enseignant peut donner la possibilité de recommencer plusieurs fois la totalité de
+l'examen. La note d'examen retenue par WIMS est alors le maximum des notes
+obtenues lors de tous les essais. La durée d'un examen correspond à la durée
+maximale d'un essai.
+</p><p>
+Indépendamment de la durée maximale d'un essai, l'enseignant peut fixer la période
+pendant laquelle l'enregistrement des notes sera ouverte.
+</p><p>
+Pour que les réponses sur un exercice soient prises en compte,
+il faut qu'elles soient envoyées avant que le temps fixé pour faire
+l'examen ne soit écoulé.
+</p>
+!if $tryremain>0 and $stries >1
+<p>
+Exemple.
+Supposons qu'il soit écrit :
+</p>
+!set h_min=$[rint(9*60+$stries*($sdure) - $sdure/2)]
+!set h_fin= $[floor($h_min/60)] h $[$h_min%60] min
+!set h_d2=$[round($sdure - $sdure/3)]
+!set h_min2=$[$sdure - $h_d2]
+!!set h_fin2=  $[floor($h_min2/60)] h $[$h_min2%60] min
+!set d_1=$[min(10,$sdure)]
+!set h_min3=$[floor(9*60+$d_1 + $sdure/2)]
+!set h_3=$[floor($h_min3/60)] h $[$h_min3%60] min
+<pre>
+$name_exam2
+$name_exam6
+$name_exam9
+$name_exam7
+</pre>
+et que l'enseignant a ouvert l'enregistrement des notes entre 9h et $h_fin.
+Cela signifie que vous pourrez commencer l'examen à partir de 9h et il
+faudra avoir terminé les $stries essais avant $h_fin :
+<ul><li>
+Si vous avez pris $d_1 min pour faire le 1er essai et que vous commencez
+votre second essai à $h_3, vous disposerez de $sdure min pour faire l'examen
+au 2ème essai.
+</li><li>
+Si vous commencez votre dernier essai $h_d2 min avant $h_fin, vous n'aurez que
+$h_min2 min pour faire une autre session d'examen.
+</li></ul>
+<p>
+Pour commencer un second essai, cliquez sur
+<span class="tt wims_code_words">$wims_name_endexam</span>.
+Vous serez alors déconnecté. Il suffira de vous reconnecter pour recommencer.
+Vous pouvez voir le résultat des essais précédents
+ en cliquant sur
+<span class="tt wims_code_words">$wims_name_myscore</span>.
+Une fois dans l'examen, il est conseillé de cliquer sur
+<span class="tt wims_code_words">$wims_name_refresh</span>
+ pour que les notes s'affichent.
+</p>
+!endif
+!if $wims_read_parm!=$empty or $job=student
+ !exit
+!endif
+
+:general
+<h2 id="general">Introduction</h2>
+
+<p>
+Un examen est constitué de séries d'exercices prises parmi les feuilles
+actives ou périmées.
+</p><p>
+Lorsque le participant commence un examen, il dispose d'un
+temps limité pour faire tous les exercices de l'examen (temps fixé par l'enseignant
+ appelé <span class="wims_emph">durée d'une session d'examen</span>).
+Il n'a pas la possiblité de renouveler un exercice de l'examen ni de désactiver
+l'enregistrement des notes.
+</p><p>
+L'enseignant peut donner la possibilité de recommencer
+ plusieurs fois un examen (paramètre <span class="wims_emph">nombre
+d'essais</span>) : on parle de sessions d'examen. La note à une session d'examen
+est la moyenne (pondérée) des notes obtenues à chaque exercice. La note finale de l'examen est
+le maximum des notes des différentes sessions d'examen.
+</p><p>
+Les énoncés de chaque exercice obtenu par le participant pendant un examen
+ainsi que les réponses qu'il a données sont enregistrés et visibles par
+le participant et l'enseignant après chaque session d'examen.
+</p><p>
+Il est possible de proposer un examen en mode simulation : les participants
+peuvent alors essayer l'examen mais les scores ne sont pas enregistrés et
+les essais ne sont donc pas comptés.
+</p><p>
+Comme pour une feuille, l'enseignant peut fixer les dates de début et de
+fin d'enregistrement des notes sur l'examen, restreindre l'accès en fixant des
+numéros IP ou utiliser une variable technique.
+</p><p>
+Les paragraphes suivants présentent en détails les différents paramètres d'un examen.
+</p>
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
+:statut
+<h2 id="statut"> Statut d'un examen</h2>
+Une feuille d'examen peut avoir quatre statuts :
+<span class="wims_emph">
+!replace internal , by ,$ $ in $(wims_name_shstatus).
+</span>
+<p>
+<span class="wims_emph">$(wims_name_shstatus[1]) :</span>
+c'est le statut initial d'une feuille d'examen. Dans ce statut, l'examen n'est pas
+visible des élèves.
+</p><p>
+<span class="wims_emph">$(wims_name_shstatus[2]) :</span>
+lorsqu'on clique sur
+<span class="tt wims_code_words">$(wims_name_actionlist[1])</span>,
+l'examen devient visible par les élèves (ils pourront travailler
+sur les exercices de l'examen si aucun paramètre dans le champ
+<span class="tt wims_code_words">$(name_shinfo[4])</span>
+ne l'empêche), son contenu
+n'est plus modifiable excepté le titre, le texte d'explication et
+le champ
+<span class="tt wims_code_words">$(name_shinfo[6])</span>
+</p><p>
+Du statut
+<span class="tt wims_code_words">$(wims_name_shstatus[2])</span>,
+la feuile d'examen peut passer au statut
+<span class="tt wims_code_words">$(wims_name_shstatus[3])</span>
+ en cliquant sur le bouton
+ <span class="tt wims_code_words">$(wims_name_actionlist[2])</span>.
+On ne peut pas revenir au statut
+<span class="tt wims_code_words">$(wims_name_shstatus[1])</span>.
+</p><p>
+<span class="wims_emph">$(wims_name_shstatus[3]) :</span>
+l'élève voit la feuille d'examen, mais n'a accès qu'au titre des exercices,
+il ne peut plus travailler dessus.
+</p><p>
+Une fois l'examen périmé, on peut le rendre invisible aux élèves en cliquant sur
+<span class="tt wims_code_words">$(wims_name_actionlist[4])</span>,
+mais aussi le remettre dans le statut
+<span class="tt wims_code_words">$(wims_name_shstatus[2])</span>.
+ </p>
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
+:session
+
+<h2 id="duration">Nombre d'essais (sessions) de l'examen et durée des sessions</h2>
+
+<p>
+Pendant un examen, le participant n'a pas la possiblité de renouveler
+un exercice de l'examen ni de désactiver l'enregistrement des notes.
+L'enseignant peut donner la possibilité de recommencer plusieurs fois un examen
+ce nombre est le <span class="tt wims_code_words">nombre d'essais autorisés</span>
+fixés par l'enseignant. Un essai correspond à une session d'examen.
+</p><p>
+La <span class="wims_emph">durée d'une session d'examen</span> est le temps imparti
+à l'élève pour faire la feuille d'examen une fois.
+ Quand l'élève commence l'examen, WIMS fait démarrer le
+chronomètre. A chaque fois que l'élève utilise un nouvel essai, le
+chronomètre repart à zéro. Dès que le chronomètre dépasse la limite de
+durée de session d'examen, l'élève ne peut plus travailler
+sur cet essai d'examen.
+</p><p>
+La durée d'une session d'examen peut être fixé entre 2 min et 600 min.
+</p><p>
+<span class="wims_warning">Attention :</span> sur ce serveur, une session non active
+pendant plus de $[floor($idle_time/60)] minutes est automatiquement détruite.
+Pensez-y en choisissant la durée d'une session.
+</p>
+<span class="wims_warning">Attention :</span> la durée d'une session d'examen
+est une notion différente du temps que passeront les élèves dans la salle
+machine (ce dernier se règle dans le champ
+<span class="tt wims_code_words">$(name_shinfo[6])</span>).
+Ainsi, si l'examen est prévu pour durer deux
+heures dans la salle machine et que l'enseignant fixe le paramètre de
+durée d'une session d'examen à 90 min et le nombre d'essais à 3
+(ce sont les valeurs par défaut), si l'élève finit son premier essai au bout de
+50 min, il lui restera encore 120 - 50 = 70 min et deux essais
+pour essayer d'améliorer sa note. S'il met de nouveau 50 min pour la seconde
+session, il ne pourra passer que 20 min sur la troisième session.
+</p><p>
+La note d'examen retenue par WIMS est le maximum des notes obtenues lors de tous
+les essais.
+</p>
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
+:allowtype
+<h2 id="allowtype">Tuning the score registration</h2>
+<p>
+In the selective open mode, you can make time
+restrictions for score registrations, by adding words <span class="tt wims_code_words">
+&gt;yyyymmdd.hh:mm</span>
+ (starting time) and/or
+ <span class="tt wims_code_words">
+&lt;yyyymmdd.hh:mm</span>
+ (ending time). These must be in the
+ SERVER's local time, and must be separated from other words by white spaces.
+ <br />
+ Cut times are used to let people take the exam in different sessions. A
+ participant having worked on the exam before a cut time will have no access
+ after the cut time.
+ <br />
+ Format of cut times: <span class="tt wims_code_words">yyyymmdd.hh:mm</span> (separate several cut times
+ by white spaces).
+</p>
+
+:cutt
+<p>
+Les <span class="wims_emph">heures de coupure</span>
+permettent de faire passer l'examen dans
+des séances différées. Un participant ayant commencé l'examen avant une
+heure de coupure ne peut pas travailler sur une nouvelle session d'examen
+après l'heure de coupure même s'il n'a pas utilisé tous les essais
+autorisés par l'enseignant.
+</p><p>
+Format des heures de coupure :
+<span class="tt wims_code_words">aaaammjj.hh:mm</span>
+(séparez plusieurs heures de coupure par des espaces).
+</p>
+
+Exemple : un premier groupe A de la classe passe l'examen
+entre 9h et 10h le 10/02/2015 et un autre groupe B de la même classe de 10h
+à 11h le même jour.
+<ul><li>
+Mettez <span class="tt">20150210.10:00</span> dans le champ
+<span class="tt wims_code_words">$name_shinfo_cutt</span>
+</li><li>
+Mettez dans le champ
+<span class="tt wims_code_words">$(name_shinfo[6])</span> :
+<span class="tt"> >20150210.9:00 <20150210.11:00</span>
+</li></ul>
+Dans ce cas, le nombre et le titre des différents exercices de l'examen
+sont visibles par tous les élèves de la classe à partir de 9h, un élève qui
+clique sur un exercice de l'examen entre 9h et 10h ne pourra pas ouvrir
+une nouvelle session d'examen après 10h.
+
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
+:variable
+<p id="variable">
+Afin d'individualiser les restrictions d'accès, il est possible de mettre
+le nom d'une <span class="wims_emph">variable technique</span> dans
+le champ  <span class="tt wims_code_words">$(name_shinfo[6]). </span>
+Cette variable doit alors être définie pour chaque participant selon les
+règles précédentes soit manuellement dans les propriétés du compte d'un
+participant ou par liaison tableur (variable technique). Si la
+restriction est un choix du participant (inscription selon certaines
+dates par exemple), il est possible de créer et utiliser un
+questionnaire en mode guidé (voir l'aide correspondante).
+</p>
+
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
+:contenu
+
+<h2 id="contenu">Contenu d'un exercice d'examen</h2>
+<p>
+This exercise can be (randomly) taken from a list of existing exercises in
+  worksheets. Please mark the worksheet exercises in the list, which
+  you want to be candidate of this exam exercise.
+</p><p>
+Après avoir cliqué sur le lien <span class="tt wims_code_words">$wims_name_addexo</span>
+vous voyez apparaître une liste d'exercices ;  déplacez dans le cadre de droite,
+ceux qui constitueront cet exercice d'examen, puis cliquez sur le bouton
+<span class="tt wims_code_words">Enregistrer.</span>
+</p><p>
+<span class="wims_emph">Titre</span> : le titre que l'on met à un exercice sera visible par les élèves lorsque l'examen
+est dans le statut
+<span class="wims_emph">$(wims_name_shstatus[2])</span>
+ou
+<span class="wims_emph">$(wims_name_shstatus[3]). </span>
+Par défaut, le titre d'un exercice est <span class="wims_emph">Ex.</span>
+</p><p>
+<span class="wims_emph">Poids</span> : la note d'une session d'examen est une moyenne
+pondérée par les poids définis pour chaque série d'exercices de l'examen.
+Par défaut, le poids est 1.
+</p><p>
+Vous pouvez aussi utiliser le lien
+<span class="tt wims_code_words">$wims_name_addsexo</span>
+pour mettre tous les exercices de la classe (chaque exercice de la classe
+ sera alors un exercice de l'examen).
+</p><p>
+Vous avez la possibilité de modifier le contenu de l'examen tant que celui-ci a
+ le statut
+<span class="wims_emph"> $(wims_name_shstatus[1]).</span></p>
+
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
+:dependency
+<h2 id="score_dependency">Score dependencies</h2>
+<p>Score dependencies refers to a certain number of points (or percentages) that must be obtained before
+the student is allowed to move on to the next exercise.
+For example, <span class="tt wims_code_words">1:50,2:30,3+4+5:60</span>
+ means that the participant must have 50% of the points required on exercise 1, 30% on exercise 2,
+ and an average of 60% on exercises 3,4,5.
+</p>
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
+:options
+ <h2 id="options">Options</h2>
+ <p>
+ At this moment just a single option is available.
+ </p>
+ <ul>
+  <li><em>autogen</em> means that the exercise is automatically generated
+  even if the user does not click on it. Therefore, he/she can consult the registered
+  exercise even when the session is closed. Not recommended except for
+  manually scored exercises.
+ </li>
+ </ul>
+
+!if $wims_read_parm!=$empty
+ !exit
+!endif

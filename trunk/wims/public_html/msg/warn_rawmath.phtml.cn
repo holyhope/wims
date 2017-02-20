@@ -1,0 +1,48 @@
+
+!set wims_warn_header=<p><span class="wims_warning">$wims_name_warning.</span>
+
+!if ambiguous iswordof $wims_warn_rawmath
+ $wims_warn_header
+ 你输入了一个有歧义的公式,
+WIMS对它的理解可能不同于你的本意. 请检查一下.
+ <p>
+ !set wims_warn_rmremark=yes
+!endif
+
+!if unknown iswordof $wims_warn_rawmath
+ $wims_warn_header
+ Wims 在你的公式里遇到了一个不认识的变量或函数名 
+ <font color="red"><b><tt>$wims_warn_rawmath_parm</tt></b></font>
+ 是输入错误吗 ?
+ <p>
+ !set wims_warn_rmremark=yes
+!endif
+
+!if flatpower iswordof $wims_warn_rawmath
+ <p><span class="wims_warning">Hint.</span>
+ 想要得到 <font color="green">x<sup>2</sup></font> 吗 ? 
+ 输入 <tt>x^2</tt> 或 <tt>x**2</tt>.
+ <p>
+!endif
+
+!if badprec iswordof $wims_warn_rawmath
+ $wims_warn_header
+ ``<tt>x^1/2</tt>'' 意为 <font color="green">x/2</font>! 请输入
+ ``<tt>x^(1/2)</tt>'' 以得到 <font color="green">x<sup>1/2</sup></font>.
+ <p>
+!endif
+
+!if unmatched_parentheses iswordof $wims_warn_rawmath
+ $wims_warn_header
+ 公式里的括号不配对. 请检查一下.
+ <p>
+!endif
+
+!if $wims_warn_rmremark=yes
+ 请使用 ``<tt>*</tt>'' 作为乘号, 
+ 并且把函数的变量放在括号里.
+ <small>对专家的提示. 如果你不要 wims 解读你的输入公式, 
+ 可以用以下的串作为开头 ``<tt>1-1+</tt>''.</small>
+ <p>
+!endif
+

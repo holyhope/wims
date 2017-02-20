@@ -1,0 +1,37 @@
+!set wims_module_log=error: $error
+
+!if $error iswordof already_exist baddocnumber not_supervisor insert_fail maxdoc toomuchsheet noexo
+  !goto $error
+!else
+ !msg $error
+ !exit
+!endif
+
+:not_supervisor:
+ ±§Ç¸, µ«ÊÇÖ»ÓĞ°à¼¶µÄ×¢²áÖ÷³Ö½ÌÊ¦²ÅÄÜ×÷Õâ¸ö×¼±¸²Ù×÷.
+!exit
+
+:insert_fail
+ Èí¼ş²»ÄÜ°ÑÄãµÄ×÷Òµ¼Óµ½°à¼¶Àï. Çë¼ì²éÄãµÄÊı¾İ.
+!exit
+
+
+:already_exist
+ ÄãÒªÌá½»µÄÎÄ¼şÒÑ¾­°üº¬ÔÚÄãµÄ°à¼¶Àï.
+!exit
+ 
+:baddocnumber
+ Les informations que vous avez saisies ne correspondent pas à un document enregistré de la classe.
+!exit
+
+:maxdoc
+Le nombre de documents est limité à $max_doc.
+!exit
+
+:toomuchsheet
+ Ò³Êı²»ÄÜ³¬¹ı $max_sheets. Äã²»ÄÜÔÙ´´½¨ĞÂÒ³.
+ !exit
+
+:noexo
+Ce document ne contient aucun exercice.
+!exit

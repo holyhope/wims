@@ -1,0 +1,42 @@
+#! /bin/sh
+
+cd `dirname $0`
+
+for l in ??
+do
+ rm -f index.$l index2.$l dirs.$l 2>/dev/null
+ dirs=`cd $l; echo * | grep -v '\*' | sort`
+ for d in $dirs
+ do
+  rm -f $l/$d/.index 2>/dev/null
+  dmethlist=
+  meth=`cd $l/$d; ls *.def 2>/dev/null | sed 's/.def$//g' | sort`
+  for m in $meth
+  do
+   tit=`awk -F'=' '/methtit=/ {print $2; exit}
+	/wims_read_parm/ {exit}' $l/$d/$m.def`
+   echo $d/$m:$tit >>index.$l
+   echo $m:$tit >>$l/$d/.index
+   dmethlist="$dmethlist $m"
+   tit2=`awk -F'=' '/methtit2=/ {print $2; exit}
+	/wims_read_parm/ {exit}' $l/$d/$m.def`
+   if [ -z "$tit2" ]; then tit2=$tit; fi
+   echo $d/$m:$tit2 >>index2.$l
+  done
+  if [ ! -z "$dmethlist" ]; then
+   echo $d:$dmethlist >>index2.$l
+  fi
+  name=`cat $l/$d/.name`
+  if [ ! -z "$name" ]; then
+   echo $d:$name >>dirs.$l
+  fi
+ done
+ for f in index index2 dirs
+ do
+  if [ -s $f.$l ]; then
+   ../dicsort $f.$l
+   mv $f.$l.sorted $f.$l
+  fi
+ done
+done
+

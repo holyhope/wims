@@ -1,0 +1,65 @@
+!set precision=!getopt precision in $(replyoption$i)
+!default precision=10
+
+!if $n<4
+ :badrep
+ reply$i=
+ test=NaN
+ !exit
+!endif
+!if $wims_read_parm=nocompare
+  !goto drawing
+!endif
+!if $m<4
+  Test=bad $i
+  !exit
+!endif
+
+!ifval $n!=$m
+ mean=1000
+ !goto diag
+!endif
+
+ecart1= $[sqrt(($(glist[1]) - ($(rlist[1])))^2 + ($(glist[2]) - ($(rlist[2])))^2)]
+ecart2= $[sqrt(($(glist[3]) - ($(rlist[3])))^2 + ($(glist[4]) - ($(rlist[4])))^2)]
+
+mean=$[max($ecart1,$ecart2)]
+
+!if NaN isin $mean or Inf isin $mean
+ !goto badrep
+!endif
+
+:diag
+test=$mean
+!if $mean<$precision
+  diareply$i=good
+  !advance freegot
+ !else
+  !if $mean<$[2*$precision]
+   precreply$i=yes
+   !advance precgood
+  !endif
+  diareply$i=bad
+ !endif
+
+:drawing
+
+!if $(replytype$i)=javacurve
+ primitive1=arrow $rlist,8,$color1
+ !if $wims_read_parm!=nocompare
+  primitive2=arrow $glist,8,$color2
+ !endif
+ !exit
+!endif
+
+!! $(replytype$i)=jsxgraphcurve
+!if $wims_read_parm!=nocompare
+ !for j=1 to $m/2
+  script$i=!append line p$i[$j] = brd$i.create('point',[$(glist[2*$j-1]),$(glist[2*$j])],{face:'+', size:'0',fixed:true,name:'',showInfobox:false,strokeColor:'$color2'}); to $(script$i)
+ !next
+script$i=!append line brd$i.create('line',[p$i[1],p$i[2]],{strokeColor:'$color2', straightFirst:false, straightLast:false, lastArrow:true}); to $(script$i)
+!endif
+!for j=1 to $n/2
+script$i=!append line q[$j] = brd$i.create('point',[$(rlist[2*$j-1]),$(rlist[2*$j])],{face:'+', size:'8',fixed:true,name:'',strokeColor:'$color1',showInfobox:false}); to $(script$i)
+!next
+script$i=!append line brd$i.create('line',[q[1],q[2]],{strokeColor:'$color1', straightFirst:false, straightLast:false, lastArrow:true}); to $(script$i)

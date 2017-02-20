@@ -1,0 +1,402 @@
+
+!set sp2=$special_parm2
+!bound sp2 within secure,supervisor,email,lang,level,limit,expiration,modtoolchg,\
+	bgcolor,homepage,bgimg,theme,css,theme_icon,logo,lock,exolog,examlog,examshow,ent,option,\
+        authtype,authtype2,topscores,external_auth\					\
+	default $
+
+!if $sp2=$empty
+ !exit
+!endif
+
+!goto $sp2
+
+:secure
+<p>
+<b>Secure hosts</b>.
+Consider the possibility under which there is a leak of your supervisor
+password: when you connect to the class as supervisor within a class room, a
+student may look over your shoulder, or even install a keyboard scanning
+software to register what you type (including the password). Believe me: if
+you keep real scores in your class, the supervisor password becomes a very
+coveted object.
+</p><p>
+The consequence of such a leak may be catastrophic to the class: data may
+be damaged, grades may be modified or you may even lose your supervisor
+access if the student changes your password.
+</p><p>
+Definition of secure hosts puts an extra security layer: sensitive
+manipulations such as class configuration, password change or score
+modificatoin can only be
+made from pre-defined <em>secure hosts</em>, when you are sure that students
+have no access to these hosts. So even if a student steals your password,
+there is not much (s)he can do to the class.
+</p>
+<div>
+!read help/hosts.phtml
+</div><p>
+By the way, if you have to type your password in a very hostile environment
+(for instance when you are working on computers used by students),
+you should also consider using single-use passwords (see the password page).
+</p>
+!exit
+
+:supervisor
+<p><b>Supervisor name</b>. Enter here your name, in the way you like.</p>
+!exit
+
+:email
+ <p>
+ <b>Supervisor email</b>.
+ Important notifications (secret codes, expiration notice, etc.) will be sent
+ to this address. This is also where student will send you messages. So you
+ MUST give your active email address, otherwise you may even lose control of
+ your class.
+ </p>
+!exit
+
+:option
+ <p>
+ <b>Option words of the class</b>. The following words can be used here:
+ </p>
+ <ul>
+ <li><span class="tt wims_code_words">showshexpire</span> Show the expiration date of worksheets on the
+  home page of participants.
+ </li><li><span class="tt wims_code_words">showexexpire</span> Show the expiration date of exam sheets on the
+  home page of participants.
+ </li><li><span class="tt wims_code_words">showshweight</span> Show worksheet weight on the
+  home page of participants.
+ </li><li><span class="tt wims_code_words">exrandomlist</span> List exercises in a random order in the exam page for participants (the exercises keep their given number in all the pages for the supervisor).<li>
+ </li></ul>
+!exit
+
+:lang
+<p>You may choose the class language among those supported
+by your wims site. Your class will then appear in the corresponding list of classes
+of the student's and teacher's areas.<br />
+Abbreviations used :</p> <ul>
+ <li>ca (Catalan)
+ </li><li>cn (Chinese gb)
+ </li><li>de (German)
+ </li><li>en (English)
+ </li><li>es (Spanish)
+ </li><li>fr (French)
+ </li><li>it (Italian)
+ </li><li>nl (Dutch)
+ </li><li>si (Slovenian)
+ </li><li>tw (Chinese big5)
+</li></ul>
+!exit
+
+:level
+ <p>Meanings of the levels: </p><ul>
+ <li>E1 - E6: Elementary school, year 1 to 6.
+ </li><li>H1 - H6: Secondary school, year 1 to 6.
+ </li><li>U1 - U5: University, year 1 to 5.
+ </li><li>G: University, Graduate study.
+ </li><li>R: Research.
+</li></ul>
+!exit
+
+:limit
+ <p><b>Participant number limit</b>. Registration of new participants will be
+refused if this limit is reached. This site has defined a hard limit
+($wims_class_user_limit) that cannot be exceeded.</p>
+!exit
+
+:expiration
+ <p>
+ <b>Expiration date</b>. The class will be closed when it reaches the
+expiration date. You may extend this date at any moment, but extensions
+exceeding one year from the actual date will be refused.
+</p><p>
+ If you want to extend this date to more than one year, you may do it
+ in several times at regular intervals, or
+ <a href="mailto:$wims_site_manager?subject=Virtual class extension
+ demand">ask the webmaster</a> to do it for you.
+</p><p>
+ This date must be entered in 8-digit form (yyyymmdd).
+ Example: 20120523 means May 23, 2012.
+</p>
+!exit
+
+:bgcolor
+ <p>
+ <b>Page background color and menu color</b>. These two colors can help you
+ quickly recognize pages within your virtual class. The values of these
+ fields must be valid html color names.
+ </p><p>
+ <b>Link color in menus and tables</b>. You may adapt the link color to the
+    menu background color. If you choose this option, it is wise to fill in explicitely
+    the table background color even if it is the same as the default one (in case the
+default would change).
+ </p><p>
+ Default values are those defined for the general site pages.
+ </p>
+!exit
+
+:homepage
+ <p>
+ <b>Participant homepage</b>. You may put the address of a document block
+ (such as <span class="tt wims_fname">c1/main</span>) to be the home page of the class for participants.
+ The document itself need not be visible by participants.
+ </p><p>
+ Leave this field blanck if you want to use the standard home page.
+ </p><p>
+ All the links in the block should be defined using the command <span class="tt wims_code_variable">\adm</span>.
+ You can use the following pre-defined variables:
+ </p>
+ $table_header
+ $table_tr<td class="tt wims_code_variable">\firstname</td><td>
+Participant's first name
+ </td></tr>
+ $table_tr<td class="tt wims_code_variable">\lastname</td><td>
+ Participant's last name
+ </td></tr>
+ $table_tr<td class="tt wims_code_variable">\scores</td><td>
+Participants's score information. This is a list of
+numbers. Each pair of numbers corresponds to one worksheet: percentage of points
+and score quality.
+ </td></tr>
+ $table_tr<td class="tt wims_code_variable">\newmsgcnt</td><td>
+Unread messages in the class forum.
+ </td></tr>
+ $table_tr<td class="tt wims_code_variable">\today</td><td>
+ Date of today, yyyymmdd.
+ </td></tr>
+ $table_tr<td class="tt wims_code_variable">\sheets</td><td>
+Number of worksheets.
+ </td></tr>
+ $table_tr<td class="tt wims_code_variable">\exams</td><td>
+ Number of exam sheets
+ </td></tr>
+ $table_tr<td class="tt wims_code_variable">\expiration1</td><td>expiration1</td></tr>
+ Expiration date of worksheet 1, worksheet 2, exam 1, ..., yyyymmdd.
+ $table_tr<td class="tt wims_code_variable">\status1</td><td>
+ Status of worksheet 1, worksheet 2, exam 1, ... This is a non-negative integer; 0
+ = under preparation, 1 = active, 2 = expired, 3 = hidden.
+ </td></tr>
+ $table_tr<td class="tt wims_code_variable">\daymessage</td><td>
+message of the day for the class
+ </td></tr>
+ $table_tr<td class="tt wims_code_variable">\userdaymessage</td><td>
+individual message of the day message for each participant.
+ </td></tr>
+ $table_end
+!goto end
+
+:bgimg
+ <p>
+ Background image file (tile) for pages in the class. You may use any valid URL.
+ There are also prepared background image files which you can use without
+ adding any address prefix:</p>
+ <pre>$bgimgs</pre>
+!exit
+
+:theme
+<p>The style theme of your class.</p>
+!exit
+
+:theme_icon
+<p>The icons in the menu</p>
+!exit
+
+:css
+<p>
+The style sheet affects almost all pages of your class.
+</p><p>
+Choose <span class="tt wims_code_words">----</span> to disable style sheets.
+</p><p>
+Choose <span class="tt wims_code_words">-theme-</span> to use style sheets corresponding to your choice
+of the theme.
+</p><p>
+Choose <span class="tt wims_code_words">class</span> to use the style sheet (css) defined by yourself
+(see remark below).
+</p><p>
+The other choices correspond to pre-defined styles on this WIMS site.
+</p><p>
+<span class="wims_warning">Remark</span>. You may use your own style classes.
+Please refer to css documents for the syntax.
+If you define your own css, please test it with ALL possible browsers used by your
+students, for possible incompatibilities!
+</p><p>
+Si vous désirez ne changer que quelques styles par rapport au thème, choisisissez
+<span class="tt wims_code_words">-theme-</span>
+ et ajouter quelques nouvelles définitions dans le champ à droite.
+ The following classes, changing the style
+of your class, may be redefined:
+</p>
+<pre>
+!read  wimshome/public_html/bases/sys/css_classes
+</pre>
+!exit
+
+:logo
+<p>
+The logo of the class is a graphics file that will be shown on the top
+of the homepage of the class, both for supervisor and for participants.
+This logo can be put either on the top left or the top right corner.
+</p><p>
+Choose <span class="tt wims_code_words">none</span> if you do not want a logo to be shown.
+</p><p>
+If you choose empty string or <span class="tt wims_code_words">wims</span>, the WIMS logo will be used.
+</p><p>
+Otherwise, you may put the URL of any valid graphics file here.
+</p>
+!exit
+
+:lock
+<p>
+Connection lock helps to track users, and can help to avoid cheating. There are
+8 lock levels. </p>
+<ul><li>
+0: No connection lock is used.
+</li><li>
+1: Cookie-tracking is activated. Connections without correct return
+ cookie will be refused.
+</li><li>
+2: Secured (https) connection is required. Connections using usual
+http request will be refused. You must check first whether the web server
+on this WIMS site accepts https connections.
+</li><li>
+3: Host address lock is activated. Participants will have no right to
+change his/her host address within one session. There will be difficulties
+when connections are made from dynamically allocated IP numbers.
+</li><li>
+4: Cookie-tracking + https.
+</li><li>
+5: Cookie-tracking + Host lock.
+</li><li>
+6: All the above methods are activated.
+</li><li>
+7: The class is closed. No participant connection accepted.
+</li></ul>
+<br class="spacer" />
+!exit
+
+:exolog
+<p>
+Number of exercise registrations (limited to $wims_exolog_limit)
+</p><p>
+This is the maximal number of exercises for which each participant can
+register the details.
+</p><p>
+Such registered details allow participants and supervisors to keep record of how the
+exercise was done and eventually discuss mistakes and errors made by the participant.
+</p><p>
+The detail of an exercise is registered only if the participant decided to do it.
+When the maximum number allowed is exceeded, the oldest registrations
+will be erased.
+</p>
+!goto logs
+
+:examlog
+<p>
+Number of exam registrations (limited to $wims_examlog_limit)
+</p><p>
+This is the maximal number of exam sessions whose details can be registered
+for each participant.
+</p><p>
+These details allow participants and supervisor to review the action of the
+exam, exercise by exercise.
+</p><p>
+The registration of exam sessions is automatic. When the maximal number is
+exceeded, the most ancient registrations will be erased.
+</p>
+!exit
+
+:logs
+<p>
+set this number to 0 if you want to disable registration.
+
+<span class="wims_warning">$wims_name_warning</span>: the registration of exercises and exams may take a lot of
+space! If you set these numbers too high, you class risks disk quota overflow.
+</p>
+!exit
+
+:examshow
+<p>
+Dans le cas où cette option est mise sur <span class="tt wims_code_words">$wims_name_no</span>, les élèves ne peuvent
+pas revoir les enregistrements d'examens. Seul l'enseignant le peut.
+</p>
+!exit
+
+:authtype
+!read help/$lang/authentification.phtml
+!exit
+
+:authtype2
+<p>
+<span class="tt wims_code_words">class_connections</span>:
+If you use the standard <span class="tt">index.php</span> the variable <span class="tt">class_connections</span> should contain the value <span class="tt">+phpidp/available+</span>. Multiple values (separated by spaces) can be inserted. For a fine tuning of this variable you should refer to the <span class="bold">$wims_name_config_otherserver</span> section.
+</p>
+!exit
+
+:modtoolchg
+<p>
+<b>Modtool Account</b> :
+Once you have entered your Modtool acount via a virtual class, your Modtool account login
+is saved on the the class. This registration can be erased if you want to use another Modtool account.
+Next, please click on the link <span class="tt">Modtool</span> on the homepage.
+</p>
+!exit
+
+:ent
+<p>
+<b>Links to another plateform</b> :
+You may add a link to another plateform :
+</p>
+<pre> link_title,link_adress</pre>
+<p>For example,</p>
+<pre>Dokeos,http://-------</pre>
+<p>If you need more than one link, they must be seperated by ";". </p>
+
+!exit
+
+:external_auth
+<p>
+<b>Adresse dans le cas d'une authentification externe</b> : <i>Ceci est pour experts
+et permet d'utiliser par exemple une authentification CAS. </i>
+Vous pouvez indiquer le lien sur une authentification externe à wims sous la forme
+(cette adresse devra alors directement faire entrer dans la classe).
+Vous devez mettre l'adresse complète en html :<span class="tt wims_address">&lt;a href="http:...">Lien&lt;/a></span>.
+
+Il est par exemple possible de mettre l'adresse dans un "frame" :
+<span class="tt wims_address">&lt;iframe https:...." width="100%" height="400">&lt;/iframe></span>.
+</p><p>
+Vous pouvez désactiver cette option tout en gardant le texte en cliquant sur <span class="tt wims_code_words">$wims_name_no</span>
+Si vous cochez <span class="tt wims_code_words">$name_mix_auth</span>, l'adresse html que vous avez donné apparaîtra mais
+aussi l'authentification propre à wims comme une alternative.
+</p><p>
+Vous devez mettre un code html valide, il ne sera pas vérifié et
+vous assurer que l'authentification externe permet d'entrer dans votre classe.
+</p>
+!exit
+
+
+:topscores
+<p class="wimscenter" style="font-weight:bold;">Best scores, number and anonymity</p>
+<p> If this number n is at least 1, then  when a participant asks for
+its score, he will see also the list of n participants having the best scores
+(with their names if anonymity=yes, with numbers only if anonymity=no).
+</p><p>
+These means do not take into account the manual scores, hence leave n=0 if there are manual
+scores.
+</p><p>
+Default=0/$wims_name_yes
+</p>
+!exit
+
+:cloning
+<p>
+Vous pouvez autoriser la duplication de votre classe par d'autres enseignants.
+Votre classe sera alors référencée comme pouvant être dupliquée.
+Seuls les administrateurs disposant du mot de passe de duplication que vous définissez
+pourront copier le contenu pédagogique de votre classe (documents, feuilles, examens, séquences).
+Les comptes des utilisateurs (participants ou administrateurs) ne sont pas concernés par la duplication.
+</p><p>
+Une classe dupliquée fonctionne indépendemment de la classe modèle.
+</p>
+!exit
+
+:end

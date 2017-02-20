@@ -1,0 +1,24 @@
+!read adm/class/classname.phtml $wims_classname\
+$wims_institutionname
+
+!read adm/title.phtml 1\
+$classname\
+$cdt_title
+
+<div class="wims_content">
+  !if $cdt_description!=$empty
+   <p>$cdt_description</p>
+  !endif
+
+  <hr style="width:40%;" />
+
+  !if $error!=$empty
+    <div class="wims_msg alert">
+      !read lang/msg.phtml.$moduclass_lang
+    </div>
+  !endif
+
+  !read form.phtml
+</div>
+
+!tail

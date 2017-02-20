@@ -1,0 +1,23 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+
+slib_parms=3\
+,[data]\
+,lambda\
+,sigma
+
+slib_author=Sophie, Lemaire; Bernadette, Perrin-Riou
+
+slib_example=[0.3,0.5],5,0.5
+!exit
+
+:proc
+
+!distribute  item $wims_read_parm into slib_data,slib_l,slib_s
+
+slib_data=!declosing $slib_data
+slib_cnt= !itemcnt $slib_data
+slib_out=!values $slib_l- $slib_s* cotan (pi * x)  for x in $slib_data
+
+slib_out=!trim $slib_out

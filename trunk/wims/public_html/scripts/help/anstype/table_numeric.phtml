@@ -1,0 +1,48 @@
+<table class="wimscenter wimsborder">
+<tr>
+  <th>$(name_header[1])</th>
+  <th>$(name_header[2])</th>
+  <th>$(name_header[3])</th>
+<th>
+$(name_header[4]) $(example[1])
+!!insmath |\mbox{reponse}-\mbox{bonne_reponse}|
+</th>
+<th>
+M(prec)
+</th><th>
+!insmath M(\sqrt{\mbox{prec}}\,)
+</th><th>
+!insmath \frac{1}{\mbox{prec}}
+</th><th>
+!insmath \frac{10}{\mbox{prec}}
+</th></tr>
+!for i=2 to $nb_ex
+!set replygood$i=!item 1 of $example
+!set reply$i=!item $i of $example
+!reset $(replyoption$i)
+!readproc anstype/numeric
+!if $(precreply$i)=yes
+  !set d1=prec
+!else
+  !set d1=$(diareply$i)
+!endif
+!reset precreply$i
+!set replyoption$i=absolute
+!readproc anstype/numeric
+!if $(precreply$i)=yes
+  !set d2=prec
+!else
+  !set d2=$(diareply$i)
+!endif
+<tr>
+  <td>$(reply$i)</td>
+  <td class="oef_ind$d1" style="font-size:120%"><a title="$(name_$d1)">&diams;</a></td>
+  <td class="oef_ind$d2" style="font-size:120%"><a title="$(name_$d2)">&diams;</a></td>
+  <td>$[abs($(replygood$i)-$(reply$i))]</td>
+  <td>$[$tot/$precision]</td>
+  <td>$[round(100000*$tot/sqrt($precision))/100000]</td>
+  <td>$[1/$precision]</td>
+  <td>$[10/$precision]</td>
+</tr>
+!next
+</table>

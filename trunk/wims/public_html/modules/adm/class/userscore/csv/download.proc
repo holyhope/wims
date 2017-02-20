@@ -1,0 +1,257 @@
+
+quote="
+fbase=data-$wims_class
+fbase=!translate internal / to _ in $fbase
+fname=wimshome/$wims_sesdir/spreadsheet.$csvformat
+dl=!singlespace $csvdownload
+!! no needed because no keyword are now directly writing and incompatible with techvar code name
+!!dl=!lower $dl
+!if login notin $dl
+  dl=login,$dl
+!endif
+!for t in average,sheet,exam,manual
+ dl=!replace $t $ by $t in $dl
+!next t
+dl=!items2words $dl
+dl=!replace word names by name in $dl
+dl=!replace grade by manual in $dl
+dl=!replace word allscores by allscore in $dl
+dl=!replace word name by lastname firstname in $dl
+dl=!replace word allscore by averages sheets exams manuals in $dl
+dl_tmp=$dl
+
+!readproc csv/keyword.proc
+
+tmp=!column 2 to -1 of $se
+tmp=!lines2words $tmp
+tmp=!items2words $tmp
+tmp=!singlespace $tmp
+
+good=$basic $av $sh $ex $ma $examduration $tmp $basic2 $basic3
+tmp=!column 2 to -1 of $exe
+
+tmp=!lines2words $tmp
+tmp=!items2words $tmp
+tmp=!singlespace $tmp
+good=$good $tmp
+
+dl=!replace word averages by $av in $dl
+dl=!replace word sheets by $sh in $dl
+dl=!replace word exams by $ex in $dl
+dl=!replace word manuals by $ma in $dl
+!if sheetexos isin $dl
+ tmp=!column 2 to -1 of $se
+ tmp=!lines2words $tmp
+ dl=!replace word sheetexos by $tmp in $dl
+!else
+  !for i in $activesh
+    !if sheetexo$i iswordof $dl
+      tmp=!select $se where column 1 = $i
+      dl=!replace word sheetexo$i by $(tmp[2..-1]) in $dl
+      dl=!replace word sheetexo$i by  in $dl
+    !endif
+  !next i
+!endif
+
+!! aoption all for examexos, non active
+!!!if examexos isin $dl
+!! tmp=!column 2 to -1 of $exe
+!! tmp=!lines2words $tmp
+!! dl=!replace word examexos by $tmp in $dl
+!!!else
+  !for i in $activexams
+    !if examexo$i iswordof $dl
+      tmp=!select $exe where column 1 = $i
+      dl=!replace word examexo$i by $(tmp[2..-1]) in $dl
+      dl=!replace word examexo$i by  in $dl
+    !endif
+  !next i
+!!!endif
+dl=!words2items $dl
+dl=!listuniq $dl
+
+good=!words2items $good,$regvarlist
+!! only techvar should be in dl_v other variable have to stay in good
+!! (generic traitement for name)
+dl_v =!listcomplement $good in $dl
+!if $dl_v!=
+  dl_var=$empty
+  !for k in $dl_v
+    realname=!replace internal techvar_ by $empty in $k
+    dl_var=!append item $(code_user_techvar_$(realname)) to $dl_var
+  !next k
+!endif
+dl=!listintersect $dl and $good
+dl=!nospace $dl
+dl_var=!nospace $dl_var
+dl_v=!nospace $dl_v
+dlcnt=!itemcnt $dl
+!if $dlcnt=0
+ !exit
+!endif
+
+sep_csv=,
+sep_ods=;
+sep_xls=;
+sep_tsv=$	$
+sep=$(sep_$csvformat)
+dl2=!replace , by ,user_ in user_$dl
+dl2=!translate , to $sep in $dl2
+
+!if $dl_var!=$empty
+   dl4=!replace , by ,user_ in user_$dl_v
+   dl4=$sep$dl4
+   dl5=$sep$dl5
+   dl=$dl$sep$dl_var
+!endif
+
+tit=!replace internal , by $quote,$quote in $quote$tit$quote
+tit=!translate , to $sep in $dl
+!! quote the values (case of word groups)
+!for n in login,password,lastname,firstname,email,regnum,comments,\
+  participate,supervise,supervisable,external_auth,average0,average1,average2
+  dl2=!replace user_$n by $(quote)user_$n$quote in $dl2
+!next n
+!if $regvarlist!=$empty
+  !for n in $regvarlist
+    dl2=!replace user_$n by $(quote)user_$n$quote in $dl2
+  !next n
+!endif
+dl4r=!items2words $dl4
+!if $dl4!=$empty
+ dl4=!replace , by $(quote),$(quote) in $(quote)$dl4$(quote)
+ dl4=!char 3 to -1 of $dl4
+ dl5=!replace user_ by $$name_user_ in $dl4
+ dl4=!replace user_ by $$user_ in $dl4
+!else
+ dl5=$empty
+!endif
+dl3=!replace user_ by $$name_ in $dl2
+dl2=!replace user_ by $$user_ in $dl2
+
+scores=no
+!if average isin $dl or manual isin $dl or sheet isin $dl or exam isin $dl
+ scores=yes
+!endif
+
+!read csv/csvnames
+!writefile $fname $tit\
+$dl3$dl5\
+
+!reset data_scores
+!for u=1 to $usercnt
+!! reinitialise variables of type user_
+ !reset user_lastname,user_firstname,user_email,user_regnum,user_comments,\
+     user_external_auth,user_supervise,user_participate,user_supervisable
+ !for n in $regvarlist
+   !reset user_$n
+ !next
+ l=!record $u of wimshome/log/classes/$wims_class/.userlist
+ user_login=!item 3 of $l
+ uu=$user_login
+ uuu=!hex $uu
+ !reset $basic,$dl4r
+ !read adm/class/userdef classes,$wims_class,$user_login
+ !defread $userdef
+ user_participate=!items2words $user_participate
+ user_supervise=!items2words $user_supervise
+ !if $scores=yes
+  !read adm/class/userscore $uu
+  user_average1=$per
+  user_average2=$(manual_$uuu)
+  !if average0 isitemof $dl
+   user_average0=$[rint($manual*$user_average2+(100-$manual)*($per))/100]
+  !endif
+  !for i=1 to $sheetcnttot
+   !if sheet$i isitemof $dl and $i isitemof $activesh
+    p_=!line $i of $percents
+    !distribute words $p_ into p1,p2,p3,p4
+    !if $p2!=$empty
+###f_$i is defined by var.proc.weights
+     !distribute item $[$p1/100],$[$p2/10],$[$p3/100],$[$p4/100] into x0_,y_,x1_,x2_
+     !set ff_$i=!mathsubst Q=$y_ in $(f_$i)
+     !for sev=0 to 2
+       !set ff_$i=!mathsubst I$sev=$(x$(sev)_) in $(ff_$i)
+     !next
+     user_sheet$i=$[rint(100*$scoremax*$(ff_$i))/100]
+    !else
+     user_sheet$i=0
+    !endif
+   !endif
+  !next i
+  !for i=1 to $sheetcnttot
+   !if sheet$(i)_exo isin $dl and $i isitemof $activesh
+    !let e_=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
+    !for k_ = 1 to $e_
+      d_=!getscore user=$uu sheet=$i work=$k_
+      dd_=!getscorerequire user=$uu sheet=$i work=$k_
+      m_=!getscoremean user=$uu sheet=$i work=$k_
+      b_=!getscorebest user=$uu sheet=$i work=$k_
+      l_=!getscorelevel user=$uu sheet=$i work=$k_
+      user_sheet$(i)_exo_$(k_)_Q=$[$m_]
+      user_sheet$(i)_exo_$(k_)_I0=$[ceil(100*$d_/$dd_)]
+      user_sheet$(i)_exo_$(k_)_I1=$[ceil(100*$b_/$dd_)]
+      user_sheet$(i)_exo_$(k_)_I2=$[$l_]
+    !next k_
+   !endif
+  !next
+  !if _exexo_ isin $dl or examduration isin $dl
+    logdir=$wims_home/log/classes/$wims_class/examlog/$uu
+    checksessions=!sh if [ -d $logdir ]; then cd $logdir; ls -tr; fi
+    checksessions=!words2items $checksessions
+    !read adm/class/userscore1 $uu
+  !endif
+  !for i=1 to $examcnttot
+   !if exam$i isitemof $dl and $i isitemof $activexams
+     user_exam$i=$[rint(10*$scoremax*$(es_$i))/100]
+   !endif
+   !if examduration$i isitemof $dl and $i isitemof $activexams
+      user_examduration$i=!replace internal , by $ $ in $quote$(Dureeexam_$i)$quote
+   !endif
+   !if exam$(i)_exexo isin $dl and $i isitemof $activexams
+     !set nb_ses=!record $i of wimshome/log/classes/$wims_class/exams/.exams
+     !set nb_ses=!line 3 of $nb_ses
+     !set nb_ses=!word 2 of $nb_ses
+     !let e_=!recordcnt wimshome/log/classes/$wims_class/exams/.exam$i
+     !set checksessions_cnt=!itemcnt $checksessions
+     !for k_ = 1 to $e_
+        !reset t_
+        !set n_ses=0
+        !for ses=1 to $checksessions_cnt
+          !if $i isitemof $(exam_$ses)
+            !set tmp=$(Exam_$(i)_$ses)
+            !set t_=$t_$(tmp[$k_]),
+            !increase n_ses
+          !endif
+        !next
+        !set t_=$(t_[1..-2])
+        !if $nb_ses>$n_ses
+          !set oo=!makelist $ $ for x=1 to $[$nb_ses-$n_ses-1]
+!! leave the space ! useful for some spreadsheet
+          !set t_=$t_ ,$oo
+        !endif
+        !set user_exam$(i)_exexo_$(k_)=!replace internal , by : in $t_
+      !next
+    !endif
+  !next i
+  !for i=1 to $gcnt
+   !if manual$i isitemof $dl
+    user_manual$i=!item $i of $(Manual_$uuu)
+    !default user_manual$i=0
+   !endif
+  !next i
+ !endif
+ tmp=!trim $dl4
+ !appendfile $fname $dl2$tmp
+ data_scores=!append item $dl2$tmp to $data_scores
+!next u
+
+infile=spreadsheet.$csvformat
+outfile=$fbase.$csvformat
+!if $csvformat iswordof ods
+ !! it is format ods
+ !mexec csv/mkODS.py
+!else
+ !! it is format csv/tsv/xls
+ !mexec csv/getprep.sh
+!endif

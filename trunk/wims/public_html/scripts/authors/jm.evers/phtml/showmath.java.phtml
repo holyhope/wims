@@ -1,0 +1,124 @@
+!set n=$counter
+<link rel="stylesheet" type="text/css" href="$htmldir/schaersvoorde.css" />
+<script type="text/javascript"  src="$jsdir/../lang/remarks.$taal.js"></script>
+<script type="text/javascript"  src="$jsdir/precheck.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+    function exitMathView(){
+	document.getElementById("MathView").destroy();window.close(); 
+    }
+
+    var URL;
+    var applet=0;
+    function sendanswer(){
+	var v;var input;var reply=new Array ;var total=new Array;
+	var ml;var t1;var t2;
+	if(document.getElementById("MathView")){
+	    applet=1;
+	    input=document.getElementById("MathView").getLinear();
+	    input=input+'';
+	    if(input.indexOf('error')!=-1){setAlarm(input);return;}   
+	    input=nthroot(input);if(input=="error"){return;}
+	    if(input.indexOf(',')!=-1){setAlarm(r4);return;}
+	    v=input.length;if(v==0){setAlarm(r1 + "$counter");return;}if(v>100){setAlarm(r2); return;}if(v==0){setAlarm(r1);return;}
+	    if(check_f(input)==0){return;}
+	    if(check_o(input)==0){return;}
+	    input=science(input);if(input=="error"){return;}
+	    input=arrows(input,2,"","");if(input=="error"){return;}
+	    if(check_x(input)==0){return;}
+	    if(check_log_NaN(input)==0){return;}if(check_sqrt_NaN(input)==0){return;}
+	    reply[0]=input;
+	    t1=input.indexOf("[");
+	    if(t1 !=- 1){
+		if(input.indexOf("sqrt[")!=-1){input=specialroot(input);if(input=="error"){return;}}
+		if(input.indexOf("log[")!=-1){input=speciallog(input);if(input=="error"){return;}}
+		t1=input.indexOf("[");
+		if(t1!=-1){setAlarm(r13);return;}
+	    }
+	    input=input.replace(/#/g,' ');
+	    total[0]=input;
+	    t=confirm(r0+"\n"+reply);
+	    if(t==true){
+		total=encodeURIComponent(total);
+		URL = '$wims_ref_name?session=$myvar4&+module=$module&+cmd=reply&+reply$n='+total ;
+		opener.location.href = URL;
+		document.getElementById("MathView").destroy();
+		window.close();
+	    }
+	}
+    }
+//]]>
+</script>
+<table class="exercise">
+    <tr>
+    <td class="exercise_c">
+	<table class="exercise">
+	    <tr>
+	    <td class="exercise_c">
+		<input type="button" id="schaersvoorde_nok_button" value="EXIT" onclick="javascript:exitMathView();" />
+	    </td>
+!!	    !if $inputs=1
+		<td class="exercise_c">
+		<input type="button" id="schaersvoorde_ok_button" value="$send" onclick="javascript:sendanswer();" />
+		</td>
+!!	    !endif
+	    </tr>
+	</table>
+    </td>
+    </tr><tr>
+    <td class="exercise_c">
+	<table class="exercise">
+	    <tr>
+	    <td class="exercise_c">
+	     <div id="alarmtext" name="alarmtext"  style="position:absolute;top:0px;left:0px;z-index:100;display:none;background-color:orange;font-size:16px;border:2px solid red"></div>
+	    </td>
+	    </tr>
+	    <tr>
+	    <td class="exercise_m">
+		<object classid="java:MathView.class" id="MathView" width="580" height="260" type="application/x-java-applet;jpi-version=1.4" >
+		    <param name="java_codebase" value="$appletdir" />
+		    <param name="java_archive" value="MathView.jar" />
+		    <param name="java_code" value="MathView" />
+		    !! will default to background color of html-page/element
+		    <script  type="text/javascript">
+			var thisbackground=document.bgColor;
+			if(thisbackground){var obj="\<param name=bgcolor value="+thisbackground+"\>"}else{var obj="\<param name=bgcolor value=#ffffff\>"}
+			document.write(obj.toString());
+		    </script>	
+		    <param name="largefont" value="$largefont" />
+		!if $wims_user=supervisor
+		    <param name="oldreply" value="
+		    !nospace $(answer$n)
+		    ">
+		!else
+		    <param name="oldreply" value="
+		    !nospace $(reply$n)
+		    ">
+		!endif
+		    <param name="mayscript" value="true" />
+		    <param name="smallfont" value="$smallfont" />
+		    <param name="helptext" value="$applettext" />
+		    !! helptext : can display "exercise" math in the applet applettext=!nospace 1 / ( 1 + x ) =
+	    	    <param name="wimsvars" value="$varlist" />
+		    !! declare varlist=x,y,z,s or varlist=x y z s
+		    <param name="special_fraction" value="$special_fraction" />
+		!if $mathviewpanel=$empty
+		    <param name="my_panel" value="$module_title:and:or:sqrt():+:-:*:/" />
+		!else
+		    <param name="my_panel" value="$mathviewpanel" />
+		!endif
+		!! syntax $mathviewpanel:
+		!! value=" title : specialbutton1 : specialbutton2 : specialbutton3 : specialbutton4"
+		!! no unicode allowed
+		!! the applet can identify: and,or,inf,sqrt,isin,notin,-> (arrow)
+		!! maximum number of functions=6? 
+		    $nojava
+		</object>
+	    </td>
+	    </tr>
+	</table>
+    </td>
+    </tr>
+</table>
+!exit
+

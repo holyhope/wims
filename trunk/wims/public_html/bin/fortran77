@@ -1,0 +1,21 @@
+#! /bin/sh
+
+# sysmask test
+../bin/true 2>/dev/null && {
+ echo Cannot compile fortran77: security protection unavailable. >&2
+ exit
+}
+
+echo "$wims_exec_parm" | sed 's/\&#36;/\$/g;s/\&#start;//' >$tmp_dir/test.F
+
+w_wims_priv_chroot=tmpdir
+export w_wims_priv_chroot
+ulimit -f 256
+bin/ch..root g77 test.F -o test || exit
+
+[ -s $tmp_dir/test ] || exit
+
+rm -f $tmp_dir/test.F
+ulimit -f 64
+bin/ch..root /lib/ld-2.3.2.so ./test
+

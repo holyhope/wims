@@ -1,0 +1,72 @@
+<h1 class="wims_docu_title">$tit</h1>
+
+!if $error!=$empty
+ <div class="wims_msg alert">
+ !read docu/$modu_lang/msg.phtml
+ </div>
+
+!endif
+
+!if $edtype=file
+ !set wims_form_method=file
+!else
+ !set wims_form_method=post
+!endif
+!form reply
+<input type="hidden" name="doc" value="$doc" />
+<input type="hidden" name="block" value="$block" />
+
+!if $titb=$empty
+$name_blockcreation
+!else
+$name_blockedition
+!endif
+
+!if $edtype=file
+ !href cmd=reply&edtype=textarea [$name_compose]
+!else
+ !href cmd=reply&edtype=file [$name_file]
+!endif
+<br />
+
+!set titb=!reinput $titb
+$wims_name_title: <input size="50" name="Titb" value="$titb" /> <br />
+!if $edtype=file
+ $name_file: <input type="file" size="35" name="wims_deposit" />
+ !if $titb!=$empty
+  <br />$name_prompt0
+  !formselect addtype list replace,append,prepend prompt\
+	$name_prompt
+  $name_prompt1.
+ !endif
+ <br />
+!else
+<a id="textarea"></a>
+ <div id="textDiv">
+  !mexec scripts/textarea.sh
+!!  <div id="handleBottom" style="width:100%; top:222px;"></div>
+ </div>
+<script type="text/javascript">
+  markdown_toolbar = new Control.TextArea.ToolBar.Markdown('wims_deposit_id');
+  markdown_toolbar.toolbar.container.id = 'markdown_toolbar';
+</script>
+!endif
+<div class="wimscenter">
+	<input type="submit" name="preview" value="$n_preview" />
+	<input type="submit" name="rEg" value="$wims_name_tosave" />
+	<input type="submit" name="abandon" value="$wims_name_giveup" class="wims_secondary_button" />
+</div>
+!! $wims_name_Keywords : <input size="50" name="Keyw" value="$keyw" /> <br />
+!if $block!=main
+ $name_prev <input size="12" name="Prev" value="$prev" />
+ $name_next <input size="12" name="Next" value="$next" />
+ $name_up <input size="12" name="Upbl" value="$upbl" />
+ <br />
+!endif
+$name_dates <span class="tt small">aaaammjj</span> : $name_from
+<input size="8" name="Dat1" value="$dat1" /> $name_to
+<input size="8" name="Dat2" value="$dat2" />
+
+!formend
+
+<hr />

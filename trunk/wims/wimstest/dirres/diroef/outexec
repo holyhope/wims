@@ -1,0 +1,119 @@
+!set title=No title
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+oef2wims_version=3.22
+
+ansorder=r,r,r
+varcnt=5
+prevarcnt=4
+postvarcnt=0
+replycnt=3
+choicecnt=0
+conditioncnt=0
+feedbackcnt=0
+format=html
+
+val1=$imagedir
+val2=$confparm1
+val3=$confparm2
+val4=$confparm3
+val5=$confparm4
+
+!if $testcondition=yes
+ !goto test
+!endif
+!if $status=waiting
+ !exit
+!endif
+
+val6=\frac{reply1}{2}
+!ifval 3/2=1.5
+val7=oui
+!else
+val7=non
+!endif
+!ifval a=a
+val7=oui
+!endif
+replytype1=numeric
+replyname1=Blab
+replygood1=$[1]
+replytype2=numeric
+replyname2=ans2
+replygood2=$[2]
+replytype3=numeric
+replyname3=ans2
+replygood3=$[3]
+question=__EXECUTED_1692754_EXERCISE__
+
+!goto stat
+
+!exit
+
+:question
+$()	
+!read oef/special.phtml expandlines ttt 	uuu
+$()		
+!read oef/img.phtml aaa
+$()	
+!read oef/img.phtml aaa ccc
+$()	
+!read oef/draw.phtml 200,200 \
+	xrange -1,1	yrange -1,1
+$()		
+!read oef/canvasdraw.phtml 200,200 \
+	xrange -1,1	yrange -1,1	
+$()		
+!read oef/img.phtml eee
+$()		
+!read oef/special.phtml mathmlinput [$val6], 200x200,5	reply1	
+$()		\aa	
+!exit
+		
+!read oef/embed.phtml r2
+$()	
+!read oef/embed.phtml r3
+$()		
+!read oef/special.phtml expandlines aaa	bb
+$()		
+!if 3/2=1.5
+$()test yes
+!else
+$() test non
+!endif
+$()	
+$()
+!exit
+
+:hint
+$()
+$()
+!exit
+
+:help
+$()
+$()
+!exit
+
+:solution
+$()
+$()
+!exit
+
+:latex
+$()
+$()
+!exit
+
+:feedback
+
+!exit
+
+:test
+
+!exit
+
+:stat
+vsavelist=6
+embedcnt=5

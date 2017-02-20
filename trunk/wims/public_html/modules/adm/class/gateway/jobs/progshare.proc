@@ -1,0 +1,30 @@
+
+parent=level
+thiscode=$prog
+proghome=$classdir1/$prog
+!readdef $proghome/.def
+other_description=!defof class_description in $classdir1/$shareprog/.def
+l_=!translate / to , in $shareprog
+other_level=!defof class_description in $classdir1/$(l_[1])/.def
+
+!if $confirm!=yes or $other_level=$empty or $other_description=$empty or
+	$class_description=$empty or $class_recshare!=$empty
+ !exit
+!endif
+
+ready=!defof class_recshare in $classdir1/$shareprog/.def
+!if $ready!=$empty and $ready!=main
+ !exit
+!endif
+
+!sh cd $classdir2/$prog\
+ for f in def doc exams sheets src vote seq Exindex Extitles; do\
+  rm -fR $$f\
+  ln -s ../../$shareprog/$$f .\
+ done
+
+!setdef !set class_recshare=$shareprog in $proghome/.def
+!setdef !set class_recshare=main in $classdir1/$shareprog/.def
+job=prog
+confirm=
+!changeto jobs/prog.proc

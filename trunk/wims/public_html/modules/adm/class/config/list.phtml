@@ -1,0 +1,227 @@
+!form reply
+<input type="hidden" name="up_job" value="list" />
+<fieldset class="property_fields blockcenter">
+  <legend>$wims_class</legend>
+  <div class="field box">
+     <label>$name_name_institution</label>
+!if $supertype notin 24 or $classdepth=1
+     <input size="50" name="up_institution" id="up_institution" value="$class_institution" />
+!else
+     $class_institution
+!endif
+  </div>
+  <div class="field box halfwidth">
+    <label for="up_description">$name_name_class</label>
+    <input size="50" name="up_description" id="up_description" value="$class_description" />
+  </div>
+  <div class="field box halfwidth">
+    <label>$wims_name_nameteacher</label>
+  !set wims_ref_class=wims_button_help float_right
+  !href cmd=help&special_parm=config&special_parm2=supervisor $wims_name_help
+     <input size="40" name="up_supervisor" id="up_supervisor" value="$class_supervisor" />
+  </div>
+  <div class="field box halfwidth">
+    <label>$wims_name_email</label>
+  !set wims_ref_class=wims_button_help float_right
+  !href cmd=help&special_parm=config&special_parm2=email $wims_name_help
+     <input size="40" name="up_email" id="up_email" value="$class_email" />
+  </div>
+  <div class="field box halfwidth">
+    <label for="up_level">$name_level</label>
+!set wims_ref_class=wims_button_help float_right
+  !href cmd=help&special_parm=config&special_parm2=level $wims_name_help
+!set up_level=$class_level
+  !formselect up_level list $wims_listlevel prompt $name_wims_listlevel
+  </div>
+  <div class="field box halfwidth">
+    <label for="up_lang">$wims_name_Language</label>
+!set wims_ref_class=wims_button_help float_right
+!href cmd=help&special_parm=config&special_parm2=lang $wims_name_help
+!set up_lang=$class_lang
+!set langs=!words2items $wims_site_languages
+   !formselect up_lang list $langs
+  </div>
+  <div class="field box halfwidth">
+    <label for="up_expiration">$name_expirationdate</label>
+!set wims_ref_class=wims_button_help float_right
+!href cmd=help&special_parm=config&special_parm2=expiration $wims_name_help
+!if $class_type notin 13
+      <input size="8" maxlength="8" name="up_expiration" id="up_expiration" value="$class_expiration" />
+!else
+      <span class="tt">$class_expiration</span>
+!endif
+    <div class="formHelp">yyyymmdd</div>
+  </div>
+  <div class="field box halfwidth">
+    <label>$name_secure</label>
+  !set wims_ref_class=wims_button_help float_right
+  !href cmd=help&special_parm=config&special_parm2=secure $wims_name_help
+     <input size="50" name="up_secure" id="up_secure" value="$class_secure" />
+  </div>
+  <div class="field box halfwidth">
+    <label for="up_limit">$name_limit</label>
+&nbsp;
+!set wims_ref_class=wims_button_help float_right
+!href cmd=help&special_parm=config&special_parm2=limit $wims_name_help
+     <input size="5" name="up_limit" id="up_limit" value="$class_limit" />
+  </div>
+   !if $class_type=0 or ($class_type=1 and $wims_typename=class)
+  <div class="field box halfwidth">
+	<label for="up_allowcloning">$name_allowcloning</label>
+	&nbsp;
+	!set wims_ref_class=wims_button_help float_right
+	!href cmd=help&special_parm=config&special_parm2=cloning $wims_name_help
+    !set wims_ref_class=wims_formradio
+    !let up_allowcloning=$class_allowcloning
+	!default up_allowcloning=no
+    !formselect up_allowcloning list yes,no prompt $wims_name_yes,$wims_name_no
+    <br/>
+    <label for="up_cloningpwd">$name_cloningpwd</label>
+        <input size="5" name="up_cloningpwd" id="up_cloningpwd" value="$class_cloningpwd" />
+  </div>
+   !endif
+   !if $class_type isin 02
+  <div class="field box halfwidth">
+	 <label for="up_regvars">$name_regvars</label>
+	!set wims_ref_class=wims_button_help float_right
+	!href cmd=help&special_parm=regvars $wims_name_help
+    !set wims_ref_class=wims_formradio
+    !let up_regvars=$class_regvars
+        <input size="20" name="up_regvars" id="up_regvars" value="$class_regvars" />
+  </div>
+    !endif
+ </fieldset>
+
+ <fieldset class="property_fields blockcenter">
+  <legend>$wims_name_Sheets</legend>
+  <div class="field box">
+    <label for="up_exolog">$name_register_exo</label>
+!set wims_ref_class=wims_button_help float_right
+!href cmd=help&special_parm=config&special_parm2=exolog $wims_name_help
+!default class_exolog=2
+!let up_exolog=$class_exolog
+!formselect up_exolog from 0 to $wims_exolog_limit
+  </div>
+  <div class="field box">
+    <label for="up_exotitleform">$name_config_exotitleform &nbsp;</label>
+!set up_exotitleform=$class_exotitleform
+!default up_exotitleform=0
+!formselect up_exotitleform list -1,0,1,2,3 prompt $name_config_exotitleformoption
+  </div>
+  <div class="field box">
+    <label for="up_authscoresuspend">$name_config_authscoresuspend</label>
+!set up_authscoresuspend=$class_authscoresuspend
+!default up_authscoresuspend=yes
+!formselect up_authscoresuspend list no,yes prompt $wims_name_no,$wims_name_yes
+  </div>
+  <div class="field box">
+    <label for="up_option">$name_optionword</label>
+!set wims_ref_class=wims_button_help float_right
+!href cmd=help&special_parm=config&special_parm2=option $wims_name_help
+      <input size="40" name="up_option" id="up_option" value="$class_option" />
+  </div>
+  <div class="field box">
+    <label>$name_bestscore</label>
+!set wims_ref_class=wims_button_help float_right
+!href cmd=help&special_parm=config&special_parm2=topscores $wims_name_help
+!default class_topscores=0
+!default class_anonymtopscores=yes
+!set up_anonymtopscores=$class_anonymtopscores
+   <input size="3" name="up_topscores" id="up_topscores" value="$class_topscores" />
+/
+!formselect up_anonymtopscores list no,yes prompt $wims_name_no,$wims_name_yes
+  </div>
+  <div class="field box">
+    <label for="up_supconnectshowed">$name_config_supconnectshowed</label>
+!set up_supconnectshowed=$class_supconnectshowed
+!default up_supconnectshowed=no
+!formselect up_supconnectshowed list no,yes prompt $wims_name_no,$wims_name_yes
+  </div>
+ </fieldset>
+
+ <fieldset class="property_fields blockcenter">
+  <legend>$wims_name_Examens</legend>
+  <div class="field box halfwidth">
+      <label for="up_examlog">$name_register_exam</label>
+!default class_examlog=$wims_examlog_limit
+!let up_examlog=$class_examlog
+!formselect up_examlog from 0 to $wims_examlog_limit
+!set wims_ref_class=wims_button_help
+!href cmd=help&special_parm=config&special_parm2=examlog $wims_name_help
+  </div>
+  <div class="field box halfwidth">
+    <label for="up_examshow">$name_visible</label>
+!set wims_ref_class=wims_button_help float_right
+!href cmd=help&special_parm=config&special_parm2=examshow $wims_name_help
+!default class_examshow=yes
+!set up_examshow=$class_examshow
+!formselect up_examshow list no,yes prompt $wims_name_no,$wims_name_yes
+  </div>
+  <div class="field box">
+    <label for="up_examscore_withoutip">$name_examscore_withoutip</label>
+!let up_examscore_withoutip=$class_examscore_withoutip
+!default class_examscore_withoutip=no
+!set up_examscore_withoutip=$class_examscore_withoutip
+!formselect up_examscore_withoutip list no,yes prompt $wims_name_yes,$wims_name_no
+  </div>
+ </fieldset>
+ <fieldset class="property_fields blockcenter">
+  <legend></legend>
+  <div class="field box">
+!set up_ent=$class_ent
+    <label for="up_ent">$wims_name_config_ent</label>
+!set wims_ref_class=wims_button_help float_right
+!href cmd=help&special_parm=config&special_parm2=ent $wims_name_help
+     <input size="50" name="up_ent" id="up_ent" value="$class_ent" />
+  </div>
+
+!!! Unuseful now
+!!!if $class_type iswordof 0 2 4
+!! !set up_external_auth=$class_external_auth
+!!     <div class="field box">
+!!       <label for="up_external_auth">$wims_name_external_auth</label>
+!!!set wims_ref_class=wims_button_help float_right
+!!!href cmd=help&special_parm=config&special_parm2=external_auth $wims_name_help
+!!   <textarea name="up_external_auth" id="up_external_auth" cols="50" rows="6">$class_external_auth</textarea>
+!!!!<input size="50" name="up_external_auth" value="$class_external_auth" />
+!!!set up_mixed_external_auth=$class_mixed_external_auth
+!!!default up_mixed_external_auth=0
+!!!formradio up_mixed_external_auth list 0,1,2 prompt $wims_name_no, $name_mix_auth, $wims_name_yes
+!!    </div>
+!!!endif
+
+!if $wims_supertype!=4 or $class_typename!=class
+  <div class="field box">
+    <label for="modtoolchg">$name_devaccount</label>
+  !set wims_ref_class=wims_button_help float_right
+  !href cmd=help&special_parm=config&special_parm2=modtoolchg $wims_name_help
+  !set modtoolchg=1
+  !set wims_ref_class=wims_formradio
+  !formcheckbox modtoolchg list 0 prompt $wims_name_change
+  </div>
+!endif
+
+!! Lock does not work
+!! <div class="field box">
+!!      <label>$name_lock_level</label>
+!!  !set wims_ref_class=wims_button_help float_right
+!!   !href cmd=help&special_parm=config&special_parm2=lock $wims_name_help
+!!  !set up_lock=$class_lock
+!!  !default up_lock=0
+!!  !formselect up_lock list 0,2,3,4,5,6,7
+!!   </div>
+</fieldset>
+<div class="wimscenter actions">
+    <input type="submit" name="save" value="$wims_name_tosave" />
+ $
+    <input type="submit" name="abandon" value="$wims_name_giveup" class="wims_secondary_button" />
+</div>
+
+!formend
+
+!reset up_institution, up_description, up_supervisor, up_email, \
+	up_lang, up_level, up_limit, up_topscores, up_anonymtopscores, up_expiration, up_secure, up_lock,\
+	up_option,up_exolog,up_examlog,up_examshow,up_ent,up_external_auth,up_mixed_external_auth,\
+	pr_homepage, pr_bgcolor, pr_refcolor, pr_ref_menucolor,pr_ref_button_help_bgcolor,pr_ref_button_help_color,\
+	pr_ref_button_color,pr_ref_button_bgcolor,pr_bgimg, pr_css, pr_theme, pr_theme_icon
+

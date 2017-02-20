@@ -1,0 +1,21 @@
+<!-- _widgets/supervisordoc.phtml -->
+!for i=1 to $doccnt
+ !set sh=!record $i of wimshome/log/classes/$wims_class/doc/.index
+ !distribute lines $sh into s_,t_,bidon,bidon,bidon,o_
+ $table_tr
+  <td>$wims_name_doc</td>
+  <td>
+   !href module=adm/doc&job=read&doc=$s_&block=main $t_
+  </td>
+  !if $seq_open=yes
+    !read themes/_procs/supervisorseq.proc c,$o_
+  !endif
+  <td>
+   !item $[$o_ +1] of $wims_name_Docstatus
+  </td><td>
+   !set wims_ref_class=wims_button
+   !href module=adm/doc&job=prop&doc=$s_ $wims_name_change
+  </td>
+ </tr>
+!next i
+<!-- end _widgets/supervisordoc.phtml -->

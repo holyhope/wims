@@ -1,0 +1,107 @@
+!set lang_exists=yes
+
+!!!!only if one prefer another order
+!!set name_username=!nosubst $firstname $lastname
+!!set name_supervisorname=!nosubst $wims_firstname $wims_lastname
+
+!set name_password_check=Password security check
+!set name_listclass=class,class,group of classes,class,portal
+
+!default Cltype=$cltype
+!if $Cltype iswordof 2 4
+   !if $Cltype=2
+    !set name_classe=$(name_listclass[$Cltype+1])
+    !set name_sup=teacher-supervisor
+   !else
+    !set name_classe=$(name_listclass[$Cltype+1])
+    !set name_sup=supervisor
+   !endif
+     !set name_classes= the $name_classe
+     !set name_classess= a $name_classe
+     !set name_classesss= of the $name_classe
+     !set name_classessss= The $name_classe
+ !else
+   !set name_classe=$(name_listclass[$Cltype+1])
+   !set name_classes=the $name_classe
+   !set name_classess=a $name_classe
+   !set name_classesss= of the $name_classe
+   !set name_classessss= The $name_classe
+   !set name_sup=teacher
+ !endif
+
+!distribute lines Continue\
+  Click here to try again.\
+  Creation of a class structure\
+  Name of the institution\
+  maximum\
+  minimum\
+for experts only\
+  characters\
+  Back to the beginning of the operation.\
+  Choose the type of virtual class you want to create.\
+  between 4 and 16 characters, digits or letters without accent\
+ into name_continue,name_again,title,name_Name_portal,name_atmost,name_atleast,name_expert,\
+   name_characters,name_comeback,name_choose,name_warningpass
+
+!if $regpolicy=file
+  !set noright=You do not have the right to do so.
+!else
+  !set noright=Only the webmaster can do it.
+!endif
+
+!set name_regpolicy=The operation of creation of $name_classesss will not succeed \
+   unless you give your email address which works right now.
+
+!set name_help1=This password will allow you to access the $name_classe as its $name_sup.\
+  You should be the only person to know it.
+
+!set name_help2=The class password will be required to register the\
+  participants of the class; you should therefore give it to your students.
+
+!set name_help3=The password of the $name_classesss will be required for the register of\
+  teachers of the $name_classesss ; you must not diffuse it to your students.
+
+!distribute lines This is the date at which an automated archive of your class is generated. Your class will not be visible after this date.\
+Maximum number of participants in the $name_classe\
+Secured access\
+Optional\
+This code is only used once here. It cannot be used to connect to the $name_classe !\
+Code of the $name_classe\
+External authentification CAS\
+into name_help_date,name_help_limit,name_secure,name_optional,name_warning_code,name_code,name_cas
+
+!set name_host=!nosubst Names of computers from which you will perform sensitive operations \
+on the $name_classe. If you leave blank, you'll receive an email for each sensitive operation \
+  (recommanded). Writing the word <span class="tt wims_code_words">all</span> will disable this security measure.
+
+!set name_cas_help=Fill in this field only if you want to use \
+external authentication of type CAS\
+(provided in France by your ENT for instance).
+
+!set name_cpexempleintro=!nosubst You will create a copy of the class \
+ <span class="tt wims_code_words">$source_title</span>
+!set name_choosemode=You must select the copy mode for this class
+!distribute item Complete,Partial into name_btcpexemplemeth0,name_btcpexemplemeth1
+
+!set name_cpexemplemeth0=All resources will be copied. The resources may then be disabled,\
+ and deleted or adapted according to the dependencies.
+!set name_cpexemplemeth1=the exams will not be copied. The resources will be automatically disabled.\
+You can then decide which ones you want to delete, adapt or leave unchanged.
+!set name_cpexemplecomment=In all cases, the expiration dates will be adjusted to the closing date of the created class.
+!set name_research1=There are many virtual classes on this site. Please enter part of a word from the title or teacher's name to find  the class you are looking for.
+!set name_research2=There are still too many classes corresponding to your search word. Please give a more specific word.
+!set name_searchclass=Find a class
+!set name_nofound=No class corresponds to your search.
+
+!distribute items Free,Protected, Not allowed, Duplication, \
+Click on the class to duplicate\
+into name_free,name_protected,name_disallowed,name_cloning,name_clickclone
+
+!set name_getcloningpwd=!nosubst You will create a copy of the class <span class="tt wims_code_words">$source_title</span>. \
+For this you must enter the duplication password given to you by the class administrator.
+
+!set name_subclass=Sub-class of
+
+!distribute lines Location (town, country)\
+ By filling this field, you agree that we indicate that WIMS is used in your town (without any further mention)\
+into name_location,name_location_help

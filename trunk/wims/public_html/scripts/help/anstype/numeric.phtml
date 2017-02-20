@@ -1,0 +1,44 @@
+ <b>Number.</b> (name: <span class="tt wims_code_words">numeric</span>)<br/>
+ Comparison of real numbers up to the precision defined by the author.
+<p>
+Precision can be fixed in the field
+<span class="tt wims_code_words">precision</span>,
+by default 1000.
+The error is by default relative : the difference between the good answer and the
+reply should be less in absolute value than
+<span class="tt">M(prec)</span>
+where
+<div class="wimscenter">
+!insmath M(prec)= \frac{max(|\mbox{reply}|+|\mbox{goodreply}|,\frac{1}{\mbox{prec}})}{\mbox{prec}}
+</div>
+(replace
+ <span class="tt">precision</span> by <span class="tt">sqrt(precision)</span>
+for a good answer up to precision).
+</p>
+:option
+<p>
+If the word <span class="tt wims_code_words">comma</span> is in the option,
+real numbers can be written with
+a comma instead of the decimal point (but the good answer must be with a
+decimal point). In this case, if the answer is bad, the good answer is written
+with the same "decimal point" as the one of the student.
+</p>
+<p>
+If the word <span class="tt wims_code_words">absolute</span> is in the option, the precision is absolute.
+The answer is then good up to precision if the difference is less than 10/precision.
+</p>
+:example
+
+!distribute items good,bad,bad precision into name_good,name_bad,name_prec
+!set name_header=Answer,Relative <br /> precision,Absolute <br />précision <br />, Difference <br />with
+!set example=0.42,0.4205,0.4192,0.4191,0.4190,0.4,0.39,500000
+!set nb_ex=!itemcnt $example
+!set precision=1000
+
+!read help/anstype/table_numeric.phtml
+
+!set example=505.42,505.4205,505.4192,505.4191,505.4190,505.4,505.39
+!set nb_ex=!itemcnt $example
+!set precision=1000
+
+!read help/anstype/table_numeric.phtml

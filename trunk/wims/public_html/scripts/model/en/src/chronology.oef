@@ -1,0 +1,134 @@
+type=game
+textarea="data"
+
+:Write the events in chronological order.
+<p>
+Author of the model: Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+</p>
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Remove the above header if you destroy the model tags i.e. the lines starting
+with a ':'. Otherwise the exercise might not be recognised by Createxo.
+
+:%%%%%%%% Example parameters to be redefined %%%%%%%%%%%%%%%%%
+:\title{Timeline}
+:\author{Csilla, Ducrocq}
+:\email{}
+:\credits{}
+:Instruction
+
+\text{instruction=Write the dates in the bottom line and the matching events in the top line.}
+:Maximum 10 dates will be presented to the learner at a time.
+ These will be drawn randomly from the entire list (Main data) provided.
+\text{N=5}
+:Color of the arrow
+\text{couleur=orange}
+:Width of labels
+\text{facteur=100}
+:Height of labels
+\integer{height=100}
+:Width of the arrow
+Choose an integer between 1 and 3
+\integer{wi=1}
+:use both the items of the main data (0), only the first column (1), only the second column (2)
+\text{choix=0}
+:Main data.
+\text{data=1492,Christopher Columbus discovers America
+1607,the first English settlements
+1776,Declaration of Independence
+1789,First constitution of the USA
+1860,Abraham lincoln becomes president
+1917,the USA joins the 1st World War
+1929,the Wall street Crash
+1941,Pearl harbor
+1945,End of World War 2}
+
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
+\text{accolade=item(1,1 yes,
+2 no)}
+
+:%%%%%%%%%%%%%% Rien à modifier ensuite %%%%%%%%%%%%%%%%
+\text{accolade=wims(word 1 of \accolade)}
+\real{M=\N-0.3}
+\text{xrange=-1,\N+1}
+\text{yrange=\choix iswordof 0 ? -5,5:-2,5}
+\text{yrange=\choix=1 ? -5,2}
+\text{yrange=\choix=3 ? -5,4}
+\text{cnt=rows(\data)}
+\text{shu=shuffle(\cnt)}
+\text{shu=\shu[1..\N]}
+\text{shu=wims(sort numeric item \shu)}
+\text{data=row([\shu],\data)}
+\text{data=\accolade=1 ? wims(embraced randitem \data)}
+\matrix{rep=\data}
+\integer{size=(1.5*\facteur)*(\M+1)}
+\integer{height2=4*\height}
+\text{size=\size,\height2}
+\text{fleche=xrange \xrange
+yrange \yrange
+lines \couleur,\M,\wi/2,-1,\wi/2,-1,-\wi/2,\M,-\wi/2,\M,-\wi,\N+0.5,0,\M,\wi,\M,\wi/2
+fill 0,0,\couleur
+}
+
+\text{STEP=\choix=0 ? wims(values x for x=1 to 2*\N)}
+\text{STEP=\choix=1 ? wims(values 2*x-1 for x=1 to \N)}
+\text{STEP=\choix=2 or \choix=3? wims(values 2*x for x=1 to \N)}
+\text{STEP=wims(makelist r x for x in  \STEP)}
+\steps{\STEP}
+\text{positionbas=}
+\text{positionhaut=}
+\text{positionbas2=}
+\for{j=0 to \N-1}{
+  \text{fleche=\choix=0 or \choix=1 or \choix=3 ? \fleche
+  line \j-0.1,-\wi/2,\j-0.1,-2*\wi,\couleur}
+  \text{fleche=\choix=0 or \choix=2 or \choix=3? \fleche
+  line \j-0.1,\wi/2,\j-0.1,2*\wi,\couleur}
+  \text{ans=pari([2*\j+1,2*\j+2])}
+  \text{v=slib(draw/convpixel \j-0.5,-2,\size,\xrange,\yrange,0,pixels)}
+  \text{positionbas=\positionbas
+ r\ans[1],\v[1] x \v[2]}
+ \text{v=slib(draw/convpixel \j-0.5,-2,\size,\xrange,\yrange,0,pixels)}
+ \text{positionbas2=\positionbas2
+ r\ans[2],\v[1] x \v[2]}
+  \text{v=slib(draw/convpixel \j-0.5,4,\size,\xrange,\yrange,0,pixels)}
+  \text{positionhaut=\positionhaut
+r\ans[2],\v[1] x \v[2]}
+
+ \text{fleche=\choix=3? \fleche
+ text black, \j-0.2,3,medium,\data[\j+1;1]}
+ }
+  \text{position=\choix=1 or \choix=0? \positionbas}
+  \text{position=\choix=2 or \choix=0? \position
+ \positionhaut}
+ \text{position=\choix=3? \positionbas2}
+ \text{urlfleche=draw(\size
+\fleche)}
+\statement{
+\instruction
+<div class="wimscenter">
+\special{imagefill \urlfleche,\size[1]x\size[2],\facteur x \height
+\position}
+</div>
+}
+
+\answer{}{\rep[1;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[1;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[2;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[2;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[3;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[3;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[4;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[4;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[5;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[5;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[6;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[6;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[7;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[7;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[8;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[8;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[9;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[9;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[10;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[10;2]}{type=clickfill}{option=shuffle}

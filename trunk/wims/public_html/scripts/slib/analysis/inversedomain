@@ -1,0 +1,110 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+
+slib_parms=8\
+,[f1x,f1y] $wims_name_or [f1z]\
+,[f21,f22,...]\
+-2,xmin\
+2, xmax\
+-2, ymin\
+2, ymax\
+red,color\
+html,option: html, url\
+
+slib_author=Bernadette, Perrin-Riou
+
+slib_example=[x,y], [y - 0.5, -y + 1],-2,2,-2,2,green,html\
+[x,y], [x^2+y^2 -1,-x^2-y^2 + 2,-x*y+0.5],-2,2,-2,2,green,html\
+[x-y,x+y], [x^2+y^2 -1,-x^2-y^2 + 2,-x*y+0.5],-2,2,-2,2,green,html\
+[x-y, x+y], [x^2-y, x^2+y],-2,2,-2,2,green,html\
+ [x,y], [x^2-y, x^2+y,x],-2,2,-2,2,green,html\
+ [x-y, x+y], [x^2-y^2,x],-2,2,-2,2,blue,html\
+ [x,y], [x^2-y^2,sin(x/10)+y],-5,5,-5,5,green,html\
+ [-0.5 * i *z + 1.5],[-(x - 1)^2 - (y + 1)^2 + 0.5^2],-3.2,3.2,-3.2,3.2,,url\
+ [-0.5 * i *z + 1.5],[-(x - 1)^2 - (y + 1)^2 + 0.5^2],-3.2,3.2,-3.2,3.2,,html
+
+!exit
+
+:proc
+slib_out=
+
+!distribute items $wims_read_parm into slib_f,slib_g,slib_xmin,slib_xmax,slib_ymin,slib_ymax,slib_color,slib_option
+
+!default slib_color=red
+!default slib_colorw=grey
+!default slib_url=html
+!default slib_xmin=-2
+!default slib_xmax=2
+!default slib_ymin=-2
+!default slib_ymax=2
+
+slib_url=$slib_option
+!!default slib_url=html
+slib_f=!declosing $slib_f
+slib_fcnt=!itemcnt $slib_f
+!if $slib_fcnt=1
+  slib_f=!mathsubst z= (x + i*y) in $slib_f
+  slib_f = !exec pari [real($slib_f),imag($slib_f)]
+!endif
+
+slib_g=!declosing $slib_g
+slib_gcnt=!itemcnt $slib_g
+
+!reset slib_out
+
+!reset slib_FG
+!for slib_i=1 to $slib_gcnt
+  slib_fg= !mathsubst x=XX in $(slib_g[$slib_i])
+  slib_fg= !mathsubst y=YY in $slib_fg
+  slib_fg= !mathsubst XX=($(slib_f[1])) in $slib_fg
+  slib_fg= !mathsubst YY=($(slib_f[2])) in $slib_fg
+  slib_FG=!append item $slib_fg to $slib_FG
+  slib_out=!append line levelcurve $slib_colorw,$slib_fg to $slib_out
+!next
+slib_test=1
+!reset slib_Test
+slib_N=30
+slib_inc=0.01
+!for slib_grx=0 to $slib_N
+  !for slib_gry=0 to $slib_N
+    slib_test=1
+    slib_point=$[$slib_inc + $slib_xmin + $ + $slib_grx*($slib_xmax - ($slib_xmin))/$slib_N], $[$slib_inc + $slib_ymin + ($slib_gry)*($slib_ymax - ($slib_ymin))/$slib_N]
+    !for slib_i=1 to $slib_gcnt
+     !reset slib_value
+      slib_value=!mathsubst x=($(slib_point[1])) in $(slib_FG[$slib_i])
+      slib_value=!evalsubst y= ($(slib_point[2])) in $slib_value
+      !!should be better to test in pixels ??
+      !ifval $slib_value <= 0.01
+        slib_test=0
+        !break
+      !endif
+    !next
+    !if $slib_test=1
+     !! slib_out=!append line point $slib_point,$slib_color to $slib_out
+      slib_out=!append line fill $slib_point,$slib_color to $slib_out
+    !endif
+  !next
+!next
+slib_out=$slib_out
+
+slib_out= xrange $slib_xmin,$slib_xmax\
+yrange $slib_ymin,$slib_ymax\
+$slib_out\
+parallel $slib_xmin,0,$slib_xmax,0,0,-1,10,grey\
+parallel $slib_xmin,0,$slib_xmax,0,0,1,10,grey\
+parallel 0,$slib_ymin,0,$slib_ymax,1,0,10,grey\
+parallel 0,$slib_ymin,0,$slib_ymax,-1,0,10,grey\
+hline black,0,0\
+vline black,0,0
+slib_out1=$slib_out
+!if url iswordof $slib_url or html iswordof $slib_url
+  insdraw_size=200,200
+ !insdraw $slib_out
+ slib_out=$ins_url
+ !if html iswordof $slib_url
+    slib_out=<img src="$ins_url" alt="" />
+ !else
+    slib_out=$slib_out,$insdraw_size
+ !endif
+!endif

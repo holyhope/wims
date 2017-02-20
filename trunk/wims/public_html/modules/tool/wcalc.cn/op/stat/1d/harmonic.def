@@ -1,0 +1,35 @@
+!goto $wims_read_parm
+
+:def
+title=Harmonic mean
+input=data1d
+!exit
+
+:proc
+
+cnt=!itemcnt $formula
+!if $cnt>0
+ result=!sum 1/x for x in $formula
+ result=$[$cnt/($result)]
+!else
+ result=0
+!endif
+
+!exit
+
+:output
+
+<p class="wimscenter">
+Harmonic mean =
+!htmlmath $result
+</p>
+Data: $cnt numbers { $formula }
+<p>
+The <em>harmonic mean</em> of 
+\(\{x_1, x_2, ..., x_n\}\) 
+is equal to
+!set ins_align=middle
+!insmath \frac{n}{\sum_{i=1}^n \frac{1}{ x_i}}
+&nbsp;.
+</p>
+!exit

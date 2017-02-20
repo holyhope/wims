@@ -1,0 +1,102 @@
+Verschillende authentificatie methodes zijn geschikbaar binnen WIMS:
+
+<ol><li>
+Authenticatie door WIMS.
+</li><li>
+CAS authenticatie (Centrale Authenticatie Service) voor het inloggen van gebruikers (single sign on ,SSO). 
+De docent moet het adres (URL) van de organistatie (CAS host van de school) invoeren.
+</li><li>
+Authentificatie door een ldap (Lightweight Directory Access Protocol ,LDAP) directory.
+Hangt af van de permissies voor de  WIMS server binnen deze directory.
+</li><li>
+Authentificatie door een PHP script.
+Gebruikt de "raw access module" van WIMS :
+ op dit moment moet voor een correcte werking "simpleSAMLphp" (http://simplesamlphp.org/) worden geinstalleerd
+</li></ol>
+
+<p>
+Tijdens de regeistratie procedure zijn de gegevens met betrekking tot de 
+aspirant deelnemer (achternaam,voornaam,emailadres, etc) te vinden in een ldap directory.
+</p><p>
+Hieronder staat nog wat extra informatie mbt registratie en authentificatie :
+</p>
+<h3>
+WIMS authenticatie (default)
+</h3>
+Dit is de standaard WIMS eigen  authentificatie procedure geimplementeerd.
+<ul><li>
+Of de docent registreerd alle deelnemers (bijvoorbeeld mbv spreadsheet klasse lijsten)
+</li><li>
+Of de deelnemers starten met behulp van een klasse_wachtwoord verkregen bij de docent, 
+zelf een aanmeldings procedure
+</li></ul>
+De deelnemer kan hierna inloggen in zijn / haar klas met loginaam en wachtwoord.
+
+<h3>
+CAS authenticatie
+</h3>
+<ul><li>
+De docent CAS authentificatie geconfigureerd door het adres van de op school gebruikte "CAS host" in te voeren
+tijdens het oprichten van een klas of achteraf op de <span class="tt wims_code_words">Configuratie/Onderhoud</span> 
+pagina (klik op <span class="tt wims_code_words">Authenticatie</span>.
+</li><li>
+De docent geeft hierna het klasse_wachtwoord aan de aspirant deelnemers.
+</li><li>
+De deelnemer klikt op de "inloggen" knop van de klas.
+Het CAS authentificatie venster wordt geopend. Voert de CAS gegevens in.
+Als de deelnemer nog niet is geregistreerd wordt een klasse_wachtwoord gevraagd.
+Hierna worden loginnaam en wachtwoord gevraagd.
+En wordt gevraagd akkoord te gaan met de gebruikersvoorwaarden van WIMS.
+</li><li>
+Een docent kan ook deelnemers registreren. In dat geval hoeft een deelnemer bij de eerste keer inloggen alleen de gebruikersvoorwaarden te accepteren.
+</li></ul>
+<h3>
+CAS authenticatie en ldap identificatie.
+</h3>
+De docent moet het URL adres van de te gebruiken CAS host op de
+<span class="tt wims_code_words">Configuration/Maintenance</span> pagina.
+(klik op <span class="tt wims_code_words">Authenticatie</span> tezamen met de overige technische ldap parameters invoeren.
+Er moet wel gecontroleerrd worden dat de directory server connecties van de WIMS server accepteerd.
+(neem hiervoor eventueel contact op met de beheerder van de CAS host server)
+<p>
+De rest van de procedure is analoog aan de CAS authentificatie, 
+behalve dat de gegevens van de aspirant deelnemers automatisch worden ingevoerd.
+Everything goes as in the case of a simple authentication by CAS, 
+but the identifiers (name, ...) are automatically filled. 
+Letop: de CAS en ldap gebruikersinfo moeten identiek zijn.
+</p>
+
+<h3>
+ldap authenticatie en ldap identificatie.
+</h3>
+
+Alles werkt identiek aan de CAS authenticatie en ldap identificatie.
+
+<h3>Opmerkingen</h3>
+<ul><li>
+<span class="wims_warning">
+Het is niet aan te raden het authentificatie type te wijzigen als deelnemers al zijn aangemeld.
+</span>
+</li><li>
+In het geval van een externe authentificatie (naar WIMS) ,wordt er <i>intern</i>
+ook een account aangemaakt. Dit account wordt niet gebruikt voor authentificatie.
+Er is geen zichtbaar wachtwoord (wel aanwezig maar onzichtbaar).
+Dit account wordt alleen intern gebruikt binnen WIMS.
+</li><li>
+De dafault instellingen worden dgedefinieerd door de site manager.
+Elke klas kan en mag hiervan afwijken.
+<br/>
+Hieronder een voorbeeld van een ldap authentificatie :
+<pre>
+ldap_host: ldap.u-psud.fr
+ldap_port: 389
+ldap_version: 3
+ldap_base: ou=people,dc=u-psud,dc=fr
+ldap_branch: ou=people,dc=u-psud,dc=fr
+ldap_uid: uid
+ldap_login: supannAliasLogin
+</pre></li><li>
+
+Als de ldap authentication (configuratie) mislukt, wordt automatisch de WIMS interne authentificatie procedure aangeboden.
+</li></ul>
+

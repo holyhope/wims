@@ -1,0 +1,42 @@
+
+!read adm/title.phtml 1\
+Serveurs de publication et de téléchargement
+
+!!publishname=Nice University Publication Center
+!!downloadname=Nice University Download Center
+!set subject=Publication
+!set unice=!defof publishname,sysadmin in wimshome/public_html/bases/sys/publishcenter/unice
+!set wimsedu=!defof publishname,sysadmin in wimshome/public_html/bases/sys/publishcenter/wimsedu
+
+<h3>Informations générales</h3>
+Deux serveurs WIMS 
+$(unice[1]) (<span class="tt">unice</span> <a href="mailto:$(unice[2])?subject=$subject">$(unice[2])</a>) et 
+$(wimsedu[1]) (<span class="tt">wimsedu</span> <a href="mailto:$(wimsedu[2])?subject=$subject">$(wimsedu[2])</a>)
+sont actuellement proposés pour la publication de modules et leur téléchargement. 
+Ils sont synchronisés dans la mesure où leur version
+est compatible avec la version de WIMS requise des modules publiés. Dans le cas où un module
+publié sur un des serveurs de publication n'est pas compatible avec la version WIMS d'un autre serveur,
+cet autre serveur garde en mémoire l'adresse du module de manière à éviter qu'un 
+autre module de même nom soit publié. 
+
+<h3>Pour les auteurs</h3>
+<p>
+Les auteurs doivent être enregistrés dans le serveur de publication qu'ils vont utiliser.
+Dans le cas contraire, ils doivent passer par un "parrain" qui validera leur module.
+</p>
+<p>
+L'auteur qui publie un module sur un des serveurs de publication n'a le droit de modification
+que sur ce serveur. Si pour une raison valable (version plus récente de WIMS par exemple), 
+l'auteur veut changer de serveur de publication pour ce module, il doit le demander 
+aux gestionnaires de serveurs de publication.
+</p>
+
+<h3>Pour les gestionnaires de sites</h3>
+Le gestionnaire d'un serveur wims choisit les serveurs de publication
+qu'il propose aux auteurs développant sur le serveur qu'il gère. 
+ainsi que  les centres de téléchargement qu'il désire utiliser.
+</p>
+<p>
+La possibilité d'ajouter d'autres centres de téléchargement ou de publication existe pour le futur.
+Un serveur de publication est centre de téléchargement, mais le contraire n'est pas forcément vrai.
+</p>

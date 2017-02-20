@@ -1,0 +1,31 @@
+!header
+
+!! La présentation de l'exercice.
+!read present.phtml
+
+<hr />
+
+!if $status=waiting
+ !if $error!=$empty
+ <div class="wims_msg alert">
+  !read msg.phtml
+  </div>
+ !endif
+!else
+ !if $error!=$empty
+ <div class="wims_msg alert">
+  !read msg.phtml
+  </div>
+ !endif
+ !read answer.phtml
+ <p>
+ !if $worksheet=$empty
+  !href exo_Intro
+.
+</p>
+ !endif
+!endif
+
+:end
+!tail
+

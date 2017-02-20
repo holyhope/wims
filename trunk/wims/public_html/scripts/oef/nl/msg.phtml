@@ -1,0 +1,106 @@
+
+!if empty_out iswordof $error
+    U moet het antwoord even veranderen: de opgestuurde code geeft geen zinnige output.
+ !if $m_reply_err!=$empty
+  <pre><span class="wims_warning">$m_reply_err</span></pre>
+ !endif
+ !exit
+!endif
+
+!! empty_data bad_data double_reply  are in html/msg.phtml.fr - suppress on test
+
+!if bad_answer iswordof $error
+ !if illegalname iswordof $test
+  De opgestuurde code bevat de term: <span class="tt">$illegal_name</span> en is niet toegestaan.<br />
+  Corrigeer dit even.
+  !exit
+ !endif
+ !if lengthoverflow iswordof $test
+    De hoeveelheid opgestuurde code is groter dan is toegestaan.<br />Dit moet worden herschreven.
+  !exit
+ !endif
+  Het antwoord
+ <span span class="tt"$bad_value</span>
+ !if unknownword iswordof $test
+  !set w=!word 3 of $test
+  is onbegrijpelijk: het woord <span class="tt">$w</span>
+  staat in geen enkele relatie met het gestelde probleem.<br />
+  Graag corrigeren
+  !exit
+ !endif
+ !if nocompute iswordof $test
+ is niet toegestaan.<br />
+ Berekeningen moet je zelf uitvoeren...de uitkomst daarvan mag worden opstuurd !
+  !exit
+ !endif
+ !if nocomputecomplex iswordof $test
+   is niet toegestaan.
+   Geef een complex getal op in de standaard vorm
+   <span class="tt"> a + b i </span>
+   waarin
+   <span class="tt">a</span>
+   en
+   <span class="tt">b</span>
+   zjn berekend en stuur de waarde op (bijvoorbeeld ,
+    <span class="tt"> -1 + 2 i</span> of <span class="tt"> 1 - 2 i</span>).
+   !exit
+ !endif
+ !if badform iswordof $test
+ Is helaas niet genoteerd zoals voorgeschreven was.<br />
+ Verbeter de schrijfwijze en stuur dan opnieuw op.
+  !exit
+ !endif
+ !if notunit iswordof $test
+ dat is alleen een getal, ik verwacht ook de bijpassende SI eenheid.
+  !exit
+ !endif
+ !if bad_variable iswordof $test
+  is onbegrijpelijk. Het mist nog wat variabelen...
+   !exit
+ !endif
+ onbegrijpelijk...<br />
+    corrigeer de fout en stuurje antwoord dan nog een keer op.
+ !exit
+!endif
+
+!if bad_exo iswordof $error
+ !for j=1 to 50
+   !if bad_exo $j isin $error
+     !set whichexo=!nosubst (het correcte antwoord voor vraag $j\
+     <span class="tt">$(replyname$j)</span>\
+     is ongeldig)
+     !!goto end_bad
+     !break
+   !endif
+ !next
+:end_bad
+ Door een fout in de oefening $whichexo, is het helaas onmogelijk de juistheid van het opgestuurde antwoord te controleren.
+ <p>
+ SVP
+ !if $email!=$empty
+  !mailurl $email schrijf naar de maker van deze oefening
+ !else
+  schrijf naar de maker van deze oefening
+ !endif
+ als je deze fout wilt melden.
+ </p>
+ !exit
+!endif
+
+!if too_many_print iswordof $error
+er zijn te veel verzoeken tot printbare versies ingediend.
+ !exit
+!endif
+
+!if chemclick_empty_data iswordof $error
+    Je hebt geen atoom of binding geselecteerd in de applet.
+    Kijk in de help pagina's voor een toelichting.
+ !exit
+!endif
+
+!if chemdraw_empty_data iswordof $error
+    Je antwoord bevat geen data. Graag de modificatie in de applet aanbrengen.
+ !exit
+!endif
+
+!msg $error

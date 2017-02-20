@@ -1,0 +1,43 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Slope of a differential field
+slib_parms=13\
+,f1\
+,f2\
+,size or sizex x sizey\
+-2,xmin\
+2,xmax\
+-2,ymin\
+2,ymax\
+,xsep\
+,ysep\
+,seglength\
+red,color\
+,initial point - only in js case for the moment\
+,option html, url, js
+
+slib_author=Bernadette, Perrin-Riou
+slib_out= draw phasis diagram of an autonome differential system x' = f1 , y' = f2 \
+  where f1 and f2 are expressions in x and y.
+slib_comment=In case of js, may give the number of the applet (write js=1 for example).
+slib_example= x+2-y, x^2-y,400,-2,2,-2,2,0.5,0.5,0.2,green,,html\
+ -x-y, x^2-y,400,-2,2,-2,2,0.5,0.5,0.3,green,,js=3\
+x+y, x^2-y,400,-2,2,-2,2,0.5,0.5,0.3,[red,blue],[0,1],js=1\
+ -x-y, x^2-2*y,400,-2,2,-2,2,0.5,0.5,0.3,green,[1,1],js=2
+
+!exit
+
+:proc
+!reset slib_out
+
+!distribute items $wims_read_parm into slib_f1,slib_f2,slib_size,slib_xmin,slib_xmax,slib_ymin,slib_ymax,slib_xsep,slib_ysep,slib_seglength,slib_color,slib_xyinit,slib_option
+!if js isin $slib_option
+  slib_option=!replace internal js= by  in $slib_option
+  slib_option=!nospace $slib_option
+  !readproc slib/analysis/slopefield_js $(wims_read_parm[1..-2]),$slib_option
+!else
+ !readproc slib/analysis/slopefield_img $wims_read_parm
+!endif
+
+slib_out=$slib_out

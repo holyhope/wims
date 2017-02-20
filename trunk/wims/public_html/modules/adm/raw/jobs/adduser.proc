@@ -1,0 +1,101 @@
+# AddUser
+# permet d'ajouter l'utilisateur quser a la classe qclass
+
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+quser=!word 1 of $quser
+# Les "." présents dans quser sont transformés en arobases.
+quser=!translate internal . to @ in $quser
+quser=!text select $char_login in $quser
+l=!charcnt $quser
+!if $quser=supervisor or $l<$login_min or $l>$login_max
+ error= login name must not be $quser (illegal, or wrong length)
+ !exit
+!endif
+
+class_superclass=!defof class_superclass in $classdeffile
+
+#on ajoute pas un utilisateur dans une sous-classe. toujours dans sa superclasse.
+!if $class_superclass != $empty
+  subclass=$qclass
+  qclass=$class_superclass
+  user_participate=$subclass
+!endif
+
+test=!defof user_exists in wimshome/log/classes/$qclass/.users/.$quser
+!if $test!=$empty
+ error=Deleted user found. Use Recuser instead.
+ !exit
+!endif
+
+userdeffile=wimshome/log/classes/$qclass/.users/$quser
+!readdef $userdeffile
+test=!defof user_exists in $userdeffile
+!if $test!=$empty
+  # L'utilisateur existe. On verifie alors si on est dans une sous-classe
+  !if $class_superclass != $empty
+    !if $user_participate != $empty
+      !if $subclass isitemof $user_participate
+        error=user $quser exists and already participates to this subclass ($subclass)
+        !exit
+      !endif
+      user_participate=$user_participate,
+    !endif
+    #l'utilisateur existait deja dans la superclasse. on lui donne simplement acces a la sous-classe.
+    !setdef !set user_participate=$user_participate$subclass in $userdeffile
+
+    ### Faut-il aussi l'ajouter dans la sous-classe ici ?
+    ### normalement, mkuserlist va s'en charger ?
+    !exit
+  !else
+    error=user already exists in this class ($qclass)
+    !exit
+  !endif
+!endif
+
+data1=!nonempty lines $data1
+n=!linecnt $data1
+!for i=1 to $n
+ l=!line $i of $data1
+ l=!translate = to $\
+$ in $l
+ !distribute lines $l into n_,v_
+ !if $n_ isitemof $userdefs
+  user_$n_=$v_
+ !endif
+!next i
+
+!if $user_password=$empty or $user_lastname=$empty
+ error=missing data
+ !exit
+!endif
+
+!writefile $userdeffile
+!for d in $userdefs
+ !appendfile $userdeffile !set user_$d=$(user_$d)
+!next d
+!appendfile $userdeffile !set user_exists=yes
+
+#on supprime d'eventuelles traces de cet utilisateur ??
+!sh cd $wims_home/log/classes/$qclass\
+ rm -f score/$quser score/$quser.exam noscore/$quser >/dev/null
+
+!read adm/class/mkuserlist $qclass
+
+!! log student have been added to class (cfr. module/adm/class/reguser/var.proc)
+date=!translate : to . in $wims_now
+!appendfile wimshome/log/classes/$qclass/.log $date $httpd_REMOTE_ADDR      User $quser added
+
+!if $class_superclass != $empty
+  !read adm/class/mkuserlist $subclass
+!endif
+class_type=!defof class_type in $classdeffile
+!if $class_type=4 or $class_type=2
+!! need also to read mkteacherlist as you might want to add users wish user_supervisable=yes
+  !read adm/gateway/mkteacherlist $qclass
+!endif
+
+!read adm/class/stat

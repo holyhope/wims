@@ -1,0 +1,46 @@
+!read adm/title.phtml 2\
+$title
+
+<div class="wims_content">
+
+
+<div class="job_desc spacer">$job_desc</div>
+  !set cnt=0
+  <div id="taxonomy_list">
+    <ul class="tabs">
+
+      !if $jquery_defined=yes
+        !set view_job = light
+      !else
+        !set view_job = taxo
+      !endif
+
+      !for taxo in $list_taxonomy
+       !increase cnt
+        !set taxo_title$cnt=!defof title in $taxo
+        !set desctaxo$cnt=!defof desctaxo in $taxo
+        <li>
+          !href module=$module&cmd=new&job=$view_job&parm=$taxo $(taxo_title$cnt)
+        </li>
+      !next
+    </ul>
+  </div>
+  !if $parm!=$empty
+    <div class="taxo_content">
+      !read $parm
+    </div>
+  !endif
+</div>
+ <!-- JS for dynamic tree display -->
+<script type="text/javascript" src="scripts/js/tree_JS/tree.js"></script>
+
+!if $jquery_defined=yes
+  <!-- JS for Tabs display -->
+  <script type="text/javascript">
+      /*<![CDATA[*/
+      jQuery(function($$) {
+          $$( "#taxonomy_list" ).tabs();
+        });
+      /*]]>*/
+  </script>
+!endif

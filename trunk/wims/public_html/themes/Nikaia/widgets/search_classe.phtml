@@ -1,0 +1,52 @@
+<!--!if $overflow=yes-->
+
+!if $keyword = $empty
+    $name_research1
+!else
+    $name_research2
+!endif
+
+<div id="search_classes" class="search_box wims_widget_box medium_size">
+    !form new
+    <div class="title_box">
+        <h2 class="wims_title">$name_search_class</h2>
+        <div class="aide_recherche">
+         !set wims_ref_class=wims_button_help
+         !href module=adm/class/classes&type=example $wims_name_n_example
+        </div>
+        <br class="clearall"/>
+    </div>
+
+       <input type="hidden" name="module" value="adm/class/classes"/>
+       <input type="hidden" name="type" value="participant"/>
+        <div class="box_content wimscenter">
+            <input type="search"
+                                      size="34"
+                                      name="keyword"
+                                      id="keyword"
+                                      value="$keyword"
+                                      autosave="class_keywords"
+                                      placeholder="$name_keywords_enter"
+                                      results="5"/><button class="wims_button" type="submit">$N_Search</button>
+        </div>
+    !formend
+</div>
+
+
+<!--!else-->
+ !if ($sccnt + $clcnt > 20 and $wims_user = $empty) or $keyword!=$empty
+	<div class="search_box wims_widget_box medium_size">
+	  <div class="title_box"><h2 class="wims_title">Rechercher une classe</h2></div>
+	  <form>
+	    <div>
+		  $name_searchclass:
+		  <input type="hidden" name="module" value="adm/class/classes"/>
+		  <ul class="box_content inline">
+			  <li class="inline"><input type="search" size="20" name="keyword" value="$keyword"/><button class="wims_button" type="submit">$N_Search</button></li>
+          </ul>
+	    </div>
+	  </form>
+	 </div>
+ !endif
+
+<!--!endif-->

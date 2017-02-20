@@ -1,0 +1,84 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+
+slib_author=Bernadette, Perrin-Riou
+slib_title= Radar
+slib_require=pari
+
+slib_parms=7\
+5,number of categories\
+[2,3,2,3],data of series (in brackets)\
+,short texts\
+,graduation (in brackets)\
+[grey,blue],colors (in brackets)\
+250,size of the images in pixels\
+,html
+
+slib_out=Graphique en radar (le nombre de niveaux et de catégories est configurable).
+slib_example=5,[3,2,4,5],,,,300,html\
+6,[1,2,3,4,5],[AA,BB,CC,DD],[,20,,40,,60],[grey,green],,html\
+7,[2,4,3,4,5,3],,[1,2,3,4,5,6,7],[grey,yellow],,html
+!exit
+
+:proc
+
+!reset slib_out slib_Line slib_line slib_Grad slib_lignes slib_Text
+
+
+!distribute items $wims_read_parm into slib_z,slib_data,slib_text,slib_grad,slib_color,slib_width,slib_url
+slib : en entrée n, liste de couleurs , sommets, arete ...
+
+slib_data=!declosing $slib_data
+slib_grad=!declosing $slib_grad
+!default slib_data=2,3,2,3
+slib_n=!itemcnt $slib_data
+slib_text=!declosing $slib_text
+!default slib_width=250
+slib_color=!declosing $slib_color
+!default slib_color=grey,blue
+
+!for slib_j=1 to $slib_z
+  slib_vertex = !exec pari concat(vector($slib_n,i,$slib_j*[ cos(2*i*pi/$slib_n),sin(2*i*pi/$slib_n)]))
+  slib_Line=!append line polygon $(slib_color[1]),$slib_vertex to $slib_Line
+!next
+!for slib_j=1 to $slib_n
+  slib_line=!append item $(slib_data[$slib_j])*cos(2*$slib_j*pi/$slib_n),$(slib_data[$slib_j])*sin(2*$slib_j*pi/$slib_n) to $slib_line
+!next
+slib_line=!exec pari [$slib_line]
+
+!for slib_j=1 to $slib_z
+  slib_Grad=!append line text black,$slib_j,0,small,$(slib_grad[$slib_j]) to $slib_Grad
+!next
+
+!for slib_i=1 to $slib_n
+  slib_lignes=!append line line 0,0,$(slib_vertex[2*$slib_i-1,2*$slib_i]),$(slib_color[1]) to $slib_lignes
+!next
+
+!for slib_i=1 to $slib_n
+  slib_char=!charcnt $(slib_text[$slib_i])
+  slib_pos=$slib_z.5
+  slib_Text=!append line text black,$slib_pos*cos(2*$slib_i*pi/$slib_n),$slib_pos*sin(2*$slib_i*pi/$slib_n),small, $(slib_text[$slib_i]) to $slib_Text
+!next
+slib_out=\
+xrange -$slib_z-1,$slib_z+1\
+yrange -$slib_z-1,$slib_z+1\
+polygon $(slib_color[2]),$slib_line\
+fill 0,0,$(slib_color[2])\
+$slib_Line\
+$slib_lignes\
+$slib_Text\
+$slib_Grad
+
+
+!if url iswordof $slib_url or html iswordof $slib_url
+  insdraw_size=$slib_width,$slib_width
+ !insdraw $slib_out
+ slib_out=$ins_url
+ !if html iswordof $slib_url
+    slib_out=<img src="$ins_url" alt="" />
+ !else
+    slib_out=$slib_out,$insdraw_size
+ !endif
+!endif
+

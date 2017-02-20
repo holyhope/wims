@@ -1,0 +1,32 @@
+!read adm/css.phtml
+!read adm/class/classname.phtml $wims_classname\
+$wims_institutionname
+!header1
+
+<script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
+!! not useful ???
+!!!if $cmd=help
+ !! !read lang/help.phtml
+!! !goto end
+!!!endif
+
+!if $error!=$empty
+ <div class="wims_msg alert">
+  !read lang/msg.phtml.$moduclass_lang
+ </div>
+ !set wims_ref_class=wims_button
+ !if $wims_class!=$empty
+   !href module=home $wims_name_class_home
+ !else
+   !href module=home $wims_name_home
+ !endif
+!else
+ !read $job.phtml
+!endif
+
+!tail
+
+!reset job,showsheet,getuser,delprep,deluser,abandon,reg,passcheck
+
+
+

@@ -1,0 +1,201 @@
+!!INDEX
+!let module_translator=
+!let module_translator_address=
+!let module_title=Setup your preferences for WIMS
+!let module_description=define preferences for wims
+!let module_language=en
+!!INDEXEND
+
+!let tip='<ul><li>FireFox&nbsp;<a target=\'new\' href=\'http://www.mozilla-europe.org/$module_language/\'><img src=\'gifs/mathml/getFireFox.gif\' alt=\'get FireFox\'/></a></li><li>Google Chrome&nbsp;<a target=\'new\' href=\'https://chrome.google.com/webstore/detail/mathjax-for-chrome/elbbpgnifnallkilnkofjcgjeallfcfa\'> MathJax Extension </a><li>Windows<ul><li>Internet Explorer: <a target=\'new\' href=\'http://www.dessci.com/en/products/mathplayer/\'><img src=\'gifs/mathml/dessci_logo.gif\' alt=\'dessci\'/> DESSCI MathPlayer plugin</a><li>Opera: <a target=\'new\' href=\'http://xml-maiden.com/userjs/mathml/\'>UserJS MathML plugin</a></ul></li><li>Safari</li></ul>'
+
+!read proc/useropts.proc
+
+!header
+<script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
+
+<div id="widget_useropts">
+  <ul>
+    <li><a href="#formula">Mathematical formulas</a></li>
+    !if $wims_user=$empty
+      <li><a href="#language_selector">Default language</a></li>
+    !endif
+    <li><a href="#accessibility">Accessibility</a></li>
+  </ul>
+
+  !if $wims_user=$empty
+  <div id="language_selector">
+    <h2>
+      Default language
+    </h2>
+    <p>
+      Choose site language :
+      !read themes/_widgets/language_selector.phtml
+    </p>
+  </div>
+  !endif
+
+  <div id="formula">
+    <h2>
+      Mathematical formulas
+    </h2>
+    <p>You can choose beetween 2 display modes:</p>
+    <ul>
+      <li> image mode</li>
+      <li> or  MathML</li>
+    </ul>
+    Some display test :
+    <ul>
+      <li>
+        Greek letters:
+        <pre>
+         !insmath alpha != pi
+        </pre>
+      </li>
+      <li>
+        Mathematical expression
+        !let ins_align=middle
+        !! we need to force dynamic insertion
+        !set pw=2
+        <pre>
+          !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{$pw} - 4a c}}{2a}
+        </pre>
+      </li>
+      <li>
+        A mixed inequality:
+        <pre>
+          !insmath | a + b | <= epsilon + 123.45
+        </pre>
+      </li>
+    </ul>
+
+    !if $texalign=2
+      <p>
+      The server is currently set to MathML if you have a suitable browser.
+        If the formula is not correctly displayed, you can use another
+        <a onmouseover="return Tip($tip)" class="wims_emph" style="cursor:help;">
+        browser
+        </a>
+        or use the serveur with "math with images".
+      </p><p>
+         Choose your display mode :
+          !set wims_ref_class=wims_button
+          !href cmd=resume&useropts=$(arg)0$font Math with images
+
+          !set arg=!nospace $texsize 2
+          !set wims_ref_class=wims_button $ wims_secondary_button
+          !href cmd=resume&useropts=$(arg)0$font MathML
+      </p>
+      <p>
+        Use zoom on formulas by mouse click.
+        !reset secondary
+        !if $useropts=$texsize$(texalign)0$font
+          !set secondary1=wims_button wims_secondary_button
+          !set secondary2=wims_button
+        !else
+          !set secondary2=wims_button wims_secondary_button
+          !set secondary1=wims_button
+        !endif
+        !set wims_ref_class=$secondary2
+        !href cmd=resume&useropts=$texsize$(texalign)1$font activated
+        &nbsp;
+        !set wims_ref_class=$secondary1
+        !href cmd=resume&useropts=$texsize$(texalign)0$font desactivated
+      </p>
+    !else
+     <p>
+        Currently, you use the server with "Math with images". If you have a suitable
+        <a onmouseover="return Tip($tip)" class="wims_emph" style="cursor:help;">
+        browser
+        </a>,
+        you may also use MathML.
+     </p><p>
+      Choose your display mode :
+      !reset secondary
+      !if $useropts=$(arg)0$font
+        !set secondary=$ wims_secondary_button
+      !endif
+      !set wims_ref_class=wims_button$secondary
+      !href cmd=resume&useropts=$(arg)0$font Mode image
+       !set arg=!nospace $texsize 2
+       !reset secondary
+       !if $useropts=$(arg)0$font
+        !set secondary=$ wims_secondary_button
+       !endif
+       !set wims_ref_class=wims_button$secondary
+       !href cmd=resume&useropts=$(arg)0$font MathML
+      </p>
+      <ul><li>
+       Size of mathematical symbols and formulas.
+       !let ts1=!eval $texsize-1
+       !let ts2=!eval $texsize+1
+       !if $ts1<1
+        !let ts1=1
+       !endif
+       !if $ts2>9
+        !let ts2=9
+       !endif
+       !set wims_ref_class=wims_button
+       !href cmd=resume&useropts=$ts1$texalign$zoom$font <img src="gifs/doc/dgauche.gif" style="width:1em" />
+       !set wims_ref_class=wims_button
+       !href cmd=resume&useropts=$[$wims_texbasesize-1]$texalign$zoom$font Normal
+       !set wims_ref_class=wims_button
+       !href cmd=resume&useropts=$ts2$texalign$zoom$font <img src="gifs/doc/ddroite.gif" style="width:1em" />
+      </li><li>
+        Position of the formulas. If the expression
+        !insmath (x+y)/(x^$pw + y^2)
+        is
+        !if $texalign=1
+         too high with respect to the text line,
+         !set wims_ref_class=wims_button
+         !href cmd=resume&useropts=$(texsize)0$zoom$font click here to lower it.
+        !else
+         too low with respect to the text line,
+         !set wims_ref_class=wims_button
+         !href cmd=resume&useropts=$(texsize)1$zoom$font click here to raise it.
+        !endif
+      </li>
+      </ul>
+    !endif
+  </div>
+
+  <div id="accessibility">
+    <h2>Accessibility</h2>
+
+    <p>You can modify space width beetween characters.
+         !if $useropts=$(texsize)$texalign$(zoom)1
+            !set secondary1=wims_button wims_secondary_button
+            !set secondary2=wims_button
+          !else
+            !set secondary2=wims_button wims_secondary_button
+            !set secondary1=wims_button
+          !endif
+        !set wims_ref_class=$secondary2
+        !href cmd=resume&useropts=$(texsize)$texalign$(zoom)0 Normal
+
+        !set wims_ref_class=$secondary1
+        !href cmd=resume&useropts=$(texsize)$texalign$(zoom)1 Spaced
+    </p>
+    <p>The spaced mode may be better if you have some reading difficulties.</p>
+  </div>
+
+</div>
+!if $jquery_defined=yes
+  !read adm/tabscript useropts
+!endif
+
+<br class="spacer" />
+<p>
+  !if $wims_user=$empty
+   When everything corresponds exactly to what you want, put
+    !set wims_ref_class=wims_button
+   <a href="$wims_ref_name?lang=$lang&+useropts=$texsize$texalign$zoom$font" title="WIMS">
+   this link
+   </a>
+   into your bookmark, to keep these preferences for your future connections.
+  !else
+   Your preferences will be preserved in your future logins in this class.
+  !endif
+</p>
+
+!tail
+

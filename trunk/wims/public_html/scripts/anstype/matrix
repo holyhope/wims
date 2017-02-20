@@ -1,0 +1,129 @@
+option:split_coeff split_column split_row
+
+dd=!rawmatrix $(reply$i)
+!if $wims_warn_rawmatrix!=$empty
+ test=NaN
+ !exit
+!endif
+
+m_reply$i=$dd
+reply_$i=!lines2rows $dd
+!if $wims_read_parm=nocompare
+ reply_$i=\([$(reply_$i)])
+ !exit
+!endif
+
+good=!trim $(replygood$i)
+good=!rawmatrix $good
+!if $wims_warn_rawmatrix!=$empty
+ Test=bad $i
+ !exit
+!endif
+replyGood$i=!lines2rows $good
+replyGood$i=\([$(replyGood$i)])
+
+n1=!linecnt $good
+n2=!linecnt $dd
+l1=!line 1 of $good
+l2=!line 1 of $dd
+m1=!itemcnt $l1
+m2=!itemcnt $l2
+
+ok=yes
+!if $n1!=$n2 or $m1!=$m2
+ badsize$i=true
+ ok=
+!else
+!reset mat_reply bad_row bad_column
+bad_coeff_cnt=0
+ !for k= 1 to $m1
+   bad_column_test$k=1
+ !next
+ !for j=1 to $n1
+  l1=!line $j of $good
+  l2=!line $j of $dd
+  bad_row_test=1
+  !for k=1 to $m1
+   x_=!item $k of $l1
+   y_=!item $k of $l2
+   y_=!nospace $y_
+   test=$[$y_]
+   !if NaN isin $test
+     !exit
+   !endif
+   !ifval $x_!=$y_
+    ok=
+    mat_reply=!append item 0 to $mat_reply
+    bad_row_test=0
+    bad_column_test$k=0
+    !increase bad_coeff_cnt
+    !read slib/text/matrixinsert [$(reply_$i)],$j,$k,\special{color=red}{$y_}
+    reply_$i=$slib_out
+   !else
+    mat_reply=!append item 1 to $mat_reply
+    !read slib/text/matrixinsert [$(reply_$i)],$j,$k,\special{color=green}{$y_}
+    reply_$i=$slib_out
+   !endif
+  !next k
+   mat_reply=$mat_reply\
+
+  !if $bad_row_test=0
+   bad_row=!append item $j to $bad_row
+ !endif
+ !next j
+ !for k=1 to $m1
+   !if $(bad_column_test$k)=0
+    bad_column=!append item $k to $bad_column
+   !endif
+ !next
+!endif
+mat_reply=!replace internal $\
+, by ; in $mat_reply
+bad_row_cnt=!itemcnt $bad_row
+bad_column_cnt=!itemcnt $bad_column
+
+:bailout
+reply_$i=!replace internal , by & in $(reply_$i)
+reply_$i=!replace internal ; by \cr$ $ in $(reply_$i)
+reply_$i=\(\begin{pmatrix}$(reply_$i)\end{pmatrix}\)
+
+m_result$i=$mat_reply
+
+m_sc_reply$i=0
+!if $ok=yes
+ diareply$i=good
+ !advance freegot
+  m_sc_reply$i=1
+!else
+  !if split_row iswordof $(replyoption$i)
+    !ifval $bad_row_cnt <= $[ceil($n1*0.5)]
+      diareply$i=good
+      partialgood$i=yes
+      freegot=$[$freegot + ($n1-$bad_row_cnt)/$n1]
+    !else
+      diareply$i=bad
+    !endif
+  !else
+    !if split_column iswordof $(replyoption$i)
+      !ifval $bad_column_cnt <= $[ceil($m1*0.5)]
+        diareply$i=good
+        partialgood$i=yes
+        freegot=$[$freegot + ($m1-$bad_column_cnt)/$m1]
+      !else
+        diareply$i=bad
+      !endif
+    !else
+      !if split_coeff iswordof $(replyoption$i)
+        !ifval $bad_coeff_cnt <= $[ceil($n1*$m1*0.5)]
+          diareply$i=good
+          partialgood$i=yes
+          freegot=$[$freegot + ($m1*$n1-$bad_coeff_cnt)/($n1*$m1)]
+        !else
+          diareply$i=bad
+        !endif
+      !else
+        diareply$i=bad
+      !endif
+    !endif
+  !endif
+!endif

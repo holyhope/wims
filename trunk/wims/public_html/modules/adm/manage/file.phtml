@@ -1,0 +1,86 @@
+!set MAX=102400
+
+!if $download=yes
+$name_file ($flen $name_bytes):
+ <p class="wimscenter">
+ !getfile $fname $file
+ </p>
+ !goto end2
+!endif
+
+!if $erase=ask
+$name_erase
+ <span class="tt wims_fname">$file</span>? <br />
+ <span class="small">($flen $name_bytes, $facc, $name_last $fdat)</span>
+  <p class="wimscenter" style="font-weight:bold;">³É¼ <font size="+2">
+  !set wims_ref_class=wims_button wims_warning
+ !href cmd=reply&job=$job&job2=eraseconfirm $wims_name_yes
+ &nbsp;&nbsp;
+ !set wims_ref_class=wims_button
+ !href cmd=reply&job=fs $wims_name_no
+ </font> </p> <hr />
+ !goto end2
+!endif
+
+!if $ftype=image
+ <span class="wims_fname">$file</span> $name_image. ($flen $name_bytes,
+ $facc, $name_last $fdat)
+ !if $pubimg!=$empty
+  <p class="wimscenter">
+  <img border="2" src="$pubimg" alt="$pubimg" />
+  </p>
+ !endif
+ !goto end
+!endif
+
+!if $ftype=binary
+ <span class="wims_fname">$file</span> $name_binary. ($flen $name_bytes,
+ $facc, $name_last $fdat)
+ !goto end
+!endif
+
+!if $flen>$MAX
+ <span class="wims_fname">$file</span> ($flen $name_bytes)
+ $name_toolong
+
+ !goto end
+!endif
+
+!set wims_form_method=post
+!form reply
+<input type="hidden" name="job" value="file" />
+<input type="hidden" name="job2" value="first" />
+<div class="wimscenter">
+ $name_content <span class="tt wims_fname">$file</span> <br />
+ <span class="small wimstech">($flen $name_bytes, $facc, $name_last $fdat)</span> <br />
+ !if $modifok!=yes
+  $name_distrib <br />
+  !set textarea_ro=readonly
+ !endif
+ !mexec scripts/textarea.sh
+<br />
+!if $modifok=yes
+ <input type="submit" name="save" value="$wims_name_tosave" />
+ <input type="submit" name="abandon" value="$wims_name_giveup" class="wims_secondary_button" />
+!endif
+</div>
+
+!formend
+
+:end
+
+<div class="wimscenter">
+!href cmd=reply&job=file&job2=download $name_download
+ &nbsp;
+!if $modifok=yes
+!set wims_ref_class=wims_button wims_warning
+ !href cmd=reply&job=file&job2=erase $wims_name_erase
+ &nbsp;
+!endif
+
+:end2
+!href cmd=reply&job=fs $wims_name_back2
+.
+
+</div>
+

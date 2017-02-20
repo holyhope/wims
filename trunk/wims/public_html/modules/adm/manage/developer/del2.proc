@@ -1,0 +1,16 @@
+job2=first
+
+!if $devno=0
+ !exit
+!endif
+
+!read developer/devheader.proc
+
+!for i=1 to $devcnt
+ !if $i!=$devno
+  !appendfile wimshome/log/.developers :$(drec$i)
+ !endif
+!next i
+
+!read developer.proc
+

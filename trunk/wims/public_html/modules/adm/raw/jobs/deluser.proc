@@ -1,0 +1,19 @@
+# DelUser
+# Supprime l'utilisateur quser de la classe qclass
+
+#on commence par verifier la classe $qclass
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+!read scripts/check.user
+!if $error!=$empty
+ !exit
+!endif
+
+!sh cd $wims_home/log/classes/$qclass/.users\
+    mv $quser .$quser
+
+!read adm/class/mkuserlist $qclass
+!read adm/class/stat

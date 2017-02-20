@@ -1,0 +1,27 @@
+!read adm/css.phtml
+!read js/speckedit.phtml name_deposit0 name_deposit1 name_deposit2 name_deposit3 name_deposit4
+
+!if link isin $job
+ !if $(module_title_$moduclass_lang)!=
+   !set module_title=$(module_title_$moduclass_lang)
+ !endif
+ !header
+!else
+ !header1
+!endif
+
+!if $job2=print and $job isitemof todo,work
+ !changeto print$job.phtml
+!endif
+
+!if $error=bad_class
+ <div class="wims_msg alert">
+ !read lang/msg.phtml.$moduclass_lang $error
+ </div>
+ !tail
+ !exit
+!endif
+
+!read $job.phtml
+
+!tail

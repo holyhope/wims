@@ -1,0 +1,88 @@
+## INPUT; identifier, class, method (for the moment only ldap)
+## OUTPUT : wims compatible unique identifier, compatible with class
+##FIXME php ?
+
+!read adm/class/authchars
+!set limit=2
+!set limit_while=$[10^$limit]
+
+!distribute items $wims_read_parm into login,cl,meth
+!set login=!lower $login
+!if $login=$empty
+   error=login_empty
+   !exit
+!endif
+!set login_ext=$login
+!if $meth!=$empty
+  !set meth_=!word 1 of $meth
+  !bound meth_ within ldap default $empty
+  !set ldap_id=!word 2 of $meth
+  !if $ldap_id!=$empty and $meth_ !=$empty
+    !goto ldap
+    !exit
+  !endif
+!endif
+
+
+!set login=!text select $char_alnum in $login
+!set login=!char 1 to $[$login_max -$limit] of $login
+!set tmp=!charcnt $login
+!if $tmp<$login_min
+  !set tmp=!makelist 0 for x=1 to $login_min-$tmp
+  !set tmp=!items2words $tmp
+  !set login=!nospace $login$tmp
+  !reset tmp
+!endif
+!!set cl=!replace internal / by , in $cl
+!set cl=$(cl[1])
+!if $cl=$empty
+  !reset login
+  !exit
+!endif
+cnt=0
+u_exists=yes
+login_init=$login
+!while $u_exists=yes and $cnt<$limit_while
+      !if $cnt>0
+        login=$login_init$cnt
+      !endif
+      !set tt1=!lookup $login_ext in wimshome/log/classes/$cl/.teacherlist_external
+      !set tt2=!lookup $login_ext in wimshome/log/classes/$cl/.userlist_external
+      !if $tt1!=$empty or $tt2!=$empty
+!! user can be both in .userlist and in .teacherlist (see r5260)
+	    !if $tt1=$tt2
+           login=$tt1
+        !else
+           login=$tt1$tt2
+        !endif
+        !exit
+      !endif
+      !read adm/class/userisinclass $cl,$login
+      !set u_exists=$script_reply
+      !increase cnt
+!endwhile
+!if $cnt>=$limit_while
+    !reset login
+!endif
+!if $login=$empty
+  error=login_missing
+  missing=!append item $login_ext to $missing
+!endif
+!exit
+:ldap
+
+!if $ldap_uid!=$ldap_login and $ldap_login notsametext $empty
+ !set login=!sh ldapsearch -x -LLL -t -H ldap://$ldap_auth:$ldap_port -b "$ldap_base" $ldap_uid="$login" $ldap_login | grep -v "^[d]n:"
+ !set login=!replace internal : by = in $login
+ !set login=!getopt $ldap_login in $login
+ !set login=!text select $char_alnum in $login
+ !set login=!char 1 to $[$login_max -$limit] of $login
+ !set login_char=!charcnt $login
+ !if $login_char=3
+   !set login=$(login)0
+ !endif
+!endif
+!if $login=$empty
+  error=login_empty
+  !exit
+!endif

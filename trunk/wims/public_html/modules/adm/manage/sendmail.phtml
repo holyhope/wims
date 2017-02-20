@@ -1,0 +1,67 @@
+!if $error!=$empty
+  <div class="wims_msg alert">
+  !read lang/msg.phtml.$modu_lang
+  </div>
+!endif
+
+!if $step=$empty
+ !form reply
+  <fieldset class="property_fields halfwidth blockcenter">
+   <div class="field box">
+    <label for="sendmail_subject">$name_subject</label>
+    <input name="sendmail_subject" id="sendmail_subject" size="45" value="$sendmail_subject" />
+   </div>
+   <div class="field box">
+    <label for="sendmail_msg">$name_message</label>
+    <textarea name="sendmail_msg" id="sendmail_msg" cols="80" rows="10">$sendmail_msg</textarea>
+   </div>
+   <div class="field box">
+    <label for="">$(name_dest[1])</label>
+     <ul>
+     !for k=1 to $nbcheck_list
+     <li>
+      <input type="checkbox" name="sendmail_dest" value="$k" />$(check_list[$k]) ($(cnt_list[$k]))
+     </li>
+     !next k
+   </div>
+   <div class="wimscenter wimsform">
+     <input type="hidden" name="step" value="1" />
+     <input type="submit" name="sendmail_reg" value="$wims_name_tosave" />
+     !set wims_ref_class=wims_button
+     !href cmd=renew $wims_name_giveup
+   </div>
+</fieldset>
+!formend
+!else
+  $table_header
+   $table_tr
+    <th>$name_subject</th>
+    <td>$save_subject</td>
+   </tr>
+   $table_tr
+    <th>$name_message</th>
+    <td style="text-align:left"><pre>$save_msg</pre></td>
+   </tr>
+   $table_tr
+    <th>$(name_dest[1])</th>
+    <td style="text-align:left">
+     !replace internal , by <br /> in $save_list
+    </td>
+   </tr>
+ $table_end
+    !if $step=1
+     !form reply
+      <input type="hidden" name="step" value="2" />
+      <div class="wimscenter actions">
+        <input type="submit" name="sendmail_reg" value="$wims_name_send" /> &nbsp;
+        !set wims_ref_class=wims_secondary_button
+        !href cmd=renew $wims_name_giveup
+      </div>
+     !formend
+    !else
+     $name_sending.
+     !reset step
+    !endif
+
+!endif
+!reset sendmail_subject,sendmail_dest,sendmail_reg,sendmail_msg

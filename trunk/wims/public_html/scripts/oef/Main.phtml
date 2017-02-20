@@ -1,0 +1,347 @@
+!nocache
+!if $oef_test=yes
+ !set renewlink=cmd=next&retest=again
+ !!$header_js
+ !goto tester
+!else
+!if $exocnt=1
+   !set exoo=!item 1 of $exolist
+   !if $module_init_parm=$empty
+    !set module_init_parm=exo=$exoo
+   !else
+     !if &exo notin &$module_init_parm
+       !set module_init_parm=exo=$exoo&$module_init_parm
+     !endif
+   !endif
+!endif
+ !set init_parm=!translate + to $ $ in $module_init_parm
+ !set init_parm=!replace internal $\
+$ by ; in $init_parm
+ !set renewlink=cmd=renew&worksheet=$worksheet&$init_parm
+!endif
+
+!if $(title_$lang)!=$empty
+  !set title=$(title_$lang)
+!endif
+!if $(title_$lang_choice)!=$empty
+  !set title=$(title_$lang_choice)
+!endif
+
+!if $printing=yes
+ !changeto oef/print.phtml
+!endif
+
+!if $title!=$empty
+ !set module_title=$title
+ !set module_author=$author
+ !set module_address=$email
+!endif
+
+!if 0$delay2>0 and $status!=$empty
+ !set now_=$wims_nowseconds
+ !read js/chrono.phtml $[max(0,$delay1-($now_-$starttime))]
+!endif
+!set wims_html_header=!append line $header_js to $wims_html_header
+!set wims_html_header=!append line $oefcss to $wims_html_header
+
+!if $wims_class!= and $class_css=yes
+!set wims_html_header=!append line <link href="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=css.css" rel="stylesheet" type="text/css" />\
+to $wims_html_header
+!endif
+!header1
+
+!default wims_exotitleform=0
+
+<h1 class="oeftitle">
+!if $wims_exo!=$empty
+ !if $wims_exotitleform>0
+  !if $wims_exotitleform=1
+   $wims_name_sheet $wims_sheet - $wims_name_Exercise $wims_exo
+  !else
+   $wims_sheettitle
+   <br/>
+   !if $wims_exotitleform=2
+    $wims_name_Exercise $wims_exo
+   !else
+    $(wims_exotitle[$wims_exo])
+   !endif
+  !endif
+ !else
+  !if $wims_exotitleform=0
+   $title
+  !endif
+ !endif
+!else
+ $title
+!endif
+</h1>
+
+!if $module_checkdata!=yes
+ !read oef/$modu_lang/nodata.phtml
+ !goto end
+!endif
+
+!if $title=$empty
+  $name_emptytitle
+  <p class="wimscenter">
+    !set wims_ref_class=wims_button
+    !href module=$module $name_restart
+    $wims_name_or
+    !set wims_ref_class=wims_button
+    !href $ $wims_name_giveup
+  </p>
+  <div class="wims_msg info small">$name_exo_giveup</div>
+  !goto end
+!endif
+
+!if 0$delay1>0 and $status!=$empty
+ <form target="#" name="chrono">
+ <table class="wimsborder wimscenter" style="border: 3px solid $wims_ref_bgcolor">
+ <tr><td> &nbsp;<span class="wims_warning">$wims_name_warning!</span>
+ !if $qnum>1
+  $name_serie_limit
+ !else
+  $name_exo_limit
+ !endif
+ <input size="4" name="clock" readonly onfocus="this.blur();"/>
+ </td></tr></table>
+ </form>
+!endif
+
+:tester
+!read oef/present.phtml
+
+!if $wims_theme_version= or $wims_theme_version<1
+<hr style="width:50%"/>
+!endif
+
+!if $cmd=hint
+ !read oef/hint.phtml
+ !goto end
+!endif
+
+!if $status=waiting
+ !if $error!=$empty
+  <div class="wims_msg alert">
+  !read oef/msg.phtml
+  </div>
+ !endif
+ !read oef/form.phtml
+
+ <div id="oef_actions">
+ !if $hint!=$empty and $givehint>0
+  !set wims_ref_class=wims_button
+  !set wims_ref_id=oef_hint
+  !href cmd=hint $name_Hint
+ $
+ !endif
+ !if $help!=$empty
+!!FIXME should be in src/exec.c
+   !if _exam isin $wims_session
+     <span class="disabled_link">$wims_name_help</span>
+   !else
+     !set wims_ref_class=wims_button_help
+     !set wims_ref_id=oef_help
+     !href cmd=help $wims_name_help
+   !endif
+ $
+ !endif
+
+ !if _exam notin $wims_session
+    !if $jquery_defined=yes
+      !! Displays a Modal dialog box explaining what the "giveup" button will do.
+      <script type="text/javascript">
+      /*<![CDATA[*/
+        $$(function(){
+          $$("#exo_giveup").dialog({
+              autoOpen: false,
+              modal: true,
+              buttons: {
+                "$wims_name_yes": function() {window.location = '?session=$session&$renewlink';},
+                "$wims_name_no": function() {$$(this).dialog("close");}
+              }
+            });
+          $$("#exo_giveup_opener").on("click", function() {
+            $$("#exo_giveup").dialog("open");
+          });
+        });
+      /*]]>*/
+      </script>
+      <button class="wims_button wims_secondary_button" type="button" data-toggle="exo_giveup" id="exo_giveup_opener">$wims_name_giveup</button>
+    !endif jquery
+    <div class="dropdown-pane wims_msg info small" id="exo_giveup" title="$wims_name_giveup" data-dropdown>
+      <p>
+      !if $qnum>1
+         $name_serie_giveup
+      !else
+         $name_exo_giveup
+      !endif qnum
+      </p>
+      !if $jquery_defined!=yes
+        <div class="oef_exo_renew">
+          !set wims_ref_class=wims_button wims_secondary_button
+          !set wims_ref_id=oef_renew
+          !href $renewlink $wims_name_giveup
+        </div>
+      !else
+        $name_giveup_confirm
+      !endif jquery
+    </div>
+  !endif _exam notin $wims_session
+
+  $
+  !if $qnum>1
+   <div class="oef_serie_exo spacer">
+   <span>$name_serie_exo</span>
+    <ul class="wims_serie_bar inline">
+    !for j=1 to $[$reply_cnt]
+      <li class="wims_exo_done" title="$name_exo $j ($wims_name_exo_tried)">$j</li>
+    !next
+      <li class="wims_exo_todo" title="$name_exo $j">$[$reply_cnt+1]</li>
+    !for j=$[$reply_cnt+2] to $qnum
+      <li title="$name_exo $j ($wims_name_exo_untry)">$j</li>
+    !next
+    </ul>
+  </div>
+  !endif
+ </div> <!-- id oef_action-->
+!else
+ !if $error!=$empty
+ <div class="wims_msg alert">
+  !read oef/msg.phtml
+ </div>
+ !endif
+
+ !read oef/answer.phtml
+
+ <div id="oef_actions">
+
+ !if $status!=$empty
+  <div class="oef_serie_exo2 spacer">$name_serie_exo2
+    $name_serie_new2
+    <ul class="wims_serie_bar inline">
+     !for j=1 to $[$reply_cnt]
+      <li class="wims_exo_done" title="$name_exo $j ($wims_name_exo_tried)">$j</li>
+     !next
+      <li class="wims_next_exo" title="$name_serie_nextexo">
+       !href cmd=next > $[$reply_cnt+1]
+      </li>
+     !for j=$[$reply_cnt+2] to $qnum
+      <li title="$name_exo $j ($wims_name_exo_untry)">$j</li>
+     !next
+    </ul>
+  </div>
+  <div class="oef_buttons">
+  !set wims_ref_class=wims_button
+  !set wims_ref_id=oef_serie_nextexo
+  !href cmd=next <span class="oef_serie_nextexo">$name_serie_nextexo</span>
+  !if _exam notin $wims_session
+    $wims_name_or
+    !set wims_ref_class=wims_button wims_secondary_button
+    !set wims_ref_id=oef_serie_renew
+    !if $jquery_defined=yes
+    !! Displays a Modal dialog box explaining what the "giveup" button will do.
+    <script type="text/javascript">
+    /*<![CDATA[*/
+      $$(function(){
+        $$("#exo_giveup").dialog({
+            autoOpen: false,
+            modal: true,
+            buttons: {
+              "$wims_name_yes": function() {window.location = '?session=$session&$renewlink';},
+              "$wims_name_no": function() {$$(this).dialog("close");}
+            }
+          });
+        $$("#exo_giveup_opener").on("click", function() {
+          $$("#exo_giveup").dialog("open");
+        });
+      });
+    /*]]>*/
+    </script>
+    <button class="wims_button wims_secondary_button" type="button" data-toggle="exo_giveup" id="exo_giveup_opener">$wims_name_giveup</button>
+    !endif jquery
+    <div class="dropdown-pane wims_msg info small" id="exo_giveup" title="$wims_name_giveup" data-dropdown>
+    <p>$name_serie_giveup</p>
+     !if $jquery_defined!=yes
+      <div class="oef_exo_renew">
+        !set wims_ref_class=wims_button wims_secondary_button
+        !set wims_ref_id=oef_renew
+        !href $renewlink $wims_name_giveup
+      </div>
+     !endif jquery
+   !endif exam
+   </div>
+ !else
+  !if $qnum>1
+   <span class="oef_modulescore">
+     $name_serie_score
+   </span>
+   !ifval $module_score>9.8
+     <span class="oef_congratulations">$wims_name_Congratulations</span>
+   !endif
+   !if $toolate!=$empty and $score>$module_score
+     <span class="oef_penalty">$name_penalty</span>
+   !endif
+   <p>
+   !set wims_ref_class=wims_button
+   !set wims_ref_id=oef_serie_renew
+   !href $renewlink <span class="oef_serie_renew">$name_serie_renew</span>
+  $
+   !if $wims_sheet=$empty
+    !set wims_ref_class=wims_button wims_secondary_button
+    !set wims_ref_id=oef_exo_intro
+    <span class="oef_exo_intro">
+    !href exo_Intro
+    </span>
+   $
+   !endif
+   </p>
+  !else
+   <span class="oef_modulescore">$name_exo_score</span>
+   !ifval $module_score>9.8
+    <span class="oef_congratulations">$wims_name_Congratulations!</span>
+   !endif
+   !if $toolate!=$empty and $score>$module_score
+    <span class="oef_penalty">$name_penalty</span>
+   !endif
+   <p class="renew_et_intro">
+   !set wims_ref_class=wims_button
+   !set wims_ref_id=oef_renew
+   !href $renewlink <span class="oef_exo_renew">$name_exo_renew</span>
+  $
+   !if $wims_sheet=$empty and $oef_test!=yes
+    !set wims_ref_class=wims_button wims_secondary_button
+    !set wims_ref_id=oef_exo_intro
+    !href exo_Intro
+   $
+   !endif
+   </p>
+  !endif
+ !endif
+ </div><!-- id oef_action-->
+!endif
+
+!if $replydefaulted=yes
+ <p id="oef_devel_mode">
+ $name_devel_mode:
+ !if $oef_default=yes
+  $name_devel_warning
+ !else
+  !set wims_ref_class=wims_button wims_secondary_button
+  !set wims_ref_id=oef_default
+  !href cmd=config&oef_default=yes $name_devel_insert
+ $
+ !endif
+ </p>
+!endif
+ <div id="oef_endhook">
+!read ./endhook.phtml
+</div> <!-- id oef_endhook-->
+:end
+</div> <!--oefform-->
+<!--fin oef main.phtml-->
+!tail
+
+!if debug iswordof $m_oefenv
+ !reset module_score
+!endif

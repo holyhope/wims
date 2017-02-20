@@ -1,0 +1,52 @@
+!set anstype=yes
+!set anstyle=dprompt
+!set ans_require=java
+
+!if $wims_read_parm=def
+ !exit
+!endif
+
+!if $wims_read_parm!=noprompt
+ <tr><td><label for="reply$i">$(replyname$i)</label></td><td>
+!endif
+
+!set input_rg=!rows2lines $(replygood$i)
+!set input_img=!line 1 of $input_rg
+!set input_rg=!line 2 to -1 of $input_rg
+!set input_icnt=!itemcnt $input_rg
+!if $input_icnt<1 and ?analyze notin $input_img
+ !exit
+!endif
+!set input_type=!item 1 of $input_rg
+
+!set inputsize=!replace internal $	$ by $\
+$ in $inputsize
+
+!if ?analyze isin $input_img
+  !set input_img=!line 2 of $inputsize
+  !set input_other=!line 3 to -1 of $inputsize
+  !set input_type=!word 1 of $input_other
+!endif
+!set inputsize=!line 1 of $inputsize
+!set inputsize=!translate internal x to $ $ in $inputsize
+!if $input_img=$empty or $input_type=$empty
+ !exit
+!endif
+!if $input_type=bound
+  !set input_type=points
+!endif
+
+!distribute words $inputsize into java_width, java_height
+!set oef_applet_option=$java_width, $java_height\
+ $input_img\
+ $input_other
+!set oef_applet_option=!nonempty lines $oef_applet_option
+!set java_background=$input_img
+!set java_reply=+cmd=reply&+reply$i=
+!read java/Input.phtml $input_type
+
+!reset inputsize
+!set oef_formnosubmit=yes
+!if $wims_read_parm!=noprompt
+ </td></tr>
+!endif

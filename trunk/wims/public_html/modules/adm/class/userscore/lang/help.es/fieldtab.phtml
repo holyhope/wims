@@ -1,0 +1,57 @@
+
+$table_header
+<caption>Campos de datos válidos</caption>
+$table_hdtr<th scope="col">Nombre</th><th scope="col">Significado</th></tr>
+$table_tr<td class="tt wims_code_variable">login</td><td>$wims_name_Login</td></tr>
+!if $special_parm=upload
+$table_tr<td class="tt wims_code_variable">password</td><td>contraseña del participante, puede ser enviada al servidor
+	pero no a la inversa.</td>
+!else
+$table_tr<td class="tt wims_code_variable">name</td><td>apellidos y nombre (por este orden, dos columnas)</td>
+!endif
+</td></tr>
+$table_tr<td class="tt wims_code_variable">lastname</td><td>apellidos</td></tr>
+$table_tr<td class="tt wims_code_variable">firstname</td><td>nombre</td></tr>
+$table_tr<td class="tt wims_code_variable">email</td><td>dirección de correo electrónico</td></tr>
+$table_tr<td class="tt wims_code_variable">regnum</td><td>número de inscripción</td></tr>
+$table_tr<td class="tt wims_code_variable">comments</td><td>comentarios sobre el participante</td></tr>
+$table_tr<td class="tt wims_code_variable">external_auth</td><td>login for an external authentification</td></tr>
+
+!if $special_parm!=upload
+$table_tr<td class="tt wims_code_variable">allscore</td><td>el conjunto de calificaciones y medias</td></tr>
+$table_tr<td class="tt wims_code_variable">averages</td><td>medias de las notas (del servidor y manuales)</td></tr>
+$table_tr<td class="tt wims_code_variable">average1</td><td>medias de las notas atribuidas por el servidor</td></tr>
+$table_tr<td class="tt wims_code_variable">average2</td><td>medias de las notas enviadas por el profesor</td></tr>
+$table_tr<td class="tt wims_code_variable">sheets</td><td>notas de todas las hojas de trabajo (una detrás de otra)</td></tr>
+$table_tr<td class="tt wims_code_variable">sheetexo1,sheetexo2,...</td><td>indicateurs des exercices de la feuille 1, feuille 2, ...
+  (actuellement, il y a deux indicateurs : pourcentage de points acquis, note de qualité)</td></tr>
+$table_tr<td class="tt wims_code_variable">sheet1,sheet2,...</td><td>notas de la hoja 1, hoja 2, ...</td></tr>
+$table_tr<td class="tt wims_code_variable">exams</td><td>notas de todos los exámenes</td></tr>
+$table_tr<td class="tt wims_code_variable">exam1,exam2,...</td><td>notas del examen 1, examen 2, ...</td></tr>
+$table_tr<td class="tt wims_code_variable">manuals</td><td>todas las notas correspondientes al profesor (una tras otra)</td></tr>
+!else
+$table_tr<td><span class="tt wims_code_variable">participate</span> (dans le cas du portail d'un établissement uniquement,
+réservé à son administrateur)</td><td>numéro des classes
+auxquelles est inscrit le participant sous la forme abcdefg/1/101
+où abcdefg est le numéro du portail. S'il y a plusieurs classes, les séparer par des espaces.</td></tr>
+!endif
+
+$table_tr<td class="tt wims_code_variable">manual1,manual2,...</td><td>notas asignadas por el profesor 1, 2, ...</td></tr>
+$table_tr<td class="tt wims_code_variable">var_xxx</td><td>la variable technique <span class="tt">xxx</span></td></tr>
+$table_tr<td class="tt wims_code_variable">regprop1,regprop2,...</td><td>variables d'inscriptions complémentaires<span class="tt">xxx</span></td></tr>
+
+
+$table_end
+<p>
+Los campos no reconocidos son ignorados. Les variables techniques peuvent être utilisées pour limiter
+de manière sélective la durée d'ouverture de feuilles d'exercices ou d'examens.
+</p>
+!if $special_parm=upload
+<p>
+Dans le cas du champ <span class="tt wims_code_variable">participate</span>, il est possible de rajouter des classes mais pas d'en enlever.
+</p><p>
+Dans le cas du champ <span class="tt wims_code_variable">var_xxx</span>,
+la variable technique doit déjà être créée et seules les valeurs définies lors de la création de la variable sont utilisables.
+</p>
+!endif
+

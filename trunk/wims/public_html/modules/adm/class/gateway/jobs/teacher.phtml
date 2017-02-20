@@ -1,0 +1,47 @@
+!if $teachercnt>0
+ <div class="wimscenter">
+$name_csv
+!getfile teachers.csv csv
+ $wims_name_or
+!getfile teachers.tsv tsv
+.
+!!href module=adm/class/userscore&job=csv&utype=1& $wims_name_csv
+
+</div>
+!endif
+
+$table_header
+<caption>
+!href cmd=reply&job=addteacher $wims_name_addteacher
+</caption>
+$table_hdtr
+<th>$wims_name_Login</th>
+<th>$wims_name_lastname</th>
+<th>$wims_name_firstname</th>
+<th>$name_gestion</th>
+<th>$wims_name_action</th>
+</tr>
+!for i=1 to $teachercnt
+ !set l=!line $i of $teacherlist
+ !distribute items $l into l_,f_,c_
+ $table_tr
+ <td class="tt wims_login">
+  $c_
+ </td><td>
+  $l_
+ </td><td>
+  $f_
+ </td><td>
+ !set tmp_=!defof user_supervise in $classdir1/.users/$c_
+ !replace internal , by ,$ $ in $tmp_
+ !reset tmp_
+ </td><td>
+ !set wims_ref_class=wims_button wims_warning
+ !href cmd=reply&job=delteacher&del=$c_ $wims_name_erase
+  $
+ !set wims_ref_class=wims_button
+!href cmd=reply&job=modteacher&teacher=$c_ $wims_name_change
+ </td></tr>
+!next i
+$table_end
+

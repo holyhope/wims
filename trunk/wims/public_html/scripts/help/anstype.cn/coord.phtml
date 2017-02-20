@@ -1,0 +1,46 @@
+
+ <b>在一个图形上点击.</b>
+ (名称: <span class="tt">coord</span>)
+ <br/>
+ 这种回答类型允许用户在一个图形上点击, 再根据各种规则分析点击的位置.
+ <p>
+正确答案应该用矩阵形式给出(以分号 `;' 作为行间分隔符).
+第一行应该是图形的URL. 目前只能接受 gif 格式的图形文件.
+
+第二行给出认定好的点击坐标的判别法则. 从可能有的第三行开始则是坏的点击坐标的判别法则.
+ 点的坐标都用像素为单位.
+  </p><p>
+如果第二行的条件满足, 就认为用户的回答是好的.
+否则, 如果给出了第三行及以后的坏的回答的条件, 而用户的回答满足了其中一条,
+此回答就是坏的. 任何条件均不满足的情形也被认为是坏的(此时可要求用户重来).
+如果没有给出坏的回答的条件, 那么不满足第二行条件的都认为是坏的.
+ </p><p>
+用户的回答中满足第二行中的条件数减去1将被保存在变量
+ <span class="tt">\result</span><em>n</em> 内, 其中 <em>n</em> 是要回答的栏目数,
+这个变量可用在 \feedback.
+
+ </p><p>
+同一行里的几个条件可以用
+ `&' (交), `|' (并), `^' (补) 等符号加上必要的括号连接起来.
+ </p><p>
+建议把这个输入栏嵌入陈述中间. 显然它不能与其它输入栏共存,
+因为用户一点击图形, 此表单就给发送出去了.
+</p>
+
+!set p=anstype.$lang/coord
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td class="tt">
+!line 1 of $l_
+    </td><td>
+!line 2 to -1 of $l_
+   </td>
+  !next
+$table_end

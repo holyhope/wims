@@ -1,0 +1,24 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+
+slib_author=Yves, Noël; Bernadette
+slib_comment=
+!!exemple à changer ensuite mais sert de test.
+slib_example=java/jmol
+!exit
+
+:proc
+!distribute items $wims_read_parm into $slib_appletdir
+!default slib_appletdir=java/jmol
+
+!set slib_out=\
+<script type="text/javascript" src="$slib_appletdir/JSmol.min.js"></script>\
+<script type="text/javascript" src="$slib_appletdir/Jmol2.js"></script>\
+<script type="text/javascript">\
+/*<![CDATA[*/\
+jmol_isReady = function(applet) {\
+	Console.log(applet._id + " is ready")\
+};\
+/*]]>*/\
+</script>

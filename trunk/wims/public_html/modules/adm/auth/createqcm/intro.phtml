@@ -1,0 +1,93 @@
+!read adm/language lang/names.phtml
+!header
+
+!read comsDir/exosDescription
+
+<div class="intro_createqcm">
+  $name_intro
+</div>
+
+<br />
+
+ <table class="table1_createqcm">
+   <tr>
+     <td>
+       $name_intro1
+     </td>
+   </tr>
+   <tr>
+     <td>
+       <ol>
+         <li class="qcm">
+	   $name_type1
+	 </li>
+	 <li class="replibre">
+	   $name_type2
+	 </li>
+	 <li class="combinatoire">
+        $name_type3
+	 </li>
+        </ol>
+     </td>
+   </tr>
+ </table>
+<hr />
+<div class="intro2_createqcm">
+	$name_intro2
+</div>
+<hr />
+
+!form new
+<input type="hidden" name="module" value="$module" />
+
+<table class="table2_createqcm">
+  <tr>
+    <td class="center">
+      <input type="radio" name="chexo" value="1" checked="checked" />
+    </td>
+    <td>
+      <p>
+      $name_select
+      <select class="select_createqcm" name="exo">
+        !for i=1 to 6
+          <option value="$i"
+          !if $i=1
+            selected="selected"
+          !endif
+          >$(exosdesc[$i;])</option>
+        !next i
+      </select>
+       </p>
+    </td>
+    <td class="center" rowspan="3">
+      <input type="submit" value="$wims_name_work" />
+    </td>
+  </tr>
+  <tr>
+    <td class="center">
+      <input type="radio" name="chexo" value="2" />
+    </td>
+    <td>
+      <p>
+        $name_modify
+       </p>
+    </td>
+  </tr> 
+  <tr>
+    <td class="center">
+      <input type="radio" name="chexo" value="3" />
+    </td>
+    <td >
+      <p>
+        $name_submit
+       </p>
+    </td>
+  </tr> 
+</table>
+
+
+!formend
+<hr />
+
+
+!tail

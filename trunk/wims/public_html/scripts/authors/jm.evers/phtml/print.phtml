@@ -1,0 +1,141 @@
+!! produces a DHTML page of the  exercise for printing
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd">	    
+<html xml:lang="$lang" xmlns="http://www.w3.org/1999/xhtml" xmlns:mathml="http://www.w3.org/1998/Math/MathML">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=iso-8859-1" />
+<title>$module_title</title>
+</head>
+<body>
+!if $questiontype !=0 or $applet=1
+    <span class="schaersvoorde_alarm">
+	My guess : this page not very usefull in a printed paperversion<br />
+	It's most likely a multiplechoice exercise<br />
+	or it makes use of some java applets ?
+	<br />
+	You can always try your browser "print functionality" on the interactive version, and see what happens.
+	<br />
+    !href module=home Back
+    </a>
+    </span>
+!else
+    <script type="text/javascript" src="$jsdir/wz_dragdrop.js"></script>
+    !set DHTML=$empty
+    <table id="exercise" class="exercise">
+	<tr>
+	!set cnt=0
+	!if $total_exos >4
+	    !set limited=I've limited your request for $total_exos exercises to a modest 4 piece papertest
+	    !set total_exos=4
+	!endif
+	!for n=1 to $total_exos
+	    !set counter=$n
+    	    !set question$n=$empty
+	    !set exotext=$empty
+	    !set formula$n=$empty
+	    !set answer$n=$empty
+	    !set options=0
+	    !readproc exos/exo$subject
+	    <tr>
+	    <td>
+		<div id="d1_$n" name="d1_$n" style="position:relative;font-size:70%">
+		    $questionnumber $n)<br />
+		    !if $(question$n) != $empty
+			$(question$n)
+	    		<br />
+		    !endif
+		    !set DHTML=!append item "d1_$n" to $DHTML
+		</div>
+		    !if $exotext != $empty
+			<div id="d2_$n" name="d2_$n" style="position:relative;font-size:70%">
+			    <br />
+			    $exotext
+			    !set DHTML=!append item "d2_$n" to $DHTML
+			</div>
+		    !endif
+		!if $(formula$n) != $empty
+		    <br />
+		    !set formula$n=$(formula$n) \,\,
+		    <div id="d3_$n" name="d3_$n" style="position:relative;font-size:70%">
+			!insmath $(formula$n)
+		    </div>
+		    !set DHTML=!append item "d3_$n" to $DHTML
+		    !! this will be an image, I hope...if not we are in deep DHTML trouble
+		!endif
+	    </td>
+    	    </tr>
+        !next n
+    </table>
+    !if $image=1
+	!if $xsize=$empty
+	    !set xsize=100
+	    !set ysize=100
+	!endif
+	!if $xsize>400 and $xsize<625
+	!! als xsize echt 450 hebben we een speciale bedoeling met dat plaatje, hoop ik...
+	    !set xsize=220
+	!endif
+	!set insdraw_size=$xsize,$ysize
+	!for n=1 to $total_exos
+	    !increase cnt
+	    !set ins_attr=name="insert$cnt"
+	    <div id="d4_$n" name="d4_$n" style="position:relative;width:$xsize;height:$ysize">
+		!if $plot=1
+		    !set insplot_set=$(image_settings$n)
+		    !insplot $(image$n)
+		!else
+		    !insdraw $(image$n)
+		!endif
+	    </div>
+	    !set DHTML=!append item "d4_$n" to $DHTML
+    	    <br />
+        !next n
+    !endif
+    <p style="page-break-after:always">
+    <hr />
+	<ol>
+	!for n=1 to $total_exos
+	    <li>
+	    !if $(textanswer$n)!=$empty
+		<div id="d5_$n" name="d5_$n" style="position:relative;font-size:70%">
+		$(textanswer$n)
+		</div>
+		<br />
+		!set DHTML=!append item "d5_$n" to $DHTML
+	    !endif
+	    !if $(texanswer$n)!=$empty
+		<div id="d6_$n" name="d6_$n" style="position:relative;font-size:70%">
+		!insmath $(texanswer$n)
+		</div>
+		!set DHTML=!append item "d6_$n" to $DHTML
+	    !else
+		$(answer$n)
+	    !endif
+	!next n
+	</ol>
+	$limited
+    </hr />
+    </p>
+
+<p style="page-break-after:always">&nbsp;</p>
+!record 69 of $remarkdir/commonremarks.$taal
+<br />
+!href module=$module&+session=$session&+cmd=intro
+!record 70 of $remarkdir/commonremarks.$taal
+
+<p style="page-break-after:always">&nbsp;</p>
+
+<script type="text/javascript">
+//<![CDATA[
+
+    function print_this(){
+    window.print();
+    } 
+    SET_DHTML( CURSOR_MOVE, RESIZABLE , NO_ALT , SCROLL , $DHTML );
+//]]>
+</script>
+<input type="button" value="print" onclick="javascript:print_this();" />
+!endif
+
+</body>
+</html>
+!exit

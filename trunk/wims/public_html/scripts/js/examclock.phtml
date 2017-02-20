@@ -1,0 +1,21 @@
+!!should use examclock1.phtml
+
+!set wims_html_onload=examclock();
+<script type="text/javascript">
+!if $wims_exam_remain=$empty
+ function examclock() {
+ }
+!else
+ var examtick=$wims_exam_remain;
+ function examclock() {
+ var timeStr;
+ examtick=(examtick>1)? examtick-1:0;
+ minutes=Math.floor(examtick/60); seconds=examtick%60;
+ timeStr= ((minutes < 10) ? "0" : "") + minutes;
+ timeStr+= ((seconds < 10) ? ":0" : ":") + seconds;
+ window.status="$wims_name_examremain" + " " + timeStr;
+ Timer= setTimeout("examclock()",1000);
+}
+!endif
+</script>
+

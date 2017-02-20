@@ -1,0 +1,56 @@
+
+!if $job iswordof edit
+ !read header_js.phtml
+ !set wims_html_header=!append line $header_js_editor to $wims_html_header
+!endif
+
+!if $job iswordof read print
+ !set wims_html_header=!append line $header to $wims_html_header
+!endif
+!read adm/css.phtml
+
+!if $job=help
+ !header1
+ !changeto help.phtml
+!endif
+
+!if help isin $wims_session and $doc!=$helpd
+ !set wims_html_onload=!append word window.close(); to $wims_html_onload
+ !header1
+ $n_helpclose
+ !tail
+ !exit
+!endif
+
+!if $cmd=help and $special_parm=about
+ !changeto about.phtml
+!endif
+
+!if $job notwordof home
+ !read menu.phtml
+!else
+ !if $(module_title_$modu_lang)!=
+  !set module_title=$(module_title_$modu_lang)
+ !endif
+ !header
+!endif
+
+!read $job.phtml
+!!transfert from docmenubox.phtml
+!if $job!=exosource and $sheetdata!=$empty and ($wims_user=supervisor or $wims_developer!=$empty)
+  !set wims_menu_items=!append line source,1,cmd=reply&job=exosource&block=$startblock\
+to $wims_menu_items
+!endif
+
+!reset rEg,preview,abandon,Titb,Keyw,Next,Prev,Upbl,currcont,\
+       titr,authorr,descr,emailr,coder,coder1,coder2,coderr,\
+       coderr1,coderr2,copyrightr,docopenr,dlangr,\
+       foldin,foldout,readcntadv,job2
+
+!for i=1 to 20
+ !reset parm$i
+!next i
+
+!if $job notwordof home
+ !tail
+!endif

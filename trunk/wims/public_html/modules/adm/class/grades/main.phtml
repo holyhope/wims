@@ -1,0 +1,57 @@
+
+!read adm/css.phtml
+!header1
+
+!read lang/names.phtml.$moduclass_lang
+!read adm/class/classname.phtml $wims_classname\
+$wims_institutionname
+
+!read adm/title.phtml 1\
+$classname\
+$name_manual_title
+
+!if $error!=$empty
+ <div class="wims_msg alert">
+ !read lang/msg.phtml.$moduclass_lang
+ </div>
+ <p>
+ !href module=home $wims_name_class_home
+. </p>
+ !goto end
+!endif
+
+!form reply
+<input type="hidden" name="method" value="percent" />
+<label for="per">$name_explanation</label>
+<input size="4" name="per" value="$percent" id="per" />%
+(<input type="submit" name="reg" value="$wims_name_change" />)
+.
+!if $method!=list
+<p class="wimscenter">
+!set wims_ref_class=wims_button
+ !href cmd=reply&method=list $wims_name_back4
+</p>
+!set wims_menu_items=!append line back4,1,cmd=reply&method=list\
+to $wims_menu_items
+!endif
+
+!formend
+
+!read $method.phtml
+
+
+!if $method=user and $wims_user=supervisor
+<p>
+ !href module=adm/class/userscore&job=getuser&getuser=$un $wims_name_otherscore ($username)
+.
+</p>
+!endif
+
+!set wims_menu_items=!append line otherscore,1,module=adm/class/userscore\
+to $wims_menu_items
+
+:end
+!tail
+
+!reset reg
+

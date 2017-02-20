@@ -1,0 +1,84 @@
+<style type="text/css">
+  .code textarea{font-family: monospace,'Courier';font-size:75%;width:100%;min-width:25em;height:3em;color:#555}
+  .wims_form>.property_fields{margin:1em auto;}
+</style>
+
+!read lang/level6.phtml.$modu_lang
+
+!read adm/title.phtml 3\
+\
+$name_subtitle
+
+!if $quota=yes
+  <p class="wims_msg warning">
+    <span class="wims_warning">$wims_name_Error.</span>$name_over_quota
+  </p>
+!else
+  !set wims_form_method=file
+  !form reply
+    <fieldset class="property_fields">
+      <legend>$name_add_file</legend>
+      <div class="wimsform">
+        <label for="wims_deposit" >$name_add_file_label</label>
+        <input type="file" name="wims_deposit" id="wims_deposit" />
+        <input type="submit" value="$wims_name_send" />
+        <div class="formHelp">$name_add_file_help</div>
+      </div>
+    </fieldset>
+  !formend
+!endif
+
+!if $imglist=$empty
+  $name_empty_imglist
+!else
+  <table class="wimstable wimsborder wimscenter" style="width:90%">
+  <caption>$name_imglist</caption>
+  <thead><tr>
+    <th>$name_filename</th><th>$name_preview</th>
+    <th>$name_html_code</th><th>$name_oef_code</th>
+    <th>$name_Actions</th>
+  </tr></thead>
+  <tbody>
+  !for i in $imglist
+    <tr>
+      !set file_url = cmd=getfile&+session=$wims_session&+special_parm=oefimg/$i
+      <td>$i</td>
+      !if .gif isin $i or .jpg isin $i or .png isin $i or .jpeg isin $i
+        <td>
+          <a href="$wims_ref_name?$file_url" target="_blank">
+          <img src="$wims_ref_name?$file_url" style="height:4em;" alt="$name_img_default_alt" /></a>
+        </td>
+        <td class="code"><textarea readonly>&lt;img src="\imagedir/$i" alt="$name_img_accessibility_alt" /&gt;</textarea></td>
+        <td class="code"><textarea readonly>\img{\imagedir/$i}{alt="$name_img_accessibility_alt"}</textarea></td>
+      !else
+        !if .mp3 isin $i
+           <td><audio controls><source src="wims.mp3?$file_url" type="audio/mpeg"></audio></td>
+           <td class="code"><textarea readonly>&lt;audio controls&gt;&lt;source src="\imagedir/$i" type="audio/mpeg"&gt;&lt;/audio&gt;</textarea></td><td>&nbsp;</td>
+        !else
+          !if .ogg isin $i
+            <td><audio controls><source src="wims.ogg?$file_url" type="audio/ogg"></audio>
+            <div class="formHelp">$wims_name_warning: <a href="//caniuse.com/#feat=ogg-vorbis" target="_blank">$name_some_browsers</a> $name_ogg_warning</div></td>
+            <td class="code"><textarea readonly>&lt;audio controls&gt;&lt;source src="\imagedir/$i" type="audio/ogg"&gt;&lt;/audio&gt;</textarea></td><td>&nbsp;</td>
+          !else
+            <td><a href="$wims_ref_name?$file_url">$i</a></td>
+            <td class="code"><textarea readonly>&lt;a href="\imagedir/$i"&gt;$i&lt;/a&gt;</textarea></td><td>&nbsp;</td>
+          !endif
+        !endif
+      !endif
+      <td>
+        !set wims_ref_class=wims_button wims_warning
+        !href cmd=reply&delfile=$i $wims_name_erase
+      </td>
+    </tr>
+  !next i
+  </tbody>
+  </table>
+
+  <p>$name_access_via_imagedir</p>
+  <div>$name_how_to_hide_help</div>
+
+!endif
+
+<hr/>
+<p class="wims_msg warning"><span class="wims_warning">$wims_name_warning.</span> $name_save_exo_warning</p>
+

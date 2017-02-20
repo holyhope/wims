@@ -1,0 +1,24 @@
+# CLEAN WORKSHEET script :
+# test if a sheet has already been used (if there are scores for it), and replace scores by "deact noscore"
+# Input :
+#   $wims_home
+#   $wims_class
+#   $sheet
+# Output :
+#  if $worktest isn't empty, there are scores associated to the sheet.
+
+#You must call before : !read check.worksheet
+
+!if $worktest!=$empty
+  worktest=!singlespace $worktest
+  !sh cd $wims_home/log/classes/$wims_class\
+  for user in $worktest\
+   do\
+    awk 'length($$1)!=17 || $$3!=$sheet {print}' score/$$user >awk.tmp1\
+    awk 'length($$1)==17 && $$3==$sheet {print $$0" deact noscore"}' score/$$user >awk.tmp2\
+    mv awk.tmp1 score/$$user\
+    cat awk.tmp2 >>noscore/$$user\
+   done\
+  rm -f awk.tmp*
+
+!endif

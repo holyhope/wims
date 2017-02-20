@@ -1,0 +1,55 @@
+
+$name_current <span class="tt">
+!href cmd=reply&fsdir=/ $base
+!set t=
+!for d in $dd
+ !set t=$t/$d
+/
+ !href cmd=reply&fsdir=$t $d
+!next d
+</span>
+
+!if $modifok=yes
+ !set wims_form_method=file
+ !form reply
+ <input type="hidden" name="job" value="$job" />
+ <input type="hidden" name="job2" value="add" />
+ $name_add:
+ <input type="file" name="wims_deposit" size="40" />
+ <input type="submit" value="$wims_name_tosave" />
+
+ !formend
+!endif
+
+
+!if $dirs!=$empty
+ $name_sub <span class="tt">
+ !for f in $dirs
+  !if / notin $f
+   !href cmd=reply&fsdir=$fsdir/$f $f
+   &nbsp;
+  !endif
+ !next f
+ </span>
+!endif
+
+!if $links!=$empty
+<p>$name_symbolic
+ !for f in $links
+  $f
+ !next f
+ </p>
+!endif
+
+!if $files!=$empty
+ <p>$name_files: <br />
+ <span class="tt">
+ !for f in $files
+  !href cmd=reply&job=file&job2=first&file=$fsdir/$f $f
+  &nbsp;
+ !next f
+ </span></p>
+!else
+ <p>$name_file</p>
+!endif
+

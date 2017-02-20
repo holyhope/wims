@@ -1,0 +1,107 @@
+!read adm/language lang/names.phtml
+!set taxodir=wimshome/public_html/bases/sys/taxonomy
+!set refdirbase=$wims_home/log/referencement
+!set refdirbase_=wimshome/log/referencement
+!set refdir0=$refdir
+!set refdir0=$(refdir0[1])
+!set refdir0_=!replace internal / by , in $refdir0
+
+!set refdirbase1=$refdirbase/$(refdir0_[1])
+!set refdirbase2=$refdirbase1/$(refdir0_[2])
+!set refdirbase3=$refdirbase2/$(refdir0_[3])
+
+!read getparm $iniparm exo
+!! pour l'instant on prend le premier exo s'il y en a plusieurs
+exocnt=!itemcnt $(get_exo)
+!if $exocnt>1
+  error=multiple
+!endif
+exo=$(get_exo[1])
+
+!if /devel/ isin /$refdir0 or /classes/ isin /$refdir0
+  error=nonpublished
+  !exit
+!endif
+
+!set type=!defof category in wimshome/public_html/modules/$refdir/INDEX
+!set tit=!lookup $exo in wimshome/public_html/modules/$refdir/Extitles
+
+!if oef notin $type
+  error=nonoef
+!endif
+
+!sh mkdir -p $refdirbase; mkdir -p $refdirbase1; mkdir -p $refdirbase2;mkdir -p $refdirbase3;
+
+!!!setdef !set ref_keywords=toto in wimshome/log/modules/$refdir0/$exo
+
+search_lang=fr
+!readdef $refdirbase_/$refdir0/$exo
+!set ref_list=!listfile $module_dir/keywords
+!! should be changed if other languages
+!set ref_list=!replace internal .phtml.fr by in $ref_list
+!set ref_list=!lines2items $ref_list
+!set ref_list=keywords,$ref_list
+!set ref_address_unisciel=http://pratic.ens-lyon.fr/projets/meta-LOM-CDM/taxo_edu/taxonomies/
+!set ref_address_commoncore=http://www.corestandards.org/Math/Content
+!set ref_address_ecogestion=http://www.aunege.org/
+!set ref_list_cnt=!itemcnt $ref_list
+
+search_lang=fr
+# how to detect the need to compute?
+
+!if $cmd=reply
+ error=
+ modif=0
+ !for tt in $ref_list
+   ref1_$(tt)=!nonempty lines $(ref_$(tt))
+   ref_$(tt)_cnt=!itemcnt $(ref_$tt[;1])
+   ref1_$(tt)=!lines2rows $(ref1_$(tt))
+   !reset update_$tt
+   !for j = 1 to $(ref_$(tt)_cnt)
+    !if $(ref1_$(tt)[$j;])!=$empty
+     key=$(ref1_$(tt)[$j;1])
+     evl=$(ref1_$(tt)[$j;2])
+     evl=!declosing $evl
+      !if $(f_$(tt)_$j) iswordof -1 1
+        modif=1
+        !if $(f_$(tt)_$j)=-1
+          update_$tt=$(update_$tt)$key,[$[$(evl[1])-1],$(evl[2])],$[$(evl[2])+$(evl[1])-1]
+        !else
+          update_$tt=$(update_$tt)$key,[$[$(evl[1])],$[$(evl[2])+1]],$[$(evl[2])+$(evl[1])+1]
+        !endif
+      !else
+        update_$tt=$(update_$tt)$(ref1_$(tt)[$j;])
+      !endif
+      update_$tt=$(update_$tt);
+    !endif
+   !next
+   !if $(taxonfree_$tt)!=$empty
+    taxon_$tt=$(taxon_$tt),$(taxonfree_$tt)
+   !endif
+    new=!nonempty lines $(taxon_$tt)
+    new1=!lines2items $new
+    new1=!nonempty items $new
+    new=!replace internal , by ; in $(new1)
+   !if $new!=$empty
+     !!check that the keyword is not already there.
+     new=!listcomplement $(ref_$tt[;1]) in $new1
+     new=!listuniq $new
+     newcnt=!itemcnt $new
+     !if $new!=$empty
+       modif=1
+       !for s =1 to $newcnt
+         update_$tt=$(update_$tt)$(new[$s]),[0,1],1;
+       !next
+     !endif
+   !endif
+   update_$tt=!replace internal ;; by ; in $(update_$tt)
+   sort=!sort numeric reverse item $(update_$tt)[;3])
+   update_$tt= $(update_$tt[$wims_sort_order;])
+   !setdef !set ref_$tt=$(update_$tt) in $refdirbase_/$refdir0/$exo
+ !next
+  compute=yes
+!endif
+
+!if $modif=1
+  wims_module_log=$wims_class $refdir $exo
+!endif

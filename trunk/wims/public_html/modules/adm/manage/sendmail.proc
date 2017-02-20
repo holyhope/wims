@@ -1,0 +1,56 @@
+check_list=!item 2 to -1 of $name_dest
+nbcheck_list=!itemcnt $check_list
+val_list=!values v for v=1 to $nbcheck_list
+
+!if $step=$empty
+ output=!sh cd $wims_home/log/classes; \
+for file in .teacher-cls .supervisor-supercls .supervisor-portal .teacher-supercls .teacher-portal; do \
+cat $$file | cut -d"," -f3 | sort | uniq | awk 'END{print NR }'; \
+done;
+ output=!lines2items $output
+ cnt_list=1,$output
+ !exit
+!endif
+
+!if $step=1
+ sendmail_dest=!listintersect $sendmail_dest and $val_list
+ file=!item $sendmail_dest of ,.teacher-cls,.supervisor-supercls,.supervisor-portal,.teacher-supercls,.teacher-portal
+ file=!items2words $file
+ list=!sh cd $wims_home/log/classes; \
+cat $file | cut -d"," -f3 | sort | uniq
+ list=!lines2items $list
+ save_list=!nonempty item $list
+ !if 1 isitemof $sendmail_dest
+  save_list=!append item $wims_site_manager to $save_list
+ !endif
+ save_subject=!char 1 to 100 of $sendmail_subject
+ save_msg=!char 1 to 1000 of $sendmail_msg
+ !if $sendmail_subject=$empty or $sendmail_msg=$empty
+  error=bad_mail
+  step=$empty
+ !endif
+ !if $save_list=$empty
+  error=bad_list
+  step=$empty
+ !endif
+ !exit
+!endif
+
+!if $step=2
+  !set test=!defof mailback_opt in wimshome/log/wims.conf
+  !default test=--
+  !if $test=-r
+    !set mailheader=!nosubst -r $wims_site_manager $us
+  !else
+    !set mailheader=!nosubst $us -- -f $wims_site_manager
+  !endif
+  !for us in $save_list
+
+!! the blank line is compulsory
+    !mailto $mailheader\
+[WIMS $wims_servername] $save_subject\
+$save_msg\
+
+
+  !next us
+!endif

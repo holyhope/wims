@@ -1,0 +1,66 @@
+!set lang_exists=yes
+!if $wims_read_parm=$empty
+ !exit
+!endif
+
+!goto $wims_read_parm
+:file
+<p>本文件内可用的文档:
+ !for f in $flist
+  !getfile doc/$f $f
+  &nbsp;
+ !next f
+</p>
+ !form reply
+ <input type="hidden" name="job2" value="erase" />
+ 删除一个文档:
+ !formselect job2 list $flist
+ <input type="submit" value="$wims_name_erase" />
+
+ !formend
+ <p>
+ 文件内的文档可以利用变量 <span class="tt wims_code_variable">\filedir</span> 来进入. 例如,
+<p><p class="wimscenter">
+ <span class="tt wims_address">&lt;a&nbsp;href="\filedir/$f1"&gt;$f1&lt;/a&gt;</span>
+</p>
+ 给出了到文档 <a href="$m_filedir/$f1">$f1</a> 的链接.
+ 你也可以写入
+<p class="wimscenter">
+ <span class="tt wims_address">&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</span>
+</p><p>
+以插入图像 <span class="tt">myfile.jpg</span>.
+ </p><p>
+ 只有有权阅读文件的人才能接触存放在这个文件里的文档.
+ </p>
+!exit
+
+:readauth
+  如果你是文件的作者, 请记住你需要得到
+ !mailurl $wims_site_manager 网站管理员\
+的授权才能使WIMS文件$doc向公众开放.
+
+ !exit
+ 
+ :erase1
+ 为安全起见, 只有网站管理员才能删除面向公众的文件.
+ <p>
+ 请与
+ !mailurl $wims_site_manager 网站管理员
+联系以删除此文件.
+ </p>
+!exit
+
+:erase2
+<b>注意</b>!! 被删的文件不能恢复!
+<p>
+你确信要删除文件 <span class="tt wims_fname">$tit</span>&nbsp;吗?
+ </p>
+!exit
+ 
+:public
+<b>附言</b>. 你必须征得
+ !mailurl $wims_site_manager 网站管理员\
+要求开放 WIMS 文件 $doc
+ 的同意才能使文件被公众看到.
+ 
+!exit

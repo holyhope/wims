@@ -1,0 +1,64 @@
+# DelSheet (BETA)
+# Suppression de la feuille qsheet
+
+### Attention : il faut etre sur que la suppression ne cause pas de décalage dans les notes, a verifier !!
+
+#Pour commencer, on verifie la classe
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+type=sheets
+!read scripts/check.proc
+!if $error!=$empty
+ !exit
+!endif
+
+state=!line 1 of $qproperties
+
+#ici on verifie que la feuille n'est pas active
+#POUR RAPPEL :
+#0 = FEUILLE EN PREPARATION
+#1 = FEUILLE ACTIVE
+#2 = FEUILLE EXPIREE
+#3 = FEUILLE CACHEE
+
+!if $state!=0
+ error=sheet #$qsheet is active.
+ !exit
+!endif
+
+# Il faut également vérifier qu'aucune des feuilles > $qsheet n'a pas été activé
+
+!for n=$[$qsheet+1] to $cnt
+  q_properties=!record $n of $listfile
+  state=!line 1 of $q_properties
+  !if $state!=0
+    error=This worksheet can't be deleted : A more recent sheet (#$n) is active.
+    !exit
+  !endif
+!next n
+
+dir=$wims_home/log/classes/$qclass
+
+!sh cd $dir\
+rm .$qsheet\
+cd $type\
+rm .sheet$qsheet
+
+n=$[$qsheet+1]
+
+# On decale ensuite en cascade les autres feuilles
+!while $n <= $cnt
+ !sh mv $dir/$type/.sheet$n $dir/$type/.sheet$[$n-1]
+ !sh mv $dir/.$n $dir/.$[$n-1]
+ !increase n
+!endwhile
+
+# Le fichier est supprime, reste a corriger le contenu du fichier .sheets
+
+update_field=0
+
+!read scripts/update.proc
+

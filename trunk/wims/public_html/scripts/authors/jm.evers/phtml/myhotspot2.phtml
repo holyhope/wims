@@ -1,0 +1,229 @@
+!!hotspot questions  var1 = xmin,xmax,ymin,ymax in coordinatesystem of the graph.
+!! without ISMAP
+
+!set xmin=!item 1 of $var1
+!set xmax=!item 2 of $var1
+!set ymin=!item 3 of $var1
+!set ymax=!item 4 of $var1
+
+!if $use_arrow = 1
+    <img id="mouse_dot_w3c" style="position:absolute;z-index:100;display:none;top:0px;left:0px;" src="$arrow" />
+    <img id="mouse_dot_ie" style="position:absolute;z-index:100;display:none;top:0px;left:0px;" src="$arrow" />
+    <div id="mouse_coords" style="opacity:0.7;position:absolute;z-index:100;display:block;background-color:orange;top:0px;left:0px;font-size:16px;border:1px solid #ff0000;color:black"></div>
+!else
+    <div id="mouse_coords" style="opacity:0.6;position:absolute;z-index:100;display:block;background-color:lightgreen;top:0px;left:0px;font-size:16px;border:1px solid #ff0000"></div>
+    <div id="mouse_dot_ie" style="position:absolute;z-index:100;display:none;background-color:red;top:0px;left:0px;width:4px;min-height:4px;max-height:4px;height:auto!important;height:4px;"><table summary="" bgcolor="red" width="4" height="4"><tr><th></th></tr></table></div>
+    <div id="mouse_dot_w3c" style="position:absolute;z-index:100;display:none;background-color:red;top:0px;left:0px;width:6px;height:6px;"></div>
+!endif
+
+!set n=$counter
+<table id="exercise" class="exercise">
+    <tr>
+    <td class="exercise_t">
+    !if $(question$n) != $empty
+	$(question$n)
+	<br />
+    !endif
+    !if $(formula$n) != $empty
+	!insmath $(formula$n)
+	<br />
+    !endif
+    !if $exotext != $empty
+	$exotext
+	<br />
+    !endif
+    </td>
+!if $make_tr=1
+    </tr>
+    <tr>
+!endif
+    <td class="exercise_c">
+	<div id="mydiv">
+	!if $draw=1
+	    !set insdraw_size=$xsize,$ysize
+	    !set ins_attr= id="myimage"
+	    !insdraw $(image$n)
+	!else
+	    !if $plot=1
+	        !set ins_attr= id="myimage"
+		!set insplot_set=$(image_settings$n)
+	    	!insplot $(image$n)
+	    !else
+	    	$(image$n)
+	    !endif
+	!endif
+	</div>
+    </td>
+!if $inputs>0
+    !if $make_tr=1
+    </tr>
+    <tr>
+    !endif
+    <td class="exercise_m">
+	<table class="zebra_table_h2">
+    !set a_items=!itemcnt $(answer$n)
+    !if $a_items != $[floor($inputs)]
+        !set use_lines=1
+    !else
+	!set use_lines=0
+    !endif
+    !for p=1 to $inputs
+	!if $wims_user=supervisor
+	    !if $use_lines=1
+		!set deelantwoord=!line $p of $(answer$n)
+	    !else
+	    !set deelantwoord=!item $p of $(answer$n)
+	    !endif
+        !else
+	    !set deelantwoord=!item $p of $(reply$n)
+	!endif
+	    <tr><td>$(description[$p])</td><td>$m_rightarrow</td><td><input type="text" id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value="$deelantwoord" /></td><td>&nbsp;$(ex$p)</td></tr>
+    !next p
+	</table>
+    </td>
+!endif
+    </tr>
+</table>
+
+<div id="send_buttons" class="embedded_central">
+    <input type="button" id="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
+    <input type="button" id="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+<!-- no validator -->
+    function dontknow(){
+	myConfirm('$dontknow','?','$wims_ref_name','$session','$module','$counter','$nok_send_color');
+    }
+
+    function sendanswer(){
+	var reply = new Array();
+	var p = 0;
+	var show="<ol>";
+	if( document.getElementById("myinput0") ){
+	    var tmp;
+	    while (document.getElementById("myinput"+p)){
+		tmp = document.getElementById("myinput"+p).value;
+		if(tmp.length == 0 ){setAlarm(r1+parseInt(p+1));return;}
+		show = show + "<li>" + tmp + "</li>";
+		reply[p] = tmp;
+		p++;
+		if(p > 100){setAlarm(r2);dontknow();}
+	    }
+	}
+	show = show + "("+relx+":"+rely+")";
+	reply[p]= relx+","+rely;
+	myConfirm(show,reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
+    }
+    
+    !! wims variables
+    var sizex=$xsize;
+    var sizey=$xsize;
+    var xmin=$xmin,xmax=$xmax,ymin=$ymin,ymax=$ymax;
+!if $rounding < 1
+    var rounding = 100;
+!else
+    var rounding = $rounding;
+!endif
+    var IE = false;
+    var relx = 0;
+    var rely = 0;
+
+    function showit(){
+	recalculate(event.x,event.y);
+    }
+    
+    function showitMOZ(e){
+	recalculate(e.pageX,e.pageY);
+	e.stopPropagation();	
+    }
+    
+    if (!document.all){
+	document.getElementById('myimage').addEventListener("click", showitMOZ, true);
+    }
+    else
+    { 
+	IE=true;
+	document.getElementById('myimage').onclick=showit;
+	// will not work: document.getElementById('myimage').addEventListener("click", showit, true);
+    }
+    function recalculate(x,y){
+	var xi = findPosX('myimage');
+	var yi = findPosY('myimage');
+	if(IE){xi=xi-document.body.scrollLeft ;yi=yi-document.body.scrollTop ;}
+	if(x > xi && x < xi+sizex && y > yi && y < yi+sizey){
+	    xi=x - xi;yi=y - yi;
+	    relx=px2x(xi);
+	    rely=px2y(yi);
+	    relx=(Math.round(rounding*relx))/rounding;
+	    rely=(Math.round(rounding*rely))/rounding;
+	    // XHTML 1.0 needs "px"
+	    if(IE){
+		document.getElementById('mouse_coords').style.top = y+6+document.body.scrollTop+'px'; 
+		document.getElementById('mouse_coords').style.left = x+6+document.body.scrollLeft+'px'; 
+		document.getElementById('mouse_dot_ie').style.top = y-4+document.body.scrollTop+'px'; 
+		document.getElementById('mouse_dot_ie').style.left = x-4+document.body.scrollLeft+'px'; 	    
+		document.getElementById('mouse_dot_ie').style.display = "block";
+	    }else{
+		document.getElementById('mouse_coords').style.top = y+6+'px'; 
+		document.getElementById('mouse_coords').style.left = x+6+'px'; 	    
+		document.getElementById('mouse_dot_w3c').style.top = y-3+'px'; 
+		document.getElementById('mouse_dot_w3c').style.left = x-3+'px'; 	    
+		document.getElementById('mouse_dot_w3c').style.display = "block";
+	    }
+	    document.getElementById('mouse_coords').innerHTML='<b>('+relx+':'+rely+')</b>';
+	}
+    }
+    
+    function findPosX(i){
+	var obj = document.getElementById(i);
+	var curleft = 0;
+	if(obj.offsetParent){
+    	    while(1){
+        	curleft += obj.offsetLeft;
+        	if(!obj.offsetParent){break;}
+		obj = obj.offsetParent;
+    	    }
+	}
+	else
+	{
+	    if(obj.x){
+    		curleft += obj.x;
+	    }
+	}
+	return curleft;
+    }
+
+    function findPosY(i){
+	var obj = document.getElementById(i);
+	var curtop = 0;
+	if(obj.offsetParent){
+    	    while(1){
+        	curtop += obj.offsetTop;
+        	if(!obj.offsetParent){break;}
+		obj = obj.offsetParent;
+    	    }
+	}
+	else
+	{
+	    if(obj.y){
+    		curtop += obj.y;
+	    }
+	}
+	return curtop;
+    }
+    
+    function px2x(px){ //pixel to x-coords
+        var X = eval(px*(xmax - xmin)/sizex + xmin);
+        return X;
+    }
+    
+    function px2y(py){ // pixel to y-coords
+        var Y = eval(ymax -  py*(ymax - ymin)/sizey);
+        return Y;
+    }
+//]]>
+</script>
+
+!exit

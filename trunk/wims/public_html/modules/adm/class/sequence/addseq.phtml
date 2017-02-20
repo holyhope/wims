@@ -1,0 +1,103 @@
+
+!read adm/title.phtml 1\
+$classname\
+$module_description\
+$wims_name_sequence $seq
+
+$name_addseq
+
+  !set data=!record 1 of wimshome/log/classes/$wims_class/seq/.sequence$seq
+  !form reply
+  <label for="seq_title">$wims_name_title</label> : <input id="seq_title" name="seq_title" size="12" value="$(data[1;])" />
+
+  <label for="seq_desc"> $wims_name_Description</label> : <input id="seq_desc" name="seq_desc" size="20" value="$(data[2;])" />
+
+  $wims_name_Status :
+  !set visible=$(data[4;])
+  !formselect visible list 0,1 prompt $wims_name_status
+ $table_header
+ !for i=1 to $doccnt
+  !set sh=!record $i of wimshome/log/classes/$wims_class/doc/.index
+  !distribute lines $sh into s_,t_,bidon,bidon,bidon,o_
+  $table_tr
+  <td>
+  !href module=adm/doc&job=read&doc=$s_&block=main $t_
+  </td>
+  <td>
+  !item $[$o_ +1] of $wims_name_status
+  !set wims_ref_class=wims_button_help
+  !href module=adm/doc&job=prop&doc=$s_ $wims_name_change
+
+  </td>
+  <td>
+  !set c_$i=!positionof item c $i in $(data[3;])
+  <input name="c_$i" size="5" value="$(c_$i)" />
+  </td>
+  </tr>
+ !next i
+  !for i=1 to $docpubliccnt
+  !set sh=!record $i of wimshome/log/classes/$wims_class/doc/.docindex
+  !distribute lines $sh into s_,t_,ti,d_,o_
+  $table_tr
+  <td>
+  !href module=$s_&$t_ $ti
+  </td>
+  <td>
+  !item $[$o_ +1] of $wims_name_status
+   !set wims_ref_class=wims_button_help
+   !href module=adm/class/adddoc&job=prop&doc=$i $wims_name_change
+
+  </td>
+  <td>
+   !set doc_$i=!positionof item doc $i in $(data[3;])
+  <input name="doc_$i" size="5" value="$(doc_$i)" />
+  </td>
+  </tr>
+ !next i
+ !for i=1 to $sheetcnt
+  !set sh=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+  !distribute lines $sh into ac,t_,ti
+  $table_tr
+  <td>
+  !href module=adm/class/sheet&sheet=$i $ti
+  </td>
+  <td>$(wims_name_shstatus[$ac+1])</td>
+  <td>
+  !set sheet_$i=!positionof item sheet $i in $(data[3;])
+  <input name="sheet_$i" size="5" value="$(sheet_$i)" />
+  </td>
+  </tr>
+ !next i
+ !set examcnt=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
+ !for i=1 to $examcnt
+  !set sh=!record $i of wimshome/log/classes/$wims_class/exams/.exams
+  !distribute lines $sh into ac,t_,d_,ti
+  $table_tr
+  <td>
+  !href module=adm/class/exam&exam=$i $ti
+  </td>
+  <td>$(wims_name_shstatus[$ac+1])</td>
+  <td>
+  !set exam_$i=!positionof item exam $i in $(data[3;])
+  <input name="exam_$i" size="5" value="$(exam_$i)" /></td>
+</tr>
+ !next i
+ !set votecnt=!recordcnt wimshome/log/classes/$wims_class/vote/.votes
+ !for i=1 to $votecnt
+  !set sh=!record $i of wimshome/log/classes/$wims_class/vote/.votes
+  !distribute lines $sh into st_,ti_,op_,re_
+  $table_tr
+  <td>
+  !href module=adm/vote&job=read&vote=$i $ti_
+  </td>
+  <td>$(wims_name_status[$st_+1])</td>
+  <td>
+  !set vote_$i=!positionof item vote $i in $(data[3;])
+  <input name="vote_$i" size="5" value="$(vote_$i)" />
+  </td>
+  </tr>
+ !next i
+ $table_end
+  <div class="wimscenter wimsform"><input type="submit" value="$wims_name_tosave" /></div>
+
+!formend

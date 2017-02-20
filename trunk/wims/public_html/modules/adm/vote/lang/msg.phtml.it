@@ -1,0 +1,67 @@
+!set wims_module_log=error: $error
+
+<span class="wims_warning">$wims_name_Error</span>.
+!if $error=badvariablename
+ L'une, au moins, des variables techniques que vous utilisez n'existe pas ou n'est pas modifiable à ce niveau. Votre questionnaire ne fonctionnera pas correctement. 
+ !exit
+!endif
+
+!if $error=notechvar
+ In questo corso non sono definite variabili tecniche. Prima di poter utilizzare questo modello di questionario è necessario definire una variabile a partire dalla pagina Gestione variabili tecniche.
+ !exit
+!endif
+
+!if $error = not_user
+ I questionari sono solo accessibili all'interno di un corso.
+ !exit
+!endif
+
+!if $error = bad_vote
+ Il questionario richiesto non esiste.
+ !exit
+!endif
+
+!if $error = already_voted
+ Hai già compilato il questionario. Non è possibile modificare la propria
+ risposta perché questo questionario è in forma anonima.
+ !exit
+!endif
+
+!if $error = too_many_votes
+ Ci sono troppi questionari, non è possibile crearne uno nuovo.
+ Sei sicuro di aver veramente bisogno di così tanti questionari?
+ !exit
+!endif
+
+!if $error = no_content
+ Manca il testo del questionario.
+ !exit
+!endif
+
+!if $error = no_title
+ Manca il titolo del questionario.
+ !exit
+!endif
+
+!if $error = bad_data
+ Alcune definizioni non sono valide. Verifica quanto digitato.
+ !exit
+!endif
+
+!if $error = not_secure
+ &Egrave; possibile esportare i dati solo da un IP sicuro.
+ !exit
+!endif
+
+!if $error = no_vote
+ Non è possibile visionare i risultati del questionario prima di aver dato la propria risposta.
+ !exit
+!endif
+
+!if $error = bad_variable
+   Il nome della variabile inserito (<span class="tt wims_code_words">$namevar</span>) non può essere utilizzato perché è un nome già in uso dal sistema.
+   !exit
+!endif
+
+!msg $error
+

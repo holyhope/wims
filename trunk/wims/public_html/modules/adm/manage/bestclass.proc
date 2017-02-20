@@ -1,0 +1,37 @@
+!bound bst_num between 1 and 200 default 10
+!readproc scripts/ccaccount.proc
+
+test=!record 0 of wimshome/s2/$wims_session/$bst_since
+nbcls=!linecnt $test
+
+test=!line 1 to $bst_num of $test
+sccnt=0
+clcnt=0
+!if $test=$empty
+ !exit
+!endif
+
+n=!linecnt $test
+!for i=1 to $n
+ l=!line $i of $test
+ !distribute item $l into c,t
+ l=!defof class_lang\
+class_supervisor\
+class_email\
+class_creation\
+class_expiration\
+class_description\
+class_institution\
+class_type in wimshome/log/classes/$c/.def
+ nbuser=!recordcnt wimshome/log/classes/$c/.userlist
+ !distribute line $l into lg,sup,mail,cre,exp,des,inst,ty
+ t=$[floor(($t+30)/60)]
+ don=$c,$lg,$sup,$mail,$cre,$exp,$des,$inst,$t,$nbuser
+ !if $ty isin 24
+  !advance sccnt
+  sclasses=!append line $don to $sclasses
+ !else
+  !advance clcnt
+  classes=!append line $don to $classes
+ !endif
+!next i

@@ -1,0 +1,54 @@
+!read adm/css.phtml
+!read lang/names.phtml.$moduclass_lang
+!read adm/class/classname.phtml $wims_classname\
+$wims_institutionname
+
+!header1
+
+!read adm/title.phtml 1\
+$classname\
+$cdt_title\
+$wims_name_config
+
+<div class="wims_content">
+  <p>$name_intro:</p>
+  !form reply
+  <input type="hidden" name="job" value="config" />
+  <fieldset class="property_fields halfwidth blockcenter">
+      <legend>$wims_name_config</legend>
+      <div class="field box">
+       <label for="cf_title">$wims_name_title</label><br/>
+       <input size="60" name="cf_title" value="$cf_title" id="cf_title" />
+     </div>
+     <div class="field box">
+       <label for="cf_description">$wims_name_Description</label>
+       <textarea class="wrap" name="cf_description" cols="60" rows="5" id="cf_description">$cf_description</textarea>
+    </div>
+    <div class="field box">
+     <label for="cf_link">$name_link </label>
+      <input size="60" name="cf_link" value="$cdt_link" id="cf_link" />
+    </div>
+    <div class="field box">
+     <label for="cf_reversedate">$name_reversedate</label>
+     !set wims_ref_class=wims_formradio
+     !formradio cf_reversedate list 1,0 prompt $wims_name_yes,$wims_name_no
+     </div>
+     <div class="field box">
+     <label for="cf_showyear">$name_showyear</label>
+     !set wims_ref_class=wims_formradio
+     !formradio cf_showyear list 1,0 prompt $wims_name_yes,$wims_name_no
+     </div>
+     <div class="field box">
+    !href cmd=renew&job=logfile $name_see
+    $name_see2.
+     </div>
+  </fieldset>
+  <p class="wimscenter"><input type="submit" name="cf_set" value="$wims_name_tosave" />
+ $
+  <input type="submit" name="cf_abandon" value="$wims_name_giveup" class="wims_secondary_button" />
+  </p>
+  !formend
+</div>
+!!ARIANE already
+!set wims_menu_items=!append line back2,1,cmd=reply&job=home\
+to $wims_menu_items

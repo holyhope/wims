@@ -1,0 +1,43 @@
+!set tr=!words2items $i_translation_language
+<script type="text/javascript">
+/*<![CDATA[*/
+jQuery(function($$) {
+   $$(document).ready(function(){
+    $$(".content_lang").hide();
+    $$(".button_lang").click(function () {
+        $$(this).next(".content_lang").slideToggle();
+    });
+  });
+});
+
+/*]]>*/
+</script>
+
+
+!for l_ in $tr
+ !if $l_ isitemof $langlist
+   <a class="wims_button button_lang">$name_prop ($(l_$l_))</a>
+   <div class="content_lang" href="#">
+     <div class="field box>
+       <label for="i_title_$l_">$wims_name_title ($(l_$l_))</label>
+        <input size="$size" name="i_title_$l_" id="i_title_$l_" value="$(i_title_$l_)" />
+     </div>
+     <div class="field box">
+       <label for="i_description">$wims_name_Description ($(l_$l_))</label>
+       <input size="$size" name="i_description_$l_" id="i_description_$l_" value="$(i_description_$l_)" />
+     </div>
+     <div class="field box">
+       <label for="i_keywords_$l_">$wims_name_Keywords ($(l_$l_))</label>
+       <input size="$size" name="i_keywords_$l_" id="i_keywords_$l_" value="$(i_keywords_$l_)" />
+      </div>
+     <div class="field box">
+       <label for="i_translator_$l_">$wims_name_Translator ($(l_$l_))</label>
+       <input type="text" size="$size" name="i_translator_$l_" id="i_translator_$l_" value="$(i_translator_$l_)" />
+      </div>
+      <div class="field box">
+        <label for="i_translator_address_$l_">$wims_name_tr_email ($(l_$l_))</label>
+        <input type="text" size="$size" name="i_translator_address_$l_" id="i_ranslator_address_$l_" value="$(i_translator_address_$l_)" />
+      </div>
+    </div>
+  !endif
+!next

@@ -1,0 +1,67 @@
+!set wims_module_log=error: $error
+
+<span class="wims_warning">$wims_name_Error</span>.
+
+!if empty_data iswordof $error
+ !distribute items $wims_name_title,$wims_name_Description,$wims_name_Type into tmp_title, tmp_description, tmp_category
+
+ Completare il campo <span class="tt wims_warning">$(tmp_$(empty_data))</span>
+e verificare gli altri campi.
+ !exit
+!endif
+
+!if bad_fname iswordof $error
+ Illegal file name. Please choose another name for your file.
+ !exit
+!endif
+
+!if binary_file iswordof $error
+ Binary file is not allowed here.
+ !exit
+!endif
+
+!if illegal_filedesc iswordof $error
+ You cannot put anything else than straightforward definitions in
+ <span class="tt wims_fname">filedesc</span>.
+ !exit
+!endif
+
+!if badoriginal iswordof $error
+ This module cannot be copied.
+ !exit
+!endif
+
+!if clash iswordof $error
+ Target module already exists.
+ !exit
+!endif
+
+!if badtarget iswordof $error
+ L'indirizzo di destinazione (<span class="tt wims_address">$target</span>) non è valido: troppo lungo, troppo corto, incompeto o contenente caratteri non validi.<br />
+ Dettagli dell'errore:
+ <ul>
+  !if incorrect_t1 iswordof $error
+   <li>Zona non corretta</li>
+  !endif
+  !if incorrect_t2 iswordof $error
+   <li>Categoria non corretta</li>
+  !endif
+  !if incorrect_t3 iswordof $error
+   <li>Nome non corretto</li>
+  !endif
+  !if incorrect_t4 iswordof $error
+   <li>Lingua non corretta</li>
+  !endif
+  !if incorrect_tlen iswordof $error
+   <li>dimensioni non corrette</li>
+  !endif
+ </ul>
+ !exit
+!endif
+
+!if symlink iswordof $error
+ The source module cannot be copied because it contains symbolic links.
+ !exit
+!endif
+
+!msg $error

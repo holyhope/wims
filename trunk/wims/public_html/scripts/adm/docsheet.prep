@@ -1,0 +1,23 @@
+
+!let wims_prefix=$wims_prefix m
+!let wims_trustfile=$wims_trustfile primitives/target.phtml primitives.phtml
+!let wims_writable=$wims_writable serial prim parm1 parm2 parm3 parm4 parms anchor w gotcnt gotm p add eq sh_ ex_ l_ m_ p_ a_ b_ t_ d_ prompt n i nadd lmod lses lcmd l ll l1 l2 m_exotitle m_exodescription
+!let wims_readable=$wims_readable wims_session wims_read_parm serial prim parm1 parm2 parm3 parm4 parms anchor w gotcnt gotm p add eq sh_ ex_ l_ m_ p_ a_ b_ t_ d_ prompt n i nadd lmod lses lcmd l ll l1 l2 wims_class m_exotitle m_exodescription
+
+m_user_login=$wims_user
+m_user_lastname=$wims_lastname
+m_user_firstname=$wims_firstname
+m_class_code=$wims_class
+m_scorerequire=!words2items $requires
+m_title=$sheet_title
+m_desc=$sheet_desc
+m_scoregot=!words2items $scores
+m_scoremean=!words2items $means
+m_expiration=$sheet_expiration
+m_today=!char 1 to 8 of $wims_now
+
+nbexo=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sh
+!for k=1 to $nbexo
+ m_infoexo$k=!record $k of wimshome/log/classes/$wims_class/sheets/.sheet$sh
+!next k
+

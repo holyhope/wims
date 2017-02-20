@@ -1,0 +1,113 @@
+!! Modify informations on the exercises in a sheet
+!!
+!distribute lines $wims_read_parm into directory_,parm_,require_,weight_,title_,desc_,dep_,comment_,feedback_
+!! !set orgtit_=!module title $directory_
+!form reply
+  !reset table_center
+  <input type="hidden" name="modif" value="$ex_" />
+  <input type="hidden" name="job" value="modify" />
+  <fieldset class="property_fields blockcenter">
+    <legend>$wims_name_properties</legend>
+    <div class="field box">
+!! if the sheet is active, the fields that may be changed are
+!! title, description, comment, feedback
+      <label for="mod_title">$wims_name_title</label>
+!!($name_oldtitle <em>$orgtit</em>)
+      <input size="50" name="mod_title" id="mod_title" value="$title_" />
+    </div>
+    <div class="field box">
+      <label for="mod_desc">$wims_name_Description</label>
+      <textarea name="mod_desc" id ="mod_desc" rows="1" cols="60">$desc_</textarea>
+       <div class="formHelp">(&lt;$desc_limit)</div>
+    </div>
+    <div class="field box">
+      <label for="mod_comment">$(name_shtab[7])</label>
+      <textarea name="mod_comment" id="mod_comment" rows="1" cols="60">$comment_</textarea>
+      <div class="formHelp">$name_desc_comment (&lt; $desc_limit)</div>
+    </div>
+    !if $activetest <= 0
+      <div class="field box">
+        <label for="mod_require">$name_pointsasked</label>
+        <select name="mod_require" id="mod_require">
+          !for i=0 to $require_limit
+            !if $i=$[$require_/10]
+              <option value="$[10*$i]" selected="selected">$[10*$i]</option>
+            !else
+              <option value="$[10*$i]">$[10*$i]</option>
+            !endif
+          !next
+        </select>
+      </div>
+      <div class="field box">
+        <label for="mod_weight">$name_weight</label>
+        <input size="4" name="mod_weight" id="mod_weight" value="$weight_" />
+      </div>
+      <div class="field box">
+        <label for="mod_dep">$(name_shtab[6])</label>
+        <input size="40" name="mod_dep" id="mod_dep" value="$dep_" />
+        !set wims_ref_class=wims_button_help float_right
+        !href target=wims_mhelp cmd=help&special_parm=dependancies $wims_name_help
+        !reset mod_dep
+      </div>
+    !endif
+    <div class="field box">
+      <label for="mod_feedback">$(name_shtab[10])</label>
+      <textarea name="mod_feedback" id="mod_feedback" rows="1" cols="60" class="nowrap">$feedback_</textarea>
+      !set wims_ref_class=wims_button_help float_right
+      !href target=wims_mhelp cmd=help&special_parm=feedback $wims_name_help
+    </div>
+    !if $activetest <= 0
+      !let oef=!defof category in wimshome/public_html/modules/$directory_/INDEX
+      !default oef=!defof category in wimshome/public_html/modules/$directory_/index
+      !if oef isitemof $oef
+        <div class="field box">
+          <strong>$(name_shtab[9])</strong>
+          !set parm__=$parm_
+          !let parm_=!replace internal & by ; in $parm_;
+          !let parm_=!replace internal scoredelay=; by scoredelay=0; in $parm_
+          !let parm_=!replace internal exo=; by exo=0; in $parm_
+          !let tmp_=!replace internal = by , in $parm_
+          !let tmp2_=!column 1 of $tmp_
+          !let tmp2_=!positionof item exo in $tmp2_
+          !let tmp_=!column 2 of $tmp_
+          !let tmp_=!item $tmp2_ of $tmp_
+          !let tmp_=!nospace $tmp_
+          !set wims_ref_class=wims_button float_right
+          !href cmd=intro&module=$directory_&special_parm=&special_parm2=&special_parm3=exo=$tmp_;$parm_&special_parm4=$sheet,$modif $(seriesaction[1])
+          <pre>$directory_
+$parm_</pre>
+        </div>
+        <div class="field box">
+          !read getparm $parm__ exo qnum random
+          !set exocnt_=!itemcnt $get_exo
+        </div>
+
+        !if $get_qnum=$exocnt_ and $get_random=0 and $get_qnum>1
+          <div class="field box">
+            !set wims_ref_class=wims_button_help float_right
+            !href target=wims_mhelp cmd=help&special_parm=series $wims_name_help
+
+            <table class="wimstable">
+              <caption>$name_order</caption>
+              !for ex = 1 to $exocnt_
+                !! ne fonctionne pas dans une classe
+                !set tt_ex=!lookup $(get_exo[$ex]) in wimshome/public_html/modules/$directory_/Extitles
+                !default tt_ex= $(get_exo[$ex])
+                <tr>
+                  <td><label for="update_ex$ex">$tt_ex</label></td>
+                  <td><input name="update_ex$ex" id="update_ex$ex" size="5" value="$ex" type="number" /></td>
+                </tr>
+              !next
+            </table>
+          </div>
+        !endif
+      !endif
+    !endif activetest = 0
+  </fieldset>
+
+  <div class="wimscenter wimsform">
+    <input type="submit" value="$wims_name_tosave" /> &nbsp;
+    !set wims_ref_class=wims_button
+    !href cmd=resume $wims_name_giveup
+  </div>
+!formend

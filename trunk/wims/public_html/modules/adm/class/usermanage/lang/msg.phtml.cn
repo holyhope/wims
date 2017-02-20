@@ -1,0 +1,23 @@
+!set wims_module_log=error: $error
+
+<span class="wims_warning">$wims_name_Error</span>.
+
+!if not_supervisor=$error
+抱歉. 只有班级的主持教师才能准备或修改作业页.
+ !exit
+!endif
+
+!if bad_classpass=$error
+ 抱歉, 你没有输入班级的正确口令. 
+你不能修改参加者信息.
+ !exit
+!endif
+
+!if bad_user=$error
+错误: 参加者 <span class="tt wims_login">$checkuser</span> 不存在.
+ !exit
+!endif
+
+!msg $error
+
+

@@ -1,0 +1,206 @@
+!nocache
+!! useful when one comes from modtool
+!set wims_backslash_insmath=yes
+!set proc=oef
+!if robot isin $session
+ !changeto content.html
+!endif
+
+!set test_data=!replace internal data/ by in $module_data
+!set test_data=!defof title in datamodule/$test_data/INDEX
+!if $test_data= and $module_data!=
+   <p class="name_datamodule">
+    <i>$name_datamodule</i>
+   </p>
+!endif
+<hr style="width:35%" />
+
+
+!! ------------------------------------- saisie des paramètres
+!if $step=1
+ $name_insert <span class="tt wims_fname">$smodule</span>
+
+ <p>$name_choose_allexo</p>
+ !form reply
+<fieldset class="property_fields blockcenter">
+ <legend>$name_title</legend>
+ <div class="field box">
+  <label for="picksheet">$name_choose</label>
+  <select name="picksheet" id="picksheet">
+ !for i=1 to $sheetcnt
+  !set sh=!line $i of $sheets
+  !set se=!item 1 of $sh
+  !set ti=!item 2 to -1 of $sh
+  !if $se=$sheetcnt
+   <option value="$se" selected="selected">$wims_name_Sheet $se: $ti</option>
+  !else
+   <option value="$se">$wims_name_Sheet $se: $ti</option>
+  !endif
+ !next i
+  </select>
+  </div>
+ !if $scoring=yes
+  <div class="field box">
+   <label for="require">$name_required</label>
+   <select name="require" id="require">
+    <option value="0">0</option>
+    <option value="10" selected="selected">10</option>
+    !for i=2 to $require_limit
+      <option value="$[10*$i]">$[10*$i]</option>
+    !next
+   </select>
+   <div class="formHelp">$name_repeat</div>
+  </div>
+  <div class="field box">
+   <label for="weight">$name_weight</label>
+   <input size="6" name="weight" value="$weight" id="weight" />
+   <div class="formHelp">$name_weight_hint</div>
+  </div>
+ !endif
+</fieldset>
+
+!!debut du menu voir intromenu.phtml
+!read oef/default
+<fieldset class="property_fields blockcenter">
+<legend>$name_general_setup</legend>
+<div class="field box">
+ <label for="qnum">$name_oneserie
+ !default qnum=$(default_choice[1])
+ !formselect qnum from 1 to 9
+ $name_exercises.</label>
+</div>
+<div class="field box">
+ <label for="scoredelay">$name_chrono:</label>
+ <input size="7" id="scoredelay" name="scoredelay" value="$scoredelay" /> $name_secondes.
+ <div class="formHelp">$name_remarkintro3</div>
+</div>
+<div class="field box">
+      !formcheckbox random list 0 prompt $name_aleaseries
+</div>
+!set translation_language=!getdef translation_language in INDEX
+!if $translation_language!=$empty
+  !set translation_language=$module_language,$translation_language
+  !set translation_language=!words2items $translation_language
+  !set translation_language=!sort items $translation_language
+  <div class="field box">
+   <label for="lang_choice">$wims_name_Language:</label>
+   !formradio lang_choice list $translation_language
+  </div>
+!endif
+</fieldset>
+
+!default expert_=no
+<fieldset class="property_fields blockcenter">
+<legend>$name_score_setup</legend>
+
+!formradio expert_ list no prompt $name_simplifiedmenu
+
+<div class="field box">
+ <label for="qcmlevel">$name_levelseverity:</label>
+ !default qcmlevel=$(default_choice[2])
+ !formselect qcmlevel from 1 to 9
+</div>
+!!default intro_check=1,2,3,4
+
+<hr/>
+
+  !set wims_ref_id=expert_yes
+  !formradio expert_ list yes prompt $name_expertmenu
+    <div class="field box">
+     <label for="intro_presentsol">$name_solutiongiven? </label>
+     !default intro_presentsol=$(default_choice[3])
+     !formselect intro_presentsol list 0,1,2 prompt $name_choice
+    </div>
+    <div class="field box">
+      !formcheckbox intro_check list 3,4 prompt $(name_choice_check[3]),$(name_choice_check[4])
+    </div>
+    !default intro_expow=$(list_expow[1])
+    !default intro_sepow=$(list_sepow[1])
+    !default intro_precw=$(list_precw[1])
+    !reset name_prompt_expower2 name_prompt_sepower2
+   !set powercnt=!itemcnt $list_expow
+   !for j=1 to $powercnt
+     !set name_prompt_expower2=!append item $(name_prompt_expower[$j]) ($(list_expow[$j])) to $name_prompt_expower2
+     !set name_prompt_sepower2=!append item $(name_prompt_sepower[$j]) ($(list_sepow[$j])) to $name_prompt_sepower2
+   !next
+    <div class="field box">
+      $name_expower<br/>
+      !set wims_ref_class=wims_formradio
+      !formradio intro_expow list $list_expow prompt $name_prompt_expower2
+    </div>
+    <div class="field box">
+      $name_sepower<br/>
+       !set wims_ref_class=wims_formradio
+      !formradio intro_sepow list $list_sepow prompt $name_prompt_sepower2
+    <div class="formHelp">$name_warning_pow</div>
+    </div>
+    <div class="field box">
+      $name_precweight:
+       !set wims_ref_class=wims_formradio
+       !formradio intro_precw list $list_precw prompt $list_precw
+       <div class="formHelp">
+        $name_help_precweight
+      </div>
+    </div>
+    <hr />
+   $name_qcm:
+    <div class="field box">
+     <label for="intro_qcmpresent">$name_qcmanswer: </label>
+     !default intro_qcmpresent=$(default_choice[4])
+     !formselect intro_qcmpresent list 2,3,4,5,6,7,8
+    </div>
+    <div class="field box">
+      !set wims_ref_id=intro_check01
+      !formcheckbox intro_check list 1 prompt $(name_choice_check[1])
+    </div>
+    <div class="field box">
+    !set wims_ref_id=intro_check02
+      !formcheckbox intro_check list 2 prompt $(name_choice_check[2])
+    </div>
+    !let tmp=!replace word expert by $ in $special_parm2
+    !set tmp3=!replace internal intro_expert=yes by in $special_parm3
+    <input type="hidden" name="intro_expert" value="yes" />
+   </fieldset>
+
+ <div class="wimscenter wimsform">
+   <input type="submit" value="$wims_name_Insert" />
+   <input type="hidden" name="step" value="2" />
+   <input type="hidden" name="job" value="$job" />
+ </div>
+!formend
+<div class="formHelp">
+  $name_remarkseverity
+  !read oef/helpseverity
+ </div>
+
+!endif
+
+!! ---------------------------------------- écriture du bilan
+!if $step=2
+ !if $addexo>0
+	<p>
+	!if $addexo=1
+	    $name_endallexo
+	!else
+	    $name_endallexos
+	!endif
+	</p>
+ !endif
+ !if $notadd>0
+  	<p>
+  	!if $notadd=1
+  	    $name_endallexo2
+  	!else
+  	    $name_endallexo2s
+  	!endif
+        <ul>
+	!for exo in $listalready
+		!let num=!positionof item $exo in $exolist
+		<li>$(exotitle[$num])</li>
+	!next exo
+	</ul></p>
+ !endif
+ !set wims_menu_items=!append line sheetcheck,1, module=adm/class/sheet&sheet=$picksheet\
+to $wims_menu_items
+!endif
+

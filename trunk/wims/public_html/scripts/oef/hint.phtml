@@ -1,0 +1,25 @@
+<div class="oefhint wims_widget_box">
+  !set hh=!trim $hint
+  !if $hh=$empty or $givehint<1
+    !!!read oef/$module_language/hint.phtml
+    <div class="wimscenter">
+      !set wims_ref_class=wims_button
+      !href cmd=resume $wims_name_resume
+    </div>
+</div>
+!exit
+  !endif
+
+  <h2 class="title_box">$name_Hint.</h2>
+  <div class="box_content">
+  !if $hint!=$executed_str or $oef2wims_version<3.10
+    $hint
+  !else
+    !read $deffile hint
+  !endif
+  </div>
+  <div class="wimscenter oef_actions">
+    !set wims_ref_class=wims_button icon_button
+    !href cmd=resume <span class="resume">$wims_name_resume</span>
+  </div>
+</div><!--oefhint-->

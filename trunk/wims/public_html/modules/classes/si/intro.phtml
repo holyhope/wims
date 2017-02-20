@@ -1,0 +1,34 @@
+!set proc=oef
+!header
+
+!if $wims_class=$empty
+ <p>
+  Ta modul je notranji modul neke uèilnice. Èe niste prijavljeni kot uporabnik te uèilnice,
+  ne morete dostopati do njegove vsebine.
+ </p>
+ <p class="wimscenter">
+  !href $ Nazaj na WIMS
+ </p>
+ !tail
+ !exit
+!endif
+
+<p>Ta modul predstavlja zbirko vaj uèilnice <span class="wims_classdesc">$wims_classname</span> ustanove
+<span class="wims_institutiondesc">$wims_institutionname</span>.</p>
+
+!if $wims_user=supervisor
+ <p>
+  !set wims_ref_class=wims_button
+  !href module=adm/createxo <span class="add_exo">Ustvari novo vajo</span>
+  </p>
+ !read oef/intromenu.phtml
+!else
+  <p>
+   Seznam vaj lahko vidi le skrbnik.
+  </p>
+  <p class="wimscenter">
+   !href module=home Nazaj na zaèetno stran
+  </p>
+!endif
+
+!tail

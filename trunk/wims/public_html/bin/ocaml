@@ -1,0 +1,13 @@
+#! /bin/sh
+
+# sysmask test
+../bin/true 2>/dev/null && {
+ echo Cannot execute ocaml: security protection unavailable. >&2
+ exit
+}
+
+echo "$wims_exec_parm" | sed 's/\&#36;/\$/g' >$tmp_dir/ocaml.src
+
+ulimit -f 64
+bin/ch..root ocaml <$tmp_dir/ocaml.src
+

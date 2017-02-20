@@ -1,0 +1,43 @@
+
+!bound step within 0,1 default 0
+
+!if $step=0
+ !if NaN isin $[$doc/10] or $doc<1 or $doc>$doctot
+    error=baddocnumber
+    !exit
+ !endif
+ sdoc=$doc
+ sh=!record $sdoc of wimshome/log/classes/$wims_class/doc/.docindex
+ !distribute lines $sh into dir,param,title,desc,status,wksheet,autosheet
+ !reset update
+ !exit
+!endif
+
+!if $step=1
+ !if $update!=$empty
+  job=deldoc
+  step=0
+  !changeto $job.proc
+ !else
+  desc=!singlespace $desc
+  desc=!char 1 to $desc_limit of $desc
+  title=!singlespace $title
+  title=!char 1 to $title_limit of $title
+  !bound wksheet between 0 and $nbsheet default 0
+  !bound status within 0,1 default 0
+  sh=!record $sdoc of wimshome/log/classes/$wims_class/doc/.docindex
+  !distribute lines $sh into dir,param,b,b,b,b,autosheet
+  newsh=$dir\
+$param\
+$title\
+$desc\
+$status\
+$wksheet\
+$autosheet
+  !read proc/updatefield.proc wimshome/log/classes/$wims_class/doc/.docindex\
+$sdoc\
+$empty\
+$newsh
+ message=$name_savemodif
+ !endif
+!endif

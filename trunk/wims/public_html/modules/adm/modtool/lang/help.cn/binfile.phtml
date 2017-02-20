@@ -1,0 +1,86 @@
+!read adm/title.phtml 2\
+
+!default special_parm2=$wims_read_parm
+!if $special_parm2 iswordof document oef
+  !goto $special_parm2
+!endif
+!exit
+
+:document
+
+在文件的情形, 除了用文件处理器创建的文件
+(使用链接 <span class="wims_button disabled">$wims_name_docgestion</span>) 外,
+可以把文件放到下述两种目录里供使用.
+
+<ul>
+ <li>
+ 欲存放在 <span class="tt wims_fname">doc/1/files</span>
+ 或
+ <span class="tt wims_fname">doc/files</span> 
+ 里的文件 (你应该在文件
+ <span class="tt wims_fname">var.proc</span>
+ 里写上
+ <span class="tt">common_files=yes</span>)
+ 可以使用在文件页里, 
+ 条件是在文件名前冠以 
+ <span class="tt wims_code_variable">\filedir</span>
+ 并且使用正确的 html 标注,
+ 对于声音文件则使用命令
+ <span class="tt wims_code_words">\audio{}</span>.
+ </li>
+ <li>
+ 放在 
+ <span class="tt wims_fname">srctex</span>
+ 里的文件格式应为 latex, 它通过 
+ <span class="tt wims_fname">latex2wims</span>
+ 转换成文件格式. 为了转换, 要回到列表页,
+ 点击按钮 <span class="wims_button disabled">$name_compile</span>
+ 回到开发模块的进入页
+ (链接
+ <span class="wims_button disabled">$wims_name_otherfiles</span>).
+ </li>
+</ul>
+!exit
+
+:oef
+
+对于 OEF 类型的模块, 有多个存放不同作用文件的目录.
+为了使用这些目录, 应该在文件
+<span class="tt wims_fname">var.proc</span>
+里把变量
+<span class="tt wims_code_variable">common_images</span>
+的值设为
+<span class="tt wims_code_variable">no</span> 
+(或数据模块的地址).
+
+<ul>
+<li>
+<span class="tt wims_fname">anstype</span> (专家使用) : 存放 WIMS 核心格式的回答类型 
+</li>
+<li>
+<span class="tt wims_fname">binary</span> : 研发中的特殊用途
+</li>
+<li>
+<span class="tt wims_fname">data</span> : 可以使用 wims 命令
+<span class="tt wims_code_variable">record</span>
+与
+<span class="tt wims_code_variable">lookup</span>
+的文件.
+</li>
+<li>
+<span class="tt wims_fname">images</span> : 图像或声音的二进制文件. 
+它们可被插入练习中, 不过要在文件名前冠以 
+ <span class="tt wims_code_variable">\filedir</span>
+ 并且使用正确的 html 标注,
+ 对于声音文件则使用命令 \
+ <span class="tt wims_code_words">\audio{}</span>.
+</li>
+<li>
+<span class="tt wims_fname">help</span> (pour expert) : 待验证
+</li>
+
+<li>
+<span class="tt wims_fname">slib</span> (专家使用) : 按 slib 语法的宏.
+</li>
+</ul>
+

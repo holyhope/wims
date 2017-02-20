@@ -1,0 +1,38 @@
+#! /bin/sh
+
+datadir=factbook/print
+
+list=`cd $datadir; ls *.html | sed 's/.html//'`
+
+rm -f area* population* capital*
+for c in $list
+do
+ awk 'BEGIN {a=0};
+	a==0 && /Area:/ {a=1};
+	a==1 && /total:/ {print "'$c': " $0; exit}' $datadir/$c.html \
+    | sed 's!:.*</i>!:!;s/million/000/g;s/sq km/@/' | cut -d@ -f 1 \
+    | tr -d ' .,' >>area.1
+ awk 'BEGIN {a=0};
+	a==0 && /Population:/ {a=1};
+	a==2 && /hab/ {exit}
+	a==2 && /[0-9]/ {print "'$c': " $0; exit}
+	a==1 && /<td/ {a=2};' $datadir/$c.html \
+    | sed 's/:[:space:]*/: /;s/million/000/g' | cut -d '(' -f 1 \
+    | tr -d ' 	.,' >>population.1
+ awk 'BEGIN {a=0};
+	a==0 && /Capital:/ {a=1};
+	a==2 && /[a-z]/ {print "'$c': " $0; exit}
+	a==1 && /<td/ {a=2};' $datadir/$c.html \
+    | sed 's/:[:space:]*/: /;s/million/000/g' | cut -d '(' -f 1 \
+    | tr -d '	.,' >>capital.1
+done
+
+for f in area population
+do
+ sort -nr -k2 -t: <$f.1 >$f
+ rm -f $f.1
+done
+
+sort <capital.1 | cut -d ';' -f 1 | grep -v -E 'capital| none' | tr -s ' ' >capital
+rm -f capital.1
+

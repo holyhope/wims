@@ -1,0 +1,41 @@
+
+!goto $wims_read_parm
+
+:def
+title=Derivative
+synonyme=Differentiation
+input=function
+!exit
+
+:proc
+
+x=!word 1 of $variable
+!if $x=$empty
+ t=!varlist nofn $formula
+ t=!sort reverse nocase item $t
+ x=!item 1 of $t
+!endif
+!default x=x
+o=!word 1 of $order
+o=$[round($o)]
+!if NaN isin $o or $o<1 or $o>100
+ o=
+!endif
+!default o=1
+
+result=!exec maxima diff($formula,$x,$o);
+!exit
+
+:output
+
+Derivative of
+!if $o>1
+ order $o of
+!endif
+!htmlmath $formula
+ with respect to $x:
+<p><center>
+!insmath $result
+</center> <p>
+!exit
+

@@ -1,0 +1,80 @@
+!set wims_module_log=error: $error
+
+!if badoldvaluesnb=$error
+ Le nombre de valeurs prises par cette ancienne variable technique est trop élevé pour qu'elle puisse être récupérée.
+ !exit
+!endif
+
+
+!if not_supervisor=$error
+ Spiacenti, solo il docente può utilizzare questa funzione.
+ !exit
+!endif
+
+!if nameforbidden=$error
+ Spiacenti, le variabili tecniche non possono utilizzare nomi del tipo exam, sheet, vote, manual seguiti da un numero.
+ !exit
+!endif
+
+!if bad_class=$error
+ Non siete all'interno di un corso.
+ !exit
+!endif
+
+!if toomanytechvar=$error
+ Avete già raggiunto il numero massimo di variabili tecniche disponibili.
+ !exit
+!endif
+
+!if badnamelen=$error
+ Il nome proposto per la variabile tecnica non ha una lunghezza consentita: troppi caratteri o troppo pochi (il limite è $MAXcharname caratteri).
+ !exit
+!endif
+
+!if namealreadyuse=$error
+ Il nome proposto per la variabile tecnica è già stato utilizzato. Sceglietene un altro!
+ !exit
+!endif
+
+!if badvaluenb=$error
+ La lista di valori possibili deve essere non vuota e contenere al massimo $MAXnbvalue elementi.
+ !exit
+!endif
+
+!if badtechvarnumber=$error
+ Problema nell'identificazione della variabile tecnica. Non modificate l'indirizzo nella barra del browser!
+ !exit
+!endif
+
+!if valuedisappear=$error
+ Per ora l'elenco dei nuovi valori deve contenere i valori già impostati. 
+ (Lavori in corso, abbiate pazienza!)
+ !exit
+!endif
+
+!if nolocalvartech=$error
+ Non ci sono variabili tecniche modificabili per questo studente.
+ !exit
+!endif
+
+!if nooldvar=$error
+ Non sono state trovate variabili tecniche preesistenti in questa struttura.
+ !exit
+!endif
+
+!if $error=oldvar_nouser
+ La variabile tecnica di vecchio tipo che volete creare non è definita per alcuno studente del corso. Probabilmente questa variabile appartiene a un altro corso nel raggruppamento. La creazione non ha avuto luogo.
+!exit
+!endif
+
+!if $error=oldvar_badvar
+ La variabile di vecchio tipo che state cercando di trasferire non corrisponde a nessuna variabile trasferibile. Non modificare l'indirizzo sulla barra di navigazione del browser!
+!exit
+!endif
+
+!if $error=witholdvar
+ Sono state rilevate variabili tecniche preesistenti. Forse è opportuno recuperarle tramite il link <i>$wims_name_oldvar</i>, prima di creare nuove variabili?
+ !exit
+!endif
+
+!msg $error

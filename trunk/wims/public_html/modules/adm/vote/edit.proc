@@ -1,0 +1,22 @@
+vcnt=!defof vcnt in wimshome/log/classes/$wims_class/vote/$vote.votes
+src=!replace internal & by &amp; in $vote_src
+src=!replace internal < by &lt; in $src
+
+!if $vote_title=$empty
+ vdata=!record $vote of $votedir/.votes
+ !distribute lines $vdata into bidon,vote_title,vote_option,vote_show,vote_whovoteshow
+!endif
+
+!if $reg_model isitemof $vmodellist
+ !readproc adm/vfilter/listvarfilter.proc
+ !if $tv_listlocal=$empty
+    !set error=notechvar
+    !reset step
+ !endif
+ !readproc models/$(reg_model).proc
+!else
+ reg_model=free
+ !reset reg_src
+!endif
+
+!reset up_namevar

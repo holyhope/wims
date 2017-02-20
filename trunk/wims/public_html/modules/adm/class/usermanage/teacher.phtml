@@ -1,0 +1,52 @@
+!read adm/title.phtml 1\
+$classname\
+$wims_name_teacherlist
+
+!!don't work as it is
+!!!if $teachercnt>0
+!!<div class="wimscenter">
+!!!href module=adm/class/userscore&job=csv $wims_name_csv
+!!</div>
+!!!endif
+
+$table_header
+!if $wims_user=supervisor and $wims_realuser=supervisor
+ <caption>
+  !href module=adm/class/reguser&step=1&utype=1 $wims_name_addteacher
+ </caption>
+!endif
+$table_hdtr
+<th>$wims_name_account</th>
+<th>$wims_name_lastname</th>
+<th>$wims_name_firstname</th>
+<th>$name_gestion</th>
+<th>$wims_name_action</th></tr>
+!for i=1 to $teachercnt
+ !set l=!line $i of $teacherlist
+ !distribute items $l into tl_,tf_,tc_
+ $table_tr
+ <td><span class="tt wims_login">$tc_</span></td>
+ <td>$tl_ </td>
+ <td>$tf_ </td>
+ <td>
+ !readproc adm/class/userdef classes,$wims_superclass,$tc_
+!set tu_=!defof user_supervise in $userdef
+$tu_
+!reset $userdef
+ </td><td>
+!! !set wims_ref_class=wims_button
+!!!href cmd=reply&job=deluser&deluser=$tc_ $wims_name_erase
+!! &nbsp;
+ !set wims_ref_class=wims_button
+!href cmd=reply&job=userprop&getuser=$tc_ $wims_name_change
+ </td>
+ </tr>
+!next i
+$table_end
+!if $wims_user=supervisor and $wims_realuser=supervisor
+  !set wims_menu_items=!append line \
+  addteacher,1, module=adm/class/reguser&step=1&utype=1\
+to $wims_menu_items
+!endif
+!set wims_menu_items=!append line part_list,1,cmd=resume\
+to $wims_menu_items

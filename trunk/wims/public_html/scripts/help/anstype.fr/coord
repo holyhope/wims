@@ -1,0 +1,45 @@
+:Liste des conditions disponibles pour tester le clic de l'utilisateur
+:Syntaxe,Signification
+:point,x,y
+Point en (x,y). C'est un point ``épais'', de largeur fixe.
+
+:rectangle,x1,y1,x2,y2
+L'intérieur d'un rectangle de diagonale (x1,y1)---(x2,y2)
+
+:circle,x,y,d
+L'intérieur d'un cercle de centre (x,y) et diamètre d
+
+:ellipse,x,y,w,h
+L'intérieur d'une ellipse de centre (x,y), largeur w, et hauteur h
+
+:polygon,x1,y1,x2,y2,x3,y3,...
+L'intérieur d'un polygone engendré par les points (x1,y1), (x2,y2), (x3,y3), ..
+
+:bound,NOMFIC,x,y
+zone définie dans le fichier image NOMFIC, qui doit être de la même taille que
+l'image cliquée (mais peut être une image différente). La condition est remplie si (x,y) est dans
+la même zone de remplissage que le clic de l'utilisateur.
+Si le champ <span class="tt wims_code_words">option</span> de la réponse
+contient le mot <span class="tt">fill</span>, la zone est remplie dans la réponse
+en vert ou en rouge (au lieu d'une boule).
+<span class="wims_warning">$wims_name_warning</span>. Si l'exercice est dans une classe,
+l'image NOMFIC doit être recopiée :
+<pre>\text{cache=draw(\size[1],\size[2]
+copy 0,0,-1,-1,-1,-1,NOMFIC)}
+\text{cache = slib(oef/insfilename)}
+</pre>
+Dans un module, il suffit d'écrire son nom.
+
+Deux options sont possibles dans ce cas :
+<ul><li>
+ <span class="tt wims_code_words">fill</span> : colorie la zone plutôt que de mettre
+ une boule dans la réponse (ne pas utiliser dans le cas où l'on utilise une image auxiliaire
+ pour analyser la réponse).
+ </li><li>
+<span class="tt wims_code_words">goodanswershown</span>: indique aussi la bonne réponse
+sur l'image en cas de réponse fausse.
+</li></ul>
+:bound,NOMFIC
+comme ci-dessus, la condition est remplie si
+le clic de l'utilisateur a une couleur DIFFERENTE du
+pixel du coin en haut à gauche de NOMFIC

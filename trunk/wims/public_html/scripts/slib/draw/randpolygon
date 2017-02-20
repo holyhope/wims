@@ -1,0 +1,109 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+
+slib_author=Bernadette, Perrin-Riou
+slib_title=Polygone quelconque
+slib_out=Random convex polygon
+slib_parms=3\
+,number of edges\
+,color: if it is a vector of colors, the measure of the edges is written in the second color\
+,option: html,url
+slib_require=pari
+slib_example=6,red,html\
+8,[blue,black],html\
+4,blue,html\
+3,[blue,grey]\
+3,[blue,grey],points
+
+!exit
+
+:proc
+slib_out=
+!distribute items $wims_read_parm into slib_n,slib_color,slib_option
+slib_color=!declosing $slib_color
+slib_m=0
+!if $(slib_color[2])!=$empty
+  slib_m=1
+!endif
+!default slib_color=green
+slib_size1=50
+!default slib_n=8
+slib_et=!randint 1,2
+slib_echelle=1.4
+slib_rayon=2
+slib_angle=0
+slib_size=$[$slib_size1*$slib_echelle+1]
+!reset slib_Point slib_Mesure slib_Dessin slib_Position
+ !for slib_a=1 to $slib_n
+  slib_anglem=$slib_angle
+  slib_angle=!randint 100*$slib_a/$slib_n +10 ,100*($slib_a+1)/$slib_n - 10
+  slib_angle=$[$slib_angle/100]
+  slib_anglem=$[($slib_angle + $slib_anglem)/2]
+  slib_rayonm=$slib_rayon
+  !if $slib_et=1
+    slib_rayon=!randint $[$slib_size1/3],$slib_size1
+  !else
+    !if $slib_rayon > $[$slib_size1/2]
+      slib_rayon=!randint $[$slib_size1/3],$[$slib_size1/2]
+    !else
+      slib_rayon=!randint max($[$slib_rayon+2],$[$slib_size1/10]), $[$slib_size1]
+    !endif
+  !endif
+  slib_rayonm=$[$slib_echelle*($slib_rayon + $slib_rayonm)/2]
+  slib_Point=!append line $[cos(2*pi*$slib_angle)*$slib_rayon], $[sin(2*pi*$slib_angle)*$slib_rayon] to $slib_Point
+  !if $slib_a>1
+     slib_mesure = $[sqrt(($(slib_Point[$slib_a-1;1]) - $(slib_Point[$slib_a;1]))^2 + ($(slib_Point[$slib_a-1;2]) - $(slib_Point[$slib_a;2]))^2)]
+     slib_positionx = $[$slib_echelle*($(slib_Point[$slib_a-1;1]) + $(slib_Point[$slib_a;1]))/2]
+     slib_positiony= $[$slib_echelle*($(slib_Point[$slib_a-1;2]) + $(slib_Point[$slib_a;2]))/2]
+     slib_positionx=$[($[cos(2*pi*$slib_anglem)*$slib_rayonm]+$slib_positionx)/2]
+     slib_positiony=$[($[sin(2*pi*$slib_anglem)*$slib_rayonm]+$slib_positiony)/2]
+     slib_Position=!append line $slib_positionx,$slib_positiony to $slib_Position
+     slib_Mesure=!append item $slib_mesure to $slib_Mesure
+   !else
+     slib_angle1=$slib_angle
+     slib_rayon1=$slib_rayon
+   !endif
+  !next slib_a
+
+slib_mesure = $[sqrt(($(slib_Point[$slib_n;1]) - $(slib_Point[1;1]))^2 + ($(slib_Point[$slib_n;2]) - $(slib_Point[1;2]))^2)]
+slib_positionx = $[$slib_echelle*($(slib_Point[$slib_n;1]) + $(slib_Point[1;1]))/2]
+slib_positiony = $[$slib_echelle*($(slib_Point[$slib_n;2]) + $(slib_Point[1;2]))/2]
+!!slib_positionx= $[($[cos(2*pi*($slib_angle+$slib_angle1)/2)*$slib_rayon]+$slib_positionx)/2]
+!!slib_positiony= $[($[sin(2*pi*($slib_angle+$slib_angle1)/2)*$slib_rayon]+$slib_positiony)/2]
+slib_Position=$slib_Position\
+$slib_positionx,$slib_positiony
+
+slib_Mesure=!append item $slib_mesure to $slib_Mesure
+slib_Mesure=!exec pari round([$slib_Mesure])
+slib_Point2=!lines2items $slib_Point
+!if points iswordof $slib_option
+  slib_out=$slib_Point2\
+  $slib_Mesure
+  !goto end
+!endif
+slib_Dessin= xrange -$slib_size,$slib_size\
+yrange -$slib_size,$slib_size\
+linewidth 2\
+polygon $(slib_color[1]),$slib_Point2
+!if $slib_m=1
+ !for slib_j=1 to $slib_n
+   slib_Dessin=$slib_Dessin\
+text $(slib_color[2]),$(slib_Position[$slib_j;]),large,$(slib_Mesure[$slib_j])
+ !next
+!endif
+slib_out=$slib_Dessin
+
+insdraw_size=300,300
+!if url iswordof $slib_option or html iswordof $slib_option
+  insdraw_size=300,300
+ !insdraw $slib_out
+ slib_out=$ins_url
+ !if html iswordof $slib_option
+    slib_out=<img src="$ins_url" alt="" />
+ !else
+    slib_out=$slib_out,$insdraw_size,$slib_Mesure
+ !endif
+!endif
+
+:end

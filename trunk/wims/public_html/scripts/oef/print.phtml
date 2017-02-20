@@ -1,0 +1,78 @@
+!nocache
+!set wims_html_header=!append line $oefcss to $wims_html_header
+!header1
+!set module_title=!module title_$lang $module
+!default module_title=!module title $module
+<h3 class="wimscenter">
+!href module=$module&cmd=intro WIMS
+ $module_title<br />
+<span class="smaller">--- $name_print ---</span></h3>
+
+!if $error!=$empty
+ !changeto oef/msg.phtml
+!endif
+
+!if ($wims_developer!= or $wims_user=supervisor) and $latex_exists=1
+  <div class="wimscenter">
+  !read oef/latex.proc print
+  </div>
+!endif
+!for i=1 to $n
+ <br class="spacer" />
+ <span class="bold">$name_exo</span> $i.
+ (<span style="text-decoration:underline;font-style:italic">$(title_$i)</span>)
+ !if $(question_$i)=$empty
+  ($name_noprint)
+ !else
+  !if __EXECUTED_ isin $(question_$i) and _EXERCISE__ isin $(question_$i)
+   !set thisexo=$(name_$i)
+   !readproc oef/imagedir.proc
+   !for k=1 to $(varcnt_$i)+5
+    !set val$k=!line $k of $(var_$i)
+   !next k
+   !read $(class_header)def/$(name_$i).def question
+  !else
+   $(question_$i)
+  !endif
+  $(chce_$i)
+ !endif
+ <br class="clearall" />
+!next i
+
+!if $wims_user!=$empty and $wims_user!=supervisor
+ !goto noans
+!endif
+
+!if $test_print=1
+<br class="spacer" /><hr/>
+<div class="wims_solution">
+<h3 class="wimscenter">$name_answers</h3>
+!for i=1 to $n
+ !set t=!linecnt $(ans_$i)
+ !if $t>0
+  <br class="spacer" />
+  <span class="bold">$name_answer_i.</span>
+  <ol style="list-style-type:square;">
+  !for k=1 to $t
+   !set l__=!line $k of $(ans_$i)
+   !if $l__ !=
+    <li style="counter-reset:$k">
+    !line $k of $(ans_$i)
+    </li>
+   !reset l__
+   !endif
+  !next k
+  </ol>
+ !endif
+!next i
+</div><!--end of wims_solution-->
+!endif
+
+:noans
+
+!set wims_menu_items=!append line renew,1,cmd=reply&print=yes\
+back2,1,module=$module&cmd=intro\
+to $wims_menu_items
+!tail
+
+

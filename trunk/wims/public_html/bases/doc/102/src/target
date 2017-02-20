@@ -1,0 +1,44 @@
+
+Appeler un module WIMS (exercice, outil, doc ou administration)&nbsp;: jusqu'à 2 arguments.
+<ul>
+  <li>
+  Argument 1: adresse du module (chaîne de caractères dans le URL après
+  <span class="tt wims_code_words">.../wims.cgi?</span>&nbsp;; mais vous pouvez aussi copier l'adresse complète).
+  Pour assurer le bon
+  fonctionnement du lien, évitez d'utiliser les adresses contenant une chaine
+  <span class="tt wims_code_words">cmd=reply</span> ou <span class="tt wims_code_words">cmd=resume</span>.
+  </li><li>
+  Argument 2 (facultatif): le texte du lien. Par défaut, ce texte sera le titre du module en question.
+ </li>
+</ul>
+ Le module appelé s'ouvrira dans une autre fenêtre du navigateur, sauf pour la commande
+ <span class="tt wims_code_words">\\adm</span>.
+<p>Par exemple, <span class="tt wims_code_words">\\exercise{module=U1/analysis/graphder}{ceci}</span>
+ou
+<span class="tt wims_code_words">\\exercise{http://wims.cgi?module=U1/analysis/graphder}{ceci}</span>
+donne \exercise{module=U1/analysis/graphder}{ceci}. (Les deux formules sont bonnes.)
+</p><p>
+<span class="tt wims_code_words">\\tool{module=tool/algebra/factor}</span>
+donne \tool{module=tool/algebra/factor}.
+</p><p>
+<span class="tt wims_code_words">\\help{module=help/main}{cette fenêtre d'aide}</span>
+ouvre \help{module=help/main}{cette fenêtre d'aide}.
+</p>
+
+<b>Remarque</b>. Pour un document dans une classe virtuelle, si vous écrivez
+<span class="tt wims_code_words">\\exercise{3/2}</span>, c'est le second exercice de la feuille 3 qui sera donné,
+avec le système de notes de la feuille.
+
+Néanmoins, ceci est limité aux exercices sans dépendance des scores, et vous devez vous assurer
+que l'exercice appelé est bel et bien accessible aux lecteurs.
+
+Une autre méthode est de mettre l'adresse de l'exercice comme dans les exemples précédents
+et de rajouter <span class="tt wims_code_words">worksheet=2</span> si l'on veut que cela corresponde
+à la feuille 2.
+
+<pre class="tt wims_code_words">
+\\exercise{module=H6/analysis/oefderiv.fr&exo=circle2&worksheet=2}{Exercice sur le cercle}
+</pre>
+Dans ce cas, l'exercice doit intervenir dans la feuille avec exactement les
+mêmes paramètres. L'avantage est que l'exercice sera exécutable par le document
+même si la feuille n'existe pas (mais dans ce cas, les notes ne seront pas enregistrées).

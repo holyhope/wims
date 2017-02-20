@@ -1,0 +1,24 @@
+
+!let modu_lang=$lang
+!let script_file=!nospace $wims_read_parm
+!reset lang_exists
+!read $(script_file).$modu_lang
+
+!if $lang_exists!=yes
+   !let modu_lang=en
+   !read $(script_file).$modu_lang
+!endif
+!set module_language=$lang
+
+!set tmp=!replace internal / by _ in $module/$(script_file)
+!set tmp=!nospace $tmp
+
+!read themes/$wims_theme/lang/$tmp.$lang
+
+!if $class_theme!=$empty
+  !read themes/$class_theme/lang/$tmp.$lang
+!endif
+
+!if $theme_class!=$empty
+  !read themes/$theme_class/lang/$tmp.$lang
+!endif

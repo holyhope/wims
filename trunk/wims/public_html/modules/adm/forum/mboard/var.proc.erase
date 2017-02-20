@@ -1,0 +1,13 @@
+!if $forumuser!=supervisor
+ !exit
+!endif
+
+m_=!translate / to , in $r_msg
+!distribute item $m_ into a_,b_
+msg=!record $b_ of $forumdir/$a_/.msglist
+!distribute item $msg into r_month,r_day,r_time,r_ident,r_prec,r_sender,r_smail
+msg=$forumdir/$r_month/$r_ident
+!setdef !set m_exists=erased in $msg
+job=list
+!changeto var.proc.list
+

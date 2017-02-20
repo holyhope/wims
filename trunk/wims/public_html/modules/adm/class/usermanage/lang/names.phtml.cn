@@ -1,0 +1,65 @@
+!set lang_exists=yes
+
+!set name_studentloc=!nosubst $user_lastname $user_firstname
+!set name_studentglo=!nosubst $wims_name_lastname $wims_name_firstname
+
+!set name_click=ÔÚÃû×ÖÉÏµã»÷ÒÔÁË½âÑ§Éú¹¤×÷µÄÏêÇé
+!set name_noyetparticipant=´Ë°à¼¶ÉĞÎŞ²Î¼ÓÕß.
+!set name_transfer=´ÓÆäËü°à¼¶×ªÒÆËûµÄ»î¶¯
+!set wims_name_recover=±»É¾³ıµÄ²Î¼ÓÕß
+!set name_filter=Variables techniques
+
+!if $job=regmanage
+	!set name_all=Tous les participants
+	!set name_reguser=Inscrire les participants
+	!set name_unreguser=Supprimer l'inscription des participants
+        !set name_display=Afficher
+        !set name_techvardisplay=Sélection par variables techniques
+	!set name_description=Utiliser les cases à cocher pour sélectionner les participants et les classes de votre choix puis appuyez sur l'un des deux boutons pour changer leurs droits d'accès.
+!endif
+
+!if $job iswordof userprop teacher userlist
+  !distribute items ĞŞ¸Ä,×¢²áºÅ,×¢½â,ÕÕÆ¬µÄurl,±äÁ¿ (¼¼ÊõµÄ),\
+  °à¼¶¿ÚÁî,ÊäÈë²Î¼ÓÕß×¢²áµÄ¿ÚÁî,\
+  Íâ²¿ÑéÖ¤µÄµÇÂ¼,×¢²á,¹ÜÀí,\
+   ±ØĞëµÄ\
+  into name_change,name_regnum,name_comments,name_photourl,name_vars,\
+  name_classpassword,name_enterpassword,name_external_auth,name_inscript,name_gestion,\
+  name_userprop_warning
+  !exit
+!endif
+
+!if $job=transfer
+   !set name_title_transfer=µÄ»î¶¯×ªÒÆ
+   !distribute items ºÏ²¢, Ìæ»», ¼ì²é\
+   into name_merge, name_replace,name_show
+ !set name_error1=²Î¼ÓÕßÃ»ÓĞÔÚµ±Ç°°à¼¶Àï×¢²á¹ıÒÔÏÂÒª×ªÒÆµÄ¿Î³Ì
+ !set name_error2=<b>´íÎó</b> °à¼¶Ãû³Æ´í. ÓÉÓÚ²Ù×÷´íÎó»òÈí¼şÂ©¶´?
+ !set name_activities=!nosubst µÚ $i ĞĞµÄ»î¶¯ÏêÇé (ÏŞ1000ĞĞ).
+ !set name_totransfer=ÕâÀïÊÇ²Î¼ÓÕßÓĞ»î¶¯µÄÆäËü¿Î³Ì. µã»÷Ò»¸ö¶¯×÷ÒÔ×ªÒÆ
+ !exit
+!endif
+
+!if $job=recover
+  !set name_empty=Õâ¸ö°à¼¶ÀïÃ»ÓĞ±»É¾µÄ²Î¼ÓÕß.
+  !set name_click=ÔÚµÇÂ¼ÃûÉÏµã»÷ÒÔ»Ö¸´´ËÓÃ»§.
+  !exit
+!endif
+
+!if $job=delprep
+  !set name_delete=!nosubst ÄãÄÜ¿Ï¶¨Òª´Ó°à¼¶ÖĞÉ¾³ı <b><em>$name_studentloc</em></b>?
+  !exit
+!endif
+
+!exit
+
+:transfer
+<b>ËµÃ÷</b>. <ol>
+<li>"$name_merge"ÒâÎª°ÑÁ½¸ö¿Î³ÌµÄ»î¶¯·ÅÔÚÒ»Æğ.</li>
+<li>"$name_replace"ÒâÎªÆäËü¿Î³ÌµÄ»î¶¯½«Ìæ´ú´Ë¿Î³ÌµÄ»î¶¯. ½öµ±Ç°Õß·Ç¿ÕÊ±²Å·¢Éú.</li>
+<li>¿¼ÊÔ¼ÇÂ¼ÒÔ¼°²»¼Æ·ÖµÄ»î¶¯×ÜÊÇ±»ºÏ²¢µÄ.</li>
+<li>Á·Ï°»ò¿¼ÊÔµÄÏêÇé¼ÇÂ¼²»±»×ªÒÆ.</li>
+<li>ÔÚ$name_merge»ò$name_replaceºó, ²Î¼ÓÕßÔÚÆäËü¿Î³ÌµÄ¼ÇÂ¼½«±»Çå³ı.</li>
+</ol>
+!exit
+

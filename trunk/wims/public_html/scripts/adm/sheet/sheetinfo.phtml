@@ -1,0 +1,95 @@
+!! Tableau d'information générale de la feuille d'exos
+!! ce fichier utilise des mots definis dans le fichier names.phtml.$lang du module adm/sheet
+!form reply
+ <input type="hidden" name="job" value="text" />
+ <fieldset class="property_fields blockcenter">
+ !!check
+      <legend>$name_info
+      !if $jquery_defined!=yes and $sheet<=$scnt
+        [
+        !href cmd=resume&infoshow=no $wims_name_hide
+        ]
+      !endif
+      </legend>
+      <div class="field box">
+        <label for="title">$(name_shinfo[1])</label>
+        <input size="65" name="title" id="title" value="$title" required="required" />
+        <div class="formHelp">$name_desc_title</div>
+      </div>
+      !ifval $activetest>-1
+        <div class="field box">
+         <label for="">$(name_shinfo[2])</label>
+         $(wims_name_shstatus[$activetest+1]) &nbsp;
+    !read adm/sheet/sheetaction.phtml sheet,$sheet,$activetest,0
+        </div>
+         !endif
+      <div class="field box fullwidth">
+       <label for="desc">$(name_shinfo[3])</label>
+       <div class="formHelp">$name_desc_desc</div>
+       <textarea id="desc" class="iEdit" rows="6" cols="65" name="desc">$desc</textarea>
+      </div>
+      <div class="field box">
+        <label for="comment">$(name_shinfo[8])</label>
+        <div class="formHelp">$name_desc_comment</div>
+        <textarea id="comment" class="iEdit" rows="6" cols="65" name="comment">$comment</textarea>
+      </div>
+      <div class="field box">
+        <label for="">$(name_shinfo[4])</label>
+    !distribute item $[$expday],$[$expmon],$[$expyear] into expday,expmon,expyear
+    !set listexpyear=!listuniq $expyear,$thisyear,$[$thisyear+1]
+    !formselect expday from 1 to 31
+    !formselect expmon from 1 to 12 prompt $months
+    !formselect expyear list $listexpyear
+       </div>
+       <div class="field box">
+       <label for="prpage">$(name_shinfo[5])</label>
+      !set wims_ref_class=wims_button_help float_right
+     !href target=wims_mhelp cmd=help&special_parm=sheetpage $wims_name_help
+      <input size="30" name="prpage" id="prpage" value="$prpage" />
+       </div>
+  !if $activetest>=0
+      <input type="hidden" name="allow" value="yes" />
+      <div class="field box">
+        <label for="allowtype">$(name_shinfo[6])</label>
+      !set wims_ref_class=wims_button_help float_right
+      !href target=wims_mhelp cmd=help&special_parm=allowtype $wims_name_help
+	<select id="allowtype" name="allowtype" onchange="submit()">
+        !if $tv_listname=$empty
+		!set list_allowtype=all,none,select
+	!else
+		!set list_allowtype=all,none,select,techvar
+	!endif
+	!let nboption=!itemcnt $list_allowtype
+        !for i=1 to $nboption
+         !if $(list_allowtype[$i])=$allowtype
+          <option value="$(list_allowtype[$i])" selected="selected">$(name_allowtype[$i])</option>
+         !else
+          <option value="$(list_allowtype[$i])">$(name_allowtype[$i])</option>
+         !endif
+        !next i
+        </select>
+       !if $allowtype=select
+	 <br /><input size="50" name="IPlist" value="$IPlist" />
+       !endif
+       !if $allowtype=techvar
+	 !read adm/vfilter/scoreregform.phtml
+       !endif
+     !default allowshare=0
+     !if $sharers!=$empty
+      <br />
+       <label for="allowshare">$(name_shinfo[7])</label>
+       !formselect allowshare list 0,1 prompt $wims_name_no,$wims_name_yes
+     !else
+      <input type="hidden" name="allowshare" value="0" />
+     !endif
+     </div>
+  !endif
+  </fieldset>
+   <div class="wimscenter wimsform">
+    !ifval $activetest=-1
+     <input type="submit" value="$name_mksheet" />
+    !else
+     <input type="submit" value="$wims_name_tosave" name="save"/>
+    !endif
+  </div>
+!formend

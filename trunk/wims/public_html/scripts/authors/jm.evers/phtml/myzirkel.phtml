@@ -1,0 +1,153 @@
+!! 14/10/2012 disabling coockies to store XML construction
+!! It somehow does not work anymore...??...and conflicts with wims-cookies
+!! giving an error message "are you trying to use another student session" or something like that
+
+<script type="text/javascript"  src="$jsdir/zirkel2wims.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+<!-- no validator -->
+    var descr_list="$description";
+    var descr_cnt = 30;
+    var description = make_description(descr_list,descr_cnt);
+    var reply="";
+    function dontknow(){
+	myConfirm('$dontknow','%3F','$wims_ref_name','$session','$module','$counter','#ffbd55');
+    }
+
+    function readapplet(){
+	!if $list_of_things = $empty
+	    reply=zirkel2wims(null,null);
+	!else
+	    !! we decide what we want from the drawing. note the pupil must name the objects correctly
+	    !! this array should be filled by WIMS : scheme ["type,name1,name2..." , "type,name1,name2..."]
+	    !! like ["point,p1,p2,p3","line,l1,l2","function,f1,f2,f3","area,poly1","angle,a1","circle,c1","segment,s1"];
+	    var list_of_things = new Array();
+	    list_of_things= $list_of_things ;
+	    var tmp;var tmp2;
+	    for(var p=0; p<list_of_things.length;p++){
+		tmp=list_of_things[p].split(',');
+		if(tmp[0].length>0){
+		    for(var s=1;s<tmp.length;s++){
+			tmp2=zirkel2wims(tmp[0],tmp[s]);if(tmp2 == "error"){return;}else{reply=reply+tmp2;}
+		    }
+		}
+	    }
+	!endif
+    }
+    
+    function sendanswer(){
+	if(document.getElementById("myinput0")){
+	    var extra_answer=new Array();
+	    var show="<ol>";
+	    var input="";
+	    var t1="";
+	    var p=0;
+	    while(document.getElementById('myinput'+p)){
+		input=document.getElementById('myinput'+p).value
+		if(input.length == 0){setAlarm(r1+"\ "+parseInt(p+1));return;}
+		input=nthroot(input);if(input=="error"){return;}
+		if(input.indexOf(',')!=-1){setAlarm(r4);return;}
+		input=arrows(input,2,"","");if(input=="error"){return;}
+		if(check_f(input)==0){return;}if(check_o(input)==0){return;}
+		if(check_log_NaN(input)==0){return;}if(check_sqrt_NaN(input)==0){return;}
+		input=science(input);if(input=="error"){return;}
+		if(check_x(input)==0){return;}
+		t1=input.indexOf("[");
+		if(t1 !=- 1){
+		    if(input.indexOf("sqrt[")!=-1){input=specialroot(input);if(input=="error"){return;}}
+		    if(input.indexOf("log[")!=-1){input=speciallog(input);if(input=="error"){return;}}
+		    t1=input.indexOf("[");if(t1!=-1){setAlarm(r13);return;}
+		}
+		input=input.replace(/#/g,' ');
+		extra_answer[p]=input;
+		show=show+"<li>"+input+"</li>";
+		p++;
+		if(p>100){setAlarm(r2);dontknow();}
+	    }
+	    readapplet();
+	    show=show + "</ol>";
+	    reply = reply +','+extra_answer;
+	    myConfirm(show,reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
+	}
+	else
+	{
+	    readapplet();
+	    myConfirm("$send",reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
+	}
+    }
+//]]>
+</script>
+
+<table id="exercise" class="exercise">
+    <tr>
+    <td class="exercise_t">
+	$(question$n)
+	!if $(formula$n) != $empty
+	    <br />
+	    !if $display = 1234
+		!insmath $$$$ $(formula$n) $$$$
+	    !else
+		!insmath $(formula$n)
+	    !endif
+	!endif
+	!if $exotext != $empty
+	    <br />
+	    $exotext
+	!endif
+    </td>
+    !if $make_tr=1
+    </tr><tr>
+    !endif
+    <td class="exercise_t">
+	!if $width=$empty
+	    !set width=640
+	    !set height=480
+	!endif
+    	<object id="zirkel" classid="java:rene.zirkel.ZirkelApplet.class" type="application/x-java-applet;jpi-version=1.4" width="$xsize" height="$ysize" >
+    	    <param name="java_code" value="rene.zirkel.ZirkelApplet" />
+    	    <param name="java_codebase" value="$appletdir" />
+    	    <param name="java_archive" value="zirkel.jar" />
+    	    <param name="mayscript" value="true" />
+	    <param name="language" value="$taal" />
+	    $var1
+	    <a onmouseover="return escape('<img src=\'$gifdir/java.jpg\' alt=\'Get JAVA\' />');" target="newwindow" href="http://www.java.com/$lang/download/manual.jsp?locale=$lang" >
+	    $nojava
+	    </a>
+	</object>
+    </td>
+    !if $make_tr=1
+    </tr><tr>
+    !endif
+    !if $inputs>1
+	<td class="exercise_t">
+	    <table class="zebra_table_h2">
+		!set a_items=!itemcnt $(answer$n)
+		!if $a_items != $[floor($inputs)]
+		    !set use_lines=1
+		!else
+		    !set use_lines=0
+		!endif
+		!for p=1 to $inputs
+		    !if $wims_user=supervisor
+			!if $use_lines=1
+			    !set deelantwoord=!line $p of $(answer$n)
+			!else
+			    !set deelantwoord=!item $p of $(answer$n)
+			!endif
+        	    !else
+			!set deelantwoord=!item $p of $(reply$n)
+		    !endif
+			<tr><td>$(description[$p])</td><td>$m_rightarrow</td><td><input type="text" id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value="$deelantwoord" /></td><td>&nbsp;$(ex$p)</td></tr>
+		!next p
+	    </table>
+	</td>
+    !endif
+    </tr>
+</table>
+
+<div id="send_buttons" class="embedded_central">
+    <input type="button" id="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
+    <input type="button" id="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
+</div>
+!exit
+

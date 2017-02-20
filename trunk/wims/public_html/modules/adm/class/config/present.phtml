@@ -1,0 +1,178 @@
+!!!### language independant
+!set wims_form_method=file
+!for cl in bgcolor,ref_menucolor,ref_button_bgcolor,ref_menucolor,\
+  ref_button_bgcolor,ref_button_color,ref_button_help_color,ref_button_help_bgolor
+  !default class_$cl=$(wims_$cl)
+  !!for compatibility
+  !set class_$cl=!replace internal white by #FFFFFF in $(class_$cl)
+  !set class_$cl=!replace internal red by #FF0000 in $(class_$cl)
+  !set class_$cl=!replace internal orange by #FFA500 in $(class_$cl)
+  !set class_$cl=!replace internal yellow by #FFFF00 in $(class_$cl)
+  !set class_$cl=!replace internal green by #00FF00 in $(class_$cl)
+!next
+
+!!why is it different ???
+ !default class_refcolor=$(wims_ref_bgcolor)
+ !set class_refcolor=!replace internal white by  #FFFFFF in $(class_refcolor)
+ !set class_refcolor=!replace internal red by    #FF0000 in $(class_refcolor)
+ !set class_refcolor=!replace internal orange by #FFA500 in $(class_refcolor)
+ !set class_refcolor=!replace internal yellow by #FFFF00 in $(class_refcolor)
+ !set class_refcolor=!replace internal green by  #00FF00 in $(class_refcolor)
+
+!form reply
+<input type="hidden" name="up_job" value="present" />
+<fieldset class="property_fields blockcenter">
+  <legend>$title</legend>
+
+  <div class="field box halfwidth">
+    <label for="pr_logo">$name_logo</label>
+    !set wims_ref_class=wims_button_help float_right
+    !href cmd=help&special_parm=config&special_parm2=logo $wims_name_help
+    <input size="35" name="pr_logo" id="pr_logo" value="$class_logo" />
+  </div>
+
+  <div class="field box halfwidth">
+    <label for="pr_logoside">$name_position_logo</label>
+    !set wims_ref_class=wims_button_help float_right
+    !href cmd=help&special_parm=config&special_parm2=logo $wims_name_help
+    !set pr_logoside=$class_logoside
+    !formselect pr_logoside list left,right prompt $name_logo_side
+  </div>
+
+  <div class="field box halfwidth">
+    <label for="pr_bgcolor">$name_background_color</label>
+    !set wims_ref_class=wims_button_help float_right
+    !href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
+    <input size="10" name="pr_bgcolor" id="pr_bgcolor" value="$class_bgcolor" type="color" />
+  </div>
+
+  <div class="field box halfwidth">
+    <label for="pr_bgimg">$name_image</label>
+    !set wims_ref_class=wims_button_help float_right
+    !href cmd=help&special_parm=config&special_parm2=bgimg $wims_name_help
+    <input size="35" name="pr_bgimg" id="pr_bgimg" value="$class_bgimg" />
+  </div>
+
+  <div class="field box halfwidth">
+    <label for="pr_refcolor">$name_menu_color</label>
+    !set wims_ref_class=wims_button_help float_right
+    !href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
+    <input size="10" name="pr_refcolor" id="pr_refcolor" value="$class_refcolor" type="color" />
+  </div>
+
+  <div class="field box halfwidth">
+    <label for="pr_ref_menucolor">$name_refmenu_color</label>
+    !set wims_ref_class=wims_button_help float_right
+    !href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
+    <input size="10" name="pr_ref_menucolor" id="pr_ref_menucolor" value="$class_ref_menucolor" type="color" />
+  </div>
+
+  <div class="field box halfwidth">
+    <label for="pr_ref_button_bgcolor">$name_button_bgcolor</label>
+    !set wims_ref_class=wims_button_help float_right
+    !href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
+    <input size="10" name="pr_ref_button_bgcolor" id="pr_ref_button_bgcolor" value="$class_ref_button_bgcolor" type="color" />
+  </div>
+
+  <div class="field box halfwidth">
+    <label for="pr_ref_button_color">$name_button_color</label>
+    !set wims_ref_class=wims_button_help float_right
+    !href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
+    <input size="10" name="pr_ref_button_color" id="pr_ref_button_color" value="$class_ref_button_color" type="color" />
+  </div>
+
+  <div class="field box halfwidth">
+    <label for="pr_ref_button_help_bgcolor">$name_button_help_bgcolor</label>
+    !set wims_ref_class=wims_button_help float_right
+    !href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
+    <input size="10" name="pr_ref_button_help_bgcolor" id="pr_ref_button_help_bgcolor" value="$class_ref_button_help_bgcolor" type="color" />
+  </div>
+
+  <div class="field box halfwidth">
+    <label for="pr_ref_button_help_color">$name_button_help_color</label>
+    !set wims_ref_class=wims_button_help float_right
+    !href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
+    <input size="10" name="pr_ref_button_help_color" id="pr_ref_button_help_color" value="$class_ref_button_help_color" type="color" />
+  </div>
+
+  <div class="field box">
+    <strong>$name_colorscore</strong>
+    <p class="wimscenter">
+      !read adm/class/colors
+      !for col=1 to 11
+        <input size="5" name="pr_sccolor$col" value="$(class_scorecolor[$col])" type="color" />
+      !next col
+    </p>
+  </div>
+
+  <div class="field box">
+    <strong>$name_coloract</strong>
+    <p>
+      !set actcolor_list=color,sheet,exam,doc,vote,exo
+      !set name_actcolor=$name_act_color,$name_sheets,$name_exam, $wims_name_docs,$name_vote,$wims_name_exercises
+      !set actcolor_cnt=!itemcnt $actcolor_list
+      !default class_actcolor=#000000,#CCCCFF,#99CCFF,#9999FF,#6666FF,#FFFFFF
+      !for col=1 to $actcolor_cnt
+        <input size="5" id="pr_actcolor$col" name="pr_actcolor$col" value="$(class_actcolor[$col])" type="color" />
+        <label for="pr_actcolor$col">$(name_actcolor[$col])</label>
+      !next col
+    </p>
+  </div>
+
+  <div class="field box halfwidth">
+    <label for="pr_theme">$name_theme</label>
+    !set wims_ref_class=wims_button_help float_right
+    !href cmd=help&special_parm=config&special_parm2=theme $wims_name_help
+
+    !set pr_theme=$class_theme
+    !formselect pr_theme list $themelist
+  </div>
+
+  <div class="field box halfwidth">
+    <label for="pr_theme_icon">$name_theme_icon</label>
+    !set wims_ref_class=wims_button_help float_right
+    !href cmd=help&special_parm=config&special_parm2=icon $wims_name_help
+    !set pr_theme_icon=$class_theme_icon
+    !formselect pr_theme_icon list $iconlist prompt $iconpromptlist
+  </div>
+
+  <div class="field box halfwidth">
+    <label for="pr_css">$name_css (css)</label>
+    !set wims_ref_class=wims_button_help float_right
+    !href cmd=help&special_parm=config&special_parm2=css $wims_name_help
+
+    !set pr_css=$class_css
+    !formselect pr_css list $csslist
+  </div>
+
+  <div class="field box halfwidth">
+    <p>
+      <label for="wims_deposit">$name_css_transfer ($name_content_style)</label>
+      <input type="file" name="wims_deposit" id="wims_deposit"  />
+    </p>
+    <p>
+      <label for="pr_cssfile">$name_content_style2</label>
+      <textarea rows="6" cols="45" name="pr_cssfile" id="pr_cssfile">$cssfile</textarea>
+    </p>
+  </div>
+
+  <div class="field box halfwidth">
+     <label for="pr_homepage">$wims_name_class_home</label>
+     !set wims_ref_class=wims_button_help float_right
+     !href cmd=help&special_parm=config&special_parm2=homepage $wims_name_help
+     <input size="35" name="pr_homepage" id="pr_homepage" value="$class_homepage" />
+  </div>
+
+  <div class="fullwidth wimscenter wimsform">
+     <input type="submit" name="save" value="$wims_name_tosave" />
+ $
+     <input type="submit" name="abandon" value="$wims_name_giveup" class="wims_secondary_button" />
+  </div>
+</fieldset>
+!formend
+
+
+!reset pr_logo, pr_logoside, pr_bgcolor,pr_refcolor, pr_ref_menucolor,\
+  pr_ref_button_color,pr_ref_button_bgcolor,pr_ref_button_help_color,pr_ref_button_help_bgcolor, \
+  pr_bgimg, pr_theme, pr_css, pr_theme_icon, pr_homepage, pr_cssfile
+

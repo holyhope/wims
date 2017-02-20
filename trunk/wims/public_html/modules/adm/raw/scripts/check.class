@@ -1,0 +1,89 @@
+qclass=!translate internal ./,;?* to $             $ in $qclass
+!if $ $ isin $qclass
+ error=wrong class id ($qclass)
+ !exit
+!endif
+
+!if $qclass=$empty or $rclass=$empty
+ error=undefined local and/or remote class
+ !exit
+!endif
+
+!if _ isin $qclass
+ qclass=!translate internal _ to , in $qclass
+ nb=!itemcnt $qclass
+
+ # the recursivity down here only works for 2 levels
+ !if $nb>2
+  error=too many subdivisions in class id ($nb)
+  !exit
+ !endif
+
+ subclassid=!item 2 of $qclass
+ qclass = !item 1 of $qclass
+
+ !read scripts/check.class
+ !if $error!=$empty
+  !exit
+ !endif
+
+ class_type=!defof class_type in $classdeffile
+ !if $class_type != 2
+ 	error=sorry, there shouldn't be a subclass in a simple class
+ 	!exit
+ !endif
+
+ qclass = $qclass/$subclassid
+
+!endif
+
+
+classdeffile=wimshome/log/classes/$qclass/.def
+classexofile=wimshome/log/classes/$qclass/.defs
+
+test=!defof class_defined in $classdeffile
+!if $test!=yes
+ error=class $qclass not existing
+ !exit
+!endif
+
+test=!defof class_connections in $classdeffile
+test=!items2words $test
+test1=!translate internal +,; to $   $ in $test
+!if $ident/$rclass notwordof $test1
+ error=connection refused by requested class ($qclass)
+ !exit
+!endif
+
+!if $job iswordof modclass delclass adduser moduser deluser recuser \
+	putcsv update and\
+	($ident/$rclass+ notwordof $test and +$ident/$rclass+ notwordof $test)
+  error=modification of class not allowed
+  !exit
+!endif
+
+############ Tests : A quoi servent les "+" ? ###################
+##ces plus sont rajoutés quand il y a des droits d'une classe sur l'autre. (BPR)
+!!#une classe créée à travers le module raw : il y a un + à la fin dans class_connections
+## A quoi correspondent chacun de ces test ? (OB)
+
+!!# si l'on crée une classe en ajoutant une connection
+!!# no no
+!!# dans la classe créée myself/2534808+
+!!# dans la classe local yourself/7020853
+
+!!# yes no
+!!# myself/2534808+
+!!# +yourself/6114403
+
+!!# no yes
+!!# myself/2534808#
+!!# yourself/4729460+
+
+!!# yes yes
+!!# myself/2534808+
+!!# +yourself/1446641+
+######################## FIN des tests
+
+wims_class=$qclass
+wims_class_dir=$wims_home/log/classes/$qclass

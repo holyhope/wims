@@ -1,0 +1,8 @@
+!mexec delete.sh
+
+!set data=!record 0 of wimshome/log/classes/$wims_class/seq/.sequences
+seq_cnt=$[$seq_cnt-1]
+!set data=!replace line number 1 by $seq_cnt in $data
+!filewrite wimshome/log/classes/$wims_class/seq/.sequences $data
+
+job=show

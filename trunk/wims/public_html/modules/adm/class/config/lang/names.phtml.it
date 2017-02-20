@@ -1,0 +1,706 @@
+!set lang_exists=yes
+
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
+
+!distribute items zone,iscritti,esercizi,documenti,docenti,test di autovalutazione\
+into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers,\
+name_sheets
+
+!distribute item messaggio del giorno,\
+	esercizi,test di autovalutazione,temi d'esame,documenti,\
+	studenti,percorsi pedagogici,registro delle competenze,competenze,questionari,\
+	agenda,account docente,forum di discussione,messaggi del forum\
+	into name_motd,name_exo,name_sheet,name_exam,name_doc,\
+	name_user,name_seq,name_livret,name_competence,name_vote,\
+	name_cdt,name_sup,name_forum,name_forum_mesg
+
+!distribute item messaggio del giorno,\
+	esercizi,test di autovalutazione,temi d'esame,documenti,studenti\
+	into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
+
+!if $job=grestrict
+ !set name_allowedsites=Siti abilitati alla registrazione dei punteggi
+ !set name_excepted=Eccezioni
+!endif
+!if $job=connectlink
+  !set title=Links
+!endif
+!if $job=arch
+ !set title=Backup e ripristino
+ !set name_title_save=Salvataggio del corso
+ !set name_title_restore=Ripristino di un backup a partire da un salvataggio
+ !set name_intro1=Seleziona il file di backup da ripristinare
+ !set name_intro=Potete creare un backup del vostro corso, nei formati
+ !set name_tosend=Per ripristinare una copia di backup del vostro corso
+ !set name_namefile=indicate il nome del file di backup
+ !set name_help=La procedura proseguirà con la richiesta di selezionare quali risorse del corso si vuole effettivamente ripristinare
+
+ !set name_deposit=!nosubst Il file di backup inviato <span class="tt wims_fname">$wims_deposit</span> contiene le seguenti risorse. \
+Selezionate quelle che volete ripristinare.
+
+ !set name_no_restore=Non può essere ripristinato perché state condividendo risorse di un altro corso. Il ripristino può essere effettuato solo a partire dal corso da cui hanno origine le risorse condivise.
+
+  !distribute lines Non sono state selezionate risorse da ripristinare.\
+   Ripristina tutto eccetto la configurazione del corso e l'account docente.\
+ <span class="wims_warning">Pericolo!</span> <span class="small">Vedi nota più avanti</span>\
+   Configurazione del corso.\
+   Account docente (compresa la password)\
+   account studenti\
+   Account esistenti\
+   documenti\
+   Documenti esistenti\
+   esercizi\
+   Esercizi esistenti\
+   test di autovalutazione\
+   Implica il ripristino degli esercizi del corso\
+   Test esistenti\
+   temi d'esame\
+   Implica il ripristino dei test di autovalutazione e degli esercizi del corso\
+   Temi d'esame esistenti\
+   messaggi del forum\
+   Messaggi esistenti\
+   Attività studenti e voti attribuiti dal server. Implica il ripristino degli account degli studenti.\
+   Voti assegnati dal docente\
+   Voti esistenti\
+   Agenda del corso\
+   L'agenda esiste\
+   Registro delle competenze\
+   Il registro esiste\
+   Percorsi pedagogici\
+   Implica il ripristino dei test, degli esercizi, dei temi d'esame e dei documenti\
+   Percorsi esistenti\
+   Metodo di ripristino\
+   Sostituisci\
+   sostituisce le risorse pedagogiche esistenti con quelle contenute nel file di backup\
+   Unisci\
+   sostituire le risorse esistenti eccetto gli account degli studenti e gli esercizi del corso; riguardo a questi ultimi, gli esercizi con lo stesso nome saranno sostituiti dai dati contenuti nel file di backup, mentre gli altri resteranno invariati\
+   Ripristina le risorse selezionate\
+   Existing message of the day\
+ into name_noselect,name_all,name_danger,name_config,name_teacher,name_user,name_user1,name_doc,\
+   name_doc1,name_exo,name_exo1,name_sheet,name_sheet0,name_sheet1,name_exam,name_exam0,name_exam1,name_forum,\
+   name_forum1,name_activity,name_manual,name_manual1,name_cdt,name_cdt1,name_livret,name_livret1,name_seq,\
+   name_seq0,name_seq1,name_method,name_replace,name_replace1,name_merge,name_merge1,\
+   name_selectrestore,name_motd1
+
+!!set name_cnil_warning=Nous vous rappelons que conformément aux déclarations faites à la CNIL, \
+  vous ne devez pas garder de données relatives à vos élèves plus d'un an. Vous devrez alors détruire\
+  toutes les sauvegardes contenant les données des élèves.\
+  Faites une sauvegarde sélective si vous désirez garder les ressources que vous\
+  avez créées (feuilles, examens, documents) ou utilisez la possibilité de duplication.
+
+!distribute lines Le risorse contenute nel backup sono state ripristinate\
+  Il ripristino degli account degli studenti (e dei registri delle attività) non è stato possibile per mancanza di spazio.\
+ La data di termine del corso è stata modificata dopo il ripristino, poiché la data impostata nel file di backup è\
+  Participant accounts already in use in your groupement (restauration refused)\
+  Il ripristino di un backup non è permesso in quanto sono presenti risorse condivisibili\
+  Save/Restoration is not needed at this level of the structure\
+ into name_restore1,name_restore2,name_restore3,name_restore4,name_forbiddenrestore,name_restore5
+
+ !distribute items incomprensibile, troppo presto, troppo tardi into ebad,eearly,elate
+
+ !distribute lines Spiacente, il salvataggio del vostro corso non è andato a buon fine.\
+  Ecco il file di backup del vostro corso: \
+  Cliccare sul nome per salvare tale file sul vostro computer.\
+  È anche possibile fare una selezione delle risorse da salvare nell'elenco seguente: \
+  e quindi cliccare sul bottone\
+  Backup selettivo\
+  per modificare il file di backup già generato.\
+ into name_download1,name_download2,name_download3,name_download4,\
+   name_selective1,name_selective2,name_selective3
+
+ !set name_download5=Attenzione: il file di backup creato è troppo grande e supera le dimensioni possibili per permettere \
+ un futuro ripristino sul server. È necessario ridurre le dimensioni del file, \
+ per fare ciò è possibile fare un backup selettivo, scegliendo qui di seguito quali risorse includere nel backup
+
+ !goto commun
+!endif
+
+!if $job=clean
+ !set title=Manutenzione (pulizia) del corso
+ !set name_lines=participant activity lines
+ !set name_empty=Il corso è vuoto!<br /> Non ci sono risorse del corso che possono essere cancellate.
+ !set name_no_erase=Non si può effettuare la pulizia perché le risorse sono condivise da (from) un altro corso.
+
+ !distribute lines Elimina tutto quello che può essere eliminato\
+   Si eliminerà anche il registro delle attività degli studenti\
+   Si elimineranno anche i temi d'esame\
+   Esegui un backup del corso\
+   Risorse effettivamente presenti nel corso\
+ into name_cleanall,name_erase1,name_warning_exam,name_saveclass,name_ressource
+  !set name_warning_clean=Le risorse eliminate con questa procedura non possono più essere ripristinate!
+ !goto commun
+!endif
+
+!if $job=neighbor
+ !set title=Corsi vicini
+ !set name_noclass=Non è possibile definire un rapporto di vicinato perché su questo sito non ci sono altri corsi.
+ !set name_toomany=There are too many virtual classes on this site. Please type a keyword\
+  to search for the class you want to enter.
+ !set name_toomany2= There are too many classes corresponding to your search. Please\
+  type a more precise keyword.
+
+ !distribute lines Cerca un corso\
+  Nessun corso trovato. Riprova.\
+  Mostra i corsi aperti disponibili su questo server\
+  Le relazioni di vicinato tra corsi permettono lo scambio di risorse o la condivisione del lavoro tra i corsi.\
+  Seleziona un corso per modificare la relazione di vicinato con tale corso.\
+  Corsi nella stessa lingua del vostro\
+  Corsi in altre lingue\
+  Esempi\
+into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
+  name_samelanguage,name_otherlanguage,name_example
+
+ !distribute lines Configurazione di vicinato\
+   Condivisione risorse\
+   per voi\
+   per l'altro corso\
+   Condivisione reciproca attiva.\
+   Voi condividete le sue risorse.\
+   Avete messo in condivisione le vostre risorse.\
+   Permesso reciproco di condivisione.\
+   Ha il permesso di condividere le vostre risorse.\
+   Vi permette di condividere le sue risorse.\
+   Interrompi la condivisione\
+   Accettare la condivisione\
+   importare tutti\
+   Teaching resources\
+   Importa altre risorse\
+   Corsi autorizzati a condividere le vostre risorse\
+   Risorse di cui autorizzate la condivisione\
+   attive\
+   Elenca tutti i corsi\
+   Informazioni sulla condivisione delle risorse\
+   Mostra i corsi aperti presenti sul server\
+   importare risorse\
+   Puoi\
+   del corso\
+   Clicca qui per selezionare le risorse da accettare in condivisione\
+ into name_declaration,name_sharing,name_byyou,name_other,name_actif,name_share1,name_share2,\
+ name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching,\
+ name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,name_exampleclass,\
+ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
+
+ !set name_nonewres=!nosubst Non ci sono (nuove) risorse nel corso \
+  <span class="wims_emph">$nei_description</span> che voi siete autorizzati a condividere.
+
+ !set name_newres=!nosubst Il corso <span class="wims_emph">$nei_description</span> \
+ vi <b>autorizza</b> a condividere i suoi
+
+ !set name_chooseres=!nosubst Scegliete i tipi di risorse che <b>mettete a disposizione</b> per il corso <span class="wims_emph">\
+  $nei_description</span> per una condivizione (<i>selezionate ciascun tipo, quindi cliccate su\
+  <span class="wims_button disabled">$wims_name_tosave</span></i>)
+
+ !set name_warning_authorized=!nosubst La classe <span class="wims_emph">$nei_description</span>\
+  vous autorise à partager certaines ressources. Vous ne devez pas l'autoriser à partager les mêmes types de ressources \
+  sous peine de confusion. Commencez par  décider quelle classe, parmi celles avec lesquelles vous\
+  voulez partager des ressources, autorise le partage de tel type de ressource\
+  et quelles classes acceptent ce partage.
+
+ !distribute lines Relazioni di vicinato\
+   non ha dichiarato rapporti di vicinato con il vostro corso\
+   vi ha accettato come vicino per\
+   con\
+   Voi state condividendo le risorse di altri corsi\
+   non ha risorse che voi potete importare\
+   vi permette di importare le seguenti risorse\
+   Presenti nel vostro corso con lo stesso titolo\
+   Niente\
+   in preparazione\
+   Sostituisci\
+   Il login è già in uso nel vostro corso\
+   Lo studente escluso è invece presente nel vostro corso\
+   Importazione dal corso\
+   Trasferiti con successo\
+   account studente dal corso vicino\
+   Verifica i risultati\
+ into name_neighbor_relation,name_text1,name_text2,name_with,name_sharealready,\
+   name_no_ressource,name_importable,name_same_title,name_empty,name_inpreparation,\
+   name_replace,name_existinglogin,name_part_erased,name_import,name_transfered,\
+   name_neigh_account,name_verify
+
+ !set name_inactif=!nosubst La risorsa importata $(name_$itype) è <em>in preparazione</em> in modo da poter essere modificata.
+
+ !set name_accept=!nosubst Voi accettate il corso <span class="wims_emph">$nei_description</span> come vostro vicino per
+
+ !if $job2=stopshare
+  !set title=Interompi la condivisione
+  !set name_warning=Il vostro corso ha attività in corso e le risorso condivise \
+   non sono vuote. Se si interrompe la condivisione ora, non sarà più possibile \
+   ripristinarla in seguito. \
+ <br />Siete sicuri di voler interrompere definitivamente questa condivisione?
+
+ !set name_stop=interrompi.
+ !endif
+ !if $job2=sharelist
+  !set title= Informazioni sulla condivisione delle risorse.
+  !set name_sharelist=!nosubst Stai condividendo $(name_$rec) che ha origine da
+  !distribute lines Non stai condividendo risorse che hanno origine da altri corsi.\
+   Stai condividendo risorse che hanno origine da altri corsi\
+  into name_noresource,name_resource
+  !endif
+
+  !if $job2=addshare
+    !set title=Condividi le risorse del corso
+    !set name_class_share=Il corso <span class="wims_emph">$nei_description</span> ti permette la condivisione delle risorse seguenti.
+  !distribute lines disponibile/i\
+    State condividendo.\
+    Non le puoi condividere perché stai condividendo le risorse analoghe da un altro corso.\
+    elimina le risorse del tuo corso\
+    se è possibile\
+    La condivisione dell'acount docente è una cosa MOLTO pericolosa! \
+  into name_available,name_actually_sharing,name_nosharing,name_cleanup,name_ifpossible,\
+    name_dangerous
+
+  !set name_warning1=You cannot share them because you are allowing other \
+    classes to share such teaching materials from you. Cascaded sharing is not \
+    supported. So you must stop allowing these shares before you can share from others.
+  !set name_warning2=!nosubst You cannot share them because your own $(name_$r) are not empty.\
+   Before sharing can be made, you should first
+  !set name_warning_erase=!nosubst This will ERASE your own existing $(name_$r)! They will be definitely\
+     lost if you have no backup.
+
+  !endif
+
+  !distribute items ---,<span class="small">per il docente</span>,\
+	<span class="small">per gli studenti</span>,\
+	<span class="small">per tutti</span>\
+  into n_n0, n_n1, n_n2, n_n3
+
+ !goto commun
+!endif
+
+!if $job=connect
+ !set title=Connessione ad altri server / piattaforme
+ !set name_listserver=Elenco delle connessioni definite
+
+ !distribute lines Test a server connection\
+   Test a connected class\
+   Add a connecting class\
+   Manage a connected class\
+   local class, remote class\
+   class definition, user list, score averages, score details,all but class definition\
+   Synchronize\
+   (with the other one) for\
+   Remote class\
+   Remote server\
+   Configura\
+   Elimina connessione\
+   This connection to the remote server is working.\
+   The connection has been added to your class, but the remote server returns an error message\
+   The remote server does not reply. Please report to the\
+  The connection is rejected by the remote server. Error message\
+  Checked remote class\
+  This connection is working. Data returned from the remote class\
+  To connect to a class on the above server, please specify\
+  Identifier of the remote class\
+  If the remote class is empty, the server will create a new class on the remote server, duplicating the properties of this one.\
+  Automatically update the remote class for changes made on this one\
+  Allow the remote class to modify this one\
+  This class has no connections to other servers.\
+  You have declared the following connections to other servers.\
+  Server\
+  This WIMS server has the following connectable servers presently.\
+  Azioni sulla connessione\
+ into wims_name_connecttest,wims_name_classtest,wims_name_addconnection,wims_name_connectmanage,name_prompt1,\
+   name_prompt2,name_synchronize,name_withotherone,name_remoteclass,name_remoteserver,wims_name_Manage,\
+   wims_name_destroy,name_working,name_error1,name_errornoreply,name_errorreject,name_check,name_data,\
+   name_toconnect,name_identifier,name_help,name_automatically,name_allow,name_noconnection,name_declaration,\
+   wims_name_server,name_listserver1,name_connexion_action
+
+ !goto commun
+!endif
+
+!if $job=access
+ !set title=Limitazione dell'accesso ai materiali
+ !goto commun
+!endif
+
+!if $job=grestrict
+ !set title=Limitazione della registrazione dei punteggi
+ !goto commun
+!endif
+
+!if $job=present
+ !set title=Configurazione dell'aspetto del corso
+ !goto commun
+!endif
+
+!if $job=oefdefault
+ !set title=Parametri di default per moduli di esercizi OEF
+ !read oef/it/intronames
+
+ !distribute lines $name_oneserie\
+   $name_levelseverity\
+   $name_chrono\
+   $name_secondes\
+   $name_qcmanswer\
+   $name_solutiongiven\
+   $name_choice\
+   $(name_choice_check[1])\
+   $(name_choice_check[2])\
+   $(name_choice_check[3])\
+   $(name_choice_check[4])\
+  into name_series,name_severity,name_chrono,name_secondes,name_qcmanswer,\
+    name_solution,name_prompt,name_prompt1,name_prompt2,name_prompt3,name_prompt4
+   !set name_warning=$(name_remarkintro3)
+ !goto commun
+!endif
+
+!if $job=security
+ !set title=Configurazioni di sicurezza disponibili
+ !set name_see_activity2=You should be the origin of all these activities; if this is not \
+   the case, you should verify where there is a leak of your supervisor's password.
+ !set name_see_activity1=See the log file of management activities of your class.
+ !distribute lines Set up the class-wide restriction\
+ of sites allowed to get scores.\
+ Other security setups in the\
+ class configuration\
+ into name_restriction1,name_restriction2,name_otherrestriction1,name_otherrestriction2
+ !goto commun
+!endif
+
+!if $job=authtype
+ !set title=Autenticazione attraverso un server esterno
+ !set name_intro_authtype=Selezionare il tipo di autenticazione e \
+ identificazione esterna che si vuole utilizzare e compilare i campi corrispondenti.
+ !set name_method_list= autenticazione via wims, autenticazione via CAS, autenticazione via CAS e identificazione via ldap,\
+ autenticazione e identificazione via ldap, autenticazione via CAS e identificazione via php,\
+ autenticazione e identificazione via php
+ !goto commun
+!endif
+
+!if $job=import
+ !set code1=Nessuno
+ !set code2=$wims_name_yes ma diverso
+ !set code3=$wims_name_yes, attivo e diverso
+!endif
+
+!if $job=propagate
+  !if $wims_supertype=2
+   !set name_thisclass=del coordinamento
+   !set name_subclasses=i sottocorsi
+   !set name_tosubclasses=ai sottocorsi
+  !else
+   !set name_thisclass=della zona attuale
+   !set name_subclasses=le zone dipendenti
+   !set name_tosubclasses=alle zone dipendenti
+  !endif
+
+ !distribute lines L'invio della configurazione $name_tosubclasses ha avuto successo\
+  Potete scegliere di inviare le configurazioni seguenti $name_thisclass $name_tosubclasses\
+ into name_propagate_succes,name_propagate_choose
+
+ !set name_warning=Si noti che $name_subclasses non riceveranno automaticamente le \
+ulteriori modifiche della configurazione $name_thisclass. È \
+necessario reinviare le modifiche ogni volta che volete trasmettere \
+le modifiche $name_tosubclasses.
+
+!endif
+
+!if $job=log
+  !set name_warning_log=Here is the log of certain managing activities of your class. This log\
+allows you to verify whether there are suspicious activities.
+!endif
+
+!if $job=index
+  !set title=!nosubst Aggiornamento dell'elenco $tit
+  !set name_done=Completato
+  !set name_result=Risultato dello script
+
+  !if $job2=structure
+   !set tit=delle zone
+  !endif
+  !if $job2=userlist
+   !set tit=degli iscritti
+  !endif
+  !if $job2=teacherlist
+   !set tit=dei docenti
+  !endif
+  !if $job2=oef
+   !set tit=degli esercizi
+  !endif
+  !if $job2=doc
+    !set tit=dei documenti
+   !endif
+!endif
+
+!if $job iswordof list new or $job=
+  !distribute line Nome dell'istituzione\
+    Nome del corso\
+    Codice corso\
+    Opzioni avanzate\
+    Accesso a Modtool\
+    Tipo di connessione\
+    Numero di voti migliori\
+    Numero massimo di iscritti\
+    Data di termine del corso\
+    Esercizi salvati\
+    Esami salvati\
+    visibili per gli studenti\
+    per modificare gli stili delle pagine del corso, come i colori, il logo,...\
+modifica le opzioni di visualizzazione del docente, non modifica l'aspetto del corso per gli altri utenti\
+    Trasmettere le configurazioni alle zone dipendenti\
+per definire i corsi vicini su questo server, con cui scambiare materiali\
+per definire connessioni verso altri server\
+definire una autenticazione esterna a WIMS; la configurazione deve essere fatta prima dell'inizio delle iscrizioni\
+    degli iscritti attraverso un server ldap\
+    Aggiorna gli elenchi\
+   tra cui \
+effettuare un backup del corso sul proprio computer o ripristinare i contenuti a partire da un backup salvato in precedenza\
+per selezionare gli strumenti a disposizione degli iscritti\
+per selezionare le postazioni per cui sono registrati i punteggi ottenuti dagli studenti\
+    abilitate alla registrazione dei voti\
+    Effettua una manutenzione selettiva\
+   Configura il\
+    Utilizzo spazio disco\
+    Numero massimo di iscritti\
+    Mista\
+    Permettere la sospensione della registrazione del punteggio\
+    Formato del titolo degli OEF esercizi come visibile agli studenti\
+    Gli studenti possono vedere se il docente è collegato\
+    L'amministratore può vedere l'IP di collegamento degli studenti di un corso\
+    Campi aggiuntivi per il modulo di iscrizione\
+    È permesso un cambio di IP durante un esame\
+impostazioni da definire in fase di creazione del corso, in particolare configurazione dei test di autovalutazione e degli esami\
+  into name_name_institution,name_name_class,name_name_number,name_optionword,name_devaccount,name_lock_level,\
+    name_bestscore,name_limit,name_expirationdate,name_register_exo,name_register_exam,\
+    name_visible,name_apparence,name_pref,name_dependant_zone,name_neigh,name_link,name_useauth,name_ldap,name_index,\
+    name_change,name_load,name_restriction1,name_restriction2,name_score,name_clean,\
+    name_config,name_disk,name_limit2,name_mix_auth,name_config_authscoresuspend,\
+    name_config_exotitleform,name_config_supconnectshowed,name_config_show_IP,name_regvars,\
+    name_examscore_withoutip,name_param
+
+ !set name_config_exotitleformoption=Nessuno,Titolo dell'esercizio,Numero del test e dell'esercizio,Titolo del test e numero dell'esercizio,Titolo del tset e titolo dell'esercizio nel test
+ !set name_allowcloning=Permette duplicazione
+ !set name_cloningpwd=Password per duplicazione
+!endif
+
+:commun
+!distribute line Configurazione generale\
+Autenticazione\
+Opzioni\
+Accesso agli strumenti\
+Parametri di default per esercizi OEF\
+Corsi vicini\
+Opzioni di sicurezza\
+Pulizia selettiva\
+Rivisualizza\
+Altri server\
+Modifica password\
+Zone dipendenti\
+Aspetto\
+Registrazione dei voti\
+Link esterni\
+di\
+Autenticazione esterna\
+into wims_name_config_list,wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
+wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
+wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
+wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
+
+!distribute lines Accesso da IP sicuro\
+   Foglio stile\
+   Logo\
+   Posizione del logo\
+   in alto a sinistra,in alto a destra\
+   Tema\
+   Set di icone\
+   Livello scolastico/accademico\
+   Postazioni abilitate alla registrazione dei voti\
+   Password di iscrizione al corso\
+   Password di gestione del corso\
+   Numero massimo di esercizi e esami salvabili\
+   Link verso una piattaforma o una pagina web\
+   Colore dello sfondo delle pagine\
+   Colore dello sfondo dei menu\
+   Colore dei link nei menu\
+   Immagine di sfondo delle pagine\
+   carica un file css\
+   Scala di colori per i voti (da 0 a 10)\
+   Colore di sfondo dei tasti\
+   Colore del testo dei tasti\
+   Colore di sfondo dei tasti per l'help\
+   Colore del testo dei tasti per l'help\
+   Link di connessione\
+   Colore del testo\
+   Colori nella presentazione delle attività\
+link per accesso diretto al corso\
+   Parametri di default per esercizi OEF\
+   into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
+   name_theme_icon,name_level,name_security,name_password,name_supass,name_exolog,name_ent,\
+   name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,\
+   name_colorscore,name_button_bgcolor,name_button_color,name_button_help_bgcolor,\
+   name_button_help_color,name_connectlink,name_act_color,name_coloract,\
+   name_connectlinkhelp,name_oefdefault
+
+!set name_content_style =<span class="tt wims_code_words">$name_css</span>  deve essere <span class="tt wims_code_words">class</span>
+
+!set name_content_style2=o copia qui i comandi css
+
+!distribute lines Presentazione del corso e dei suoi contenuti\
+la configurazione di questi strumenti può essere fatta a partire dalla pagina relativa\
+la configurazione può anche essere effettuata al di fuori di quest'area\
+parametri di default per l'inserimento di un esercizio in un test\
+Accesso ai materiali e alla registrazione dei voti\
+Connessioni con altri corsi WIMS o con altri server\
+Les liens ci-dessous vous permettent de modifier certains paramètres de la classe.\
+Salvataggio e manutenzione del corso\
+into name_newrem1,name_newrem2,name_seqrem,name_oefrem,\
+  name_title_access,name_title_other,name_configrem,name_title_saveman
+!exit
+:arch
+
+ State ripristinando risorse che appartengono a un altro corso.
+ Se ripristinate risorse incompatibili con il vostro corso, correte il rischio
+ che vada letteralmente distrutto.
+ !href cmd=help&special_parm=dependencies Perché questo avviene?
+ <br />
+ !href cmd=reply&job=list Fermatevi
+  se non siete sicuri di quello che sate facendo. (E in ogni caso
+  fate un backup dello stato attuale prima di continuare.)
+!exit
+
+:arch_end
+ <span class="wims_warning">IMPORTANTE</span>. <ul><li> Non viene effettuato alcun controllo
+  sull'integrità dei dati che state caricando sul server, modifiche manuali
+  del file di backup non sono supportate dal sistema. Eventuali errori nelle
+  modifiche manuali possono portare conseguenze imprevedibili.</li>
+
+<li>Evitare nei limiti del possibile di ripristinare
+<span class="wims_warning">opzioni di configurazione</span> e
+<span class="wims_warning">account docente</span>.
+Errori nel file di ripristino per questi due campi possono
+farvi perdere ogni possibilità di accedere e gestire il vostro corso.</li>
+
+<li> È possibile utilizare il backup di un vecchio corso per
+impostarne uno nuovo. In questo caso evitare di ripristinare i voti (sia
+quelli assegnati automaticamente dal server, che quelli assegnati manualmente
+dal docente). Si tenga presente che se queste due risorse vengono ripristinate
+poi non possono più essere cancellate (per motivi di sicurezza) e che se
+sono presenti dei voti, alcune funzioni di gestione del corso non sono
+disponibili.</li>
+</ul>
+!exit
+
+:clean
+<p>
+ You cannot erase teaching materials of the class
+ when participant activities have already started.
+ </p><p>
+ This is an important security measure. If you feel that it is an
+ inconvenience, think of the following two aspects.
+ </p><p>
+ On the one hand, suppose that your password is stolen and someone wants to erase
+ something on this page. Your teaching activities would be greatly disturbed and
+ your students would be penalised.
+ </p><p>
+ On the other hand, different teaching materials of the class are inter-dependent.
+ If you
+ erase some teaching materials without erasing those depending on them, your class
+ will no longer work.
+ !href cmd=help&special_parm=dependencies Examples.
+ </p><p>
+ Anyway, if you really want to clean this class, you can always expire it
+ (by setting its expiration date to today; the class will disappear the next
+ morning), or
+ <a href="mailto:$wims_site_manager?subject=Please erase my class">ask
+ the webmaster</a> to erase it for you.
+ </p>
+ !exit
+
+:clean2
+<span class="wims_warning">$wims_name_warning</span>. <ul><li> Questa funzione è disponibile solo in fase di prima configurazione del corso. Una volta che l'attività degli studenti è cominciata non è più possibile eliminare risorse.
+</li><li>
+ L'operazione di eliminazione di risorse condivise può essere effettuata
+solo nei corsi che originano la condivisione. Per fare ciò occorre
+comunque che tutti gli altri corsi
+!href cmd=reply&job=neighbor&job2=sharelist interrompano la condivisione
+ per permettere tale eliminazione.
+ </li></ul>
+!exit
+
+:connect_first_info
+Server / platform connection allows your class to directly communicate with
+another one on another WIMS server or on another web e-learning platform. Participants
+can easily move from one class to another.
+<br />
+In particular, you can mirror this class to a remote WIMS server,
+so that if this server becomes momentarily unavailable, work
+may continue in the mirror class. Scores on the mirror can be merged later.
+!exit
+
+:connect_first
+
+This WIMS server has not declared any connectable remote server. In order
+ to use this connection feature, the
+ <a href="mailto:$wims_site_manager?subject=server connection">site
+ manager</a> must declare such remote server, and the remote server must also
+ declare this WIMS server as connectable.
+ (The webmaster can refer to the file
+ <span class="tt wims_fname">$basedir/log/classes/.connections/myself</span> for details of how to
+ declare site connections.)
+
+ !exit
+
+:import2
+ <p>Il test di autovalutazione che vuoi importare contiene potrebbe utilizzare
+   esercizi definiti nel corso vicino.
+   </p><p>
+   Se tali esercizi non esistono nel tuo corso, il test importato potrebbe
+   non funzionare correttamente. Verifica con cura che tutti gli esercizi
+   presenti nel corso vicino siano presenti (ad esempio siano importati)
+   nel tuo corso.
+   </p>
+!exit
+:import3
+   <p>Exam sheets are based on worksheets to make up their
+   contents.
+   </p><p>
+   Importing an exam sheet makes sense only if you have exactly the same
+   active worksheets as your neighbor, and only if these worksheets are in the
+   same order within the two classes.
+   </p><p>
+   If this is not the case, the imported exam sheet will almost certainly
+   behave erratically.
+   </p>
+!exit
+:import4
+  You are about to replace an existing $(name_$itype)
+  in your class by
+  the imported teaching resource. No recovery will be possible after this
+  operation, and your existing $(name_$itype), which is different from the
+  imported one, will be definitely lost.
+!exit
+
+:import5
+ Non è stato possibile aggiungere utenti al corso. Verificare che non
+ si sia raggiunto il numero massimo di utenti (eventualmente consultare
+ il webmaster per verificare che il server non abbia raggiunto il limite).
+!exit
+
+:auth1
+<p>Le pagine di configurazione sono accessibili solo se si è definita una
+connessione sicura.
+</p><p>
+Dal momento che non è stata configurata una connessione sicura, stiamo inviando
+un messaggio di verifica al tuo indirizzo email. Controlla la posta e inserisci
+qui sotto il codice che hai ricevuto.
+</p>
+!exit
+:auth2
+<p>
+<span class="wims_warning">Nota</span>. Questa verifica serve a limitare i danni al corso anche in
+caso di furto della password.
+Per una maggiore sicurezza sarebbe opportuno (e più semplice) definire
+correttamente le postazioni di accesso sicure.
+</p>
+!exit
+
+:download
+<p><span class="wims_warning">$wims_name_warning!</span> Di solito le parti che occupano più spazio sono l'attività
+degli iscritti, i messaggi del forum e i documenti del corso. È possibile
+fare più backup separati per ognuna di queste risorse.
+</p>
+!exit

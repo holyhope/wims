@@ -1,0 +1,42 @@
+<!-- adm/class/sheet/student.phtml START -->
+
+!read adm/class/classname.phtml $wims_classname\
+$wims_institutionname
+
+!read adm/title.phtml 1\
+$classname\
+$name_title
+
+<div class="wims_sheet_desc">$desc</div>
+
+!if $exocnt=0
+ $wims_name_sheetempty
+!else
+ $name_assignedwork:
+ <div class="wims_sheet">
+  <ul class="wims_sheet_list">
+  !for i=1 to $exocnt
+   !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+   !distribute lines $ex into di,pa,re,we,ti,de,dep
+   <li>$i.
+    !href module=$di&cmd=new&worksheet=$parm1&$pa $ti
+, $de
+    !if $re>0
+     <span class="small">$name_quality 0/10. </span>
+    !endif
+   </li>
+  !next i
+  </ul>
+ </div>
+!endif
+
+!homeref
+
+!set wims_menu_items=!append line itemsep,0,\
+backteacher,1,cmd=resume\
+to $wims_menu_items
+
+<!-- adm/class/sheet/student.phtml END -->
+!tail
+
+!set job=

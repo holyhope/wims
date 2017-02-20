@@ -1,0 +1,20 @@
+!!site.proc :
+!!Adds Site-wide links in wims_rm_0 for navigation menus
+
+!set wims_rm_0 = $wims_rm_0\
+mod_new,1,module=adm/new
+
+!set wims_show_stat=!tolower $wims_show_stat
+!if yes isin $wims_show_stat
+ !set wims_rm_0 = $wims_rm_0\
+stat,1,module=adm/stat/stat\
+ref,1,module=adm/stat/referer
+!endif
+
+!set wims_rm_0 = $wims_rm_0\
+download,1,module=adm/light&phtml=download.phtml.$lang\
+mirror,1,module=adm/light&phtml=mirror.phtml.$lang\
+cgu,1,module=adm/light&+phtml=cgu.phtml\
+pref,1,module=adm/light&phtml=useropts.phtml.$lang
+
+!!iconabout,1,module=adm/light&+phtml=iconabout.phtml

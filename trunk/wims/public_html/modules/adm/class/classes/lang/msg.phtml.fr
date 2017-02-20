@@ -1,0 +1,51 @@
+!set wims_module_log=ERROR $error
+
+!if $error=bad_password
+ Mot de passe non reconnu. Veuillez réessayer après quelques secondes.
+ <form action="#" name="chrono">
+ <span class="wims_warning">$wims_name_warning</span> ! Tout mot de passe envoyé dans les 5 secondes
+ qui suivent sera rejeté&nbsp;!
+ <input size="1" name="clock" /> </form>
+ !exit
+!endif
+
+!if $error=in_exam
+ Vous ne pouvez pas changer de classe quand vous êtes en train de passer
+ un examen.
+ !exit
+!endif
+
+!if $error=recent_rafale
+ Ce compte est bloqué pendant 10 minutes à cause d'activités irrégulières.
+ !exit
+!endif
+
+!if $error=no_cgu
+ Vous n'avez pas accepté les conditions générales d'utilisation de ce serveur (CGU).
+ Vous devez d'abord accepter les CGU avant de pouvoir vous identifier.
+ !form reply
+  !formcheckbox agreecgu list yes prompt $name_acceptcgu
+  [
+  !href cmd=help $name_seecgu
+  ]
+  !let save_logincgu=$auth_user
+  <div class="wimscenter wimsform">
+  <input type="submit" value="$wims_name_tosave" />
+  </div>
+
+!formend
+ !exit
+!endif
+
+!if $error=bad_loginmail
+ Votre identifiant n'est pas reconnu ou vous n'avez pas défini d'adresse électronique lors de votre inscription.
+ <br />
+ Demandez à votre enseignant de vous attribuer un nouveau mot de passe.
+ <form action="#" name="chrono">
+ <span class="wims_warning">$wims_name_warning</span> ! Cette procédure de récupération de mot de passe est désactivée pendant 5 secondes &nbsp;!
+ <input size="1" name="clock" /> </form>
+ !exit
+!endif
+
+!msg $error
+

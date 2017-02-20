@@ -1,0 +1,121 @@
+!if $wims_class=
+  !read adm/language lang/names.phtml
+!else
+  !read adm/class/classlang names.phtml
+  !set modu_lang=$moduclass_lang
+!endif
+!if $(module_title_$modu_lang)!=
+  !set module_title=$(module_title_$modu_lang)
+!endif
+!read lang/names.phtml.$modu_lang
+
+!header1
+
+!read adm/title.phtml 1\
+WIMS $httpd_HTTP_HOST\
+$title_title
+
+!if $toomany=yes
+ !read lang/toomany.phtml.$modu_lang
+ !goto end
+!endif
+
+!if $error!=$empty
+ <div class="wims_msg alert">
+ !read lang/msg.phtml.$modu_lang
+ </div>
+ <p>
+ !href module=$module&cmd=reply&step=0 $name_restart
+ </p>
+ !goto end
+!endif
+
+!if $step=$empty or $step=0
+ !set password=
+ !set passsup=
+  $name_warning
+ !form reply
+ <input type="hidden" name="step" value="1" />
+ <ul>
+ <li>$name_name_forum
+  <input size="$titlelim" name="title" value="$title" />
+</li><li>
+$wims_name_Description (< $desclim $name_characters) :
+  <textarea cols="65" rows="5" name="description">$description</textarea>
+</li><li>
+$name_name_owner
+  <input size="$suplim" name="supervisor" value="$supervisor" />
+</li><li>
+$wims_name_email
+  <input size="$emaillim" name="email" value="$email" /> <br />
+  ($name_warning1)
+</li><li>
+$name_choosepass1
+  <input size="16" type="password" name="passsup" /> <br />
+  ($name_instruction). <br />
+  $name_help1
+</li><li>
+$name_choosepass2
+  <input size="16" type="password" name="password" /> <br />
+  ($name_instruction). <br />
+  $name_help2</li></ul>
+ <p class="wimscenter wimsform">
+ <input type="submit" value="$name_continue" />
+ </p>
+
+ !formend
+
+ !goto end
+!endif
+
+!if $step=1
+ $name_hello, $supervisor!<p>
+ !read lang/names.phtml.$modu_lang step1
+
+ !form reply
+ <p><input type="hidden" name="step" value="2" />
+  $name_ownerpass
+ </p><p><input type="password" name="passsup" /> </p>
+ !if $pword!=$empty
+ <p>
+  $name_forumpass
+  <input type="password" name="password" />
+  </p>
+ !endif
+ <p class="wimscenter wimsform"><input type="submit" value="$name_continue" /></p>
+
+ !formend
+ !goto end1
+!endif
+
+!if $step=2
+ $name_hello, $supervisor!<p>
+!read lang/names.phtml.$modu_lang step2
+ !form reply
+ <input type="hidden" name="step" value="3" />
+ <p class="wimscenter">$name_code : <input size="16" name="typecode" /></p>
+ <p class="wimscenter"><input type="submit" value="$name_continue" /></p>
+
+ !formend
+ <p>
+ $name_warning2
+ </p>
+ !goto end1
+!endif
+
+!if $step=3
+ $name_hello, $supervisor!<p>
+!read lang/names.phtml.$modu_lang step3
+ !goto end
+!endif
+
+:end1
+<p>
+!set wims_ref_class=wims_secondary_button
+!href module=$module&cmd=reply&step=0 $wims_name_giveup
+</p>
+:end
+!tail
+
+!set step=
+

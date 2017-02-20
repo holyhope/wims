@@ -1,0 +1,78 @@
+<li><b>Author-controlable multiple choices</b>: <span class="tt wims_code_words">checkbox</span>,
+ <span class="tt wims_code_words">click</span>, <span class="tt wims_code_words">menu</span>, 
+ <span class="tt wims_code_words">radio</span>, <span class="tt wims_code_words">mark</span>, <span class="tt wims_code_words">flashcard</span><br/>
+ These can be used to replace the standard multiple choice input, giving
+ you more control on its appearance. The good answer should contain two
+ fields, separated by a semi-colon <span class="tt wims_code_words">;</span>. The second field (after
+ the semi-colon) is the list of choice texts, and the first field is a list
+ of numbers of the good choices. In the case of <span class="tt wims_code_words">checkbox</span>
+ and of <span class="tt wims_code_words">flashcard</span>, the user
+ must check exactly all the good choices. For all the
+ other cases, any good choice will be enough.
+ In case of <span class="tt wims_code_words">flashcard</span>, the third line is showed on the hident face of the
+ cards (default: interogation points).
+ <p>
+ For types <span class="tt wims_code_words">checkbox</span>, <span class="tt wims_code_words">menu</span>, <span class="tt wims_code_words">click</span>,
+ <span class="tt wims_code_words">radio</span> and <span class="tt wims_code_words">flashcard</span>, an option
+ called <span class="tt wims_code_words">shuffle</span> can be specified, that has the 
+ effect of randomly shuffling the order of items in the multiple choice 
+ presented to students.
+ <p>
+ Automatic shuffle is not applied without the option <span class="tt wims_code_words">shuffle</span>,
+ and the number of choice items is not automatically cut.
+ <p>
+ And for an opposite effect, the option word <span class="tt wims_code_words">sort</span> makes the items
+ always presented in alphabetic order.
+ <p>
+ <span class="tt wims_code_words">click</span> should be used only in the case where there is no other
+ replies or choices.
+ <p>
+ The type <span class="tt wims_code_words">menu</span> accepts an option <span class="tt wims_code_words">multiple</span> with value. The
+ value of this option gives the maximal size (by default 8) of the choice
+ window. For example, <span class="tt wims_code_words">multiple=5</span> gives a multiple menu window up
+ to 5 lines.
+ <p>
+ <span class="tt wims_code_words">mark</span> works similarly as <span class="tt wims_code_words">checkbox</span>, with the difference
+ that instead of a button, the chosen item itself will change color. It is
+ therefore principally for inline use.
+ <p>
+ 
+ In case of <span class="tt wims_code_words">flashcard</span>, the choices (cards) are hident and the good choices 
+ must be returned. With the option <span class="tt wims_code_words">show</span>, the cards are seen and the good choices
+ must be hiden. The number of clicks on each cards are send in the second line of
+ the variable <span class="tt wims_code_words">\reply</span>n. 
+ 
+ <p>
+ For types where several choices can be entered (<span class="tt wims_code_words">checkbox</span>,
+ <span class="tt wims_code_words">mark</span>, as well as <span class="tt wims_code_words">menu</span> with option <span class="tt wims_code_words">multiple</span>),
+ by default the student will be zero score whenever the answer is different
+ from the given good answer. If you want to give partial score for partially
+ good answers, you can add the option word <span class="tt wims_code_words">split</span> (synonym:
+ <span class="tt wims_code_words">partialscore</span>. In this case, the partial score will be computed 
+ according to the proportion of good answers picked by the student. On the
+ other hand, if bad answers are picked, every bad answer will compensate
+ two good answers until the score reaches 0. Such a policy is necessary,
+ among others, for dissuading people from taking all the available choices
+ in case there are many good ones.
+ <p>
+ While such a formula should fit most of the situations, you can add an
+ option word <span class="tt wims_code_words">eqweight</span> if this is not your case. This word forces
+ the computation to be of equal weight both positively and negatively,
+ that is, every bad answer compensates only one good answer. But you are
+ warned that this seemingly just policy may lead to weird effects!
+ 
+Dans le cas d'utilisation de la commande <span class="tt wims_code_words">\embed</span>, il est possible de placer
+précisément le k-ème item  en écrivant <span class="tt wims_code_words">\embed{r</span>n<span class="tt wims_code_words">,k}</span>
+avec <span class="tt wims_code_words">n</span> le numéro de la question. Dans le cas de <span class="tt wims_code_words">flashcard</span>, on peut de plus 
+préciser sur les deux lignes suivantes le style css des cartes (style associé à la balise div).
+(il doit être le même pour chaque carte, dans le cas de style différent, c'est le dernier placé
+qui est utilisé dans la réponse).
+Par exemple,
+<pre>
+\embed{r1,4
+style="display:inline-block;min-width:30px;min-height:30px;padding-top:10px;padding-bottom:5px;background-color:red;"
+style="display:inline-block;min-width:30px;min-height:30px;padding-top:10px;padding-bottom:5px;background-color:blue;"
+}
+</pre>
+
+

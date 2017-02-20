@@ -1,0 +1,21 @@
+!!!### language independant
+!!
+
+sh=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+!for i=1 to $sh
+ l=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+ l=!word 1 of $l
+ !if $l>0
+  asheets=!append item $i to $asheets
+ !endif
+!next i
+
+ex=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
+!for i=1 to $ex
+ l=!record $i of wimshome/log/classes/$wims_class/exams/.exams
+ l=!word 1 of $l
+ !if $l>0
+  aexams=!append item $i to $aexams
+ !endif
+!next i
+

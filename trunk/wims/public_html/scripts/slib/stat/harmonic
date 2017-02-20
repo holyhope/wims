@@ -1,0 +1,18 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+
+slib_author=Adeline Grelot
+slib_example=1,2,3
+!exit
+
+:proc
+!readproc slib/stat/dataproc $wims_read_parm
+
+!if $slib_cnt=0
+slib_out=1
+!else
+slib_data=!sum 1/x for x in $slib_data
+slib_out=$[$slib_cnt/($slib_data)]
+!endif
+slib_out =!trim $slib_out

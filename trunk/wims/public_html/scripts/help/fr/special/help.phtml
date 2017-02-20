@@ -1,0 +1,65 @@
+:signification
+<p>
+La méthode spéciale <span class="tt wims_code_words">help</span> accepte deux paramètres. Le premier est un identificateur
+ qui sera dans la variable <span class="tt wims_code_variable">\help_subject</span>
+ à l'intérieur de la commande <span class="tt wims_code_words">\help</span>
+ et le second est le texte du lien.
+La classe css du lien est <span class="tt wims_code_words">oef_specialhelp</span> et peut être configurée.
+
+Si <span class="tt wims_code_words">\special{help}</span> est mis dans l'énoncé ou le feedback d'un exercice,
+ l'aide sera de type popup, contrairement à l'aide usuelle.
+
+Tout le contenu de l'aide doit être mis dans le source de l'exercice oef.
+Aucune facilité n'est prévue pour l'aide au niveau du module, car le principe
+est que l'indépendance des fichiers oef n e doit pas être détruit par les aides.
+Cependant, si vous avez plusieurs exercices partageant les mêmes textes d'aide
+vous pouvez utiliser cpp.
+</p>
+:example
+ <span class="wims_help_example">Exemple</span>
+
+<div>
+<textarea id="wims_show81" cols="100" rows="24" readonly="readonly">
+ \title{Deviner}
+ \statement{ Deviner un mot :
+   \special{help test1,Premier indice}
+ }
+ \answer{}{Singe}
+ \help{
+  \if{\help_subject issametext }{
+     Cliquer sur le bouton à l'intérieur de l'énoncé pour voir le premier indice.
+   }
+   \if{\help_subject issametext test1}{
+     L'indice est S.
+   }
+ }
+ </textarea>
+ </div>
+
+
+Voici un exemple d'aides imbriquées.
+<div>
+<textarea id="wims_show82" cols="100" rows="24" readonly="readonly">
+ \title{Deviner}
+ \statement{ Deviner un mot :
+   \special{help test1,Premier indice}
+ }
+ \answer{}{Singe}
+ \help{
+   Voici l'aide: help subject=\help_subject
+   \if{\help_subject issametext}{
+     \special{help test0,ici}
+   }
+   \if{\help_subject issametext test1}{
+     La première lettre est <span class="wims_emph">S</span>. Vous pouvez trouver un nouvel indice
+     \special{help test2,ici}
+   }
+  \if{\help_subject issametext test2}{Voici le second indice.
+    La deuxième lettre est <span class="wims_emph">i</span>
+   }
+  \if{\help_subject issametext test0}{Voici
+    \special{help test1,l'aide 1}, \special{help test2,l'aide 2}
+   }
+ }
+ </textarea>
+ </div>

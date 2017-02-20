@@ -1,0 +1,67 @@
+type=language
+textarea="data"
+
+:Choisir parmi des étiquettes le mot entendu (enregistrement de la base audio de WIMS). 
+
+Un audio est proposé et le texte doit être choisi par des étiquettes. Les audio sont
+pris parmi la base d'audio de mots enregistrés de WIMS. Si l'exercice est dans une classe,
+avec une adapatation, il peut être utilisé avec des audios mis dans la classe.
+<p>
+Pour construire un exercice avec ce modèle, il suffit de taper la liste de
+mots à condition qu'ils existent dans la base d'audio (pour vérifier, taper
+swac dans le moteur de recherche et utiliser l'outil proposé).
+</p>
+<p>
+Pour plus de possibilités, utiliser Quicktool.
+</p>
+<p>
+Auteur du modèle : Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+</p>
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Enlevez l'en-tête ci-dessus si vous détruisez les balises pour le modèle !
+(Ce sont les lignes qui commencent par un ':'.)
+Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
+
+:%%%%%%%% Paramètres d'exemples à redéfinir %%%%%%%%%%%%%%%%%
+
+
+:\title{Écouter et reconnaître}
+:\author{Bernadette, Perrin-Riou}
+:\email{bpr@math.u-psud.fr}
+:Consigne
+\text{instruction=Clique sur le mot entendu.}
+
+:Liste de mots
+\text{liste = doctor,teacher,journalist,policeman, fireman, postman}
+
+:Language audio : les choix possibles sont <span class="tt">fra</span>,  <span class="tt">eng</span>,  <span class="tt">dut</span> (et d'autres avec moins de possibilités  <span class="tt">pol</span>,  <span class="tt">wol</span>,  <span class="tt">deu</span>,  <span class="tt">swe</span>.)
+\text{lang = eng}
+:Nombre de perturbateurs.
+\integer{cntpertub=3}
+:La taille verticale des cases en pixels.
+\integer{sizev=200}
+
+:La taille horizontale des cases à gauche en pixels.
+\integer{sizel=20}
+
+:%%%%%%%%%%%%% Maintenant l'énoncé en code html. %%%%%%%%%%%%%%%%%%%%
+
+\text{mot = randitem(\liste)}
+\text{perturb=wims(listcomplement \mot in \liste)}
+\text{perturb=shuffle(\perturb)}
+\text{perturb=\perturb[1..\cntpertub]}
+
+\text{audio = slib(lang/swac \mot,\lang)}
+\text{audio = \audio[1;1]}
+\text{size=\sizev[]x\sizel[]x\sizer}
+
+\statement{
+\instruction
+<div class="wimscenter">\audio</div>
+
+<div class="wimscenter">
+\embed{r1,\size}
+</div>
+}
+\answer{}{\mot;\perturb}{type=clickfill}

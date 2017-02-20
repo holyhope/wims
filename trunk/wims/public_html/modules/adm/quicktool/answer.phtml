@@ -1,0 +1,72 @@
+!set st=style="color:#CC0000; font:bold;"
+!set Type_exo = $(type_exo)
+!set my_dir=lang/answer.$modu_lang
+<div $frame>
+!set wims_form_method=file
+!form reply
+
+<p class="wimscenter"><input type="submit" $balise_obl  value="$wims_name_back2" /></p>
+  <p>
+!record 1 of lang/answer.$modu_lang
+</p>
+!!@#Voici le source de votre exercice!!#@
+ $(type_exo)
+<ul>
+  <li>
+!record 2 of lang/answer.$modu_lang
+!!@#Copiez le source dans un module Modtool sous le nom!!#@
+  <span class="tt" $st>src/$file.oef</span> 
+  </li>
+!if $file notsametext 
+  <li>
+!record 3 of $my_dir
+!!@#Copiez votre fichier de données dans le fichier!!#@
+  <span class="tt" $st>$file</span> 
+  !href cmd=help&special_parm=$(Type_exo[1]) [$wims_name_help]
+  </li> 
+!endif
+!if $reading_file notsametext  and $reading_file notsametext no 
+  <li>
+!record 4 of $my_dir
+!!@#Copiez votre texte à lire dans le fichier!!#@
+  <span class="tt" $st>$reading_file</span> 
+  </li>
+!endif
+!if $audio_file notsametext  and $audio_file notsametext no
+  <li>
+!record 5 of $my_dir
+!!@#Chargez le fichier !!#@
+  <span class="tt" $st>images/$audio_file</span>
+!record 6 of $my_dir
+!!@#dans le dossier!!#@
+  <span class="tt" $st>images</span></li>
+!endif
+!if $image_file notsametext and $image_file notsametext no
+  <li>
+!record 5 of $my_dir
+!!@#Chargez le fichier image!!#@
+   <span class="tt" $st>images/$image_file</span> 
+!record 6 of $my_dir
+!!@#dans le dossier!!#@
+   <span class="tt" $st>images</span></li>
+!endif
+!if http notwordof $video_file and $video_file notsametext  and $video_file notsametext no
+  <li>
+!record 5 of $my_dir
+!!@#Chargez le fichier video!!#@
+    <span class="tt" $st>$video_file</span>
+!record 6 of $my_dir
+!!@# dans le dossier !!#@
+   <span class="tt" $st>images</span></li>
+!endif
+</ul>
+!href target=wims_test module=adm/modtool&modreq=$target $wims_name_modtool
+
+!href session=$wims_session&module=adm/modtool&modreq=$target $name_sup_file
+<div class="wimscenter">
+<textarea rows="30" cols="70" readonly="readonly">$exo</textarea>
+</div>
+
+<div class="wimscenter wimsform"><input type="submit" $balise_obl  value="$wims_name_back2" /></div>
+</div>
+!formend

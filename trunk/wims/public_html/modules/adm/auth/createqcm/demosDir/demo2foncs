@@ -1,0 +1,35 @@
+!if $demo=oui
+  <p> On entre une liste de fonctions avec lesquelles 
+  on veut faire des calculs: 
+  </p>
+!endif
+!if $foncsList!=$empty
+  !set rowsnb=$[floor($foncsnb/2)]
+  !set extrarow=$[$foncsnb%2]
+
+  <table class="wimsborder" style="background-color:moccasin">
+      !for i=1 to $rowsnb
+        !set c1=!item $i of $foncsList
+	!set c2=!item $[($i+$rowsnb)] of $foncsList
+	!set c1=!char 2 to -2 of $c1
+	!set c2=!char 2 to -2 of $c2
+	<tr>
+	  <td style="background-color:azure">
+	    $c1
+	  </td>
+	  <td style="background-color:azure">
+	    $c2
+	  </td>
+	</tr>
+      !next i
+      !if $extrarow!=0
+        !set c3=!item $foncsnb of $foncsList
+	!set c3=!char 2 to -2 of $c3
+	<tr>
+	  <td colspan="2" style="background-color:azure">
+	    $c3
+	  </td>
+	</tr>
+      !endif
+  </table>
+!endif

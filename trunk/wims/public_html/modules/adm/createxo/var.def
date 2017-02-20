@@ -1,0 +1,40 @@
+
+any:rawinp mode model level realtest newtest retest catsource catmodule1
+init:delete deltitle catmodule existing
+
+reply: file_name_src
+any:newone success delfile wims_deposit oef_title oef_computeanswer oef_parms \
+  oef_statement oef_author oef_email oef_format oef_precision oef_rangel oef_ranger\
+  oef_answercnt oef_choicecnt oef_condcnt oef_hint oef_solution
+
+deny:oef_fname
+
+any:ansprompt[10] ansgood[10] anstype[10] Condtest[8] Condname[8]\
+  choiprompt[10] choigood[10] choibad[10]
+##############################################
+######### testing variables ##################
+
+deny:oef_version insdraw_filebase oef2wims_version status reply_cnt varcnt\
+  postvarcnt ansorder replycnt choicecnt conditioncnt feedbackcnt embedcnt title\
+  question hint help solution author author_email format shufflelist qcmpresent \
+  qcmgood penalty presentgood precweight givehint presentsol leftrange rightrange\
+  score_should score_got score qcmpower scorepower oefstep oefsteps oefstepcnt nextstep\
+  dynsteps deffile question_url vsave vsavelist replynames
+
+deny:replygood[MAX_OEFREPLIES] anstype_shuffle_[MAX_OEFREPLIES]
+deny:replytypes replystyles replyoptions replyweights choicenames choicegoods choicebads\
+  choicelists choiceitemss choiceoptions choiceweights savedraw[16] fill_check fill_checked \
+  oef_presrc oef_postsrc oef_codelim code_allow_ code_deny_ \
+  saverep[MAX_OEFREPLIES] savech[MAX_OEFREPLIES] oef_applet_option \
+  oef_applet_command oef_answer_option[MAX_OEFREPLIES] sc_reply[MAX_OEFREPLIES]
+
+reply:reply[MAX_OEFREPLIES] choice[MAX_OEFCHOICES] click_x click_y
+
+oef_default config
+deny:oef_fill_option inputsize
+## modif jy ##
+init:to_ia_qcm
+
+any:modtoolhelp slibdet outimages
+
+deny:slib_geogebra_exists slib_geogebrawindow1 slib_geogebrawindow2

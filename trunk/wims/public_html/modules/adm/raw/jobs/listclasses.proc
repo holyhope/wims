@@ -1,0 +1,54 @@
+# ListClasses
+# liste toutes les classes de ce serveur qui autorisent une connexion avec le serveur distant
+
+#Option contient la liste des attributs a afficher
+#l'option "all" est un raccourci pour obtenir la liste complete des infos possibles
+!if all iswordof $option
+ option=$low_classdefs
+!endif
+
+#On restreint la liste des options aux informations affichables dans un niveau "bas" de sécurité
+options=!listintersect $option and $low_classdefs
+
+
+cnt_class=!recordcnt wimshome/log/classes/.index
+# On parcourt l'index des classes du serveur
+!for i = 1 to $cnt_class
+  cl=!record $i of wimshome/log/classes/.index
+  # lorsqu'une des classes autorise une connexion, on verifie
+  !if $(cl[10]) != $empty
+	rc=!words2items $(cl[10])
+    index=1
+    rchain = $ident,$rclass
+    
+	# On parcourt toutes les connexions declaree par la classe
+	!while $(rc[$index]) != $empty
+		# on compare la connexion avec celle demandee
+		current= $(rc[$index])
+		current=!translate internal +,; to $ $ in $current
+		current = !singlespace $current
+		current=!translate internal / to , in $current
+		
+		!if $(current[1]) = $(rchain[1])
+			!if $rclass=ALL or $(current[2]) = $(rchain[2])
+				listclasses=!append item $(cl[1]) to $listclasses
+				list_rclasses=!append item $(current[2]) to $list_rclasses
+			!endif
+		!endif
+		
+		!increase index
+	!endwhile
+  !endif
+!next
+
+!if $listclasses = $empty
+ error= $error \
+ 		there is no class allowed for this server
+!endif
+
+
+
+!if $error!=$empty
+ !exit
+!endif
+

@@ -1,0 +1,53 @@
+!set methtit=不等式两边加一个数
+!set methenv=ZZ QQ RR
+!set methparmtype=number,parm inequality
+!set methhelp=此方法把不等式 \(a > b)\
+ 变形成等价的 \(a + n > b + n), 其中 \(n) 是一个数.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ Add the number
+ !read deduc/methparm.phtml 1,15
+ to the two sides of the inequality
+ !read deduc/methparm.phtml 2
+
+!exit
+:check
+ !distribute items $methparmobj2 into data,left,sign,right
+ methexp=把 \(methparm1) 加到 \($left $sign $right) 的两边
+
+ !read deduc/sub/simplify $left + ($methparm1)\
+    $right + ($methparm1)
+ !distribute lines $out into newleft,newright
+ !if $newleft=$empty or $newright=$empty
+  error=bad_data
+  !exit
+ !endif
+ newsign=$sign
+ newobject2=$newleft $newsign $newright
+ oldobject=2
+ 
+ contextlist=$ct_Always,\
+    $ct_Onlywhen这个数是正的,\
+    $ct_Onlywhen不等式是严格的,\
+    $ct_Onlywhen不等式不是严格的
+
+ !if $askresult>1
+  !read deduc/sub/simplify $left - ($methparm1)\
+    $right - ($methparm1)
+  !distribute lines $out into badleft, badright
+  badsign=!translate internal <> to >< in $newsign
+ 
+  resultlist=$newobject2,\
+    $newleft $newsign $badright,\
+    $badleft $newsign $newright,\
+    $newleft $badsign $newright,\
+    $newleft $badsign $badright
+ !endif
+
+!exit
+

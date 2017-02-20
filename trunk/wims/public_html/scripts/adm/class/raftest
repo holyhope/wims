@@ -1,0 +1,22 @@
+# test rafale to see whether the user can be allowed to login.
+
+raftest=!sh grep rafale $wims_home/log/classes/$class/score/$auth_user 2>/dev/null | tail -1
+ raftest=!word 1 of $raftest
+ nowm=!char 13 of $wims_now
+ lastallow=$wims_now
+ !if $nowm=0
+  lastallow=!replace char number 13 by 5 in $lastallow
+  nowm=!char 11 of $lastallow
+  !if $nowm=0
+   lastallow=!replace char number 11 by 9 in $lastallow
+   nowm=!char 10 of $lastallow
+   lastallow=!replace char number 10 by $[$nowm-1] in $lastallow
+  !else
+   lastallow=!replace char number 11 by $[$nowm-1] in $lastallow
+  !endif
+ !else
+  lastallow=!replace char number 13 by $[$nowm-1] in $lastallow
+ !endif
+ raftest=!char 3,4,5,6,7,8,10,11,13,14 of $raftest
+ lastallow=!char 3,4,5,6,7,8,10,11,13,14 of $lastallow
+

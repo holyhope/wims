@@ -1,0 +1,115 @@
+today=!char 1 to 8 of $wims_now
+thisyear=!char 1 to 4 of $today
+!if $class_expiration=$empty
+ !defread wimshome/log/classes/$wims_class/.def
+!endif
+!if $class_expiration=$empty
+ error=bad_class
+ !exit
+!endif
+
+!! ------------------ keep save data
+data=!record 1 of $votedir/$vote.data
+codevar=!line 1 of $data
+po=!positionof item $codevar in $tv_listcode
+namevar=!item $po of $tv_listname
+!bound up_codevar within $tv_listlocalcode default $codevar
+
+!if $po isitemof $tv_listlocal and $codevar=$up_codevar
+ data=!line 2 to -1 of $data
+ listcle=!column 1 of $data
+ tmp=!line $po of $tv_listtechvar
+ tmp=!record $(tmp[3]) of wimshome/log/classes/$wims_class/.techvar
+ listval=!line 2 of $tmp
+ numsess=!itemcnt $listval
+ !default mod_numsess=$numsess
+ !for i=1 to $numsess
+   p=!positionof item $(listval[$i]) in $listcle
+   !if $p!=$empty
+    tdon=!line $p of $data
+    !default up_nstud$i=$(tdon[2])
+    !default up_testoextra$i=$(tdon[3])
+   !endif
+   nstud$i=$(up_nstud$i)
+   testoextra$i=$(up_testoextra$i)
+ !next i
+!else
+ data=$empty
+!endif
+!default up_testointro=!record 2 of $votedir/$vote.data
+testointro=$up_testointro
+
+!if $gstep=2
+!! need to check carefully namexevar vs. up_namevar (at some step we seem to
+!! be loosing the correction)(?? should this go outside the if $gstep=2)
+ !if $up_codevar=$empty and $codevar=$empty
+   error=bad_variable
+   gstep=1
+   !exit
+ !endif
+ !default codevar=$up_codevar
+ !if $codevar=$empty
+  error=no_variable
+  gstep=1
+  !exit
+ !endif
+ !writefile $votedir/$vote.data :$codevar\
+$data\
+:$testointro
+!endif
+
+!if $gstep>=2
+!! get list of value for the technical variable :
+ numvar=!positionof item $codevar in $tv_listcode
+ tmp=!line $numvar of $tv_listtechvar
+ tmp=!record $(tmp[3]) of wimshome/log/classes/$wims_class/.techvar
+ listval=!line 2 of $tmp
+ numsess=!itemcnt $listval
+!endif
+
+!if $gstep=3
+!!## need to check $testointro contains no vote primitives
+ !for i in uservar,menu,list,radio,checkbox,textarea
+  !set testointro=!replace internal \$i by INVALID in $testointro
+ !next i
+ donfile=$codevar
+ !for i=1 to $numsess
+!!## need to check no "," in testoextra
+  testoextra$i=!replace internal , by . in $(testoextra$i)
+  nstud$i=$[max(-1,$(nstud$i))]
+  !if NaN isin $(nstud$i) or . isin $(nstud$i)
+    nstud$i=-1
+  !endif
+  donfile=!append line $(listval[$i]),$(nstud$i),$(testoextra$i) to $donfile
+ !next i
+ !writefile $votedir/$vote.data :$donfile\
+:$testointro
+
+ reg_src=<div>\
+$testointro\
+</div>\
+\list{
+
+ reg_src1=$reg_src
+ reg_src2=\uservar{$namevar,$empty,
+ !for i=1 to $numsess
+!! writing "0:" gives bad output in the vote page
+!if $(nstud$i)=0
+  reg_src1=$reg_src1\
+$(testoextra$i),
+!else
+  reg_src1=$reg_src1\
+$(nstud$i): $(testoextra$i),
+!endif
+  reg_src2=$reg_src2\
+$(listval[$i]),
+ !next i
+ reg_src=$reg_src1\
+$name_cancellation\
+}\
+$reg_src2\
+$empty\
+}
+
+!endif
+

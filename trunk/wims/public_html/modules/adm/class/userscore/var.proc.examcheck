@@ -1,0 +1,53 @@
+
+checkuser=!translate / to $ $ in $checkuser
+!read adm/class/userisinclass ,$checkuser
+!if yes notin $script_reply
+ error=bad_usercls
+ !reset job,checkuser
+ !exit
+!endif
+!read adm/class/userdef classes,$wims_class,$checkuser
+!readdef $userdef
+!if $user_exists != yes
+ error=bad_user
+ !exit
+!endif
+
+maxexo=0
+!for k in $activexams
+ tmp=!recordcnt wimshome/log/classes/$wims_class/exams/.exam$k
+ maxexo=$[max($maxexo,$tmp)]
+!next k
+logdir=$wims_home/log/classes/$wims_class/examlog/$checkuser
+!if $checksession=$empty
+ checksessions=!sh if [ -d $logdir ]; then cd $logdir; ls -tr; fi
+ checksessions=!words2items $checksessions
+ !for ses in $checksessions
+  exo=!sh cd $wims_home/log/classes/$wims_class/examlog/$checkuser/$ses; ls
+  exo$ses=!words2items $exo
+  exo=!words2lines $exo
+  exo=!translate . to , in $exo
+  exom=!column 1 of $exo
+  exom=!listuniq $exom
+  exam$ses=$exom
+  !for xm in $exom
+   exot=!select $exo where column 1 = $xm
+   exot=!column 2 of $exot
+   exo$(ses)$xm=!sort numeric items $exot
+  !next xm
+!next ses
+!if $checksessions=$empty
+  !exit
+ !endif
+ !readproc adm/class/userscore1 $checkuser
+ !exit
+!endif
+
+exos=!sh if [ -d $logdir/$checksession ]; then cd $logdir/$checksession; ls; fi
+exos=!words2items $exos
+logfile=classes/$wims_class/examlog/$checkuser/$checksession/$checkexo
+
+!if _check isin $session
+ !read adm/class/exocheck
+!endif
+

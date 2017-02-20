@@ -1,0 +1,49 @@
+!set methtit2=Multiplier une équation par un nombre non-nul
+!set methtit=Multiplier une équation par un nombre
+!set methenv=ZZ QQ RR CC
+!set methparmtype=number,parm equation
+!set methhelp=Cette méthode transforme une équation \(A = B)\
+ en l'équation équivalente \(A*n = B*n), où \(n) est un nombre,\
+ qui doit être non-nul pour guarantir l'équivalence entre l'équation\
+ de départ et celle transformée.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ Multiplier l'équation
+ !read deduc/methparm.phtml 2
+ par le nombre
+ !read deduc/methparm.phtml 1,10
+
+!exit
+:check
+ !distribute items $methparmobj2 into data,left,sign,right
+ !if $methparm1=0
+  error=Multiplier une équation par 0 vous fait perdre de l'information, et \
+   est donc interdit.
+  !advance penalty
+  !exit
+ !endif
+ methexp=Multiplier \($left $sign $right) par \($methparm1)
+
+ !read deduc/sub/simplify ($left) * ($methparm1)\
+	($right) * ($methparm1)
+ !distribute lines $out into newleft,newright
+ !if $newleft=$empty or $newright=$empty
+  error=bad_data
+  !exit
+ !endif
+ newsign=$sign
+ newobject2=$newleft $newsign $newright
+ oldobject=2
+
+ contextlist=$ct_Onlywhen on multiplie par un nombre non-nul,\
+	$ct_Onlywhen on multiplie par un nombre positif,\
+	$ct_Onlywhen les deux côtés sont positifs,\
+	$ct_Onlywhen les deux côtés sont de même signe
+ 
+!exit
+

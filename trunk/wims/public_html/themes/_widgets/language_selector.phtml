@@ -1,0 +1,27 @@
+!!useful for adm/light
+!if $module=adm/light
+  !readproc languages
+!endif
+!! input variables : wims_language_cnt, wims_site_languages
+
+<!-- begin of _widgets/language_selector.phtml -->
+<ul id="lang_list" class="menu">
+ !for i=1 to $wims_language_cnt
+   !set l=!word $i of $wims_site_languages
+   !set l_=<span class="legende">$(lang_name_$l)</span>
+    <li class="menuitem">
+      !set wims_ref_title=$(Lang_name_$l)
+      !if $l!=$lang
+        !if $module=adm/light
+          !set refresh_url = cmd=resume&phtml=useropts.phtml.$l&lang=$l
+        !else
+          !set refresh_url = lang=$l&session=$wims_session.1&module=$module
+        !endif
+        !href $refresh_url <img src="gifs/$l.gif" alt="$(Lang_name_$l)" class="vignette" />$l_
+      !else
+        <span class="current disabled"><img src="gifs/$l.gif" alt="$(Lang_name_$l)" class="vignette"/>$l_ (current)</span>
+      !endif
+    </li>
+ !next i
+</ul>
+<!-- end of _widgets/language_selector.phtml -->

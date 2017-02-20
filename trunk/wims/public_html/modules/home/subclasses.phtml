@@ -1,0 +1,140 @@
+!! make the list of all classes and programms which are supervised
+!! with the courses inside with incrementation.
+!! no test zone. No intercourses ?
+!! subclass1 is something as the variable $wims_participate (only courses ? )+ optional courses
+!! eventually
+!! subclass2 is the complement
+
+!if $auth_method isitemof $auth_method_list and $wims_user!=supervisor
+      !set u_=$wims_external_auth
+!else
+      !set u_=$wims_realuser
+      !default u_=$wims_user
+!endif
+!default CL_Name=$CL_Names
+!!!if $user_participate$user_supervise!=$empty
+!!<p>
+!!  !if $supervisable!=yes
+!!    $U_gotoclass
+!!  !else
+!!    $U_gotoclass3
+!!  !endif
+!!</p>
+!!!endif
+
+!if $supervisable=yes or ($wims_user=supervisor and $wims_realuser=supervisor)
+  !read subclasses_supervisor.phtml
+  !if ($wims_user=supervisor or $wims_class=$wims_superclass)
+!!FIXME desactivate the possibility for teachers to register without the administrator in a portal
+    !if $class_type iswordof 2 4
+       !!href module=adm/class/classes&type=supervisor&superclass=$wims_class $U_supervise
+    !!else
+      !if $wims_user!=supervisor or $wims_realuser!=supervisor
+        $name_gotosupervise
+      !endif
+    !endif
+  !endif
+!else
+    !if $supervisable!=yes
+      !read subclasses_user.phtml
+      !read classlegend.phtml
+    !endif
+!endif
+!!exit
+!goto end1
+
+  <ul class="wims_subclasses"><!--wims_subclasses-->
+!reset alreadyseen
+!if $wims_class!=$wims_superclass
+   !set subclass1=$wims_class,$subclass1
+!endif
+!for c in $subclass1
+     !set name=!defof class_description in wimshome/log/classes/$c/.def
+     !set type=!defof class_type in wimshome/log/classes/$c/.def
+     !set type_name=!defof class_typename in wimshome/log/classes/$c/.def
+     !read adm/class/initclass $c,auth
+
+     !set t_=participant
+     !set type_class=!defof class_type in wimshome/log/classes/$class/.def
+     !if $c notitemof $alreadyseen
+      <li>  <span class="wims_classes_direct_$type_name">
+      !if $c!=$wims_class
+      !href module=adm/class/classes&type=authparticipant&class=$c&auth_user=$u_ $name
+      !else
+        $name
+      !endif
+      ($(CL_Name[2]))</span>
+     !set alreadyseen=!append item $c to $alreadyseen
+     !set sub_=!record 0 of wimshome/log/classes/$c/courses
+     !set sub_cnt=!linecnt $sub_
+     !if $sub_cnt>0
+       <ul><!--2-->
+      !for k_ =1 to $sub_cnt
+       !set parent_c=!defof class_parent in wimshome/log/classes/$wims_superclass/$(sub_[$k_;1])/.def
+       !set split=!replace internal / by , in $(sub_[$k_;1])
+       !set progstyle=!defof class_progstyle in wimshome/log/classes/$wims_superclass/$(split[1])/$(split[3])/.def
+       !set name_c=!defof class_description in wimshome/log/classes/$parent_c/.def
+       !if  optional iswordof $progstyle
+         !set inscrit=!defof user_class in wimshome/log/classes/$wims_superclass/$(sub_[$k_;1])/.users/$wims_user
+       !endif
+       !if $wims_superclass/$(sub_[$k_;1]) notitemof $alreadyseen and mandatory iswordof $progstyle or $(split[1])/$(split[2]) iswordof $inscrit or $wims_user=supervisor
+        !set alreadyseen=!append item $wims_superclass/$(sub_[$k_;1]) to $alreadyseen
+        <li>
+        <span class="wims_classes_direct_course">
+        !href module=adm/class/classes&type=auth$t_&class=$wims_superclass/$(sub_[$k_;1])&auth_user=$u_ $(sub_[$k_;3])
+       ($(CL_Name[4]))
+        </span>
+        </li>
+       !endif
+       </li>
+      !next k_
+       </ul><!end--2-->
+      !endif sub_cnt>0
+        !if $c=$wims_class
+         !goto end
+        !endif
+      !endif $c notitemof $alreadyseen
+!next
+
+:end
+</ul>
+:end1
+!if $alreadyseen!=$empty
+  !set subclass2=!listcomplement $alreadyseen in $subclass2
+  !set subclasscnt2=!itemcnt $subclass2
+!endif
+!if $class_mixed_external_auth!=2 and $subclasscnt2>0
+
+ !if $insc!=yes
+ !!not a program
+  !if $class_type!=3
+    !href module=home&cmd=new&insc=yes $U_inscription2
+  !endif
+ !else
+<div>
+  $U_inscription1
+ <ul class="wims_subclasses">
+  !for c in $subclass2
+   !set name=!defof class_description in wimshome/log/classes/$c/.def
+   !set type=!defof class_typename in wimshome/log/classes/$c/.def
+   <li><span class="wims_classes_direct_$type">
+!! wrong variable?
+!!   !href module=adm/class/reguser&class=$c&auth_user=$u_ $name
+   !href module=adm/class/reguser&class=$c&user_auth=$u_&subclass=yes $name
+   </span></li>
+  !next c
+ </ul>
+</div>
+  !set wims_ref_class=wims_button
+  !href module=home&cmd=new $wims_name_back2
+ !endif
+!endif
+!if $supervisable=yes and ($wims_user=supervisor or $wims_class=$wims_superclass) and $class_type notwordof 3 4
+<p>
+   !set wims_ref_class=wims_button
+   !href module=adm/class/regclass $wims_name_classcreate
+   !set wims_ref_class=wims_button
+   !href module=adm/class/regclass&job=cloneexemple $wims_name_cloneclass
+
+</p>
+!endif

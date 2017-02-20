@@ -1,0 +1,33 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+
+slib_parms=3\
+,[data]\
+5,n\
+0.5,p
+
+slib_author=Sophie, Lemaire; Bernadette, Perrin-Riou
+
+slib_example=[0.2,0.4,0.6],5,0.5\
+0.2,5,0.5
+slib_require=octave
+!exit
+
+:proc
+
+!distribute  item $wims_read_parm into slib_data,slib_n,slib_p
+!default slib_n= 5
+!default slib_p=0.5
+!if $slib_p>=1 or $slib_p<=0
+	slib_out=0
+	!exit
+!endif
+slib_out=
+!!slib_data=!declosing $slib_data
+slib_p=$[$slib_p]
+slib_out=!exec octave nbininv($slib_data,$slib_n,$slib_p)
+slib_out=!trim $slib_out
+slib_out=!replace internal $\
+$ by ; in $slib_out
+slib_out=!words2items $slib_out

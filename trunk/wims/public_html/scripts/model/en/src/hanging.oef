@@ -1,0 +1,280 @@
+type=game
+textarea="data"
+
+:Hangman
+Find the words by selecting letters from the list provided. To win, the word must be found
+before the man is hanged.
+<p>
+Author of the model : Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+</p>
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Remove the above header if you destroy the model tags i.e. the lines starting
+with a ':'. Otherwise the exercise might not be recognised by Createxo.
+
+:%%%%%%%% Example parameters to be redefined %%%%%%%%%%%%%%%%%
+:\title{Hangman}
+:\author{Csilla, Ducrocq}
+:\email{}
+:\credits{}
+:Instruction
+Instruction
+\text{instruction=Select the letters one by one and write the missing word.}
+
+:Text of the feedback. This can be changed as you wish.
+
+\text{feedback=That's right!}
+
+:Feedback d'echec
+Texte affiché à la fin de l'exercice, quand le mot n'a pas été trouvé.
+\text{echec=Perdu !}
+
+:Message sur le nombre d'essais restant
+
+\text{message=Vous avez droit à XXXX erreurs}
+
+:Type of drawing
+Choix du dessin.  1: hangman, 2: rectangles with changing colours, 3: skull and crossbones
+\text{type=item(2,3 (skull and crossbones),
+	2 (rectangles with changing colours),
+	1 (hangman))}
+
+:Main data.
+Write the missing words in the first column in lower case, write helps in the second column.
+The words and the helps are separated by a comma.
+
+\text{data=whale,the biggest mammal on Earth
+rabbit,an animal with long ears
+mouse,can refer to an animal or a computer device
+hedgehog,an animal with prickles
+giraffe, an animal with a very long neck
+lion, is also called the king of the animals}
+
+:%%%%%%%%%%%%%% Nothing to modify before the statement  %%%%%%%%%%%%%%%%
+\text{Indication=Hint}
+\text{motatrouver=Word to find}
+\text{proposer=Select a letter (small)}
+\text{typename=wims(declosing wims(word 2 to -1 of \type))}
+\text{type=wims(word 1 of \type)}
+\text{typename=wims(words2items wims(nospace \typename))}
+\text{typename=slib(oef/blank _,,\typename)}
+\text{mot=randrow(\data)}
+\text{indication=\mot[2..-1]}
+\text{mot=\mot[1]}
+\text{jok=&mdash;}
+\css{<style type="text/css">
+.centrer{text-align:center;}
+.seen {opacity:0.5;font-weight: bold;}
+.lettres span{background-color:orange;font-size:20px;font-family:monospace;padding:0 0.5em;}
+.w {padding : 0 2px;}
+.word {background-color:orange;font-size:20px;white-space: nowrap;}
+.forget {background-color:red;color:white;font-size:20px;}
+.good {color:green;}
+.bad  {color:red;}
+.indication {font-size:16px;font-weight:bold;}
+.pendu {background-color:#CCC;width:80%;margin:auto;min-height:54px;padding:3px;}
+.reponse, .lettres, .question {margin:1em;}
+
+.dessin{border-right:1px dashed gray;}
+.small_col{width:25%;}
+.large_col{max-width:75%;}
+.floating{float:left;}
+
+.type2 span {background-color:green;color:green; display: inline-block; min-height: 40px;width: 40px;padding:0 0.5em;margin:2px;}
+.type2 span.red {background-color:red;color:red;}
+.type1 {min-width:210px;}
+.type2,.type3  {min-width:80px;}
+</style>
+}
+\if{\type=1}{
+ \text{dessin=xrange 0,10
+yrange 0,10
+lines black, 0,1,2,1
+lines black,1,1,1,8,5,8,5,6.5
+linewidth 3}
+
+\matrix{pendu=ellipse 5,6,1.5,1.5,red
+lines red, 5,5.4,5,3
+lines red,4,4,5,5
+lines red,6,4,5,5
+lines red,6,2,5,3
+lines red,4,2,5,3}
+
+\text{Dessin=<img src="draw(200,200
+\dessin)" alt="\typename[1]"/>}
+
+}
+
+\text{contenu=&nbsp;}
+\if{\type=2}{
+  \text{contenu=\typename[2]}
+}
+
+\if{\type>1}{
+ \text{order=shuffle(6)}
+ \text{dessin=
+ <div class="pendu">
+  <span id="essai_4">\contenu</span><span id="essai_5">\contenu</span>
+  <span id="essai_6">\contenu</span><span id="essai_1">\contenu</span>
+  <span id="essai_2">\contenu</span><span id="essai_3">\contenu</span>
+  </div>
+ }
+ \text{Dessin=\dessin}
+}
+
+\text{nb=wims(charcnt \mot)}
+\text{mot1=wims(words2items wims(singlespace \mot))}
+\text{mot=wims(replace internal , by _ in \mot1)}
+\text{mot=wims(text expand \mot using 10)}
+\text{mot=wims(words2items \mot)}
+\text{blanc=position(_,\mot)}
+\text{MOT=wims(makelist \jok for x=1 to \nb)}
+\for{a in \blanc}{
+  \text{MOT=wims(replace item number \a by _ in \MOT)}
+}
+\text{MOT1=wims(makelist <span class="w">x</span> for x in \MOT) }
+\text{MOT2=wims(items2words \MOT1)}
+\text{MOT2=wims(replace internal _ by &nbsp; in \MOT2)}
+
+\text{nstep=r1}
+
+\text{lettre1=a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}
+\text{accents=à,ä,â,é,è,ê,ë,î,ï,ô,ö,û,ù,-,!,?}
+   \text{lettre1=\lettre1,\accents}
+\text{lettre=wims(makelist <span class="notseen">x</span> for x in \lettre1)}
+\text{lettre2=\lettre}
+\text{lettre2=\lettre2[1..10]
+<br/>\lettre2[11..20]
+<br/>\lettre2[21..30]
+<br/>\lettre2[31..-1]}
+\text{lettre2=wims(replace internal ,  by in \lettre2)}
+\nextstep{\nstep}
+\text{cnt=0}
+
+\integer{reste=6 - \cnt}
+\text{message=wims(replace internal XXXX by <strong>\reste</strong> in \message0)}
+\statement{
+	<p class="instruction">\instruction</p>
+	<p ><em>\Indication&nbsp;: <span class="indication">\indication</span></em></p>
+<div class="floating small_col centrer type\type">
+ <div class="dessin"><p>\message</p>
+\Dessin</div>
+</div>
+ <div class="floating large_col centrer">
+  <div class="question">\motatrouver&nbsp;:<span class="word"> \MOT2</span></div>
+  <div class="reponse">
+   <label for="reply\step">\proposer&nbsp;: </label>
+   \embed{r\step,1
+   default
+   autocomplete="off" maxlength="1" id="reply\step" style="text-align:center;"}
+  </div>
+  <div class="lettres">\lettre2</div>
+ </div>
+
+<br style="clear:both;"/>
+}
+
+\answer{}{\rep1}{type=case}{option=noanalyzeprint}
+\answer{}{\rep2}{type=case}{option=noanalyzeprint}
+\answer{}{\rep3}{type=case}{option=noanalyzeprint}
+\answer{}{\rep4}{type=case}{option=noanalyzeprint}
+\answer{}{\rep5}{type=case}{option=noanalyzeprint}
+\answer{}{\rep6}{type=case}{option=noanalyzeprint}
+\answer{}{\rep7}{type=case}{option=noanalyzeprint}
+\answer{}{\rep8}{type=case}{option=noanalyzeprint}
+\answer{}{\rep9}{type=case}{option=noanalyzeprint}
+\answer{}{\rep10}{type=case}{option=noanalyzeprint}
+\answer{}{\rep11}{type=case}{option=noanalyzeprint}
+\answer{}{\rep12}{type=case}{option=noanalyzeprint}
+\answer{}{\rep13}{type=case}{option=noanalyzeprint}
+\answer{}{\rep14}{type=case}{option=noanalyzeprint}
+\answer{}{\rep15}{type=case}{option=noanalyzeprint}
+\answer{}{\rep16}{type=case}{option=noanalyzeprint}
+\answer{}{\rep17}{type=case}{option=noanalyzeprint}
+\answer{}{\rep18}{type=case}{option=noanalyzeprint}
+\answer{}{\rep19}{type=case}{option=noanalyzeprint}
+\answer{}{\rep20}{type=case}{option=noanalyzeprint}
+\answer{}{\rep21}{type=case}{option=noanalyzeprint}
+\answer{}{\rep22}{type=case}{option=noanalyzeprint}
+\answer{}{\rep23}{type=case}{option=noanalyzeprint}
+\answer{}{\rep24}{type=case}{option=noanalyzeprint}
+\answer{}{\rep25}{type=case}{option=noanalyzeprint}
+\answer{}{\rep26}{type=case}{option=noanalyzeprint}
+\answer{}{\rep27}{type=case}{option=noanalyzeprint}
+\answer{}{\rep28}{type=case}{option=noanalyzeprint}
+\answer{}{\rep29}{type=case}{option=noanalyzeprint}
+\answer{}{\rep30}{type=case}{option=noanalyzeprint}
+
+\text{rep=\rep1,\rep2,\rep3,\rep4,\rep5,\rep6,\rep7,\rep8,\rep9,\rep10,\rep11,\rep12,\rep13,\rep14,
+ \rep15,\rep16,\rep17,\rep18,\rep19,\rep20,\rep21,\rep22,\rep23,\rep24,
+ \rep25,\rep26,\rep27,\rep28,\rep29,\rep30}
+
+
+\text{w_class=good}
+
+\if{\rep[\step-1] notitemof \mot }{
+ \integer{cnt=\cnt+1}
+ \integer{reste=6 - \cnt}
+ \text{w_class=bad}
+
+ \if {\reste > 0}{
+  \text{message=wims(replace internal XXXX by <strong>\reste</strong> in \message0)}
+ }
+ \if {\reste <= 0} {
+  \text{message=<strong class="oef_condbad">\echec</strong>}
+ }
+
+ \if{\type = 1}{
+ \text{dessin=\dessin
+  \pendu[\cnt;]}
+ \text{Dessin=<img src="draw(200,200
+ \dessin)" alt="Vous avez fait \cnt erreur(s). Vous avancez vers la pendaison..."/>}
+ }
+
+ \if{\type>1}{
+  \integer{h=\order[\cnt]}
+  \text{jj=<span id="essai_\h">\contenu</span>}
+  \if{\type=2}{
+   \text{dessin=wims(replace internal \jj by <span class="red">\typename[1]</span> in \dessin)}
+  }
+  \if{\type=3}{
+   \text{dessin=wims(replace internal \jj by <img src="gifs/images/skull_and_crossbones50.png" alt="\typename[1]"/> in \dessin)}
+  }
+  \text{Dessin=\dessin}
+ }
+}
+
+# On affiche differement les lettres deja tapées
+\text{z=position(\rep[\step-1],\lettre1)}
+\text{lettre=wims(replace internal item number \z by <span class="seen \w_class">\rep[\step-1]</span> in \lettre)}
+
+# On repartit les lettres par groupes de 10 maxi par ligne
+\text{lettre2=\lettre[1..10]
+<br/>\lettre[11..20]
+<br/>\lettre[21..30]
+<br/>\lettre[31..-1]}
+\text{lettre2=wims(replace internal , by in \lettre2)}
+
+
+\text{z=position(\rep[\step-1],\mot)}
+\for{k in \z}{
+  \text{MOT=wims(replace internal item number \k by \rep[\step-1] in \MOT)}
+}
+
+\text{MOT1=wims(makelist <span class="w">x</span> for x in \MOT)}
+\text{MOT2=wims(items2words \MOT1)}
+\text{MOT2=wims(replace internal _ by &nbsp; in \MOT2)}
+\text{nstep=}
+\text{nstep=\jok isitemof \MOT and \step<30 and \cnt<6 ? r \step}
+\if{\step>30 or \cnt>=6}{
+  \text{w=position(\jok,\MOT)}
+  \for{a in \w}{
+    \text{MOT1=wims(replace internal item number \a by <span class="w forget">\mot[\a]</span> in \MOT1)}
+  }
+  \text{MOT2=wims(items2words \MOT1)}
+  \text{MOT2=wims(replace internal _ by &nbsp; in \MOT2)}
+}
+
+\condition{Vous avez trouvé le mot ?}{\jok notitemof \MOT}
+\condition{}{\cnt<=3}{option=hide}
+\condition{}{\cnt<=4}{option=hide}

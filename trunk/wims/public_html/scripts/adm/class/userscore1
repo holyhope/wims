@@ -1,0 +1,98 @@
+!default uu=$wims_read_parm
+
+!!! perhaps should be a command in wims.c ?
+!!! variables which are necessary : wims_class, checksessions
+!!! FIXME 64= max of exam number
+!!! FIXME max of session number
+!!! do reset only if the variable is non empty, if not it creates a variable
+!!! and gives some "variable_name_buffer_overflow"
+
+!for i in $activexams
+ !if $(Dureeexam_$i)!=$empty
+   !reset Dureeexam_$i
+ !endif
+ !if $(Dureeexam_$i)!=$empty
+   !reset Dureeexam_$i
+ !endif
+ !for jj=1 to 64
+ !! jj correspond to maximum of number sessions
+   !if $(duree$(jj)_$(i))!=$empty
+     !reset duree$(jj)_$(i)
+   !endif
+   !if $(exam_$jj)!=$empty
+    !reset exam_$jj
+   !endif
+!! jj correspond to exos in an exam
+   !if $(exam$(i)_$jj)!=$empty
+     !reset exam$(i)_$jj
+   !endif
+  !next
+!next
+
+sc=!record 0 of wimshome/log/classes/$wims_class/score/$uu.exam
+!if $sc=$empty
+  !exit
+!endif
+nsc=!linecnt $sc
+
+
+!for i=1 to $nsc
+  l=!line $i of $sc
+  !distribute words $l into e_,s_,t__,T_,i_,S_,t_
+  !if $S_=0
+    !reset jj
+  !else
+    !set jj=!positionof item $S_ in $checksessions
+    !set score$(jj)_$e_=$s_
+    !set exam_$jj=!append item $e_ to $(exam_$jj)
+    !set exam_$jj=!listuniq $(exam_$jj)
+    !if $s_ issametext 00
+      start$(jj)_$e_=$t_
+      dur$(jj)_$e_=$T_
+    !endif
+    !if $t__ issametext -1
+      duree$(jj)_$(e_)=$[$T_ - $(dur$(jj)_$e_)]
+    !endif
+  !endif
+!next
+!for i in $activexams
+ !if $(Dureeexam_$i)!=$empty
+   !reset Dureeexam_$i
+ !endif
+ !for e=1 to 64
+  !if $(Exam_$(i)_$(e))!=$empty
+    !reset Exam_$(i)_$(e)
+  !endif
+  !if $(exam$(i)_$e)!=$empty
+     !reset exam$(i)_$e
+  !endif
+ !next
+ !for ses_ in $checksessions
+   !set jj=!positionof item $ses_ in $checksessions
+   !if $(duree$(jj)_$i)!=$empty
+        Dureeexam_$i=!append item $(duree$(jj)_$i) to $(Dureeexam_$i)
+   !endif
+ !next
+!next
+
+!!details des notes examens par session
+!for ses_ in $checksessions
+   !set jj=!positionof item $ses_ in $checksessions
+   !set ss=!sh grep "$ses_" $wims_home/log/classes/$wims_class/noscore/$uu | grep "score" | awk -F"\t" '{print $$1}' | awk -F" " '{print $$3,$$4,$$6}'
+   !set ss=!lines2rows $ss
+   !set ss=!words2items $ss
+!!perhaps several different exams in one session.
+   !for i in $(exam_$(jj))
+     !set s_=!select $ss where column 1=$i
+     !set nbx=!recordcnt wimshome/log/classes/$wims_class/exams/.exam$i
+     !for k_=1 to $nbx
+       !reset s
+       !set s=!select $s_ where column 2=$k_
+       !set s=$(s[3])
+       !if $s!=$empty
+         !set s=$[rint($s*$scoremax)/10]
+       !endif
+       !set Exam_$(i)_$(jj)=$(Exam_$(i)_$(jj)) $s,
+     !next
+   !next
+!next

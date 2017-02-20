@@ -1,0 +1,24 @@
+
+!for t in result,context
+ !if $(ask$t)<2
+  n$t=0
+ !else
+  n$t=!itemcnt $($(t)list)
+ !endif
+ !if $(n$t)>1
+  good=!item 1,2 of $($(t)list)
+  !if $(ask$t)>2
+   bad=!item 3 to -1 of $($(t)list) 
+   n=!itemcnt $bad
+   s=!shuffle $n
+   s=!item 1 to $(ask$t)-2 of $s
+   bad=!item $s of $bad
+   list$t=!sort items $good,$bad
+  !else
+   list$t=!sort items $good
+  !endif
+  sh$t=$wims_sort_order
+  good$t=!positionof item 1 in $(sh$t)
+ !endif
+!next t
+

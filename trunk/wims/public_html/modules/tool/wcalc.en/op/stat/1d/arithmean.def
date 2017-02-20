@@ -1,0 +1,36 @@
+!goto $wims_read_parm
+
+:def
+title=Arithmetic mean
+synonyme=average, mean
+input=data1d
+!exit
+
+:proc
+
+cnt=!itemcnt $formula
+!if $cnt>0
+ result=!sum x for x in $formula
+ result=$[($result)/$cnt]
+!else
+ result=0
+!endif
+
+!exit
+
+:output
+
+<p class="wimscenter">
+Arithmetic mean =
+!htmlmath $result
+</p>
+Data: $cnt numbers { $formula }
+<p>
+The <em>arithmetic mean</em> of
+\(\{x_1, x_2, ..., x_n\}\)
+is equal to
+!set ins_align=middle
+!insmath {1\over n}\sum_{i=1}^n x_i
+&nbsp;.
+</p>
+!exit

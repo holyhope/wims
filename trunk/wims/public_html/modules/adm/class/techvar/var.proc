@@ -1,0 +1,34 @@
+!read adm/class/classlang names.phtml
+
+!set wims_name_listvar=$name_listvar
+wims_prefix=class user
+
+test=!defof class_defined in wimshome/log/classes/$wims_class/.def
+!if $test!=yes
+ error=bad_class
+ !reset job
+ !exit
+!endif
+
+!readproc tabletheme
+
+!if $wims_user!=supervisor
+ error=not_supervisor
+ !reset job
+ !exit
+!endif
+version_class=!record 0 of wimshome/log/classes/$wims_class/version
+!if $version_class>=5
+  !bound job within listvar,modifvar,addvar,userlist,userprop default listvar
+!else
+  !bound job within listvar,modifvar,addvar,userlist,userprop,oldvar default listvar
+!endif
+
+# make list of technical variable
+!readproc adm/vfilter/listvarfilter.proc
+
+!if $job!=$empty
+ !read $job.proc
+!endif
+
+!set wims_ariane=!append line "$(name_$job)",8 to $wims_ariane

@@ -1,0 +1,95 @@
+type=image
+textarea="data"
+
+:$name_description
+:%%%%%%%%
+:\title{$name_title}
+:\author{$wims_firstname,$wims_lastname}
+:\email{$wims_email}
+:\credits{}
+:$name_instruction
+\text{instruction=$name_instruction21}
+:$name_image
+\text{image=$wims_deposit}
+
+:$name_data
+$name_help_data
+\matrix{data=$data}
+
+:%%%%%%%%%%%%%%%%%%%%%%%%
+\text{cache=z_$wims_deposit}
+\text{size= \data[1;]}
+\text{rubrique=wims(column 1 of \data[2..-1;])}
+\text{rubrique=wims(listuniq \rubrique)}
+\text{rubrique=randitem(\rubrique)}
+\text{zone=}
+\text{coord = \data[2..-1;]}
+\integer{N=rows(\coord)}
+\matrix{coord=\coord}
+\for{ a = 1 to \N}{
+  \if{\coord[\a;1]=\rubrique}{
+    \text{point=\coord[\a;]}
+    \text{zone1=\point[2,3]}
+    \text{zone1=\point[4] issametext circle ? \point[5,6]}
+    \if{\point[4] issametext rectangle}{
+      \text{zone1=([\point[5],\point[6]]+[\point[7],\point[8]])/2}
+      \text{zone1=pari(\zone1)}
+      \text{zone1=wims(nospace \zone1)}
+    }
+    \text{zone=wims(append item \zone1 to \zone)}
+  }
+}
+\text{dessin=\imagedir/\image}
+\text{cache=draw(\size[1],\size[2]
+copy 0,0,-1,-1,-1,-1,\cache)}
+\text{cache = slib(oef/insfilename)}
+pour le feedback
+\text{figure=}
+\text{color=}
+\matrix{test=}
+\text{ff=}
+\text{QQ=}
+\integer{NNN=}
+
+\statement{
+\instruction \rubrique.
+&lt;div class="wimscenter">
+\embed{r1,\size[1] x \size[2]}
+&lt;/div>
+}
+\answer{}{\imagedir/\image;bound,\cache,\zone}{type=jsxgraphcurve}{option= precision=12 color1=blue color2=green}
+
+\matrix{test=\reply1}
+\text{color=\test[1;1]=1?green:red}
+\for{ a = 1 to \N}{
+  \if{\coord[\a;4] issametext circle and \coord[\a;1] issametext \rubrique}{
+    \text{fig= pza\a=brd.create('point',[\coord[\a;5],\coord[\a;6]], {visible: false});
+  brd.create('\coord[\a;4]',[pza\a,\coord[\a;7]],{strokeColor:'\color', fillColor:'\color', fillOpacity:0.5, highlightFillOpacity:0});}}
+  \if{\coord[\a;4] issametext rectangle and \coord[\a;1] issametext \rubrique}{
+    \text{fig= pzb\a=brd.create('point',[\coord[\a;5],\coord[\a;6]], {visible: false});
+  pzc\a=brd.create('point',[\coord[\a;5],\coord[\a;8]], {visible: false});
+  pzd\a=brd.create('point',[\coord[\a;7],\coord[\a;8]], {visible: false});
+  pze\a=brd.create('point',[\coord[\a;7],\coord[\a;6]], {visible: false});
+  brd.create('polygon',[pzb\a,pzc\a,pzd\a,pze\a],{strokeColor:'\color', fillColor:'\color', fillOpacity:0.5, highlightFillOpacity:0});}}
+  \if{\coord[\a;4] issametext polygon and \coord[\a;1] issametext \rubrique}{
+      \text{ff=}
+      \integer{NNN=(items(\coord[\a;])-5)/2}
+      \for{zz=1 to \NNN}{
+         \text{ff=kkk\zz=brd.create('point',[\coord[\a;2*\zz+3],\coord[\a;2*\zz+4]], {visible: false});}
+         \text{fig=\fig
+\ff}
+         \text{QQ=wims(append item kkk\zz to \QQ)}
+      }
+     \text{fig=\fig
+brd.create('polygon',[\QQ],{strokeColor:'\color', fillColor:'\color', fillOpacity:0.5, highlightFillOpacity:0});}
+ }
+ \text{figure=\fig
+\figure}
+}
+
+\text{A=slib(geo2D/jsxgraph jsxbox,\size[1] x \size[2], var brd = JXG.JSXGraph.initBoard('jsxbox', {axis:false,boundingbox: [0, 0, \size[1],  \size[2]], grid:false, shownavigation:false});
+var urlImg = "\imagedir/\image";
+var carte = brd.create('image',[urlImg,[0, \size[2]], [\size[1], -\size[2]]],{fixed: true, highlight: false});
+\figure
+)}
+\feedback{1=1}{\A}

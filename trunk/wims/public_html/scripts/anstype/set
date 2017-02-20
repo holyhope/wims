@@ -1,0 +1,61 @@
+option:distinct_inputs repeat
+
+!reset dd1, good1
+dd=!declosing $(reply$i)
+!if ; isin $dd
+ test=NaN
+ !exit
+!endif
+!if , notin $dd
+ dd=!words2items $dd
+!endif
+!if repeat iswordof $(replyoption$i) or distinct_inputs iswordof $(replyoption$i)
+dd1=!sort items $dd
+!endif
+dd=!listuniq $dd
+!default dd1=$dd
+reply$i={$dd1}
+
+m_reply$i=$dd1
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+
+good=!declosing $(replygood$i)
+!if , notin $good
+ good=!words2items $good
+!endif
+!if repeat iswordof $(replyoption$i) or distinct_inputs iswordof $(replyoption$i)
+ good1=!sort items $good
+!endif
+good=!listuniq $good
+!default good1=$good
+replyGood$i={$good1}
+dt=!listintersect $good and $dd
+n1=!itemcnt $good
+n2=!itemcnt $dd
+n3=!itemcnt $dt
+
+!if $good1 issametext $dd1
+  test_rep_=1
+!else
+  test_rep_=0
+!endif
+!if $n1!=$n2 and (repeat notwordof $(replyoption$i) and distinct_inputs notwordof $(replyoption$i))
+ badsize$i=true
+!endif
+
+!if $n1=$n2 and $n2=$n3
+ !if $test_rep_=1
+   diareply$i=good
+   !advance freegot
+ !else
+   diareply$i=good
+   !advance freegot
+   !if repeat iswordof $(replyoption$i)
+    partialgood$i=yes
+   !endif
+ !endif
+!else
+ diareply$i=bad
+!endif

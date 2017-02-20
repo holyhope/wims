@@ -1,0 +1,56 @@
+:signification
+ Met des champs de types de réponses texte sur une image.
+ Doit être utilisé dans le <span class="tt wims_code_words">statement</span> d'un exercice OEF.
+
+<p>
+La première ligne est formée de l'adresse de l'image, suivie de la taille générique des
+ champs de réponse (obligatoire).
+ Les lignes suivantes sont de la forme
+ </p>
+ <pre>
+ reply <span class="tt">n</span>, p_X x p_Y,size, css
+ </pre>
+ où <span class="tt">p_X</span> et <span class="tt">p_Y</span>
+ donnent la position en pixels du coin en haut à gauche du champ correspondant,
+ <span class="tt">size</span> est la taille du champ (facultatif),
+ <span class="tt">defaut</span> est un texte s'affichant dans le champ
+ correspondant (facultatif), <span class="tt">css</span> un code
+ css (facultatif).
+
+:example
+<div class="wims_help_example">
+ <span class="wims_help_example">Exemple</span>
+ <div class="spacer">
+  <textarea id="wims_show51" cols="100" rows="9" readonly="readonly">
+\statement{
+ \special{imageinput image_url, 200x200,5
+ reply 1,100x100
+ reply 2,150x150
+ }
+}
+\answer{}{x^2}{type=formal}
+\answer{}{2}{type=numeric}
+  </textarea>
+ </div>
+ <div class="spacer">
+  <textarea id="wims_show52" cols="100" rows="13" readonly="readonly">
+\text{D=draw(200,200
+xrange -5,5
+yrange -5,5
+hline 0,0,black
+vline 0,0,black)}
+\statement{
+\special{imageinput \D, 200x200,3
+reply 1,180x80
+reply 2,102x0}
+}
+\answer{}{x}{type=case}
+\answer{}{y}{type=case}
+  </textarea>
+ </div>
+</div>
+<div class="wims_warning">
+Attention : il peut y avoir un bogue pour l'instant dans le cas où un autre
+champ de réponses se trouve sur la page (numérotation dans l'analyse)
+que l'on espère corriger.
+</div>

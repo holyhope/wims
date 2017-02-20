@@ -1,0 +1,92 @@
+
+<b>Click in tiles.</b>
+(nome: <span class="tt wims_code_words">clicktile</span>)
+<br/>
+
+Una animazione mostra una serie di quadretti colorati. Possono essere disegnati dei poligoni
+o un punto (l'uno o l'altro). Si richiede all'utente di colorare i quadretti, seguendo una qualche
+regola, cliccandoci sopra.
+
+<p>Deve essere inserita nell'enunciato con un comando <span class="tt wims_code_words">\embed</span>. I quadretti sono indicati
+dando le cordinate del vertice in alto a sinistra nella forma <span class="tt wims_code_words">intero:intero</span>.
+La prima riga del comando <span class="tt wims_code_words">\embed</span> è la dimensione X x Y in pixels dell'animazione.
+La seconda riga, tra parentesi quadre <span class="tt wims_code_words">[</span> <span class="tt wims_code_words">]</span> contiene comandi che precisano
+i colori dei quadretti che vengono mostrati all'utente (e che <b>non</b> possono essere
+modificati dallo studente). Per esempio
+<pre>
+\embed{r1, 200 x 200
+[xrange -5,5
+yrange -5,5
+background_color yellow
+square blue,1:1,1:2,1:3
+square green,2:3,2:4
+point red,0:0]}
+</pre>
+Gli estremi (<span class="tt wims_code_words">xrange</span> e <span class="tt wims_code_words">yrange</span>) devono essere interi.
+La risposta corretta è data da righe del tipo
+<span class="tt wims_code_words">color,a:b,c:d</span>
+La posizione dei quadretti deve essere data nella forma <span class="tt wims_code_words">a:b</span>
+con <span class="tt wims_code_words">a</span> e <span class="tt wims_code_words">b</span> interi.
+
+Per presentare all'utente un disegno/una costruzione può essere utilizzato uno dei
+seguenti elementi
+<pre>
+polygon white,0:0,0:1,1:1
+point red,0:0
+line white,-5:0,5:0
+</pre>
+&Egrave; anche possibile presentare all'utente un'immagine di sfondo.
+<pre>copy,x,y,url</pre>
+Se questa immagine viene costruita con flydraw, l'url deve essere quello prodotto
+dalla fuzione <span class="tt wims_code_words">draw()</span>. Si raccomanda in questo caso di utilizzare gli stessi
+valori per <span class="tt wims_code_words">xrange</span> e <span class="tt wims_code_words">yrange</span>.
+
+La variabile <span class="tt wims_code_variable">\reply</span><em>n</em> è la matrice dei quadretti selezionati dall'utente
+(una riga per ciascun colore)
+Se la seconda riga del comando <span class="tt wims_code_words">\embed</span> è
+<pre>
+return_all_objects yes
+</pre>
+allora la variabile <span class="tt wims_code_variable">\reply</span><em>n</em> registrerà la costruzione completa.
+La variabile <span class="tt wims_code_variable">\sc_reply</span><em>n</em> assume valore 0.5 se i quadretti selezionati
+dall'utente sono quelli corretti, ma non del colore corretto.
+
+<p>&Egrave; anche possibile utilizzare una variabile vuota come risposta corretta nel comando
+<span class="tt wims_code_words">\answer</span>. In questo caso occorre programmare la verifica della correttezza della
+risposta con opportune <span class="tt wims_code_words">\condition</span>.
+case.
+</p>
+<p>
+<b>Esempio</b>:
+</p>
+<textarea id="wims_show" cols="100" rows="10" name="wims_show" readonly="readonly">
+\statement{
+  \embed{r1,200 x 200
+  [xrange -5,5
+   yrange -5,5
+   background_color yellow
+   square blue,1:1,1:2,1:3
+   square green,2:3,2:4
+   line white,-5:0,5:0
+  ]}
+}
+\answer{}{blue,1:0,1:-1,1:-2; green,2:-2,2:-3}{type=clicktile}
+</textarea>
+
+$table_header
+$table_hdtr<th></th><th>Spiegazione</th></tr>
+$table_tr<td>xrange x1,x2</td><td></td></tr>
+$table_tr<td>yrange y1,y2</td><td></td></tr>
+$table_tr<td>background_color [color]</td><td></td></tr>
+$table_tr<td>square [color],x1:y1,x2:y2,...</td><td></td></tr>
+$table_tr<td>segment [color],x1:y1,x2:y2</td><td></td></tr>
+$table_tr<td>polygon [color],x1:y1,x2:y2,x2:y2,...</td><td></td></tr>
+$table_tr<td>return_all_objects yes/no</td><td>no: solo i nuovi oggetti sono restituiti</td></tr>
+$table_tr<td>colors</td><td>Elenco dei colori supplementari</td></tr>
+</table>
+
+I colori possibili sono
+<span class="tt">white,red, green, blue, orange, yellow, purple, lightgreen, lightblue, cyan,
+brown, salmon, pink</span>.
+
+

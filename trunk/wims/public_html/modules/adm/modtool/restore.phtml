@@ -1,0 +1,67 @@
+!reset wims_deposit
+
+!if $mode=bad_fname
+<div class="wims_warning">$name_warning </div>
+!endif
+
+!if $mode=bad_arch
+<p>
+ $name_norecognize
+ </p>
+!endif
+
+!if $mode=illegal
+<p>
+$name_illegal
+ </p>
+!endif
+
+!if $mode=diffcheck
+ !if $diff=$empty
+  $name_diff1
+ !else
+  !if $diff1=MANY
+   $name_diff2:
+  !else
+   $name_diff3:
+  !endif
+   <div class="wimscenter">
+    <textarea id="wims_show" cols="100" rows="30" name="wims_show" readonly="readonly">$diff</textarea>
+   </div>
+ !endif
+ !exit
+!endif
+
+!if $mode!=$empty and $mode iswordof prep bad_fname bad_arch illegal
+ !set wims_form_method=file
+ !form reply
+ <input type="hidden" name="jobreq" value="restore" />
+ $name_restore:
+ <input type="file" name="wims_deposit" size="40" />
+ <input type="submit" value="$wims_name_tosave" />
+ <p class="small">$name_warning2
+ </p><p>
+<span class="wims_warning">$wims_name_warning</span>. $name_warning_diff
+ <input type="checkbox" name="confirm" value="diffcheck" />
+ $name_show_diff
+</p>
+
+!formend
+!else
+$table_header
+<caption>$name_restored</caption>
+$table_tr <th>$wims_name_title</th><th>$wims_name_description</th>
+<th>$wims_name_Address</th></tr>
+$table_tr
+ <td> <span class="wims_mod_title">$ftest</tt></td><td> <span class="wims_mod_desc">$ftest2</span>
+ </td><td class="wims_fname">$restored</td>
+ </tr>
+  $table_end
+ <div class="wimscenter wimsform"> 
+ !set wims_ref_class=wims_button
+ !href cmd=reply&jobreq=flist&modreq=$restored $name_gotowork
+ </div>
+
+
+!endif
+

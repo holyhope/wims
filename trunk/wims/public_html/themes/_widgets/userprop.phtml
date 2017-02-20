@@ -1,0 +1,14 @@
+
+!if $class_type isin 0134
+  !set tmp_cl=$wims_superclass
+  !default tmp_cl=$wims_class
+  !set tmp=!defof class_authidp in wimshome/log/classes/$tmp_cl/.def
+  !set tmp=$(tmp[2;])
+ !if $tmp issametext $empty
+ <!-- _widgets/userprop.phtml -->
+ <$div1 class="menuitem">
+  !read ./adm/oneitem.phtml account,1,module=adm/class/usermanage&job=userprop
+ </$div1>
+ <!-- _widgets/userprop.phtml -->
+ !endif
+!endif

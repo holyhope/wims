@@ -1,0 +1,26 @@
+!! no mathml zooming in dynapi
+!set disable_zoom=yes
+!set dynapi_agent=!lowercase $httpd_HTTP_USER_AGENT
+
+!if chrome isin $dynapi_agent or trident isin $dynapi_agent or android isin $dynapi_agent
+  !set disable_mathml=1
+!endif
+!set wims_texbasesize=5
+
+!if $wims_dynapi=loaded
+ !exit
+!endif
+!set wims_dynapi=loaded
+
+<script type="text/javascript" src="scripts/js/dynapi3x/src/dynapi.js"></script>
+<script type="text/javascript">
+    /*<![CDATA[*/
+dynapi.library.setPath('scripts/js/dynapi3x/src/');
+dynapi.library.include('dynapi.api');
+dynapi.library.include('dynapi.api.ext.DragEvent')
+!if $wims_html_onload!=$empty
+ dynapi.onLoad(function() {$wims_html_onload});
+!endif
+    /*]]>*/
+</script>
+

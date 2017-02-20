@@ -1,0 +1,39 @@
+
+!if $special_parm iswordof publication namewriting
+  !changeto help/$modu_lang/$special_parm.phtml
+!endif
+<div class="wims_content">
+
+!if $special_parm iswordof domain
+  !read lang/help.$modu_lang/$special_parm.phtml
+  !set dir=wimshome/public_html/bases/sys/domain/domain
+  !set dom=!lookup domain in wimshome/public_html/bases/sys/domain/domain
+  <table class="wimscenter wimsborder">
+  !for a in $dom
+    !set t_dom=!lookup $a in $dir.$lang
+   <tr><th colspan="2">$t_dom</th></tr>
+   !set t_dom=!lookup $a in $dir
+   !for t in $t_dom
+     !set t2=!lookup $t in $dir.$lang
+    <tr><td class="bold">$t</td><td>$t2</td></tr>
+   !next
+  !next
+  </table>
+  </div>
+  !exit
+!endif
+
+!if $special_parm iswordof keywords
+  !read lang/help.$modu_lang/$special_parm.phtml
+  !read help/keywords.phtml
+  </div>
+  !exit
+!endif
+
+!if $special_parm!=$empty
+ !read lang/help.$modu_lang/$special_parm.phtml
+!endif
+</div>
+!changeto lang/help.phtml.$modu_lang
+
+

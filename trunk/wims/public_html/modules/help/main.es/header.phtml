@@ -1,0 +1,62 @@
+!set lan=es
+!read tabletheme
+!header1
+
+<div id="wimsmhelp">
+
+<div class=wimsmenu>
+!robottrap
+<center>
+$table_header
+ $table_tr<th>
+!if _ isin $wims_subsession
+ <a href="#" onclick="window.close()">Cerrar la ventana de ayuda</a>
+!else
+ !href session=$wims_session.1 Página de inicio de WIMS
+!endif
+!if $style=print
+ &nsbp;
+ !href module=$module&chapter=0 Versión interactiva
+ !set chapter=-1
+ !goto tabend
+!endif
+!if $chapter>0
+ <th>
+ !href module=$module&chapter=0 Índice de la ayuda
+</th>
+!endif
+<th>
+!href module=$module&style=print Versión imprimible
+</th>
+!if $chapter>1
+ <th>
+ !href module=$module&chapter=$[$chapter-1] Capítulo anterior
+!endif
+!if $chapter<$chaptercnt
+ <th>
+ !href module=$module&chapter=$[$chapter+1] Capítulo siguiente
+!endif
+
+:tabend
+</table></center>
+</div><!--wimsmenu-->
+<div id="wimsbodybox">
+<div id="wimspagebox">
+<div class=wimsbody>
+
+!if $chapter>0
+ !set l=!line 1 of $(chapter$chapter)
+ !set ll=!word $chapter of I II III IV V VI VII IIIV IX X
+ !set l=Capítulo $ll. $l
+!else
+ !if $chapter<0
+  !set l=Versión imprimible
+ !else
+  !set l=Índice general
+ !endif
+!endif
+
+<p><h1 class="wims_title">Ayuda de WIMS<br/><font size="+1"><b>
+$l</b></font>
+</h1> <p>
+

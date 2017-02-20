@@ -1,0 +1,138 @@
+option:feedback=" "
+
+good=!rows2lines $(replygood$i)
+image=!line 1 of $good
+tester=!line 2 to -1 of $good
+!if $(saverep$i)=$empty
+ reply$i=($click_x,$click_y)
+ saverep$i=$(reply$i)
+ m_reply$i=$(reply$i)
+!endif
+replyGood$i=...
+
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+
+tmp=!declosing $(reply$i)
+tmp=!nonempty item $tmp
+!if $tmp=$empty
+ error=empty_data
+ !exit
+!endif
+
+ifile=$image
+!if $imagedir isin $image
+ ifile=!translate internal / to $ $ in $ifile
+ ifile=!word -1 of $ifile
+!else
+ !if getfile isin $image
+  ifile=!translate internal =/ to $  $ in $ifile
+  ifile=!word -1 of $ifile
+ !else
+  !if getins isin $image
+   ifile=!replace internal &modif= by $ $ in $ifile
+   ifile=!replace internal &+modif= by $ $ in $ifile
+   ifile=!replace internal special_parm= by $ $ in $ifile
+   ifile=!word 2 of $ifile
+  !endif
+ !endif
+!endif
+
+ifile$i=$ifile
+tmp=!declosing $(reply$i)
+x=!item 1 of $tmp
+y=!item 2 of $tmp
+
+x=$[round($x)]
+y=$[round($y)]
+!if NaN isin $x$y
+ test=NaN
+ !exit
+!endif
+
+error_back=$wims_exec_error
+wims_exec_error=
+
+tester=!nonempty lines $tester
+tcnt=!linecnt $tester
+test=!exec clickzone $x,$y\
+$tester
+
+m_clickzone_error=!trim $wims_exec_error
+m_clickzone_error=!line 2 to -1 of $m_clickzone_error
+wims_exec_error=$error_back
+
+test1=!line 1 of $test
+test2=!line 2 to -1 of $test
+!distribute words $test1 into i_,prec
+
+!if $i_=1
+ ball=greenball
+ colfill=green
+!else
+ ball=redball
+ colfill=red
+ !if goodanswershown iswordof $(replyoption$i)
+  colgood=green
+ !endif
+!endif
+!!fragile
+feedback=!getopt feedback in $(replyoption$i)
+feedback=!declosing $feedback
+!if fill iswordof $(replyoption$i) and bound isitemof $tester
+  !if $colgood!=$empty
+    testgood=fill $(tester[3]),$(tester[4]),$colgood
+  !endif
+  !insdraw existing $(ifile$i)\
+ fill $x,$y,$colfill\
+ $test2\
+ $testgood\
+ $feedback
+!else
+   !if $colgood!=$empty and ($(tester[1]) iswordof circle point)
+     testgood=copy $(tester[2])-7,$(tester[3])-7,-1,-1,-1,-1,$(colgood)ball.gif
+   !endif
+   !if $colgood!=$empty and $(tester[1]) iswordof bound
+     testgood=copy $(tester[3])-7,$(tester[4])-7,-1,-1,-1,-1,$(colgood)ball.gif
+   !endif
+ !insdraw existing $(ifile$i)\
+ copy $x-7,$y-7,-1,-1,-1,-1,$ball.gif\
+ $test2\
+ $testgood\
+ $feedback
+!endif
+
+!if analysenofig notwordof $(replyoption$i)
+ reply_$i=<img src="$ins_url" alt="" style="margin-left:5px;margin-bottom:5px;vertical-align:middle;"/>
+!else
+ reply_$i=&nbsp;
+!endif
+!if fill iswordof $(replyoption$i) and bound isitemof $tester
+  reply__$i=<img src="$ins_url" alt="" style="margin-left:5px;margin-bottom:5px" />
+!else
+  reply__$i=<img src="gifs/$ball.gif" alt="$ball"/>
+!endif
+m_result$i=$i_
+
+!if $test=$empty
+ Test=bad $i
+ !exit
+!endif
+
+!if $tcnt>1 and $i_=-1
+ test=NaN
+ saverep$i=
+ !exit
+!endif
+
+!if $i_=1 and $prec=0
+ diareply$i=good
+ !advance freegot
+!else
+ !if $i_=1
+  !advance precgood
+  precreply$i=yes
+ !endif
+ diareply$i=bad
+!endif

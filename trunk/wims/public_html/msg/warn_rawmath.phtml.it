@@ -1,0 +1,50 @@
+
+!set wims_warn_header=<p><span class="wims_warning">$wims_name_warning.</span>
+
+!if ambiguous iswordof $wims_warn_rawmath
+ $wims_warn_header
+ La formula inserita è ambigua. Verificate che WIMS
+ abbia correttamente 
+ interpretato i dati inseriti.
+ </p>
+ !set wims_warn_rmremark=yes
+!endif
+
+!if unknown iswordof $wims_warn_rawmath
+ $wims_warn_header
+ WIMS non riconosce la funzione (o la variabile)
+ <span class="bold tt wims_warning">$wims_warn_rawmath_parm</span> utilizzata nella formula. Errore di battitura?
+ </p>
+ !set wims_warn_rmremark=yes
+!endif
+
+!if flatpower iswordof $wims_warn_rawmath
+ <p><span class="wims_warning">Suggerimento.</span>
+ Se si vuole inserire <span class="wims_emph">x<sup>2</sup></span> scrivere
+ <span class="tt">x^2</span> oppure <span class="tt">x**2</span>.
+ </p>
+!endif
+
+!if badprec iswordof $wims_warn_rawmath
+ $wims_warn_header
+ ``<span class="tt">x^1/2</span>'' significa <span class="wims_emph">x/2</span>! Scrivete
+ ``<span class="tt">x^(1/2)</span>'' se intendete <span class="wims_emph">x<sup>1/2</sup></span>.
+ </p>
+!endif
+
+!if unmatched_parentheses iswordof $wims_warn_rawmath
+ $wims_warn_header
+ C'è una parentesi di troppo nella formula.
+ Verificate bene.
+ </p>
+!endif
+
+!if $wims_warn_rmremark=yes
+ <p>
+ Usate sempre ``<span class="tt">*</span>'' per indicare la moltiplicazione e
+ usate sempre le parentesi per gli argomenti delle funzioni.
+ <span class="small">Per gli esperti: se volete che WIMS non cerchi di interpretare
+ i dati che inserite, fateli precedere da ``<span class="tt">1-1+</span>''.</span>
+ </p>
+!endif
+

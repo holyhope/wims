@@ -1,0 +1,91 @@
+!set n=$counter
+<script type="text/javascript">
+//<![CDATA[
+    function demomath() {
+    var myvar1=document.getElementById('mathinput').value;
+    !increase myvar2
+    var myvar2=$myvar2;
+    var myvar4="$myvar4";
+    myvar1= encodeURIComponent( myvar1 );
+    myvar2= encodeURIComponent( myvar2 );
+    myvar4= encodeURIComponent( myvar4 );
+    var URL = '$wims_ref_name?session=$session&module=$module&cmd=help&showmath=1&myvar1='+myvar1+'&+myvar2='+myvar2+'&+myvar4='+myvar4;
+    document.location.href = URL;
+    }
+//]]>
+</script>
+    !! myvar2 counts the number of calls to this file
+    !! no playing allowed: 5 times then it's over
+<table>
+    <tr>
+    <td style="text-align:center;background-color:lightblue">
+	!if $myvar1!=$empty
+	    <hr />
+	    !set myvar1=!nonempty line $myvar1
+	    !set l=!linecnt $myvar1
+	    !if $l=1
+		!set myvar1=!rawmath $myvar1
+		!set texvar=!texmath $myvar1
+	    !else
+		!set symbols= --->,-->,->,===>,==>,=>
+		!for s=1 to $l
+		    !set L=!line $s of $myvar1
+		    !set L=!rawmath $L
+		    !set m=!append line $L to $m
+		    !for p in $symbols
+			!set L=!replace internal $p by \rightarrow in $L
+		    !next p
+		    !set L=!texmath $L
+		    !set texvar=!append line $L \\  to $texvar
+		!next s
+		!set texvar=\begin{array}{l} \special{color=red}$texvar \end{array}
+		!set myvar1=$m
+	    !endif
+	    !insmath $texvar
+	    <hr />
+	!endif
+    </td>
+!if $myvar2 !=5
+    </tr>
+    <tr>
+    <td>
+	<textarea id="mathinput" class="schaersvoorde_textarea" wrap="off" cols="20" rows="1" >$myvar1</textarea>
+    </td>
+    </tr>
+    <tr>
+    <td>
+	<table>
+	    <tr>
+	    <td>
+		<input type="button" style="background-color:lightgreen;font-size:10pt;" onclick="javascript:demomath();" id="schaersvoorde_extra_button" value="SHOW FORMULA" />
+	    </td>
+	    </tr>
+	    <tr>
+	    <td>
+	    	<input type="button" style="background-color:lightgreen;font-size:10pt;" onclick="javascript:window.close();" id="schaersvoorde_nok_button" value="EXIT"/>
+	    </td>
+	    </tr>
+    !if $questiontype=0 and $inputs>0 and $inputs <2 
+    !! dus alleen laten opsturen bij een enkel open antwoord
+<script type="text/javascript">
+//<![CDATA[
+    function sendanswer() {
+	var reply=document.getElementById('mathinput').value;
+	reply= encodeURIComponent( reply );
+	var URL = '$wims_ref_name?session=$myvar4&+module=$module&+cmd=reply&+reply$n='+reply ;
+	opener.location.href = URL;
+	window.close();
+    }
+//]]>
+</script>
+	    <tr>
+	    <td>
+		<input type="button" style="background-color:orange;font-size:10pt;" value="$send" onclick="javascript:sendanswer();"/>
+	    </td>
+    !endif 
+	    </tr>
+	</table>
+    </td>
+    </tr>
+</table>
+<script type="text/javascript" src="$jsdir/wz_tooltip.js"></script>

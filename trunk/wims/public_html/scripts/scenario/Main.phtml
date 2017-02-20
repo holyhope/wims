@@ -1,0 +1,34 @@
+!header
+
+!read scenario/present.phtml
+
+<hr />
+
+!if $error!=$empty
+<div class="wims_msg warning">
+ !read scenario/msg.phtml
+</div>
+!else
+ !read scenario/form.phtml
+!endif
+
+<div class="spacer">
+!if $status=waiting
+!set wims_ref_class=wims_button wims_secondary_button
+ !href exo_Renew
+ $
+!else
+ !set wims_ref_class=wims_button
+ !href exo_Again
+ $
+ !if $worksheet=$empty
+  !set wims_ref_class=wims_button
+  !href exo_Intro
+.
+ !endif
+!endif
+</div>
+!read endhook.phtml
+!tail
+
+!reset ans

@@ -1,0 +1,39 @@
+!read adm/css.phtml
+!read adm/class/classname.phtml $wims_classname\
+$wims_institutionname
+
+!if $cmd=help
+ !header
+ !changeto help.phtml
+!endif
+
+!header1
+
+!read adm/title.phtml 1\
+$classname\
+$name_title
+
+!if $error!=$empty
+ <div class="wims_msg alert">
+ !read lang/msg.phtml.$moduclass_lang
+ </div>
+ !set wims_menu_items=!append line class_home,1,module=home\
+ to $wims_menu_items
+ !goto end
+!endif
+
+!read table.phtml
+
+!read form.phtml
+
+:end
+!set wims_menu_items=!append line itemsep,0,$wims_name_Evaluation\
+Score1,1,module=adm/class/userscore\
+livret,1,module=adm/class/livret\
+activity,1,module=adm/class/activity\
+ to $wims_menu_items
+
+!tail
+
+!reset show
+

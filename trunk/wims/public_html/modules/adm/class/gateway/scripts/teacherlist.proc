@@ -1,0 +1,19 @@
+
+tt=!defof user_lastname, user_firstname in $classdir1/supervisor
+tlist1=$wims_name_supervisor
+!if $moduclass_lang=cn
+ tsplit=
+!else
+ tsplit=&#44; $
+!endif
+tlist2=$wims_name_supervisor
+
+Tlist=!record 0 of $classdir1/.teacherlist
+n=!linecnt $Tlist
+n=$[min($n,500)]
+!for i=1 to $n
+ l=!line $i of $Tlist
+ tlist1=!append item $(l[3]) to $tlist1
+ tlist2=!append item $(l[1])$tsplit$(l[2]) ($(l[3])) to $tlist2
+!next i
+

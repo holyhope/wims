@@ -1,0 +1,32 @@
+<h3>Using a document block for worksheet presentation</h3>
+
+You may put the address of a document block
+(such as <span class="tt wims_fname">c1/main</span>) to be the presentation page of the work sheet.
+The document itself need not be readable by participants.
+<p>Leave this field blank if you want to use the standard presentation page.</p>
+<p>
+Links to individual exercises should be defined using the command
+    <span class="tt wims_code_variable">\exercise</span>.</p>
+You can use the following pre-defined variables:
+<ul>
+ <li><span class="tt wims_code_variable">\scorerequire</span> Required points of each exercise
+ </li><li><span class="tt wims_code_variable">\scoregot</span> Participant's point achievements on each exercise
+ </li><li><span class="tt wims_code_variable">\scoremean</span> Participant's average score on each exercise
+ </li><li><span class="tt wims_code_variable">\expiration</span> Expiration date of the sheet, yyyymmdd
+ </li><li><span class="tt wims_code_variable">\today</span> Date of today, yyyymmdd</li>
+</ul>
+<p>All the score parameters are lists of numbers, each member of the list
+corresponding to the number for an exercise of the sheet.</p>
+
+<b>For example</b>, if you are creating worksheet number 5, write the following instructions
+in the </tt>c1/main</tt> block of the document:
+<pre>
+\exercise{5/1} : Score required: \scorerequire[1]
+                 Score obtained: \scoregot[1]
+
+\exercise{5/2} : Score required: \scorerequire[2]
+                 Score obtained: \scoregot[2]
+
+\exercise{5/3}{Un autre titre}: Score required \scorerequire[3]
+                Score obtained: \scoregot[3]
+</pre>

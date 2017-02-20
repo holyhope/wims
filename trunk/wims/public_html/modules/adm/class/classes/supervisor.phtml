@@ -1,0 +1,185 @@
+<div class="wims_content">
+
+!read search.phtml
+!if $clcnt+$sccnt<1 and $keyword!=$empty
+ <p class="notfound">
+ $name_nofound
+ </p>
+!endif
+!if $wims_user!=$empty
+ !read direct.phtml
+ !if $wims_user!=supervisor and $supervisable!=yes
+  !exit
+ !endif
+!else
+  !read lang/supervisor.phtml.$modu_lang
+!endif
+
+!if $overflow=yes
+ !exit
+!endif
+
+!if $clcnt+$sccnt>0
+ !if $wims_user=$empty
+   $name_supervisor_text
+ !endif
+
+ !if $sccnt>0
+  $table_header
+
+  <caption>$name_portalandgroup</caption>
+  $table_hdtr<th rowspan="2">$wims_name_name</th><th>$wims_name_teacher</th><th colspan="2">$wims_name_nameteacher/$wims_name_Supervisor</th></tr>
+  $table_hdtr<th>$wims_name_action</th><th>$wims_name_name</th><th>$wims_name_action</th></tr>
+!!  <th colspan="2">$wims_name_Supervisor</th></tr>
+  !for i=1 to $sccnt
+   !set l=!line $i of $sclasses
+   !distribute items $l into code,expire,in,cl,la,ty,lv,pswd
+   !set supv=!item 9 of $l
+   !default supv=!defof class_supervisor in wimshome/log/classes/$code/.def
+
+   $table_tr
+   <td>
+    $in<br />$cl
+   </td>
+   !reset class_auth
+   !defread wimshome/log/classes/$code/.def
+   !read adm/class/initclass $code,auth
+   !if $class_auth isitemof $auth_method_list and $(class_$(class_auth)_auth)!=$empty
+     !read supervisor2.phtml
+   !else
+   <td>
+    !set wims_ref_class=wims_button
+    !href module=$module&type=authparticipant&class=$code $wims_name_Enter
+   </td>
+   !endif
+   <td>$supv</td>
+   <td>
+    !set wims_ref_class=wims_button
+    !href module=$module&type=authsupervisor&class=$code $wims_name_Enter
+   </td></tr>
+  !next i
+  $table_end
+ !endif
+ !if $clcnt>0 and $s_prog!=1
+  $table_header
+  !if $superclass_orig=$empty
+   <caption>$name_independantclass</caption>
+   $table_hdtr<th>$wims_name_name</th><th>$wims_name_nameteacher / $wims_name_Supervisor</th>
+   <th>$wims_name_action</th></tr>
+  !else
+   !if $splevel>1
+    !set inst=!defof class_description in wimshome/log/classes/$superclass2/.def
+   !else
+    !set inst=!defof class_institution in wimshome/log/classes/$superclass_orig/.def
+   !endif
+   !default Name_level=$(CL_Name[2])
+    <caption>$Name_level / $inst
+    !if $class_type>2
+    $
+    !set wims_ref_class=wims_button_help
+    !href cmd=help&special_parm=$module_language/structure $wims_name_help
+    !endif
+    !if $splevel>1
+     !href cmd=reply&type=$type&superclass2=$sparent&s_prog=0 $name_up
+    !endif
+    </caption>
+    $table_hdtr<th>$Name_level</th><th>$wims_name_nameteacher</th>
+    !if $superclass_orig!=$empty and $stype=4
+     <th>+</th>
+     !if $ty!=1 and $splevel =1
+      <th>+</th>
+     !endif
+    !endif
+ </tr>
+   !endif
+   !for i=1 to $clcnt
+     !set l=!line $i of $classes
+     !distribute items $l into code,expire,in,cl,la,ty,lv,pswd
+     !set supv=!item 9 of $l
+     !default supv=!defof class_supervisor in wimshome/log/classes/$code/.def
+
+     $table_tr
+     !if $superclass_orig=$empty
+      <td>$in<br />$cl</td>
+     !else
+      <td>
+      !href module=$module&type=authsupervisor&class=$code $cl
+      </td>
+     !endif
+     <td>$supv</td>
+     !if $superclass_orig!=$empty and $stype=4
+      <td>
+      !if $ty!=1
+       !set wims_ref_class=wims_button
+       !href cmd=reply&type=$type&superclass2=$code&s_prog=0 $sousclasses
+      !else
+      -
+      !endif
+      </td>
+      !if $ty!=1 and $splevel =1
+       <td>
+       !set wims_ref_class=wims_button
+       !href cmd=reply&type=$type&superclass2=$code&s_prog=1 $name_program
+       </td>
+      !endif
+     !endif
+     !if $superclass_orig=$empty
+      <td>
+      !set wims_ref_class=wims_button
+      !href module=$module&type=authsupervisor&class=$code $wims_name_Enter
+      </td>
+     !endif
+     </tr>
+    !next i
+   $table_end
+  !else
+!!#####################program
+   !if $clcnt_pr>0
+   !if $splevel>1
+    !set inst=!defof class_description in wimshome/log/classes/$superclass2/.def
+   !else
+    !set inst=!defof class_institution in wimshome/log/classes/$superclass_orig/.def
+   !endif
+   $table_header
+    <caption>$Name_program ($inst)
+    !if $splevel>1
+     !href cmd=reply&type=$type&superclass2=$sparent&s_prog=0 $name_up
+    !endif
+    </caption>
+    $table_hdtr<th>$wims_name_level</th><th>$wims_name_nameteacher</th><th>+</th>
+    !for i=1 to $clcnt_pr
+     !set l=!line $i of $classes_pr
+     !distribute items $l into code,expire,in,cl,la,ty,lv,pswd
+     !set supv=!item 9 of $l
+     !default supv=!defof class_supervisor in wimshome/log/classes/$code/.def
+     $table_tr
+     <td>
+     !href module=$module&type=authsupervisor&class=$code $cl
+     </td>
+     <td>$supv</td>
+     !if $superclass_orig!=$empty and $stype=4
+      <td>
+      !if $ty!=1
+       !set wims_ref_class=wims_button
+       !href cmd=reply&type=$type&superclass2=$code&s_prog=0 $sousclasses
+      !else
+       -
+      !endif
+      </td>
+     !endif
+    </td></tr>
+    !next i
+    $table_end
+   !endif
+  !endif
+!else
+ !if $class_type=$empty and $superclass_orig=$empty and $keyword=$empty
+  ($name_language2)
+ !else
+   !if $clcnt=0 and $keyword=$empty
+    ($name_noavailable)
+   !endif
+ !endif
+!endif
+
+</div>

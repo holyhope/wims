@@ -1,0 +1,161 @@
+!if $vote_status!=1
+ error=bad_vote
+ job=home
+ !changeto home.proc
+!endif
+
+!readdef $userfile
+!if $(user_vote_$Vote)=$empty and $(user_vote_$vote)!=$empty
+    user_vote_$Vote=$(user_vote_$vote)
+!endif
+
+# pour un questionnaire tracé ou anonyme on interdit de
+# modifier son vote.
+
+!if $vote_option!=nominative and $(user_vote_$Vote)!=$empty
+ error=already_voted
+ !exit
+!endif
+
+!readdef $votedir/$vote.votes
+
+!readdef $votedir/$vote.comments
+vote_description=$empty
+noprint=yes
+!reset parmcnt
+!readproc $votedir/$vote.def
+voteset=
+!if $(user_vote_$Vote)=$empty
+ !advance vcnt
+ voteset=vcnt=$vcnt
+!endif
+
+# on récupère le nombre de votes déjà exprimés
+nbvotes=$vcnt
+
+!for t=1 to $parmcnt
+ !if $(vote_description[$t;2])=textarea
+  !if $vote_option!=nominative
+    tt = !singlespace $(parm$t)
+    tt = !char 1 to $limit_textarea of $tt
+    !appendfile $votedir/$(vote)_$t.comments :$tt
+  !endif
+ !else
+  !for k=0 to $(choices$t)
+   vc_$k=$(vcnt_$(t)_$k)
+  !next k
+  tmp=!values v for v=1 to $(choices$t)
+  parm$t=!nospace $(parm$t)
+  parm$t=!listintersect $(parm$t) and $tmp
+  !for k in $(parm$t)
+   !default vc_$k=0
+   !advance vc_$k
+  !next k
+  old=!item $t of $(user_vote_$Vote)
+  old=!words2items $old
+  !for v in $old
+   vc_$v=$[max(0,$(vc_$v)-1)]
+  !next v
+  !for k=0 to $(choices$t)
+   !default vc_$k=0
+   !if $(vc_$k) != $(vcnt_$(t)_$k)
+    voteset=!append line vcnt_$(t)_$k=$(vc_$k) to $voteset
+   !endif
+  !next k
+ !endif
+!next t
+
+
+# paramcnt: nombre de questions
+
+
+!if $vote_option=anonymous
+ user_vote_$Vote=yes
+!else
+  # nouvelle option pour le tracage des reponses.
+  # on ne garde pas le nom du votant mais on lui donne un numéro qui
+  # est égal au nombre de votes exprimés.
+  #
+  # comme on est dans le ELSE du anonymous, on n'a plus que 2 choix possibles:
+  #   nominatif ou tracage
+  # d'où le IF/ELSE simple
+  # si un autre cas devait être intégré il faudrait faire un test un peu plus poussé
+
+  # la partie du fichier obtenu est de la forme vote
+  option=$empty
+
+  !if $vote_option iswordof nominative
+    option=$wims_class/$wims_user
+  !else
+    option=$nbvotes
+  !endif
+
+ tt=$empty
+ !for t=1 to $parmcnt
+  !if $(vote_description[$t;2])!=textarea
+   !if $vote_option=nominative
+    !! erase old vote. allowed only with vote_option=nominative
+    old=!item $t of $(user_vote_$Vote)
+    old=!words2items $old
+    !for v in $old
+     vv=!replace item $option by $ in $(votes_$(t)_$v)
+     vv=!nonempty items $vv
+     voteset=!append line votes_$(t)_$v=$vv to $voteset
+     votes_$(t)_$v=$vv
+    !next v
+   !endif
+   tmp=!items2words $(parm$t)
+   tt=!append item $tmp to $tt
+   !for v in $(parm$t)
+    vv=!append item $option to $(votes_$(t)_$(v))
+    voteset=!append line votes_$(t)_$v=$vv to $voteset
+   !next v
+  !else
+   tt=!append item 0 to $tt
+  !endif
+ !next t
+ !if $vote_option=trace
+  user_vote_$Vote=yes
+ !else
+  user_vote_$Vote=$tt
+ !endif
+!endif
+
+!setdef !set user_vote_$Vote=$(user_vote_$Vote) in $userfile
+!if $voteset!=$empty
+ !setdef $voteset in $votedir/$vote.votes
+!endif
+
+!! --------------------------
+!! these lines are writing the variable user_techvar_ttt in the user file when
+!!\uservar{ttt, ....}
+
+
+ccc=!itemcnt $uvcnt
+!if $ccc>0
+ !readproc adm/vfilter/listvarfilter.proc
+ !for i=1 to $ccc
+  uvc=!item $i of $uvcnt
+  uvn=!item $i of $uvname
+!! no registery if the technical variable is not already defined
+  !if $uvn isitemof $tv_listlocalcode
+      uvv=!line $i of $uvval
+      uvv=!item $(parm$uvc)+1 of $uvv
+!! check if the value exists for this technical variable (only defined values can be save in user .def file)
+      po=!positionof item $uvn in $tv_listcode
+      don=!line $po of $tv_listtechvar
+      !distribute item $don into name,classid,number
+      don=!record $number of wimshome/log/classes/$wims_class/.techvar
+      don=!line 2 of $don
+      !if $uvv notitemof $don
+	uvv=$empty
+      !endif
+      classid=!replace internal / by _ in $classid
+      !setdef !set user_techvar_$(uvn)=$uvv in $userfile
+  !endif
+ !next i
+!endif
+!! -------------------------------------------
+
+!restart module=adm/vote&job=read&vote=$vote
+

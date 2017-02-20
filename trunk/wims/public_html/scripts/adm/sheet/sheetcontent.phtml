@@ -1,0 +1,66 @@
+!! --------------------  affiche le contenu de la feuille $sheet de la classe $wims_class
+!! langage is defined in adm/class/sheet/lang/names.phtml.$lang
+
+$table_header
+ <caption>$name_content</caption>
+ $table_hdtr
+  !for k=1 to 5
+   <th>$(name_shtab[$k])</th>
+  !next k
+   <th>$name_qnum</th>
+  !for k=6 to 7
+   <th>$(name_shtab[$k])</th>
+  !next k
+  <th>$(name_shtab[10])</th>
+  !if $activetest>=0
+   <th>$(name_shtab[8])</th>
+  !endif
+ </tr>
+ !for i=1 to $exocnt
+  !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+  !distribute lines $ex into di,pa,re,we,ti,de,dep,com,feed
+  $table_tr
+   <td id="td_exo_$i">$i</td>
+   <td>
+    !href cmd=new&module=$di&worksheet=$sheet&$pa $ti
+   </td>
+   <td>$de</td>
+   <td>$re</td>
+   <td>$we</td>
+   !set pa=!replace internal & by $ $ in $pa
+   !reset qnum
+   !!oef exercises
+   !set qnum=!getopt qnum in $pa
+   !if $qnum=
+   !!J.E. exercises
+     !set qnum=!getopt total_exos in $pa
+   !endif
+   <td>$qnum</td>
+   <td>
+    !if $dep!=$empty
+     $dep
+    !else
+     $
+    !endif
+   </td>
+   <td>$com</td>
+   <td>$feed</td>
+   !if $activetest>=0
+    <td>
+    !set wims_ref_class=wims_button
+     !href cmd=reply&job=prep_modify&modif=$i $(seriesaction[1])
+    !if $activetest=0
+     &nbsp;
+     !set wims_ref_class=wims_button wims_warning
+     !href cmd=reply&job=delete&delete=$i#list $(seriesaction[2])
+     !if $i>1
+      $
+      !set wims_ref_class=wims_button
+      !href cmd=reply&job=moveup&moveup=$i#td_exo_$[$i-1] $(seriesaction[3])
+     !endif
+    !endif
+    </td>
+   !endif
+  </tr>
+ !next i
+$table_end

@@ -1,0 +1,33 @@
+!let wims_module_log=error: $error
+<span class="wims_warning">$wims_name_Error.</span>
+
+!if $error=no_download_sites
+给出的地址不是有效的 WIMS 模块下载中心的地址. 服务器发生的问题是 : $error_list.<br />
+产生问题的原因可能是
+<ul>
+<li>下载中心中断服务 : 等待服务器重新工作 !</li>
+<li>你的服务器里的下载中心的定义文件有误 : 请与下载中心的管理员联系, 以得到正确的定义文件.</li>
+</ul>
+故设置没有改变.
+ !exit
+!endif
+
+!if $error=bad_mail
+主题栏没有内容
+ !exit
+!endif
+
+!if $error=bad_list
+忘了输入收信人 ?
+ !exit
+!endif
+
+!if $error iswordof noclass
+  没有选定班级.
+  !exit
+!endif
+!if $error iswordof classnotexists
+  The class to restore does not exist.
+  !exit
+!endif
+!msg $error

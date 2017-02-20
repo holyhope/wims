@@ -1,0 +1,35 @@
+!goto $wims_read_parm
+
+:def
+title=Nombre complexe
+synonyme=argument, partie reelle, partie imaginaire
+input=function
+!exit
+
+:proc
+formula=!rawmath $formula
+result=!exec pari c=$formula; print(real(c));\
+	print(imag(c));\
+	print(abs(c));\
+	print(arg(c));\
+	print(arg(c)/pi);
+result=!nonempty lines $result
+n=!linecnt $result
+!if $n<5
+ result=
+!endif
+!distribute lines $result into re,im,mod,arg,argp
+!exit
+
+:output
+Nombre complexe
+!htmlmath c = $formula
+&nbsp;:
+<ul><li>
+ Re(c) =  $re</li>
+ <li>Im(c) = $im</li>
+ <li>|c| =  $mod</li>
+ <li>argument(c) = $arg + 2k$m_pi</li>
+ <li> = $argp$m_pi + 2k$m_pi</li>
+</ul>
+!exit

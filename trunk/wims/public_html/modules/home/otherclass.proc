@@ -1,0 +1,64 @@
+!! Insert a link to other classes in breadcrumbs.
+!if $wims_user=$empty
+  !exit
+!endif
+!!if $auth_method isitemof $auth_method_list and ($wims_user!=$wims_realuser)
+  !set tmp_=auth
+!!else
+!!   !reset tmp_
+!!endif
+!if $wims_user!=supervisor
+  !goto nosupervisor
+!endif
+
+:supervisor
+!set superclass_description=!defof class_description in wimshome/log/classes/$wims_superclass/.def
+!set c_=8
+!if $wims_class isitemof $wims_supervise or $wims_realuser=supervisor
+  !set c_=1
+!endif
+!if $class_type!=0
+  !set wims_ariane=!append line class_home $superclass_description,$c_,module=adm/class/classes&type=$(tmp_)supervisor&auth_user=$ext_login&class=$wims_superclass\
+to $wims_ariane
+!endif
+!if $wims_superclass!=$empty and $wims_superclass!=$wims_class
+  !if / isin $class_parent and $class_type=1
+    !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
+    !set c_=8
+    !if $class_parent isitemof $wims_supervise or $wims_realuser=supervisor
+      !set c_=1
+    !endif
+    !set wims_ariane=!append line class_home $pname,$c_,module=adm/class/classes&type=$(tmp_)supervisor&class=$class_parent to $wims_ariane
+  !endif
+  !if $seq!=$empty
+    !set wims_ariane=!append line class_home $wims_classname,1,cmd=resume to $wims_ariane
+  !else
+    !set wims_ariane=!append line class_home $wims_classname,8 to $wims_ariane
+  !endif
+!endif
+
+!exit
+
+:nosupervisor
+
+!if $wims_superclass!=$empty and $wims_superclass!=$wims_class
+    !set superclass_description=!defof class_description in wimshome/log/classes/$wims_superclass/.def
+    !set wims_ariane=!append line class_home $superclass_description,1,module=adm/class/classes&type=$(tmp_)participant&auth_user=$ext_login&class=$wims_superclass\
+to $wims_ariane
+!endif
+
+:subclasses
+!if $wims_superclass!=$empty and $wims_superclass!=$wims_class
+  !if / isin $class_parent and $class_type=1
+    !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
+    !set wims_ariane=!append line class_home $pname,1,module=adm/class/classes&type=$(tmp_)participant&auth_user=$ext_login&class=$class_parent\
+to $wims_ariane
+  !endif
+  !if $seq!=$empty
+    !set wims_ariane=!append line class_home $wims_classname,1,cmd=resume to $wims_ariane
+  !else
+    !set wims_ariane=!append line class_home $wims_classname,8 to $wims_ariane
+  !endif
+!endif
+
+

@@ -1,0 +1,42 @@
+!goto $wims_read_parm
+
+:def
+title=Substitution
+synonyme=substitute, composed function, fonction composition, function substitution
+input=function
+!exit
+
+:proc
+formula2=!trim $formula2
+!if $formula2=$empty
+ error=empty_data
+ !exit
+!endif
+!exchange formula, formula2
+!read input/function
+!if $error!=$empty
+ !exit
+!endif
+!exchange formula, formula2
+formula=!item 1 of $formula
+formula2=!item 1 of $formula2
+variable=!items2words $variable
+variable=!word 1 of $variable
+!if $variable=$empty
+ list=!varlist nofn $formula
+ list=!sort nocase items $list
+ variable=!item -1 of $list
+!endif
+!default variable=x
+result=!exec maxima expand(subst($formula2,$variable,$formula));
+!exit
+
+:output
+If
+!htmlmath f(x) = $formula
+<p>
+Then
+!htmlmath f($formula2) = $result
+ .
+!exit
+

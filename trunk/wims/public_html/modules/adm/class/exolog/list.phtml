@@ -1,0 +1,85 @@
+
+!if $exologcnt<1
+ $name_noexercise2 $(names[1]) $(names[2]).
+ !exit
+!endif
+
+$name_click
+!if $wims_user=supervisor
+ $name_bug
+!endif
+
+!read tabletheme
+
+$table_header
+$table_hdtr
+<th class="small">$wims_name_date</th>
+!if $checkuser!=supervisor
+  <th class="small">$wims_name_Sheet</th>
+!else
+  <th class="small">$wims_name_Module</th>
+!endif
+<th class="small">$wims_name_Exercise</th>
+<th class="small">$name_Step</th>
+<th class="small">$wims_name_Score1</th>
+<th>$wims_name_title</th>
+<th>$wims_name_action</th>
+</tr>
+!for i=1 to $exologcnt
+ !set l=!line $i of $exolog2
+ !set l_=!line $i of $exologs
+ !distribute item $l into d_,s_,n_
+ !set n_=!translate . to , in $n_
+ !distribute item $n_ into S_,E_
+ !set s_=!getdef w_module_score in wimshome/log/classes/$wims_class/exolog/$checkuser/$l_
+ !default s_=-
+ !set p_=!recordcnt wimshome/log/classes/$wims_class/exolog/$checkuser/$l_
+ !set V_=!record $E_ of wimshome/log/classes/$wims_class/sheets/.sheet$S_
+ !distribute lines $V_ into a,a,a,a,T_,D_
+ !default T_=!getdef w_title in wimshome/log/classes/$wims_class/exolog/$checkuser/$l_
+ !if $wims_user=supervisor
+   !set S__=!getdef w_module in wimshome/log/classes/$wims_class/exolog/$checkuser/$l_
+   !set E_=!getdef w_exo in wimshome/log/classes/$wims_class/exolog/$checkuser/$l_
+   !set M_=!getdef w_email in wimshome/log/classes/$wims_class/exolog/$checkuser/$l_
+   !if xiao isin $M_
+     !set M_=$DEBUG_MODULE
+   !else
+     !set CC_=$DEBUG_MODULE
+   !endif
+ !endif
+ !default T_=$S_
+ !if $T_!=$empty
+  $table_tr<td>
+  !href target=wims_check module=$module&job=check&checkuser=$checkuser&logcheck=$l_&checkstep=1 $d_
+  </td>
+  <td>$S_</td><td>$E_</td>
+  <td>$p_</td>
+  <td>$s_</td>
+  <td>$T_ <span class="small">$D_
+  !if $wims_user=supervisor
+   !getfile exolog/$l_ $name_source
+  !endif
+   </span>
+   </td><td>
+   !if $wims_user=supervisor
+   !!set source=!record 0 to -1 of $source
+   !!mailto $DEBUG_MODULE\
+!![qualite] $S_\
+!! :$source
+!set msg=Please join the file source in the attachment
+   <a class="wims_button" href="mailto:$M_?subject=[qualite] $S__ $E_&body=$msg&cc=$CC_">$name_sendmail</a>.
+    !endif
+   !endif
+   !if $checkuser=$wims_user
+     !set wims_ref_class=wims_button wims_warning
+     !href cmd=reply&job=erase&source=exolog/$checkuser/$l_ $wims_name_erase
+   !endif
+  </td></tr>
+ !endif
+!next i
+$table_end
+
+!if $checkuser!=supervisor
+  !set wims_menu_items=!append line myscore,1,module=adm/class/userscore&job=getuser&getuser=$checkuser\
+to $wims_menu_items
+!endif

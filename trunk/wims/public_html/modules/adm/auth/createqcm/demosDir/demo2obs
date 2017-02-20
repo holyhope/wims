@@ -1,0 +1,35 @@
+!if $demo=oui
+  <p> On entre la liste des objets sur lesquels on veut 
+  poser des questions: 
+  </p>
+!endif
+!if $obsList!=$empty
+  !set rowsnb=$[floor($obsnb/2)]
+  !set extrarow=$[$obsnb%2]
+
+  <table class="wimscenter wimsborder" style="background-color:moccasin">
+      !for i=1 to $rowsnb
+        !set c1=!item $i of $obsList
+	!set c2=!item $[($i+$rowsnb)] of $obsList
+	!set c1=!char 2 to -2 of $c1
+	!set c2=!char 2 to -2 of $c2
+	<tr>
+	  <td style="background-color:azure">
+	    $c1
+	  </td>
+	  <td style="background-color:azure">
+	    $c2
+	  </td>
+	</tr>
+      !next i
+      !if $extrarow!=0
+        !set c3=!item $obsnb of $obsList
+	!set c3=!char 2 to -2 of $c3
+	<tr>
+	  <td colspan="2" style="background-color:azure">
+	    $c3
+	  </td>
+	</tr>
+      !endif
+  </table>
+!endif

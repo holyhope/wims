@@ -1,0 +1,22 @@
+
+chaptercnt=!recordcnt chapters.dat
+!bound chapter between integer 0 and $chaptercnt default 0
+
+!for i=1 to $chaptercnt
+ chapter$i=!record $i of chapters.dat
+ chapter$i=!trim $(chapter$i)
+!next i
+
+open=!items2words $open
+open=!words2items $open
+open=!listuniq $open
+open=!items2words $open
+
+!if robot isin $session
+ open=
+ chapter=0
+ !exit
+!endif
+
+wims_module_log=$chapter, $open
+

@@ -1,0 +1,59 @@
+<!-- _widgets/sequence.phtml -->
+
+<div id="widget_sequence">
+
+!if $seq_cnt >1 and $seq=$empty
+  !if $jquery_defined=yes
+    !read adm/tabscript sequence
+  !endif
+!set seq_reverse=!defof sequence_reverse in wimshome/log/classes/$wims_class/seq/.def
+  <ul id="wims_seq_summary">
+  !for i=1 to $seq_cnt
+    !if $seq_reverse=yes
+      !set u=$[$seq_cnt+1-$i]
+    !else
+      !set u=$i
+    !endif
+    !set seq_=!record 1 of wimshome/log/classes/$wims_class/seq/.sequence$u
+    !distribute line $seq_ into tis_,cos_,obj_,o_
+    !if $o_>0
+      !if $tis_!=$empty
+        <li><a href="#wims_seq_$u">$tis_</a></li>
+      !else
+        <li><a href="#wims_seq_$u">$wims_name_sequence $u</a></li>
+       !endif
+    !endif
+  !next
+  </ul>
+!endif
+
+!if $seq>0
+  !read ./sequence.phtml $seq
+  !reset seq
+!else
+  !for i=1 to $seq_cnt
+    !if $seq_reverse=yes
+      !set u=$[$seq_cnt+1-$i]
+    !else
+      !set u=$i
+    !endif
+    !read ./sequence.phtml $u
+  !next
+!endif
+</div>
+<div class="wims_work_legend">
+  <p class="inline">$wims_name_legend:</p>
+  <ul class="inline">
+    <li class="wims_doc_item">$wims_name_Docs</li>
+    <li class="wims_sheet_item">$wims_name_Sheets</li>
+    <li class="wims_exam_item">$wims_name_Examens</li>
+    <li class="wims_vote_item">$wims_name_Votes</li>
+  </ul>
+</div>
+<!--end  _widgets/sequence.phtml -->
+
+!if $seq_cnt>0
+  !read themes/_widgets/user_varsheet.phtml
+  !read themes/_widgets/user_varexam.phtml
+!endif
+

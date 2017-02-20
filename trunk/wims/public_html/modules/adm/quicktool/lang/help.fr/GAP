@@ -1,0 +1,111 @@
+Un exercice de type $wims_name_quick_GAP propose un texte et demande de compléter des mots ou groupes de mots 
+selon différentes méthodes :  
+     <ul>
+       <li> <span class="tt">case</span>: case pour écrire </li>
+       <li> <span class="tt">clickfill</span>: mots à glisser/déposer</li>
+       <li> <span class="tt">dragfill</span>: mots à glisser/déposer (utilisables une seule fois  :
+       ils disparaissent dès qu'ils ont été utilisés par l'élève )
+       </li>
+       <li> <span class="tt">menu</span>: menu déroulant</li>
+       <li> <span class="tt">mark</span>: mots à marquer</li>
+     </ul>
+   On peut décider du nombre d'essais auquel a droit l'élève avant d'obtenir une correction.
+   On peut aussi demander que les réponses non trouvées soient affichées à la fin. 
+   A chaque essai, seules les réponses fausses sont redemandées. 
+   Une aide est possible (nombre de lettres, quelques lettres ou la forme audio du mot manquant
+   à condition que celui-ci se trouve dans la collection audio swac ou qu'il ait été enregistré
+   au préalable dans Modtool, une indication mise dans le texte ou même la réponse montrée 
+   un temps limité). Dans la case <span class="tt">prompt</span>, il faut mettre le mot qui apparaîtra et qui permettra de voir
+   apparaître l'aide par passage de la souris (par exemple, aide, help).
+   
+   Actuellement, au plus 39 trous sont possibles. 
+   Il est possible d'avoir plusieurs réponses possibles.
+   Dans le format <span class="tt">menu</span> ou <span class="tt">mark</span>,  
+   l'option <span class="tt">choix commun</span> permet de proposer dans chaque trou le choix
+   entre tous les mots demandés du texte.
+   Dans le cas contraire, il est nécessaire de spécifier au moins 
+   deux choix pour chaque mot (voir syntaxe). Il est possible 
+   de rajouter des mots supplémentaires (perturbateurs).
+   Cette liste peut aussi être donnée dans la 
+   variable <span class="tt">choice</span> dans le fichier de données (voir le second exemple).
+   Elle apparaitra dans chaque menu, que l'option choix commun ait été ou non 
+activée.
+
+:format
+<pre>
+:Je suis ??là,la,l'a?? !
+:Cet élève-??là,la,l'a?? n'est pas très sage, 
+??la,là,l'a?? maîtresse n'est pas très contente.
+:Cette voiture ??là,la,l'a??-bas, dans ??la,là,l'a?? 
+cour, est ??la,là,l'a??  mienne.
+:C'est ??là,la,l'a?? où je vais.
+</pre>
+<h3>$wims_name_Syntax</h3>
+<pre>
+:texte ??bon_choix1,mauvais_choix1, mauvais_choix2, mauvais_choix3?? 
+texte ??bon_choix2,mauvais_choix4, mauvais_choix5?? 
+texte ??bon_choix3,mauvais_choix6?? texte  ??bon_choix4,mauvais_choix7,mauvais_choix8??
+</pre>
+<span class="wims_warning">$wims_name_remark</span> : Pour simplifier, dans le cas où il n'y 
+a que quelques réponses possibles, il est possible de l'indiquer au début du 
+fichier dans la variable <span class="tt">choice</span>. C'est aussi ici qu'on écrira aussi 
+les mots perturbateurs valables pour tout le texte.
+<pre>
+choice= bon choix1,bon choix2,bon choix3,perturbateur1,perturbateur2
+:texte ??bon choix1?? texte ??bon choix2?? texte
+??bon choix3?? texte ??bon choix2??
+</pre>
+<span class="wims_warning">$wims_name_remark</span> : Afin d'augmenter le nombre de phrases 
+différentes que l'élève verra, on peut écrire plusieurs mots ou groupes de mots 
+entre accolades séparés par des virgules, un seul sera pris au hasard. Dans ce cas, 
+il faut remplacer les virgules du texte par leur code html (&amp;#44;)
+<pre>
+:{Je suis,Il est} ??là?? !
+:{Cet élève,Cet étudiant}-??là?? n'est pas très sage, 
+{??la?? maîtresse n'est pas très contente., 
+??le?? maître va se mettre en colère.}
+:Cette voiture ??là??-bas, dans ??la?? cour, est ??la?? 
+mienne.
+:C'est ??là?? où je vais.
+:Il s'est caché ??là??.
+:C'est ??là?? qu'il faut aller.
+</pre>
+
+<span class="wims_warning">$wims_name_remark</span> : Lorsque plusieurs bonnes réponses sont possibles, 
+les séparer par | . Par exemple,
+<pre>
+:une bonne réponse possible|deuxième bonne réponse possible|troisième bonne réponse possible,perturbateur??
+:The ??organisation|organization,organize?? of this meeting is difficult.
+:Beaucoup de ??gens|personnes,chiens?? en France ont un téléphone portable.
+</pre>
+<p>
+En cas de réponse fausse, c'est la première réponse qui est indiquée (par exemple, ici <span class="tt">organisation</span>)
+</p><p>
+<span class="wims_warning">$wims_name_remark</span> : Préférences relatives à un jeu de données.
+Dans le cas où on souhaite ajouter des documents audio, une image, un titre, une introduction différents 
+pour chaque jeu de données, la première ligne doit être de la forme (champs facultatifs)
+</p>
+<pre>
+:audio=nom.mp3 image=nomim.jpg title="titre" intro="ma consigne" 
+</pre>
+
+<pre>
+:audio=nom1.mp3
+texte ??bonne réponse1|autre bon choix possible,mauvais choix1, mauvais choix2?? 
+texte ??bon choix,mauvais choix1, mauvais choix2?? texte.
+</pre>
+
+<p>
+<span class="wims_warning">$wims_name_remark</span> : Ajout d'une aide personnalisée. Vous pouvez
+ ajouter une ou plusieurs aides personnalisées pour les exercices à trou de type 'case'. 
+ Si vous en ajoutez plusieurs, une sera tirée au hasard.
+ 
+Dans ce cas-là il faut respecter le format suivant :
+</p>
+<pre>text text ??trou //help=[{personalised aid number 1}]?? 
+text text text text ??trou //help=[{personalised aid number 2}]?? text text<br />
+Example : My ??sister //help=[{opposite of brother, a family member}] is coming to Paris tomorrow.<br />
+Il joue au ??football //[{un sport que l'on joue avec un ballon}]?? dans un club.
+</pre>
+
+

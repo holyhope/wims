@@ -1,0 +1,49 @@
+!set wims_module_log=error: $error
+
+!if no_pick=$error
+ Prosim, da
+ !href cmd=resume izberete delovni list
+predno kliknete na gumb <span class="wims_button disabled">$wims_name_Insert</span>.
+ !exit
+!endif
+
+!if not_supervisor=$error
+ Spreminjanje delovnih listov je dovoljeno le skrbniku uèilnice.
+ !exit
+!endif
+
+!if no_sheet=$error
+ Va¹a uèilnica nima neaktiviranih delovnih listov. To vsebino lahko dodate le v neaktiviran delovni list. ®elite
+ !href module=adm/class/sheet&sheet=$[$sheettot+1] ustvariti nov list
+?
+ !exit
+!endif
+!if bad_sheet=$error
+ Napaèna ¹tevilka delovnega lista.
+ !exit
+!endif
+
+!if too_many_exos=$error
+ Maksimalno ¹tevilo elementov $max_exos je na delovnem listu $picksheet ¾e dose¾eno.
+ Da bi lahko vstavili nov element, morate izbrisati katerega od obstojeèih.
+!exit
+!endif
+
+!if already_exist=$error
+ Element, ki ga ¾elite vstaviti, je ¾e na delovnem listu $test.
+ Èe ¾elite na listu dve enaki vaji, morata imeti razliène zaèetne parametre.
+ V tem primeru spremenite zaèetne parametre zadnje vaje. <p>
+ Èe ¾elite, da uporabniki vajo veèkrat ponovijo, poveèajte ¹tevilo zahtevanih toèk pri posamezni vaji.
+ !exit
+!endif
+
+!if $error=bad_exo
+ Aucune série d'exercices ne correspond aux informations que vous avez indiquées.
+ !exit
+!endif
+
+!if $error=not_exo
+ Le module que vous essayez d'insérer dans la feuille n'est pas un module d'exercices. Il doit y avoir une erreur !
+ !exit
+!endif
+!msg $error

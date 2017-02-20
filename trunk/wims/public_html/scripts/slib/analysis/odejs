@@ -1,0 +1,143 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_author=Bernadette, Perrin-Riou
+
+slib_parms=12\
+,f1\
+,f2\
+400,size\
+-10,xmin\
+10,xmax\
+-10,ymin\
+10,ymax\
+[red,red],color (positive direction, negative direction)\
+1,number of curves (limited to 10) or lists of initial points enclosed in brackets\
+,data (in brackets) for cursors separated by ; (for each one : symbol used in expressions f1 and f2, name of the cursor, label for the cursor, init values (min,default,max).\
+,a number to identify the applet in case of multiple ones.\
+pos, options : words as <span class="tt">pos neg</span>.
+
+slib_author=Bernadette, Perrin-Riou
+
+slib_example=x-y, x+y,400,-10,10,-10,10,green,1,,1\
+  1, (y+2)*(y-1),600,0,20,-10,10,green,[2,1,3,2],,2\
+  x-y+sin(t), x+y,400,-10,10,-10,10,green,4,,3\
+  1,t,600,0,20,-10,10,green,3,,4\
+  CC*x-y, x+y,400,-10,10,-10,10,green,[0,2,0,4],[CC,c1,legend,0,1,4],5\
+  CC*x-y, x+y,400,-10,10,-10,10,[green,blue],[0,2,0,4],[CC,c2,legend,0,1,4],6,neg\
+  CC*x-y, x+y,400,-10,10,-10,10,green,[0,2,0,4],[CC,c3,legend,0,1,4],7,neg pos
+
+!exit
+
+:proc
+!reset slib_size1 slib_out slib_number slib_script_main
+!distribute items $wims_read_parm into slib_f1,slib_f2,slib_size1,slib_xmin,slib_xmax,slib_ymin,slib_ymax,slib_color,slib_init,slib_cursor,slib_number,slib_option
+!default slib_size1=400
+!default slib_xmin=-10
+!default slib_xmax=10
+!default slib_ymin=-10
+!default slib_ymax=10
+!default slib_number=!randint 10000,30000
+
+!set slib_color=!declosing $slib_color
+!distribute items $slib_color into slib_colorp, slib_colorn
+!default slib_colorp=red
+!default slib_colorn=red
+slib_sens=pos
+!if neg iswordof $slib_option
+  slib_sens=neg
+!endif
+!if pos iswordof $slib_option
+  slib_sens=$slib_sens pos
+!endif
+
+slib_N=$slib_xmax
+slib_init=!declosing $slib_init
+slib_initcnt=!itemcnt $slib_init
+!if $slib_initcnt<=1
+  slib_nbcurve=$slib_init
+ !bound slib_nbcurve between 1 and 10 default 1
+  slib_points=!values $[$slib_xmin+($slib_xmax -$slib_xmin)/10], $slib_ymin + (x-0.5)/$slib_nbcurve*($slib_ymax-$slib_ymin) for x = 1 to $slib_nbcurve
+!else
+  slib_nbcurve=$[$slib_initcnt/2]
+  slib_points=$slib_init
+!endif
+slib_cursorcnt=0
+slib_cursor=!declosing $slib_cursor
+!if $slib_cursor != $empty
+ !if ; isin $slib_cursor
+   slib_cursorcnt=!itemcnt $(slib_cursor[;1])
+ !else
+   slib_cursorcnt=1
+ !endif
+!endif
+!reset slib_script_cursor
+brd=brd$slib_number
+
+!for slib_j = 1 to $slib_cursorcnt
+  slib_script_cursor=$slib_script_cursor\
+   $(slib_cursor[$slib_j;2]) = $brd.createElement('slider', [[$[$slib_xmin+1],$[$slib_ymax-$slib_j-0.5]],[$[round(($slib_xmax+$slib_xmin)/2)],$[$slib_ymax-$slib_j-0.5]],[$(slib_cursor[$slib_j;4..6])]],{name:'$(slib_cursor[$slib_j;2])',strokeColor:'black',fillColor:'black', snapWidth:0.1});\
+   $(slib_cursor[$slib_j;2])_name=$brd.createElement('text', [$[$slib_xmin+1],$[$slib_ymax-$slib_j], "$(slib_cursor[$slib_j;3])"]);
+   slib_f1=!replace internal $(slib_cursor[$slib_j;1]) by $(slib_cursor[$slib_j;2]) in $slib_f1
+   slib_f2=!replace internal $(slib_cursor[$slib_j;1]) by $(slib_cursor[$slib_j;2]) in $slib_f2
+!next
+
+slib_script_main=var $brd = JXG.JSXGraph.initBoard('jsxbox$slib_number', \
+  {boundingbox:[$slib_xmin,$slib_ymax,$slib_xmax,$slib_ymin],axis:true,showCopyright:false});\
+\
+  $slib_script_cursor\
+  var txt1_$slib_number = $brd.jc.snippet('$slib_f1',true,'x,y,t');\
+  var txt2_$slib_number = $brd.jc.snippet('$slib_f2',true,'x,y,t');\
+  var f$slib_number = function(t, yy){return [txt1_$slib_number(yy[0], yy[1],t), txt2_$slib_number(yy[0], yy[1],t)]};\
+  $brd.update();
+!if pos iswordof $slib_sens
+ slib_script_main=$slib_script_main\
+ function odep$slib_number(P) {\
+   return JXG.Math.Numerics.rungeKutta('heun', [P.X(),P.Y()], [P.X(), P.X()+$slib_N], $slib_size1, f$slib_number);\
+ };
+!endif
+!if neg iswordof $slib_sens
+  slib_script_main=$slib_script_main\
+    function oden$slib_number(P) {\
+    return JXG.Math.Numerics.rungeKutta('heun', [P.X(),P.Y()], [P.X(), P.X()-$slib_N], $slib_size1, f$slib_number);\
+};
+!endif
+!! creation of several curves
+
+!for slib_i=1 to $slib_nbcurve
+  slib_script_main=$slib_script_main\
+   var P_$(slib_i)_$slib_number = $brd.create('point',[$(slib_points[2*$slib_i-1]),$(slib_points[2*$slib_i])],{withLabel:false,size:1});
+  !if pos iswordof $slib_sens
+    slib_script_main=$slib_script_main\
+  var g_$(slib_i)_$slib_number = $brd.create('curve', [[0],[0]], {strokeColor:'$slib_colorp', strokeWidth:2, name:'x', withLabel:false});\
+  g_$(slib_i)_$slib_number.updateDataArray = function() {\
+    var data = odep$slib_number(P_$(slib_i)_$slib_number);\
+    var h = $slib_N/$(slib_size1);\
+    this.dataX = [];\
+    this.dataY = [];\
+    for(var i=0; i<data.length; i++) {\
+        this.dataX[i] = data[i][0];\
+        this.dataY[i] = data[i][1];\
+    }\
+};
+  !endif
+  !if neg iswordof $slib_sens
+    slib_script_main=$slib_script_main\
+  var gn_$(slib_i)_$slib_number = $brd.create('curve', [[0],[0]], {strokeColor:'$slib_colorn', strokeWidth:2, name:'x', withLabel:false});\
+  gn_$(slib_i)_$slib_number.updateDataArray = function() {\
+    var data = oden$slib_number(P_$(slib_i)_$slib_number);\
+    var h = $slib_N/$(slib_size1);\
+    this.dataX = [];\
+    this.dataY = [];\
+    for(var i=0; i<data.length; i++) {\
+        this.dataX[i] = data[i][0];\
+        this.dataY[i] = data[i][1];\
+    }\
+};
+  !endif
+
+!next
+slib_script_main=$slib_script_main\
+ $brd.update();
+
+!readproc slib/geo2D/jsxgraph jsxbox$slib_number, $slib_size1 x $slib_size1, $slib_script_main

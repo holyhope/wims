@@ -1,0 +1,44 @@
+# Utilise pour verifier l'existence d'une feuille ou d'un examen
+# Check.proc verifie que l'element #$n de type $type existe
+
+!if $type=$empty
+ error no type defined in a check request
+ !exit
+!endif
+
+!if $type=exams
+ type1=exam
+ q=!translate internal ./,;?* to $             $ in $qexam
+!else
+ type1=sheet
+ q=!translate internal ./,;?* to $             $ in $qsheet
+!endif
+
+#si le parametre $q contient un caractere special, on abandonne
+
+!if $ $ isin $q
+ q=
+!endif
+
+listfile=wimshome/log/classes/$qclass/$type/.$type
+
+#On compte le nombre d'elements de type $qtype de la classe $qclass
+cnt=!recordcnt $listfile
+
+#Si l'element $q n'existe pas, on abandonne
+!if $q=$empty
+ error=undefined query id for type $type1
+ !exit
+!else
+ !if  $q>$cnt
+  error=element #$q of type $type1 does not exist in this class ($qclass)
+  !exit
+ !endif
+!endif
+
+# L'element existe. on initialise la varible wims_$type1
+wims_$type1=$q
+qfile=wimshome/log/classes/$qclass/$type/.$type1$q
+qproperties=!record $q of $listfile
+
+

@@ -1,0 +1,117 @@
+
+!if empty_out iswordof $error
+ Su código no ha devuelto ningún resultado. Por favor corríjalo.
+ !if $m_reply_err!=$empty
+  <pre><span class="wims_warning">$m_reply_err</span></pre>
+ !endif
+ !exit
+!endif
+
+!if empty_data iswordof $error
+ Ha enviado una respuesta incompleta. Por favor, complétela.
+ !exit
+!endif
+
+!if bad_data iswordof $error
+ No he podido evaluar los valores que ha enviado. ¿Error de escritura?
+ !exit
+!endif
+
+!if double_reply iswordof $error
+ Ya ha enviado una respuesta a este problema, que ha sido analizada y
+ puntuada. Las respuestas repetidas se ignoran. (¡No use el botón `Actualizar'
+ de su navegador para reenviar respuestas!)
+ !exit
+!endif
+
+!if bad_answer iswordof $error
+ !if illegalname iswordof $test
+  Su código contiene el término no autorizado <span class="alert tt">$illegal_name</span>. Por favor corríjalo.
+  !exit
+ !endif
+ !if lengthoverflow iswordof $test
+  Su código ha excedido el límite de longitud. Por favor reescríbalo.
+  !exit
+ !endif
+ Su respuesta
+ <b>$bad_name</b> = <span class="tt">$bad_value</span>
+ !if unknownword iswordof $test
+  !set w=!word 3 of $test
+  no es comprensible:
+  el término <span class="tt">$w</span>
+  de la respuesta no tiene relación con el problema o no está autorizado.
+  Por favor corríjalo o elija una expresión más sencilla.
+  !exit
+ !endif
+ !if nocompute iswordof $test
+  no está permitida: por favor, haga los cálculos usted mismo, y
+  envíe el valor resultante.
+  !exit
+ !endif
+ !if nocomputecomplex iswordof $test
+   is not allowed.
+   Please give the complex number in standard rectangular form
+   <span class="tt"> a + b i </span>
+   where
+   <span class="tt">a</span>
+   and
+   <span class="tt">b</span>
+   are computed, and submit the resulting value (for example,
+    <span class="tt"> -1 + 2 i</span> or <span class="tt"> 1 - 2 i</span>).
+   !exit
+ !endif
+ !if badform iswordof $test
+  !if noreduced iswordof $test
+   no está expresada de forma irreductible. Por favor reduzca la fracción.
+   !exit
+  !endif
+  no está correctamente escrita. Por favor reescríbala de forma correcta.
+  !exit
+ !endif
+ !if notunit iswordof $test
+  no es más que un número:
+  por favor precise la unidad en su respuesta.
+  !exit
+ !endif
+ !if bad_variable iswordof $test
+   is not understandable. It should contain extra variables.
+   !exit
+ !endif
+ is not understandable.
+  no puedo entenderla. Por favor, corrija el error y reenvíe su respuesta.
+ !exit
+!endif
+
+!if bad_exo iswordof $error
+ Debido a un error en este ejercicio (la respuesta correcta para
+ <b>$(replyname$i)</b> es inválida), es imposible comprobar la
+ corrección de su respuesta. La única solución para usted es cambiar de ejercicio.
+ Lo sentimos.
+ <p>
+ Puede
+ !if $email!=$empty
+  !mailurl $email contactar con el autor
+ !else
+  contactar con el autor
+ !endif
+ del ejercicio si quiere informarle del error.
+</p>
+ !exit
+!endif
+
+!if too_many_print iswordof $error
+ Ha solicitado demasiadas versiones impresas.
+ !exit
+!endif
+
+!if chemclick_empty_data iswordof $error
+ You have selected no atom or bond. Look at the help.
+ !exit
+!endif
+
+!if chemdraw_empty_data iswordof $error
+ You have not modify the applet. Please complete it.
+ !exit
+!endif
+
+!msg $error

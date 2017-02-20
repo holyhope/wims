@@ -1,0 +1,56 @@
+################      UPDATE.PROC         ####################
+#procedure generique de modification/suppression pour feuille et exam
+# pre-requis :
+#		$type doit etre specifie (exam ou sheet)
+#		$wims_class is the current class
+#		$qsheet or $qexam : element to be modified
+# 		$update_field is the line number of field to update
+# 			If update_field=0, the element is deleted.
+# 		$update_content is the new content.
+#
+
+!if $type=$empty
+ error=No type defined in update.proc
+ !exit
+!endif
+
+!if $type=sheets
+ qrecord=$qsheet
+!else 
+ qrecord=$qexam
+!endif
+
+listfile=wimshome/log/classes/$wims_class/$type/.$type
+cnt=!recordcnt $listfile
+
+!ifval $qrecord>$cnt
+ error=element #$qrecord of type $type does not exist (in update.proc)
+ !exit
+!endif
+
+#on commence par remplir les valeurs _x par l'enregistrement correspondant dans l'index
+!for s=1 to $cnt
+ record_$s=!record $s of $listfile
+ record_$s=!line 1 to 7 of $(record_$s)\
+\
+\
+\
+\
+\
+\
+
+!next s
+
+!if $update_field!=0
+ record_$qrecord=!replace line number $update_field by $update_content in $(record_$qrecord)
+!endif
+
+#on peut alors reconstruire le fichier d'index des feuilles
+!writefile $listfile
+!for s=1 to $cnt
+ !if $update_field!=0 or $s!=$qrecord
+  sf=!line 1 to 5 of $(record_$s)
+  !appendfile $listfile :$sf\
+
+ !endif
+!next s

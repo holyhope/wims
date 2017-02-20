@@ -1,0 +1,55 @@
+!! output : whoconnect=list of connected participant
+!!          numpartconnected=number of participant connected
+!! in wims_class
+!! output for supervisor :
+!! wims_whoconnect (tabular one line by participant) login,session,firstname,lastname
+!! wims_connectedlogin : list of connected login
+!! wims_numpartconnected : number of connected participant.
+!! output for other user :
+!! wims_supervisorconnected
+
+
+!let file_=!replace internal / by ~ in $wims_class
+!if $wims_user=supervisor
+  last_=!sh if [ -e $wims_home/tmp/whoconnect/$file_ ]; then\
+perl -e '@a = stat($ARGV[0]); print $$a[9]' $wims_home/tmp/whoconnect/$file_;\
+fi;
+ !default $last_=0
+ !if $wims_nowseconds-$last_>300 or $wims_read_parm=1
+  ses_=!sh cd $wims_home/sessions;\
+  grep -r wims_class=$wims_class ./*/var.stat | cut -d/ -f2;
+  ses_=!words2items $ses_
+  wims_whoconnect=$empty
+  !for s_ in $ses_
+   t_=!defof wims_user\
+wims_firstname\
+wims_lastname in wimshome/sessions/$s_/var.stat
+   !distribute line $t_ into t1_,t2_,t3_
+   !if $t1_!=supervisor
+    !if $t1_ notitemof $wims_connectedlogin
+     wims_whoconnect=!append line $t1_,$t2_,$t3_,$s_ to $wims_whoconnect
+     wims_connectedlogin=!append item $t1_ to $wims_connectedlogin
+    !else
+     pos_=!positionof item $t1_ in $wims_connectedlogin
+     tmp_=!append item $s_ to $(wims_whoconnect[$pos_;])
+     wims_whoconnect=!replace line number $pos_ by $tmp_ in $wims_whoconnect
+    !endif
+   !endif
+  !next s_
+  !writefile wimshome/tmp/whoconnect/$file_ $wims_whoconnect
+ !else
+  wims_whoconnect=!record 0 of wimshome/tmp/whoconnect/$file_
+  wims_connectedlogin=!column 1 of $wims_whoconnect
+ !endif
+ wims_numpartconnected=!linecnt $wims_whoconnect
+ !setdef user_connected=$wims_session in wimshome/tmp/whoconnect/sup$file_
+!else
+ wims_supervisorconnected=!defof user_connected in wimshome/tmp/whoconnect/sup$file_
+ !if $wims_supervisorconnected!=$empty
+  test_=!defof wims_user in wimshome/sessions/$wims_supervisorconnected/var.stat
+  !if $test_=$empty
+   !reset wims_supervisorconnected
+   !setdef user_connected=$empty in wimshome/tmp/whoconnect/sup$file_
+  !endif
+ !endif
+!endif

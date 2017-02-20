@@ -1,0 +1,78 @@
+!!<script type="text/javascript">
+!!/*<![CDATA[*/
+!! jQuery(function($$) { $$(document).ready(function(){
+!!    $$(".content_expert").hide(); $$(".button_expert").click(function () {
+!!       $$(this).next(".content_expert").slideToggle(); });
+ !! });
+!!});
+!!/*]]>*/
+!!</script>
+!set file=wimshome/log/classes/$wims_class/.userlist
+!set cnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
+!for lu =1 to $cnt
+  !set us_=!record $lu of $file
+  !if $(us_[3]) notitemof $select_user
+   !set option=!append line <option value="$(us_[3])">$(us_[1]) $(us_[2]) ($(us_[3]))</option> to $option
+  !else
+   !set option_select=!append line <option value="$(us_[3])">$(us_[1]) $(us_[2]) ($(us_[3]))</option> to $option_select
+  !endif
+!next
+!if $option=$empty
+  !set option=<option value=""></option>
+!endif
+!if $option_select=$empty
+  !set option_select=<option value=""></option>
+!endif
+
+ <a class="wims_button button_expert">$name_menu</a>
+ <div class="content_expert" href="#">
+  <div class="field box">
+ $name_graphics
+ !formradio graphics list 0,1 prompt $wims_name_no,$wims_name_yes
+   <div class="formHelp">$name_help3</div>
+  </div>
+  <div class="field box">
+$name_expert0
+!distribute items wims_formradio,choice0 into wims_ref_class,wims_ref_id
+   <div>
+   !formradio choice list all prompt <b>$name_allpart</b>
+    <div class="formHelp">$name_help0</div>
+   </div>
+!distribute items wims_formradio,choice1 into wims_ref_class,wims_ref_id
+   <div>
+  !formradio choice list first prompt <b>$name_shiftpart</b>
+    <div class="formHelp">$name_help1</div>
+   </div>
+   !distribute items wims_formradio,choice3 into wims_ref_class,wims_ref_id
+   <div>
+!set userc_=!itemcnt $user
+!if $userc_=1
+  !set choice=login
+  !set loginlist=$user
+!endif
+!formradio choice list login prompt <b>$name_loginlist</b>:
+    <div class="formHelp">$name_help2 $name_help00.</div>
+   </div>
+   <div class="wimscenter">
+    <textarea name="loginlist" cols="20" rows="5">$loginlist</textarea>
+   </div>
+!distribute items wims_formradio,choice2 into wims_ref_class,wims_ref_id
+   <div>
+!formradio choice list select prompt <b>$name_select</b>
+    <div class="formHelp">$name_help2 $name_help00.</div>
+!set wims_chooselist_select=$option
+!set wims_chooselist_checked=$option_select
+    <div class="wimscenter">
+!read js/chooselist.phtml select_user1,select_user2,select_user
+   </div>
+  </div>
+!distribute items wims_formradio,choice4 into wims_ref_class,wims_ref_id
+   !if $tv_listtechvar!=$empty
+   <div>
+     !formradio choice list filter prompt <b>$wims_name_filter:</b>
+      <div class="formHelp">$name_help2 $name_help00.</div>
+   </div>
+  !read adm/vfilter/varfilter htmldiv
+ !endif
+ </div>
+</div>

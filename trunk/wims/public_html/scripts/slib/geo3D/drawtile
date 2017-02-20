@@ -1,0 +1,256 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+
+slib_author=Bernadette, Perrin-Riou
+slib_example=[0,0,0;0,0,2;0,0,3;1,1,2]\
+[0,0,0;0,0,1;0,0,2;0,1,2],,,[blue,blue],[0.01,0.01]\
+[0,0,0;0,1,0;0,1,0;2,0,0],300,300,[red,red]\
+[0,0,0,2,3,3;1,3,1,1,1,1;1,3,3,3,1,1],300,300,[blue,green],,p\
+[0,0,0;0,0,1;0,0,2;1,0,2;2,0,2;0,1,2;0,1,3],300,300,[blue,green]\
+[0,0,0;0,0,1;0,0,2;1,0,2;2,0,2],300,300,[blue,green]\
+[0,0,0;0,1,0;0,1,1;1,1,0;1,1,1;1,2,0]\
+[0,0,0,2,2,4;1,1,4,5,2,1],300,300,[violet,purple],,p\
+[0,0,0,2,2,4;0,0,3,-5,-2,-3;1,1,4,1,2,1],300,300,,,p
+[0,0,0,5,4,4;2,4,2,1,5,3],300,300,,,p\
+[0,0,0,5,4,4;2,4,2,1,5,1],500,500,,,p
+
+!exit
+
+:proc
+!reset slib_out slib_data slib_color
+!distribute items $wims_read_parm into slib_d,slib_sizex,slib_sizey, slib_color,slib_width
+slib_d=!declosing $slib_d
+slib_d=!rows2lines $slib_d
+slib_dcnt=!linecnt $slib_d
+slib_d=!lines2rows $slib_d
+
+!default slib_color=[red,red]
+!default slib_width=[0.01,0.03]
+!default slib_sizex=300
+!default slib_sizey=300
+slib_bondcnt=0
+slib_data=ATOM
+slib_b=!linecnt $slib_data
+slib_cnt=0
+!if $slib_id!=
+  !increase slib_id
+!endif
+!if $(wims_read_parm[7])!=$empty
+  slib_id=$(wims_read_parm[7])
+!endif
+!if $slib_id=
+  slib_id=0
+!endif
+
+!if p iswordof $(wims_read_parm[6])
+  !goto parallepipede
+!endif
+
+!for slib_n = 1 to $slib_dcnt
+     slib_cube=$(slib_d[$slib_n;])
+     slib_cube1=!items2words $slib_cube
+     slib_cube=!words2items $slib_cube1
+     slib_cube=!nospace $slib_cube
+     slib_list=$(slib_data[;1])
+     slib_new0=!positionof item c $slib_cube1 in $slib_list
+     !if $slib_new0=
+       slib_data=!append line c $slib_cube1 to $slib_data
+       slib_list=$(slib_data[;1])
+       !increase slib_cnt
+       slib_new0=$slib_cnt
+    !else
+       slib_new0=$[$slib_new0-$slib_b]
+    !endif
+    slib_pos=$[$(slib_cube[1])+1] $[$(slib_cube[2])] $[$(slib_cube[3])]
+    slib_new1=!positionof item c $slib_pos in $slib_list
+    !if $slib_new1=
+       slib_data=!append line c $slib_pos,$slib_new0 to $slib_data
+       slib_list=$(slib_data[;1])
+       !increase slib_cnt
+       slib_new1=$slib_cnt
+       !increase slib_bondcnt
+   !else
+      slib_new1=$[$slib_new1-$slib_b]
+   !endif
+   slib_pos=$[$(slib_cube[1])] $[$(slib_cube[2])+1] $[$(slib_cube[3])]
+   slib_new2=!positionof item c $slib_pos in $slib_list
+   !if $slib_new2=
+      slib_data=!append line c $slib_pos,$slib_new0 to $slib_data
+      slib_list=$(slib_data[;1])
+      !increase slib_cnt
+      slib_new2=$slib_cnt
+      !increase slib_bondcnt
+   !else
+      slib_new2=$[$slib_new2-$slib_b]
+     !endif
+     slib_pos=$[$(slib_cube[1])] $[$(slib_cube[2])] $[$(slib_cube[3])+1]
+     slib_new3=!positionof item c $slib_pos in $slib_list
+     !if $slib_new3=
+        slib_data=!append line c $slib_pos,$slib_new0 to $slib_data
+        slib_list=$(slib_data[;1])
+        !increase slib_cnt
+        slib_new3=$slib_cnt
+        !increase slib_bondcnt
+   !else
+      slib_new3=$[$slib_new3-$slib_b]
+   !endif
+   slib_pos=$[$(slib_cube[1])+1] $[$(slib_cube[2])+1] $[$(slib_cube[3])]
+   slib_new4=!positionof item c $slib_pos in $slib_list
+   !if $slib_new4=
+        slib_data=!append line c $slib_pos,$slib_new1,$slib_new2 to $slib_data
+        slib_list=$(slib_data[;1])
+        !increase slib_cnt
+        slib_new4=$slib_cnt
+        slib_bondcnt=$[$slib_bondcnt+2]
+   !else
+      slib_new4=$[$slib_new4-$slib_b]
+   !endif
+   slib_pos=$[$(slib_cube[1])] $[$(slib_cube[2])+1] $[$(slib_cube[3])+1]
+   slib_new5=!positionof item c $slib_pos in $slib_list
+   !if $slib_new5=
+        slib_data=!append line c $slib_pos,$slib_new2,$slib_new3 to $slib_data
+        slib_list=$(slib_data[;1])
+        !increase slib_cnt
+        slib_new5=$slib_cnt
+        slib_bondcnt=$[$slib_bondcnt+2]
+  !else
+      slib_new5=$[$slib_new5-$slib_b]
+  !endif
+     slib_pos=$[$(slib_cube[1])+1] $[$(slib_cube[2])] $[$(slib_cube[3])+1]
+     slib_new6=!positionof item c $slib_pos in $slib_list
+  !if $slib_new6=
+        slib_data=!append line c $slib_pos,$slib_new3,$slib_new1 to $slib_data
+        slib_list=$(slib_data[;1])
+        !increase slib_cnt
+        slib_new6=$slib_cnt
+        slib_bondcnt=$[$slib_bondcnt+2]
+  !else
+      slib_new6=$[$slib_new6-$slib_b]
+  !endif
+  slib_pos=$[$(slib_cube[1])+1] $[$(slib_cube[2])+1] $[$(slib_cube[3])+1]
+  slib_new7=!positionof item c $slib_pos in $slib_list
+  !if $slib_new7=
+        slib_data=!append line c $slib_pos,$slib_new4,$slib_new5,$slib_new6 to $slib_data
+        slib_list=$(slib_data[;1])
+        !increase slib_cnt
+        slib_new7=$slib_cnt
+        slib_bondcnt=$[$slib_bondcnt+3]
+  !else
+      slib_new7=$[$slib_new7-$slib_b]
+  !endif
+!next
+!goto end
+:parallepipede
+
+!for slib_n = 1 to $slib_dcnt
+  slib_step=$[sign($(slib_d[$slib_n;4]))],$[sign($(slib_d[$slib_n;5]))],$[sign($(slib_d[$slib_n;6]))]
+ !for slib_i=0 to $(slib_d[$slib_n;4]) step $(slib_step[1])
+   !for slib_j = 0 to $(slib_d[$slib_n;5]) step $(slib_step[2])
+     !for slib_h = 0 to $(slib_d[$slib_n;6]) step $(slib_step[3])
+       slib_Neig=
+       slib_list= $(slib_data[;1])
+       !reset slib_neig
+       !if c $[$(slib_d[$slib_n;1])+$slib_i] $[$(slib_d[$slib_n;2])+$slib_j] $[$(slib_d[$slib_n;3])+$slib_h] isitemof $slib_list
+         !goto break
+       !endif
+       slib_neig=!positionof item c $[$(slib_d[$slib_n;1]) + $slib_i] $[$(slib_d[$slib_n;2])+$slib_j] $[$(slib_d[$slib_n;3])+$slib_h+1] in $slib_list
+       !if $slib_neig > $slib_b
+         slib_Neig=!append item $[$slib_neig-$slib_b] to $slib_Neig
+       !endif
+       !reset slib_neig
+       slib_neig=!positionof item c $[$(slib_d[$slib_n;1]) + $slib_i] $[$(slib_d[$slib_n;2])+$slib_j] $[$(slib_d[$slib_n;3])+$slib_h-1] in $slib_list
+       !if $slib_neig > $slib_b
+         slib_Neig=!append item $[$slib_neig-$slib_b] to $slib_Neig
+       !endif
+       !reset slib_neig
+       slib_neig=!positionof item c $[$(slib_d[$slib_n;1])+$slib_i-1] $[$(slib_d[$slib_n;2])+$slib_j] $[$(slib_d[$slib_n;3])+$slib_h] in $slib_list
+       !ifval $slib_neig > $slib_b
+         slib_Neig=!append item $[$slib_neig-$slib_b] to $slib_Neig
+       !endif
+       !reset slib_neig
+        slib_neig=!positionof item c $[$(slib_d[$slib_n;1])+$slib_i +1] $[$(slib_d[$slib_n;2])+$slib_j] $[$(slib_d[$slib_n;3])+$slib_h] in $slib_list
+        !ifval $slib_neig > $slib_b
+         slib_Neig=!append item $[$slib_neig-$slib_b] to $slib_Neig
+       !endif
+        !reset slib_neig
+        slib_neig=!positionof item c $[$(slib_d[$slib_n;1])+$slib_i] $[$(slib_d[$slib_n;2])+$slib_j+1] $[$(slib_d[$slib_n;3])+$slib_h] in $slib_list
+        !ifval $slib_neig > $slib_b
+         slib_Neig=!append item $[$slib_neig-$slib_b] to $slib_Neig
+       !endif
+       !reset slib_neig
+        slib_neig=!positionof item c $[$(slib_d[$slib_n;1])+$slib_i] $[$(slib_d[$slib_n;2])+$slib_j-1] $[$(slib_d[$slib_n;3])+$slib_h] in $slib_list
+       !ifval $slib_neig > $slib_b
+         slib_Neig=!append item $[$slib_neig-$slib_b] to $slib_Neig
+       !endif
+       slib_Neig=!singlespace $slib_Neig
+       slib_Neig=!listuniq $slib_Neig
+       slib_data=!append line c $[$(slib_d[$slib_n;1])+$slib_i] $[$(slib_d[$slib_n;2])+$slib_j] $[$(slib_d[$slib_n;3])+$slib_h], $slib_Neig\
+       to $slib_data
+       slib_cnt=!itemcnt $slib_Neig
+       slib_bondcnt=$[$slib_cnt + $slib_bondcnt]
+       !reset slib_Neig
+:break
+    !next
+  !next
+ !next
+!next
+:end
+!if $slib_bondcnt >= 500
+  slib_out=too_big
+  !exit
+!endif
+
+slib_data=!items2words $slib_data
+slib_data_cnt=!linecnt $slib_data
+!reset slib_vertex slib_edge slib_edge_cnt slib_face slib_face_cnt slib_arete slib_vertex_cnt
+slib_vertex_cnt=0
+
+!for slib_j=2 to $slib_data_cnt
+    slib_line=!line $slib_j of $slib_data
+    slib_point=!word 2 to 4 of $slib_line
+    slib_vertex=!append line $slib_point to $slib_vertex
+    slib_e=!word 5 to -1 of $slib_line
+    slib_e=!words2items $slib_e
+    slib_n=!itemcnt $slib_e
+    !if $slib_n>0
+      slib_e=!exec pari [$slib_e]-vector($slib_n,i,1)
+    !endif
+    !if $slib_e!=
+      slib_face=!append line $[$slib_n+1] $slib_vertex_cnt $slib_e to $slib_face
+      !increase slib_face_cnt
+      slib_e=!words2items $slib_e
+      !for slib_m=1 to $[$slib_n]
+         slib_edge=!append line $slib_vertex_cnt $[$(slib_e[$[$slib_m]])] to $slib_edge
+         !increase slib_edge_cnt
+      !next
+    !endif
+    !increase slib_vertex_cnt
+!next
+slib_edge=!replace internal , by $ $ in $slib_edge
+slib_face=!replace internal , by $ $ in $slib_face
+slib_vertex=!nonempty lines $slib_vertex
+slib_data=$[$slib_vertex_cnt] 0 $[$slib_edge_cnt]\
+$slib_vertex\
+$slib_edge
+
+
+!readproc slib/geo3D/off2jmol $slib_data,[S$slib_id,A$slib_id],$slib_color,$slib_width,url $slib_id
+
+slib_out2=$slib_out
+
+  !readproc oef/togetfile.proc tmp2_$slib_id new\
+$slib_out
+
+!!slib_rotation=moveto 0.0 { 722 -692 2 36.12}  100.0 0.0 0.0  {0 0 0} 3.08 {0 0 0} 0 0 0 3.0 0.0 0.0;
+
+!reset slib_vertex slib_edge slib_edge_cnt slib_face slib_face_cnt slib_arete slib_vertex_cnt slib_data slib_out
+!readproc slib/chemistry/jmolshow $(slib_out2[2]),$slib_sizex,$slib_sizey,white,script "$(slib_out2[1])";zoom 120;$slib_rotation,$slib_id
+
+
+!exit
+
+moveto /* time, axisAngle */ 0.0 { 722 -692 2 36.12} /* zoom, translation
+*/  100.0 0.0 0.0  /* center, rotationRadius */ {0 0 0} 3.08 /* navigation
+center, translation, depth */ {0 0 0} 0 0 0 /* cameraDepth, cameraX,
+cameraY */  3.0 0.0 0.0;

@@ -1,0 +1,49 @@
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+:dependancies
+!read adm/title.phtml 1\
+$(name_shtab[6])
+
+Un participant doit d'abord acquérir des points dans d'autres exercices de la feuille, avant de pouvoir travailler sur celui-ci.
+Par exemple, <span class="tt wims_code_words">1:50,2:30,3+4+5:60</span> signifie que le participant doit avoir un succès de 50% sur l'exercice 1,
+ 30% sur l'exercice 2, et une moyenne de succès de 60% sur les exercices 3, 4, 5.
+
+<br class="spacer" />
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
+:allowtype
+!read adm/title.phtml 1\
+Indicació sobre el registre de notes.
+ En el mode selectiu, podeu imposar una
+ restricció de temps per a la gravació de notes mitjançant l'addició de
+ paraules
+ <span class="tt wims_code_words">
+&gt;aaaammjj.hh:mm</span>
+ (début) i/o
+ <span class="tt wims_code_words">
+&lt;aaaammjj.hh:mm</span>
+ (final). Les dates i hores han de ser en el temps actual del SERVIDOR
+ i aquestes paraules han d'estar separades unes de les altres per espais.
+
+!! for translation copy the part of the lang/help.phtml.fr corresponding to the record :variable
+!read lang/help.phtml.fr variable
+
+!exit
+
+:feedback
+!read adm/title.phtml 1\
+$(name_shtab[10])
+
+!read lang/help.phtml.fr feedback
+
+!exit
+
+:series
+!! for translation copy the part of the lang/help.phtml.fr corresponding to the record :series
+!read lang/help.phtml.fr series
+
+!exit

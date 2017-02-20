@@ -1,0 +1,56 @@
+<hr/>
+!read Exindex
+!set exocnt=!itemcnt $exolist
+!set qcnt=8
+!if $qcnt>$exocnt
+ !set qcnt=$exocnt
+!endif
+!if $exocnt<1
+Helaas, deze module heeft op dit moment nog geen oefeningen.
+Kom later maar eens terug!
+ !exit
+!endif
+!if $exocnt=1
+Deze module bevat precies 1 oefening , <b>
+ !item 1 of $titlelist
+ </b>.
+ !set exoo=!item 1 of $exolist
+ !href cmd=new&module=$module&exo=$exoo Proberen
+ .
+ !exit
+!endif
+
+!form new
+<input type="hidden" name="module" value="$module"/>
+<table class="wimscenter" border="0"><tr>
+<td align=center>Kies een scenario:</td><td>
+!if $exocnt>6
+ !set selsize=6
+!else
+ !set selsize=$exocnt
+!endif
+!set wims_formselect_switch=multiple size=$selsize
+!set exo=$special_parm
+!if $exo!=$empty
+ !set exolist=!listuniq $exo,$exolist
+ !set exolist=!replace , by , $ in $exolist
+ !set dictionary=$module_dir/Extitles
+ !set translator_unknown=leave
+ !set titlelist=!exec translator $exolist
+!endif
+!formselect exo list $exolist prompt $titlelist
+!set wims_formselect_switch=
+ </td></tr><tr><td>Type oefening:</td><td>
+ !formselect style list 1,2,3,4 prompt \
+ 	zoek de eerste foute stap,\
+	zoek allee foutieve stappen,\
+	stap voor stap zonder redenering,\
+	stap voor stap met redenering
+</td></tr>
+ <tr><td>Moeilijkheidsgraad:</td><td>
+ !default level=2
+ !formselect level from 1 to 5
+  </td></tr></table>
+ <div class="wimscenter"><input type="submit" value="Aan het werk" />
+ </div>
+ !formend

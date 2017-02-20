@@ -1,0 +1,65 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+
+slib_author=Bernadette, Perrin-Riou
+!exit
+
+:proc
+slib_out=
+
+!distribute items $wims_read_parm into slib_f1,slib_f2,slib_size,slib_xmin,slib_xmax,slib_ymin,slib_ymax,slib_xsep,slib_ysep,slib_seglength,slib_color,slib_xyinit,slib_number,slib_cursor
+!default slib_ysep=0.5
+!default slib_xsep=0.5
+slib_xyinit=!declosing $slib_xyinit
+
+slib_xyinitcnt=!itemcnt $slib_init
+!if $slib_xyinitcnt<=1
+  slib_xynbcurve=$slib_xyinit
+ !bound slib_xynbcurve between 1 and 10 default 1
+  slib_xypoints=!values $[$slib_xmin+($slib_xmax -$slib_xmin)/10], $slib_ymin + (x-0.5)/$slib_nbcurve*($slib_ymax-$slib_ymin) for x = 1 to $slib_nbcurve
+!else
+  slib_xynbcurve=$[$slib_xyinitcnt/2]
+  slib_xypoints=$slib_xyinit
+!endif
+!! ne tient compte que du premier point. A changer
+
+!distribute items $slib_xyinit into slib_xinit,slib_yinit
+!if x notin $slib_size
+  slib_size=$slib_size x $slib_size
+!endif
+slib_color=!declosing $slib_color
+!default slib_color=green, blue
+slib_color=$slib_color,$slib_color
+!default slib_number=!randint 1,100
+jxgbox=jxgbox$slib_number
+brd=brd
+!default slib_seglength=0.2
+slib_cursorcnt=0
+slib_cursor=!declosing $slib_cursor
+!if $slib_cursor != $empty
+ !if ; isin $slib_cursor
+   slib_cursorcnt=!itemcnt $(slib_cursor[;1])
+ !else
+   slib_cursorcnt=1
+ !endif
+!endif
+!reset slib_script_cursor
+brd=brd
+
+!if $slib_cursorcnt>0
+  slib_script_cursor=var $brd = JXG.JSXGraph.initBoard('$jxgbox', {axis:true, boundingbox:[$slib_xmin,$slib_ymax,$slib_xmax,$slib_ymin]});
+!endif
+!for slib_j = 1 to $slib_cursorcnt
+  slib_script_cursor=$slib_script_cursor\
+   $(slib_cursor[$slib_j;2]) = $brd.createElement('slider', [[$[$slib_xmin+1],$[$slib_ymax-$slib_j-0.5]],[$[round(($slib_xmax+$slib_xmin)/2)],$[$slib_ymax-$slib_j-0.5]],[$(slib_cursor[$slib_j;4..6])]],{name:'$(slib_cursor[$slib_j;2]) ',strokeColor:'black',fillColor:'black', snapWidth:0.1});\
+   $(slib_cursor[$slib_j;2])_name=$brd.createElement('text', [$[$slib_xmin+1],$[$slib_ymax-$slib_j], "$(slib_cursor[$slib_j;3])"]);
+  slib_f1=!replace internal $(slib_cursor[$slib_j;1]) by $(slib_cursor[$slib_j;2]).Value() in $slib_f1
+  slib_f2=!replace internal $(slib_cursor[$slib_j;1]) by $(slib_cursor[$slib_j;2]).Value() in $slib_f2
+!next
+
+!readproc slib/analysis/slope.js
+slib_script=!replace internal /*CURSOR*/ by $slib_script_cursor in $slib_script
+
+!readproc slib/geo2D/jsxgraph $jxgbox, $slib_size, $slib_script
+

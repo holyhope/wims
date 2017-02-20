@@ -1,0 +1,53 @@
+!if $noarch=yes
+ $name_restore5
+ !exit
+!endif
+
+!if $job2!=first
+ !changeto arch/$job2.phtml
+!endif
+
+<h3>$name_title_save
+!set wims_ref_class=wims_button_help
+!href cmd=help&special_parm=download $wims_name_help
+</h3>
+
+!if $name_cnil_warning!=$empty
+  <div class="wims_msg warning">
+    $name_cnil_warning
+  </div>
+!endif
+$name_intro
+
+!href cmd=reply&job=arch&job2=download&selection=all&format=zip zip
+,
+!href cmd=reply&job=arch&job2=download&selection=all&format=tgz tgz
+ $wims_name_or
+!href cmd=reply&job=arch&job2=download&selection=all&format=tar.gz tar.gz
+.
+
+<h3>
+$name_title_restore
+!set wims_ref_class=wims_button_help
+!href cmd=help&special_parm=upload $wims_name_help
+</h3>
+
+!if $test_sharing!=$empty
+ $(name_forbiddenrestore).
+ !exit
+!endif
+
+!set wims_form_method=file
+!form reply
+<input type="hidden" name="job" value="arch" />
+<input type="hidden" name="job2" value="upload" />
+<ul class="nopuce"><li>
+$name_intro1
+<input type="file" name="wims_deposit" size="40" />
+</li><li>
+$name_selective1
+<input type="submit" value="$wims_name_send" />.
+$name_help
+</li>
+</ul>
+!formend

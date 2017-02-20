@@ -1,0 +1,116 @@
+!if $job=lightpopup
+ !changeto jobs/lightpopup.proc
+!endif
+
+wims_prefix=class user tmp n sharing sharable ident
+!if $job=help
+ wims_module_log=help
+ !exit
+!endif
+
+!read defs
+
+job=!lower $job
+!bound job within $allowed_actions_jobs,$allowed_file_jobs,$allowed_jobs_without_auth default $
+option=!items2words $option
+option=!words2items $option
+code=!word 1 of $code
+
+
+!if $job notin $allowed_jobs_without_auth or $ident != $empty
+	# le script autchars permet de definir les listes de caracteres alphanumeriques et de ponctuation
+	# il definit egalement la fourchette de longueur autorise des login/mdp
+	!read adm/class/authchars
+	# Le script var.check verifie l'authentification de l'utilisateur
+	!read var.check
+!endif
+
+!if $job isin $allowed_jobs_without_auth
+  !default ident_type=json
+!endif
+
+!if $error=$empty
+ !read jobs/$job.proc
+!endif
+
+notplaintext = xmlformat json
+
+#Lorsque l'on sort de la procedure "job", il ne doit tjs pas y avoir d'erreur.
+!if $error!=$empty
+ !changeto error.proc $error
+!endif
+
+!if $code=$empty
+  !if $ident_type notwordof $notplaintext
+	ok=OK
+  !else
+  	!if $ident_type=xmlformat
+  	  	ok=<params><param><value><string>OK</string></value></param>
+  	!endif
+  	!if $ident_type=json
+  	  	ok={"status" : "OK"
+  	!endif
+  !endif
+!else
+  !if $ident_type notwordof $notplaintext
+	ok=OK $code
+  !else
+  	!if $ident_type=xmlformat
+  	 ok=<params><param><value><struct>\
+  	 <member>\
+	 	<name>code</name>\
+	 	<value><string>$code</string></value>\
+	 </member>\
+
+	!endif
+	!if $ident_type=json
+  	  	ok={"status" : "OK","code":"$code"
+  	!endif
+  !endif
+!endif
+
+!if $job isitemof $allowed_file_jobs
+ !if $job isitemof getclasstgz,getibookwidget
+ 	!shortout $header_zip\
+Content-Disposition: attachment; filename=$fname;
+
+ !else
+ 	!shortout $header\
+
+ !endif
+
+ !sh cat $wims_home/$fname
+
+ !exit
+!endif
+
+
+!if $ident_type notwordof $notplaintext
+	!shortout $header\
+
+!else
+ !if $ident_type iswordof xmlformat
+	!shortout $header_xml\
+<?xml version="1.0" encoding="$encoding"?>\
+<!DOCTYPE methodResponse PUBLIC "XML9-RPC" "http://ticewims.unice.fr/xml-rpc/xml-rpc.dtd">\
+<methodResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ticewims.unice.fr/xml-rpc/xml-rpc.xsd">\
+
+ !endif
+ !if $ident_type=json
+ 	!shortout $header_json\
+
+ !endif
+
+!endif
+
+!if $job isitemof $allowed_actions_jobs
+ !shortout $ok\
+
+ !read types/$ident_type
+!endif
+
+!if $job notwordof authuser getsession
+ wims_mode=popup
+!endif
+
+wims_module_log=$job $ident -> $qclass $quser

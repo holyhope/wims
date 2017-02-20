@@ -1,0 +1,168 @@
+<div class="wims_content">
+
+!read search.phtml
+!if $overflow=yes
+ !exit
+!endif
+!if $clcnt+$sccnt+$directcnt<1
+ !if $keyword=$empty
+  $name_language
+  !href module=home&list=0 $wims_name_search
+ !else
+  $name_nofound
+ !endif
+ !exit
+!endif
+!if $wims_user!=$empty
+ !read direct.phtml
+ !if $wims_user!=supervisor and $superclass_orig=$empty
+  !!exit
+ !endif
+!else
+  $name_text1
+!endif
+
+!set super_mixed_auth=!defof class_mixed_external_auth in wimshome/log/classes/$wims_superclass/.def
+!if $sccnt>0 and $super_mixed_auth!=2
+ $table_header
+ <caption>$name_portalandgroup</caption>
+ $table_hdtr
+ <th>$wims_name_name</th><th>$wims_name_action</th><th>$wims_name_Supervisor</th><th>$wims_name_Status</th></tr>
+ !for i=1 to $sccnt
+  !set l=!line $i of $sclasses
+  !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
+  !!!if $sclass=$empty
+   !set show=$inst<br />$cl
+  !!!else
+  !! !set show=$inst
+  !!!endif
+  !set supv=!item 9 of $l
+  !if $supv=$empty
+   !reset class_password
+   !defread wimshome/log/classes/$code/.def
+   !set supv=$class_supervisor
+   !set pswd=$class_password
+  !endif
+  $table_tr<td>
+  !!!href module=$module&type=authparticipant&class=$code
+  $show
+  </td>
+   !read adm/class/initclass $code,auth
+   !defread wimshome/log/classes/$code/.def
+   !if $class_auth isitemof $auth_method_list and $(class_$(class_auth)_auth)!=$empty
+     !set tmp_parm=&subclass=yes
+     !read participant2.phtml
+     !reset tmp_parm
+   !else
+   <td>
+   !set wims_ref_class=wims_button
+   !href module=$module&type=authparticipant&class=$code&subclass=yes $wims_name_Enter
+   </td>
+   !endif
+  <td>
+  $supv
+  </td><td>
+  !if $pswd=$empty
+   $name_open
+  !else
+   $name_protected
+  !endif
+</td></tr>
+ !next i
+ $table_end
+!endif
+
+!if $clcnt>0 and $super_mixed_auth!=2
+$table_header
+ !if $superclass_orig=$empty
+  <caption>$name_independantclass</caption>
+  $table_hdtr
+  <th>$wims_name_name</th><th>$wims_name_action</th>
+  <th>$wims_name_nameteacher</th><th>$wims_name_level</th><th>$wims_name_Status</th>
+ !else
+   !if $splevel>1
+    !set inst=!defof class_description in wimshome/log/classes/$superclass2/.def
+   !else
+    !set inst=!defof class_institution in wimshome/log/classes/$superclass_orig/.def
+   !endif
+   <caption>$Name_levels ($inst)
+   !if $splevel>1
+    !href cmd=reply&type=$type&superclass2=$sparent $name_up
+   !endif
+   </caption>
+   $table_hdtr
+   <th>$wims_name_name</th><th>$wims_name_action</th>
+   <th>$wims_name_nameteacher</th><th>$wims_name_level</th><th>$wims_name_Status</th>
+   !if $superclass_orig!=$empty and $stype=4
+    <th>+</th>
+   !endif
+ !endif
+ </tr>
+
+ !!! put it var.proc ??
+  !set directlist_=!replace internal , by $ ; $ $ in $directlist
+ !for i=1 to $clcnt
+  !set l=!line $i of $classes
+  !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
+  !set supv=!item 9 of $l
+  !if $supv=$empty
+   !reset class_password
+   !defread wimshome/log/classes/$code/.def
+   !set lv=$class_level
+   !set supv=$class_supervisor
+   !set pswd=$class_password
+  !endif
+  !distribute char $lv into l_,y_
+  !if $superclass_orig=$empty
+   !set show=$inst <br />$cl
+  !else
+   !set show=$cl
+  !endif
+  !read adm/class/initclass $code,auth
+  !!defread wimshome/log/classes/$code/.def
+  $table_tr<td>
+    $show
+  </td>
+  !if $auth_method isitemof $auth_method_list and $host_auth!=$empty
+     !read participant2.phtml
+  !else
+  <td>
+    !set wims_ref_class=wims_button
+     !if $code notwordof $directlist_
+       !href module=$module&type=authparticipant&class=$code&subclass=yes $wims_name_Enter
+     !else
+      !if $splevel=$empty or $splevel=2
+       !set wims_ref_class=wims_button
+       !href module=adm/class/reguser&class=$code $name_register
+      !else
+        <span style="color:grey">$name_register</span>
+      !endif
+    !endif
+    </td>
+  !endif
+  <td>
+  $supv
+  </td><td>$(wims_name_n_$l_)<br />$name_year $y_</td>
+  <td>
+  !if $pswd=$empty
+   $name_open
+  !else
+   $name_protected
+  !endif
+  </td>
+   !if $superclass_orig!=$empty and $stype=4
+    <td>
+    !if $ty!=1 and $splevel!=3
+    !set wims_ref_class=wims_button
+     !href cmd=reply&type=$type&superclass2=$code $sousclasses
+    !else
+    -
+    !endif
+    </td>
+   !endif
+   </tr>
+:endloop
+ !next i
+ $table_end
+!endif
+</div>

@@ -1,0 +1,79 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+
+slib_author=Bernadette, Perrin-Riou
+
+slib_example=[1,2;allo;mer]\
+[1,2;allo,make your own css],4\
+[1;30000],center\
+[\(x^4\),\(x^3);\(\frac{x}{y}\),3],center\
+[\(x^4\),\(x^3) &lt; a;\(\frac{x}{y}\),3],wimscenter\
+[\(x^4\),\(x^3);\(\frac{x}{y}\),3],wimsnoborder wimscenter 1\
+[1,2,3;4,5,6;5,2,3]\
+[def1,2,3,4;def2,5,6,7;def3,2,3,4],1,TH=[;1,3]\
+[def1,2,3;def2,5,6;def3,2,3],1,TH=[1;]\
+[def1,2,3;def2,5,6;def3,2,3;def4,2,3;def5,2,3],1,TH=[2,4;3]\
+[def1,2,3;def2,5,6;def3,2,3;def4,2,3;def5,2,3],1,TH=[2,4;3] CAPTION="texte en caption"
+slib_require=pari
+!exit
+
+:proc
+!reset slib_align slib_class slib_option slib_id
+!distribute items $wims_read_parm into slib_matrix,slib_id,slib_option
+slib_matrix=!declosing $slib_matrix
+!if center iswordof $slib_id
+  slib_align=$ style="text-align:center"
+  slib_id=!replace internal center by in $slib_id
+!endif
+!for slib_cl in wimscenter, wimsborder, wimsnoborder, wimstable
+ !if $slib_cl iswordof $slib_id
+  slib_class=!append word $slib_cl to $slib_class
+  slib_id=!replace internal $slib_cl by in $slib_id
+ !endif
+!next
+
+slib_id=!nospace $slib_id
+slib_class=class="$slib_class wims_matrix$slib_id"
+slib_caption=!getopt CAPTION in $slib_option
+slib_th=!getopt TH in $slib_option
+slib_th=!declosing $slib_th
+slib_tr=$(slib_th[1;])
+slib_td=$(slib_th[2;])
+slib_out=<table $slib_class>
+!if $slib_caption!=$empty
+  slib_out=$slib_out<caption>$slib_caption</caption>
+!endif
+slib_matrix=!lines2rows $slib_matrix
+slib_cnt=
+slib_colcnt=0
+slib_rowcnt=!rowcnt $slib_matrix
+
+!for slib_a =1 to $slib_rowcnt
+  slib_cnt_p=!itemcnt $(slib_matrix[$slib_a;])
+  slib_cnt=!append item $slib_cnt_p to $slib_cnt
+  slib_colcnt=$[max($slib_colcnt,$slib_cnt_p)]
+!next
+slib_tt=td
+!for slib_a =1 to $slib_rowcnt
+  slib_out_p=
+  !if $slib_a isitemof $slib_tr
+    slib_tt=th
+  !endif
+  !for slib_b=1 to $slib_colcnt
+    slib_tmp=$(slib_matrix[$slib_a;$slib_b])
+    !if $slib_b isitemof $slib_td or $slib_tt=th
+      slib_tt1=th
+    !else
+      slib_tt1=td
+    !endif
+    slib_out_p=!append word <$slib_tt1$slib_align>$slib_tmp</$slib_tt1> to $slib_out_p
+    !reset slib_tt1
+  !next
+  slib_out=$slib_out\
+  <tr>$slib_out_p</tr>
+  slib_tt=td
+!next
+slib_out=$slib_out\
+</table>
+

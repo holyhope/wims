@@ -1,0 +1,35 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+
+slib_author=Fabrice,Guerimand
+
+slib_example=435,\
+12,30
+
+!exit
+
+:proc
+!distribute item $wims_read_parm into slib_input,slib_option,slib_sep
+slib_input=$[rint($slib_input)]
+!if NaN isin $slib_input
+ !exit
+!endif
+!bound slib_option between 5 and 50 default 20
+!bound slib_input between 1 and 10^5 default 0
+!bound slib_sep within item,$empty default $empty
+slib_cnt=!charcnt $slib_input
+slib_out=$empty
+!for slib_k=1 to $slib_cnt
+    slib_char=!char $slib_k of $slib_input
+    !if $slib_char!=0
+     slib_valeur=egyptien_$[10^($slib_cnt-$slib_k)]
+     slib_tmp=!makelist <img width="$slib_option" src="gifs/numeration/$(slib_valeur).gif" alt="$slib_valeur"/> for v=1 to $(slib_char)
+     !if $slib_sep=item
+      slib_out=!append item $slib_tmp to $slib_out
+     !else
+      slib_tmp=!items2words $slib_tmp
+      slib_out=$slib_out $slib_tmp
+     !endif
+    !endif
+!next slib_k

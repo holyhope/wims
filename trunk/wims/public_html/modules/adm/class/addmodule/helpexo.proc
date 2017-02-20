@@ -1,0 +1,45 @@
+!! add help to a series of exercise of a sheet
+!!
+
+!default step=0
+!default picksheet=1
+!bound note between 0 and 10 default 10
+
+sheets=
+!for i=1 to $sheettot
+ sh=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+ !distribute lines $sh into a_,t_,title
+ nb=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
+ sheets=!append line $i,$nb,$title to $sheets
+!next i
+sheetcnt=!linecnt $sheets
+lnumsheet=!column 1 of $sheets
+
+!if $step=0
+ !ifval $sheetcnt=0
+  error=no_sheet
+  !exit
+ !endif
+ !bound picksheet within $lnumsheet default $(lnumsheet[1])
+ !exit
+!endif
+
+!if $step=1
+ !bound picksheet within $lnumsheet default 0
+ !bound exo between 1 and $nb default 0
+ !ifval $exo*$picksheet=0
+  error=bad_exo
+  !exit
+ !endif
+ update_field=9
+ t=cmd=new
+ !if $t notin $iniparm
+  update_content=module=$dir&$iniparm&cmd=new,$note
+ !else
+  update_content=module=$dir&$iniparm,$note
+ !endif
+ sheet=$picksheet
+ !read adm/class/update.exo
+ title=!module title $dir
+ desc=!module description $dir
+!endif

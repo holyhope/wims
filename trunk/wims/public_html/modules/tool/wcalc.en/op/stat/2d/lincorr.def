@@ -1,0 +1,75 @@
+!goto $wims_read_parm
+
+:def
+title=Linear correlation coefficients
+synonyme=linear correlation, correlation coefficients
+input=data2d
+!exit
+
+:proc
+!if $cnt<2
+ !exit
+!endif
+pari_header=data=[$fml2];\
+	meanx=sum(t=1,$cnt,data[t,1])/$cnt;\
+	meany=sum(t=1,$cnt,data[t,2])/$cnt;\
+	sigmax=sqrt(sum(t=1,$cnt,(data[t,1]-meanx)^2));\
+	sigmay=sqrt(sum(t=1,$cnt,(data[t,2]-meany)^2));\
+	cov=sum(t=1,$cnt,(data[t,1]-meanx)*(data[t,2]-meany));
+	
+result=!exec pari print(cov/(sigmax*sigmay));\
+	print(cov);\
+	print(sigmax);\
+	print(sigmay);\
+	print(meanx);\
+	print(meany);
+	
+result=!nonempty lines $result
+test=!linecnt $result
+!if $test<6
+ result=
+ !exit
+!endif
+!distribute lines $result into corr,cov,sigmax,sigmay,meanx,meany
+!exit
+
+:output
+<table border=0>
+<tr><td nowrap align=right>
+ Linear correlation coefficients = <td>
+ !htmlmath $corr
+<tr><td nowrap align=right>
+ Covariance cov(x,y) = <td>
+ !htmlmath $cov
+<tr><td nowrap align=right>
+ ($m_sigma<sub>x</sub> , $m_sigma<sub>y</sub>) = <td>
+ !htmlmath ($sigmax , $sigmay)
+<tr><td nowrap align=right>
+ Mean = <td>
+ !htmlmath ($meanx , $meany)
+</table> <p>
+Data : $cnt couples { $fml3 }. These data have therefore a
+!item $[floor(abs($corr)*7)+1] of pratically no,\
+	very weak, rather weak, average, rather good, very strong,\
+	very very strong
+ correlation.
+<p>
+<b>Recall</b>. The linear correlation coefficients of a set
+<p><center>
+{($m_x<sub>1</sub>,$m_y<sub>1</sub>) , ... , ($m_x<sub>$m_n</sub>,$m_y<sub>$m_n</sub>)}
+</center> <p>
+of discret data of dimension 2 are defined by
+<p><center>
+!instex $$$$ \rho_{xy} = {{\rm cov}(x,y) \over \sigma_x \sigma_y }\;\;, $$$$
+</center> <p>
+where 
+!set ins_align=middle
+!instex $$$$ {\rm cov}(x,y) = \sum_{i=1}^n (x_i - m_x)(y_i - m_y) $$$$
+ is the <em>covariance</em>, 
+!instex $$$$ \sigma_x=\sqrt{\sum_{i=1}^n (x_i - m_x)^2} $$$$
+ and
+!instex $$$$ \sigma_y=\sqrt{\sum_{i=1}^n (y_i - m_y)^2} $$$$
+ are <em>variances</em> in x and in y, and 
+ ($m_m<sub>$m_x</sub>,$m_m<sub>$m_y</sub>) is the average of the data.
+!exit
+

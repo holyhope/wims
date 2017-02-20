@@ -1,0 +1,111 @@
+!distribute items $wims_read_parm into authprep_class,authprep_user
+!if user notwordof $wims_prefix
+ wims_prefix=$wims_prefix user
+!endif
+
+overflow=!record 0 of wimshome/log/cquota/lim.class
+!if $authprep_class iswordof $overflow
+ !usererror overload
+!endif
+
+!read adm/class/otherclass classes,$authprep_class,$authprep_user
+
+accessright=!record 0 of wimshome/log/classes/$authprep_class/accessright
+accessright=!items2words $accessright
+accessright=!singlespace $accessright
+!default class_lock=0
+
+!if $class_type iswordof 2 4
+ !default class_superclass=$authprep_class
+!endif
+
+authprep_realuser=
+!if $class_superclass!=$empty
+ class_supertype=!defof class_type in wimshome/log/classes/$class_superclass/.def
+ authprep_realuser=$wims_realuser
+ !if $wims_user!=$empty and $wims_user!=supervisor and $authprep_user=supervisor
+  authprep_realuser=$wims_user
+ !endif
+ !if $authprep_realuser != $authprep_user
+  !readdef wimshome/log/classes/$class_superclass/.users/$authprep_realuser
+ !endif
+!endif
+!default class_theme_icon=$wims_theme_icon
+!default class_theme=$wims_theme
+!default class_supertype=0
+!default authprep_realuser=$wims_user
+!default authprep_realuser=$authprep_user
+
+!set wims_name_sequence=!defof sequence_Title in wimshome/log/classes/$authprep_class/seq/.def
+
+classdef=wims_class=$authprep_class\
+wims_user=$authprep_user\
+wims_realuser=$authprep_realuser\
+wims_external_auth=$user_external_auth\
+wims_firstname=$user_firstname\
+wims_lastname=$user_lastname\
+wims_email=$user_email\
+wims_superclass=$class_superclass\
+wims_supertype=$class_supertype\
+wims_typename=$class_typename\
+wims_participate=$user_participate\
+wims_supervise=$user_supervise\
+wims_classname=$class_description\
+wims_institutionname=$class_institution\
+wims_class_location=$class_location\
+wims_supervisor=$class_supervisor\
+wims_supervisormail=$class_email\
+wims_otherclass=$wims_otherclass\
+wims_classlock=$class_lock\
+wims_class_exolog=$class_exolog\
+wims_class_examlog=$class_examlog\
+wims_class_examshow=$class_examshow\
+wims_class_ent=$class_ent\
+wims_class_external_auth=$class_external_auth\
+wims_class_mixed_external_auth=$class_mixed_external_auth\
+wims_accessright=$accessright\
+wims_exotitleform=$class_exotitleform\
+wims_supconnectshowed=$class_supconnectshowed\
+wims_caller=$wims_caller\
+wims_sup_secure=$sup_secure\
+wims_useropts=$user_opts\
+wims_bgcolor=$class_bgcolor\
+wims_bgimg=$class_bgimg\
+wims_css=$class_css\
+wims_theme=$class_theme\
+wims_class_bgcolor=$class_bgcolor\
+wims_theme_icon=$class_theme_icon\
+wims_class_refcolor=$class_refcolor\
+wims_class_ref_menucolor=$class_ref_menucolor\
+wims_class_ref_button_color=$class_ref_button_color\
+wims_class_ref_button_bgcolor=$class_ref_button_bgcolor\
+wims_class_ref_button_help_color=$class_ref_button_help_color\
+wims_class_ref_button_help_bgcolor=$class_ref_button_help_bgcolor\
+wims_robotcheck=manual\
+wims_authidp=$class_authidp\
+wims_idp_auth=$(class_idp_auth)\
+wims_cas_auth=$(class_cas_auth)\
+wims_ldap_auth=$(class_ldap_auth)\
+wims_ldap_port=$(class_ldap_port)\
+wims_ldap_version=$(class_ldap_version)\
+wims_ldap_base=$(class_ldap_base)\
+wims_ldap_branch=$(class_ldap_branch)\
+wims_ldap_uid=$(class_ldap_uid)\
+wims_ldap_login=$(class_ldap_login)\
+wims_ldap_email=$(class_ldap_email)\
+wims_ldap_photourl=$(class_ldap_photourl)\
+wims_ldap_regnum=$(class_ldap_regnum)\
+wims_examscore_withoutip=$(class_examscore_withoutip)\
+wims_name_sequence=$(wims_name_sequence)
+
+!if $authprep_user=supervisor
+ !for k in qnum,qcmlevel,scoredelay,qcmpresent,presentsol,check,expow,sepow,precw
+  !if $(user_$k)!=$empty
+   classdef=$classdef\
+wims_oefdefault_$k=$(user_$k)
+  !endif
+ !next k
+!else
+ classdef=$classdef\
+wims_showlivret=$class_showlivret
+!endif

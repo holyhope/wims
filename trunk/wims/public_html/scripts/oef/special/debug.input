@@ -1,0 +1,67 @@
+ !set replydefaulted=yes
+ !if $oef_default=yes
+   !if $wims_read_parm!=$empty
+     !set i_=$wims_read_parm
+  !else
+     !set i_=$i
+  !endif
+!if $(replytype$i_) iswordof range raw symtext vector set
+ !goto $(replytype$i_)
+!else
+ !goto default
+!endif
+
+:default  
+  !set tt=!row 1 of $(replygood$i_)
+  !set tt=!translate | to $\
+$ in $tt
+  !default reply$i_=!item 1 of $tt
+  !goto end
+
+:range 
+  !set tt=!itemcnt $(replygood$i_)
+  !ifval $tt%2=1
+   !default reply$i_=$(replygood$i_[-1])
+  !else
+   !default reply$i_=$[($(replygood$i_[1])+$(replygood$i_[2]))/2]
+  !endif
+  !goto end
+
+:raw
+  !set tt=!line 1 of $(replygood$i_)
+  !set tt=!row 1 of $tt
+  !set tt=!translate | to $\
+$ in $tt
+  !default reply$i_=!line 1 of $tt
+  !goto end
+
+:symtext
+  !set tt=!line 1 of $(replygood$i_)
+  !set tt=!row 1 of $tt
+  !set tt=!translate | to $\
+$ in $tt
+  !set tt=!line 1 of $tt
+  !set tt=!trim $tt
+  !default reply$i_=!singlespace $tt
+  !goto end
+
+:vector
+  !default reply$i_=$(replygood$i_)
+  !goto end
+:aset
+ !goto set
+:fset
+ !goto set
+:set
+  !set tt=!declosing $(replygood$i_)
+  !if , notin $good
+   !set tt=!words2items $tt
+  !endif
+  !if repeat notwordof $(replyoption$i_)
+   !default reply$i_=!listuniq $tt
+  !else
+   !default reply$i_=$tt
+  !endif
+
+:end
+!reset wims_read_parm

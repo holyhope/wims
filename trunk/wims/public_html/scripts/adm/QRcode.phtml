@@ -1,0 +1,20 @@
+!distribute item $wims_read_parm into http_,size_
+!default size_=50
+!if session isin $http_
+ !exit
+!endif
+!let qrencode_=!defof QRencode_command\
+QRencode_open in wimshome/log/wims.conf
+!distribute line $qrencode_ into qrencode_,qrencodeopen_
+!if $qrencodeopen_!=yes
+ !exit
+!endif
+!default qrencode_=!defof DF_QRencode_command in wimshome/public_html/bases/sys/defaults.conf
+!let name_=!word 1 of $qrencode_
+!let test_=!sh which $name_
+!if /$name_ notin $test_
+ !exit
+!endif
+!sh $qrencode_ $wims_home/s2/$wims_session/qrencode.png $http_
+<img src="$wims_ref_name?session=$wims_session&+cmd=getins&+special_parm=qrencode.png" 
+  style="width:$(size_)px" alt="qrencode" />

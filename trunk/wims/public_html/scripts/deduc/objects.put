@@ -1,0 +1,72 @@
+!bound wims_read_parm between integer 0 and $currstep default $currstep
+
+caseline=!line 1 of $allcases
+caseline=!translate internal $	$ to $\
+$ in $caseline
+objtmp=!translate internal $\
+$ to $	$ in $objects
+
+casesplit=!nonempty lines $casesplit
+splittest=!linecnt $casesplit
+casecnt=!linecnt $allcases
+!if $splittest<=1
+ !if $casecnt<=1
+  allcases=$objtmp
+  casecnt=1
+  thiscase=-
+ !else
+  allcases=!replace line number $activecase+1 by $objtmp in $allcases
+  thiscase=!line $activecase+1 of $caseline
+ !endif
+ object$wims_read_parm=$allcases
+ !exit
+!endif
+
+newobject=!line 1 of $casesplit
+!if $casecnt>1
+ objcases=!line 2 to -1 of $allcases
+ objcases=!replace line number $activecase by $objtmp in $objcases
+ caseids=!line 2 to -1 of $caseline
+ caseid=!line $activecase of $caseids
+ thiscase=$caseid
+ !if $caseid!=$empty
+  caseid=and $caseid
+ !endif
+ caseids=!replace line number $activecase by $newobject $caseid in $caseids
+!else
+ activecase=1
+ caseids=$newobject
+ caseid=
+ objcases=$objtmp
+ thiscase=-
+!endif
+
+!if $goalsplit=yes
+ newObject=< $newobject
+!else
+ newObject=> $newobject
+!endif
+
+splitcnt=!linecnt $casesplit
+!for i=2 to $splitcnt
+ l_=!line $i of $casesplit
+ !if $(splitobject$i) != $empty
+  o_=!translate internal $\
+$ to $	$ in $(splitobject$i)
+  objcases=!append line $o_ to $objcases
+ !else
+  objcases=!append line > $l_	$splitobj to $objcases
+ !endif
+ caseids=!append line $l_ $caseid to $caseids
+!endif
+
+caseid=!line $activecase of $caseids
+caseline=!translate internal $\
+$ to $	$ in $activecase\
+$caseids
+
+allcases=$caseline\
+$objcases
+object$wims_read_parm=$allcases
+casecnt=!linecnt $allcases
+

@@ -1,0 +1,68 @@
+!set wims_module_log=error: $error
+
+<span class="wims_warning">$wims_name_Error</span>.
+
+!if empty_data iswordof $error
+ !distribute items $wims_name_title,$wims_name_Description,$wims_name_Type into tmp_title, tmp_description, tmp_category
+
+ Si us plau ompliu el camp <span class="tt wims_warning">$(tmp_$(empty_data))</span>
+ i comproveu els altres camps.
+ !exit
+!endif
+
+!if bad_fname iswordof $error
+ Nom del fitxer il·legal. Si us plau trieu un altre nom per al fitxer.
+ !exit
+!endif
+
+!if binary_file iswordof $error
+ Fitxer prohibit.
+ !exit
+!endif
+
+!if illegal_filedesc iswordof $error
+ Es poden posar només definicions directes a
+ <span class="tt wims_fname">filedesc</span>.
+ !exit
+!endif
+
+!if badoriginal iswordof $error
+ Aquest mòdul no es pot copiar.
+ !exit
+!endif
+
+!if clash iswordof $error
+ El mòdul de destinació ja existeix.
+ !exit
+!endif
+
+!if badtarget iswordof $error
+ L'adreça de destinació <span class="tt wims_address">$target</span> no és correcta :
+ massa llarga, massa curta, incompleta o amb caràcters no permesos.<br />
+ Detall dels errors :
+ <ul>
+  !if incorrect_t1 iswordof $error
+   <li>Zona incorrecta</li>
+  !endif
+  !if incorrect_t2 iswordof $error
+   <li>Categoria incorrecta</li>
+  !endif
+  !if incorrect_t3 iswordof $error
+   <li>Nom incorrecte</li>
+  !endif
+  !if incorrect_t4 iswordof $error
+   <li>Llengua incorrecta</li>
+  !endif
+  !if incorrect_tlen iswordof $error
+   <li>longitud incorrecta</li>
+  !endif
+ </ul>
+ !exit
+!endif
+
+!if symlink iswordof $error
+ No es pot copiar el mòdul d'origen, ja que conté enllaços simbòlics.
+ !exit
+!endif
+
+!msg $error

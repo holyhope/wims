@@ -1,0 +1,45 @@
+<ul class="inline nopuce">
+<li><table class="wimsborder">
+<caption>$addtable</caption>
+<tr><td $opcolor>+</td>
+!for j=0 to $q-1
+ <td $hdcolor>$(el$j)</td>
+!next j
+</tr>
+!for i=0 to $q-1
+ <tr><td $hdcolor>$(el$i)</td>
+ !for j=0 to $q-1
+  !if $field=prime
+   !set t=!eval ($i+$j)%$q
+  !else
+   !set t=!item $i+1 of $(add$j)
+  !endif
+  <td>$(el$t)</td>
+ !next j
+ </tr>
+!next i
+</table>
+</li><li>
+<table class="wimsborder">
+<caption>$multable</caption>
+<tr><td $opcolor>*</td>
+!for j=0 to $q-1
+ <td $hdcolor>$(el$j)</td>
+!next j
+</tr>
+!for i=0 to $q-1
+ <tr><td $hdcolor>$(el$i)</td>
+ !for j=0 to $q-1
+  <td>
+  !if $field=prime
+   !set t=!eval ($i*$j)%$q
+  !else
+   !set t=!item $i+1 of $(mul$j)
+  !endif
+  $(el$t)
+  </td>
+ !next j
+ </tr>
+!next i
+</table>
+</li></ul>

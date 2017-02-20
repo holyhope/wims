@@ -1,0 +1,93 @@
+type=language
+textarea="data"
+
+:Choisir parmi des étiquettes le mot entendu (enregistrement de la base audio de WIMS).
+
+Un audio est proposé et le texte doit être choisi par des étiquettes. Les audio sont
+pris parmi la base d'audio de mots enregistrés de WIMS. Si l'exercice est dans une classe,
+avec une adapatation, il peut être utilisé avec des audios mis dans la classe.
+<p>
+Pour construire un exercice avec ce modèle, il suffit de taper la liste de
+mots à condition qu'ils existent dans la base d'audio (pour vérifier, taper
+swac dans le moteur de recherche et utiliser l'outil proposé).
+</p><p>
+Pour plus de possibilités, utiliser Quicktool.
+</p><p>
+Auteur du modèle : Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+</p>
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Enlevez l'en-tête ci-dessus si vous détruisez les balises pour le modèle !
+(Ce sont les lignes qui commencent par un ':'.)
+Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
+
+:%%%%%%%% Paramètres d'exemples à redéfinir %%%%%%%%%%%%%%%%%
+
+
+:\title{Écouter et reconnaître}
+:\author{Bernadette, Perrin-Riou}
+:\email{bpr@math.u-psud.fr}
+:\credits{}
+:Consigne
+\text{instruction=Clique sur le mot entendu.}
+
+:Liste de mots
+S'il y a plusieurs lignes, les distracteurs seront pris sur la même ligne que le mot choisi.
+\text{liste = doctor,teacher,journalist,policeman, fireman, postman}
+
+:Language audio : les choix possibles sont <span class="tt">fra</span>,  <span class="tt">eng</span>,  <span class="tt">dut</span> (et d'autres avec moins de possibilités  <span class="tt">pol</span>,  <span class="tt">wol</span>,  <span class="tt">deu</span>,  <span class="tt">swe</span>.)
+\text{lang = eng}
+:Nombre de perturbateurs.
+\integer{cntpertub=3}
+:La taille verticale des cases en pixels.
+\integer{sizev=200}
+
+:La taille horizontale des cases à gauche en pixels.
+\integer{sizel=20}
+
+:Selon l'option, tous les mots ou un seul aléatoirement sont proposés (au plus 10 mots).
+\text{choix=item(1,1 tout,
+2 un seul)}
+
+:%%%%%%%%%%%%% Maintenant l'énoncé en code html. %%%%%%%%%%%%%%%%%%%%
+\text{choix=wims(word 1 of \choix)}
+\text{Audio =}
+\text{Perturb=}
+\text{list=randrow(\liste)}
+\text{mots=\choix=1 ? shuffle(\liste): randitem(\liste)}
+\integer{cnt=items(\mots)}
+\integer{cnt=min(10,\cnt)}
+\for{j=1 to \cnt}{
+  \text{mot=\mots[\j]}
+  \text{audio = slib(lang/swac \mot,\lang)}
+  \text{Audio = wims(append item \audio[1;1] to \Audio)}
+  \text{perturb=wims(listcomplement \mot in \liste)}
+  \text{perturb=shuffle(\perturb)}
+  \text{perturb=\perturb[1..\cntpertub]}
+  \text{Perturb=wims(append line \perturb to \Perturb)}
+}
+\text{size=\sizev[]x\sizel[]x\sizer}
+\text{etape=wims(makelist r x for x=1 to \cnt)}
+\text{etape=wims(replace , by ; in \etape)}
+\steps{\etape}
+
+\statement{
+<div class="instruction">
+\instruction
+</div>
+<div class="wimscenter">\Audio[\step]</div>
+
+<div class="wimscenter">
+\embed{r \step,\size}
+</div>
+}
+\answer{}{\mots[1];\Perturb[1;]}{type=clickfill}
+\answer{}{\mots[2];\Perturb[2;]}{type=clickfill}
+\answer{}{\mots[3];\Perturb[3;]}{type=clickfill}
+\answer{}{\mots[4];\Perturb[4;]}{type=clickfill}
+\answer{}{\mots[5];\Perturb[5;]}{type=clickfill}
+\answer{}{\mots[6];\Perturb[6;]}{type=clickfill}
+\answer{}{\mots[7];\Perturb[7;]}{type=clickfill}
+\answer{}{\mots[8];\Perturb[8;]}{type=clickfill}
+\answer{}{\mots[9];\Perturb[9;]}{type=clickfill}
+\answer{}{\mots[10];\Perturb[10;]}{type=clickfill}

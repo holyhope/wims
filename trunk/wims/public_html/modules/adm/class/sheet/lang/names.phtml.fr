@@ -1,0 +1,54 @@
+!let lang_exists=yes
+
+!read adm/lang/date.phtml.$moduclass_lang
+!read adm/lang/sheetexam.phtml.$moduclass_lang
+
+!set statutname=$(wims_name_shstatus[1]),$wims_name_shstatus
+!set seriesaction=!nosubst $wims_name_change,$wims_name_erase,$wims_name_up
+!set name_duplicateok=Feuille d'exercices dupliquée correctement.
+
+!set name_name=!nosubst $wims_name_name
+!set name_ltvalue=Valeur(s)
+
+!let name_shtab=!nosubst $wims_name_number,$wims_name_title,$wims_name_Description,Points,$name_weight,$name_dependency,$wims_name_comment,$wims_name_action,Paramètres de la série,$wims_name_feedbackexo
+!set name_qnum=Nb. ex. dans série
+
+!if $activetest<=0
+ !let wims_name_sheetadmin=Page de préparation
+ !set name_title=!nosubst Préparation de la feuille $sheet
+ !set name_order=Ordre des exercices de la série
+!else
+ !let wims_name_sheetadmin=Page de gestion
+ !set name_title=!nosubst Gestion de la feuille $sheet
+!endif
+!let name_mksheet=Créer la feuille
+
+!distribute lines Informations générales&nbsp;\
+Contenu de la feuille&nbsp;\
+Cette feuille n'a pas encore de contenu.\
+Le titre d'origine est\
+Modification de la série d'exercices\
+Nombre de points demandés\
+Corriger le source\
+La date d'expiration de la feuille doit être antérieure à la date d'expiration de la classe\
+Votre requête est donc ignorée.\
+into name_info,name_content,name_warning,name_oldtitle,name_prep_modify,\
+name_pointsasked,name_correctsource,name_expiration1,name_expiration2
+
+!set name_text1=Pour ajouter un travail (exercice, outil, etc.) à la feuille, vous devez d'abord choisir\
+ l'objet correspondant (voir ci-dessous) ; réglez les différents paramètres proposés et lancez l'exercice.\
+ Ensuite, utilisez le lien sur le bord de l'exercice pour l'ajouter à la feuille.\
+ Pour choisir votre travail, vous avez une des possibilités suivantes
+
+!set name_text2=Passer par le moteur de recherche
+!set name_text3=Chercher un exercice parmi les
+!set name_text4=Chercher un exercice de votre compte
+!set name_texttaxo= Passer par certaines taxonomies
+!set name_textsubject= Passer par sujets (mots clés).
+
+!set name_getsource=Voici le source de cette feuille. Vous pouvez copier ce source (entre les deux lignes composées de `*'; \
+utilisez le presse-papier) dans un fichier, ce qui vous permettra de réutiliser le contenu dans une autre feuille ultérieurement.
+
+
+!! be careful define variable below only if module help/teacher/program work in your lang. Keep , at the same place.
+!set name_helpprog=Vous aider de cette, correspondance indicative, entre les programmes de l'enseignement français et les exercices Wims

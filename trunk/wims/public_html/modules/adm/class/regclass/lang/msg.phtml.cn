@@ -1,0 +1,226 @@
+!set wims_module_log=error: $error
+
+!default wims_name_passsup=$wims_name_Password ($name_sup)
+!default wims_name_password=$wims_name_Password ($name_classesss)
+!default wims_name_institution=$name_Name_portal
+!default wims_name_description=$wims_name_name $name_classesss
+
+!if no_subclass iswordof $error
+µ±Ç°ÄãÎŞÈ¨´´½¨·Ö°à.
+ !set restart=no
+ !exit
+!endif
+
+!if no_right iswordof $error
+¶Ô²»Æğ, ÄãÎŞÈ¨ÔÚ±¾ÍøÕ¾´´½¨ĞéÄâ°à¼¶. Çë
+ !mailurl $wims_site_manager ÁªÏµÍøÕ¾¹ÜÀíÔ±\
+ĞéÄâ°à¼¶´´½¨
+ÁË½âÏêÇé.
+ !set restart=no
+ !exit
+!endif
+
+!if not_manager iswordof $error
+¶Ô²»Æğ, Ö»ÓĞÍøÕ¾¹ÜÀíÔ±²ÅÓĞÈ¨´´½¨Ñ§Ğ£µÄÑ§Çø.
+ !exit
+!endif
+
+!if getpass iswordof $error
+ !if $sendmail!=$empty
+  <p class="wimscenter large">
+  ·¢ËÍµ½µçÓÊµØÖ· $sendmail µÄÃÜÂë.
+  </p>
+ !endif
+ !if $regpass!=$empty
+±§Ç¸, ÄãµÄÃÜÂë²»¶Ô. ÇëÖØÊÔ.
+ !else
+  !set cname=!item $cltype+1 of ĞéÄâ°à,,°à¼¶×é,,\
+    Ñ§Ğ£µÄÑ§Çø
+  ÔÚ±¾Õ¾´´½¨$cnameÊÜÃÜÂë±£»¤. Äã±ØĞëÊäÈëÃÜÂë²ÅÄÜ¼ÌĞø.
+ !endif
+
+ !form reply
+  <input type="hidden" name="step" value="0" />
+ ÊäÈëÃÜÂë: <input size="16" name="regpass" type="password" />
+  <input type="submit" name="Envoyer" value="$wims_name_send" />
+
+!formend
+
+¸½×¢. ´´½¨ĞéÄâ°à¼¶µÄÃÜÂëÓ¦¸Ã´Ó WIMS ÍøÕ¾µÄ
+ !mailurl $wims_site_manager ¹ÜÀíÔ±\
+ĞéÄâ°à¼¶´´½¨ÃÜÂë
+ÄÇÀïµÃµ½.
+ !if $regpassmail!=$empty and $sendmail=$empty
+ !form reply
+  Äã¿ÉÒÔ´ÓÒÔÏÂµÄµçÓÊµØÖ·ÊÕµ½ÃÜÂë :
+  <input type="text" name="adresse1" value="$adresse1" size="20" />
+  <input type="hidden" name="step" value="0" />
+  !let nbaddr=!itemcnt $regpassmail
+  !if $nbaddr=1
+   <font size="+1">@$regpassmail</font>
+   <input type="hidden" name="adresse2" value="$regpassmail" />
+  !else
+   @
+   !formselect adresse2 list $regpassmail
+  !endif
+  &nbsp;
+  <input type="submit" value="Recevoir" name="Recevoir" />
+
+!formend
+ !else
+  !reset sendmail
+ !endif
+ !set restart=no
+ !exit
+!endif
+
+!if getid iswordof $error
+ !if $regpass$regid!=$empty
+±§Ç¸, ÄãµÄÃÜÂë²»¶Ô. ÇëÖØÊÔ.
+ !else
+ÔÚ±¾ÍøÕ¾ÉÏ´´½¨ĞéÄâ°à¼¶ÊÜÏµÍ³Éí·İÑéÖ¤µÄ±£»¤. ÇëÑéÃ÷ÄãµÄÉí·İ.
+ !endif
+ <p>
+ !form reply
+  <table class="wimscenter wimsnoborder">
+  <tr><td style="text-align:right">
+ ÊäÈëÄãµÄÕÊ»§Ãû:</td><td><input size="20" name="regid" /></td>
+  </tr><tr><td style="text-align:right">
+  ÒÔ¼°ÃÜÂë:</td><td><input size="16" name="regpass" type="password" />
+  <input type="submit" value="Ìá½»" /></td>
+  </tr></table>
+
+!formend
+¸½×¢. Èç¹ûÄãĞèÒª´´½¨ĞéÄâ°à¼¶µÄÃÜÂë, Çë·¢µçÓÊ¸ø
+ !mailurl $wims_site_manager ÍøÕ¾¹ÜÀíÔ±\
+ĞéÄâ°à´´½¨ÃÜÂë
+ !set restart=no
+ !exit
+!endif
+
+!if class_quota=$error
+ÄãÓĞÈ¨½¨Á¢ÖÁ¶à$r_quota1¸ö°à¼¶. ÄãÒÑ¾­´ïµ½ÁË; ²»ÄÜÔÙÔö¼Ó.
+ !set restart=no
+ !exit
+!endif
+
+!if bad_secure=$error
+ ÄãÄ¿Ç°µÄÍøÂçÎ»ÖÃ²»ÔÚÄã×Ô¼º¶¨ÒåµÄ°²È«Á¬½Ó±íÄÚ (<span class="tt wims_code_words">$secure</span>)&nbsp;!
+ Õâ¸ö´íÎó¿ÉÄÜ¾ÍÊÇÓÉÓÚ¶Ô°à¼¶µÄ½ÓÈë¿ØÖÆËùÔì³É.
+ <p>
+ Çë×ĞÏ¸ÔÄ¶ÁÒÔÏÂÎÄ¼ş. Èç¹ûÄã»¹ÊÇ¸ã²»¶®,
+ Äã¿ÉÒÔ°Ñ´ËÀ¸Áô¿Õ (¶ÔÓÚÃô¸ĞµÄ²Ù×÷½«»á°ÑÒ»´ÎĞÔÃÜÂë·¢ËÍ¸øÄã),
+ »òÕßÌîÈë <span class="tt wims_code_words">all</span>
+ ÒÔ¹Ø±ÕÕâ¸ö°²È«´ëÊ©.
+ </p><hr />
+ !read help/hosts.phtml
+ !reset secure
+ !exit
+!endif
+
+!if has_empty=$error
+ Äã»¹Ã»ÓĞ¸ø³ö´´½¨°à¼¶ËùĞèµÄËùÓĞĞÅÏ¢. ÇëÔÚÌîÈ«Êı¾İºóÔÙµİ½».<br/>
+ <span class="tt wims_code_words">$(wims_name_$error_subject) required.</span>
+ !exit
+!endif
+
+!if too_short=$error
+Êı¾İÓò <span class="tt wims_code_words">$(wims_name_$(error_subject))</span> ËÆºõÌ«¶Ì.
+ !exit
+!endif
+
+!if bad_date=$error
+ÄãµÄÊ§Ğ§ÆÚ²»ÕıÈ·.
+ !exit
+!endif
+
+!if anti_date=$error
+ ÄãµÄ°à¼¶µÄÊ§Ğ§ÈÕÆÚÔçÓÚ½ñÌì.
+ Òò´Ë°à¼¶»¹Ã»ÓĞ´´½¨¾ÍÊ§Ğ§ÁË!
+ !exit
+!endif
+
+!if bad_level=$error
+ ´íÎóµÄÄê¼¶Ãû.
+ !exit
+!endif
+
+!if bad_email=$error
+ÄãµÄµç×ÓÓÊ¼şµØÖ·ÊÇÎŞĞ§µÄ.
+ <p>
+Çë×¢Òâ: Èç¹ûÄã²»Ìá¹©Äã±¾ÈËµÄµç×ÓÓÊ¼şµÄÕæÊµµØÖ·, ´´½¨°à¼¶µÄ¹¤×÷ÊÇ²»¿ÉÄÜÍê³ÉµÄ.
+ !exit
+!endif
+
+!if existing=$error
+°à¼¶$classnameËÆºõÒÑ¾­´æÔÚ. Äã²»¸Ã´´½¨Í¬ÑùµÄ°à¼¶.
+ !exit
+!endif
+
+!if pass_discord=$error
+ÄãµÚ¶ş´ÎÊäÈëµÄÃÜÂëÓëµÚÒ»´ÎÊäÈëµÄ²»Í¬. Òò´ËÄã´´½¨µÄ°à¼¶Î´±»Â¼Èë;
+ÇëÄãÖØÊÔ.
+ !exit
+!endif
+
+!if bad_pass=$error
+ÄãµÄ $(wims_name_$(error_subject)) º¬ÓĞ·Ç·¨×Ö·û. <p>
+ÇëÊ¹ÓÃÒ»¸öÖ»º¬Ó¢ÎÄ×ÖÄ¸ÓëÊı×ÖÇÒ²»º¬¿Õ¸ñµÄ×Ö·û´®.
+ !exit
+!endif
+
+!if bad_code=$error
+ÄãÃ»ÓĞ¸ø³öÕıÈ·µÄ°à¼¶ÃÜÂë. Äã¸ø³öµÄµç×ÓÓÊ¼şµØÖ·ÕıÈ·Âğ?<p>
+´Ë´ÎÊ§°ÜÒÑ±»¼ÇÂ¼.
+ !exit
+!endif
+
+!if define_fail=$error or abuse=$error
+·şÎñÕ¾ÎŞ·¨½«ÄãµÄ°à¼¶²åÈëÊı¾İ¿â. ÕâÊÇÈí¼şµÄÄÚ²¿´íÎó.
+ <p>
+Çë°Ñ´ËÎÊÌâ±¨¸æ¸ø
+ !mailurl $wims_site_manager ÍøÕ¾¹ÜÀíÔ±\
+ÓÃ»§µÇÂ¼Ê§°Ü
+. Ğ»Ğ»!
+ !exit
+!endif
+
+!if duplicate=$error
+ÄãÏëÒªÔÙ´Î´´½¨ÒÑ¾­´æÔÚµÄ°à¼¶. Ò²ĞíÊÇÒòÎªÄãµã»÷ÁË `reload' Å¥?
+²»¹ÜÔõÑù, °à¼¶ $classname ÒÑ¾­´æÔÚ. ÔÙ´Î´´½¨ÊÇÎŞĞ§µÄ. <p>
+ !read adm/lang/links.phtml.$modu_lang
+ !exit
+!endif
+
+!if classdontexists=$error
+ Cette classe n'existe pas.
+ !exit
+!endif
+
+!if notexempleclass=$error
+ Cette classe n'est pas une classe d'exemple : impossible de la copier.
+ !exit
+!endif
+
+!if badcpmethod=$error
+ Méthode de copie impossible à identifier. Recommencer l'opération. Si l'erreur persiste contacter l'administrateur du serveur.
+ !exit
+!endif
+
+!if cloningnotallow=$error
+ La duplication de cette classe n'est pas autorisée par son administrateur.
+ !exit
+!endif
+
+!if badcloningpwd=$error
+ Mauvais mot de passe de duplication.
+ !exit
+!endif
+
+!if disallowcloning=$error
+ Aucune duplication de cette classe ne peut être réalisée.
+ !exit
+!endif
+
+!msg $error
+

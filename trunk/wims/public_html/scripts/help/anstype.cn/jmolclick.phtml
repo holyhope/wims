@@ -1,0 +1,140 @@
+<b>选取 3D 分子里的原子</b> (需要 java) (名称: <span class="tt">jmolclick</span>)
+<p>
+在 java 的小工具 <b>Jmol</b> 里显示一个分子, 要求选取一些原子.
+这个回答类型必须与命令 <span class="tt">\embed{}</span> 配合使用.
+根据 <b>Jmol</b> 的能力, 也可以展示分子以外的对象.
+</p><p>
+正确的答案含两行 (用分号 ; 分隔) : 第一行是正确的答案,
+第二行是要显示的分子: 结构文件 (以 <b>Jmol</b> 的有效格式)
+可放在模块的 <span class="tt">data</span> 子目录下,
+或放在 WIMS 的数据目录下 (地址 <span class="tt">data/xxx</span>),
+或在 <span class="tt">modules/data</span> 中的一个数据模块里 (在这种情形, 其地址为
+<span class="tt">datamodule/xxx</span>) 或在目录 <span class="tt">images</span> 下 (地址为 <span class="tt">\imagedir/xxx</span>).
+也可以直接放在模块的结构中.
+</p><p>
+正确答案的第一部分给出所选取的原子个数的列表
+(如同在结构文件中所使用的) 或者使用符合
+<b>Jmol</b> 语法里的命令 (见后面的例). 所以 <span class="tt">1, 2, 3</span> 等价于
+<span class="tt">atomno=1 or atomno=2 or atomno=3</span> 或 <span class="tt">({0,1,2})</span> 
+(后面两个是符合 <b>Jmol</b> 语法的).
+<p>
+可以给出几个正确答案, 不过要用 <span class="tt">|||</span> 分隔.
+
+
+注意 : 如果 <span class="tt">no_select=2</span>, <span class="tt">_O ||| 1|2|4</span> 意为必须恰好选择 2 个氧原子
+或者 1, 2 与 4 中的 2 个原子. 
+
+命令 <span class="tt">\embed</span> 的第一行是小工具的大小 X x Y (像素). 
+在接着的 3 行里, 可给出 <b>Jmol</b> 脚本 : 第一行是在练习的第一个请求里执行的,
+第三行是在送出回答后执行的, 第二行同时用于上述两种情形.
+<p>
+也可以给出含有脚本的文件. 规则如同分子结构的情形
+(<span class="tt">data/scriptsimple.spt</span>). 
+此文件的扩展名必须是 <span class="tt">.spt</span> 才能生效. 当此脚本由练习创建时
+(例如, 它含有随机变量), 我们也可以使用脚本库
+<span class="tt">oef/newfile</span> (例如 : 
+<span class="tt">\text{filescript=slib(oef/newfile spt,\text_script)}</span>
+其中的变量 <span class="tt">text_script</span> 包含有脚本.
+它给出所创建文件的 url 地址.
+
+</p><p><b>例</b>: 
+<pre>
+\text{filescript=wims(record 0 of data/scriptsimple.spt)}
+\text{filescript=slib(oef/newfile spt,\filescript)}
+\statement{
+  \embed{r1, 300x300
+  script \filescript ; select ({5}); spacefill 0.1;select none;
+  set echo top left; echo "回答之前";
+  set echo bottom right; echo "回答之后";}
+}
+</pre>
+或
+<pre>
+\text{filescript=wims(record 0 of data/scriptsimple.spt)}
+\text{filescript=slib(oef/newfile spt,\filescript)}
+\statement{
+  \embed{r1, 300x300
+  \filescript}
+}
+</pre>
+<p>
+不要忘记 Jmolscript 里的分号.
+</p><p>
+回答类型 <span class="tt">jmolclick</span> 可使用下列选项:
+</p>
+$table_header
+$table_tr<td><span class="tt">
+split</span> 或 <span class="tt">partialscore
+</span></td><td>
+部分正确的回答也给分并且错误回答的权重大于正确回答的权重.
+$table_tr<td class="tt">
+eqweight
+</td><td>
+部分正确的回答在得分里有同样的权重.
+$table_tr<td class="tt">
+noselect="原子编号表"
+</td><td>
+不能选取列表里的原子.
+$table_tr<td><span class="tt">
+nb_select=</span>m</td><td>所选的原子数必须等于 <span class="tt">m</span>.
+如果不符合, 则会发警告信息.</td>
+$table_tr<td class="tt">
+applet=imagedir</td><td>供专家使用: 使用的小工具在模块的
+<span class="tt">images</span> 目录里. 除非你使用更新版本的 
+<b>Jmol</b>, 最好不要使用此选项.
+$table_end
+
+变量 <span class="tt">reply</span>n 含有三个用分号分隔的表 :
+学生的正确回答的表; 他的错误回答的表; 遗漏原子的表.
+<p>
+如果第一栏正确回答是空的, 那末变量
+<span class="tt">reply</span>n 就是所选原子的表.
+
+
+!set p=anstype.cn/jmolclick1
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td class="tt">
+!line 1 of $l_
+    </td><td>
+!line 2 of $l_
+   </td></tr>
+  !next
+$table_end
+
+<p>
+在 <b>Jmol</b> 中的条件可以利用集合运算 
+<span class="tt">OR</span>, <span class="tt">AND</span> 及 <span class="tt">NOT</span> 加以组合. 详情请参见 
+<a href="http://chemapps.stolaf.edu/jmol/docs/#atomexpressions">Jmol docs</a>.
+</p>
+
+!set p=anstype.cn/jmolclick2
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td class="tt">
+!line 1 of $l_
+    </td><td>
+!line 2 of $l_
+   </td></tr>
+  !next
+$table_end
+
+<p>
+某些 Jmol 的脚本库可供使用 :
+!href module=help/wimsdoc&+subject=slib#slib slib
+</p>
+

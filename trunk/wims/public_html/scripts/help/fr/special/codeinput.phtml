@@ -1,0 +1,63 @@
+:signification
+ Met les champs des types de réponses de type texte dans un texte en gardant sa présentation
+ (espaces, retours à la ligne, ...). Cela est utile si l'on désire faire remplir des trous
+ dans un code de programmation.
+ Doit être utilisé dans le <span class="tt wims_code_words">statement</span> d'un exercice OEF.
+
+<p>
+La première ligne est formée du texte du code mis entre crochets, suivi de la taille générique des
+ champs de réponse (obligatoire).
+ Les lignes suivantes sont formées des réponses insérées suivies si nécessaires de la taille de
+ cette réponse si elle est différente de la taille générique.
+ Les endroits d'insertion de la réponse sont marqués par le mot reply<span class="tt">n</span>.
+</p>
+:example
+<div class="wims_help_example">
+ <span class="wims_help_example">Exemple</span>
+ <div class="spacer">
+  <textarea id="wims_show11" cols="100" rows="7" readonly="readonly">
+\statement{
+\special{codeinput [texte], 5
+reply1,2x8
+reply3
+reply4,1x10
+}
+  </textarea>
+ <div>
+ Dans l'exemple ci-dessus, on affiche le code dans l'énoncé avec 3 champs de réponse.
+ Les trois champs sont respectivement les réponses 1, 3 et 4 (qui peuvent être toute 
+ réponse faisant intervenir un champ de texte comme 
+ <span class="tt wims_code_words">numeric</span>, <span class="tt wims_code_words">case</span>
+ <span class="tt wims_code_words">formal</span>, etc.)
+ </div>
+ </div>
+ <div class="spacer">
+  <textarea id="wims_show12" cols="100" rows="14" readonly="readonly">
+\text{code=for i = 1 to reply1
+  do 
+    reply2
+  od
+}
+\statement{
+ \special{codeinput [\code], 5
+reply1
+reply2,30
+ }
+}
+\answer{}{4}{type=numeric}
+\answer{}{tourner d'un quart de tour}{type=nocase}
+  </textarea>
+ </div>
+</div>
+:option
+<div class="wims_help_option">
+ <span class="wims_help_example">Option:</span>
+ Il est possible de rajouter un mot d'option, pour l'instant uniquement
+  <span class="tt wims_code_words">div</span>. Dans ce cas, le texte ne sera pas affiché dans un
+  style <span class="tt wims_code_words">pre</span>.
+</div>
+<div class="wims_warning">
+$wims_name_warning : il peut y avoir un bogue pour l'instant dans le cas où un autre
+champ de réponses se trouve sur la page (numérotation dans l'analyse)
+que l'on espère corriger.
+</div>

@@ -1,0 +1,72 @@
+!set methtit=Montrer un but séparément (quand il y en a plusieurs)
+!set methparmtype=choice
+!set methhelp=Quand il y a plusieurs buts à démontrer, vous pouvez utiliser\
+ cette méthode pour en isoler un dans un cas séparé.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!if fixedgoal iswordof $m_options
+ !set error1=fixedgoal
+ !exit
+!endif
+
+!set n=!linecnt $m_goal
+!if $n<1
+ !set error1=no_object
+ !exit
+!endif
+!if $n<2
+ !set error1=Cette méthode est utilisable uniquement quand il y a plusieurs\
+  buts à démontrer.
+ !exit
+!endif
+
+!exit
+:form
+ Mettre le but
+ !set gl=!replace internal , by &#44; in $m_goal
+ !set gl=!lines2items $gl
+ !set n=!itemcnt $gl
+ !formselect methparm1 from 0 to $n prompt $ch_choose,$gl
+ dans un cas séparé à démontrer.
+!exit
+:check
+ n=!linecnt $m_goal
+ !bound methparm1 between integer 0 and $n default 0
+ !if $methparm1=0
+  error=empty_data
+  !exit
+ !endif
+ l=!line $methparm1 of $m_goal
+ goal1=$l
+ goal2=!replace line number $methparm1 by $ in $m_goal
+ goal2=!nonempty lines $goal2
+ goal2=!line 1 of $goal2
+ !if $n>2
+  goal2=$goal2 ...
+ !endif
+ casesplit=$goal1\
+$goal2
+ !reset splitobject1,splitobject2
+ n=!linecnt $objects
+ lt=<
+ !for i=1 to $n
+  l=!line $i of $objects
+  w=!word 1 of $l
+  !if $w!=$lt
+   splitobject1=!append line $l to $splitobject1
+   splitobject2=!append line $l to $splitobject2
+  !else
+   !if $l notsametext $lt $goal1
+    splitobject2=!append line $l to $splitobject2
+   !endif
+  !endif
+ !next i 
+ splitobject1=!append line < $goal1 to $splitobject1
+ objects=$splitobject1
+ goalsplit=yes
+ methexp=Séparer le but $goal1
+!exit
+

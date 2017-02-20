@@ -1,0 +1,183 @@
+<b>动态几何</b>
+(名称 : <span class="tt">geogebra</span>)
+
+一个动态几何的小应用程序(applet) GeoGebra 已经公布.
+用户可以用它作出一些对象 (点, 直线, 圆等等). 
+这一种类型的对象必须使用命令 <span class="tt">\embed</span>
+<p>
+合格的回答应该具有矩阵的形式. 
+每一行含有一条下述形式的指令
+(f 指形式, n 指数值)
+<pre>
+n,"数值条件",文本
+f,"形式条件",文本
+n,"数值-形式条件",文本
+</pre>
+上面的文本被用在答案分析中. 
+如果命令中没有提供文本, 则会根据所给条件给出一个默认的文本;
+如果文本只是 <span class="tt">hiden</span>, 
+那么这个条件将不会出现在答案分析中.
+
+<ul><li><b>形式条件</b> : 在练习叙述或
+GeoGebra 句法 (参见 http://www.geogebra.org/help/docufr/ ) 中必要的对象.
+它们可以有个名字 (如果取了不好的名字会被扣分).
+如果有很多条件的话, 最好能给出名字.
+在分析答案时, 应该不使用代入就能验证.
+也加入了辅助测试. 例如若条件是
+<span class="tt">A=Centre[c]</span>, 如果在用户的回答里出现了
+<span class="tt">c=Cercle[A,B]</span>, 也认为条件满足.
+
+<p>例 :
+<ul><li> 
+<span class="tt">A=Point</span> : A 应该是一个点
+</li><li>
+<span class="tt">=Cercle[D,E]</span> : 应该有一个以 D 为圆心, 通过 E 点的圆 (这里的名字无关紧要)
+</li><li>
+<span class="tt">c=Cercle[,B]</span> : 应该有一个通过 B 点的圆 c
+</li><li>
+<span class="tt">d2=Perpendiculaire[A,d1]</span> : d2 应该通过 A 点且与 d1 垂直
+</li></ul>
+</li>
+<li><b>数值条件</b> :
+数值条件中依据的数据应该是:
+点或向量的坐标, 直线或圆的方程, 等等. 我们可以使用 :
+<ul><li><span class="tt">x_A, y_A</span> : 
+表示点 <span class="tt">A</span> 或向量 <span class="tt">A</span> 的坐标.</li>
+<li><span class="tt">R_c,x_c,y_c</span> : 
+表示圆 <span class="tt">c</span> 的半径及其圆心坐标.</li>
+<li><span class="tt">a_d, b_d, c_d, p_d, m_d</span> : 
+表示方程为 <span class="tt">ax + by = c</span> 的直线 <span class="tt">d</span> 的 3 个系数, 
+纵轴上的截距以及斜率.
+</li>
+<li><span class="tt">v_ob</span> : 表示名为 "ob" 的对象的值, 这个对象可以是 <span class="tt">segment(线段), function(函数), angle(角), numeric(数值), text(文字)</span>
+.</li>
+<li>
+<span class="tt">x2_c,y2_c,xy_c,x_c,y_c,cst_c</span> : 表示圆锥曲线 <span class="tt">c</span> 的方程的
+ <span class="tt">x^2, y^2, x*y, x,y, 1</span> 的系数.
+</li>
+</ul>
+也可测试方程, 例如 <span class="tt">eq_a:2x+y=3</span> (或 <span class="tt">eq_:2x+y=3</span>
+如果直线的名字不重要的话) 以测试 2x+y=3 是否直线 <span class="tt">a</span> 的方程.
+<p>
+<b>例</b> : <span class="tt">x_c>0 && y_c>0 & R_c<4</span> 要求测试圆 <span class="tt">c</span>
+的中心是否在第一象限, 它的半径是否小于 4.
+(作数值测试时对象的名字不能省略.)
+在等式的情形使用测试 <span class="tt">==</span>. 建议使用不等式测试如 : <span class="tt"> abs(x_c-1.2)<10^(-6)</span>
+代替等式测试 <span class="tt">x_c==1.2</span>. 
+</li>
+<li><b>数值-形式条件</b> : 其句法同形式条件,
+但是使用的是高精度计算
+(默认精度是 10^(-18)). 命令内
+应该给出对象的名字.
+测试时把用户在回答中给出的数据代入计算.
+目前能使用的命令很少 (见下表).
+<p>
+<b>例</b> :
+<span class="tt">n, a=Droite[A,B] </span> : a 应该是通过 A 和 B 的直线 (使用数值验证)
+<p>
+<b>可用的命令 </b> :
+<ul>
+<li><span class="tt">a=Droite[A,B] </span> : a 是通过 A 和 B 的直线
+</li><li><span class="tt">a=Mediatrice[A,B]</span> : a 是 A 和 B 的垂直平分线
+</li><li><span class="tt">b=Perpendiculaire[A,a]</span> : b 是过 A 点的 a 的垂线
+</li><li><span class="tt">C=Milieu[A,B]</span> : C 是 A 和 B 的中点
+</li><li><span class="tt">C=Bissectrice[A,B]</span> 
+</li><li><span class="tt">c=Circle[A,B]</span> : c 是以 A 为圆心过 B 点的圆
+</li><li><span class="tt">-30=AngleOriente[A,B,A,C]</span> : (AB,AC) 构成的有向角等于 -30 度
+</li><li><span class="tt">30=Angle[A,B,C]</span> : 角 ABC 等于 30 度</li>
+</ul>
+</li>
+</ul>
+<p>目前只有一种 <span class="tt">geogebra</span> 类型的回答.
+使用时必须出现命令 <span class="tt">embed</span> :
+<pre>
+\embed{reply1,\option}
+</pre>
+这里 </tt>\option</tt> 的第一项应该是小应用程序占用的象素多少 (宽 x 高). 
+然后是小应用程序或命令的选项
+(预定义的对象). 例 :
+<pre>
+showToolBar=true
+customToolBar=0|40|2|10
+A = (1,2)
+B = (-1,2)
+a = Droite[A,B]
+setFixed('A',true)
+setFixed('B',true)
+setAxesVisible(false,false)
+</pre>
+<b>可能的选项</b>
+<pre>
+showToolBar (default : true)
+showMenuBar (default : false)
+showResetIcon(default : true)
+showToolBarHelp(default : true)
+enableRightClick(default : false)
+showAlgebraInput(default : false)
+customToolBar
+file
+</pre>
+可能的命令有 :
+<pre>
+evalCommand setValue setCoords setColor setVisible setLabelVisible setLabelStyle 
+setFixed setTrace setAxesVisible setGridVisible setCoordSystem
+</pre>
+更多细节可参看 GeoGebra 关于 m閠hodes javascript disponibles 的帮助 :<br/>
+<a target='wims_external' href="http://www.geogebra.org/source/program/applet/geogebra_applet_javascript.html">
+http://www.geogebra.org/source/program/applet/geogebra_applet_javascript.html</a>
+<p>
+变量 <span class="tt">\reply</span><i>n</i> 其中 <i>n</i> 是多行回答的编号.
+第一行给出对象的数目.
+接下去的行包含每个对象的定义 (一行一个对象), 
+先是形式的, 然后是数值的.
+</p>
+
+<p>变量 <span class="tt">\sc_reply</span><i>n</i> 的第一行是 : 0 (错误回答),
+0.5 (只是名字错误) 或 1 (正确回答);
+以后每一行对于每个认可的回答给出分数 (0, 0.5 或 1).
+</p>
+
+<p><b>选项</b> :
+<ul>
+<li><span class="tt">max</span> 小应用程序内可以构作的最大对象数
+(默认 : 10).
+</li><li><span class="tt">precision</span> : 绝对精度
+(作数值比较时的小数位数, 默认 : 18).
+</li><li><span class="tt">idontknow</span> (<span class="tt">yes</span> 或 <span class="tt">no</span>, 默认 : <span class="tt">no</span>) : 
+是否要在按钮 "发送" 旁设立按钮 "我不知道".  
+</li><li><span class="tt">extra</span> (<span class="tt">yes</span> 或 <span class="tt">no</span>, 默认 : <span class="tt">no</span>) : 
+允许出现附加对象 (如果选项 <span class="tt">extra</span> 不是 <span class="tt">yes</span>,
+如果学生构造的对象超出了标准答案里给出的<i>形式条件</i>, 就会被扣分)
+</li><li><span class="tt">output</span> : 可能的值是 <span class="tt">coord</span> (默认), 
+<span class="tt">formal</span>, <span class="tt">nothing</span>.
+区别在于如何把用户构造的对象在答案分析里显示 :
+<ul><li><span class="tt">coord</span> : 提供对象的坐标</li>
+<li><span class="tt">nocoord</span> : 只提供所构造对象的名称</li>
+<li><span class="tt">formal</span> : 提供形式关系式</li>
+<li><span class="tt">nothing</span> : 不提供任何东西</li>
+</ul>
+</li><li><span class="tt">weights</span> (默认, 1&0.2&1) 最终得分应该是 3 个分数
+的加权平均值, 这里给出用 "&" 分隔的 3 个权.
+这 3 个分数分别是: "形式测试" (f) 的得分,
+所要求对象的名字得分, "数值测试" (n) 的得分.
+</li></ul>
+
+<p><b>一般注记</b> :
+<ul>
+<li>GeoGebra 可在以下库中找到 
+<span class="tt">public_html/java/geogebra3</span>.
+它要求本地计算机安装了 Java,
+而且使用 <span class="tt">geogebra</span> 回答会减慢网页的装载.
+因此只有必要时才使用它.
+</li>
+<li>WIMS 不认识以 "My_" 起首的名字, 由此也不能用在回答里.
+</li>
+<li>
+角度的单位总是度. 
+</li><li>
+函数 <span class="tt">f</span> 的名字是 
+<span class="tt">f(x)</span>. 
+因此使用时应写成如 <span class="tt">f(x)=sin(x)</span> 的形式.
+</li>
+</ul>
+

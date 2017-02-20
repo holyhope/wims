@@ -1,0 +1,178 @@
+!if ~ notin $mod
+ <p>
+ <span class="wims_warning">$wims_name_warning</span>.
+ $name_simpl_address: <span class="tt wims_fname">$mod</span>.
+ !href cmd=reply&jobreq=move&original=devel/$auth_login/$mod $name_updateadress
+</p>
+!endif
+
+!read lang/names.phtml.$modu_lang
+
+!set doctest1=!module category devel/$auth_login/$mod
+
+<a id="optiontestLink"
+   class="wims_button"
+   onclick="jQuery('#optiontest').slideToggle();"
+   style="float:right;margin:1em;">$name_optiontest</a>
+<fieldset id="optiontest" style="display:none;border:1px ridge black;">
+<legend>$name_optiontest</legend>
+  !form reply
+    <ul>
+     <li>$name_formule:
+      !formradio useropts1 list 0,1,2 prompt $name_useropts1
+     </li><li>
+      $name_useropts2:
+      !formradio useropts2 list 0,1 prompt $wims_name_no,$wims_name_yes
+     </li><li>
+      $name_fonte:
+      !formradio useropts3 list 0,1 prompt $name_useropts3
+     </li><li>
+      $name_useropts4:
+      !formradio useropts4 list 0,1,2
+     </li>
+    </ul>
+    <div class="wimscenter">
+    <input type="submit"  />
+    </div>
+  !formend
+</fieldset>
+
+!read adm/validation/validate.phtml
+<br class="spacer" />
+!if document notin $doctest1
+ $name_your_module
+ <div class="center"><span class="wims_mod_title">$title</span> (<span class="wims_mod_desc">$description</span>)
+ <span class="small">
+ !href cmd=reply&jobreq=index $mod
+ </span>
+ </div>
+  !if oef isin $category
+    $name_your_module_OEF
+  !endif
+ $name_file2.
+  !if oef isin $category
+   !set wims_ref_class=wims_button_help
+   !href cmd=help&special_parm=modtooloef $wims_name_help
+   <p>$name_first</p>
+  !endif
+ !else
+!!the script src2def should be launched for oefexercises also, but I do not see
+!! the need for the moment
+  $wims_name_doc <span class="wims_mod_title">$title</span> (<span class="wims_mod_desc">$description</span>)
+  <span class="small">
+ !href cmd=reply&jobreq=index $mod
+ </span>:
+  $name_gestion
+!endif
+!set table_cellpadding=1
+!reset table_center
+!set table_spacer=yes
+
+!set table_header=!replace internal <> by in $table_header
+!set table_end=!replace internal </> by in $table_end
+!if oef notin $category
+ $table_header
+ $table_hdtr
+  <th scope="col">$wims_name_name</th><th scope="col">$wims_name_action</th><th scope="col">$wims_name_Explanations</th>
+</tr>
+ !for f in $files
+  $table_tr
+  <td style="text-align:left;" class="wims_fname nowrap">$f</td>
+  <td>
+  !set wims_ref_class=wims_button
+  !href cmd=reply&jobreq=showfile&fname=$f $wims_name_Show
+  $
+  !set wims_ref_class=wims_button
+  !href cmd=reply&jobreq=edfile&fname=$f $wims_name_change
+  $
+  !set wims_ref_class=wims_button wims_warning
+  !href cmd=reply&jobreq=delfile&fname=$f $wims_name_erase
+  !if oef isin $doctest1 and ../src/ isin ../$f and .oef/.. isin $f/..
+   !set f_=!translate internal / to , in $f
+   !set f_=!item -1 of $f_
+   !set f_=!replace internal .oef.. by in $f_..
+   $
+   !set wims_ref_class=wims_button
+   !href  module=adm/createxo&catmodule=devel/$auth_login/$mod&existing=$f_ Createxo
+  !endif
+</td><td>
+    !set t_=!translate . to _ in $f
+    !set t_=!translate / to _ in $t_
+    !set t_=$($t_)
+    !default t_=--
+    $t_
+  </td></tr>
+ !next f
+$table_end
+!else oef module
+  !read adm/tabscript modtool
+  <div id="widget_modtool">
+    <ul id="modtool_summary">
+    !for tfile in other,src,cpp,help,lang,phtml
+      !if $(files$tfile) !=$empty
+        <li><a href="#modtool$tfile">$(name_files_$tfile)</a></li>
+      !endif
+    !next
+    </ul>
+  !for tfile in other,src,cpp,help,lang,phtml
+    !if $(files$tfile)!=$empty
+      <div id="modtool$tfile">
+        $table_header
+        <caption>$(name_files_$tfile)</caption>
+        $table_hdtr
+          <th scope="col">$wims_name_name</th><th scope="col">$wims_name_action</th><th scope="col">$wims_name_Explanations</th>
+        </tr>
+        !for f in $(files$tfile)
+          $table_tr
+            <td style="text-align:left;" class="wims_fname nowrap">$f</td>
+            <td style="text-align:center;">
+              !set wims_ref_class=wims_button
+              !href cmd=reply&jobreq=showfile&fname=$f $wims_name_Show
+$
+              !set wims_ref_class=wims_button
+              !href cmd=reply&jobreq=edfile&fname=$f $wims_name_change
+$
+              !set wims_ref_class=wims_button wims_warning
+              !href cmd=reply&jobreq=delfile&fname=$f $wims_name_erase
+!!!can change the name if it is
+!! -- not published and (not a phtml file in an oef module)
+!! or
+!! -- published and not a file with extension oef
+              !if ($pubtit=$empty and ($tfile!=phtml or oef notin $category))\
+              or ($pubtit!=$empty and (oef notin $category or $tfile notwordof src phtml))
+              !set wims_ref_class=wims_button
+              !href cmd=reply&jobreq=changefile&fname=$f $name_changefile
+              !endif
+              !if oef isin $category and ../src/ isin ../$f and .oef/.. isin $f/..
+                !set f_=!translate internal / to , in $f
+                !set f_=!item -1 of $f_
+                !set f_=!replace internal .oef.. by in $f_..
+$
+                !set wims_ref_class=wims_button
+                !href module=adm/createxo&catmodule=devel/$auth_login/$mod&existing=$f_ Createxo
+              !endif
+            </td><td>
+              !set t_=!translate . to _ in $f
+              !set t_=!translate / to _ in $t_
+              !set t_=$($t_)
+              !default t_=--
+              $t_
+            </td>
+          </tr>
+        !next f
+    $table_end
+    <span class="text_icon help">
+      $(name_help_addfile_$tfile) $name_help_addfile
+    </span>
+  </div>
+  !endif
+ !next tfile
+!endif
+
+!form reply
+  <input type="hidden" name="jobreq" value="edfile" />
+  $name_addfile:
+  <input size="20" name="fname" value="$lastfname" />
+  <input type="submit" value="$wims_name_tosave" />
+!formend
+!reset fname

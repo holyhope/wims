@@ -1,0 +1,137 @@
+!reset compsup1 compsup2 compsup3
+!set statut=!line 1 of $wims_read_parm
+!set compsup=!line 2 to -1 of $wims_read_parm
+!set compsup1=!column 2 to -1 of $compsup
+!set col1=!column 1 of $compsup1
+!set col1=!listuniq $col1
+!set col1cnt=!itemcnt $col1
+!let don=!defof class_typename,class_description,class_supervisor in wimshome/log/classes/$wims_class/.def
+
+!!program without icourses
+!if $(don[1])=program and $col1cnt=0
+  <ul class="wims_subclasses">
+  !read adm/class/graphprog $wims_class
+  </ul>
+!endif
+!if $col1cnt=0
+  !exit
+!endif
+
+!set classrad=$wims_superclass
+!while $classrad!=$wims_class
+   !set classrad=$classrad/$col1
+   !set lcnt=!linecnt $compsup1
+    !set compsup1=!column 2 to -1 of $compsup1
+    !set col1=!column 1 of $compsup1
+    !set col1=!listuniq $col1
+    !set col1cnt=!itemcnt $col1
+!endwhile
+
+!let don=!defof class_typename,class_description,class_supervisor in wimshome/log/classes/$classrad/.def
+
+!if $col1cnt=0 and $(don[1])!=program
+  !exit
+!endif
+
+   <ul class="wims_subclasses">
+  !if $(don[1])=program
+      !read adm/class/graphprog $classrad
+  !endif
+  !for j1=1 to $col1cnt
+     !set cls1=!nospace $classrad/$(col1[$j1])
+     !let don=!defof class_typename,class_description,class_supervisor in wimshome/log/classes/$cls1/.def
+     !reset tmp
+     !if $(don[1])=course
+        !set tmp=$ class="inline"
+     !endif
+      <li$tmp><span class="wims_classes_direct_$(don[1])">
+     !reset tmp
+     !if $cls1 isitemof $(user_$(statut)_)
+       !if $statut=supervise
+         !href module=adm/class/classes&type=authsupervisor&class=$cls1&auth_user=supervisor $(don[2])
+       !else
+         !href module=adm/class/classes&type=authparticipant&class=$cls1&auth_user=$u_ $(don[2])
+       !endif
+     !else
+        $(don[2])
+     !endif
+     </span>
+    !if $(don[1])=program
+    <ul>
+      !read adm/class/graphprog $cls1
+    </ul>
+    !endif
+    !set compsup2=!select $compsup1 where column 1=$(col1[$j1])
+    !set col2=!column 2 of  $compsup2
+    !set col2=!listuniq $col2
+    !set col2cnt=!itemcnt $col2
+    !if $col2cnt>0
+      !set compsup2=!column 2 to -1 of $compsup2
+      <ul class="wims_subclasses">
+      !for j2=1 to $col2cnt
+        !set cls2=!nospace $cls1/$(col2[$j2])
+        !let don=!defof class_typename,class_description,class_supervisor in wimshome/log/classes/$cls2/.def
+        !reset tmp
+        !if $(don[1])=course
+          !set tmp=$ class="inline"
+        !endif
+         <li$tmp><span class="wims_classes_direct_$(don[1])">
+         !if $cls2 isitemof $(user_$(statut)_)
+           !if $statut=supervise
+             !href module=adm/class/classes&type=authsupervisor&class=$cls2&auth_user=supervisor $(don[2])
+           !else
+             !href module=adm/class/classes&type=authparticipant&class=$cls2&auth_user=$u_ $(don[2])
+           !endif
+         !else
+           $(don[2])
+         !endif
+         </span>
+        !if $(don[1])=program
+          <ul>
+           !read adm/class/graphprog $cls2
+         </ul>
+        !endif
+        !set compsup3=!select $compsup2 where column 1=$(col2[$j2])
+        !set col3=!column 2 of  $compsup3
+        !set col3=!listuniq $col3
+        !set col3cnt=!itemcnt $col3
+        !if $col3cnt!=0
+          <ul>
+          !set compsup3=!column 2 to -1 of $compsup3
+          !for j3=1 to $col3cnt
+            !set cls3=!nospace $cls2/$(col3[$j3])
+            !let don=!defof class_typename,class_description,class_supervisor in wimshome/log/classes/$cls3/.def
+            !reset tmp
+            !if $(don[1])=course
+              !set tmp=$ class="inline"
+            !endif
+             <li$tmp><span class="wims_classes_direct_$(don[1])">
+             !reset tmp
+              !if $cls3 isitemof $(user_$(statut)_)
+                !if $statut=supervise
+                  !href module=adm/class/classes&type=authsupervisor&class=$cls3&auth_user=supervisor $(don[2])
+                !else
+                  !href module=adm/class/classes&type=authparticipant&class=$cls3&auth_user=$u_ $(don[2])
+                !endif
+                ($(don[3]))
+              !else
+                $(don[2])
+              !endif
+              </span>
+              !if $(don[1])=program
+              <ul>
+                !read adm/class/graphprog $cls3
+              </ul>
+              !endif
+             </li>
+          !next j3
+          </ul>
+        !endif col3cnt
+      </li>
+     !next j2
+    </ul>
+   !endif col2cnt
+    </li>
+   !endif
+ !next j1
+ </ul>

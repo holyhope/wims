@@ -1,0 +1,91 @@
+
+!read themes/$wims_theme/table.proc
+!if $special_parm=flydraw
+ <h3 class="wimscenter">$name_doc $(swname[1])</h3>
+!set a=!record 0 of example.flydraw
+<div class="float_right">
+!insdraw $a
+</div>
+<textarea id="flydraw" cols="50" rows="15" name="wims_flydraw" readonly>
+   !read example.flydraw
+  </textarea>
+<br class="clearall" />
+ !read help/flydraw.phtml
+ !exit
+!endif
+
+!if $special_parm=jsxgraph
+   $name_remark_jsxgraph
+  <textarea id="jsxbox" cols="100" rows="15" name="wims_jsxgraph" readonly>
+   !read example.jsxscript
+  </textarea>
+ !goto common
+!endif
+
+!if $special_parm=graphviz
+  <textarea id="jsxbox" cols="100" rows="15" name="wims_graphviz" readonly>
+   !read example.graphviz
+  </textarea>
+ !goto common
+!endif
+
+!if $special_parm=canvasdraw
+  <textarea id="canvasdraw" cols="100" rows="15" name="wims_canvasdraw" readonly>
+   !read example.canvasdraw
+  </textarea>
+  <br />
+  !read help/canvasdraw.phtml
+ !goto common
+!endif
+
+!if $special_parm=jmol
+   $name_remark_jmol
+  <textarea id="jmol" cols="100" rows="15" name="wims_jmol" readonly>
+   !read example.jmol
+  </textarea>
+ !goto common
+!endif
+
+!if $special_parm=pari
+<p>
+ <a href="http://pari.math.u-bordeaux.fr/dochtml/html-stable/" target="wims_external">
+ $name_doc $(swname[7])
+ </a>
+</p>
+!goto common
+!endif
+:common
+
+<form action="http://www.google.com/search">
+<div>
+<input type="submit" value="Google" /> $name_doc
+<select name="q">
+!for sw in $swname
+ <option value="$sw $name_doc">$sw</option>
+!next sw
+</select>
+</div>
+</form>
+
+!if $special_parm!=flydraw
+<p>
+!href cmd=help&special_parm=flydraw $name_doc $(swname[1])
+.
+</p>
+!endif
+!if $special_parm!=pari
+<p>
+ <a href="http://pari.math.u-bordeaux.fr/dochtml/html-stable/" target="wims_external">
+ $name_doc $(swname[7])
+ </a>
+</p>
+!endif
+<p>
+$name_restrict
+</p><p>
+!if $securetest=$empty
+  $name_nosecure
+!else
+  $name_c
+!endif
+</p>

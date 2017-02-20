@@ -1,0 +1,34 @@
+!set methtit=Echanger les deux côtés d'une inégalité
+!set methenv=ZZ QQ RR
+!set methparmtype=parm inequality
+!set methhelp=Cette méthode réécrit l'inégalité \(a < b) en \(b > a),\
+ ou vice versa.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ Echanger les deux côtés de l'inégalité
+ !read deduc/methparm.phtml 1
+
+!exit
+:check
+ !distribute items $methparmobj1 into data,left,sign,right
+ methexp=Echanger les deux côtés de \($left $sign $right)
+
+ newsign=!translate internal <> to >< in $sign
+ newobject1=$right $newsign $left
+ oldobject=1
+
+ contextlist=$ct_Always,\
+	$ct_Onlywhen les deux côtés sont positifs,\
+	$ct_Onlywhen les deux côtés sont de même signe,\
+	$ct_Onlywhen l'inégalité est stricte
+
+ resultlist=$newobject1,\
+  $right $sign $left
+
+!exit
+

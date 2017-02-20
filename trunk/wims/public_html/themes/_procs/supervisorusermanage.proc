@@ -1,0 +1,17 @@
+!!supervisormanage.proc
+!!Check if some one has the supervisor right in a portal
+
+!if $class_typename isitemof portal,level and $wims_user=supervisor
+ !set wims_rm_0 = $wims_rm_0\
+struct,1,module=adm/class/gateway
+!endif
+!! Adds supervisor usermanage links in wims_rm_0 for navigation menus
+!if $class_typename isitemof group,portal,level\
+  or ($wims_supertype=4 and $class_typename issametext class)\
+  or ($wims_supertype<4 and $wims_typename=class) \
+  or ($wims_supertype=4 and $wims_typename iswordof course)
+    !set wims_rm_0 = !append line usermanage,1,module=adm/class/usermanage\
+    techvar,1,module=adm/class/techvar\
+    csv,1,module=adm/class/userscore&+job=csv\
+to $wims_rm_0
+!endif

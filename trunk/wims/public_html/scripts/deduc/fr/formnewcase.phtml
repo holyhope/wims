@@ -1,0 +1,21 @@
+!if $casecnt<3
+ Erreur de manipulation : Il n'y a qu'un seul cas qui reste.
+ !href cmd=resume Continuer
+.
+ !exit
+!endif
+
+Vous avez les $[$casecnt-1] cas suivant à traiter. Cliquez sur un pour y aller.
+<p><ul>
+!for i=1 to $casecnt-1
+ !set l=!line $i+1 of $caseline
+ <li>
+ !href cmd=reply&opt=gotocase&gotocase=$i Cas $i
+.
+ !insmath $l
+ !if $i=$activecase
+  (cas actuel)
+ !endif
+!next i
+</ul>
+

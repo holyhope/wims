@@ -1,0 +1,28 @@
+
+formdir=form
+search=!trim $search
+!if $search=$empty
+ !exit
+!endif
+
+search=!char 1 to 256 of $search
+srch=!lower $search
+srch=!deaccent $srch
+srch=!translate internal ()[]{}|`'"\/,;.-?! to \
+		        $                    $ in $srch
+srch=!singlespace $srch
+dictionary=$module_dir/dic/syno
+suffix_dictionary=bases/sys/suffix.$module_language
+translator_unknown=leave
+srch=!exec translator $srch
+srch=!singlespace $srch
+
+dictionary=$module_dir/dic/form
+!read search.proc
+
+!if $gotcnt=0
+ wims_module_log=Fail: $search
+!else
+ wims_module_log=Found $gotcnt on $search
+!endif
+

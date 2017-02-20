@@ -1,0 +1,72 @@
+
+!if empty_data iswordof $wims_error
+ You have sent an incomplete reply. Please complete your data before sending
+ it.
+ !exit
+!endif
+
+!if double_reply iswordof $wims_error
+ You have already submitted a reply to this problem, which has been 
+ analysed and scored. Repetitive replies are ignored. (Don't use the 
+ `reload' button of your browser to repost replies!)
+ !exit
+!endif
+
+!if bad_data iswordof $wims_error
+ I have failed to evaluate the values you have submitted. A typo?
+ !exit
+!endif
+
+!if no_ldap_parameter iswordof $wims_error
+ Fields indicated with an asterix must be filled in. Please ask the ldap administrator for help if you don't know what to enter in these fields. 
+ !exit
+!endif
+
+!if bad_class iswordof $wims_error
+It seems that your class is not valid!
+ !exit
+!endif
+
+!if bad_day iswordof $wims_error or day_dontexist iswordof $wims_error
+ The given date is not valid.
+!exit
+!endif
+
+
+!if not_supervisor iswordof $wims_error
+ Sorry, but only the registered supervisor of the class can carry out  this operation.
+ !exit
+!endif
+
+!if nouser iswordof $wims_error or bad_user iswordof $wims_error \
+  or bad_usercls iswordof $wims_error
+ This participant does not seem to exist !!!!
+!exit
+!endif
+
+!if insert_fail iswordof $wims_error
+ The software has failed to insert your work into the database. Please
+ check your data.
+ !exit
+!endif
+
+!if bad_pass iswordof $wims_error
+ Bad password: a password can only contain letters and digits and must be between
+ 4 and 16 characters long. The password you are typing a second time should be the same as the
+ first one! Try again.
+ !exit
+!endif
+
+!if bad_auth iswordof $wims_error
+ Authentification failed. Please try again.
+ !exit
+!endif
+
+!if bad_login iswordof $wims_error
+ Your login name contains illegal characters.
+ Please use a word containing only digits or letters without accents, and 
+ without space between them.
+ !exit
+!endif
+
+Type of error: $wims_error $wims_error_parm.

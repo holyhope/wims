@@ -1,0 +1,105 @@
+!set lang_exists=yes
+
+!set name_duplicateok=Examen dupliqué correctement.
+!set name_title=×¼±¸¿¼ÊÔ
+!set wims_name_mainpage=¿¼ÊÔµÄÖ÷Ò³
+
+!if $activetest<=0
+ !let wims_name_sheetadmin=×¼±¸Ò³
+ !set name_title=!nosubst ×¼±¸¿¼ÊÔ
+!else
+ !let wims_name_sheetadmin=¹ÜÀíÒ³
+ !set name_title=!nosubst ¹ÜÀí¿¼ÊÔ
+!endif
+
+!read adm/lang/date.phtml.$lang
+!read adm/lang/sheetexam.phtml.$lang
+
+!set wims_name_scoreexam=ÎÒµÄµÃ·Ö
+
+!set name_Options=Ñ¡Ïî
+!set name_All=ËùÓĞ
+
+!set name_done=Íê³É
+!set name_instructions=Ö¸Áî
+
+!distribute lines ½áÊøÕâ³¡¿¼ÊÔ\
+·µ»Ø¼ÌĞø¿¼ÊÔ\
+Ö÷³Ö½ÌÊ¦Ëù¼ûµÄÊÔ¾í.\
+²Î¼ÓÕß¿´µ½µÄÊÔ¾í\
+µ±Ç°µÃ·ÖµÄÏêÇé\
+´Ë¿¼ÊÔÊÇ¿ÕµÄ! Ã»ÓĞÖ¸¶¨ÈÎºÎÄÚÈİ. ¿ÉÄÜÊÇÖ÷³Ö½ÌÊ¦µÄ²Ù×÷´íÎó.\
+¸ø¿¼ÊÔÖ¸¶¨ÄÚÈİ\
+Õâ´Î¿¼ÊÔ¹ØÓÚÄãµÄÁ¬½ÓÊÇ¹Ø±ÕµÄ.\
+Õâ¸ö¿¼ÊÔÄãÖ»ÄÜ¿¼Ò»´Î.\
+ËùÒÔÄã²»ÄÜÔÙ¸Ä½øÄãµÄ·ÖÊı.\
+ÕâÊÇÄãµÄ×îºóÒ»´ÎÓĞĞ§µÄ³¢ÊÔ. ÇëĞ¡ĞÄ!\
+µ¹Êı¼ÆÊ±½«Æô¶¯, ²¢ÇÒ³¢ÊÔ´ÎÊıÔö¼Ó 1.\
+µ¹Êı¼ÆÊ±½«Æô¶¯.\
+ÒªÇó³É¹¦Íê³ÉÆäËüÁ·Ï°\
+±¾³¡¿¼ÊÔµÄµÃ·Ö\
+into wims_name_endexam,wims_name_backexam,wims_name_teacherview,name_presentation,\
+name_scoreexam,name_empty,name_content,name_examclosed,name_exam1,name_exam5,\
+name_lasttry,name_exam7,name_exam8,name_depend,name_scoreexam2
+
+!set name_exam2=!nosubst Õâ¸ö¿¼ÊÔ¿ÉÒÔ³¢ÊÔÖÁ¶à $stries ´Î.
+
+!set name_exam3=!nosubst ÄãÒÑ¾­ÓÃ $tried ´Î³¢ÊÔ½áÊøÄãµÄ¿¼ÊÔ»á»°,
+!set name_exam4=!nosubst  ÄãÒÑ¾­×÷ÁË <strong>$tried</strong> ´Î³¢ÊÔ,
+!set name_exam6=!nosubst Äã»¹¿ÉÒÔ×÷ <strong>$tryremain</strong> ´ÎĞÂ³¢ÊÔ.
+
+!set name_exam9=!nosubst ÄãÓĞ <strong>$sdure</strong> ·ÖÖÓ¿ÉÓÃÓÚÕâ¸ö¿¼ÊÔ.\
+   µ±Äãµã»÷ÉÏÁĞÁ·Ï°Ê±,
+
+!set name_simulation=<strong>Õâ¸ö¿¼ÊÔ´¦ÓÚÄ£Äâ×´Ì¬.</strong> ËüºÍÕıÊ½¿¼ÊÔÒ»Ñù,\
+  Ö»ÊÇ²»»á¼ÇÂ¼ÄãµÄµÃ·Ö, ²¢ÇÒÄãµÄ³¢ÊÔÒ²²»»á¼ÆÊı.
+
+!set wims_name_examremain=Õâ¸ö¿¼ÊÔµÄÊ£ÓàÊ±¼ä: $
+
+!distribute lines »¹²»ÄÜËã³ö\
+  Äã»¹Ã»ÓĞ¶¯ÊÖ´ğÌâ.\
+  ¿ªÊ¼´ğÌâ.\
+  µ±Ç°µÄµÃ·Ö²»±»¼ÇÂ¼, ÒòÎª¿¼ÊÔ´¦ÓÚÄ£Äâ×´Ì¬.\
+into name_pending,name_begin1,name_begin2,name_simulation2
+
+!set name_timeleft=!nosubst Ê±¼äµ½! ÄãÒÑ¾­ÓÃÍêÁË·ÖÅä¸øÕâ¸ö¿¼ÊÔµÄ $sdure ·ÖÖÓ.\
+ You must logout now.
+!set name_realscore=!nosubst ÄãµÄÕâ¸ö¿¼ÊÔÒ³µÄÊµ¼ÊµÃ·ÖÊÇ $lastscore.
+!set name_bestscore =!nosubst ÄãÔÚÕâ¸ö¿¼ÊÔµÄ×î¼ÑµÃ·ÖÊÇ $lastscore. (ÕâÊÇ±»¼ÇÂ¼µÄµÃ·ÖÖĞµÄ×î¸ß·Ö.)
+
+
+!! ---------------------------
+!! nouvelle partie
+
+!set statutname=$(wims_name_shstatus[1]),$wims_name_shstatus
+
+!set name_desc_duration=ÒÔ·ÖÖÓ¼Æ
+!set name_units_duration=·ÖÖÓ
+!let name_mkexam=´´½¨¿¼ÊÔ
+
+!let name_shinfo_cutt=½Ø¶ÏÊ±¼ä
+
+!! différents commentaires de la page de gestion
+!distribute lines Ò»°ãĞÅÏ¢&nbsp;\
+Á·Ï°ÄÚÈİ&nbsp;\
+Õâ¸öÁ·Ï°ÉĞÎŞÄÚÈİ.\
+into name_info,name_content,name_warning
+
+!! titre du tableau de contenu de l'examen (file examcontent.phtml)
+!let name_extab=!nosubst ±àºÅ,$wims_name_title,ÄÚÈİ,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
+
+!set name_contenu=Ñ¡ÔñÄÚÈİ
+!let name_cpsheet1=×÷ÒµÒ³µÄÁ·Ï°¶¼ÊÇÒ»¸öÒ»¸öµØ¼Óµ½¿¼ÊÔÒ³µÄÄ©Î². \
+Ã¿¸öÁ·Ï°µÄÈ¨ÖØ¶¼Éè³É 1. \
+Èç¹ûÒÔÏÂµÄÀ¸ÊÇ¿Õ°×, \
+ÄÇÃ´Á·Ï°±£ÁôÔ­À´×÷ÒµÒ³µÄ±êÌâ²»±ä.
+
+!let name_cpsheet3=Á·Ï°µÄÄ¬ÈÏ±êÌâ
+!let name_cpsheet4=Á·Ï°½«ÒÀĞò±àºÅ
+
+!set name_warning_nonfinished=Äã»¹Ã»ÓĞ×öÍê±¾´Î¿¼ÊÔµÄÈ«²¿Á·Ï°. Èç¹ûÏÖÔÚ¾Í½áÊø»áÓ°ÏìÄãµÄµÃ·Ö,\
+  ²¢ÓÃÈ¥ÄãµÄÒ»´Î¿¼ÊÔ»ú»á. ÏÂ´ÎÄã±ØĞë´ÓÍ·¿ªÊ¼. <br />ÄãÊÇ·ñ¿Ï¶¨Òª½áÊø?
+
+!set wims_name_cpexam=´Ó¼¤»îµÄ¿¼ÊÔ¸´ÖÆÄÚÈİ.
+
+!set name_cpexam1=ÄãÕıÔÚ°Ñ¼¤»îµÄ¿¼ÊÔµÄÄÚÈİ¸´ÖÆÔÚÕâÀï. ÔÚ¼¤»îÇ°Äã¿ÉÒÔĞŞ¸Ä±¾¿¼ÊÔµÄÄÚÈİ.

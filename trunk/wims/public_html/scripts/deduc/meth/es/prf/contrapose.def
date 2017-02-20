@@ -1,0 +1,74 @@
+!set methtit=Contraposer
+!set methparmtype=parm predicate nocomma >
+!set methparmrelax=1
+!set methhelp=Contraposer hypothèse et but&nbsp;:\
+réécrire A \(=>) B en non(A) \(=>) non(B)).\
+<p>\
+On peut aussi utiliser cette méthode pour faire une démonstration\
+par contradiction.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!if fixedgoal iswordof $m_options
+ !set error1=fixedgoal
+ !exit
+!endif
+
+!set n_=!linecnt $m_goal
+!if $n_>1
+ !set error1=Vous avez plusieurs buts dans l'état actuel&nbsp;!\
+ La contraposition doit se faire avec un but unique. Veuillez d'abord\
+ séparer les buts.
+ !exit
+!endif
+!if $n_<1
+ !set error1=Vous n'avez pas d'objet pour contraposer.
+ !exit
+!endif
+
+!exit
+:form
+ !set i_=!linecnt $mtobj1
+ !if $i_>0
+  Contraposer l'hypothèse
+  !set ch_optional=Aucune
+  !read deduc/methparm.phtml 1 
+  et le but \($m_goal).
+  !set methremark=Choisissez "hypothèse=Aucune" pour faire un raisonnement par\
+  contradiction.
+ !else
+  Contraposer le but \($m_goal)&nbsp;: raisonnement par contradiction.
+ !endif
+!exit
+:check
+ !if contradiction notwordof $m_goal
+  newobject0=!exec mathexp not\
+$m_goal
+  oldobject=0
+ !else
+  !reset newobject, newobject0
+ !endif
+ !if $methparm1=$empty or $methparm1<1
+  !if contradiction iswordof $m_goal
+   error=Contraposer une contradiction sans hypothèse n'a pas de sens !
+   !exit
+  !endif
+  newgoal=contradiction
+  methexp=Contraposer
+ !else
+  obj=!line $methparm1 of $mtobj1
+  d=!item 1 of $obj
+  l=!word 1 of $d
+  obj=!item 2 to -1 of $obj
+  m_context=!replace line number $l by $ in $m_context
+  m_context=!nonempty lines $m_context
+  newgoal=!exec mathexp not\
+$obj
+  methexp=Contraposer avec \($obj)
+ !endif
+ m_goal=$newgoal
+ !read deduc/objects.combine
+!exit
+

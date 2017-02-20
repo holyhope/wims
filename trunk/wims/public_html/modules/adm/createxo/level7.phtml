@@ -1,0 +1,30 @@
+!!transfer towards a developper account
+<script type="text/javascript">
+function emptyfield() {
+ alert("$name_warning_empty"); return false;
+}
+function formcheck() {
+ if(document.getElementById('source').value=="") return emptyfield();
+return true ;
+}
+</script>
+
+!read lang/name.phtml.$modu_lang register
+<p>$name_register_dev <span class="tt wims_login">$wims_developer</span>: </p>
+!form reply onsubmit="return formcheck();"
+<ul><li>
+$name_choice_module
+
+!formselect catmodule1 list $list_mod_oef
+</li><li>
+$name_choice_filename
+<input id="source" type="text" size="12" name="file_name_src" value="" /><span class="tt">.oef</span>
+</li></ul>
+<div class="wimscenter">
+<input type="submit" value="OK" />
+!set wims_ref_class=wims_button wims_secondary_button
+!href cmd=reply&level=3 $wims_name_giveup
+</div>
+<input type="hidden" name="level" value="4" />
+
+!formend

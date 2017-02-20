@@ -1,0 +1,40 @@
+
+!set field=!item 2 of $special_parm
+
+!if $field=$empty
+ !exit
+!endif
+
+!read help/$lang/model.phtml
+
+!if $(special_parm[3])!=$empty
+ !readproc model/cut.proc model/$lang/src/$(special_parm[3]).oef
+ !set title$field=$model_title
+!else
+ !readproc model/cut.proc
+ !set title1=$model_title
+!endif
+
+<h2 class="wimscenter">$(title$field)</h2>
+
+!if $field=1
+ <div class="bold">$desc</div>
+!endif
+$(help$field)
+
+!if $field=1
+ <div class="wims_small_remark">
+  $credits_help
+ </div>
+!endif
+
+!if $(name$field) iswordof $model_random
+ $name_random
+!endif
+
+!if $(name$field) iswordof $model_computed $model_random
+ <p>
+ !href cmd=help&special_parm=parameters $name_detail_parm
+ </p>
+!endif
+<br class="spacer"/>

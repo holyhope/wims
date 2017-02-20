@@ -1,0 +1,35 @@
+!goto $wims_read_parm
+
+:def
+title=Rang
+synonyme=rang d'une matrice, matrice rang
+input=matrix
+!exit
+
+:proc
+
+result=!exec pari matrank([$mat])
+!exit
+
+:output
+!set pars=$[max(min($rows,10),1)]
+<table class="wimscenter wimsnoborder">
+!for i=1 to $rows
+ !set l=!line $i of $formula
+ <tr>
+ !if $i=1
+  <td rowspan="$rows">rang $(m_leftpar$pars)</td>
+ !endif
+ !for j=1 to $cols
+  !set k=!item $j of $l
+  <td>$k</td>
+ !next j
+ !if $i=1
+  <td rowspan="$rows">$(m_rightpar$pars) = $result</td>
+ !endif
+ </tr>
+!next i
+
+</table>
+!exit
+

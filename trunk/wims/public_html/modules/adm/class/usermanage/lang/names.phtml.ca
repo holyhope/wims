@@ -1,0 +1,73 @@
+!set lang_exists=yes
+
+!if $wims_read_parm!=
+ !goto $wims_read_parm
+!endif
+
+!set name_studentloc=!nosubst $user_firstname $user_lastname
+!set name_studentglo=!nosubst $wims_name_firstname $wims_name_lastname
+
+!set name_click=Cliqueu sobre un nom per veure amb detall el seu treball
+!set name_noyetparticipant=Aquesta classe encara no té cap alumne.
+!set name_transfer=Transferir activitats de les altres classes
+!set name_filter=Variables techniques
+
+!if $job=regmanage
+	!set name_all=Tots els participants
+	!set name_reguser=Inscriure els participants
+	!set name_unreguser=Suprimir l'inscripció dels participants
+        !set name_display=Afficher
+        !set name_techvardisplay=Sélection par variables techniques
+	!set name_description=Utiliser les cases à cocher pour sélectionner les participants et les classes de votre choix puis appuyez sur l'un des deux boutons pour changer leurs droits d'accès.
+!endif
+
+!if $job iswordof userprop teacher userlist
+  !distribute items Canviar, Número de registre, Comentaris, URL d'una foto, Variables (tècniques),\
+  Contrasenya de la classe,Entreu la contrasenya de registre d'alumnes,\
+  Login per autenticació externa,Inscripció,Gestió,\
+   Obligatori\
+  into name_change,name_regnum,name_comments,name_photourl,name_vars,\
+  name_classpassword,name_enterpassword,name_external_auth,name_inscript,name_gestion,\
+  name_userprop_warning
+  !exit
+!endif
+
+!if $job=transfer
+   !set name_title_transfer=Transferir les activitats
+   !distribute items Adjuntar,Reemplaçar,Examinar\
+   into name_merge, name_replace,name_show
+
+ !set name_error1=L'alumne no està registrat en un curs corresponent\
+a la classe actual i no es possible la transferència
+ !set name_error2=<b>Error</b> d'identificació de classes. Moviment en fals o error de programari?
+
+!set name_activities=!nosubst  Detall de l'activitat a $i (limitat a 1000 línies).
+!set name_totransfer=Aquests són els altres cursos en els que l'alumne ha actuat.\
+  Cliqueu sobre una acció per transferir les seves activitats
+  !exit
+!endif
+
+!if $job=recover
+  !set name_empty=No hi ha cap alumne suprimit en aquesta classe.
+  !set name_click= Cliqueu sobre un nom d'usuari per restaurar l'alumne a la classe.
+  !exit
+!endif
+
+!if $job=delprep
+  !set name_delete=!nosubst Esteu segurs que voleu eliminar <b><em>$name_studentloc</em></b>\
+de la vostra classe ?
+  !exit
+!endif
+!exit
+
+:transfer
+<b>Notes</b>. <ol>
+<li>"$name_merge" significa ajuntar les activitats de tots dos cursos.</li>
+<li>"$name_replace" significa que les activitats dels altres cursos substituiran
+les d'aquest curs. La substitució no es produirà si el primer és buit.</li>
+<li>Les notes dels exàmens i les activitats no comptades van sempre unides.</li>
+<li>El registre dels detalls d'exercicis o exàmens no és transferible.</li>
+<li>Després de l'acció ("$name_merge" o "$name_replace"), els registres de les
+activitats de l'alumne en els altres cursos seran eliminats.</li>
+</ol>
+!exit

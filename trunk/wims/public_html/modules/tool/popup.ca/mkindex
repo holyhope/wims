@@ -1,0 +1,36 @@
+#! /bin/sh
+
+dicsort_separator=':'
+w_dictionary=dic/syno
+w_suffix_dictionary=dic/suffix
+w_translator_unknown=leave
+export dicsort_separator w_dictionary w_suffix_dictionary w_translator_unknown
+export wims_exec_parm dicsort_grouping
+
+echo >dic/form
+cnt=0
+for i in `find form -name '*.def'`
+do
+ base=`echo $i | sed 's/\.def$//;s!^form/!!'`
+ index=`echo $base | tr / @`
+# if [ ! -f index/$index ] || [ index/$index -ot $i ]; then
+ get=`awk 'BEGIN {a=0};
+ 	substr($1,1,1)==":" {if(a==0) a=1; else exit;}
+	a==1 {print}' $i |
+	tr 'çéèêëúùûüáàâäãóòôöõíìïîñýÇÉÈÊËÚÙÛÜÁÀÂÃÄÓÒÔÖÕÍÌÏÎÑÝ' 'ceeeeuuuuaaaaaoooooiiiinyCEEEEUUUUAAAAAOOOOOIIIINY' |
+	tr "\:[A-Z]\-\012\'" " [a-z] , " | sed 's/,/, /g' | tr -s '[:blank:]' ' '`
+ wims_exec_parm="$get"
+ got=`exec dic/translator | tr , '\012' | sed 's/^ //' | sort | uniq`
+ echo "$got" | awk '{print $0":'$base'"}' >>dic/form
+# echo "$got" | awk '{print $0":'$base'"}' >index/$index
+# fi
+# cat index/$index >>dic/form
+ echo $base
+ cnt=$(($cnt+1))
+done
+echo $cnt forms.
+
+dicsort_grouping=" "
+dic/dicsort dic/form
+mv dic/form.sorted dic/form
+

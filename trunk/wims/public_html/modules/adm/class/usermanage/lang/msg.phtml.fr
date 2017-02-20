@@ -1,0 +1,24 @@
+!set wims_module_log=error: $error
+
+<span class="wims_warning">$wims_name_Error</span>.
+
+!if not_supervisor=$error
+ Désolé, mais l'opération de préparation / modification d'une feuille de
+ travail est réservée aux enseignants enregistrés d'une classe.
+ !exit
+!endif
+
+!if bad_classpass=$error
+ Désolé mais vous n'avez pas fourni le bon mot de passe d'inscription de
+ participant à la classe. Vous n'avez pas le droit de changer les informations
+ qui suivent sans ce mot de passe.
+ !exit
+!endif
+
+!if bad_user=$error
+ Erreur d'appel : le participant <span class="tt wims_login">$checkuser</span> n'existe pas.
+ !exit
+!endif
+
+!msg $error
+

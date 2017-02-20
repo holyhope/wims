@@ -1,0 +1,55 @@
+:title
+ <b>Fonction numérique.</b> (nom: <span class="tt wims_code_words">function</span>)
+
+:light
+ La réponse est évaluée en tant que fonction et la comparaison est
+ effectuée pour des valeurs de variable dans une zone définie par l'auteur,
+ à la précision définie par l'auteur.
+
+:documentation
+<p>
+La bonne réponse est donnée par la fonction. Si l'élève donne une
+réponse contenant des variables qui ne sont pas dans la fonction, il
+lui est demandé de resoumettre sa réponse. Pour éviter cela,
+il est possible d'ajouter une suite de variables qui seront admises.
+Cela est nécessaire en particulier lorsque la fonction est aléatoire
+et que son nombre de variables peut varier.
+</p>
+<pre>
+\answer{}{x^2,x,y}{type=function}
+</pre>
+<p>
+La zone de valeurs des variables est définie dans le champ
+\range{} qui est par défaut l'intervalle [-5,5].
+Cependant, il est possible de préciser pour chaque variable un intervalle
+servant à la comparaison comme dans les exemples ci-dessous.
+</p><pre>
+\answer{}{log(x)+y,x=[1,5],y}{type=function}
+</pre><p>
+Dans ce cas, la réponse est testée pour 10 valeurs aléatoires de x entre 1 et 5
+et 10 valeurs aléatoires de y entre -5 et 5.
+</p><pre>
+\answer{}{log(x)+log(-y),x=[1,5],y=[-5,-1]}{type=function}
+</pre><p>
+Dans ce cas, la réponse est testée pour 10 valeurs aléatoires de x entre 1 et 5
+et 10 valeurs aléatoires de y entre -5 et -1.
+</p><p>
+En particulier, dans le cas de plusieurs questions dans un même exercice,
+l'intervalle peut être différent selon la question.
+</p><pre>
+\answer{}{log(x),x=[1,5]}{type=function}
+\answer{}{log(-x),x=[-5,-1]}{type=function}
+</pre>
+
+L'option possible est <span class="tt wims_code_words">integer</span>.
+<pre>
+\answer{}{1/(x+9)+1/(x-9)+1/x}{type=function}{option=integer}
+</pre>
+Dans ce cas, les valeurs de test sont entières
+dans l'intervalle donnée. Il est aussi possible de fixer les valeurs de
+test en donnant explicitement la liste :
+<pre>
+\answer{}{1/(x-3)+1/(x-2)+1/x,x=[-8,-7,-6,-4,4,5,6,7,8,9]}{type=function}{option=integer}
+</pre>
+Cela est à manier avec prudence, en particulier, il est recommandé de
+donner au moins 10 valeurs.

@@ -1,0 +1,26 @@
+\title{Lettre de l'alphabet}
+\text{alphabet = a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}
+\integer{n = randint(1..20)}
+\integer{try = 0}
+\text{REP=}
+\text{NETAPE = r1}
+\nextstep{\NETAPE}
+
+\statement{Ecrire la lettre de l'alphabet qui suit  la lettre \alphabet[\n] :
+<div style="text-align:center;">
+     \if{ r1 isitemof \NETAPE}{
+        \embed{r1,5} <span class="oef_indbad">\REP</span>
+      }{
+      <span class="oef_indgood">\alphabet[\n + 1]</span>
+     }
+ </div>
+}
+
+\answer{lettre suivant \alphabet[\n]}{\A}{type=nocase}
+\condition{}{\A issametext \alphabet[\n + 1]}
+\text{REP = \reply1}
+\text{NETAPE=}
+\text{NETAPE = \reply1 notsametext \alphabet[\n + 1] and \try < 3 ? r1}
+
+\feedback{\try > 1}{Vous avez fait \try essais}
+\integer{try = \try + 1}

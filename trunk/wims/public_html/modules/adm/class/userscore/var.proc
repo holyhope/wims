@@ -1,0 +1,197 @@
+# Variable calculations should be done in this file.
+# It is read and interpreted by wims for all valid calls to the module.
+!read adm/class/classlang
+!readproc adm/whoconnect
+wims_prefix=class user tmp n sharing sharable
+!read adm/class/authchars
+max_sheets=!defof MAX_SHEETS in wimshome/public_html/bases/sys/define.conf
+title_limit=80
+desc_limit=4000
+!!use for avoid the variable_overflow
+TOO_BIG=320
+!read tabletheme
+wims_helper=chapter=3
+userdir=!item -1 of $wims_superclass
+!default userdir=$wims_class
+sclassdir=log/classes/$userdir
+userdir=log/classes/$userdir/.users
+tooltip_parm=FONTSIZE,'11pt',ABOVE,'true'
+picto=<img src="gifs/picto.gif" alt="picto" />
+
+shweights=!record 0 of wimshome/log/classes/$wims_class/sheets/.severity
+
+!if $wims_user=$empty
+  error=not_supervisor
+  !exit
+!endif
+
+!if $cmd=help
+  !exit
+!endif
+
+!if $wims_user!=supervisor
+  !reset deluser,formula,getraw,delprep
+  !bound job within getuser,userprop,examcheck,getraw default getuser
+  getuser=$wims_user
+!else
+  !readproc adm/vfilter/listvarfilter.proc
+  !readproc adm/vfilter/varfilter proc
+  !bound job within getuser,userprop,examcheck,getraw,userexam,userexamclose,showsheet,csv,formula,sheets,$empty default $empty
+!endif
+
+!if $cmd=reply && $job=examcheck
+  !changeto var.proc.examcheck
+!endif
+
+!if $job=showsheet
+  show_tmp=!words2items $show
+  !!no comma in the first field of the line for oneitem.phtml
+  !set wims_ariane=!append line sheet $show,1,cmd=reply&job=sheets&showsheet=$show_tmp\
+to $wims_ariane
+
+  !changeto var.proc.showsheet
+!endif
+
+!if $job=teacher
+  !changeto var.proc.teacher
+!endif
+
+deluser=!word 1 of $deluser
+!if $job=sheets
+  show=!translate , to $ $ in $showsheet
+!else
+  showsheet=!words2items $show
+!endif
+mean_per=0
+mean_av=0
+!set tmp=!defof DF_SEVERITY in wimshome/public_html/bases/sys/define.conf
+!set tmp=!word 1 of $tmp
+!for i in $showsheet
+  !distribute item 0,0,0 into per_$i, av_$i, cnt_$i
+!next i
+sheetcnt=!itemcnt $showsheet
+!if $activesheets=$empty
+  scoremax=!line 1 of $shweights
+  !default scoremax=10
+  defaultformula=!line 2 to -1 of $shweights
+  examweights=!record 0 of wimshome/log/classes/$wims_class/exams/.eseverity
+  n=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+  !distribute item $ into activevars,activesh
+
+  seq_open=!defof sequence_open in wimshome/log/classes/$wims_class/seq/.def
+  !set seq_=!record 0 of wimshome/log/classes/$wims_class/seq/.sequences
+  !set seq_cnt=!line 1 of $seq_
+  !if $seq_open!=yes or $seq_cnt= or $seq_cnt=0
+    !for i=1 to $n
+      s=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+      !distribute lines $s into a,e,t,d
+      shw=!line $i+1 of $shweights
+      shw=!word 1 of $shw
+      !bound shw between 0 and 100000 default $tmp
+      !if $a>0 and ($a<2 or $wims_user=supervisor or $shw>0)
+        ec=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
+        activesheets=!append line $i,$ec,$t to $activesheets
+        activesh=!append item $i to $activesh
+      !endif
+    !next i
+  !else
+    !!!for sequences
+    !set seq_reverse=!defof sequence_reverse in wimshome/log/classes/$wims_class/seq/.def
+
+    !!!!!! for compatibility. Will be remove in the definitive version
+    !read adm/class/sheetindex
+    !!!!!!
+    !for ii=1 to $seq_cnt
+      !if $seq_reverse=yes
+        !set iii=$[$seq_cnt+2-$ii]
+      !else
+        !set iii=$[$ii+1]
+      !endif
+      n=!itemcnt $(seq_[$iii;])
+      !for j=2 to $n
+        !if sheet isin $(seq_[$iii;$j])
+          i=!word 2 of $(seq_[$iii;$j])
+          s=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+          !distribute lines $s into a,e,t,d
+          shw=!line $i+1 of $shweights
+          shw=!word 1 of $shw
+          !bound shw between 0 and 100000 default $tmp
+          !if $a>0 and ($a<2 or $wims_user=supervisor or $shw>0)
+            ec=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
+            activesheets=!append line $i,$ec,$[$iii-1],$t to $activesheets
+            activesh=!append item $i to $activesh
+          !endif
+        !endif
+      !next j
+    !next ii
+  !endif seq_open
+  !reset activexams
+  ecnt=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
+  !for i=1 to $ecnt
+    e=!record $i of wimshome/log/classes/$wims_class/exams/.exams
+    e=!word 1 of $e
+    !if $e>0
+      activexams=!append item $i to $activexams
+    !endif
+  !next i
+!endif activesheets=$empty
+activecnt=!linecnt $activesheets
+eactivecnt=!itemcnt $activexams
+
+!bound job_affi within notes,points,quality,best,level default notes
+!if $showsheet=$empty and $job_affi!=notes
+  showsheet=$activesh
+  !for i in $showsheet
+    !distribute item 0,0,0 into per_$i, av_$i, cnt_$i
+  !next i
+!endif
+
+!!! allow the definition of the sheet calculation formula f_$i
+!read var.proc.weights
+usercnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
+
+job=!word 1 of $job
+!if $job iswordof getuser getraw delprep deluser userexam userexamclose
+  logname=$getuser$getraw$delprep$deluser
+  !read adm/class/userdef classes,$wims_class,$logname
+  !defread $userdef
+  lastname=$user_lastname
+  firstname=$user_firstname
+!endif
+
+!if $job=$empty or $job iswordof sheets csv
+  m=!record 1 of wimshome/log/classes/$wims_class/.grades
+  !distribute lines $m into manual,titles,weights
+  gcnt=!itemcnt $titles
+  gcnt=$[$gcnt-2]
+  !if $gcnt<1
+    manual=0
+  !else
+    mwtot=0
+    !for g=1 to $gcnt
+      w$g=!item $g+2 of $weights
+      mwtot=$[$mwtot+$(w$g)]
+    !next g
+  !endif
+  !if $manual>0
+    uucnt=!recordcnt wimshome/log/classes/$wims_class/.grades
+    !for i=2 to $uucnt
+      l=!record $i of wimshome/log/classes/$wims_class/.grades
+      n=!item 1 of $l
+      g=!item 3 to -1 of $l
+      n=!hex $n
+      Manual_$n=$g
+      mm=0
+      !for j=1 to $gcnt
+        g_=!item $j of $g
+        mm=$[$mm+($(w$j))*($g_)]
+      !next j
+      manual_$n=$[rint(100*$mm/$mwtot)/100]
+    !next i
+  !endif
+!endif
+!if $job!=$empty
+  wims_module_log=$job
+  !read var.proc.$job
+!endif
+!reset tmp

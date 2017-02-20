@@ -1,0 +1,67 @@
+!set form_OK=$wims_name_tosave
+!set form_titlename=$wims_name_title
+!set form_caption=$name_classproperties
+!set title=$class_description
+!set sup=$class_Supervisor
+<div id="widget_zone_list">
+!if $jquery_defined=yes
+  !read adm/tabscript zone_list
+!endif
+<ul>
+ <li><a href="#wims_classform">$wims_name_properties</a></li>
+ <li><a href="#wims_othergestion">$name_othergestion</a></li>
+ <li><a href="#wims_zone_course">$wims_name_course</a></li>
+</ul>
+<div id="wims_classform">
+ !read scripts/classform.phtml
+</div>
+<div id="wims_zone_course">
+!if $coursecnt=0
+<p>
+ $name_class1
+ !href cmd=reply&cparent=class&job=addcourse $wims_name_addcourse
+   $
+!set wims_ref_class=wims_button_help
+ !href cmd=help&special_parm=structure#course $wims_name_help
+ </p>
+!else
+ $table_header
+ <caption>$name_class2
+   $
+!set wims_ref_class=wims_button_help
+ !href cmd=help&special_parm=structure#course $wims_name_help
+  $
+ !href cmd=reply&cparent=class&job=addcourse $wims_name_addcourse
+ </caption>
+ $table_hdtr
+ <th>$name_code</th><th>$wims_name_name</th><th>$wims_name_action</th><th>$name_supervisor2</th>
+ </tr>
+ !for i=1 to $coursecnt
+   !set l=!line $i of $courses
+   !distribute items $l into l_,s_,t_,n_
+   $table_tr<td>$l_</td>
+   <td>
+   !href cmd=reply&job=course&cparent=class&course=$l_ $t_
+   </td><td>
+   !set wims_ref_class=wims_button wims_warning
+    !href cmd=reply&job=delcourse&cparent=class&del=$l_ $wims_name_erase
+   </td><td>
+   !if $s_!=$empty
+    !if $s_=supervisor
+     $s_
+    !else
+     !default n_=$s_
+     !href cmd=reply&job=modteacher&teacher=$s_ $n_
+    !endif
+   !else
+    $name_nonavailable
+   !endif
+   </td></tr>
+ !next i
+ $table_end
+!endif
+</div>
+!set wims_menu_items=!append line addcourse,1,cmd=reply&cparent=class&job=addcourse\
+to $wims_menu_items
+!reset title
+

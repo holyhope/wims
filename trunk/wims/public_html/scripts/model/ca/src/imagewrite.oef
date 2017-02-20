@@ -1,0 +1,64 @@
+type=image
+textarea="data"
+
+:Choisir parmi des étiquettes ce qui correspond à l'image (ou au texte présenté)
+Attention, ce modèle ne fonctionnera bien que si vous chargez les images sur wims.
+<p>
+Pour construire un exercice avec ce modèle, il suffit de taper la liste des images et
+des étiquettes correspondantes
+</p>
+$image_help
+<p>
+Auteur du modèle : Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+</p>
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Enlevez l'en-tête ci-dessus si vous détruisez les balises pour le modèle !
+(Ce sont les lignes qui commencent par un ':'.)
+Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
+
+:%%%%%%%% Paramètres d'exemples à redéfinir %%%%%%%%%%%%%%%%%
+
+
+:\title{Reconnaître une image}
+:\author{Bernadette, Perrin-Riou}
+:\email{bpr@math.u-psud.fr}
+:Consigne
+\text{instruction=Ecris le mot correspondant à l'image (l'exercice ne fonctionnera que quand les images seront chargées
+dans l'exercice)}
+
+:Données
+\text{data=amphitheatre.png,l'amphithéâtre
+aqueduc.png, l'aqueduc
+arcdetriomphe.png,l'arc de triomphe
+cirque.png, le cirque
+domus.png, la domus
+temple.png, le temple
+theatre.png, le théâtre
+thermes.png, les termes
+}
+
+:La taille des cases en pixels.
+\text{sizeh=40}
+:%%%%%%%%%%%%% Maintenant l'énoncé en code html. %%%%%%%%%%%%%%%%%%%%
+
+\text{mot = randrow(\data)}
+\text{image=\mot[1]}
+\text{ext=item(2,wims(replace internal . by , in wims(lowercase \image)))}
+\text{mot =\mot[2]}
+
+\statement{
+\instruction
+<p style="text-align:center;">
+\if{\ext isitemof png,gif,jpg,jpeg}{
+  \img{\imagedir/\image}
+  }
+  {\image}</p>
+
+<p style="text-align:center;">
+\embed{r1,\sizeh
+default
+autocomplete="off"}
+</p>
+}
+\answer{}{\mot}{type=case}

@@ -1,0 +1,54 @@
+!let lang_exists=yes
+
+!read adm/lang/date.phtml.$moduclass_lang
+!read adm/lang/sheetexam.phtml.$moduclass_lang
+
+!set statutname=$(wims_name_shstatus[1]),$wims_name_shstatus
+!set seriesaction=!nosubst $wims_name_change,$wims_name_erase,$wims_name_up
+!set name_duplicateok=Feuille d'exercices dupliquée correctement.
+
+!set name_name=!nosubst $wims_name_name
+!set name_ltvalue=Valeur(s)
+
+!let name_shtab=!nosubst No,$wims_name_title,$wims_name_Description,Punts,Pes,Dependències,$wims_name_comment,$wims_name_action,Paramètres de la série,$wims_name_feedbackexo
+!set name_qnum=Nb ex. in series
+
+!if $activetest<=0
+ !let wims_name_sheetadmin=Pàgina de preparació
+ !set name_title=!nosubst Preparació del full $sheet
+ !set name_order=Ordre dels exercicis de la sèrie
+!else
+ !let wims_name_sheetadmin=Pàgina de gestió
+ !set name_title=!nosubst Gestió del full $sheet
+!endif
+!let name_mksheet=Crear el full
+
+!distribute lines Informacions generals&nbsp;\
+Contingut del full&nbsp;\
+Aquest full encara no té contingut.\
+El títol original és\
+Modificació de l'exercici\
+Nombre de punts necessaris\
+Corregir el codi\
+La data de caducitat del full ha de ser anterior a la data de caducitat de la classe\
+La vostra petició s'ignora.\
+into name_info,name_content,name_warning,name_oldtitle,name_prep_modify,\
+name_pointsasked,name_correctsource,name_expiration1,name_expiration2
+
+!set name_text1=Per afegir un treball (exercici, eina, etc.) al full, primer heu de triar\
+ l'objecte corresponent (veure baix); establir els diferents paràmetres proposats i executar l'exercici.\
+ A continuació, utilitzeu l'enllaç del costat de l'exercici per afegir-lo al full.\
+ Per triar el vostre treball, teniu les possibilitats següents:
+
+!set name_text2=Passar pel motor de cerca
+!set name_text3=Cercar un exercici entre els
+!set name_text4=Cercar un exercici del vostre compte
+!set name_texttaxo= Trobar un exercici en algunes taxonomies
+!set name_textsubject= Trobar un exercici per tema (paraules clau)
+
+!set name_getsource=Aquí tens el codi d'aquesta pàgina. Pots copiar aquest codi (entre les dues línies de `*'; \
+utilitzant el portapapers) en un arxiu, que et permetrà reutilitzar el contingut en un altre full més endavant.
+
+
+!! be careful define variable below only if module help/teacher/program work in your lang. Keep , at the same place.
+!set name_helpprog=Us pot ajudar això, correspondència indicativa entre els programes d'ensenyament francès i els exercicis de WIMS

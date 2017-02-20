@@ -1,0 +1,36 @@
+!! document menu
+!nocache
+!set wims_theme_docheader=yes
+!if $wims_class=$empty or adm/doc notin $module
+  !set oneitem=oneitem.phtml
+!else
+  !set oneitem=./adm/oneitem.phtml
+!endif
+<!-- begin of default/docheader.phtml -->
+
+!if $job iswordof read print
+ <div id="wimsdoc">
+!endif
+
+!if $wims_lightpopup=yes
+  !goto end1
+!endif
+<div id="wimstopbox">
+ !read themes/_widgets/docheadermenu.phtml
+ !read themes/_widgets/docnavigation.phtml
+</div><!--end of wimstopbox  -->
+!read themes/_widgets/ariane.phtml
+
+:end1
+!if $wims_lightpopup=yes
+  <div id="wimslightpopup">
+   <div id="wimsbodybox">
+    <div id="wimspagebox">
+  !exit
+!endif
+ <div id="wimsbodybox">
+  <div id="wimspagebox">
+
+!read themes/_widgets/alertchat.phtml
+
+<!-- end of default/docheader.phtml -->

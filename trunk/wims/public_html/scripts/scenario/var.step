@@ -1,0 +1,45 @@
+
+picked=!line 1 to $step-1 of $good
+bad_reasons=!line $step of $traps
+r=!random 0,1
+!if $r<0.5 and $(bad_$step)!=$empty
+ b=!randitem $(bad_$step)
+ b=!record $b of $deffile
+ !distribute lines $b into b1,step_remark,b3
+ step_reason=!item 2 of $b1
+ picked=!append line $b3 to $picked
+ bad_reasons=!append item $bad_reasons to $step_reason
+ step_test=NO
+!else
+ !distribute items OK,OK into step_reason,step_test
+ step_remark=!line $step of $remarks
+ thisstep=!line $step of $good
+ picked=!append line $thisstep to $picked
+!endif
+
+!read reasons/reasons
+!if $ask_reason=0
+ bad_reasons=NO
+ bad_rnames=$NO: $no_name
+ !exit
+!endif
+
+res=$reason_title,$reason_title2
+rn=!itemcnt $res
+sh=!shuffle $rn
+res=!item $sh of $res
+bad_reasons=!append item $res to $bad_reasons
+bad_reasons=!listuniq $bad_reasons
+
+bad_reasons=!item 1 to 4 of $bad_reasons
+rn=!itemcnt $bad_reasons
+sh=!shuffle $rn
+bad_reasons=!item $sh of $bad_reasons
+
+bad_rnames=
+!for i in $bad_reasons
+ n_=!positionof item $i in $reason_title,$reason_title2
+ n_=!item $n_ of $reason_name,$reason_name2
+ bad_rnames=!append item $NO: $n_ to $bad_rnames
+!next i
+

@@ -1,0 +1,32 @@
+ !set chb=!item $(choice$i) of $(choicelist$i),$ch_noidea,$ch_none
+ <tr>
+ <td style="text-align:right" class="nowrap bold">$(choicename$i)</td>
+ <td class="tt">$chb :</td>
+ <td>&nbsp;
+ !if $(diachoice$i)=good
+  $indgood.
+ !else
+  !set k=!itemcnt $(choicegood$i)
+  !if $presentgood>0
+   !ifval $(choice$i)!=$(choiceitems$i)+1
+    $indbad,
+   !endif
+   !if $k<=1
+    !if $k=0
+     $ch_good1 <div class="inline tt">$ch_none</div>.
+    !else
+     $ch_good1 <div class="inline tt">$(choicegood$i)</div>.
+    !endif
+   !else
+    $ch_goodn <div class="inline tt">$(choicegood$i)</div>.
+   !endif
+  !else
+   !ifval $(choice$i)!=$(choiceitems$i)+1
+    $indbad.
+   !else
+    $name_sorry.
+   !endif
+  !endif
+ !endif
+ </td>
+ </tr>

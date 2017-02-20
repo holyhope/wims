@@ -1,0 +1,193 @@
+
+!set week_min=3
+!set month_min=20
+!set year_min=200
+!set title_2=$name_Requests
+!set title_3=$name_Sessions
+!set title_4=$name_Visitors
+!read adm/date.phtml date,$year1,$month1,$day1
+!set date1=$c_date_out
+!read adm/date.phtml date,$year2,$month2,$day2
+!set date2=$c_date_out
+$name_number_visits $name_from $date1 $name_to $date2
+($name_sum).
+ !set wims_print_precision=4
+ $table_header
+ $table_hdtr<th>$name_cnt</th><th>$name_total</th><th>$name_avgday</th>
+ !if $laps>$week_min
+  <th>$name_avgweek</th>
+  !if $laps>$month_min
+   <th>$name_avgmonth</th>
+   !if $laps>$year_min
+    <th>$name_avgyear</th>
+   !endif
+  !endif
+ !endif
+ <th>$name_avgsite</th></tr>
+ $table_tr<th style="background-color:$table_bgcolor;">$name_Requests</th>
+ <td>
+   !htmlmath $[$total_click]
+   </td><td>
+   !htmlmath $[rint($total_click/$laps)]
+   </td>
+   !if $laps>$week_min
+   <td>
+    !htmlmath $[rint($total_click*7/$laps)]
+    </td>
+    !if $laps>$month_min
+    <td>
+     !htmlmath $[rint($total_click*30.4/$laps)]
+     </td>
+     !if $laps>$year_min
+     <td>
+      !htmlmath $[rint($total_click*365.25/$laps)]
+    </td>
+     !endif
+    !endif
+   !endif
+   <td>
+   !htmlmath $[$total_click/$total_site]
+   </td>
+ </tr>
+ $table_tr<th style="background-color:$table_bgcolor;">$name_Sessions</th>
+   <td>
+   !htmlmath $[$total_session]
+   </td><td>
+   !htmlmath $[rint($total_session/$laps)]
+   </td>
+   !if $laps>$week_min
+    <td>
+    !htmlmath $[rint($total_session*7/$laps)]
+    </td>
+    !if $laps>$month_min
+     <td>
+     !htmlmath $[rint($total_session*30.4/$laps)]
+     </td>
+     !if $laps>$year_min
+      <td>
+      !htmlmath $[rint($total_session*365.25/$laps)]
+      </td>
+     !endif
+    !endif
+   !endif
+   <td>
+   !htmlmath $[$total_session/$total_site]
+   </td>
+   </tr>
+ $table_tr<th style="background-color:$table_bgcolor;">sites</th>
+   <td>
+   !htmlmath $[$total_site]
+   </td><td>
+   !htmlmath $[rint($total_site/$laps)]
+
+   </td>
+   !if $laps>$week_min
+    <td>
+    !htmlmath $[rint($total_site*7/$laps)]
+    </td>
+    !if $laps>$month_min
+     <td>
+     !htmlmath $[rint($total_site*30.4/$laps)]
+     </td>
+     !if $laps>$year_min
+      <td>
+      !htmlmath $[rint($total_site*365.25/$laps)]
+      </td>
+     !endif
+    !endif
+   !endif
+   <td>1</td>
+   </tr>
+ $table_end
+
+$wims_name_Explanations. $name_explanations
+
+!if $laps >= 3
+ <p class="wimscenter">
+ <span class="wims_warning">$(title_$plot_type) $name_byday</span> <br />
+ !insplot "insplot_data" using 1:2 smooth csplines notitle with lines
+ </p>
+!endif
+
+!if $modules=yes and $modulecnt>0
+ !set langcnt=!wordcnt $wims_site_languages
+ !distribute item 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 into tot,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16
+ $table_header
+ <caption>$wims_name_statdetail
+  ($name_from $day1/$month1/$year1 $name_to $day2/$month2/$year2)</caption>
+ $table_hdtr<th>$wims_name_name</th><th>
+ !item $module_type of $name_prompt
+ </th>
+ !if $module_type!=2
+  !for i=1 to $langcnt
+   !set l=!word $i of $wims_site_languages
+   <th><img src="gifs/$l.gif" alt="$l" /></th>
+  !next i
+  <th>$name_installed</th>
+  <th>$name_avghebdo</th>
+ !endif
+ !for i=1 to $modulecnt
+  !set l=!line $i+1 of $stat_out
+  !set c=!word 1 of $l
+  !ifval $c=0
+   !goto cont
+  !endif
+  !set t=$[$t+$c]
+  </tr>$table_tr<td>
+  !set n=!word 3 of $l
+  !set n=!char -40 to -1 of $n
+  !set n=!translate @ to / in $n
+  !href module=$n $n
+  </td>
+  <td class="nowrap">
+  !if $module_type=2
+   $[$c/100]
+   </td>
+   !goto cont
+  !endif
+  !htmlmath $[$c]
+  </td>
+  !for j=1 to $langcnt
+   <td class="nowrap">
+   !set tt=!word $j+3 of $l
+   !set t$j=$[$(t$j)+$tt]
+   !htmlmath $[$tt]
+   </td>
+  !next j
+  <td>
+  !set d=!word 2 of $l
+  !set dy=!char 1,2,3,4 of $d
+  !set dm=!char 5,6 of $d
+  !set dd=!char 7,8 of $d
+  !read adm/date.phtml date,$dy,$dm,$dd
+  $c_date_out
+  !if $d<=$date1
+   !set lps=$laps
+  !else
+   !set d_d=!date -d $d '+%j'
+   !set lps=!eval ($year2-$dy)*365+$date_2-$d_d+1
+   !ifval floor($dy/4)<floor($year2/4) and floor($dy/100)=floor($year2/100)
+    !set lps=!eval $lps+1
+   !endif
+  !endif
+  </td><td>$[rint($c*7/$lps)]</td>
+  :cont
+ !next i
+ !if $module_type!=2
+     </tr>$table_tr<th>$name_subtotal</th><td class="nowrap">
+  !htmlmath $t
+  </td>
+  !for i=1 to $langcnt
+   <td class="nowrap">
+   !htmlmath $(t$i)
+   </td>
+  !next i
+  <td>-</td><td>-</td>
+ !endif
+</tr>
+$table_end
+!else
+!set wims_menu_items=!append line statdetail,1,cmd=reply&modules=yes\
+ to $wims_menu_items
+!endif modules=yes
+

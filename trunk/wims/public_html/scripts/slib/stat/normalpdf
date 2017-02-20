@@ -1,0 +1,30 @@
+
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+
+slib_author=Sophie, Lemaire; Bernadette, Perrin-Riou
+
+slib_parms=3\
+,[data]\
+0,mu\
+1,sigma
+
+
+slib_example=[-2,-4,1],0,1
+!exit
+
+:proc
+
+!distribute item $wims_read_parm into slib_data,slib_mean,slib_var
+slib_out=
+!default slib_mean=0
+!default slib_var=1
+slib_var=$[$slib_var]
+slib_mean=$[$slib_mean]
+
+slib_data=!declosing $slib_data
+
+slib_out = !values exp(-(x-$slib_mean)^2/(2*$slib_var^2))/((2*pi)^(1/2)*$slib_var) for x in $slib_data
+
+slib_out=!trim $slib_out

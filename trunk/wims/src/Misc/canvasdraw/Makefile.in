@@ -1,0 +1,34 @@
+# I don't know of another way to get the absolute path...$(CURDIR) does not work if
+# Makefile is called from another Makefile...
+
+wims_home=`pwd | awk -F/src '{ print $$1 }'`
+canvasdraw_home=$(wims_home)/src/Misc/canvasdraw
+cc=@CC@
+cflags=@CFLAGS@
+ldflags= @LDFLAGS@ -lm -L../../Lib -lwims
+STRIP= @STRIP@
+public_script=$(wims_home)/public_html/bin/canvasdraw
+O=canvasmacro.o canvasdraw.o
+H=../../Lib/libwims.h ../../config.h ../../includes.h ../../wimsdef.h
+
+all:canvasdraw
+
+%.o: %.c *.h $(H)
+	$(cc) -o $@ $(cflags) $(defines) -c $<
+
+clean:
+	rm -f $(canvasdraw_home)/canvasdraw $(canvasdraw_home)/*.o
+
+distclean:
+	rm -f $(canvasdraw_home)/canvasdraw
+	rm -f $(wims_home)/public_html/bin/canvasdraw
+
+canvasdraw: $(O)
+	$(cc) $(cflags) $(O) $(ldflags) -o canvasdraw
+	$(STRIP) canvasdraw
+	chmod a+x canvasdraw
+	echo "#!/bin/sh" > $(public_script)
+	echo "./bin/wrap..exec ../other/bin/canvasdraw  <<@" >>  $(public_script)
+	echo "\$$wims_exec_parm" >> $(public_script)
+	echo "@" >> $(public_script)
+	chmod a+x $(public_script)

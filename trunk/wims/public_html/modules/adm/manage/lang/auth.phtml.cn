@@ -1,0 +1,23 @@
+!set name_admpasswd=请输入服务器管理员的密码
+
+!read authscript.phtml
+!if $passone!=$empty
+ <p>
+ 由于你没有定义管理员的密码, 服务器生成了仅供本次使用的一次性密码.
+ 你可在WIMS服务器的文件<span class="tt">$wims_home/$oncename</span>里找到这个密码.
+ 请把你在这个文件里读到的密码输入上面框内.
+ </p><p>
+ 如果你要定义一个永久性的密码 (其安全性不及一次性密码),
+ 你可将此密码存入<span class="tt">$wims_home/log/.wimspass</span>.
+ 但是你<b>必须</b>使这个文件只能由你一个人读取!
+ </p>
+!else
+ <p>
+ 你已经定义了一个永久性的服务器管理员密码. 请注意, 你也可以使用一次性密码, 且后者更安全.
+ </p><p>
+ 为了切换到一次性密码, 你只要删除服务器里的文件<span class="tt">$wims_home/log/.wimspass</span>.
+</p>
+!endif
+
+请你在操作管理员密码时要非常小心. 以管理员身份的入侵可以破坏你的服务器的所有数据!
+

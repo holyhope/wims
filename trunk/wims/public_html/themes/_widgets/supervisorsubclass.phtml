@@ -1,0 +1,15 @@
+<!-- _widgets/supervisorsubclass.phtml -->
+!for i=1 to $subclasscnt
+ !let f_class=!record $i of wimshome/log/classes/$wims_class/.subclasses
+ !let f_aff=!item 4 of $f_class
+ !let f_name=!item 1 of $f_class
+ $table_tr
+  <td>$ADD_class $i</td>
+  <td>
+   !href module=adm/class/classes&type=authsupervisor&class=$f_name $f_aff
+  </td><td>
+  !item 9 of $f_class
+  </td>
+ </tr>
+!next i
+<!-- end _widgets/supervisorsubclass.phtml -->

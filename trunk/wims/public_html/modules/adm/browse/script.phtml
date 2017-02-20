@@ -1,0 +1,23 @@
+!distribute items $wims_read_parm into t, supt
+!! for the moment we do not use supt, plane for the future
+!!keep key - use in search_addr.
+!! supt should be a father of t
+  !reset key
+    !set key=!lookup $t in $dir
+    !default key=$t
+    !set key_l=!lookup $t in $dir_lang
+    !set name_$t=!lookup $t in $dir_lang
+    !default name_$t=$t
+    !!set key=!replace internal _ by $ $  in $t
+    !!set key=$supt,$key_l
+    !set key=$key_l
+    !set more=!lookup $t in $dir
+!if $more!=$empty
+      !href module=$module&cmd=new&job=$job&parm=$t $(name_$t)
+!else
+      $(name_$t)
+!endif
+!set wims_ref_class=wims_button
+!href $search_addr >>>>
+!set tt=!lookup $t in $dir
+!set cnt=!itemcnt $tt

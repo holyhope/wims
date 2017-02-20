@@ -1,0 +1,27 @@
+ <b>Raw text.</b>
+ (nombrett>raw</tt>)
+ <br/> Un texto que debe compararse con la buena respuesta dada.
+Las opciones siguientes permiten controlar cómo el texto debe transformarse
+antes de compararse. Si ninguna opción se indica, solamente los espacios
+a principio y a final del texto se retiran antes de la comparación.
+Es necesario pues tener muy cuidado utilizando este tipo de respuestas:
+por defecto, la respuesta se da por falsa incluso si hay un espacio de diferencia.
+Este tipo se destina a los autores que desean analizar ellos mismos la respuesta.
+
+!set p=anstype.$lang/raw
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td class="tt">
+!line 1 of $l_
+    </td><td>
+!line 2 of $l_
+   </td></tr>
+  !next
+$table_end

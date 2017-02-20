@@ -1,0 +1,199 @@
+<b>Géométrie dynamique</b>
+(nom : <span class="tt wims_code_words">geogebra</span>)
+
+Une applet de géométrie dynamique GeoGebra est affichée. L'utilisateur  
+peut construire un certain nombre d'objets (points, droites, cercles, etc.). 
+Ce type doit obligatoirement être utilisé avec la commande <span class="tt wims_code_words">\embed</span>
+<p>
+La bonne réponse doit être donnée sous la forme d'une matrice. 
+Chaque ligne contient des instructions d'une des formes suivantes 
+(f pour formal, n pour numeric)
+<pre>
+n, "condition numérique", texte
+f, "condition formelle", texte
+n, "condition numérique avec syntaxe formelle", texte
+</pre>
+Le texte est un texte qui apparaît dans l'analyse de réponse. 
+Si aucun texte n'est mis, un texte par défaut est construit à partir 
+de la condition ; si le texte est le mot <span class="tt wims_code_words">hiden</span>, 
+la condition n'apparaît pas dans l'analyse de la réponse.
+
+<ul><li><b>condition formelle</b> : les objets exigés, dans la langue de 
+l'exercice et dans la syntaxe de GeoGebra (voir 
+<a target='wims_external" href="http://www.geogebra.org/help/docufr/">http://www.geogebra.org/help/docufr</a> )
+avec leur nom s'il est imposé (en cas de mauvais nom, l'objet sera reconnu quand même 
+mais une pénalité est donnée).
+Il est cependant recommandé de mettre le nom dans le cas de nombreuses conditions.
+L'analyse de la réponse vérifie que la condition est bien réalisée sans remplacement.
+Quelques tests supplémentaires sont ajoutés. Par exemple, si la condition
+est <span class="tt wims_code_words">A=Centre[c]</span>, on vérifiera aussi si l'utilisateur a répondu 
+quelque chose comme <span class="tt wims_code_words">c=Cercle[A,B]</span>.
+
+<p>Exemples : 
+<ul><li>
+<span class="tt wims_code_words">A=Point</span> : A doit être un point.
+</li><li>
+<span class="tt wims_code_words">=Cercle[D,E]</span> : Il doit y avoir un cercle de centre D passant par E 
+(le nom n'a pas d'importance).
+</li><li>
+<span class="tt wims_code_words">c=Cercle[,B]</span> : Il doit y avoir un cercle c passant par B.
+</li><li>
+<span class="tt wims_code_words">d2=Perpendiculaire[A,d1]</span> : d2 doit être la perpendiculaire à d1 passant par A, obtenue
+par la commande GeoGebra <span class="tt wims_code_words">Perpendiculaire</span>.
+</li></ul>
+</li>
+<li><b>condition numérique</b> :
+les conditions numériques doivent être construites à partir
+des coordonnées des points ou des vecteurs ou des équations des droites, des cercles, etc. 
+On peut utiliser :
+<ul><li><span class="tt wims_code_words">x_A, y_A</span> : 
+coordonnées d'un point <span class="tt wims_code_words">A</span> ou d'un vecteur <span class="tt wims_code_words">A</span>.</li>
+<li><span class="tt wims_code_words">R_c,x_c,y_c</span> : 
+carré du rayon d'un cercle <span class="tt wims_code_words">c</span>, coordonnées de son centre.</li>
+<li><span class="tt wims_code_words">a_d, b_d, c_d, p_d, m_d</span> : 
+coefficients d'une équation de la droite <span class="tt wims_code_words">d</span> du type <span class="tt wims_code_words">ax + by = c</span>, 
+ordonnée à l'origine et coefficient directeur.
+</li>
+<li><span class="tt wims_code_words">v_ob</span> : valeur d'un objet (nommé <span class="tt wims_code_words">ob</span>) qui peut être du type 
+<span class="tt wims_code_words">segment, function, angle, numeric, text</span>.
+</li>
+<li>
+<span class="tt wims_code_words">x2_c,y2_c,xy_c,x_c,y_c,cst_c</span> : coefficients de <span class="tt wims_code_words">x^2, y^2, x*y, x,y, 1</span> d'une conique
+<span class="tt wims_code_words">c</span>.
+</li>
+</ul>
+On peut aussi tester des équations par exemple, <span class="tt wims_code_words">eq_a:2x+y=3</span> (ou <span class="tt wims_code_words">eq_:2x+y=3</span>
+si on ne désire pas donner d'importance au nom de la droite) teste si 2x+y=3 est une équation de la droite <span class="tt wims_code_words">a</span>.
+<p>
+<b>Exemple</b> : <span class="tt" class="wims_code_words">x_c>0 && y_c>0 & R_c<4</span> demande de tester si le cercle <span class="tt wims_code_words">c</span>
+a un centre dont les coordonnées sont positives et un rayon inférieur à 2.
+(L'utilisation des noms des objets pour formuler les <i>tests numériques</i> est
+obligatoire.) Dans le cas d'égalité, utiliser le test <span class="tt wims_code_words">==</span>. Il est recommandé
+de faire des tests d'inégalité plutôt que des tests d'égalité :<span class="tt" class="wims_code_words"> abs(x_c-1.2)<10^(-6)</span>
+par exemple, plutôt que <span class="tt wims_code_words">x_c==1.2</span>. 
+</li>
+<li><b>condition numérique avec syntaxe formelle</b> : La syntaxe est similaire à celle des conditions formelles mais l'analyse est faite numériquement avec une 
+très grande précision (par défaut 10^(-18)). Les noms des objets à 
+l'intérieur des commandes doivent tous être donnés.
+Le remplacement numérique est fait à l'aide des données numériques 
+de la réponse de l'utilisateur.
+Seules quelques commandes sont disponibles (voir liste ci-dessous).
+<p>
+<b>Exemple</b> :
+<span class="tt wims_code_words">n, a=Droite[A,B] </span> : a doit être la droite passant par A et B (vérification numérique)
+<p>
+<b>Commandes disponibles (elles sont très limitées)</b> :
+<ul>
+<li><span class="tt wims_code_words">a=Droite[A,B] </span> : a doit être la droite passant par A et B
+</li><li><span class="tt wims_code_words">a=Médiatrice[A,B]</span> :
+</li><li><span class="tt wims_code_words">b=Perpendiculaire[A,a]</span> :
+</li><li><span class="tt wims_code_words">C=Milieu[A,B]</span> :
+</li><li><span class="tt wims_code_words">C=Bissectrice[A,B]</span> :
+</li><li><span class="tt wims_code_words">c=Circle[A,B]</span> :
+</li><li><span class="tt wims_code_words">-30=AngleOriente[A,B,A,C]</span> : l'angle orienté (AB,AC) doit mesurer -30°
+</li><li><span class="tt wims_code_words">30=Angle[A,B,C]</span> : l'angle géométrique ABC doit mesurer 30°
+</li>
+</ul>
+</li>
+</ul>
+<p>Une seule réponse du type <span class="tt wims_code_words">geogebra</span> est possible pour l'instant dans l'exercice.
+On doit obligatoirement utiliser la commande <span class="tt wims_code_words">embed</span> :
+<pre>
+\embed{reply1,option}
+</pre>
+où <span class="tt wims_code_words">option</span> a comme première ligne la taille de l'applet en pixels (Largeur x Hauteur). 
+Les lignes suivantes sont formées d'options de l'applet ou de commandes 
+(objets prédéfinis). Par exemple :
+<pre>
+  showToolBar=true
+  customToolBar=0|40|2|10
+  A = (1,2)
+  B = (-1,2)
+  a = Droite[A,B]
+  setFixed('A',true)
+  setFixed('B',true)
+  setAxesVisible(false,false)
+</pre>
+
+<b>Options possibles</b>
+<pre>
+  showToolBar (default : true)
+  showMenuBar (default : false)
+  showResetIcon (default : true)
+  showToolBarHelp (default : true)
+  enableRightClick (default : false)
+  showAlgebraInput (default : false)
+  customToolBar
+  file
+</pre>
+Les commandes possibles sont outre les définitions d'objets les méthodes javascript
+de GeoGebra :
+<pre>
+evalCommand setValue setCoords setColor setVisible setLabelVisible setLabelStyle 
+setFixed setTrace setAxesVisible setGridVisible setCoordSystem
+</pre>
+Pour plus de détails, voir l'aide de GeoGebra sur les méthodes javascript disponibles :<br/>
+<a target=wims_external href="http://www.geogebra.org/source/program/applet/geogebra_applet_javascript.html">
+http://www.geogebra.org/source/program/applet/geogebra_applet_javascript.html</a>
+<p>
+La variable <span class="tt wims_code_words">\reply</span><i>n</i> où <i>n</i> est le numéro du champ de réponse est formée
+de plusieurs lignes. La première ligne donne le nombre d'objets. Les lignes suivantes
+contiennent la définition de chaque objet (une ligne par objet), d'abord formellement
+si cela est possible, puis numériquement.
+</p>
+
+<p>La variable <span class="tt wims_code_words">\sc_reply</span><i>n</i> contient sur la première ligne : 0 (mauvaise réponse),
+0.5 (erreur de nom seulement) ou 1 (bonne réponse);
+sur les lignes suivantes, le même détail (0, 0.5 ou 1) pour chaque ligne de la bonne réponse
+</p>
+
+<p><b>Options</b> :
+<ul>
+<li><span class="tt wims_code_words">max</span> nombre maximum d'objets qui peuvent être construits dans l'applet
+(par défaut : 10).
+</li><li><span class="tt wims_code_words">precision</span> : précision absolue (nombre de décimales prises en compte pour
+les comparaisons numériques, défaut : 18).
+</li><li><span class="tt wims_code_words">idontknow</span> (<span class="tt wims_code_words">yes</span> or <span class="tt wims_code_words">no</span>, par défaut : <span class="tt wims_code_words">no</span>) : 
+fait apparaître un bouton <span class="tt wims_code_words">Je ne sais pas</span> à côté du bouton <span class="tt wims_code_words">Valider</span>. 
+</li><li><span class="tt wims_code_words">extra</span> (<span class="tt wims_code_words">yes</span> or <span class="tt wims_code_words">no</span>, par défaut : <span class="tt wims_code_words">no</span>) : 
+autorise les objets supplémentaires (si l'option <span class="tt wims_code_words">extra</span> n'est pas égale à <span class="tt wims_code_words">yes</span>, 
+le score est diminué dans le cas où il y a plus 
+d'<i>objets construits par l'étudiant</i> 
+qu'il n'y avait de <i>conditions formelles</i> données dans la bonne réponse par
+l'auteur de l'exercice.)
+</li><li><span class="tt wims_code_words">output</span> : les valeurs possibles sont <span class="tt wims_code_words">coord</span> (défaut), 
+<span class="tt wims_code_words">formal</span>, <span class="tt wims_code_words">nothing</span>.
+La différence se trouve dans la manière dont les objets construits par l'utilisateur
+sont réaffichés dans l'analyse de la réponse :
+<ul><li><span class="tt wims_code_words">coord</span> : les coordonnées des objets sont affichés ;</li>
+<li><span class="tt wims_code_words">nocoord</span> : seuls les noms des objets construits sont affichés ;</li>
+<li><span class="tt wims_code_words">formal</span> : les relations formelles sont affichées s'il y en a ;</li>
+<li><span class="tt wims_code_words">nothing</span> : aucun affichage.</li>
+</ul>
+</li><li><span class="tt wims_code_words">weights</span> (par défaut, 1&0.2&1) le score final de la construction est
+la moyenne pondérée de trois scores dont on peut ici préciser les coefficients
+(séparés par des <span class="tt wims_code_words">&</span>). Ces trois scores sont respectivement le score 
+des <i>tests formels</i> (f),
+le score des <i>noms des objets demandés</i>, le score des <i>tests numériques</i> (n).
+</li></ul>
+
+<p><b>Remarques générales</b> :
+<ul>
+<li>L'applet GeoGebra doit se trouver dans le répertoire 
+<span class="tt wims_code_words">public_html/java/geogebra3</span>.
+Elle nécessite l'installation de Java sur l'ordinateur local et 
+l'utilisation du type de réponse <span class="tt wims_code_words">geogebra</span> risque de ralentir 
+le chargement des pages : il ne faut l'utiliser que si le recours 
+à la géométrie dynamique est utile.
+</li>
+<li>Les objets dont le nom commence par <span class="tt wims_code_words">My_</span> ne seront pas reconnus par wims et ne seront pas réaffichés lors de l'analyse de la réponse.
+</li>
+<li>
+Les mesures des angles sont toujours en degrés. 
+</li><li>
+Une fonction <span class="tt wims_code_words">f</span> a pour nom 
+<span class="tt wims_code_words">f(x)</span>. 
+Il faut donc écrire quelque chose du type <span class="tt wims_code_words">f(x)=sin(x)</span>.
+</li>
+</ul>
+

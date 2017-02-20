@@ -1,0 +1,117 @@
+
+!distribute items $sw,$sw into sw_1,sw_2
+
+!if $sw=pari
+  !set sw_1=gp
+!endif
+!if $sw iswordof draw
+  !set sw_1=flydraw
+  !set sw_2=flydraw
+!endif
+!if $sw=insmath
+  !set sw_1=latex
+  !set sw_2=latex
+!endif
+!if $sw=jsxgraph
+  !set sw_1=js
+!endif
+
+!! a modifier quand il y aura d'autres styles
+!default sw_1=flydraw
+
+!if $sw=jsxgraph
+ !read js/jsxgraph.phtml
+!endif
+
+!if $(module_title_$modu_lang)!=
+   !set module_title=$(module_title_$modu_lang)
+!endif
+!header
+!if $compute=yes
+ !if $swout=$empty
+  <span class="wims_warning">$SW</span> $name_non_execute.
+ !else
+  <div class="center">$SW</div>
+  !if $sw=draw
+   <img src="$swout" alt="" />
+   !goto after
+  !endif
+  !if $sw=povray
+   <img src="$swout" alt="" />
+   !goto after
+  !endif
+  !if $sw=graphviz
+   !set swout=!line 1 of $swout
+   <img src="$swout" alt="" />
+   !goto after
+  !endif
+  !if $sw=jsxgraph
+  <div id="jsxbox" class="box" style="width:400px; height:400px;text-align:center;"></div>
+  <script type="text/javascript">
+  $swout
+  </script>
+    !goto after
+  !endif
+   !if $sw=insmath
+     MathML: $swout
+  Image:
+     !instex $src1
+     !goto after
+  !endif
+  !if $sw=canvasdraw
+   $swout
+   !read script_canvasdraw
+   !goto after
+  !endif
+  !if $sw=jmol
+   !set swout1=!lines2rows $swout
+   !readproc slib/chemistry/jmolshow $swout1,200,200,white,,
+   $slib_out
+   !goto after
+  !endif
+<pre style="font-weight:bold;font-family:Courier New,Courier,mono;overflow:auto;color:blue;">
+$swout
+</pre>
+ !endif
+!else
+  !read lang/intro.phtml.$modu_lang
+!endif
+
+:after
+!if $msg!=$empty
+ <hr />
+ $name_msg <em>$SW</em> :
+<pre style="color:red;font-size:80%">
+$msg
+</pre>
+!endif
+!form reply
+<input type="submit" value="$name_execute" />
+
+!default sw=sh
+!set wims_formselect_switch=onchange='submit()'
+!formselect sw list $swlist prompt $swname
+!set wims_formselect_switch=
+$ :
+ &nbsp;
+ !set wims_ref_class=wims_button
+!href cmd=renew $name_empty
+ &nbsp;
+ !set wims_ref_class=wims_button_help
+!href cmd=help&special_parm=$sw_2 $wims_name_help
+&nbsp;
+!set src=!reinput $src
+!set src=!replace internal &amp;#36; by &#36; in $src
+!set src=!replace internal &amp; by & in $src
+
+<br class="spacer" />
+<textarea id="wims_deposit" wrap="off" name="src" cols="100" rows="15">
+$src
+</textarea>
+$(name_remark_$sw)
+
+!formend
+
+!tail
+
+!reset src sw

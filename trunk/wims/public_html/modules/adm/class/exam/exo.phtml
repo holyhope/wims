@@ -1,0 +1,55 @@
+!!!### langage independant
+!!
+
+!form reply
+<input type="hidden" name="job" value="exo" />
+<input type="hidden" name="exo" value="$exo" />
+
+<fieldset class="property_fields">
+  <legend>$wims_name_Exercise $exo</legend>
+  <div class="field box halfwidth">
+    <label for="ename">$wims_name_title</label>
+    <input size="20" name="ename" id="ename" value="$ename" />
+  </div>
+  <div class="field box halfwidth">
+    <label for="eweight">$name_weight</label>
+    <input size="5" name="eweight" id="eweight" value="$eweight" />
+  </div>
+  <div class="field box halfwidth">
+     <label for="edep">$name_dependency</label>
+!set wims_ref_class=wims_button_help float_right
+   !href target=wims_mhelp cmd=help&special_parm=dependency $wims_name_help
+     <input size="40" name="edep" id="edep" value="$edep" />
+   </div>
+   <div class="field box halfwidth">
+     <label for="eopt">$name_Options</label>
+!set wims_ref_class=wims_button_help float_right
+      !href target=wims_mhelp cmd=help&special_parm=options $wims_name_help
+      !formcheckbox eopt list $optionlist
+   </div>
+   <div class="field box">
+     <label for="ecomment">$wims_name_comment</label>
+     <div class="formHelp">$name_desc_comment</div>
+     <textarea name="ecomment" id="ecomment" rows="3" cols="60">$ecomment</textarea>
+   </div>
+   <div class="field box">
+    <label for="">$name_contenu</label>
+!set wims_ref_class=wims_button_help float_right
+   !href target=wims_mhelp cmd=help&special_parm=contenu $wims_name_help
+   !read adm/class/transfertexo.phtml
+  </div>
+  <div class="wimscenter wimsform">
+   <input type="submit" value="$wims_name_tosave" name="save2" />
+   &nbsp;
+   !set wims_ref_class=wims_button
+   !if $exo>$exocnt
+  !set wims_menu_items=!append line mainpage,1, cmd=reply \
+    to $wims_menu_times
+    !href cmd=reply $wims_name_mainpage
+   !else
+    !href cmd=reply $wims_name_giveup
+   !endif
+  </div>
+</fieldset>
+!formend
+!reset save,save2

@@ -1,0 +1,50 @@
+wims_prefix=class user tmp cdt date
+wims_writable=nbsheet courses nbdate jdesc serial
+wims_readable=wims_read_parm wims_session date m_filedir
+
+
+insmath_rawmath=yes
+wims_backslash_insmath=yes
+msg2wims_primitives=exercise doc href
+wims_trustfile=primitives.phtml
+!if $wims_class=$empty or ($wims_supertype!=0 and\
+ ($wims_supertype!=2 or $wims_typename!=class) and\
+ ($wims_supertype!=4 or $wims_typename notitemof class,course))
+ error=bad_class
+ !exit
+!endif
+!defread wimshome/log/classes/$wims_class/.def
+!defread wimshome/log/classes/$wims_class/cdt/.def
+!read adm/class/classlang names.phtml
+!read tabletheme
+!read adm/date.phtml
+!reset table_center
+
+!if $wims_user=supervisor and yes isin $cdt_supervise
+ !bound job within file,home,adddate,addtodo,del,todo,work,helplink,config,logfile default home
+!else
+ !bound job within home,todo,work default home
+!endif
+
+!if $job!=home
+  !set wims_ariane=!append line cdt,1,cmd=new&job=home\
+to $wims_ariane
+  !set wims_ariane_self=no
+!endif
+
+!if $job isitemof work,todo
+ !read work.proc
+!else
+ !read $job.proc
+!endif
+
+!if $jour_begin!=$empty
+    jyear=!char 1 to 4 of $jour_begin
+    jmonth=!char 5 to 6 of $jour_begin
+    jday=!char 7 to 8 of $jour_begin
+!endif
+!if $jour_end!=$empty
+    jyear2=!char 1 to 4 of $jour_end
+    jmonth2=!char 5 to 6 of $jour_end
+    jday2=!char 7 to 8 of $jour_end
+!endif

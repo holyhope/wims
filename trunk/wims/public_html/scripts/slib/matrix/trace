@@ -1,0 +1,17 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+
+slib_author=Gang, XIAO
+
+slib_example=1,2,3;3,2,1;0,0,1
+slib_require=pari
+!exit
+
+:proc
+slib_mat=!declosing $wims_read_parm
+!if $slib_mat=$empty
+ slib_out=
+!else
+ slib_out=!exec pari print(trace([$slib_mat]))
+!endif

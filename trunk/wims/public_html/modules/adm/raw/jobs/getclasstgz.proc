@@ -1,0 +1,28 @@
+# GetClassTGZ
+# Telecharge la classe dans un fichier compresse
+
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+#explication des options TAR utilise :
+# c : create archive
+# z : GZIP the archive
+# f : in the file F
+# h : --dereference : don't dump symlinks; dump the files they point to
+# X : eXclude files
+
+header=Content-Type: application/x-gzip\
+
+# l'ancien code ne semblait pas fonctionner. je le remplace ici :
+# j'en profite pour exclure tous les fichiers ".DS_Store" eventuellement ajoutes par le systeme MacOs
+
+!! In case of subclasses $qclass=nnnnn/1 containing a slash. Be sure
+!! to have a proper filename (CHECK)
+qclassfile=!translate internal / to _ in $qclass
+!sh cd $wims_home/log/classes\
+    tar -hczf $qclassfile.tgz --exclude '.DS_Store' $qclass\
+    mv $qclassfile.tgz $wims_home/$wims_sesdir
+
+fname=$wims_sesdir/$qclassfile.tgz

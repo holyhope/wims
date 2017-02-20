@@ -1,0 +1,92 @@
+<!-- adm/sheet/main.phtml START -->
+
+!if $job=print
+ !changeto print.phtml
+!endif
+
+!if $public!=P
+ !changeto class.phtml
+!endif
+!if $(module_title_$modu_lang)!=
+   !set module_title=$(module_title_$modu_lang)
+!endif
+
+!header
+
+!if $error!=$empty
+ <div class="wims_msg alert">
+ !read lang/msg.phtml.$modu_lang
+ </div>
+ !tail
+ !exit
+!endif
+
+!if $wims_user=supervisor and $job=raw
+<p id="textsource">$name_textsource</p>
+<hr />
+<pre>
+ !sh awk 'BEGIN {a=0};\
+	/^:/ {a=1};\
+	a==1 {print}' bases/sheet/$sh.def
+</pre>
+<hr />
+
+!set wims_menu_items=!append line participantview,1,cmd=resume&job=read \
+to $wims_menu_items
+
+ !tail
+ !exit
+!endif
+
+!set intro=!record 0 of $data
+!set dur=!words2items $(intro[3;])
+!distribute items $dur into duration,year
+!if ? notin $duration
+ !let duration=- $name_duration $duration mn
+!else
+ !let duration=$empty
+!endif
+!read adm/title.phtml 3\
+$sheet_title\
+$name_level : $(name_wims_level_$(intro[5;])) $duration - $year<br />$(intro[8;])\
+
+<div class="wims_sheet_desc">$sheet_desc</div>
+
+!if $n=0
+ $name_sheetempty
+!else
+ <div class="wims_sheet">
+ <ul class="wims_sheet_list">
+ !for i=1 to $n
+  !set ex=!record $i of $data
+  !distribute lines $ex into di,pa,require,we,ti,de
+  !set got=!word $i of $scores
+  !set mean=!word $i of $means
+  !if .___ isin $(ti)___
+   !set ti=!replace internal .___ by in $(ti)___
+  !endif
+  <li class="wims_sheet_list">$i
+  !href module=$di&cmd=new&worksheet=$public$shn&$pa $ti
+  !if $de notsametext $empty
+, $de
+ !else
+.
+ !endif
+ </li>
+ !next i
+ </ul>
+ </div>
+ !if $wims_user=supervisor
+ !set wims_menu_items=!append line import,1,cmd=reply&job=import \
+ sheetsource,1,cmd=reply&job=raw\
+ to $wims_menu_items
+ !endif
+!endif
+
+!set wims_menu_items=!append line printable,1,cmd=reply&job=print\
+to $wims_menu_items
+
+<!-- adm/sheet/main.phtml END -->
+
+!tail
+

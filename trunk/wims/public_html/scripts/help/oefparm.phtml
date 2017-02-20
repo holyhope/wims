@@ -1,0 +1,30 @@
+!if $lang notwordof es de ca
+  !set ll=$lang
+!else
+  !set ll=en
+!endif
+!readproc tabletheme
+!readproc oef/$lang/names
+!reset table_center
+!for j in 0,5,1,2,3,4
+ $table_header
+ !set caption=!record 1 of help/$ll/oefparm$j
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$ll/oefparm$j
+  $table_tr<th style="min-width:140px;">$(header[1])</th><th>$(header[2])</th><th>$(header[3])</th></tr>
+  !set cnt_record=!recordcnt help/$ll/oefparm$j
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$ll/oefparm$j
+    $table_tr<td class="tt wims_code_words">
+!line 1 of $l_
+    </td><td class="tt">
+!line 2 of $l_
+    </td><td>
+!line 3 of $l_
+    </td></tr>
+  !next
+$table_end
+!next j
+
+!exit
+

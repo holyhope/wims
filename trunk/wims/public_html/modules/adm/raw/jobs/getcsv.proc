@@ -1,0 +1,52 @@
+# GetCSV
+# Downloads a spreadsheet file with class scores
+
+!bound format within csv, tsv, xls, ods default csv
+
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+!readdef $classdeffile
+
+# call mkuserlist, just to be sure the userlist contains all the users.
+!read adm/class/mkuserlist $qclass
+usercnt=!recordcnt wimshome/log/classes/$qclass/.userlist
+
+!default option=login,name,allscore
+
+csvdownload=$option
+csvformat=$format
+
+# Définition de "activesh"
+scnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+!reset activesh
+!for i=1 to $scnt
+  l=!record $i of wimshome/log/classes/$qclass/sheets/.sheets
+  l=!word 1 of $l
+  !if $l>0
+    activesh=!append item $i to $activesh
+  !endif
+!next i
+
+# Définition de "activexams"
+ecnt=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
+!reset activexams
+!for i=1 to $ecnt
+  e=!record $i of wimshome/log/classes/$wims_class/exams/.exams
+  e=!word 1 of $e
+  !if $e>0
+    activexams=!append item $i to $activexams
+  !endif
+!next i
+
+# Définition de "scoremax"
+s=!record 0 of wimshome/log/classes/$wims_class/sheets/.severity
+scoremax=!line 1 of $s
+!default scoremax=10
+
+#"CSV" directory is a symbolic link to adm/class/userscore/csv
+!read csv/download.proc
+
+fname = $wims_sesdir/getfile/$fbase.$csvformat

@@ -1,0 +1,208 @@
+option:color=" " eqweight split
+
+!set xysize=!line 1 of $oef_applet_option
+!set replygood$i=!lines2rows $(replygood$i)
+!set type=$(replygood$i[2;1])
+!if $type iswordof polyline
+  replist=!lines2rows $(reply$i)
+  replist=!exec pari [$replist]~
+  replist=!replace internal ; by , in $replist
+!else
+  replist=$(reply$i)
+!endif
+
+!if $wims_read_parm=nocompare
+  !set reply_cnt=!itemcnt $replist
+  !if $reply_cnt <= 1
+    !set parm3=!line 1 to -2 of $oef_applet_option
+    !read oef/canvasdraw.phtml $parm3
+  !else
+    !set parm3=!line 1 to -1 of $oef_applet_option
+    !read oef/canvasdraw.phtml $parm3 $replist
+  !endif
+ reply_$i=$canvasdraw_out
+!exit
+!endif
+!set parm3=!line 1 to -2 of $oef_applet_option
+
+!! first line : the code
+!! second line : segments, liste of segments
+
+!set listtype1=segments arrows rects circles points crosshairs
+!set listtype2=lines demilines
+!!only one object
+!set listtype3=polyline polygon
+!set listtype=$listtype1 $listtype2
+!set type=$(replygood$i[2;1])
+
+!set rlist=!sort lines $replist
+!set good=$(replygood$i[2;2..-1])
+!if $type iswordof polygon
+  !set good=$good,$(good[1]),$(good[2])
+!endif
+!set good_cnt=!itemcnt $good
+!set arrow_head=!getopt arrow_head in $(replyoption$i)
+!default arrow_head=10
+
+!if $type iswordof arrows
+   option=$arrow_head,
+!endif
+
+!if $type iswordof $listtype $listtype3
+  !if $type iswordof circles
+    !set type_cnt=3
+  !endif
+  !if $type iswordof points crosshairs $listtype3
+    !set type_cnt=2
+  !endif
+  !default type_cnt=4
+!endif
+!if $type iswordof $listtype3
+  !set type_cnt2=4
+!endif
+!default type_cnt2=$type_cnt
+
+!if $[$good_cnt%$type_cnt]!=0
+  Test=bad $i
+  !exit
+!endif
+!reset g_cnt2
+!for s=1 to $[$good_cnt/$type_cnt]
+  rg=$[($s-1)*$type_cnt]
+  !if $rg+$type_cnt2 <= $good_cnt
+    !increase g_cnt2
+    glist=!append line $(good[$rg+1 ..$rg+$type_cnt2]) to $glist
+    !if $type iswordof segments rects
+       glist=!append line $(good[$rg+3,$rg+4,$rg+1,$rg+2]) to $glist
+    !endif
+  !endif
+!next
+
+!set g_cnt=$[$good_cnt/$type_cnt]
+!set g_cnt1=$g_cnt
+!if $type iswordof segments
+  g_cnt1=$[2*$g_cnt]
+!endif
+!set r_cnt=!itemcnt $rlist
+!reset Rlist
+!for s=1 to $r_cnt
+  Rlist=!append line $(rlist[($s-1)*$type_cnt+1 ..($s-1)*$type_cnt+$type_cnt2]) to $Rlist
+!next
+
+!if $type iswordof $listtype3
+  !if $type=polyline
+    Rlist=!line 1 to -2 of $Rlist
+  !else
+   Rlist=$Rlist,$(rlist[1]),$(rlist[2])
+  !endif
+!else
+  glist=!sort lines $glist
+!endif
+
+rlist=!sort lines $Rlist
+r_cnt=!linecnt $rlist
+!!g_cnt=!linecnt $glist
+
+rlist=!lines2rows $rlist
+glist=!lines2rows $glist
+glist=!exec pari [$glist]
+!reset goodrg goodrr
+!for u=1 to $r_cnt
+   !for v=1 to $g_cnt1
+     !if $type iswordof $listtype1 $listtype3
+        ecart1= $[sqrt(($(glist[$v;1]) - ($(rlist[$u;1])))^2 + ($(glist[$v;2]) - ($(rlist[$u;2])))^2)]
+        !if $type_cnt2>=4
+          !ifval $ecart1<1/$precision
+              ecart2 = $[sqrt(($(glist[$v;3]) - ($(rlist[$u;3])))^2 + ($(glist[$v;4]) - ($(rlist[$u;4])))^2)]
+          !else
+             ecart1 = $[sqrt(($(glist[$v;1]) - ($(rlist[$u;3])))^2 + ($(glist[$v;2]) - ($(rlist[$u;4])))^2)]
+             ecart2 = $[sqrt(($(glist[$v;3]) - ($(rlist[$u;1])))^2 + ($(glist[$v;4]) - ($(rlist[$u;2])))^2)]
+          !endif
+        !endif
+        !if $type_cnt2=3
+           ecart2 = $[abs($(rlist[$u;3]) - ($(glist[$v;3])))]
+        !endif
+        !if $type_cnt2=2
+          ecart2=0
+        !endif
+         mean=$[max($ecart1,$ecart2)]
+      !else (type is lines demilines)
+         vectg=$[$(glist[$v;3])-($(glist[$v;1]))],$[$(glist[$v;4])-($(glist[$v;2]))]
+         vectr=$[$(rlist[$u;3])-($(rlist[$u;1]))],$[$(rlist[$u;4])-($(rlist[$u;2]))]
+         mean=$[abs(($(vectg[1]))*$(vectr[2]) - ($(vectg[2]))*$(vectr[1]))]
+         sens=$[$(vectg[1])*($(vectr[1])) + ($(vectg[2]))*($(vectr[2]))]
+      !endif
+
+      !if NaN isin $mean or Inf isin $mean
+        !debug $mean
+        !goto badrep
+      !endif
+      !if $type iswordof demilines and $sens<=0
+        !goto next
+      !endif
+      !if $mean<1/$precision
+        goodrg=!append item $v to $goodrg
+        goodrr=!append item $u to $goodrr
+        parm3=!append line $type green, $option$(glist[$v;1..$type_cnt2]) to $parm3
+        !goto next
+      !endif
+  !next v
+:next
+!next u
+
+goodrg=!listuniq $goodrg
+totalr=!makelist x for x=1 to $r_cnt
+totalg=!makelist x for x=1 to $g_cnt2
+badr=!listcomplement $goodrr in $totalr
+missing_r=!listcomplement $goodrg in $totalg
+goodr_cnt=!itemcnt $goodrr
+badr_cnt=$[$r_cnt - $goodr_cnt]
+missing_r_cnt=!itemcnt $missing_r
+
+!if $badr!=$empty
+ !for u in $badr
+   parm3=!append line $type red, $option$(rlist[$u;1..$type_cnt2]) to $parm3
+ !next
+!endif
+!if $missing_r_cnt!=0
+ !for v in $missing_r
+  parm3=!append line dashed\
+$type blue, $option$(glist[$v;1..$type_cnt2]) to $parm3
+ !next
+!endif
+!if split iswordof $(replyoption$i) or partialscore iswordof $(replyoption$i) or eqweight iswordof $(replyoption$i)
+  !if eqweight iswordof $(replyoption$i)
+    coeff=0.5
+  !else
+    coeff=1
+  !endif
+!else
+  coeff=0
+!endif
+!if $coeff=0
+   !if $goodr_cnt=$g_cnt2 and $badr_cnt=0 and $missing_r_cnt=0
+      score=1
+   !else
+      score=0
+   !endif
+!else
+  score=$[max(0,min(1,($goodr_cnt-$coeff*(max($badr_cnt,$missing_r_cnt)))/$g_cnt2))]
+!endif
+!if $score=1
+  diareply$i=good
+  !increase freegot
+!else
+  !if $score>0.1
+    partialgood$i=yes
+    diareply$i=good
+    freegot=$[$freegot+$score]
+  !else
+    diareply$i=bad
+  !endif
+!endif
+!set parm3=!nonempty lines $parm3
+!read oef/canvasdraw.phtml $xysize\
+$parm3
+
+reply_$i=$canvasdraw_out
+reply__$i=&nbsp;

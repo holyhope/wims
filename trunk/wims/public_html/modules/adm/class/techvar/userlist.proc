@@ -1,0 +1,14 @@
+!! display list of participant in the class
+
+usercnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
+nblisttechvar=!linecnt $tv_listtechvar
+lttechvarid=$empty
+!for k=1 to $nblisttechvar
+    don=!line $k of $tv_listtechvar
+    !distribute item $don into bl,cl,num
+    tmp=!item $k of $tv_listcode
+    lttechvarid=!append item user_techvar_$(tmp) to $lttechvarid
+!next k
+
+# varfilter proc
+!readproc adm/vfilter/varfilter proc

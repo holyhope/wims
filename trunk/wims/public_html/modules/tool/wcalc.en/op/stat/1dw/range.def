@@ -1,0 +1,29 @@
+!goto $wims_read_parm
+
+:def
+title=Weighted data range
+synonyme=weighted statistic range, range of weighted, weighted range
+input=data2d
+!exit
+
+:proc
+f=
+!for i=1 to $cnt
+ t=!line $i of $fml
+ t=!item 1 of $t
+ f=!append item $[$t] to $f
+!next i
+fml=!sort numeric item $f
+min=!item 1 of $f
+max=!item -1 of $f
+result=$[$max-($min)]
+!exit
+
+:output
+<center>
+Range = $result
+(max = $max, min = $min)
+</center> <p>
+Data: $cnt weighted numbers { $fml3 }
+!exit
+

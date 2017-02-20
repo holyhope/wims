@@ -1,0 +1,97 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_author=Bernadette, Perrin-Riou
+
+slib_parms=9\
+,f1\
+,f2\
+-2,xmin\
+2,xmax\
+-2,ymin\
+2,ymax\
+red,color\
+0,size of the arrow\
+,option: html, url\
+
+slib_example= x+2-y, x^2-y,-2,2,-2,2,green,8,html\
+x+y,x-y,,,,,,,html\
+x+y,x-y
+!exit
+
+:proc
+slib_out=
+
+!distribute items $wims_read_parm into slib_f1, slib_f2,slib_XMIN,slib_XMAX,slib_YMIN,slib_YMAX,slib_color,slib_ARROW_WIDTH
+slib_option=$($wims_read_parm[-1])
+!default slib_LIM = 20
+!default slib_NTEST = 50
+!default slib_MINDIV = 2
+!default slib_MAXCOUNT = 50
+!default slib_XDIV = 25
+!default slib_YDIV = 25
+!default slib_zoom = 2.0
+!default slib_XMIN = -$slib_zoom
+!default slib_YMIN = -$slib_zoom
+!default slib_XMAX = $slib_zoom
+!default slib_YMAX = $slib_zoom
+!default slib_ARROW_LEN = 3
+!default slib_ARROW_WIDTH = 0
+!default slib_color=red
+
+!readproc slib/analysis/phase.gp
+slib_prog =$program_gp
+slib_image = !exec pari color=$slib_color ;\
+dx(x,y) = $slib_f1;\
+dy(x,y) = $slib_f2;\
+LIM = $slib_LIM; NTEST = $slib_NTEST; MINDIV = $slib_MINDIV; MAXCOUNT = $slib_MAXCOUNT;\
+XDIV = $slib_XDIV; YDIV = $slib_YDIV; XMIN = $slib_XMIN; YMIN = $slib_YMIN; XMAX = $slib_XMAX;\
+YMAX = $slib_YMAX; ARROW_LEN = $slib_ARROW_LEN; ARROW_WIDTH = $slib_ARROW_WIDTH ;\
+$slib_prog ; print([img,ARROW]);
+
+slib_image = !declosing $slib_image
+!distribute items $slib_image into slib_image, slib_ARROW
+slib_ARROW = !exec pari mattranspose($slib_ARROW)
+slib_image = !declosing $slib_image
+slib_img = !trim $slib_image
+slib_img = !nonempty lines $slib_img
+slib_img = !declosing $slib_img
+
+slib_img2 =
+slib_img_cnt =!itemcnt $slib_img
+!for slib_i = 2 to $slib_img_cnt
+ slib_im = !item $slib_i of $slib_img
+ slib_im = !exec pari mattranspose($slib_im)
+ slib_im =!declosing $slib_im
+ slib_im = polyline $slib_color, $slib_im
+ slib_img2 = !append line $slib_im to $slib_img2
+!next slib_i
+
+slib_img = !translate internal ; to $\
+$ in $slib_img2
+slib_ARROW = !translate internal ; to $\
+$ in $slib_ARROW
+slib_ARROW = !replace internal arrow, by arrow $    in $slib_ARROW
+
+slib_out = $slib_img
+
+!if $slib_ARROW_WIDTH != 0
+ slib_out =$slib_out\
+ $slib_ARROW
+!endif
+slib_out=xrange $slib_XMIN, $slib_XMAX\
+yrange $slib_YMIN, $slib_YMAX\
+hline 0,0,black\
+vline 0,0,black\
+$slib_out
+
+!if url iswordof $slib_option or html iswordof $slib_option
+  insdraw_size=200,200
+  !insdraw $slib_out
+  slib_out=$ins_url
+  !if html iswordof $slib_option
+    slib_out=<img src="$ins_url" alt="" />
+ !else
+    slib_out=$slib_out,$insdraw_size
+ !endif
+!endif

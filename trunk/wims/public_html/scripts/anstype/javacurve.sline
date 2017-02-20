@@ -1,0 +1,105 @@
+!set precision=!getopt precision in $(replyoption$i)
+!default precision=5
+
+ra=$[$(rlist[2])-$(rlist[4])]
+rb=$[$(rlist[3])-$(rlist[1])]
+rc=$[$(rlist[2])*($(rlist[3]))-($(rlist[1]))*($(rlist[4]))]
+rm=$[max(abs($ra),abs($rb))]
+!if $wims_read_parm=nocompare
+  !if NaN isin $ra$rb$rc or $rm<$precision
+   reply$i=
+   test=NaN
+   !exit
+  !endif
+  m_reply$i =$rlist
+  !goto drawing
+!endif
+ga=$[$(glist[2])-$(glist[4])]
+gb=$[$(glist[3])-$(glist[1])]
+gc=$[$(glist[2])*($(glist[3]))-($(glist[1]))*($(glist[4]))]
+gm=$[max(abs($ga),abs($gb))]
+ !if NaN isin $ga$gb$gc or $gm<$precision
+  Test=bad $i
+  !exit
+ !endif
+ !if NaN isin $ra$rb$rc or $rm<$precision
+  reply$i=
+  test=NaN
+  !exit
+ !endif
+ t1=$[($ga*($rb)-($gb)*($ra))/$gm]
+ !if abs($ga) > abs($gb)
+  t2=$[$ga*($rc)-($gc)*($ra)]
+ !else
+  t2=$[$gb*($rc)-($gc)*($rb)]
+ !endif
+ t2=$[$t2/($gm^2)]
+ t3= $[sqrt(($(glist[1]) - ($(rlist[1])))^2 + ($(glist[2]) - ($(rlist[2])))^2)]
+ t4 = $[($(glist[3]) - $(glist[1]))*($(rlist[3]) - $(glist[2])) + ($(glist[4]) - $(glist[2]))*($(rlist[4]) - $(glist[2]))]
+ test=$[max(max(abs($t1),abs($t2)),$t3)]
+
+ !if $test<$precision and $t4 > 0
+  diareply$i=good
+  !advance freegot
+ !else
+  diareply$i=good
+  !if $test<$[2*$precision-1] and $t4 > 0
+   precreply$i=yes
+   !advance precgood
+  !endif
+  !endif
+ !endif
+
+!if $t4 > 0
+  sens=1
+!else
+  sens=0
+!endif
+
+!if $t3 < $precision
+  origine=1
+!else
+  origine=0
+!endif
+!ifval abs($t1) < $precision
+  direction=1
+!else
+  direction=0
+!endif
+
+##coordonnées des points cliqués
+## test sur l'origine, test sur la direction, test sur le sens (0 ou 1)
+m_reply$i =$rlist;$origine,$direction,$sens
+
+:drawing
+!if $(replytype$i)=javacurve
+ rr=$[ceil(1000/$rm)+2]
+ rp=$[$rr+1]
+ rx1=$[$(rlist[1])*$rp-($(rlist[3]))*$rr]
+ rx2=$[$(rlist[3])*$rp-($(rlist[1]))*$rr]
+ ry1=$[$(rlist[2])*$rp-($(rlist[4]))*$rr]
+ ry2=$[$(rlist[4])*$rp-($(rlist[2]))*$rr]
+ primitive1=line $(rlist[1]),$(rlist[2]),$rx2,$ry2,$color1
+ !if $wims_read_parm!=nocompare
+  gr=$[ceil(1000/$gm)+2]
+  gp=$[$gr+1]
+  gx1=$[$(glist[1])*$gp-($(glist[3]))*$gr]
+  gx2=$[$(glist[3])*$gp-($(glist[1]))*$gr]
+  gy1=$[$(glist[2])*$gp-($(glist[4]))*$gr]
+  gy2=$[$(glist[4])*$gp-($(glist[2]))*$gr]
+  primitive2=line $(glist[1]),$(glist[2]),$gx2,$gy2,$color2
+ !endif
+ !exit
+!endif
+
+!! $(replytype$i)=jsxgraphcurve
+!if $wims_read_parm!=nocompare
+ !for j=1 to $m/2
+  script$i=!append line p$i[$j] = brd$i.create('point',[$(glist[2*$j-1]),$(glist[2*$j])],{face:'+', size:'0',fixed:true,name:'',showInfobox:false,strokeColor:'$color2'}); to $(script$i)
+ !next
+script$i=!append line brd$i.create('line',[p$i[1],p$i[2]],{strokeColor:'$color2', straightFirst:false}); to $(script$i)
+!endif
+!for j=1 to $n/2
+  script$i=!append line q[$j] = brd$i.create('point',[$(rlist[2*$j-1]),$(rlist[2*$j])],{face:'+', size:'8',fixed:true,name:'',strokeColor:'$color1',showInfobox:false}); to $(script$i)
+!next
+script$i=!append line brd$i.create('line',[q[1],q[2]],{strokeColor:'$color1', straightFirst:false}); to $(script$i)

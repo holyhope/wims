@@ -1,0 +1,68 @@
+
+!if $title=$empty
+ $name_error1 <span class="tt wims_fname">$addr</span>.
+ !set wims_ref_class=wims_button
+ !href cmd=reply&job2=first $wims_name_back2
+ !exit
+!endif
+
+!if $muauto iswordof update install
+ !if $output!=ok
+  $name_error2 <span class="tt wims_fname">$addr</span>.
+ !else
+  $name_install <span class="tt wims_fname">$addr</span>: $name_successful.
+!set wims_ref_class=wims_button
+  !href target=wims_test module=$addr $name_test
+<p>
+  $name_need
+  !href cmd=reply&job=mkindex $name_rebuild
+.
+</p>
+ !endif
+
+!set wims_menu_items=!append line download_module,1,cmd=reply&job=modules&job2=first\
+  to $wims_menu_items
+
+ !reset muauto
+ !exit
+!endif
+!reset table_center
+$table_header
+<caption>
+!if $vtest=$empty
+ $name_newmodule <span class="tt wims_address">$addr</span> <br />
+ !set wims_ref_class=wims_button
+ !href cmd=reply&job2=one&muauto=install $name_Install
+!else
+ $name_version <span class="tt wims_address">$addr</span> <br />
+!set wims_ref_class=wims_button
+ !href cmd=reply&job2=one&muauto=update $name_Update
+!endif
+ $
+!set wims_ref_class=wims_button public_html/modules/adm/manage/mu/one.phtml
+!href cmd=reply&job2=first $wims_name_giveup
+</caption>
+$table_tr<th>$wims_name_publish_center</th><td>$mu_name</td></tr>
+$table_tr<th>$wims_name_title</th><td>$title</td></tr>
+$table_tr<th>$wims_name_Description</th><td>$description</td></tr>
+$table_tr<th>$wims_name_Type</th><td>$category</td></tr>
+$table_tr<th>$wims_name_Version</th><td>$version
+!if $vtest!=$empty
+ ($name_versus $vtest)
+!endif
+</td></tr>
+$table_tr<th>$wims_name_Language</th><td>$language</td></tr>
+$table_tr<th>$wims_name_Author</th><td>
+  <a href="mailto:$address">$author</a></td></tr>
+!if $translator!=$empty
+ $table_tr<th>$wims_name_Translator</th><td>
+  <a href="mailto:$translator_address">$translator</a>
+ </td></tr>
+!endif
+$table_tr<th>$wims_name_require</th><td>$require</td></tr>
+!if $news!=$empty
+ $table_tr<th>$name_Changes</th><td>
+  <pre class="small">$news</pre></td></tr>
+!endif
+$table_end
+

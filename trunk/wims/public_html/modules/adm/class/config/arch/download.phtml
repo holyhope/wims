@@ -1,0 +1,38 @@
+
+!if $fsize=$empty
+ $name_download1
+ !exit
+!endif
+
+$name_download2
+!getfile $fname.$format $fname.$format
+ ($fsize K)
+ $name_download3
+
+!! you can always choose data in arch (CNIL compatibility)
+!!!if $fsize<50 and all isitemof $selection
+!! !exit
+!!!endif
+
+!form reply
+<input type="hidden" name="job" value="$job" />
+<input type="hidden" name="job2" value="$job2" />
+!if $fsize<500
+ $name_download4
+!else
+ $name_download5
+!endif
+
+!set selection=$select
+!formcheckbox selection list $reclist prompt $tot
+
+<p>$name_selective1 <input type="submit" value="$name_selective2" />
+$name_selective3
+</p>
+<div class="wims_msg info">
+!read lang/names.phtml.$moduclass_lang download
+</div>
+
+!formend
+
+

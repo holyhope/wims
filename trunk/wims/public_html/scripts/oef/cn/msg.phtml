@@ -1,0 +1,97 @@
+
+!if empty_out iswordof $error
+你的回答不包含任何输出. 请改正.
+ !if $m_reply_err!=$empty
+  <pre><span class="wims_warning">$m_reply_err</span></pre>
+ !endif
+ !exit
+!endif
+
+!! empty_data bad_data double_reply  are in html/msg.phtml.fr - suppress on test
+
+!if bad_answer iswordof $error
+ !if illegalname iswordof $test
+你的回答包含非法名字<span class="tt">$illegal_name</span>. 请改正.
+  !exit
+ !endif
+ !if lengthoverflow iswordof $test
+你的回答超长. 请重写.
+  !exit
+ !endif
+你的回答
+ <span span class="tt">$bad_value</span>
+ !if unknownword iswordof $test
+  !set w=!word 3 of $test
+看不懂: 回答中的<span class="tt">$w</span>
+与问题无关. 请改正.
+  !exit
+ !endif
+ !if nocompute iswordof $test
+是不允许的: 请你自己计算出答数, 再将其送回.
+  !exit
+ !endif
+ !if nocomputecomplex iswordof $test
+是不允许的.
+请按下列形式给出复数
+   <span class="tt"> a + b i </span>
+   其中
+   <span class="tt">a</span>
+   和
+   <span class="tt">b</span>
+   是计算出来的数值 (例如,
+    <span class="tt"> -1 + 2 i</span> or <span class="tt"> 1 - 2 i</span>).
+   !exit
+ !endif
+ !if badform iswordof $test
+  !if noreduced iswordof $test
+没有写成最简形式. 请约简分式.
+   !exit
+  !endif
+不符要求. 请重新写成正确的形式.
+  !exit
+ !endif
+ !if notunit iswordof $test
+只是一个数: 请写出它的单位.
+  !exit
+ !endif
+  !if bad_variable iswordof $test
+   is not understandable. It should contain extra variables.
+   !exit
+ !endif
+ is not understandable.
+看不懂. 请改正后重新发送.
+ !exit
+!endif
+
+!if bad_exo iswordof $error
+ 由于本练习有错，无法检测你的回答的正确性. 你现在唯一的解决办法是换一个
+ 练习, 非常抱歉.
+ <p>
+ 如果你要报告本练习的错误,
+ !if $email!=$empty
+  请
+  !mailurl $email 与作者联系
+.
+ !else
+  请与作者联系.
+ !endif
+ </p>
+ !exit
+!endif
+
+!if too_many_print iswordof $error
+ 你对可打印版本的请求超过了限制.
+ !exit
+!endif
+
+!if chemclick_empty_data iswordof $error
+ 你没有选取原子或键. 请参见帮助.
+ !exit
+!endif
+
+!if chemdraw_empty_data iswordof $error
+ 你还没有修改java的小程序. 请完成它.
+ !exit
+!endif
+
+!msg $error

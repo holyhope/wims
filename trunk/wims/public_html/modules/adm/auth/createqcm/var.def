@@ -1,0 +1,84 @@
+# Fichier de déclaration des variables
+#
+# Only those variables with possible user inputs or requiring inter-request
+# savings need to be declared in this file.
+#
+#Each non-comment line defines a variable. Format of the line:
+#
+#name	allow
+#
+#name: name of the variable
+#allow: when allow the user to override the defined value.
+#       it maybe any, deny, init, config, reply.
+#
+#
+#name	allow
+deny:status
+
+## initilisatisation en intro ##
+init:exo chexo
+
+## description des exos ##
+deny:exosdesc demo
+
+## alertes ##
+deny:alerts	exalert
+
+## couleurs de fonds et cosmétique ##
+deny:coulors labels[3]
+
+## le répertoire à lire ##
+prefixdir	deny
+
+## les objets ##
+obsList		reply
+deny:obsnb obsrecord chronobs
+
+## les propriétés ##
+propsList	reply
+deny:propsnb propsrecord propsrepList nonprop rowsnb extrarow rpmat
+
+## les fonctions ##
+reply:foncsList foncsrep typnb
+deny:foncsnb foncsrecord chronfoncs fonctemp typafList rfmat rfmatL \
+ foncsrepList foncstypList
+
+##------ liste de types des résultats des fonctions ------##
+deny:ftypList Nbtyp
+##------ libellés des types précédents (pour affichage) ------##
+typafList deny
+
+## les possibilités d'affichage des propriétés ##
+reply:ckchnb fixchnb chbox_u_radio bornd borng
+deny:multirep chnb
+
+## les étapes ##
+deny:etape etapesnb
+navig		reply
+
+## identifiants de l'exo oef ##
+reply:auteur imel titre
+
+## l'énoncé ##
+enonceR		reply
+
+## les indications ##
+exo_indic	reply
+deny:indicList rindic rindicL indicList_obj	indicList_fonc
+
+## liste des numéros des propriétés éventuelles -- limitée à 100 -- ##
+propsrep	reply
+
+## la version du module et l'avertissement ##
+deny:version warning
+
+###---------- noms des variables pour createxo ----------###
+deny:toef_var[21] typvarcnt toef_varcnt toefsource fichname
+reply:sendoef fichsrc
+
+###--------- données récupérables pour l'exo ---------###
+exodata		deny
+
+###--------- pour createxo ---------###
+to_ia_qcm	init
+

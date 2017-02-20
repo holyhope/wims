@@ -1,0 +1,75 @@
+!read adm/title.phtml 3\
+\
+$title
+
+!if $job2=one
+ !read mu/one.phtml
+ !reset auto muauto
+ !exit
+!endif
+
+!if $job2=all
+ <p>
+ $name_scheduled
+ </p> <hr style="width:70%" />
+ !set job2=first
+ !reset auto muauto
+!endif
+
+$name_canupdate
+!href cmd=reply&job=conf&confcat=6 $name_click
+ $name_automatic
+  &nbsp;
+  !set wims_ref_class=wims_button_help
+  !href cmd=help&help_subject=publication $wims_name_help
+
+!form reply
+<input type="hidden" name="muauto" value="check" />
+!reset table_center
+<fieldset class="property_fields blockcenter">
+  <legend>$title</legend>
+    <div class="field box halfwidth">
+     <label for="muzone">$name_zone</label>
+     <input size="40" name="muzone" id="muzone" value="$muzone" />
+    </div>
+    <div class="field box halfwidth">
+     <label for="mucat">$name_cat</label>
+     <input size="40" name="mucat" id="mucat" value="$mucat" />
+    </div>
+    <div class="field box fullwidth wimscenter">
+      <label for="mudelay">$name_change</label>
+      <input size="4" name="mudelay" id="mudelay" value="$mudelay" />
+      $name_ago
+    </div>
+    <div class="field box fullwidth wimscenter">
+     <input type="submit" value="$wims_name_search" />
+     <label for="">$name_mod</label>
+     <div class="formHelp">
+      !let nb=!itemcnt $mu_download_site
+      !if $nb>1
+        <ol>
+        !for k in $mu_download_site
+          <li>$(depotname_$k) ($k)</li>
+        !next depot
+        </ol>
+      !else
+        $(depotname_$(mu_download_site)) ($mu_download_site)
+      !endif
+      </div>
+    </div>
+ </fieldset>
+
+!formend
+
+$name_youneed
+!href cmd=reply&job=mkindex $name_rebuild
+ $name_after.
+
+$name_rss
+!href cmd=reply&job=rss RSS
+.
+!if $auto=check
+ !read mu/$auto.phtml
+!endif
+
+!reset muauto

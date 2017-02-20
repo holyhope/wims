@@ -1,0 +1,589 @@
+!!@# translate between !!@#  and !!#@
+!!!for the moment no language version, because only one example module
+!!!set example_dir=lang/example.fr
+
+<div $frame>
+
+!goto $special_parm1
+
+:etape
+$hh   Nombre maximum d'étapes</h2>
+!!@#
+Si vous choisissez 2 étapes, l'exercice proposera d'abord un jeu de questions, 
+attendra les réponses, puis, si elles sont justes, proposera un autre jeu de questions.
+Le nombre de questions de chaque jeu est paramétré dans la case au dessus.
+!!#@
+!goto end
+
+:format_click
+$hh $name_format</h2>
+<ul><li> <dl $tt>case</dl>
+!!@#
+texte à taper
+!!#@
+</li>
+<li><dl $tt>clickfill</dl>
+!!@#
+étiquette à déplacer (une étiquette peut servir plusieurs fois)
+!!#@
+</li>
+<li><dl $tt>dragfill</dl>
+!!@#
+étiquette à déplacer (chaque étiquette ne peut être
+utilisée qu'une seule fois). Ce type étant délicat à utiliser
+n'est plus proposé dans le menu, il peut cependant être obtenu
+directement sur les sources.
+!!#@ 
+</li>
+<li><dl $tt>mark</dl>
+!!@#
+texte à marquer à la souris
+!!#@
+</li>
+<li><dl $tt>menu</dl>
+!!@#
+menu déroulant
+!!#@
+</li>
+</ul>
+!goto end
+:format0
+Le format <span class="tt">mark</span> demande de marquer des mots. Le format <span class="tt">flashcard</span> demande de
+retourner des étiquettes et de cacher des mots.
+!goto end
+:format_radio
+$hh $name_format</h2>
+<ul><li> <dl $tt>radio</dl>
+!!@#
+choix de réponses (une seule case peut être cochée par question)
+!!#@
+</li>
+<li><dl $tt>checkbox</dl>
+!!@#
+choix de réponses (une ou plusieurs cases peuvent être cochées par question)
+!!#@
+</li>
+</ul>
+!goto end
+
+:menu_commun 
+$hh Menu commun</h2>
+<ul><li>
+!!@#
+Si vous choisissez l'option <span class="tt">oui</span>, tous les mots entre ?? ??
+sont proposés en commun dans tous les menus.
+!!#@
+</li>
+<li>
+!!@#
+Si vous cochez <span class="tt">non</span>, vous devrez obligatoirement
+mettre plusieurs choix possibles dans chaque ?? ?? . 
+!!#@
+</li>
+</ul>
+!goto end
+
+:data
+$hh 
+!!@#
+Nombre de jeux de données
+!!#@
+</h2>
+!!@#
+Le nombre de jeux de données correspond au nombre de questions que vous souhaitez
+voir sur un même écran (c'est-à-dire à chaque étape).
+!!#@
+
+!goto end
+
+:file
+$hh    </h2>
+!!@#
+Le fichier source contient le code de programmation. Il est écrit 
+par Quicktool à partir des renseignements que vous donnez dans ce formulaire
+et est nécessaire au fonctionnement de l'exercice.
+!!#@
+!goto end
+
+:choice
+$hh </h2>
+!!@#
+Dans le QCM $wims_name_quick_TRUEFALSE, vous choisissez les deux (ou plus) mots clés 
+de réponse, par exemple <span class="tt">true,false</span>. Vous pouvez les indiquer soit
+en haut du fichier de données, soit ici (ce que vous indiquez
+ici est prioritaire). Attention, ces mots doivent se trouver à l'identique
+dans le fichier de données après chaque affirmation.
+!!#@
+!goto end
+
+
+:choice2
+$hh   </h2>
+!!@#
+Cette liste de mots proposée est commune à tous les trous. Elle correspond 
+à la variable <span class="tt">choice=</span> qui peut être écrite en haut du fichier de 
+données. Cette fonction peut être utile pour rajouter des mots perturbateurs.
+!!#@
+!goto end
+
+:partialscore
+!!@#
+Si vous répondez oui, une réponse seulement partiellement juste permet de faire 
+la question suivante. Si vous répondez non, tous les mots doivent être 
+correctement marqués pour pouvoir répondre à la deuxième question.
+!!#@
+!goto end
+
+:first_step
+$hh Première étape</h2>
+!!@#
+La première question est en général une question demandant de marquer
+des mots. Vous pouvez la supprimer en cochant la case <span class="tt">no</span>. 
+!!#@
+!goto end
+
+:second_step
+$hh 
+!!@#
+Question supplémentaire
+!!#@
+</h2>
+!!@#
+Une question supplémentaire peut être demandée. Dans ce cas, vous pouvez
+<ul>
+<li>donner une consigne pour la deuxième question ;</li>
+<li>insérer la deuxième question dans le texte, après le texte ;</li>
+<li>choisir le format de la question supplémentaire.</li>
+</ul>
+!!#@
+!goto end
+
+:answer_given
+$hh  Réponses données</h2>
+!!@#
+Vous pouvez choisir que les bonnes réponses soient données ou non
+une fois l'exercice fait. 
+!!#@
+!goto end
+
+:raw
+<p>
+!!@#
+Si vous choisissez l'option <span class="tt">texte dans son format original</span>, 
+les retours à la ligne seront exactement ceux du texte que vous avez copié. 
+<br />
+Si vous choisissez
+ <span class="tt">texte ajusté à la taille de la fenêtre </span>, 
+ le texte sera ajusté à la taille de fenêtre. Par contre, il vous
+ sera peut-être nécessaire de rajouter des balises html indiquant 
+ un début de paragraphe :  <span class="tt">&lt;p></span>. 
+!!#@
+</p>
+!goto end
+
+:taille_corr
+$hh    </h2>
+V x HG x HD :
+!!@#
+V est la taille verticale des étiquettes et HG, HD sont les tailles
+horizontales des colonnes gauche et droite.
+!!#@
+!goto end
+
+:taille_compose
+$hh    </h2>
+!!@#
+hauteur de la fenêtre d'écriture : par défaut, 10, pour une ligne mettre 5.
+Au dessous de 5, le texte est centré.
+!!#@
+!goto end
+
+:taille_case
+$hh    </h2>
+!!@#
+nombre de caractères dans la case à remplir
+!!#@
+!goto end
+
+:taille_drag
+$hh    </h2>
+V x H 
+!!@#
+où V est la taille verticale des étiquettes et H la taille horizontale
+!!#@
+!goto end
+
+:alea
+$hh  
+!!@#
+Aléatoire
+!!#@
+</h2>
+!!@#
+<p> Si vous cochez <span class="tt">oui</span>, vos questions seront proposées au hasard 
+(de façon aléatoire) et elles apparaîtront dans un ordre aléatoire sur 
+l'écran.
+</p>
+<p>Si vous cochez <span class="tt">non</span>, les questions apparaîtront dans l'ordre
+où vous les avez mises dans le fichier de données.
+Vous devez donc dans ce cas-là sélectionner
+<span class="tt">tout</span> pour le parmètre <span class="tt">nombre de jeux de données utilisés 
+à chaque étape</span>. 
+Ne le faites que si vous êtes sûr de vous. L'exercice
+ne sera plus aléatoire et donc peu intéressant dans la répétition. 
+</p>
+N'oubliez pas que l'intérêt de wims est cette possibilité d'aléatoire. 
+!!#@
+!goto end
+
+!goto end
+:specialhelp
+$hh 
+!!@#
+Aides spéciales
+!!#@
+</h2>
+!!@#
+Des aides peuvent être données à chaque mot dans le cas 
+où le format de réponses est <span class="tt">case</span>. Elles sont obtenues
+en passant la souris sur le prompt (par défaut le prompt est ++>). 
+Quatre types d'aide sont prévus : <ol><li>le nombre de lettres des mots indiqués
+par un tiret</li>
+<li> trois lettres prises au hasard par mot 
+(ou deux si le mot a moins de cinq lettres)</li>
+<li> la troisième aide est faite à partir d'un message personnalisée entrées dans le fichier de 
+données au préalable
+(voir format du fichier de données). 
+</li>
+<li>les mots manquants sont montrés pendant quelques secondes.
+</li>
+</ol>
+<p>
+Ces aides sont à choisir pour les quatre premiers essais. Si vous ne cochez rien, aucune aide 
+n'est donnée.
+</p>
+!!#@
+
+!goto end
+
+:percent
+$hh  Pourcentage de réussite</h2>
+!!@#
+S'il y a au moins deux étapes, vous pouvez décider du pourcentage
+de réussite demandé pour passer d'une étape à l'autre. Si vous sélectionnez
+100%, l'exercice s'arrête à la première faute. Si vous sélectionnez
+0%, il continue jusqu'à la fin quelque soit les réponses données. 
+!!#@
+!goto end
+
+:supplement
+$hh  Réponses</h2>
+!!@#
+Les réponses peuvent être mises soit à l'intérieur du texte soit après le texte.
+!!#@
+!goto end
+
+
+:try
+$hh    </h2>
+!!@#
+Rentrez ici le nombre d'essais autorisés. La note
+sera bien sûr donnée en fonction du nombre d'essais.
+!!#@
+!goto end
+
+:instruction
+$hh  Consigne</h2>
+
+!!@#
+Mettez ici la consigne de l'exercice. Elle se trouvera
+au début de l'exercice. Vous pouvez utiliser des balises html. 
+Si vous désirez mettre des liens sur internet, faites-les ouvrir
+de préférence dans une autre fenêtre en écrivant 
+<br />
+<pre>
+&lt;a target=wims_external href="http://adresse ..... "&gt;lien&lt;/a&gt;
+</pre>
+Mais n'oubliez pas que ces pages web peuvent parfois disparaître.
+!!#@
+!goto end
+
+:reading
+$hh    </h2>
+!!@#
+Si vous cochez <span class="tt">oui</span>, vous devez donner le nom d'un fichier (que 
+vous téléchargerez ensuite dans le module). Le texte qui se 
+trouvera dans ce fichier apparaîtra en fenêtre popup
+lorsqu'on cliquera sur le mot que vous indiquez (à la place de 
+[à lire]).
+!!@#
+!goto end
+
+:audio
+$hh    </h2>
+!!@#
+Si vous cochez <span class="tt">oui</span>, vous devez donner le nom d'un fichier (que 
+vous téléchargerez ensuite dans le module). Ne pas oublier l'extension 
+<span class="tt">.mp3</span>.
+!!#@
+
+!goto end
+
+
+:video
+$hh    </h2>
+
+!!@#
+Si vous cochez <span class="tt">oui</span>, vous devez donner le nom d'un fichier video
+(que vous téléchargerez ensuite dans le module) s'il n'est pas trop gros 
+ou le nom d'une adresse http valide de la forme <span class="tt">http://xxx </span>. 
+Ce fichier sera lu lorsqu'on cliquera sur le mot que vous indiquez 
+(à la place de  [video]).
+!!#@
+!goto end
+
+:image
+$hh    </h2>
+
+!!@#
+Si vous cochez <span class="tt">oui</span>, vous devez donner le nom de fichiers images
+(avec extension, par exemple <span class="tt">.jpg</span>)
+que  vous téléchargerez ensuite dans le module. 
+Ces images apparaîtront dans une fenêtre popup 
+lorsqu'on  cliquera sur le mot [à regarder]. 
+
+Si vous désirez que ce lien soit au milieu d'une phrase des consignes, 
+selectionner <span class="tt">non</span> et mettre à l'endroit désiré
+<span class="tt"> &lt;img src=\imagedir/nom_image&gt></span>
+Le nom est le nom complet (avec l'extension). 
+!!#@
+
+!goto end
+
+:sens
+$hh Sens dans $wims_name_quick_QUIFAITQUOI   </h2>
+!!@#
+Vous pouvez demander Qui fait les actions données, ou quelles actions
+fait un des "personnages". L'exercice peut aussi choisir aléatoirement 
+une des deux possibilités. 
+!!#@
+!goto end
+
+:aucune
+$hh Mot dans $wims_name_quick_QUIFAITQUOI   </h2>
+!!@#
+Dans votre exercice, la dernière question est toujours "aucune de ces  
+possibilités". Vous pouvez remplacer cette phrase par  
+une autre et dans la langue qui vous convient ; vous pouvez écrire  
+par exemple: "none of the above" en anglais.
+!!#@
+
+!goto end
+:nopaste
+$hh    </h2>
+!!@#
+Si vous cochez oui, l'élève pourra faire du copier-coller. 
+Si vous cochez non, il sera obligé d'écrire lui-même
+dans le cas où la réponse est libre. 
+!!#@
+!goto end
+
+:css
+$hh    </h2>
+!!@#
+Vous pouvez mettre ici le style css des questions ou des réponses.
+Par exemple, vous pouvez changer la couleur.
+!!#@
+!goto end
+
+
+:css1
+$hh    </h2>
+!!@#
+Si vous utilisez des styles css dans la partie "instruction", vous pouvez
+les mettre ici. Par défaut, le style énumération avec des lettres majuscules
+a été mis. 
+!!#@
+
+!goto end
+
+
+:prompts
+
+$hh    </h2>
+!!@#
+Vous pouvez ici mettre des "prompts" ou des commentaires apparaissant en cas
+de bonnes réponse, mauvaises réponses ou réponses incomplètes. 
+!!#@
+!goto end
+
+:player
+$hh    </h2>
+!!@#
+Vous pouvez choisir un lecteur audio flash dans la liste proposée. Si vous désirez changer la taille par
+défaut de ce lecteur, entrez les tailles désirées sous la forme 
+<span class="tt">width=60 height=80</span> (sans espace avant et après les signes <span class="tt">=</span>.
+!!#@
+!goto end
+:swac
+$hh    </h2>
+
+!!@#
+Si vous désirez utiliser les mots de la base audio swac (<a target="wims_external" href="http://shtooka.net">http://shtooka.net</a>),
+vous devez préciser le language choisi. 
+Cela n'est pas encore utilisable pour tous les types d'exercice (mais est utilisable
+dans les "préférences" d'un jeu de données sous la forme <span class="tt">audio="mot"</span>
+en ne précisant pas l'extension <span class="tt">.mp3</span>)
+!!#@
+!goto end
+</div>
+
+
+!!language independant
+
+:data_fileCORRESP
+$hh  $wims_name_quick_CORRESP</h2>
+<p>
+$gen_data
+</p>
+!set b = !record 1 of lang/help.$modu_lang/CORRESP
+!set a = !record 2 to -1 of lang/help.$modu_lang/CORRESP
+!set b= !line 2 to -1 of $b
+<pre  $pre>
+$b
+!replace internal : by &#58; in :$a
+</pre>
+!goto end
+
+:data_fileCOMPOSE
+$hh2 $wims_name_quick_COMPOSE</h2>
+<p>
+$gen_data
+</p>
+!set b = !record 1 of lang/help.$modu_lang/COMPOSE
+!set a=!record 2 to -1 of  lang/help.$modu_lang/COMPOSE
+!set b= !line 2 to -1 of $b
+<pre  $pre>
+$b
+!replace internal : by &#58; in :$a
+</pre>
+!goto end
+
+:data_fileGAP
+$hh  $wims_name_quick_GAP</h2>
+<p>
+$gen_data
+</p>
+!set b = !record 1 of lang/help.$modu_lang/GAP
+!set a = !record 2 to -1 of lang/help.$modu_lang/GAP
+!set b= !line 2 to -1 of $b
+<pre  $pre>
+$b
+!replace internal : by &#58; in :$a
+</pre>
+!goto end
+
+:data_fileORDONNE
+$hh  $wims_name_quick_ORDONNE</h2>
+$gen_data
+
+!set b = !record 1 of lang/help.$modu_lang/ORDONNE
+!set a = !record 2 to -1 of lang/help.$modu_lang/ORDONNE
+!set b= !line 2 to -1 of $b
+<pre  $pre>
+$b
+!replace internal : by &#58; in :$a
+</pre>
+!goto end
+
+:data_fileQCM
+$hh  $wims_name_quick_QCM</h2>
+$gen_data
+
+!set b = !record 1 of lang/help.$modu_lang/QCM
+!set a = !record 2 to -1 of lang/help.$modu_lang/QCM
+!set b= !line 2 to -1 of $b
+<pre  $pre>
+$b
+!replace internal : by &#58; in :$a
+</pre>
+!goto end
+
+:data_fileSELECTWORD
+
+
+$hh  $wims_name_quick_SELECTWORD</h2>
+$gen_data
+!set b = !record 1 of lang/help.$modu_lang/SELECTWORD
+!set a = !record 2 to -1 of lang/help.$modu_lang/SELECTWORD
+!set b= !line 2 to -1 of $b
+<pre  $pre>
+$b
+!replace internal : by &#58; in :$a
+</pre>
+!goto end
+
+:data_fileSELECTWORDA
+
+$hh  $wims_name_quick_SELECTWORDA</h2>
+$gen_data
+
+!set b = !record 1 of lang/help.$modu_lang/SELECTWORDA
+!set a = !record 2 to -1 of lang/help.$modu_lang/SELECTWORDA
+!set b= !line 2 to -1 of $b
+<pre  $pre>
+$b
+!replace internal : by &#58; in :$a
+</pre>
+!goto end
+
+:data_fileSELECTWORDB
+$hh  $wims_name_quick_SELECTWORDB</h2>
+$gen_data
+!set b = !record 1 of lang/help.$modu_lang/SELECTWORDB
+!set a = !record 2 to -1 of lang/help.$modu_lang/SELECTWORDB
+!set b= !line 2 to -1 of $b
+<pre  $pre>
+$b
+!replace internal : by &#58; in :$a
+</pre>
+!goto end
+
+:data_fileQUIFAITQUOI
+$hh $wims_name_quick_QUIFAITQUOI</h2>
+$gen_data
+!set b = !record 1 of lang/help.$modu_lang/QUIFAITQUOI
+!set a = !record 2 to -1 of lang/help.$modu_lang/QUIFAITQUOI
+!set b= !line 2 to -1 of $b
+<pre  $pre>
+$b
+!replace internal : by &#58; in :$a
+</pre>
+!goto end
+
+:data_fileTONIC
+$hh $wims_name_quick_TONIC</h2>
+$gen_data
+!set b = !record 1 of lang/help.$modu_lang/TONIC
+!set a = !record 2 to -1 of lang/help.$modu_lang/TONIC
+!set b= !line 2 to -1 of $b
+<pre  $pre>
+$b
+!replace internal : by &#58; in :$a
+</pre>
+!goto end
+
+:data_fileTRUEFALSE
+$hh $wims_name_quick_TRUEFALSE</h2>
+$gen_data
+!set b = !record 1 of lang/help.$modu_lang/TRUEFALSE
+!set a = !record 2 to -1 of lang/help.$modu_lang/TRUEFALSE
+!set b= !line 2 to -1 of $b
+<pre  $pre>
+$b
+
+!replace internal : by &#58; in :$a
+</pre>
+!goto end
+
+:end

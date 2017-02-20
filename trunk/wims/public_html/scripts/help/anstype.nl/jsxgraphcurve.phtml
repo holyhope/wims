@@ -1,0 +1,68 @@
+<b>Teken een rechte, polygon , punten , segment , vector ,rechthoek, stippellijn </b>
+(naam : <span class="tt wims_code_words">jsxgraphcurve</span>)
+<br />
+Dit antwoordmodel kijkt de tekening van de gebruiker na.
+De syntax is gelijk aan die van antwoordmodel "javacurve" maar gebruikt hiervoor javascript inplaats van java.
+
+<p>Enkele bijzonderheden:
+Het gebruik van de css klassen
+<span class="wims_code_words">jxgbox</span> en <span class="wims_code_words">jsxgraph_button</span> kunnen
+worden gebruikt om het antwoord te centreren op de pagina, bijvoorbeeld:
+</p>
+<pre>
+&lt;style type="text/css">
+.jxgbox {margin-left:auto;margin-right:auto}
+.jsxgraph_button {text-align:center;}
+&lt;/style>
+</pre>
+
+!set p=anstype.$lang/javacurve
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td class="tt wims_code_words">
+!line 1 of $l_
+    </td><td>
+!line 2 to -1 of $l_
+   </td>
+ </tr>
+  !next
+  $table_tr<td class="tt wims_code_words">
+  brokenline,x1,y1,x2,y2, ...
+  </td><td>
+  Polygonal line
+  </td></tr>
+$table_end
+
+Bijvoorbeeld :
+
+<textarea id="wims_show" cols="100" rows="30" name="wims_show" readonly="readonly">
+\title{Voorbeeld met jsxgraphcurve}
+
+\title{Rechte}
+\precision{100}
+\css{<style type="text/css">
+.jxgbox {margin-left:auto;margin-right:auto;}
+.jsxgraph_button {text-align:center;}
+</style>}
+
+\text{canvas=draw(200,200
+hline 100,100,black
+vline 100,100,black
+hline 100,50,black
+vline 150,100,black
+text black,100,100,large,O
+text black,150,50,large,A
+)
+}
+\statement{ Teken de rechte tussen O en A.
+ \embed{r1,200x200}
+}
+\answer{}{\canvas;line,100,100,150,50}{type=jsxgraphcurve}
+</textarea>

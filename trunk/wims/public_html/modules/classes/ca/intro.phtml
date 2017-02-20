@@ -1,0 +1,36 @@
+!set proc=oef
+!header
+
+!if $wims_class=$empty
+ <p>
+  Aquest mòdul és un mòdul intern d'una classe virtual. Com que no estàs
+  connectat com a membre d'aquesta classe, no pots accedir-hi. Ho sento.
+ </p>
+ <p class="wimscenter">
+  !href $ Tornar a WIMS
+ </p>
+ !tail
+ !exit
+!endif
+
+<p>Aquest mòdul recull els exercicis interactius creats a la classe
+<span class="wims_classdesc">$wims_classname</span> de
+<span class="wims_institutiondesc">$wims_institutionname</span>.</p>
+
+!if $wims_user=supervisor
+ <p>
+  !set wims_ref_class=wims_button
+  !href module=adm/createxo Crear un exercici
+ </p>
+ !read oef/intromenu.phtml
+!else
+  <p>
+   Només el professor pot accedir a aquesta llista d'exercicis.
+  </p>
+  <p class="wimscenter">
+   !href $ $wims_name_home
+  </p>
+!endif
+
+!tail
+

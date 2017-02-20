@@ -1,0 +1,81 @@
+!!read adm/title.phtml 1
+
+!if $save!=$empty
+ !if $error!=$empty
+  <div class="wims_msg alert">
+  !read lang/msg.phtml.$modu_lang
+  </div>
+ !else
+  !if $changed<1
+   $name_config
+  !else
+   $name_updated
+  !endif
+ !endif
+!endif
+
+!form reply
+<fieldset class="property_fields blockcenter">
+ <legend>$title</legend>
+ <ul class="flex_box">
+!for i=1 to $confcnt
+ !set r_=!record $i of lang/confdata.$modu_lang
+ !set t_=!word 1 of $r_
+ !if $catname isitemof $t_
+   <li class="field box halfwidth">
+  !distribute lines $r_ into a_,b_,c_,e_,f_
+  !distribute words $a_ into t_,n_,N_
+  !set D_=$($n_)
+  <label for="conf_$i">$b_</label>
+  !set wims_ref_class=wims_button_help float_right
+  !href cmd=help&help_subject=conf&help_conf=$i $wims_name_help
+
+  !if $c_=free
+    <input size="40" name="conf_$i" id="conf_$i" value="$D_" />
+  !endif
+  !if $c_=int
+    <input size="10" name="conf_$i" id="conf_$i" value="$D_" />
+  !endif
+  !if $c_=color
+    <input size="10" name="conf_$i" id="conf_$i" value="$D_" type="color" />
+  !endif
+  !if $c_=choice
+   !set conf_$i=$D_
+   !set e_=!translate ; to $\
+$ in $e_
+   !distribute lines $e_ into x_,y_
+   !formselect conf_$i list $x_ prompt $y_
+  !endif
+  !if $c_=checkbox
+   !set conf_$i=$D_
+   !set e_=!translate ; to $\
+$ in $e_
+   !distribute lines $e_ into x_,y_
+   !set wims_ref_class=wims_formradio
+   !formcheckbox conf_$i list $x_ prompt $y_
+  !endif
+  !if $c_ iswordof free int color
+    !set tmp=!replace internal ' by \' in $(DF_$n_)
+   <span class="small">
+     <input type="button" onclick="document.forms[0].conf_$i.value='$tmp'" value="$name_default" class="wims_button"/>
+   </span>
+  !endif
+  !set g_=!trim $g_
+  <div class="formHelp">
+    $f_
+  </div>
+  </li>
+ !endif
+!next i
+</ul>
+ <div class="wimscenter actions">
+   <input type="submit" name="save" value="$wims_name_tosave" />
+   !set wims_ref_class=wims_button wims_secondary_button
+   !href cmd=reply&job=list $wims_name_giveup
+ </div>
+</fieldset>
+
+!formend
+<span class="wims_warning">$wims_name_warning</span>. $name_warning
+
+!read conf/$catname.phtml

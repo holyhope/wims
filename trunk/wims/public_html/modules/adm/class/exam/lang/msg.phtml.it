@@ -1,0 +1,129 @@
+!set wims_module_log=error: $error
+
+!if bad_maxexams=$error
+ Il numero massimo di esami è $max_exams.
+ !exit
+!endif
+
+!if not_supervisor=$error
+ Spiacente ma la preparazione / modifica dei temi d'esame è
+ limitata ai docenti registrati.
+ !exit
+!endif
+
+!if $error=no_sheet
+ <p>
+ Il contenuto di un tema d'esame viene selezionato tra quello dei test
+ periodici (ancora attivi o già terminati).
+ </p><p>
+ Il corso non contiene alcun test periodico. Occorre prima preparare
+ un test, attivarlo e poi si può procedere alla
+ creazione di un tema d'esame.
+ </p>
+ !exit
+!endif
+
+!if bad_exam=$error
+ Il numero del tema d'esame non è valido. Errore del software?
+ !exit
+!endif
+
+!if $error=simuchange
+ Lo status di questo tema d'esame è appena cambiato. Puoi solo
+ !href cmd=reply&job=scorereg cliccare qui
+ per terminare la sessione.
+ !exit
+!endif
+
+!if already_registered=$error
+ Il voto è già stato registrato.
+ !exit
+!endif
+
+!if no_more_registration=$error
+ Questo esame può essere ripetuto al massimo $stries volte.
+ Non è più possibile registrare il voto.
+ !exit
+!endif
+
+!if bad_source=$error
+ L'elemento $bad_source nei comandi inseriti non è
+ valido.
+ !href cmd=reply&job=prep_putsource&source=$source Correggere
+ .
+ !exit
+!endif
+
+!if no_title=$error
+ Per registrare un tema d'esame è necessario inserire il titolo.
+ Correggere.
+ !exit
+!endif
+
+!if prep_activate=$error
+ Si è richiesto di attivare il tema d'esame $sheet, cioè
+ di renderlo accessibile agli studenti. <p>
+ Ricordiamo che un tema d'esame attivo non è più modificabile.
+ Continuare?
+  <div class="wimscenter">
+ !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
+ .&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ . </div>
+ !exit
+!endif
+
+!if prep_erase=$error
+ Sicuri di voler eliminare il tema d'esame numero $exam ($title)?
+  <div class="wimscenter">
+ !set wims_ref_class=wims_button wims_warning
+ !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
+ !set wims_ref_class=wims_button
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+  </div>
+ !exit
+!endif
+
+!if prep_expire=$error
+ Questo esame ($title) terminerà il $expday
+ !item $expmon of $months
+ $expyear. Farlo terminare ora?
+  <div class="wimscenter">
+ !href cmd=reply&job=expire $wims_name_yes; $(wims_name_actionlist[2])
+ .&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ . </div><b>Nota.</b> Gli studenti non possono più lavorare su un tema
+ d'esame disattivato. I voti vengono conservati (e se ne tiene conto
+ nelle statistiche). Possono essere consultati dal
+ docente in qualsiasi momento.
+ !exit
+!endif
+
+!if nodeactivate=$error
+  Questo esame non può più essere disattivato in quanto
+  !if badstructure isin $deactivate
+   il coordinamento di corsi non lo permette.
+  !else
+   !if score isin $deactivate
+    alcuni studenti hanno già cominciato a lavorare su questo esame!
+   !else
+    il tema d'esame è condiviso con altri corsi!
+   !endif
+  !endif
+!endif
+
+!if active_exam=$error
+   Spiacenti, questo esame è attivo e quindi non più modificabile. Non si possono più modificare gli esercizi che contiene.
+ !exit
+!endif
+
+!if $error=prep_noexercise
+  Il contenuto dell'esercizio $exo del tema d'esame è vuoto. Riprova.
+  !exit
+!endif
+
+!if $error=addexook
+  Esercizio inserito correttamente.
+  !exit
+!endif
+!msg $error

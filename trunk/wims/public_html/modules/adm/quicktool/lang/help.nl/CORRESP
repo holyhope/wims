@@ -1,0 +1,67 @@
+<p>
+$wims_name_quick_CORRESP type : overeenkomst oefeningen.  
+Een lijst van 3 (of N aantal) items (woorden, geluidsfragmenten, plaatjes) 
+en overeenkomstige items  (woorden, geluidsfragmenten, plaatjes) worden 
+ willekeurig gekozen uit een set data.
+</p><p>
+Geluidsfragmenten van de <span class="tt">swac audio collection</span> kunnen worden ingezet bij dit type oefening.
+In dat geval eerst kontroleren of de vereiste fragmenten aanwezig zijn.
+Indien aanwezig, gebruik het volgende formaat: 
+<span class="tt"> audio="woord"</span> of <span class="tt">audio="expressie"</span>.
+</p><p>
+Gebruik wel de correcte naam voor deze geluidsfragmenten, anders kan QUICKTOOL het woord of uitdruking niet herkennen.
+</p><p>
+De grootte van de labels kan worden veranderd (bijvoorbeeld bij gebruik van een lange zin als item in de oefening)
+door het instellen van de parameters: V x LG x LD ( hoogte, breedte van de linker kolom, breedte van de rechter kolom) 
+</p>
+
+:format
+<pre>
+:je broer,je vader's zoon
+je zuster,je vader's dochter
+je neef,je oma's kleinkind
+je oom,je oma's zoon
+je tante,je oma's dochter
+</pre>
+<i><span style="color:black;">Algemene syntax</span></i>
+<pre>
+:1st woord(en) aan de linker kant, 1st woord(en) aan de rechter kant 
+2de woord(en) aan de linker kant, 2de woord(en) aan de rechter kant 
+3de woord(en) aan de linker kant, 3de woord(en) aan de rechter kant 
+...
+n-de woord(en) aan de linker kant, n-de woord(en) aan de rechter kant 
+</pre>
+
+<span class="wims_warning">$wims_name_remark</span>: Gebruik van data.
+Als er een geluidsfragment, een andere tekst of een andere introductie (instructie) voor een oefening worde vereist, 
+moet de eerste regel het volgende formaat hebben: 
+
+<pre>
+:audio=geluids_bestand.mp3 image=plaatjes_bestand.jpg title="uw tekst" intro="instructies voor student"
+</pre>                                                                                                                                    
+<p>     
+Elk individueel item in de data (de oefening) kan zijn: een woord (of meerdere woorden), 
+een geluidsfragment of een plaatje.
+</p><p>
+Als er ebruik moet worden gemaakt van andere audio opnames of plaatjes als items, is het volgende formaat vereist:
+ <span class="tt">"naam_van_de_audio_file.mp3"</span> als dit bestand zich in de <span class="tt">images</span> directory bevind,
+of <span class="tt">"audio="word"</span> ; in dit geval zal de software eerst zoeken naar het bestand
+<span class="tt">word.mp3</span> in de <span class="tt">images</span> directory, zo niet dan wordt gezocht in de swac audio database.
+Als er geen gebruik wordt gemaakt van een audio opname,  moet de eerste regel van de data set leeg zijn.
+</p><p>
+In het onderstaande voorbeeld moet er een opname genaamd <span class="tt">father.mp3</span> aanwezig zijn in de
+<span class="tt">images</span> directory (let op de blanco regel.)
+</p>
+<pre>
+:
+moeder,audio=mother
+zuster,audio=sister
+vader,father.mp3
+</pre>
+
+<pre>
+:instruction="myn instructies"
+moeder,audio=mother
+zuster,audio=sister
+vader,father.mp3
+</pre>

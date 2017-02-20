@@ -1,0 +1,83 @@
+
+<b>Teken een lijn, een veelhoek [polygon] ,  punten ,  een segment, een vector, een rechthoek .</b>
+(naam : <span class="tt wims_code_words">javacurve</span>)
+<br/>
+Dit antwoord type geeft de leerling de mogelijkheid lijnen,veelhoeken,segmenten,vectoren,rechthoeken, meerdere punten als
+antwoord op de vraag in te leveren.
+<p>
+Het correcte antwoord is gegeven als een matrix, met als rij-scheidingsteken een ";"
+<br/>
+De eerste rij van het goede antwoord is de URL van het [achtergrond] plaatje.
+De volgende rij is de test-conditie voor de leerling_tekening, zoals.
+Si l'on désire analyser la réponse par des conditions,
+on mettra une variable vide pour la bonne réponse et on rajoute
+dans le champ <span class="tt wims_code_words">embed</span>
+en seconde ligne l'URl de l'image et en troisième ligne le type de tracé comme
+dans le tableau suivant (par exemple <span class="tt wims_code_words">points</span>,
+<span class="tt wims_code_words">line</span> ...).
+
+!set p=anstype.$lang/javacurve
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td class="tt wims_code_words">
+!line 1 of $l_
+    </td><td>
+!line 2 to -1 of $l_
+   </td>
+   </tr>
+  !next
+$table_end
+<p>
+Options may be added in the option field:
+<span class="tt wims_code_words">precision</span,
+<span class="tt wims_code_words">color1</span (reply color),
+<span class="tt wims_code_words">color2</span> (good answer color).
+The parameter <span class="tt wims_code_words">precision</span> is subtil ...
+for example
+</p>
+<pre>
+\answer{}{...}{type=jsxgraphcurve}{option=color1=black color2=#B4B4FF precision=8}
+</pre>
+Le paramètre <span class="tt wims_code_words">precision</span> doit être manié avec précaution ...
+<p>
+Het is verstandig dit invoerveld via \embed{} in het \statement{} te verwerken.
+Dit antwoord_type is incompatible met andere antwoord invoervelden.
+</p>
+Algemeen: de variabele
+<span class="tt wims_code_variable">\reply</span><em>n</em>, waarbij  <em>n</em>
+het nummer van het input-veld voorsteld, kan worden gebruikt
+bij het definieren van \feedback{}.<br/>
+Behalve in de onderstaande gevallen:
+
+<ul><li>
+In het geval <span class="tt wims_code_words">points</span>,
+de eerste regel van de <span class="tt wims_code_variable">\reply</span> is de lijst met coo&uml;dinaten in pixels,
+de tweede regel van de <span class="tt wims_code_variable">\reply</span> is <span class="tt wims_code_words">n1,n2,n3</span> met
+<span class="tt wims_code_words">n1</span> als aantal correcte punten (x,y),
+<span class="tt wims_code_words">n2</span> is het aantal ontbrekende punten in de leerling_tekening.
+<span class="tt wims_code_words">n3</span> is het aantal foutieve getekende punten.<br/>
+De derde lijn is de lijst van correct getekende punten.
+
+</li><li>
+In het geval van <span class="tt wims_code_words">cirkel</span>,
+is de eerste lijn van <span class="tt wims_code_variable">\reply</span> zijn de coo&uml;dinaten en radius uit gedrukt in pixels.
+De tweede lijn is <span class="tt wims_code_words">n1,n2</span> met daarin
+<span class="tt wims_code_words">n1</span> 1 als het middelpunt correct is getekend, anders 0 <br/>
+<span class="tt wims_code_words">n2</span> 1 als de straal correct is, anders 0.
+</li>
+<li>
+In het geval <span class="tt wims_code_words">sline</span>,
+is de eerste lijn van <span class="tt wims_code_variable">\reply</span> de lijst met coo&uml;dinaten in pixels.<br/>
+de tweede lijn is <span class="tt wims_code_words">n1,n2,n3</span> met daarin
+<span class="tt wims_code_words">n1</span> 1 als de oorsprong correct is getekend, anders 0,
+<span class="tt wims_code_words">n2</span> 1 als de richting correct is getekend, anders 0,
+<span class="tt wims_code_words">n3</span>1 als de orientatie correct is , anders 0.
+</li>
+</ul>

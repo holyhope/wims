@@ -1,0 +1,21 @@
+# Standardized expression simplification.
+# Input are lines.
+# Output are lines, in $out.
+
+I__=!nonempty lines $wims_read_parm
+n__=!linecnt $I__
+!reset out,p__
+!for i__=1 to $n__
+ l__=!line $i__ of $I__
+ l__=$maximasimp($l__)
+ !if expand iswordof $m_options
+  l__=expand($l__)
+ !endif
+ !if factor iswordof $m_options
+  l__=factor($l__)
+ !endif
+ p__=!append line $l__; to $p__
+!next i__
+
+out=!exec maxima $p__
+

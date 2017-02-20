@@ -1,0 +1,67 @@
+
+good=!singlespace $(replygood$i)
+good=!rows2lines $good
+good=!nonempty lines $good
+badwords=!line 2 to -1 of $good
+good=!line 1 of $good
+replyGood$i=!translate | to $\
+$ in $good
+replyGood$i=!nonempty lines $(replyGood$i)
+replyGood$i=!line 1 of $(replyGood$i)
+badwords=!translate internal |[]{*} to $       $ in $badwords
+dd=!translate internal |[]{*} to $       $ in $(reply$i)
+
+good=!replace internal | by $ | $ in $good
+good=!translate internal []{*} to $      $ in $good
+
+suffix_dictionary=bases/sys/suffix.$module_language
+dictionary=scripts/oef/$module_language/atext.dic
+!for d in good,badwords,dd
+ dv=!deaccent $($d)
+ dv=!lower $dv
+ dv=!translate internal -+/*='"`.;,!@#$$%^&()?<>\~ to\
+		$                                       $ in $dv
+ dv=!replace | by $ | $ in $dv
+ translator_unknown=leave
+ dv=!exec translator $dv
+ dv=!singlespace $dv
+ dv=!trim $dv
+ $d=!text select $ |[]{}*abcdefghijklmnopqrstuvwxyz0123456789 in $dv
+!next d
+
+m_reply$i=$dd
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+
+!if $good=$empty
+ Test=bad $i
+ !exit
+!endif
+
+diag=
+good=!translate | to , in $good
+good=!nonempty items $good
+!for g in $good
+ !if $dd=$g
+  diag=yes
+ !endif
+!next g
+
+!if $diag=yes
+ diareply$i=good
+ !advance freegot
+!else
+ bn=!wordcnt $badwords
+ !if $bn>0
+  dt=!words2items $dd
+  !for w in $dt
+   !if $w notwordof $good $badwords
+    test=NaN unknownword $w
+    !exit
+   !endif
+  !next w
+ !endif
+ diareply$i=bad
+!endif
+

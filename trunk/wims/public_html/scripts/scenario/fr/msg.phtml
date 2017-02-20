@@ -1,0 +1,93 @@
+
+!if dontknow iswordof $error
+ En fait, la dernière étape
+ !if $step_reason=OK
+  est correcte. $step_remark
+ !else
+  n'est pas correcte. $step_remark
+  <div>
+  !read reasons/$step_reason.det
+  </div>
+  Une version correcte de la dernière étape sera
+  <table class="wimscenter wimsnoborder" style="width:80%"><tr><td>
+  !line $step of $good
+ </td></tr></table>
+ !endif
+ <p>
+ Dommage que vous n'ayez pas pu voir tout ça.
+ </p>
+ !goto gnext
+!endif
+
+<b>Erreur.</b>
+
+!if step_error iswordof $error
+ !if $step_reason=OK
+  Mais si, cette étape est parfaitement correcte&nbsp;!
+  $step_remark
+ !else
+  !if $ask_reason>0 and $step_reason!=$ans
+   Non, la dernière étape est bien erronée, mais pas à cause de ce que vous pensez.
+  !else
+   Mais non, il y a bien une erreur dans la dernière étape.
+  !endif
+  $step_remark
+  <div>
+  !read reasons/$step_reason.det
+  </div>
+  Une version correcte de la dernière étape sera
+  <table class="wimscenter wimsnoborder" style="width:80%"><tr><td>
+  !line $step of $good
+  </td></tr></table>
+ !endif
+ :gnext
+ <p>
+ !if $step<$stepcnt
+  !href cmd=reply&ans=next Passer à l'étape suivante.
+ !else
+  Cet exercice est terminé. Votre note&nbsp;: $module_score/10.
+ !endif
+ </p>
+ !exit
+!endif
+
+!if bad_step iswordof $error
+ !if $badstep=0
+  Vous pensez que toutes les étapes sont correctes.
+ !else
+  Vous pensez que la première mauvaise étape est le numéro $badstep.
+ !endif
+ !if $bad_steps=$empty
+  Vous avez tort&nbsp;: toutes les étapes sont correctes.
+  <p>
+  !line $badstep of $remarks
+ !else
+  Non, la <em>première</em> mauvaise étape est le numéro $sss. <p>
+  !if $badstep>0
+   !if $badstep isitemof $bad_steps
+    L'étape $badstep est bien erronée, mais elle n'est pas la première
+    mauvaise étape.
+   !else
+    Par contre, l'étape $badstep est tout à fait juste.
+   !endif
+  !else
+   $bad_reason
+   <div>
+   !set rrr=!item 1 of $bad_reasons
+   !read reasons/$rrr.det
+   </div>
+  !endif
+ !endif
+ <p>Votre note&nbsp;: $module_score/10.</p>
+ !exit
+!endif
+
+!! already in html/msg.phtml.fr
+!!!if double_reply=$error
+!! Vous avez déjà soumis une réponse à ce problème qui a été analysée et notée.
+!! Les réponses répétitives sont ignorées. (N'utilisez pas le bouton
+!! `recharger' de votre navigateur pour reposter les réponses!)
+!! !exit
+!!!endif
+
+!msg $error

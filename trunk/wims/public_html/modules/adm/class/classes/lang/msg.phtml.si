@@ -1,0 +1,48 @@
+!set wims_module_log=ERROR $error
+
+!if $error=bad_password
+Vne¹eno geslo je napaèno. Poskusite znova èez nekaj sekund.
+ <form action="#" name="chrono">
+ <span class="wims_warning">$wims_name_warning</span>! Naslednjih 5 sekund sistem ne bo sprejel novega gesla.
+ <input size="1" name="clock" /> </form>
+ !exit
+!endif
+
+!if $error=in_exam
+Medtem preizkusom znanja ni mogoèe zamenjati uèilnice.
+ !exit
+!endif
+
+!if $error=recent_rafale
+Ta uporabni¹ki raèun se zaklene za 10 minut zaradi nedovoljenih aktivnosti.
+ !exit
+!endif
+
+!if $error=no_cgu
+ Niste sprejeli pogojev uporabe (CGU).
+ Prijava ni mogoèa.
+ !form reply
+  !formcheckbox agreecgu list yes prompt $name_acceptcgu
+  [
+  !href cmd=help $name_seecgu
+  ]
+  !let save_logincgu=$auth_user
+  <div class="wimscenter wimsform">
+  <input type="submit" value="$wims_name_tosave" />
+  </div>
+
+!formend
+ !exit
+!endif
+
+!if $error=bad_loginmail
+ Va¹a identifikacija ni mogoèa. Morda pri prijavi niste navedli e-naslova.
+ <br />
+ Prosite skrbnika va¹e uèilnice za novo geslo.
+ <form action="#" name="chrono">
+ <span class="wims_warning">$wims_name_warning</span>! Med tem procesom je va¹e geslo onemogoèeno za 5 sekund.
+ <input size="1" name="clock" /> </form>
+ !exit
+!endif
+
+!msg $error

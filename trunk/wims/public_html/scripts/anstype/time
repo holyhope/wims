@@ -1,0 +1,34 @@
+
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+
+!! replygood will be three numbers in millisecondes
+!! minimum, maximum, second maximum
+!distribute item $(replygood$i) into min_, max_, mmax_
+min_=$[$min_]
+max_=$[$max_]
+mmax_=$[$mmax_]
+!if $(reply$i) <= $max_ and  $(reply$i) >= $min_
+  diareply$i=good
+  !advance freegot
+  reply_$i=&nbsp;
+!else
+  !if $(reply$i) > $max_ and  $(reply$i) <= $mmax_
+    diareply$i=good
+    partialgood$i=yes
+    freegot =$[freegot+max(1,10*ceil(($mmax_-$(reply$i))/($mmax_-$max_)/10))]
+    reply_$i=long
+    sc_reply$i=0.5
+  !else
+    diareply$i=bad
+    !if $(reply$i) > $mmax_
+      reply_$i= too_long
+      sc_reply$i=0.25
+    !else
+      reply_$i=too_short
+      sc_reply$i=0.75
+    !endif
+  !endif
+!endif
+

@@ -1,0 +1,43 @@
+<b>画直线, 多边形, 点, 线段, 向量, 矩形或折线</b>
+(名称 : <span class="tt wims_code_words">jsxgraphcurve</span>)
+<br />
+这一类型的回答允许在图形里画直线, 多边形,
+矩形或多个点. 语法同
+javacurve 只是使用了 javascript 代替 java.
+
+!set p=anstype.$lang/javacurve
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td class="tt wims_code_words">
+!line 1 of $l_
+    </td><td>
+!line 2 to -1 of $l_
+   </td>
+   </tr>
+  !next
+  $table_tr<td class="tt wims_code_words">
+  brokenline,x1,y1,x2,y2, ...
+  </td><td>
+  Polygonal line
+  </td>
+ </tr>
+$table_end
+
+<p>这里指出几个特点.
+若想使结果居中, 可定义类 css
+<span class="wims_code_words">jxgbox</span> 及 <span class="wims_code_words">jsxgraph_button</span>.
+例如,
+</p>
+<pre>
+&lt;style type="text/css">
+.jxgbox {margin-left:auto;margin-right:auto}
+.jsxgraph_button {text-align:center;}
+&lt;/style>
+</pre>

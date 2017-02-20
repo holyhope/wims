@@ -1,0 +1,124 @@
+!set anstype=yes
+!!set anstyle=dprompt
+!set ans_require=
+
+!set author=Bernadette, Perrin-Riou
+!if $wims_read_parm=def
+ !exit
+!endif
+!reset nx ny taille width
+!set answer=!lines2rows $(replygood$i)
+!set answer=!lines2rows $answer
+!set N=!replace internal x by , in $(answer[2;])
+!set image=$(answer[1;])
+!distribute items $N into ny, nx, width
+!default nx=3
+!default ny=3
+!set nb_im=$[$nx*$ny]
+!set taille=!replace internal x by , in $inputsize
+!default taille=500,500
+!set taille=$taille,100
+!set cutx=!values $(taille[1])/$nx*x for x=0 to $nx
+!set cuty=!values $(taille[2])/$ny*x for x=0 to $ny
+!set cutx=!exec pari round([$cutx])
+!set cuty=!exec pari round([$cuty])
+!default width=$(cutx[2])
+!set height=$[round($(cuty[2])/$(cutx[2])*$width)]
+!set list=!makelist x for x=1 to $[($nx)*($ny)]
+!set Zshuf=!shuffle $list
+!set Zurl=
+!set Zurl2=$list
+!set Z2=$list
+!set img_nb=!itemcnt $image
+!if $img_nb=1
+!for t=1 to $nb_im
+  !set s=$(Zshuf[$t])
+  !set x=$[$s%$nx]
+  !if $x=0
+    !set x=$nx
+  !endif
+  !set y=$[($s-$x)/$nx+1]
+  !readproc oef/draw.phtml $(cutx[2]),$(cuty[2])\
+    copy 0,0,$(cutx[$x]),$(cuty[$y]),$(cutx[$x+1]),$(cuty[$y+1]),$image
+  !set Zurl=!append item <img src="$ins_url" style="width:$(width)px" alt="" /> to $Zurl
+  !set Zurl2=!replace internal item number $s by <img src="$ins_url" style="width:$(width)px" alt="" /> in $Zurl2
+  !set Z2=!replace internal item number $s by $t in $Z2
+!next
+!else
+ !if text notwordof $(replyoption$i)
+  !set Zurl2=!makelist <img src="$imagedir/x" style="width:$(width)px" alt="" /> for x in $image
+  !set Zurl =!makelist <img src="$imagedir/x" style="width:$(width)px" alt="" /> for x in $image
+ !else
+  !set Zurl2=!makelist x for x in $image
+  !set Zurl =!makelist x for x in $image
+ !endif
+!endif
+!set oef_answer_option$i=$Z2\
+$Zurl2\
+$ny,$nx,$width,$height
+
+:shuffle
+!set scramble=!shuffle $list
+!if $scramble issametext $list
+ !goto shuffle
+!endif
+<table class="wimscenter" style="border-collapse:collapse;border-spacing:0;text-align:center;background-color:lightblue;">
+!for y=1 to $ny
+ <tr style="margin:0;padding:0;line-height:0;">
+ !for x=1 to $nx
+ !set t=$[$x+($y-1)*($nx)]
+ !set t_=!item $x+($y-1)*($nx) of $scramble
+  <td id="p$(i)_$t" onclick="javascript:click$i($t);" style="border:solid 1px;width:$(width)px;height:$(height)px">
+  <div id="img$(i)_$(x)_$(y)">$(Zurl[$t_])</div>
+  </td>
+ !next x
+</tr>
+!next y
+</table>
+<script type="text/javascript">
+/*<![CDATA[*/
+var fl_clic$i=false;
+var tableurl$i=Array() ; var table$i=Array() ;
+!for t=1 to $nb_im
+  tableurl$i[$t]='$(Zurl[$(scramble[$t])])'
+  table$i[$t]=$(scramble[$t])
+!next
+var nb_clic$i=0
+function click$i(n)
+{
+  if (!fl_clic$i) //pour mémoriser le 1er click..
+     {
+      fl_clic$i=true;
+      n_memo$i=n;
+      document.getElementById('p$(i)_' + n).style.opacity = '0.35';
+     }
+  else {
+        newurl=tableurl$i[n];number=table$i[n];
+        tableurl$i[n]=tableurl$i[n_memo$i]; table$i[n]=table$i[n_memo$i];
+        tableurl$i[n_memo$i]=newurl;table$i[n_memo$i]=number;
+        document.getElementById('p$(i)_' + n_memo$i).style.opacity = '1';
+        fl_clic$i=false;
+        if(n != n_memo$i){ nb_clic$i ++}
+        for(var x=1;x<=$nx;x++) {
+          for(var y=1;y<=$ny;y++) {
+            document.getElementById('img$(i)_' + x + '_' + y).innerHTML=tableurl$i[x + (y-1)*($nx)];
+          }
+       }
+    }
+}
+function sendanswer$i()
+  { var reply=table$i[1] ; var replyurl=tableurl$i[1] ;
+     if (nb_clic$i < 1 ) {document.getElementById('oefvar$i').value=''}
+     else {
+       for (var t = 2 ; t <= $nb_im ; t ++){
+         reply = reply + ',' + table$i[t] ;
+         replyurl = replyurl + ',' + tableurl$i[t] ;
+       }
+       document.getElementById('oefvar$i').value=reply + ';' + replyurl + ';' + nb_clic$i
+     }
+  }
+/*]]>*/
+</script>
+<input type="hidden" name="reply$i" id="oefvar$i" value="" />
+
+!set oef_js_submit=$oef_js_submit; sendanswer$i()

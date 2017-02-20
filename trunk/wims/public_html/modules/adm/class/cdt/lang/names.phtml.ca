@@ -1,0 +1,95 @@
+!set lang_exists=yes
+
+!if $job=adddate
+  !set cdt_subtitle=Afegir/Modificar una data
+  !goto common
+!endif
+
+!if $job=addtodo
+  !set cdt_subtitle=Afegir deures
+  !goto common
+!endif
+
+!if $job=logfile
+  !set cdt_subtitle=Fitxa d'enregistrament
+  !set name_text=Aquí teniu el registre de les connexions amb l'agenda de la classe
+  !goto common
+!endif
+
+!if $job=config
+  !set cdt_subtitle=Fitxa d'enregistrament
+  !set name_link=Nom de l'enllaç a la pàgina d'inici
+  !set name_intro=Aquests són els paràmetres que podeu canviar
+  !set name_see=Veure
+  !set name_see2=el fitxer de connexió a l'agenda de la classe
+  !set name_reversedate=Visualització de la informació en l'ordre invers al de la data
+  !set name_showyear=Afficher l'année dans les tableaux
+  !goto common
+!endif
+
+!if $job=file
+  !set name_erasedfile=!nosubst El fitxer <b>$erase</b> s'ha eliminat.
+  !set name_depos=Podeu enviar un fitxer&nbsp;
+  !set name_available=Fitxers disponibles a
+  !set name_erase=Esborrar un fitxer
+  !set name_nodeposit=No podeu enviar el fitxer perquè el seu contingut supera l'espai màxim de disc permés. Ho sento.
+  !set name_explanation1=!nosubst Aquests fitxers són accessibles amb l'ajuda de la variable\
+  <span class="tt wims_code_variable">\filedir</span>. \
+  Per exemple,\
+  <p class="wimscenter">\
+ <span class="tt wims_address">&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</span>\
+ </p>\
+ crea un enllaç al fitxer <a href="$m_filedir/$f1">$f1</a>.\
+ També podeu escriure
+
+ !set name_explanation2=per incloure el fitxer d'imatge <span class="tt">myfile.jpg</span> a la pàgina.\
+ <br />Els fitxers carregats només estan disponibles per a participants de la classe.
+
+!set name_availablespace=Espai de disc disponible en començar&nbsp;,Espai lliure
+  !goto common
+!endif
+
+!if $job=helplink
+  !set name_Add=Per afegir un element, cliqueu a l'enllaç corresponent.
+  !set name_exam=Exàmens&nbsp;
+  !goto common
+!endif
+
+:common
+!distribute line Treball fet\
+Treball per fer\
+entre el\
+i el\
+Afegir un examen\
+Afegir un full d'exercicis\
+pel \
+Treball per fer\
+Deures\
+Nombre de dates per mostrar\
+Treball per fer per al\
+Treball fet\
+Sessió de\
+caràcters\
+No hi ha informació\
+No hi ha informació fins ara\
+No hi ha informació en aquest moment\
+Dia\
+Material\
+A la classe de\
+Tenint en compte la\
+No hi ha deures a fer per al\
+Inseriu una activitat de classe\
+le\
+into name_done,name_todo,name_between,name_and,name_addexam,name_addsheet,name_for,name_worktodo,\
+name_work,name_nb_date,name_todo2,name_workdone,name_session,\
+name_character,name_noinfo1,name_noinfo2,name_noinfo3,\
+name_Day,name_discipline,name_inclass,name_giventhe,name_nowork,\
+name_help_add,name_the
+
+!set name_workfor=$name_work $name_for
+
+!set name_warning1=Si no introduïu una segona data, s'efectuarà \
+una recerca sobre la primera data.
+!set name_find2=Recherche
+!set name_find=Chercher
+

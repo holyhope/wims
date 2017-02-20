@@ -1,0 +1,154 @@
+!!INDEX
+!let module_translator=
+!let module_translator_address=
+!let module_title=设置 WIMS 的个人喜好
+!let module_description =设置 WIMS 的个人喜好
+!let module_language=cn
+!!INDEXEND
+
+!let tip='<ul><li>FireFox&nbsp;<a target=\'new\' href=\'http://www.mozilla-europe.org/$module_language/\'><img src=\'gifs/mathml/getFireFox.gif\' alt=\'get FireFox\'/></a></li><li>Google Chrome&nbsp;<a target=\'new\' href=\'https://chrome.google.com/webstore/detail/mathjax-for-chrome/elbbpgnifnallkilnkofjcgjeallfcfa\'> MathJax Extension </a><li>Windows<ul><li>Internet Explorer: <a target=\'new\' href=\'http://www.dessci.com/en/products/mathplayer/\'><img src=\'gifs/mathml/dessci_logo.gif\' alt=\'dessci\'/> DESSCI MathPlayer plugin</a><li>Opera: <a target=\'new\' href=\'http://xml-maiden.com/userjs/mathml/\'>UserJS MathML plugin</a></ul></li><li>Safari</li></ul>'
+
+!read proc/useropts.proc
+
+!header
+<script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
+<p>本页是用于修改你在 WIMS 作业过程中的个人喜好的.</p>
+
+<div id="widget_useropts">
+  <ul>
+    <li><a href="#formula">数学公式</a></li>
+    !if $wims_user=$empty
+      <li><a href="#language_selector">默认的语言</a></li>
+    !endif
+    <!--li><a href="#accessibility">Accessibility</a></li-->
+  </ul>
+
+  !if $wims_user=$empty
+  <div id="language_selector">
+    <h2>默认的语言</h2>
+    !set wims_language_cnt=!wordcnt $wims_site_languages
+    !for l=1 to $wims_language_cnt
+     !let la=!word $l of $wims_site_languages
+     !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src="gifs/$la.gif" alt="$la.gif" border=1/>$(lang_name_$la)
+     &nbsp;&nbsp;
+    !next l
+  </div>
+  !endif
+
+  <div id="formula">
+    <h2>数学公式</h2>
+
+    !if $texalign=2
+      服务器目前设置为 MathML 假定你使用合有适的浏览器. 例如,
+      <p class="wimscenter">
+      !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{2} - 4 a c}}{2a}
+      </p>
+      如果此公式不能正确显示, 你可以换用其它
+      <a onmouseover="return Tip($tip)"><span class="wims_emph">浏览器</span></a>
+      或使用把数学公式化为图像的服务器.
+      !set wims_ref_class=wims_button
+      <p class="wimscenter">
+         !href cmd=resume&useropts=$arg 以图像显示数学公式
+      </p>
+
+      <hr/>
+      <h3>Options</h3>
+      <div>
+        !let ts1=!eval $texsize-1
+        !let ts2=!eval $texsize+1
+        !if $ts1<1
+          !let ts1=1
+        !endif
+        !if $ts2>9
+          !let ts2=9
+        !endif
+
+        设置数学公式的大小.
+        !set wims_ref_class=wims_button
+        !href cmd=resume&useropts=$ts1$texalign <img src="gifs/doc/dgauche.gif" width="20px" />
+        &nbsp;
+        !set wims_ref_class=wims_button
+        !href cmd=resume&useropts=$default 默认
+        &nbsp;
+        !set wims_ref_class=wims_button
+        !href cmd=resume&useropts=$ts2$texalign <img src="gifs/doc/ddroite.gif" width="20px" />
+      </div>
+
+      <div>
+        !set zoom=1
+        通过鼠标点击对公式缩放.
+        !set wims_ref_class=wims_button
+        !href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_yes
+        !set zoom=0
+        &nbsp;
+        !set wims_ref_class=wims_button
+        !href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_no
+      </div>
+
+    !else
+      目前你使用的是把数学公式表成图像的服务器. 如果你有合适的
+      <a onmouseover="return Tip($tip)"><span class="wims_emph">浏览器</span></a>, 你可以使用 MathML.
+      <p class="wimscenter">
+        !set arg=!nospace $texsize 2
+        !set wims_ref_class=wims_button
+        !href cmd=resume&useropts=$arg MathML
+      </p>
+      <h3>Options</h3>
+      数学符号与公式的字体大小. 利用以下的行比较符号与文字的大小.
+
+      !let ts1=!eval $texsize-1
+      !let ts2=!eval $texsize+1
+      !if $ts1<1
+        !let ts1=1
+      !endif
+      !if $ts2>9
+          !let ts2=9
+      !endif
+      !set wims_ref_class=wims_button
+      !href cmd=resume&useropts=$ts1$texalign$useropt2 <img src="gifs/doc/dgauche.gif" width="20px" />
+      &nbsp;
+      !set wims_ref_class=wims_button
+      !href cmd=resume&useropts=$ts2$texalign$useropt2 <img src="gifs/doc/ddroite.gif" width="20px" />
+      <p>
+        希腊字母 $m_alpha, $m_pi. 数学公式
+        !let ins_align=middle
+        !! 你需要强制动态插入
+        !set pw=2
+        !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{$pw} - 4ac}}{2a}
+        混合的不等式
+      </p>
+      <p class="wimscenter">| $m_a + $m_b | $m_le $m_varepsilon + 123.45.</p>
+
+      <hr/>
+      公式的位置. 如果公式
+      !insmath (x+y)/(x^$pw + y^2)
+      与文字相比
+      !if $texalign=1
+        太高,
+        !href cmd=resume&useropts=$(texsize)0$useropt2 点击这里
+        使其降低.
+      !else
+        太低,
+        !href cmd=resume&useropts=$(texsize)1$useropt2 点击这里
+        使其升高.
+      !endif
+      !set zoom=$empty
+    !endif
+  </div>
+</div>
+
+!if $wims_user=$empty
+当一切均符合你的心意时, 把
+ <a href="$wims_ref_name?lang=$lang&+useropts=$texsize$texalign$useropt2$zoom"
+ title="WIMS">此链接</a>
+收入你的书签, 供以后连接之用.
+!else
+你的喜好将被保存到你以后登录到此班级时.
+!endif
+
+:end
+!if $jquery_defined=yes
+  !read adm/tabscript useropts
+!endif
+!tail
+

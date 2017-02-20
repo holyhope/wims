@@ -1,0 +1,61 @@
+!!##!! language independant
+!read adm/class/classname.phtml $wims_classname\
+$wims_institutionname
+
+!read adm/title.phtml 1\
+$classname\
+$livret_title\
+$name_job
+
+!form reply
+  <fieldset class="property_fields">
+    <legend>$name_info</legend>
+  !set wims_ref_class=wims_button float_right
+ !href cmd=reply&comp=$comp&job=delcomp $wims_name_delete
+    <div class="field box">
+      <label for="cf_title">$name_title_comp</label>
+      <input size="50" name="cf_title" id="cf_title" value="$mem_title" />
+    </div>
+    <div class="field box">
+      <label for="cf_nbpalier">$name_cnt_palier</label>
+      <select name="cf_nbpalier" id="cf_nbpalier" onchange="submit()">
+    !for i=1 to $maxpalier
+     !if $i=$mem_nbpalier
+      <option value="$i" selected="selected">$i</option>
+     !else
+      <option value="$i">$i</option>
+     !endif
+    !next i
+      </select>
+ !for k=1 to $mem_nbpalier
+  !let eold=!record $k of wimshome/log/classes/$wims_class/livret/.comp$comp
+  !distribute line $eold into name,eold
+   <div class="field box">
+     <label>$name_n_Palier $k <span class="wims_emph">$name</span></label>
+   !set wims_ref_class=wims_button
+   !href cmd=reply&job=modpalier&comp=$comp&palier=$k $wims_name_change
+   !set wims_ref_class=wims_button
+   !href cmd=reply&job=delpalier&comp=$comp&palier=$k $wims_name_delete
+   !if $eold!=
+     <ul>
+    !for l in $eold
+      <li>
+     !let t=!replace internal . by , in $l
+      $l
+      !line $(t[2]) of $(sheet$(t[1]))
+       </li>
+    !next l
+     </ul>
+   !endif
+   </div>
+ !next k
+   <div class="wimscenter wimsform">
+    <input type="submit" name="cf_set" value="$wims_name_tosave" />
+   </div>
+</fieldset>
+
+!formend
+!set wims_menu_items=!append line back2,1,cmd=reply&job=home\
+to $wims_menu_items
+
+!reset cf_nbpalier

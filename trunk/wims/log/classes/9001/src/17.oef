@@ -1,0 +1,29 @@
+\title{Schémas du cycle cellulaire (feedback)}
+\text{phases = l'interphase,la prophase,la prométaphase,
+la métaphase,l'anaphase,la télophase,la cytodiérèse}
+\integer{n = randint(1..7)}
+\text{liste = interphase.jpg,prophase.jpg,
+prometaphase.jpg, metaphase.jpg,anaphase.jpg,
+telophase.jpg,cytodierese.jpg}
+\text{choix = \liste[\n]}
+
+\statement{Le schéma suivant
+  <div class="wimscenter"> \img{\imagedir/\choix} </div>
+  décrit une cellule animale dans une des phases du
+  cycle cellulaire. Laquelle ?
+
+  <div class="wimscenter">\embed{reply1}</div>
+  <div class="wims_instruction">
+   Les choix sont présentés dans l'ordre alphabétique.
+  </div>
+}
+
+\answer{}{\n;\phases}{type=radio}{option=sort}
+\integer{k=position(\reply1,\phases)}
+\text{imgrep=\liste[\k]}
+\feedback{\k<>\n}{
+  <span class="oef_indbad"> Attention !
+   Le schéma correspondant à \phases[\k] est :
+  </span>
+  <p class="wimscenter"> <img src="\imagedir/\imgrep" /></p>
+}

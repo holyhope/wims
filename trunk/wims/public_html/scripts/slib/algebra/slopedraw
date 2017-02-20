@@ -1,0 +1,132 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+
+slib_title=Polygone tracé à partir des pentes (dessin)
+slib_author=Bernadette, Perrin-Riou
+
+slib_parms=3\
+,list of slopes or vector of such lists\
+,vector of colors [lines, points, axes, grid] or vector of such vectors\
+,option: html, url
+
+slib_author=Bernadette, Perrin-Riou
+slib_out= drawing (or data for drawing)  of a polygon given by its slopes \
+  (with repetition : each slope corresponds to an unit on x-axis).
+
+slib_comment=
+
+
+
+slib_example=[0,1,3,4,6,8],[red,black,green,grey],html\
+[[0,2,3,5],[1,3,6,7]],[[red,black,green],[navy,yellow]],html\
+[[0,2,3,5],[1,3,6,7],[2,3,7,5]],[[red,black,green],[navy,yellow],[yellow]],html\
+[0,1,3,4,6,7],[red,black,green],html\
+[0,1,1,1,2,3,4],[red,black],html\
+[1/2,1/2,2/3,2/3,2/3],[red,,green],html\
+[1/2,-1/2,1/2,4,-1,-3,-5],[red,black,green],html
+
+!exit
+
+:proc
+
+!distribute items $wims_read_parm into slib_slope, slib_color,slib_option
+!reset slib_Ligne slib_Points
+!default slib_cgraph1=black
+!default slib_cpoint1=black
+!set slib_slope_test=!declosing $slib_slope
+!set slib_number=!itemcnt $slib_slope_test
+!set slib_test=!item 1 of $slib_slope_test
+!if , notin $slib_test
+  !set slib_number=1
+!else
+  !set slib_slope=!declosing $slib_slope
+  !set slib_color=!declosing $slib_color
+!endif
+
+pari_header=$pari_header\
+(polygon (slope,decal) = {\
+  my (a,b, r=1, s, zero) ; nsl=1 ;\
+  if (slope==0, return(0)) ;\
+  line=matrix(#slope+1,2);\
+  a = 0 ; b = 0 ; s=slope[1] ;\
+  line[1,1]=0;line[1,2]=0;\
+  for ( i = 1, #slope, if( i < #slope, s1=slope[i+1],s1=jeton) ;\
+     if(s1 == s, r = r + 1 ,\
+         r=1 ;\
+         line[nsl+1,1]=i ; line[nsl+1,2] = b+s ;\
+         nsl=nsl+1;\
+     ) ;\
+     b=b+s ; s=s1 ;\
+  ) ;\
+  [matrix(nsl,2,i,j,line[i,j]+decal)] \
+};)
+
+!set slib_infini=!exec pari valuation(0,2)
+!set slib_slope=!replace internal infty by $slib_infini in $slib_slope
+!set slib_x1 = -1
+!set slib_x2 = 1
+!set slib_y1 = -1
+!set slib_y2 = 1
+!set slib_size1=2
+!set slib_size2=2
+!set slib_decal=0
+!for slib_t=1 to $slib_number
+   !set slib_color$slib_t=!declosing $(slib_color[$slib_t])
+   !distribute items $(slib_color$slib_t) into slib_cgraph$slib_t,slib_cpoint$slib_t,slib_caxe$slib_t,slib_cquad$slib_t
+   !default slib_cgraph$slib_t=$slib_cgraph1
+   !default slib_cpoint$slib_t=$slib_cpoint1
+   !set slib_slope$slib_t=$(slib_slope[$slib_t])
+   !set slib_slope$slib_t=!declosing $(slib_slope$slib_t)
+   !set slib_size1$slib_t = !itemcnt $(slib_slope$slib_t)
+   !set slib_size1 = $[max($slib_size1,$(slib_size1$slib_t))]
+   !set slib_pol$slib_t=!exec pari $pari_header ; polygon([$(slib_slope$slib_t)],$slib_decal)
+   !set slib_decal=$[$slib_decal + 0.05]
+   !set slib_polygon$slib_t = !declosing $(slib_pol$slib_t)
+   !set slib_tmp=$(slib_polygon$slib_t)
+   !set slib_pointy$slib_t=$(slib_tmp[;2])
+   !set slib_points$slib_t = !replace internal ; by , in $(slib_polygon$slib_t)
+   !set slib_zero$slib_t = !declosing $(slib_tmp[2])
+   !set slib_x2 = $[max($(slib_size1$slib_t),$slib_x2)]
+   !set slib_y1_ = !replace internal $slib_infini by in $(slib_pointy$slib_t)
+   !set slib_y1_ = !declosing $(slib_y1_)
+   !set slib_y1_ = !nonempty items $(slib_y1_)
+   !set slib_y1_ = !sort numeric items $slib_y1_
+   !set slib_y1 = $[min($slib_y1,$(slib_y1_[1]))]
+   !set slib_y2= $[max($slib_y2,$(slib_y1_[-1]))]
+   !set slib_Ligne=!append line polyline $(slib_cgraph$slib_t),$(slib_points$slib_t) to $slib_Ligne
+   !set slib_Points=!append line points $(slib_cpoint$slib_t),$(slib_points$slib_t) to $slib_Points
+!next
+!set slib_x2 = $[$slib_x2+1]
+!set slib_y1 = $[$slib_y1-1]
+!set slib_y2 = $[$slib_y2+2]
+!set slib_size1 = $[$slib_size1+2]
+!set slib_size2 = $[$slib_y2 -$slib_y1 + 3]
+
+!set slib_dessin = xrange $slib_x1,$slib_x2\
+yrange $slib_y1,$slib_y2\
+parallel $slib_x1,$slib_y1,$slib_x1,$slib_y2,1,0,$slib_size1,$slib_cquad1\
+parallel $slib_x1,$slib_y1,$slib_x2,$slib_y1,0,1,$slib_size2,$slib_cquad1\
+linewidth 2\
+hline 0,0,$slib_caxe1\
+vline 0,0,$slib_caxe1\
+$slib_Ligne
+!if $slib_cpoint1!=
+ !set slib_dessin = $slib_dessin\
+linewidth 4\
+$slib_Points\
+linewidth 1
+!endif
+
+slib_out=$slib_dessin
+
+!if url iswordof $slib_option or html iswordof $slib_option
+  insdraw_size=300,300
+  !insdraw $slib_out
+  slib_out=$ins_url
+ !if html iswordof $slib_option
+   slib_out=<img src="$ins_url" alt="" />
+ !else
+  slib_out=$slib_out,$insdraw_size
+ !endif
+!endif

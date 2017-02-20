@@ -1,0 +1,73 @@
+!! Give answers in this file.
+
+!if $type notwordof 0 1 2
+ !goto end
+!endif
+!if $type iswordof 1 2
+  !goto 12
+!endif
+!goto $type
+:0
+
+ <table class="wimscenter wimsborder">
+  <tr><td>$name_file</td>
+  </tr>
+  <tr>
+     <td>$wims_deposit</td>
+    !!$format_out_
+  !for f in svg
+    !if $f=png
+    <td>
+     <img src="$wims_home/$wims_sesdir/getfile/$f_depo.$f" />
+    </td>
+    !endif
+    !if $f iswordof svg
+     <td>
+      !record 0 of wimshome/s2/$wims_session/$f_depo.$f
+     </td>
+    !endif
+    <td>
+     !getfile $f_depo.$f $f_depo.$f
+    </td>
+  !next
+  </tr>
+</table>
+
+!goto end
+:12
+  <table class=" wimscenter wimsborder">
+  <tr><td>Smiles</td><td>$name_file</td>
+  </tr>
+!for sm=1 to $data_cnt
+  <tr>
+     <td>$(data_1[$sm])</td><td>$(data_2[$sm])</td>
+  !for f in $format_out_
+    !if $f=png
+    <td>
+     <img src="$wims_home/$wims_sesdir/getfile/$(data_2[$sm]).$f" />
+    </td>
+    !endif
+    !if $f iswordof svg
+     <td>
+      !record 0 of wimshome/s2/$wims_session/$(data_2[$sm]).$f
+     </td>
+    !endif
+    <td>
+     !getfile $(data_2[$sm]).$f $(data_2[$sm]).$f
+    </td>
+  !next
+  </tr>
+!next
+</table>
+
+!if $save_old=1
+  $name_savefile
+!endif
+!goto end
+
+:end
+!if $wims_theme=default
+  !set wims_ref_class=wims_button
+  !href module=adm/tool/chemtool&cmd=resume $wims_name_back2
+!endif
+!!!getfile $(data_2[$sm]).$f $(data_2[$sm]).$f

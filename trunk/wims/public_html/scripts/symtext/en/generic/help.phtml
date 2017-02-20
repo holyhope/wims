@@ -1,0 +1,59 @@
+!set style=en/generic
+
+<h2 class="wimscenter">The <span class="tt">generic</span> style of symtext (default)</h2>
+
+<p>This is the style applied by 
+!href cmd=help&special_parm=symtext symtext
+ where there is no style declaration in the options. The text comparison
+does not take into account the differences in lower- and upper-cases, nor
+letters with or without accent, nor singular or plural forms of common
+nouns, nor the present singular third-person form of common verbs.
+</p>
+
+!set n=!recordcnt symtext/$style/macros.help
+!if $n>0
+
+Definitions of positional macros: (recall that to replace a word
+(a, b, c, etc.) by a group of several words, one has to enclose the latter
+by a pair of brackets.)
+
+!readproc tabletheme
+
+$table_header
+$table_hdtr<th>Syntax</th><th>Recognition</th></tr>
+
+!for i=1 to $n
+ !set l=!record $i of symtext/$style/macros.help
+ !distribute lines $l into s1, s2
+ $table_tr<td class="tt">$s1</td>
+ <td>$s2</td>
+ </tr>
+!next i
+$table_end
+
+!endif
+<p>
+
+antonym, synonym and type dictionaries are planned.
+</p>
+!exit
+
+Il y a trois dictionnaires : anto (antonymes), syno (synonymes), type (type
+de mot). Ils peuvent s'utiliser par la règle <span class="tt">[Dic:...]</span> ou les
+macros <span class="tt">[anto:...]</span>, <span class="tt">[syno:...]</span> ou <span class="tt">[type:...]</span>.
+<b>Attention</b> les dictionnaires ne sont pas encore complets.
+<p>
+Pour le dictionnaire <span class="tt">type</span> (chaque mot peut avoir plusieurs types) : 
+</p>
+<ul>
+<li><span class="tt">a</span> désigne adjectif.
+</li><li><span class="tt">ad</span> désigne adverbe.
+</li><li><span class="tt">inf</span> désigne verbe en forme infinitif.
+</li><li><span class="tt">n</span> désigne nom.
+</li><li><span class="tt">nf</span> désigne nom féminin.
+</li><li><span class="tt">nm</span> désigne nom masculin.
+</li><li><span class="tt">v</span> désigne verbe.
+</li><li><span class="tt">va</span> désigne verbe auxiliaire.
+</li><li><span class="tt">vi</span> désigne verbe intransitif.
+</li><li><span class="tt">vt</span> désigne verbe transitif.
+</li></ul>

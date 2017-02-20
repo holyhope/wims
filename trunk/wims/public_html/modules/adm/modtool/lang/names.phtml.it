@@ -1,0 +1,277 @@
+!set lang_exists=yes
+
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
+
+!set name_auth=Accesso creazione e gestione moduli
+!set name_prop=Proprietà
+!set name_modname=!nosubst Elenco dei moduli di <em>$(auth_name[1]) $(auth_name[2])</em>
+!set name_create=Crea un nuovo modulo
+!set name_diff= Verifica le differenze
+!! must be the same as wims_name_modcontent in html/names.phtml.$lang
+!! dont succeed not to duplicate
+!set name_flist=File principali
+!set name_files_binfile= File binari
+!set name_del=Cancella un modulo
+!set name_size=Dimensioni
+!set name_publish=!nosubst Pubblica $i_title<br /><span class="tt">$mod</span>
+!set name_publication=Publicazione
+!set name_validation_message=Chiedere al webmaster di verificare l'installazione.
+!set name_compile=Compila latex2wims
+!set name_backup=Backup
+!set name_edfile=Modifica file
+!set name_showfile=Contenuto del file
+
+!distribute line File OEF/src\
+File OEF/src/cpp\
+File di dati modificabili\
+File per traduzioni\
+File di configurazione\
+Help Files\
+into name_files_src,name_files_cpp, name_files_other,name_files_lang,name_files_phtml,name_files_help
+
+!! wims_name_properties
+!set name_index=Proprietà
+
+!set name_file=File binari esistenti
+!set name_file1=File
+!set name_nofile=Questo modulo non contiene file binari.
+!set name_depos=Carica un file binario
+!set name_in_module=nel modulo
+!set name_replace=un file per sostituirlo
+!set name_addfile=Aggiungi un nuovo file
+!set name_successfile=Il file è stato inserito nel modulo
+!set name_nosuccessfile=Il file non è stato caricato nel modulo.\
+  Verificate che il nome non contenga lettere accentate o \
+  uno dei seguenti caratteri
+!set name_successdeletefile=è stato cancellato dalla directory
+!set name_changefile=Rinomina
+!set name_changenamefile=Nuovo nome del file
+!set name_warning_changenamefile=Attenzione, modifiche ai nomi dei file possono\
+  rendere inutilizzabili i test di autovalutazione già presenti nei corsi.\
+  Questo vale in particolare per i file con estensione
+
+!set name_help_addfile=Ogni nome <span class="tt wims_fname">nome_file</span> deve congenere solo\
+  caratteri alfanumerici senza accenti né spazi (va bene il carattere _, ma non il carattere -).
+!set name_help_addfile_src=il nome di un file per un esercizio OEF \
+   deve avere la forma <span class="tt wims_fname">src/nome_file.oef</span>
+!set name_help_addfile_src=Il nome dei file contenenti il codice di un esercizio OEF\
+ deve essere della forma <span class="tt wims_fname">src/nome_file.oef</span>.
+!set name_help_addfile_cpp=Il nome dei file contenenti il codice cpp di esercizi OEF\
+ deve essere della forma <span class="tt wims_fname">src/cpp/nome_file.cpp</span>.
+!set name_help_addfile_other=I nomi dei file devono essere della forma\
+ <span class="tt wims_fname">nome_file</span>.
+!set name_help_addfile_lang=Il nome del file deve essere della forma\
+ <span class="tt wims_fname">lang/nome_file.xx</span> dove\
+ <span class="tt wims_fname">xx</span> è il simbolo del linguaggio di traduzione.
+!set name_help_addfile_phtml=È possibile modificare alcuni di questi file per\
+   una ulteriore configurazione del vostro modulo.
+
+!set name_gestion=Per aggiungere/modificare un documento, cliccare sul \
+ link <span class="wims_button disabled">$wims_name_docgestion</span>. Il link <span class="wims_button disabled">$wims_name_binfile</span>\
+ permette di cambiare i file biniari o i sorgenti latex da cui sono generate le pagine \
+ del documento
+!set name_your_module=Il tuo modulo
+!set name_your_module_OEF=è un modulo di esercizi in formato OEF e
+!set name_file2=contiene i seguenti file
+!set name_updateadress=Aggiorna l'indirizzo
+!set name_simpl_address=Questo modulo ha solo un indirizzo semplificato
+!set gnu=!nosubst &copy; $year (<a href=\"COPYING\">GNU GPL</a>)
+
+!set name_type=OEF,documento, esercizio, strumento, ricreazione, Deductio
+!set name_zone=Zona
+!set name_Category=Tipo
+!set name_category=!nosubst $wims_name_Type
+!set name_createnew=Crea un nuovo modulo
+!set name_noquicktool=Quicktool non è installato su questo server
+!set name_rename=rinomina
+!set name_duplicate=duplica
+!set name_increment=Da aumentare ogni volta che si pubblica una nuova versione!
+!set name_backto=!nosubst Torna a $otit
+!set name_this1=del tuo nuovo modulo
+!set name_this2=del modulo attualmente in lavorazione
+!set name_levellist=K: infanzia; E: scuola primaria (elementare); H: scuola secondaria; U: università;<br /> G: dottorato; R: postdoc
+
+!set name_accountchange=Modifica opzioni account di lavorazione
+!set name_empty=!nosubst se non vuoi modificare la password lascia in bianco il campo <span class="wims_label">$wims_name_Password</span>
+!set name_change=La tua password è stata modificata.
+ !set name_translation_language=Altre lingue
+
+!distribute lines Opzioni di test\
+  Formula\
+  Low image,High image, Mathml\
+  Zoom\
+  Spaziatura caratteri\
+  normale,distanziata\
+  Dimensione delle formule matematiche\
+into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name_useropts3,\
+  name_useropts4
+
+!if $job=modname
+  !set name_moddevcnt=!nosubst Hai $totalcnt moduli in lavorazione.
+  !set name_limited=!nosubst la lista è limitata a $maxlist elementi
+
+  !distribute lines Mostra solo i moduli il cui indirizzo contiene \
+   Clicca sul titolo del modulo per modificarlo.\
+   Non ci sono moduli in lavorazione. È possibile\
+   ripristinare un file di backup\
+  into name_browselist,name_clicktitle,name_nomodule,name_restore
+!endif
+
+!distribute lines Copia,Rinomina,Duplica,Renomina\
+ into name_choice
+!set name_move=$(name_choice[2])
+!set name_copy=$(name_choice[3])
+
+!if $job iswordof move copy
+  !distribute lines fare una copia\
+   Rinominare il modulo ha come conseguenza che i test di autovalutazione che utilizzano questo modulo non funzioneranno più. Assicurarsi che questo non generi problemi,\
+ into name_copy,name_warning1
+
+!set name_public_module=!nosubst il modulo pubblico <span class="wims_mod_title">$otit</span>\
+ (<span class="tt wims_fname">$original2</span>) nello spazio di \
+  creazione moduli del server, all'indirizzo
+!set name_warning2= Rinominare o duplicare un nome-indirizzo pubbico di un modulo può avere come conseguenza\
+  la sua duplicazione. Per favore prestare attenzione! \
+  <p>Se si vogliono effettuare dei test, utilizzare invece la zona <span class="tt wims_fname">test</span> del server.
+!set name_warning3=Se avete già pubblicato questo modulo, per favore utilizzate come indirizzo\
+  esattamente l'indirizzo <em>pubblico</em> già utilizzato. In caso contrario il modulo sarà inutilmente duplicato.</p>
+!endif
+
+!if $job=auth
+  !set name_intro=Questo modulo interattivo permette lo sviluppo di moduli (sofisticati)\
+ per WIMS. Solo utenti con un account di gestione moduli possono accedere.\
+ <p>Inserire i propri dati di accesso
+
+  !distribute lines contattare il gestore del sito\
+    se non si ricordano i dati.\
+    Se siete interessati a creare e gestire moduli interattivi WIMS,\
+    per chiedere la creazione di un account (ed ottenere i dati di accesso, login e password).\
+    È anche possibile utilizzare\
+    per creare esercizi interattivi più semplici, attraverso una interfaccia facilitata e senza il bisogno di registrazione.\
+  into name_manager,name_forget,name_developer,name_identification,name_createxo1,\
+    name_createxo2
+
+!endif
+
+!if $job=backup
+ !set name_save=Questo è il file di backup del modulo
+ !set name_internal_error=Errore interno: impossibile generare il file di backup del modulo. Si prega di contattare il
+!endif
+
+!if $job=publish
+  !distribute lines Login (account <em>modtool</em>)\
+  Tipo di pubblicazione\
+  versione in fase di sviluppo,versione stabile - modifica un modulo esistente,versione stabile - creazione di un nuovo modulo\
+  Questo modulo è una traduzione<br />di un modulo di un altro autore?\
+  Utenti autorizzati a modificare questo modulo\
+  Leggimi!\
+  La versione pubblica di questo modulo apparirà a breve nel motore di ricerca del server.\
+  Se si tratta di un errore, si prega di contattare il site manger per richiedere la cancellazione del modulo.\
+  Riceverete una mail a conferma della pubblicazione.\
+  OK, va bene così\
+  I seguenti Campi non esistono\
+ into name_publishaccount,name_publishtype,name_prompt,name_translation,name_authorized,name_readhelp,\
+   name_local,name_error,name_emailsend,name_goahead,name_warning_nodomain
+
+ !set name_warning0=!nosubst Questo è un modulo con un indirizzo pubblico pronto per la pubblicazion attraverso il \
+  centro di pubblicazione $publishname.
+ !set name_warning01=Per favore inserire i propri dati di accesso.
+ !set name_warning1=Avete incrementato il numero della versione del modulo, se state pubblicando \
+  una nuova versione di un modulo esistente? Se non lo fate, questa nuova versione non sarà acquisita da nessun server.
+ !set name_warning2= Questo modulo ha un indirizzo locale (<span class="tt wims_fname">local</span>). Sarà pubblicato solamente nello spazio <span class="tt wims_fname">local</span> di questo server.\
+   Procedere con la pubblicazione?
+!set name_warning3=Il vantaggio principale di una pubblicazione dello spazio <span class="tt wims_fname">local</span> del server è che in questo modo il modulo sarà\
+  indicizzato e apparirà nel motore di ricerca di questo server.
+  !set name_cheat1=!nosubst Questo modulo dichiara che funziona con la versione $Wver2 di WIMS, ma \
+    in realtà è stato creato con la versione $wims_version. Probabilmente è un errore ed è \
+    necessario aggiornare il file INDEX del modulo aggiornando la <em>Versione di WIMS necessaria</em> nelle <span class="tt">Proprietà</span> del modulo.
+
+
+  !set name_cheat2= Se siete sicuri di sapere cosa stata facendo, potete \
+    imbrogliare il server (l'operazione è MOLTO RISCHIOSA)!
+  !set name_warning_domain=!nosubst Dovresti verificare le proprietà del modulo e\
+     utilizzare campi e parole chiave che siano già utilizzate dal server\
+     <span class="wims_label">$wims_name_Domain</span> e \
+     <span class="wims_label">$wims_name_Keywords</span>. \
+     Se ritenete che nessuna di queste sia adatta, potete aiutarci inviando una proposta a
+  !set name_warning_domain2=!nosubst Click on the field help\
+     <span class="wims_label">$wims_name_Domain</span> or\
+     <span class="wims_label">$wims_name_Keywords</span> to find the list
+  !set name_warning_keywords=!nosubst To improve the referencement of public modules,\
+   check the domains and keywords (see the field helps\
+   <span class="wims_label">$wims_name_Domain</span> and \
+   <span class="wims_label">$wims_name_Keywords</span>),\
+   le parole chiave devono essere separate da virgole e sono ammessi gruppi di parole,\
+   utilizzare per le parole chiave i termini inglesi standardizzati in modo da essere compatibili con il motore di ricerca multilingue del server.
+
+
+!set name_warning_keywords_unknown=Le seguenti parole chiave non sono nell'elenco di parole chiave\
+ ufficiali utilizzate da WIMS.
+ !set name_warning_keywords2=Solo le parole chiave ufficiali sono utilizzate per il completamento\
+ nel motore di ricerca. Avete verificato che le parole chiave che \
+ state cercando di utilizzare non abbiano un corrispondente nell'elenco ufficiale? Ricordate che\
+ le parole contenute nel titolo o nella descrizione sono già utilizzate dal motore di ricerca e non è quindi necessario riproporle.
+ !set name_warning_suggestion=Potete contribuire inviando le vostre proposte per nuovi campi o parole chiave scrivendo a
+!endif
+
+!if $job=diff
+  !distribute lines Nessuna differenza tra la versione in lavorazione e la versione pubblicata su questo server.\
+  Viene mostrata solo una parte delle numerose differenze tra la versione in lavorazione e la versione pubblicata su questo server:\
+  Differenze tra la versione in lavorazione e la versione pubblicata su questo server:\
+  into name_diff1,name_diff2,name_diff3
+!endif
+
+!if $job=restore
+ !set name_warning1=Il vostro file non è riconosciuto come un file di backup!<p>\
+ È possibile ripristinare solo file creati come backup di Modtool. Riprovate.</p>
+
+ !distribute lines Il vostro file non è riconosciuto come un file di backup. Errore nel file!\
+   Non ci sono differenze tra il modulo presente sul server (nello spazio di lavorazione) e il file di backup.\
+   Viene mostrata solo una parte delle numerose differenze tra il modulo presente sul server (nello spazio di lavorazione) e il file di backup:\
+   Differenze tra il modulo presente sul server (nello spazio di lavorazione) e il file di backup\
+   Indicare il file di backup da ripristinare\
+   mostrare solo le differenze con il modulo presente sul server.\
+   Vai a lavorare sul modulo\
+   Modulo ripristinato\
+  into name_norecognize,name_diff1,name_diff2,name_diff3,name_restoref,name_show_diff,name_gotowork,\
+    name_restored
+
+!set name_illegal= Il vostro backup contiene file di tipo non consentito! Non può essere ripristinato.\
+<p>Forse si tratta di un backup troppo vecchio? In questo caso è necessario compiare sul server i file uno a uno.</p>
+!set name_warning2=Solo backup creati tramite Modtool o prelevati dal centro di pubblicazione <a href="$downloadsite">$downloadsite</a>\
+   sono accettati. Non è possibile effettuare modifiche manuali dei file di backup.
+!set name_warning_diff=!nosubst Il ripristino di un file di backup ora sostituisce completamente i contenuti del modulo con lo stesso indirizzo esistente,\
+  senza possibilità di recupero, ma è possibile fare una verifica e
+
+!endif
+
+!exit
+:del
+L'operazione di cancellazione non è
+reversibile. Si consiglia di
+!href cmd=reply&jobreq=backup $wims_name_modsave
+
+<p>
+<b>ATTENZIONE</b>: ci possono essere corsi o test di
+autovalutazione che fanno riferimento a questo modulo, cancellare il
+modulo potrebbe creare problemi.
+
+</p><p>
+Sicuri di voler eliminare il modulo
+!!</p> close after the name of the module
+!exit
+:delconfirm
+ Il file
+ <span class="tt wims_fname">$fname</span>
+ è stato cancellato dal modulo
+ <span class="wims_mod_title">$title</span>.
+!exit
+
+:delfile
+Sicuri di voler eliminare il file
+<span class="tt wims_fname">$fname</span>
+dal modulo
+<span class="wims_mod_title">$title</span>?
+!exit

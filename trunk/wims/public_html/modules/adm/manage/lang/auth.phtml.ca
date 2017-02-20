@@ -1,0 +1,27 @@
+!set name_admpasswd=Mot de passe d'administrateur du site
+
+!read authscript.phtml
+!if $passone!=$empty
+ Comme vous n'avez pas choisi le mot de passe d'administrateur, le serveur va créer
+ un mot de passe valable uniquement pour cette session. Vous pouvez le trouver dans le fichier
+ <span class="tt wims_fname">$wims_home/$oncename</span> sur le compte du serveur WIMS. Lisez ce fichier
+ et tapez son contenu dans le champ ci-dessus.
+ <p>
+ Si vous désirez définir un mot de passe permanent (cela est commode mais moins
+ sûr qu'un mot de passe jetable), vous pouvez le mettre dans un fichier nommé
+ <span class="tt wims_fname">$wims_home/log/.wimspass</span>. Mais ce fichier ne doit être lisible
+ que par vous.
+!else
+Vous avez défini un mot de passe permanent pour l'administration du site. Vous pouvez aussi
+utiliser des mots de passe valables une seule fois, ce qui est plus sûr.
+ <p>
+ Pour passer au mot de passe valable une seule fois, effacez simplement le
+ fichier <span class="tt wims_fname">$wims_home/log/.wimspass</span> sur le compte du serveur WIMS.
+</p>
+!endif
+
+<p>
+Dans tous les cas, soyez extrêmement prudent lorsque vous utilisez le mot de passe
+d'administration du site. Une intrusion comme administrateur du site peut provoquer
+des dommages sur toutes les données sur le serveur.
+</p>

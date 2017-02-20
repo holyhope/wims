@@ -1,0 +1,56 @@
+
+
+<p class="wimscenter">Access restriction definition</p>
+<p>
+
+This is multi-line data, executed line by line in their list orders. The
+restrictions only affect resource modules, but not administration modules.
+Lines starting with a `<span class="tt">#</span>' are comments.
+</p><p>
+Each line is of the format <span class="tt">[access conditions]:[host conditions]</span>.
+</p><p>
+The access conditions is a list of words, which will be ANDed. The available
+words are listed in the following table. Each word can be prefixed with
+<span class="tt wims_code_words">non</span> to reverse its logical meaning.
+</p>
+$table_header
+$table_tr<th>word</th><th>meaning</th></tr>
+$table_tr<td class="tt wims_code_words">class</td><td>The connection is within a virtual class.</td></tr>
+$table_tr<td class="tt wims_code_words">com</td><td>The requested module is under the com/ subtree.</td></tr>
+$table_tr<td class="tt wims_code_words">document</td><td>The requested module is a document. (not yet available)</td></tr>
+$table_tr<td class="tt wims_code_words">exercise</td><td>The requested module is an exercise.</td></tr>
+$table_tr<td class="tt wims_code_words">hint</td><td>The request is for hint.</td></tr>
+$table_tr<td class="tt wims_code_words">local</td><td>The requested module is under the local/ subtree.</td></tr>
+$table_tr<td class="tt wims_code_words">recreation</td><td>The requested module is a recreation.</td></tr>
+$table_tr<td class="tt wims_code_words">tool</td><td>The requested module is a tool.</td></tr>
+$table_end
+
+The host conditions can be any host definition, eventually plus time
+definition as for any worksheets. If the first character of the host
+conditions is <span class="tt wims_code_words">!</span>, then the host/time meeting the conditions will
+be refused access (for the resources meeting the access conditions).
+Otherwise they will be granted access, and subsequent lines in the
+restriction definition will be ignored for those meeting the conditions.
+
+<hr/>
+
+!read help/hosts.phtml
+
+<hr/>
+
+Some starting examples.
+<p>
+# Disallow the use of tools from 134.59.102.*
+<br /><span class="tt wims_code_words">tool:! 134.59.102.</span>
+</p><p>
+# Disallow calls for hint from localhost.
+<br /><span class="tt wims_code_words">hint:! 127.0.0.1</span>
+</p><p>
+# People from wanadoo.fr cannot have anonymous accesses for recreations.
+<br /><span class="tt wims_code_words">recreation nonclass:! .wanadoo.fr</span>
+</p><p>
+# Work in virtual classes prohibited from localhost on New Year's Day of 2004.
+<br /><span class="tt" class="wims_code_words">
+class: ! 127.0.0.1 >20040101.00:00 <20040101.23:59</span>
+</p>
+

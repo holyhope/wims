@@ -1,0 +1,99 @@
+!set lang_exists=yes
+
+!set name_username=!nosubst $lastname$firstname
+!set name_supervisorname=!nosubst $wims_lastname$wims_firstname
+
+!set name_password_check=Password security check
+!set name_listclass=°à¼¶,°à¼¶,°à¼¶×é,°à¼¶,Ñ§Çø
+
+!default Cltype=$cltype
+!if $Cltype iswordof 2 4
+   !if $Cltype=2
+    !set name_classe=$(name_listclass[$Cltype+1])
+    !set name_sup=½ÌÊ¦-Ö÷³Ö½ÌÊ¦
+   !else
+    !set name_classe=$(name_listclass[$Cltype+1])
+    !set name_sup=Ö÷³Ö½ÌÊ¦
+   !endif
+     !set name_classes=$name_classe
+     !set name_classess=$name_classe
+     !set name_classesss=$name_classe
+     !set name_classessss=$name_classe
+ !else
+   !set name_classe=$(name_listclass[$Cltype+1])
+   !set name_classes=$name_classe
+   !set name_classess=$name_classe
+   !set name_classesss=$name_classe
+   !set name_classessss=$name_classe
+   !set name_sup=½ÌÊ¦
+ !endif
+
+!distribute lines ¼ÌĞø\
+  ÖØĞÂ²Ù×÷.\
+  ´´½¨ : °à¼¶, °à¼¶×é, Ñ§Ğ£\
+  Ñ§Ğ£Ãû\
+  ÖÁ¶à\
+  ÖÁÉÙ\
+  ±£Áô¸ø×¨¼Ò\
+  ×Ö·û\
+  ·µ»Øµ½²Ù×÷µÄÆğµã.\
+  Ñ¡ÔñÄãÒª´´½¨µÄĞéÄâ°à¼¶µÄÀàĞÍ.\
+  4 ÖÁ 16 ¸ö×Ö·û, ¿ÉÒÔÊÇÊı×Ö»ò×ÖÄ¸\
+ into name_continue,name_again,title,name_Name_portal,name_atmost,name_atleast,name_expert,\
+   name_characters,name_comeback,name_choose,name_warningpass
+
+!if $regpolicy=file
+  !set noright=(ÄãÃ»ÓĞÈ¨ÏŞ×öÕâ¼şÊÂ.)
+ !else
+  !set noright=(Ö»ÓĞÍøÕ¾¹ÜÀíÔ±²ÅÄÜ×öÕâ¼şÊÂ.)
+!endif
+
+!set name_regpolicy=Ö»ÓĞÄãµÄµçÓÊµØÖ·ÏÖÔÚ¾ÍÓĞĞ§, $name_classesssµÄ´´½¨¹¤×÷²ÅÄÜ³É¹¦.
+
+!set name_help1=´ËÃÜÂëÊ¹ÄãÄÜ×÷ÎªËüµÄ¸ºÔğÈË½øÈë$name_classe. Ö»ÓĞÄãÒ»¸öÈËÄÜÖªµÀ´ËÃÜÂë.
+!set name_help2=µ±°à¼¶µÄ²Î¼ÓÕß×¢²áÊ±±ØĞëÊ¹ÓÃ$name_classesssµÄÃÜÂë;\
+ Òò´ËÄã¿ÉÒÔ°ÑËü·Ö·¢¸øÄãµÄÑ§Éú.
+
+!set name_help3=µ±$name_classesssµÄÖ÷³Ö½ÌÊ¦×¢²áÊ±±ØĞëÊ¹ÓÃ$name_classesssµÄÃÜÂë;\
+ Äã²»ÄÜÈÃÄãµÄÑ§ÉúÖªµÀÕâ¸öÃÜÂë.
+
+!distribute lines ÕâÊÇÄãµÄ°à¼¶×Ô¶¯´æµµµÄÈÕÆÚ.\
+  ÄãµÄ$name_classe²Î¼ÓÕßÈËÊıÉÏÏŞ \
+  °²È«Èë¿Ú\
+  ¿ÉÑ¡µÄ.\
+  ´ËÃÜÂëÖ»ÓÃÒ»´Î. ²»ÄÜÓÃÓÚÁ¬½Ó$name_classe!\
+  ÄãµÄ$name_classeÃÜÂë\
+  Íâ²¿ÑéÖ¤ CAS\
+  into name_help_date,name_help_limit,name_secure,name_optional,name_warning_code,name_code,name_cas
+
+!set name_host=!nosubst Äã¶Ô$name_classeÊ©ĞĞÃô¸Ğ²Ù×÷µÄÖ÷»úÃû.\
+ Èç¹ûÄã²»ÌîĞ´, ÄÇÃ´ÔÚÃ¿¸öÃô¸Ğ²Ù×÷ºóÄã¶¼»áÊÕµ½Ò»¸öµçÓÊ.\
+ ÌîÈë <span class="tt wims_code_words">all</span> ¿ÉÒÔÈ¡ÏûÕâ¸ö°²È«´ëÊ©.(²»ÍÆ¼ö)
+
+!set name_cas_help=Èç¹ûÄãÏëÊ¹ÓÃ CAS ĞÍµÄÍâ²¿ÑéÖ¤, Çë²»ÒªÌîĞ´´ËÀ¸\
+(Ëü»áÓÉÄãµÄ ENT Ìá¹©).
+
+
+!set name_cpexempleintro=!nosubst Vous allez créer une copie de la classe <span class="tt wims_code_words">$source_title</span>
+!set name_choosemode=Vous devez choisir le mode de copie de cette classe
+!distribute item Intégrale,Partielle into name_btcpexemplemeth0,name_btcpexemplemeth1
+
+!set name_cpexemplemeth0=Toutes les ressources seront copiées. Les ressources pourront être désactivées puis supprimées ou adaptées en fonction des dépendances.
+!set name_cpexemplemeth1=Les examens ne seront pas copiés. Les ressources seront désactivées automatiquement. Vous pourrez alors décider de celles que vous souhaitez supprimer, adapter ou garder.
+!set name_cpexemplecomment=Dans tous les cas, les dates d'expiration seront adaptées à la date de fermeture de la classe créée.
+!set name_research1=Il y a beaucoup de classes virtuelles sur ce site. Tapez une partie d'un mot se trouvant dans son titre ou dans le nom de l'enseignant pour trouver celle que vous cherchez.
+!set name_research2=Il y a encore trop de classes correspondant à votre mot de recherche. Veuillez donner un mot plus précis.
+!set name_searchclass=Rechercher une classe
+!set name_nofound=Aucune classe ne correspond à votre recherche.
+
+!distribute items Libre, Protégé, Non autorisé, Duplication, \
+Cliquez sur la classe à dupliquer\
+into name_free,name_protected,name_disallowed,name_cloning,name_clickclone
+
+!set name_getcloningpwd=!nosubst Vous allez créer une copie de la classe <span class="tt wims_code_words">$source_title</span>. \
+Pour cela vous devez saisir le mot de passe de duplication que l'administrateur de la classe vous a communiqué.
+!set name_subclass=Sous-classe de
+
+!distribute lines Location (town, country)\
+ En remplissant ce champ, vous acceptez que nous indiquions que WIMS est utilisé dans votre ville (sans aucune autre mention)\
+into name_location,name_location_help

@@ -1,0 +1,136 @@
+
+!set form_titlename=$wims_name_title
+!set form_caption=$name_levelproperties
+!set title=$class_description
+!set sup=$class_Supervisor
+!set alevel=$class_level
+<div id="widget_zone_list">
+!if $jquery_defined=yes
+  !read adm/tabscript zone_list
+!endif
+<ul>
+ <li><a href="#wims_levelform">$wims_name_properties</a></li>
+ <li><a href="#wims_othergestion">$name_othergestion</a></li>
+ <li><a href="#wims_zone_class">$wims_name_class</a></li>
+ <li><a href="#wims_zone_program">$wims_name_program</a></li>
+
+</ul>
+<div id="wims_levelform">
+!read scripts/levelform.phtml
+</div>
+<div id="wims_zone_class">
+!if $classcnt=0
+<p>
+ $name_level1
+ !href cmd=reply&job=addclass $wims_name_addclass
+!!/
+!! !href cmd=reply&job=addcsvclass $name_addcsvclass
+!!.
+!! $
+!set wims_ref_class=wims_button_help
+ !href cmd=help&special_parm=structure#class $wims_name_help
+</p>
+!else
+ $table_header
+ <caption>$name_level4
+  $
+!set wims_ref_class=wims_button_help
+ !href cmd=help&special_parm=structure#class $wims_name_help
+!! !href cmd=reply&job=addclass $wims_name_addclass
+!! /
+!! !href cmd=reply&job=addcsvclass $name_addcsvclass
+ </caption>
+ $table_hdtr
+ <th>$name_code</th><th>$wims_name_name</th><th>$wims_name_action</th><th>$name_supervisor2</th>
+ <th class="small">$wims_name_course</th>
+ <th class="small">$name_participant</th>
+ </tr>
+ !for i=1 to $classcnt
+   !set l=!line $i of $classes
+   !distribute items $l into l_,s_,t_,n_
+   !set c=!record 0 of $classdir1/$l_/courses
+   !set c=!nonempty lines $c
+   !set c=!linecnt $c
+   $table_tr<td>$l_</td>
+   <td>
+   !href cmd=reply&job=class&class=$l_ $t_
+   </td><td>
+   !set wims_ref_class=wims_button wims_warning
+    !href cmd=reply&job=delclass&del=$l_ $wims_name_erase
+   </td><td>
+   !if $s_!=$empty
+    !if $s_=supervisor
+     $wims_name_supervisor
+    !else
+     !default n_=$s_
+     !href cmd=reply&job=modteacher&teacher=$s_ $n_
+    !endif
+   !else
+    $name_nonavailable
+   !endif
+   </td><td>$c</td>
+   !set c=!recordcnt $classdir1/$l_/.userlist
+   <td>$c</td>
+   </tr>
+ !next i
+ $table_end
+!endif
+</div>
+<div id="wims_zone_program">
+!if $progcnt=0
+<p>
+$name_level2
+ !href cmd=reply&job=addprog $wims_name_addprog
+. $
+!set wims_ref_class=wims_button_help
+ !href cmd=help&special_parm=structure#program $wims_name_help
+</p>
+!else
+ $table_header
+ <caption>$name_level3
+  $
+!set wims_ref_class=wims_button_help
+ !href cmd=help&special_parm=structure#program $wims_name_help
+!! <span class="small">
+!! !href cmd=reply&job=addprog $wims_name_addprog
+!! </span></caption>
+ $table_hdtr
+ <th>$name_code</th><th>$wims_name_name</th><th>$wims_name_action</th><th>$name_supervisor2</th>
+ <th class="small">$wims_name_course</th>
+ </tr>
+ !for i=1 to $progcnt
+   !set l=!line $i of $programs
+   !distribute items $l into l_,s_,t_,n_
+   !set c=!record 0 of $classdir1/$l_/courses
+   !set c=!nonempty lines $c
+   !set c=!linecnt $c
+   $table_tr<td>$l_</td>
+   <td>
+   !href cmd=reply&job=prog&prog=$l_ $t_
+   </td><td>
+   !set wims_ref_class=wims_button
+    !href cmd=reply&job=delprog&del=$l_ $wims_name_erase
+   </td><td>
+   !if $s_!=$empty
+    !if $s_=supervisor
+     $wims_name_supervisor
+    !else
+     !default n_=$s_
+     !href cmd=reply&job=modteacher&teacher=$s_ $n_
+    !endif
+   !else
+    $name_nonavailable
+   !endif
+   </td><td>$c</td>
+   </tr>
+ !next i
+ $table_end
+!endif
+!set wims_menu_items=!append line addclass,1,cmd=reply&job=addclass\
+addcsvclass,1,cmd=reply&job=addcsvclass\
+itemsep,0,\
+addprog,1,cmd=reply&job=addprog\
+to $wims_menu_items
+</div>
+!! div id="widget_zone_list" is closed in main.phtml
+!reset title

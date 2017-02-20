@@ -1,0 +1,67 @@
+!set wims_module_log=error: $error
+
+<span class="wims_warning">$wims_name_Error</span>.
+!if $error=badvariablename
+ L'une, au moins, des variables techniques que vous utilisez n'existe pas ou n'est pas modifiable à ce niveau. Votre questionnaire ne fonctionnera pas correctement. 
+ !exit
+!endif
+
+!if $error=notechvar
+ Aucune variable technique définie dans cette classe. Pour utiliser ce modèle de questionnaire vous devez d'abord définir une variable technique dans la classe en utilisant le gestionnaire de variable technique.
+ !exit
+!endif
+
+!if $error = not_user
+ Í¶Æ±ÏµÍ³½öÄÜÓÃÓÚĞéÄâ°à¼¶.
+ !exit
+!endif
+
+!if $error = bad_vote
+ ÄãÒªÇóµÄÍ¶Æ±/¼ÇÂ¼²¢²»´æÔÚ.
+ !exit
+!endif
+
+!if $error = already_voted
+ ÄãÒÑ¾­Í¶¹ıÆ±, ²»ÄÜÔÙÍ¶, ÒòÎªÕâÊÇÄäÃûµÄ.
+ !exit
+!endif
+
+!if $error = too_many_votes
+ ÄãµÄ°à¼¶ÀïÒÑ¾­ÓĞÌ«¶àµÄÍ¶Æ±/¼ÇÂ¼.
+ ÎªÊ²Ã´ĞèÒªÕâÃ´¶à?
+ !exit
+!endif
+
+!if $error = no_content
+ Äã»¹Ã»ÓĞÌîºÃÍ¶Æ±/¼ÇÂ¼µÄÄÚÈİ.
+ !exit
+!endif
+
+!if $error = no_title
+ Çë¸ø³öÄãµÄÍ¶Æ±/¼ÇÂ¼µÄ±êÌâ.
+ !exit
+!endif
+
+!if $error = bad_data
+ ÄãµÄÄ³Ğ©¶¨ÒåÊÇÎŞĞ§µÄ. Çë¸ÄÕı.
+ !exit
+!endif
+
+!if $error = no_vote
+ ÄãÃ»ÓĞÍ¶¹ıÆ±, Òò´ËÄã²»ÄÜ¿´½á¹û.
+ !exit
+!endif
+
+!if $error = no_variable
+   ÄãÃ»ÓĞ¸ø³ö±äÁ¿Ãû»òÕß±äÁ¿ÃûÎŞĞ§.
+   !exit
+!endif
+
+!if $error = bad_variable
+   Äã¸ø³öµÄ±äÁ¿Ãû (<span class="tt wims_code_words">$namevar</span>) ²»ºÏÊÊ, 
+   ¿ÉÄÜËüÒÑ±»Èí¼şÊ¹ÓÃ.
+   !exit
+!endif
+
+!msg $error
+

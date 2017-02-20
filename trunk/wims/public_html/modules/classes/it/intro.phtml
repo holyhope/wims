@@ -1,0 +1,36 @@
+!set proc=oef
+!header
+
+!if $wims_class=$empty
+ <p>
+  Questo è un modulo interno di un corso virtuale, pertanto
+  solo gli utenti registrati del corso possono
+  accedervi.
+ </p>
+ <p class="wimscenter">
+  !href $ $wims_name_home
+ </p>
+ !tail
+ !exit
+!endif
+
+<p>Questo modulo raccoglie esercizi interattivi per il corso
+<span class="wims_classdesc">$wims_classname</span>
+(<span class="wims_institutiondesc">$wims_institutionname</span>).</p>
+!if $wims_user=supervisor
+ <p>
+  !set wims_ref_class=wims_button
+  !href module=adm/createxo Crea un nuovo esercizio
+ </p>
+ !read oef/intromenu.phtml
+!else
+  <p>
+   Solo il docente può accedere a questa pagina.
+  </p>
+  <p class="wimscenter">
+   !href module=home $wims_name_class_home
+  </p>
+!endif
+
+!tail
+

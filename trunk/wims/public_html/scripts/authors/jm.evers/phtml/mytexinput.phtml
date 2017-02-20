@@ -1,0 +1,141 @@
+!set n=$counter
+<script type="text/javascript">
+//<![CDATA[
+<!-- no validator -->
+    var descr_list="$description";
+    var descr_cnt = 30;
+    var description = make_description(descr_list,descr_cnt);
+
+    function dontknow(){
+	myConfirm('$dontknow','?','$wims_ref_name','$session','$module','$counter','$nok_send_color');
+    }
+    
+    function TexAppInputs(num){
+	if( document.getElementById('TexApp1') ){ // starts with 1
+	    var p = 1;
+    	    while ( document.getElementById('TexApp'+p) ){
+		document.getElementById('TexApp'+p).changeInputfields(num);
+		p++;
+	    }
+	}
+    }
+    
+    function sendanswer(){
+	var reply = new Array();var show ="<ol>";
+	var p = 1;
+	var tmp;var tmp1;var cnt = 0;var ans = new Array();
+	if( document.getElementById('TexApp1') ){ // starts with 1
+    	    document.getElementById('wait_for_applet').style.display = "none";
+    	    while ( document.getElementById('TexApp'+p) ){
+		tmp1 = document.getElementById('TexApp'+p).ReadApplet()+"";
+		ans = tmp1.split(',');
+		if(ans.length>100){setAlarm(r2);dontknow();}
+		for(var s = 0; s < ans.length; s++){
+		    tmp = ans[s];tmp=tmp.replace(/\ /g,'');
+		    if(tmp.length == 0){setAlarm(r1+" "+ parseInt(cnt+1));return;}
+		    if(tmp.indexOf(',')!=-1){setAlarm(r4);return;}
+		    if(check_x(tmp) == 0){return;}
+		    if(tmp.indexOf('error')!=-1){setAlarm(tmp);return;}
+		    tmp = science(tmp);if(tmp == "error"){return;}
+		    if(tmp.indexOf("[") != -1){
+			if(tmp.indexOf("sqrt[")!=-1){tmp = specialroot(tmp);if(tmp == "error"){return;}}
+			if(tmp.indexOf("log[") !=-1){tmp = speciallog(tmp) ;if(tmp == "error"){return;}}
+		        if(tmp.indexOf("[") != -1){setAlarm(r13);return;}
+		    }
+		    tmp = arrows(tmp,2,"","");if(tmp == "error"){return;}
+		    reply[cnt] = tmp; 
+		    show = show + "<li>" + tmp + "</li>"; 
+		    cnt++;
+        	}
+		p++;
+    	    }
+    	    document.getElementById('wait_for_applet').style.display = "block";
+	}
+	if( document.getElementById('myinput0') ){ // using other inputfields as well ? use wims array-list description for use in confirm div
+	    var inputfieldnumber=0;
+	    while( document.getElementById('myinput'+inputfieldnumber) ){
+		tmp = document.getElementById('myinput'+inputfieldnumber).value;
+		if(tmp.length == 0){setAlarm(r1+" "+ parseInt(cnt+1));return;}
+		if(tmp.indexOf(',')!=-1){setAlarm(r4);return;}
+		if(check_x(tmp) == 0){return;}
+		if(tmp.indexOf('error')!=-1){setAlarm(tmp);return;}
+		tmp = science(tmp);if(tmp == "error"){return;}
+		if(tmp.indexOf("[") != -1){
+		    if(tmp.indexOf("sqrt[")!=-1){tmp = specialroot(tmp);if(tmp == "error"){return;}}
+		    if(tmp.indexOf("log[") !=-1){tmp = speciallog(tmp) ;if(tmp == "error"){return;}}
+		    if(tmp.indexOf("[") != -1){setAlarm(r13);return;}
+		}
+		tmp = arrows(tmp,2,"","");if(tmp == "error"){return;}
+		reply[cnt] = tmp;
+		show = show + "<li>" + description[inputfieldnumber] +  tmp + "</li>"; 
+		cnt++;
+		inputfieldnumber++;
+		if(cnt>100){setAlarm(r2);dontknow();}
+	    }
+	}
+	show = show + "</ol>";
+	myConfirm(show,reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
+    }
+//]]>
+</script>
+
+<div id="wait_for_applet" style="text-align:center;display:block;"><img src="$gifdir/wait.gif" alt="wait...wait"></div>
+!! TexApp is in exotext or in object_n
+<table id="exercise" class="exercise" ><!-- begin table id="exercise" -->
+    <tr>
+    <td class="exercise_t">
+	!if $(question$n) != $empty
+	    $(question$n)
+	    <br />
+	!endif
+	!if $(formula$n) != $empty
+	    !if $display = 1234
+		!insmath $$$$ $(formula$n) $$$$
+	    !else
+		!insmath $(formula$n)
+	    !endif
+	    <br />
+	!endif
+	!if $exotext != $empty
+	    <br />
+	    $exotext
+	!endif
+    </td>
+!if $image=1
+    !if $make_tr=1
+    </tr>
+    <tr>
+    !endif
+    <td class="exercise_c">
+    !if $draw=1
+	!set insdraw_size=$xsize,$ysize
+	!set ins_attr= id="myimage"
+	!insdraw $(image$n)
+    !endif
+    !if $plot=1
+	!set insplot_set=$(image_settings$n)
+	!set ins_attr= id="myimage"
+	!insplot $(image$n)
+    !endif
+    </td>
+!endif
+!if $(object$n) != $empty
+    !if $make_tr=1
+    </tr>
+    <tr>
+    !endif
+    <td class="exercise_c">
+	$(object$n)
+    </td>
+!endif
+    </tr>
+</table><!-- begin table id="exercise" -->
+
+<div id="send_buttons" class="embedded_central">
+    <input type="button" id="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send">
+    <input type="button" id="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow">
+!if $control_inputs = 1
+    <input type="button" id="schaersvoorde_extra_button" onclick="javascript:TexAppInputs(1)" value="+">
+    <input type="button" id="schaersvoorde_extra_button" onclick="javascript:TexAppInputs(-1);" value="&minus;">
+!endif
+</div>

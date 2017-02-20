@@ -1,0 +1,53 @@
+
+!if $condtest=-1
+ scoretest=0
+ !goto score
+!endif
+
+casecnt=!linecnt $allcases
+!if $cutstop!=yes and $casecnt>2
+ oldcaseid=$caseid
+ caseline=!line 1 of $allcases
+ cases=!line 2 to -1 of $allcases
+ caseline=!translate internal $	$ to $\
+$ in $caseline
+ activecase=!line 1 of $caseline
+ caseids=!line 2 to -1 of $caseline
+ cases2=
+ caseids2=
+ !if $activecase>1
+  cases2=!line 1 to $[$activecase-1] of $cases
+  caseids2=!line 1 to $[$activecase-1] of $caseids
+ !endif
+ !if $activecase<$casecnt-1
+  cases3=!line $activecase+1 to -1 of $cases
+  caseids3=!line $activecase+1 to -1 of $caseids
+  cases2=!append line $cases3 to $cases2
+  caseids2=!append line $caseids3 to $caseids2
+ !else
+  activecase=$[$activecase-1]
+ !endif
+ caseid=!line $activecase of $caseids2
+ caseline=!translate internal $\
+$ to $	$ in $activecase\
+$caseids2
+ allcases=$caseline\
+$cases2
+ !reset newobject,m_newobject,newObject
+ !read deduc/objects.get
+ !read deduc/methreset erase
+# statusline=!replace item number $currstep by () in $statusline
+# statusLine=!replace item number $currstep by () in $statusLine
+ object$[$currstep-1]=$allcases
+ casefinished=$oldcaseid
+ !exit
+!endif
+
+:score
+!if $earlyscore=$empty
+  module_score=$scoretest
+  wims_module_log=score $module_score/10
+!endif
+score=$scoretest
+status=
+

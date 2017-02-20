@@ -1,0 +1,133 @@
+!read adm/class/classlang names.phtml
+
+!if $error isitemof notsupervisor,noclass,nosupervisormail
+    !exit
+!endif
+
+!bound job within all,filter,login,select default all
+!if $job notwordof login select
+  !reset loginlist
+!endif
+
+job=!items2words $job
+aim=email
+
+!if $msg issametext and $cmd notwordof new renew
+  error=empty_msg
+!endif
+
+!if $email_exists=0
+  error=$error empty_user
+!endif
+
+!if $cmd=resume
+  !reset list_user list_noemail error
+!endif
+
+!readproc adm/vfilter/listvarfilter.proc
+!if $varfilterclear!=$empty
+ step=0
+!else
+ !reset step
+!endif
+!readproc adm/vfilter/varfilter proc
+
+list_user=
+list_noemail=
+!default job=all
+
+rac=wimshome/log/classes/$wims_class
+wims_superclass=!defof class_superclass in $rac/.def
+!default wims_superclass=$wims_class
+file=$rac/.userlist
+
+!if select iswordof $job and login iswordof $job
+   loginlist_=!listuniq $loginlist,$select_user
+!else
+  !if login iswordof $job
+    loginlist_=$loginlist
+  !else
+    loginlist_=$select_user
+  !endif
+!endif
+!if $job=all or $loginlist_=$empty
+  loginlist_=all
+!endif
+
+$(aim)_exists=0
+
+!set cnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
+
+!!!if $varfilter=$empty and $job notwordof select login
+!!   varfilter=all
+!!!endif
+!for lu =1 to $cnt
+  TEST=
+  us_=!record $lu of $file
+  !distribute item $us_ into l_name_,f_name_,login
+  !defread wimshome/log/classes/$wims_superclass/.users/$login
+  !if $varfilter=$empty
+    !if $loginlist_=all or $login isitemof $loginlist_ or $varfilter=all
+      TEST=1
+      !goto OK
+    !endif
+  !else
+    !if ($login isitemof $loginlist_) or $loginlist_=all or ($filter!=all and $filter!=$empty)
+     !read adm/vfilter/testfilter $login\
+$varfilter
+     TEST=$var_filter_test
+    !else
+     TEST=0
+    !endif
+ !endif
+:OK
+  !if $TEST=1
+    aim_=!defof user_$aim in wimshome/log/classes/$wims_superclass/.users/$login
+    !if $aim_!=
+     list_user=!append line $login,$l_name_,$f_name_,$aim_ to $list_user
+     !set $(aim)_exists=1
+    !else
+     list_noemail=!append line $login,$l_name_,$f_name_, to $list_noemail
+    !endif
+  !endif
+!next lu
+!goto end
+!endif
+!endif
+
+!if $job=login
+  !for lu =1 to $cnt
+   us_=!record $lu of $file
+   !distribute item $us_ into l_name_,f_name_,login
+   !if $login isitemof $loginlist
+    !defread wimshome/log/classes/$wims_superclass/.users/$login
+    aim_=!defof user_$aim in wimshome/log/classes/$wims_superclass/.users/$login
+    !if $aim_ !=
+     list_user=!append line $login,$l_name_,$f_name_,$ph_ to $list_user
+     !set $(aim)_exists=1
+    !else
+     list_noemail=!append line $login,$l_name_,$f_name_, to $list_noemail
+    !endif
+   !endif
+  !next lu
+ !goto end
+!endif
+
+
+:end
+
+
+!! teacher list
+
+aim_=!defof user_email in wimshome/log/classes/$wims_class/supervisor
+list_teacher=supervisor,,,$aim_
+ !if $wims_superclass!=$wims_class
+  !set other_teachers=!record 0 of wimshome/log/classes/$wims_class/.teacherlist
+  !set other_teachers=!column 3 of $other_teachers
+  !for ot in $other_teachers
+   m_ot=!getdef user_email in wimshome/log/classes/$wims_superclass/.users/$ot
+   !if $m_ot !=$empty
+    list_teacher=!append line $ot,,,$m_ot to $list_teacher
+   !endif
+  !next
+ !endif

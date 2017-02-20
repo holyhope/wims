@@ -1,0 +1,56 @@
+!set wims_theme_mhelpheader=yes
+<!-- begin of mhelpheader.phtml -->
+
+ !set modtitle=$(module_title_$lang)
+ !default modtitle=$module_title
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd">
+<html xml:lang="$lang" xmlns="http://www.w3.org/1999/xhtml" xmlns:mathml="http://www.w3.org/1998/Math/MathML">
+
+<head>
+
+!read name.phtml.$module_language
+!if $special_parm=about
+ !set wname_h=$wims_name_about
+!else
+ !set wname_h=$wims_name_help
+!endif
+!set module_title2=$wname_h : $modtitle
+!read adm/css.phtml
+$wims_html_header
+
+</head>
+
+<body $wims_htmlbody onload="window.focus();window.moveTo(150,120);window.resizeTo(700,600);">
+
+	<div id="wimsmhelp">
+
+		<div id="wimstopbox">
+			<!--Titre du site-->
+			<div id="wims_title">
+				<h1 class="wims_title">
+				   WIMS <!--$N_at <a href="/">$httpd_HTTP_HOST</a>-->
+				</h1>
+				<h2 class="wims_subtitle">
+				 <!--$V_title--> WWW Interactive Multipurpose Server
+				</h2>
+			</div><!--end wimstitle-->
+
+			<br class="clearall spacer"/>
+
+			<!--menu-->
+			<ul class="wimsmenu menuglobal">
+				<li class="menuitem">
+				 !read oneitem.phtml back2,3,window.close();
+				</li> <!-- end of menuitem -->
+			</ul> <!-- end of wimsmenu -->
+		</div><!-- wimstopbox -->
+
+		<div id="wimsbodybox">
+			<div id="wimspagebox">
+				<div class="wimsbody">
+					<div id="wims_title">
+						<h1 class="wims_title">$modtitle</h1>
+					</div>
+
+<!-- end of mhelpheader.phtml -->

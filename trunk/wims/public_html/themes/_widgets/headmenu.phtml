@@ -1,0 +1,11 @@
+!default div1=div
+<!-- _widgets/headmenu.phtml -->
+!for i_=1 to $wims_hm_cnt
+ !set 1_=!line $i_ of $wims_hm
+ !set wims_ref_class = !item 1 of $1_
+ <$div1 class="menuitem $wims_ref_class">
+  !read $(path)oneitem.phtml $1_
+ </$div1>
+ !reset wims_ref_class
+!next i_
+<!-- end _widgets/headmenu.phtml -->

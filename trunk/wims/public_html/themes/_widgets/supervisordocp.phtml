@@ -1,0 +1,29 @@
+<!-- _widgets/supervisorsdocp.phtml -->
+!set docpubliccnt=!recordcnt  wimshome/log/classes/$wims_class/doc/.docindex
+!for i=1 to $docpubliccnt
+ !set sh=!record $i of wimshome/log/classes/$wims_class/doc/.docindex
+ !distribute lines $sh into s_,t_,ti,d_,o_,w_
+ $table_tr
+  <td>$wims_name_doc</td>
+  <td>
+   !href module=$s_&$t_&wksheet=$w_ $ti
+  </td>
+   !if $seq_open=yes
+    !read themes/_procs/supervisorseq.proc doc,$o_
+  !endif
+  <td>
+   !item $[$o_ +1] of $wims_name_status
+  </td><td>
+   !set wims_ref_class=wims_button
+   !href module=adm/class/adddoc&job=prop&doc=$i $wims_name_change
+
+   !set wims_ref_class=wims_button
+   !href module=adm/class/adddoc&job=chstatus&doc=$i $(wims_name_actionlist[5-$o_])
+
+   !set wims_ref_class=wims_button wims_warning
+   !href module=adm/class/adddoc&job=deldoc&doc=$i $(wims_name_actionlist[6])
+
+  </td>
+ </tr>
+!next i
+<!-- end _widgets/supervisorsdocp.phtml -->

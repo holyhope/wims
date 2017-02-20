@@ -1,0 +1,191 @@
+!if $step=$empty
+    step=1
+!endif
+
+max_exos=!defof MAX_EXOS in wimshome/public_html/bases/sys/define.conf
+max_sheets=!defof MAX_SHEETS in wimshome/public_html/bases/sys/define.conf
+title_limit=50
+desc_limit=255
+
+!if $scoring=yes
+ !default require=10
+ !default weight=1
+!else
+ require=0
+ weight=0
+!endif
+
+!if $step=1
+ sheets=
+ !for i=1 to $sheettot
+  sh=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+  !distribute lines $sh into a_,t_,title
+  !if $a_<1
+   sheets=!append line $i,$title to $sheets
+  !endif
+ !next i
+ sheetcnt=!linecnt $sheets
+ !ifval $sheetcnt=0
+  error=no_sheet
+  !exit
+ !endif
+ special_parm2=expert
+ smodule=$dir
+ !distribute line $wims_oefdefault_qnum\
+$wims_oefdefault_qcmlevel\
+$wims_oefdefault_scoredelay\
+$wims_oefdefault_qcmpresent\
+$wims_oefdefault_presentsol\
+$wims_oefdefault_check\
+wims_oefdefault_expow\
+wims_oefdefault_sepow\
+wims_oefdefault_precw\
+  into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_presentsol,intro_check,\
+  expow,sepow,precw
+!endif
+
+!! calcul du nombre d'exercices
+!if /////classes/ isin /////$smodule
+    !! adresse du module d'exo d'une classe
+    dir_header=wimshome/log/classes/$wims_class
+!else
+    !! adresse d'un module public ou modtool
+    dir_header=wimshome/public_html/modules/$smodule
+!endif
+exolist=!defof exolist in $dir_header/Exindex
+exolist=!char 17 to -2 of $exolist
+exotitle=!defof titlelist in $dir_header/Exindex
+exotitle=!char 17 to -2 of $exotitle
+exocnt=!itemcnt $exolist
+
+
+!if $step=2
+!! vérification des données de feuille.
+ !if $picksheet=$empty
+  error=no_pick
+  !exit
+ !endif
+ picksheet=$[floor($picksheet)]
+ !if $picksheet=NaN or $picksheet<1 or $picksheet>min($max_sheets,$sheettot)
+  error=bad_sheet
+  !exit
+ !endif
+ sh=!record $picksheet of wimshome/log/classes/$wims_class/sheets/.sheets
+ a=!line 1 of $sh
+ !if $a>0
+  error=bad_sheet
+  !exit
+ !endif
+ shexocnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$picksheet
+ !if $exocnt+$shexocnt>$max_exos
+  error=too_many_exos
+  !exit
+ !endif
+ !if $scoring=yes
+  require=$[$require]
+  weight=$[$weight]
+  !if NaN isin $require
+   require=0
+  !endif
+  !if NaN isin $weight
+   weight=0
+  !endif
+  !bound require between 0 and $[10*$require_limit] default 0
+  !bound weight between 0 and 10 default 0
+ !endif
+!! vérification des donnees d'execution du module d'exo
+ test_transl=!module translation_language $dir
+ !if $lang iswordof $test_transl
+   tr_lang=yes
+   title=!module title_$lang $dir
+   desc=!module description_$lang $dir
+ !endif
+ !default title=!module title $dir
+ !default desc=!module description $dir
+ cat=!module category $dir
+ !if exercise notin $cat and oef notin $cat
+  error=not_exo
+  !exit
+ !endif
+ !bound qnum between integer 1 and 9 default $wims_oefdefault_qnum
+ !bound qcmlevel between integer 1 and 9 default $wims_oefdefault_qcmlevel
+ !bound intro_qcmpresent between integer 2 and 8 default $wims_oefdefault_qcmpresent
+ !bound intro_presentsol between integer 0 and 2 default $wims_oefdefault_presentsol
+ !bound intro_expow between 1 and 6 default $wims_oefdefault_expow
+ !bound intro_sepow between 1 and 6 default $wims_oefdefault_sepow
+ !bound intro_precw between 0 and 1 default $wims_oefdefault_precw
+
+ intro_check=!listintersect $intro_check and 1,2,3,4
+ !bound random within 0,1 default 0
+ !if $scoredelay!=$empty and $scoredelay!=0
+  d_=!items2words $scoredelay
+  !distribute words $d_ into delay1,delay2
+  !bound delay1 between integer 0 and 2000 default 0
+  !bound delay2 between integer $delay1 and 2000
+  scoredelay=$delay1,$delay2
+ !endif
+ iniparm=$empty
+ !if $expert_=yes
+  !if $intro_check!=$empty
+ 	!for k in $intro_check
+		iniparm=$(iniparm)&intro_check=$k
+	!next k
+  !endif
+    iniparm=qnum=$qnum&qcmlevel=$qcmlevel&scoredelay=$scoredelay&intro_presentsol=$intro_presentsol$(iniparm)&intro_qcmpresent=$intro_presentsol&intro_expow=$intro_expow&intro_sepow=$intro_sepow&intro_precw=$intro_precw&intro_expert=yes
+!else
+  iniparm=qnum=$qnum&qcmlevel=$qcmlevel&scoredelay=$scoredelay
+!endif
+!! ------  write data in the sheet file.
+ !! analyse series already in the sheet
+ listmod=$empty
+ listiniparm=$empty
+ !for i=1 to $shexocnt
+	e=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$picksheet
+	!distribute lines $e into wdi,win
+  	listmod=!append line $wdi to $listmod
+	listiniparm=!append line $win to $listiniparm
+ !next i
+ !! Ecriture
+ writedon=$empty
+ listalready=$empty
+ !for j=1 to $exocnt
+	 ex=!item $j of $exolist
+	 lerror=0
+	 exoiniparm=exo=$ex&$iniparm
+	 !for i=1 to $shexocnt
+		wdi=!line $i of $listmod
+		win=!line $i of $listiniparm
+  		!if $smodule=$wdi and $exoiniparm=$win
+   			lerror=1
+  		!endif
+ 	 !next i
+	 !if $lerror=1
+		listalready=!append item $ex to $listalready
+   	 !else
+   	   desc_=!lookup $ex in wimshome/public_html/modules/$smodule/Descindex
+   	   !if $desc_!=$empty
+   	     desc=$desc_
+   	   !endif
+   	   obs_=!lookup $ex in wimshome/public_html/modules/$smodule/Obsindex
+		writedon=!append line :$smodule\
+$exoiniparm\
+$require\
+$weight\
+$(exotitle[$j])\
+$desc\
+\
+$obs_\
+ to $writedon
+         !endif
+ !next j
+ !if $writedon!=$empty
+  !appendfile wimshome/log/classes/$wims_class/sheets/.sheet$picksheet $writedon
+ !endif
+ last=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$picksheet
+ notadd=!itemcnt $listalready
+ addexo=$[$exocnt-$notadd]
+ wims_module_log=class $class: add  No$[$last-$addexo+1] to No$last to worksheet $picksheet
+ sh=!record $picksheet of wimshome/log/classes/$wims_class/sheets/.sheets
+ title=!line 3 of $sh
+!endif
+

@@ -1,0 +1,16 @@
+
+!for i_=1 to $wims_home_items_cnt
+ !set 1_=!line $i_ of $wims_home_items
+ !set wims_rm_tmp=$wims_rm_tmp\
+$1_
+!next i_
+
+!if $wims_rm_tmp!=$empty
+ !if $wims_rm_0!=empty
+  !set wims_rm_0=$wims_rm_tmp\
+$wims_rm_0
+ !endif
+!endif
+!set wims_rm_0=!nonempty lines $wims_rm_0
+!set wims_homeref_n0 = !linecnt $wims_rm_0
+!reset wims_rm_tmp

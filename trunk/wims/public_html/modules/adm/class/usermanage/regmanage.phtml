@@ -1,0 +1,98 @@
+!read adm/title.phtml 1\
+$classname\
+$wims_name_regmanage
+
+!reset table_center
+!set typen=!defof class_typename in wimshome/log/classes/$wims_class/.def
+!if $usercnt=0
+    <div class="wimscenter">
+    $name_noyetparticipant
+    !if $typen!=level
+        &nbsp;
+      !set wims_ref_class=wims_button
+      !href module=adm/class/reguser&step=1 $wims_name_addstudent
+&nbsp;
+    !endif
+    </div>
+!else
+
+ $name_description
+ !if $tv_listtechvar!=$empty
+   <fieldset class="property_fields blockcenter">
+   <legend>$name_techvardisplay</legend>
+   <div class="field box">
+    !form reply
+    <div style="margin-left:4.5em;" id="tech_var">
+      !read adm/vfilter/varfilter htmldiv
+    </div>
+    <div class="wimscenter">
+     <input type="hidden" name="job" value="regmanage" />
+     <input type="submit" name="action" value="$name_display" $wims_on_click/>
+    </div>
+    !formend
+   </div>
+  </fieldset>
+ !endif
+
+!form reply
+!! ----- displaying table of participant
+    $table_header
+    $table_hdtr
+        <th><input type="checkbox" name="listuser" id="listuser_all" value="__ALL__"/><label for="listuser_all">$name_all</label></th>
+        <th>$name_studentglo</th>
+       !for l=1 to $nbsubclasses
+            <th>
+             <input type="checkbox" name="listsclassch" id="listsclassch$l_" value="$(ltsubclasses[$l])"/>
+             <label for="listsclassch$l_">$(ltnamesubclasses[$l])</label>
+             <br/> ($(ltsupsubclasses[$l]))
+            </th>
+       !next l
+   </tr>
+    !readproc adm/class/mkcomment name
+    !let namecomment=$scriptout
+    !for i=1 to $usercnt
+     !set uu=!record $i of wimshome/log/classes/$wims_class/.userlist
+     !distribute items $uu into bl,bl,uu
+     !if $varfilter_!=$empty
+        !read adm/vfilter/testfilter $uu\
+$varfilter_
+     !endif
+     !if $(var_filter_test)=1 or $varfilter_=$empty
+!!        !set UU=!hex $uu
+          !reset user_exists,user_email,user_regnum,user_external_auth,user_vars,user_comments$namecomment,user_comments,user_participate
+          !readproc adm/class/userdef classes,$wims_class,$uu
+          !readdef $userdef
+          !set user_vars=!sh grep -E '^!set user__' $Userdef | sed 's/^!set user__//g'
+          $table_tr
+            <td><input type="checkbox" name="listuser" value="$uu"/></td>
+            !reset css_connected
+            !if $uu isitemof $wims_connectedlogin
+              !set css_connected=class="wims_connected"
+              !set wims_ref_title=connected
+            !endif
+            <td><span $css_connected>
+            !href cmd=reply&job=userprop&getuser=$uu $name_studentloc
+            </span></td>
+            !for k in $ltsubclasses
+              <td class="wimscenter">
+              !if $k isitemof $user_participate
+                &#x2705;
+              !endif
+               </td>
+            !next k
+          </tr>
+    !endif
+    !next i
+    </table>
+    <div class="wimscenter">
+     <input type="hidden" name="job" value="regmanage" />
+     <input type="submit" name="action" value="$name_reguser" $wims_on_click/>
+     <input type="submit" name="action" value="$name_unreguser" $wims_on_click/>
+    </div>
+
+!!    </fieldset>
+    !formend
+!endif
+
+!! define wims_menu_items
+!set wims_menu_items=!append line back2,1,module=adm/class/usermanage&job=userlist to $wims_menu_items

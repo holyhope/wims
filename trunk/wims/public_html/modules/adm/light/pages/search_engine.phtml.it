@@ -1,0 +1,88 @@
+!!INDEX
+!! Erase the above line to hide your page from wims search engine.
+!! Line starting with double exclamations are comment lines.
+!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!
+!! Indexing definitions. You should modify them according to your case.
+!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!! Put every definition in ONE LINE!!
+!let module_author	=
+!let module_address	=
+!let module_title	=Motore di ricerca
+!let module_description	=
+!let module_language	=$lang
+
+!!Your copyright policy.
+!!Your page will be included in wims distribution if the word `GNU'
+!! appears in the following definition.
+!let module_copyright	=&copy; 2009 (<a href="COPYING">GNU GPL</a>)
+
+!readproc adm/search_engine/names.$lang
+
+
+!header
+
+<div class="wims_content">
+<p>Questa pagina permette di effettuare ricerche per parole chiave. </p>
+!if $wims_class=$empty
+<p>È anche possibile utilizzare il link <span class="wims_button disabled">$wims_name_browse</span> per una descrizione ragionata del materiale didattico disponibile su questo sito.</p>
+!endif
+<h3>Ricerca per parole chiave</h3>
+
+<p>Per un elenco di materiale didattico relativo a un determinato tema o livello scolastico,
+scegliere il <b>tipo di risorsa</b>, <b>il tipo di ricerca</b> e la <b>lingua preferita</b>, inserire una o più 
+<b>parole chiave</b>, quindi cliccare su <span class="wims_button disabled">$wims_name_search</span>.</p>
+
+<h5>Tipi di risorsa</h5> 
+Il tipo <span class="tt">$C_A</span> esegue la ricerca su tutti i materiali didattici WIMS.<br />
+Il tipo <span class="tt">$C_X</span> esegue la ricerca tra gli esercizi,
+tale ricerca si può restringere a <span class="tt">$C_O</span>.<br />
+Il tipo <span class="tt">$C_T</span> comprende tutti gli strumenti di calcolo, 
+in particolare gli <span class="tt">$C_P</span>.<br />
+Per i tipi <span class="tt">$C_S</span> e <span class="tt">$C_C</span>
+si può avviare la ricerca senza inserire alcuna parola chiave.<br />
+Per gli altri tipi è necessario inserire una parola chiave altrimenti non viene 
+restituito alcun risultato.
+
+<h5>Tipo di ricerca</h5>
+
+Se si vuole eseguire una ricerca combinata con più parole chiave
+o gruppi di parole, inserirle separate da virgole. Il motore di 
+ricerca restituisce l'unione o l'intersezione delle risorse
+associate a tali parole a seconda che si selezioni 
+<b>almeno una parola</b> o <b>tutte le parole</b>. 
+
+<h5>Lingua preferita</h5>
+<p>Il motore di ricerca effettua le ricerche tra il materiale didattico disponibile
+in qualsiasi lingua definita sul server. Quando un elemento è disponibile in più
+lingue, ne viene visualizzata una sola versione, seguendo questo ordine
+di priorità:</p>
+<ol><li>la versione nella "lingua preferita";</li>
+<li>la versione inglese;</li>
+<li>una qualsiasi delle altre lingue disponibili.</li>
+</ol>
+
+<h5>Parole chiave</h5>
+<p>È possibile inserire una parola, ad esempio <span class="tt">graphique</span>,
+per eseguire una ricerca per tema, oppure un livello, nella forma 
+<span class="tt">levelU1</span>, per una ricerca per livello.<br />
+È possibile inserire un gruppo di parole, ad esempio 
+<span class="tt">fonction exponentielle</span>.<br />
+Il motore di ricerca confronta queste parole chiave inserite con quelle 
+definite dagli autori dei moduli. Viene suggerita una lista di queste ultime
+come autocompletamento nella pagina del motore di ricerca. 
+La ricerca viene effettuata anche rispetto al campo descrizione dei vari 
+moduli.
+</p>
+
+<h5>Identificativo del modulo</h5>
+<p>Se si conosce l'identificativo WIMS del modulo, ad 
+esempio <span class="tt wims_address">E4/grammar/oeffonction.fr</span>, 
+può essere utilizzato nel motore di ricerca.
+</p>
+</div>
+
+!tail

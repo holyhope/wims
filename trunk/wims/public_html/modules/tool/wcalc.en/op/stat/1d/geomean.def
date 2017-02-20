@@ -1,0 +1,35 @@
+!goto $wims_read_parm
+
+:def
+title=Geometric mean
+input=data1d
+!exit
+
+:proc
+
+cnt=!itemcnt $formula
+!if $cnt>0
+ result=!product x for x in $formula
+ result=$[($result)^(1/$cnt)]
+!else
+ result=1
+!endif
+
+!exit
+
+:output
+
+<div class="wimscenter">
+Geometric mean =
+!htmlmath $result
+</div>
+Data: $cnt numbers { $formula }
+<p>
+The <em>geometric mean</em> of 
+\(\{x_1, x_2, ..., x_n\}\)
+is equal to
+!set ins_align=middle
+!insmath \left(\prod_{i=1}^n x_i\right)^{1/n}
+.
+</p>
+!exit

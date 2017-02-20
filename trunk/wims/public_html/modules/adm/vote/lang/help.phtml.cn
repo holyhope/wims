@@ -1,0 +1,118 @@
+!if $special_parm!=$empty
+ !changeto help/$module_language/$special_parm.phtml
+!endif
+
+!if $wims_user!=supervisor
+ 对不起, 没有对参加者的帮助.
+ !tail
+ !exit
+!endif
+
+!if $wims_read_parm=$empty
+投票的内容可以是 html 格式的文本, 通过论坛信息的手段加以强化,
+再加上以下的命令. <dl>
+<dt><span class="tt wims_code_variable">\menu{是,否}</span>
+	<dd>用菜单选择.
+    </dd>
+<dt><span class="tt wims_code_variable">\list{A,B,C,D}</span>
+	<dd>用竖直的按钮来选择.
+    </dd>
+<dt><span class="tt wims_code_variable">\radio{差, 中, 良, 优}</span>
+	<dd>用水平按钮来选择.
+    </dd>
+<dt><span class="tt wims_code_variable">\checkbox{A,B,C,D}</span>
+	<dd>用水平按钮多重选择.
+	</dd>
+<dt><span class="tt wims_code_variable">\uservar{vname,val0,val1,...}</span>
+	<dd>把刚才的选择记录在参加者的各个变量中, 变量名是 <span class="tt">vname</span>.
+这个变量的默认值是 <span class="tt">val0</span>, 如果选中第一个选项, 则取值 <span class="tt">val1</span>,
+以此类推. <br />
+通过把 <span class="tt wims_code_variable">\vname</span> 放到练习页或试卷的限制条件中,
+这个变量可以用来定义练习页或考试的进入许可.
+在这种情形可以给出允许选择的参加者的人数上限:
+每个选择必须以这个数字起首, 再接以 <span class="tt wims_code_words">:</span>
+	例如,
+<pre>
+\list{46:Seance 1 at 8.00,
+46:Seance 2 at 10.00,
+40:Seance 3 at 13.00}
+</pre>
+Attention cependant, utiliser la m阭e variable technique dans plusieurs questionnaire peut g閚閞er des conflits.
+	</dd>
+<dt><span class="tt wims_code_variable">\textarea</span>
+ <dd>自由输入文字的区域, 仅出现在匿名投票.
+ </dd>
+</dl>
+
+一个投票可以包含多达 $max_parms 个选项.
+
+!tail
+!exit
+!endif
+
+!if generalinfo iswordof $wims_read_parm
+<ul>
+ <li><b>$wims_name_title</b>: 问题表的标题.</li>
+ <li><b>$wims_name_Type</b>:
+  <ul>
+   <li><b>$name_anonymous </b>: 在匿名问题表里没有人知道谁回答了什么
+   (目前不可能返回,
+   请双击你自己的回答.)
+</li>
+   <li><b>带登录文件的$name_trace</b>: 本类型与匿名问题表相似,
+   不过可以查阅参加者提供的回答,
+   但不能泄露参加者的身份.</li>
+   <li><b>$name_nominative</b>:  每个参加者的回答都可以查阅
+   (在这种类型的问题表里不能使用"自由回答"的格式.)</li>
+</ul>
+ </li>
+ <li><b>$wims_name_Status</b>: 有以下几种状态:
+     <ul>
+      <li><b>$name_0</b>: 问题表可修改, 参加者看不到.</li>
+      <li><b>$name_1</b>: 问题表不可修改, 参加者可以回答问题</li>
+      <li><b>$name_2</b>: 问题表不可修改, 参加者不能回答问题 </li>
+      <li><b>$name_3</b>: 问题表不可修改, 参加者不能看到问题.</li>
+     </ul>
+ </li>
+ <li><b>$name_result</b>: 如果结果已公布, 参加者在投过票后就可以查询到,
+ 否则只有班级的管理者可以接触这些结果.
+ <li><b>$name_whovote</b>: 如果本表公布了, 班级的管理者和参加者都可以查询到
+ (只要有足够多的参加者投了票),
+ 否则没有人知道谁投了票.
+</ul>
+ !goto guidedmode
+!tail
+!exit
+!endif
+
+!if guidedmode iswordof $wims_read_parm
+:guidedmode
+可以有多种模式 :
+<ul><li>
+  <b>$name_free</b> :
+  你可以自由地使用帮助中给出的命令以创建一个问题表.
+  </li><li>
+!readproc adm/lang/sheetexam.phtml.$lang
+  <b>$name_accessvar</b> : 由这个表格, 允许你在时间区段注册.
+  已创建的各种技术允许你个性化定义如何进入练习页或考试.
+  为此, 如果你已经命名它为 <span class="tt wims_code_variable">ma_variable</span>,
+  那么当表格问你时, 你只要把 <span class="tt wims_code_variable">\ma_variable</span> 填写到
+  练习页或考试的对应于 <span class="tt wims_code_words">$(name_shinfo[6])</span> 的空白区域里就可以了.
+  </li><li>
+  <b>$name_group</b> : 你可以构建组. 将会要求你提供变量名 (例如你称它为 <span class="tt wims_code_variable">ma_variable</span>).
+  你以后可以利用这个变量名按组发邮件,
+  尝试班级内按组的 csv 文件 (<b>在后一情形</b>
+  要求你已经定义了变量 <span class="tt wims_code_variable">var_ma_variable</span>).
+  其它应用尚在开发中.
+  </li>
+<li>Attention cependant, utiliser la m阭e variable technique dans plusieurs questionnaire peut g閚閞er des conflits.</li></ul>
+
+变量名应该不同于 WIMS 已使用的变量,
+(例如, 不要使用 <span class="tt wims_code_variable">exam1</span>, ... , <span class="tt wims_code_variable">sheet1</span>, ...,
+<span class="tt wims_code_variable">manual1</span>, ...).
+<br/>
+Les mod鑜es <span class="tt wims_code_words">$name_free</span> et <span class="tt wims_code_words">$name_group</span> ne sont pas disponibles lorsque les questionnaires sont partag閟 avec une autre classe.
+!tail
+!exit
+!endif
+!tail

@@ -1,0 +1,107 @@
+!! FIXME was not read if the job has changed, should be put in var.proc or main.phtml ?
+!readproc adm/class/classlang names.phtml
+<div>
+ <p>
+!set wims_ref_class=wims_button
+ !if $teachercnt=0
+$name_first1
+ !href cmd=reply&job=addteacher $wims_name_addteacher
+.
+!else
+ !href cmd=reply&job=teacher $wims_name_teacher ($teachercnt)
+.
+!endif
+</p>
+!!set wims_menu_items=!append line addteacher,1,cmd=reply&job=addteacher \
+!!to $wims_menu_items
+!goto nopart
+ <p>
+!set wims_ref_class=wims_button
+!if $studentcnt=0
+ $name_first2
+ !href cmd=reply&job=addstudent $wims_name_addstudent
+.
+!else
+!set wims_menu_items=!append line student,1,cmd=reply&job=student\
+to $wims_menu_items
+ !href cmd=reply&job=student $studentcnt $wims_name_student
+.
+!endif
+</p>
+!set wims_menu_items=!append line addstudent,1,cmd=reply&job=addstudent\
+to $wims_menu_items
+
+:nopart
+</div>
+!if $levelcnt=0
+<div>
+<p>
+  $name_first3
+  !set wims_ref_class=wims_button
+  !href cmd=reply&job=addlevel $wims_name_addlevel
+  !set wims_menu_items=!append line addlevel,1,cmd=reply&job=addlevel\
+to $wims_menu_items
+. $
+!set wims_ref_class=wims_button_help
+
+  !href cmd=help&special_parm=structure#level $wims_name_help
+</p>
+!else
+ <div id="widget_zone_list">
+!if $jquery_defined=yes
+  !read adm/tabscript zone_list
+!endif
+<ul>
+ <li><a href="#wims_othergestion">$name_othergestion</a></li>
+ <li><a href="#wims_levellist">$wims_name_level</a></li>
+</ul>
+<div id="wims_levellist">
+ $table_header
+ <caption>$name_first4
+ $
+ !set wims_ref_class=wims_button_help
+ !href cmd=help&special_parm=structure#level $wims_name_help
+!!<br /><span class="small">
+ !!href cmd=reply&job=addlevel $wims_name_addlevel
+ !! $
+ !!href cmd=reply&job=backstruct $wims_name_backstruct
+ !set wims_menu_items=!append line addlevel,1,cmd=reply&job=addlevel\
+to $wims_menu_items
+!! </span>
+ </caption>
+ $table_hdtr
+ <th>$name_code</th><th>$wims_name_name</th><th>$wims_name_action</th><th>$name_supervisor2</th>
+ <th class="small">$name_class</th>
+ <th class="small">$name_program</th>
+ </tr>
+ !for i=1 to $levelcnt
+   !set l=!line $i of $leveldata
+   !distribute items $l into l_,s_,t_,n_
+   !set c=!positionof item $l_ in $classl
+   !set c=!itemcnt $c
+   !set p=!positionof item $l_ in $progl
+   !set p=!itemcnt $p
+   $table_tr<td>$l_</td>
+   <td>
+   !href cmd=reply&job=level&level=$l_ $t_
+   </td><td>
+   !set wims_ref_class=wims_button wims_warning
+    !href cmd=reply&job=dellevel&del=$l_ $wims_name_erase
+   </td><td>
+   !if $s_!=$empty
+    !if $s_=supervisor
+     $wims_name_supervisor
+    !else
+     !default n_=$s_
+     !href cmd=reply&job=modteacher&teacher=$s_ $n_
+    !endif
+   !else
+    $name_nonavailable
+   !endif
+   </td><td>$c</td>
+   <td>$p</td>
+   </tr>
+ !next i
+ $table_end
+!endif
+</div>

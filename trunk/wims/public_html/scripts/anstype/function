@@ -1,0 +1,85 @@
+option:integer
+
+rg1=!item 1 of $(replygood$i)
+rg2=!item 2 to -1 of $(replygood$i)
+replyGood$i=!rawmath $rg1
+vars=!varlist nofn $rg1
+!if $rg2 != $empty
+  vars2=!varlist nofn $rg2
+  vars=!listuniq $vars, $vars2
+!endif
+!! one looks for the range for each variable
+vars2cnt=!itemcnt $vars2
+!for vf=1 to $vars2cnt
+  varsr=!item $vf of $rg2
+  varsr=!replace internal = by , in $(varsr)
+  varsrange$(varsr[1])=!declosing $(varsr[2])
+!next
+n=!itemcnt $vars
+!for vf=1 to $n
+  !default varsrange$(vars[$vf])=$leftrange,$rightrange
+!next
+wims_rawmath_variables=$vars
+reply$i=!rawmath $(reply$i)
+reply$i=!mathsubst I=i in $(reply$i)
+
+m_reply$i=$(reply$i)
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+
+tf=$(reply$i)
+vars_=!varlist nofn $tf
+!set test=!listcomplement $vars in $vars_
+
+!if $test!=$empty
+  test=NaN bad_variable
+  !exit
+!endif
+
+gf=$rg1
+test=0
+!for t=1 to $testnum
+ tt=$tf
+ gt=$gf
+ !for j=1 to $n
+  v=!item $j of $vars
+  vr_=!itemcnt $(varsrange$v)
+  !if $vr_ <= 2
+    vt=!random $(varsrange$v)
+    !if integer iswordof $(replyoption$i)
+      vt=!randint $(varsrange$v)
+    !endif
+  !else
+    vt=!randitem $(varsrange$v)
+  !endif
+  !if $v notitemof e,E,pi,Pi,PI,Euler,EULER,euler,NaN,Inf
+   tt=!mathsubst $v=($vt) in $tt
+   gt=!mathsubst $v=($vt) in $gt
+  !endif
+ !next j
+ gt=$[$gt]
+ !if NaN isin $gt or Inf isin $gt
+  Test=bad $i
+  !exit
+ !endif
+ tt=$[$tt]
+ test=$[$test+abs($tt-($gt))]
+!next t
+test=$[$test/$testnum]
+
+!if NaN notin $test and inf notin $test
+ !if $test<1/$precision
+  diareply$i=good
+  !advance freegot
+ !else
+  !if $test<1/sqrt($precision)
+   !advance precgood
+   precreply$i=yes
+  !endif
+  diareply$i=bad
+ !endif
+!else
+  !reset test
+  diareply$i=bad
+!endif

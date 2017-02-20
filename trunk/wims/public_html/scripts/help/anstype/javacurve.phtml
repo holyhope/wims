@@ -1,0 +1,85 @@
+
+<b>Draw a line, a polygon, points, a segment, a vector, a rectangle.</b>
+(name : <span class="tt">javacurve</span>)
+<br/>
+This reply type allows the user to draw a line, a polygon, a segment, a
+vector,  a rectangle or several points on a drawing.
+
+The good answer is given as a matrix (row separator:
+ semi-colon `;'). The first row is the image URL.
+The second row is the condition for testing the user drawing in the following
+list.
+Si l'on désire analyser la réponse par des conditions,
+on mettra une variable vide pour la bonne réponse et on rajoute 
+dans le champ <span class="tt wims_code_words">embed</span>
+en seconde ligne l'URl de l'image et en troisième ligne le type de tracé comme 
+dans le tableau suivant (par exemple <span class="tt wims_code_words">points</span>,
+<span class="tt wims_code_words">line</span> ...).
+</p>
+!set p=anstype/javacurve
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td class="tt">
+!line 1 of $l_
+    </td><td>
+!line 2 to -1 of $l_
+   </td></tr>
+  !next
+$table_end
+
+<p>
+Options may be added in the option field:
+<span class="tt wims_code_words">precision</span, 
+<span class="tt wims_code_words">color1</span (reply color), 
+<span class="tt wims_code_words">color2</span> (good answer color).
+
+The parameter <span class="tt wims_code_words">precision</span> is subtil ...
+for example 
+</p>
+<pre>
+\answer{}{...}{type=jsxgraphcurve}{option=color1=black color2=#B4B4FF precision=8}
+</pre>
+
+<p>
+It is recommended that this input field be embedded in the statement. It
+ cannot coexist with other input fields, for the obvious reason that any user
+ click on the image will send the form.  The size of the image must be written in
+ the second argument of <span class="tt wims_code_words">\embed</span> as <span class="tt wims_code_words">L x H</span>, 
+for example <span class="tt wims_code_words">\embed{reply</span><em>n</em>, <span class="tt wims_code_words">300 x 400}</span>.
+
+</p>
+En général, the variable
+<span class="tt wims_code_variable">\reply</span><em>n</em>, where <em>n</em> is the number
+ of the input field, which can be used in a \feedback is 
+ the click replies (x1,...)
+ except in the following cases : 
+<ul><li>
+In case of <span class="tt">points</span>,
+ the first line is the list of click coordinates in pixels, 
+ the second line is <span class="tt">n1,n2,n3</span> with
+<span class="tt">n1</span> number of correct points, <span class="tt">n2</span> number of missing points,
+<span class="tt">n3</span> number of incorrect points.The third line is the list
+of numbers of correctly found points. 
+</li><li>
+in case of <span class="tt">cercle</span>, the first line is the list
+of click coordinates and radius in pixels, the second line
+is <span class="tt">n1,n2</span> with 
+<span class="tt">n1</span> 1 if the center is correct, else 0 and
+<span class="tt">n2</span> 1 if the radius is correct, else 0.
+</li>
+<li>
+in case of <span class="tt">sline</span>, the first line is the list
+of click coordinates in pixels, the second line
+is <span class="tt">n1,n2,n3</span> with
+<span class="tt">n1</span> 1 if the origin is correct, else 0,
+<span class="tt">n2</span> 1 if the direction is correct, else 0,
+<span class="tt">n3</span>1 if the orientation is correct, else 0.
+</li>
+</ul>

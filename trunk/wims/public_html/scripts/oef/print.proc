@@ -1,0 +1,189 @@
+!advance prcnt
+!if $prcnt>6 and $wims_user!=supervisor
+ error=too_many_print
+ printing=yes
+ !exit
+!endif
+
+printmax=40
+!reset savedrawcnt print
+printing=yes
+exo=!listintersect $exo and $exolist
+!default exo=$defaultlist
+wims_intro_parm=$exo
+!default exo=$exolist
+exo_cnt=!itemcnt $exo
+!!at least 1 exercise of each type
+exo_=!shuffle $exo_cnt
+qnum1=$[$qnum-$exo_cnt]
+!if $qnum1 >= 1
+ exo__=!randint 1,$exo_cnt repeat $qnum1
+ exo_=$exo_,$exo__
+!endif
+exo=$(exo[$(exo_)])
+exo=!item 1 to $printmax of $exo
+n=!itemcnt $exo
+
+!if $n<1
+ !exit
+!endif
+
+M=0
+m_step=1
+test_print=0
+!if $wims_developer!= or $wims_user=supervisor
+  latex_exists=0
+  !readproc oef/latex.proc begin
+!else
+  latex_exists=-1
+!endif
+
+!for i=1 to $n
+ question_$i=
+ e_=!item $i of $exo
+ name_$i=$e_
+ !if $lang_choice!=$empty
+   title_$i=!defof title_$lang_choice in $(class_header)def/$e_.def
+ !else
+   title_$i=!defof title_$lang in $(class_header)def/$e_.def
+ !endif
+ !if $(title_$i)=$empty
+   title_$i=!defof title in $(class_header)def/$e_.def
+ !endif
+ !reset question testcondition format
+ thisexo=$e_
+ !readproc oef/imagedir.proc
+ varcnt=!defof varcnt in $(class_header)def/$e_.def
+ !default varcnt=0
+ !for v=2 to $varcnt+5
+  val$v=
+ !next v
+ status=prep
+ !read $(class_header)def/$e_.def
+ !if $format=html
+  question_$i=$question
+  !if __EXECUTED_ isin $question
+   varcnt_$i=$varcnt
+   var_$i=$val1
+   !for v=2 to $varcnt+5
+    v_=!translate internal $\
+$ to $	$ in $(val$v)
+    var_$i=$(var_$i)\
+$v_
+   !next v
+  !endif  __EXECUTED_
+  !ifval $replycnt=0 and $choicecnt=1
+   rep=!item 1 to 6 of $choicebad1
+   rep=!append item $choicegood1 to $rep
+   rep=!listuniq $rep
+   rep=!sort items $rep
+   rep=!replace , by </li><li> in <ul style="list-style-type: square;"><li>$rep</li></ul>
+   chce_$i=$rep
+   test_print=1
+  !else
+   chce_$i=
+  !endif replycnt=0 and choicecnt=1
+  rep=
+!if 3 isin $intro_check or $intro_check=$empty
+ !for k=1 to $choicecnt
+  !if $(choicename$k)!=
+    rep=!append line <em>$(choicename$k)</em>: $(choicegood$k) to $rep
+  !else
+    rep=!append line $(choicegood$k) to $rep
+  !endif
+ !next k
+ !for k=1 to $replycnt
+   thisstep=!line 1 of $oefsteps
+   !if r$k isitemof $thisstep or $oefsteps=$empty
+     rg_=$(replygood$k)
+     Replytype$i=!append item $(replytype$k) to $(Replytype$i)
+     Replystyle$i=!append item $anstyle to $(Replystyle$i)
+     !if $(replytype$k) iswordof checkbox mark click menu radio clickfill dragfill
+      rg_=!translate internal ; to $\
+$ in $rg_
+      rg1_=!line 1 of $rg_
+      rg2_=!line 2 to -1 of $rg_
+      rg2_=!translate internal $\
+$ to ; in $rg2_
+      rg_=!item $rg1_ of $rg2_
+      Rg$i=!append line $rg2_ to $(Rg$i)
+     !endif checkbox
+     !if $(replytype$k) iswordof atext wlist nocase case
+      rg_=!translate internal ;| to $\
+\
+$ in $rg_
+      rg_=!line 1 of $rg_
+     !endif atext
+     !if $(replytype$k) iswordof function default equation
+      rg_=!item 1 of $rg_
+      Rg$i=!append line $ to $(Rg$i)
+     !endif function
+     !if $(replytype$k) iswordof imgcomp textcomp compose reorder \
+	dragfill clickfill
+      rg_=!translate internal | to $\
+$ in $rg_
+      rg_=!rows2lines $rg_
+      rg_=!line 1 of $rg_
+      !if $(replytype$k)=imgcomp
+       rg_=!item 2 to -1 of $rg_
+       rg_=!nospace $rg_
+       rg_=!replace , by " />,<img src="$imagedir/ in <img src="$imagedir/$rg_" />
+       rg__=!shuffle $rg_
+       Rg$i=!append line $rg__ to $(Rg$i)
+      !else
+       rg_cnt_=!itemcnt $rg_
+       rg__=!shuffle $rg_cnt_
+       Rg$i=!append line $(rg_[$rg__]) to $(Rg$i)
+      !endif  imgcomp
+      rg_=!translate , to $ $ in $rg_
+    !endif imgcomp textcomp
+    !if $(replytype$k) iswordof correspond
+     !set rg__=!replace internal ; by $\
+$ in $rg_
+     !distribute lines $rg__ into rg1__,rg2__
+     !set rg__cnt=!itemcnt $rg1__
+     !set rg_2_=!shuffle $rg__cnt
+     !set rg__=!replace internal , by </td><td> in <table class="wimsborder"><tr><td>$rg1__</td></tr><tr><td>$(rg2__[$rg_2_])</td></tr></table>
+     !set rg_=!replace internal , by </td><td> in <table class="wimsborder"><tr><td>$(rg_[1;])</td></tr><tr><td>$(rg_[2;])</td></tr></table>
+   $prompt_
+     Rg$i=!append line $(rg__) to $(Rg$i)
+   !endif
+  !if $conditioncnt<1
+   !if noanalyzeprint notwordof $(replyoption$k)
+    !if $(replyname$k)$rg_ !=
+     !if http isin $(replyname$k)$rg_
+      rep=!append line $name_noprint to $rep
+     !else
+      !if $(replyname$k)!=
+        rep=!append line <em>$(replyname$k)</em>: $rg_ to $rep
+      !else
+        rep=!append line $rg_ to $rep
+      !endif replyname$k nonempty
+     !endif http
+    !else
+     rep=
+    !endif $(replyname$k)$rg_
+   !endif noanalyzeprint
+  !endif conditioncnt
+ !else
+   Replytype$i=!append item $(replytype$k) to $(Replytype$i)
+   Replystyle$i=!append item $(replystyle$k) to $(Replystyle$i)
+ !endif r$k isitemof $thisstep
+  !reset replyoption$k
+!next k
+!endif intro_check
+  rep=!imgrename $rep
+  ans_$i=!trim $rep
+  !if  $(ans_$i)!=
+   test_print=1
+  !endif
+ !endif html
+!reset intro_check
+!if $latex_exists>=0
+ !readproc oef/latex.proc exo
+!endif
+Rg$i=!imgrename $(Rg$i)
+!next i
+!if $latex_exists>=1
+  !readproc oef/latex.proc end
+!endif

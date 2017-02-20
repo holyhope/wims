@@ -1,0 +1,117 @@
+!set lang_exists=yes
+
+!if $class_type iswordof 2 4
+   !if $class_type=2
+    !set name_classe=grup de classes
+    !set name_sup=administrador
+    !set name_classes= el $name_classe
+    !set name_classesss= d'un $name_classe
+    !set name_classessss= El $name_classe
+   !else
+    !set name_classe=portal de centre
+    !set name_sup=administrador
+    !set name_classes= el $name_classe
+    !set name_classesss= del $name_classe
+    !set name_classessss= El $name_classe
+   !endif
+   !set name_classess= un $name_classe
+ !else
+   !set name_classe=classe
+   !set name_classes=la $name_classe
+   !set name_classess=una $name_classe
+   !set name_classesss= de la $name_classe
+   !set name_classessss= La $name_classe
+   !set name_sup=professor
+ !endif
+
+ !if $splevel iswordof 1 2 3
+   !set sousclasses=!item $splevel of classe,curs
+   !set Name_level= !item $splevel of Nivell,Classe,Curs
+   !set Name_levels= !item $splevel of Nivells,Classes,Cursos
+   !set sousclasses_else=!item $splevel of o una classe, o un curs
+   !set name_level_else= !item $splevel of un nivell,una classe,un curs
+ !else
+   !set sousclasses=sub-classes
+   !set sousclasses_else=una classe o un portal de centre
+ !endif
+
+!set CL_Name	=Nivell,Classe,Programa,Curs,Curs interclasses,Portal,Zona d'assaig
+!set Name_program=Programes
+!set name_program=programa
+!set name_portalandgroup=Portals de centre i grups de classes
+!set name_independantclass=Classes independents
+
+!distribute items Registrar,anònim,oberta,protegida,curs,\
+Nou participant,registrat,Tipus de connexió,A dalt,Copier\
+into name_register,name_anonymous,name_open,name_protected,name_year,\
+name_new_participant,name_registered,name_connexion,name_up,name_copy
+
+!set name_new_participant_external=!nosubst Encara no estàs registrat en $classname. Si us plau, registra't\
+clicant al botó
+!set name_warning_external=Utilitzeu el formulari següent si l'enllaç de dalt\
+ no funciona.
+!distribute line No tens compte en altres classes.\
+Cerca la teva classe\
+No hi ha classes disponibles.\
+Cap classe no correspon a la vostra cerca.\
+Pots canviar directament a\
+into name_noaccount,name_searchclass,name_noavailable,name_nofound,name_direct
+
+!let classification=Primària,ESO,Batxillerat,Universitat,Llengües,Arxius,Desenvolupament
+
+!set name_text1=Trieu la línia corresponent a la classe o entitat \
+<p>Cliqueu a <span class="wims_button disabled">Entrar</span> per entrar o per registrar-vos\
+(si l'estat és <span class="wims_label">$name_protected</span>, necessiteu la contrasenya de la classe \
+que us ha de donar el professor o administrador).</p>
+
+!set name_text2= Per anar a $name_level_else $sousclasses_else, tria \
+ el seu nom a la taula següent.
+!set name_text3=Podeu triar $name_level_else $sousclasses_else a la taula següent.
+
+!set name_language=De moment, en aquest lloc no hi ha classes en Català. Potser estàs buscant classes en \
+ una altra llengua?
+!set name_language2=Aquest lloc encara no conté cap classe en Català.
+
+!set name_warning=Demaneu entrar a $name_classess i no existeix.\
+ Sisplau, comproveu la vostra demanda.
+
+!set name_enter=!nosubst Per tal d'entrar a $classname, \
+sisplau dóna el nom d'usuari i la contrasenya personal.
+
+!set name_entersup=!nosubst Per tal d'entrar a $name_classes $classname com el seu\
+<em>$name_sup</em>, sisplau entra la contrasenya de $name_sup.
+
+!set name_research1=Hi ha massa classes virtuals. Per veure la teva,\
+  escriu alguna paraula del seu títol o del nom del professor.
+!set name_research2=Encara hi ha massa classes corresponents a la teva cerca. Sisplau\
+  fes una cerca més precisa.
+
+!set name_supervisor_text=!nosubst Trieu la línia corresponent a la classe, al grup o a la institució que busqueu.\
+<br />Després cliqueu a <span class="wims_button disabled">$wims_name_Enter</span> com a professor (per entrar o crear un compte)\
+ o com a administrador (per gestionar el grup o institució).\
+<p> El registre aquí està reservat als professors.</p>
+
+ !if $type=example
+   !set name_example1=Ho sento, de moment en aquest lloc no hi ha classes obertes.
+   !set name_example2=Ho sento, de moment en aquest lloc no hi ha classes obertes en Català.
+   !set name_example3=!nosubst Hi ha $clcnt classe/s oberta/es en Català.
+    !set name_example3b=!nosubst Hi ha $othercnt classe/s oberta/es en altres llengües
+   !set name_example4=El seu objectiu és mostrar el funcionament d'una classe virtual des del punt de vista de l'estudiant.\
+     Per tenir la perspectiva del professor, que és molt més potent, heu de crear la vostra pròpia classe.
+   !set name_instruction=<ul>\
+<li>Clica a <span class="wims_button disabled">$name_anonymous</span> per connectar-te a la classe com un visitant anònim (alumne).\
+</li><li>Clica a <span class="wims_button disabled">$name_registered</span> per connectar-te a la classe com a usuari\
+registrat amb nom i contrasenya. (Has hagut de registrar-te prèviament, i el\
+teu registre serà regularment eliminat del servidor perquè es tracta de classes obertes).\
+</li><li>Clica a <span class="wims_button disabled">$name_register</span> per registrar-te a la classe.\
+</li></ul>
+  !set name_sheet_example=Trobareu també fulls d'exercicis XXXXX que podreu importar \
+    a la vostra classe i modificar-los.
+ !endif
+
+!set name_acceptcgu=Accepto les condicions generals d'ús (CGU)
+!set name_seecgu=Veure les CGU
+
+
+!set name_sendmailmess=Un missatge que conté una nova contrasenya ha estat enviada a l'adreça de correu electrònic especificada.
+

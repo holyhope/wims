@@ -1,0 +1,470 @@
+!set lang_exists=yes
+
+!set name_intromain=Aquesta eina permet a l'administrador fer el manteniment de WIMS en línia.\
+L'accés està controlat per les opcions establertes en el fitxer de configuració
+
+!set name_warning_wrongpass=Contrasenya incorrecta.
+!set name_try_wrongpass=Torna a provar
+
+!!list
+ !distribute lines Les instal·lacions de seguretat han de ser revisades després de la compilació. Executeu <span class="tt">bin/wrapuid</span> com <span class="tt">root</span>!\
+   Aquestes són les tasques que es poden realitzar en línia.\
+   Configuració\
+   Comprovació del Sistema\
+a executar després de cada addició de nous recursos (mòduls, fulles) al servidor\
+   Mantenir\
+   Crear/mantenir\
+into name_warning,name_online,name_configuration,name_checklist,name_mkindex,name_checkmaintain,\
+  name_createmaintain
+!!Comprovar
+!set name_restore_class=Restaurar una classe
+!!help
+
+!set name_warning_help=Utilitzeu els enllaços de suport específic per accedir als diferents temes d'ajuda.
+
+!set name_visit=Visitar
+!set name_click=Cliqueu aquí
+
+!set wims_name_download_module=Descàrrega de Mòduls
+
+!if $job=access
+ !set title=Configuració de la política d'accés
+ !set name_subtitle=Definició de la política d'accés
+ !exit
+!endif
+
+!if $job=activ
+  !set title=Activitats actuals del servidor
+  !distribute lines Temps del servidor\
+    Càrrega mitjana\
+    minut\
+    minuts\
+    hora\
+    hores\
+    darrer\
+    des de\
+    Nombre de sol·licituds\
+    Sessions actives en els últims 10 minuts\
+    Sessió\
+    IP Client\
+    Sol·licituds\
+    Mòdul\
+  into name_servor_time,name_Load,name_min,name_mins,name_hour,name_hours,name_last,name_since,\
+   name_requests,name_activesessions,name_session,name_IP,name_Requests,name_module
+ !exit
+!endif
+
+!if $job=attrib
+  !set title=Comprovació dels permisos dels fitxers
+
+  !distribute lines Els permisos d'accés d'aquesta instal·lació WIMS són tots segurs.\
+   Els següents arxius i carpetes poden ser llegits per altres persones, i això no ha de ser així.\
+   Hi ha molts arxius o carpetes llegibles pels altres, i això no ha de ser així.\
+   El problema ha estat parcialment reparat.\
+   Executeu l'script una altra vegada\
+   fins que no hi hagi més arxius o carpetes que tinguin permisos incorrectes.\
+   Llistes de permisos reparats\
+   Els següents arxius o carpetes es poden modificar per altres, i això no ha de ser així.\
+   Els següents arxius o carpetes són executables per altres, i això no ha de ser així.\
+   Hi ha un gran nombre d'arxius o carpetes que no pertanyen a WIMS. Aquí està una llista parcial.\
+   Els següents arxius o carpetes no són propietat de WIMS. .\
+   Els següents fitxers o carpetes han de ser executables per tothom, i no ho són.\
+into name_attrib1,name_attrib2,name_attrib3,name_attrib4,name_repeat,\
+  name_attrib5,name_attrib6,name_attrib7,name_attrib8,name_attrib9,name_attrib10,
+  name_attrib11
+
+  !set name_warning1=Les carpetes de WIMS no han de contenir arxius que pertanyen a d'altres.\
+  Has de comprovar l'origen d'aquests arxius i eliminar-los o canviar el seu propietari.
+  !set name_warning2=Recomanació important de seguretat: gràcies per canviar el propietari \
+  dels següents arxius.
+
+ !set name_warning_chroot=Si utilitza la distribució wims-chroot, ha d'executar \
+  com <span class="tt">root</span> l'script <span class="tt">bin/setchroot</span>.
+ !set name_warning_wimsd=Si utilitza  wimsd, ha d'executar com <span class="tt">root</span> \
+   l'script <span class="tt">bin/setwimsd</span>.
+ !set name_warning_wrapexec=Ha d'executar com <span class="tt">root</span> l'script <span class="tt">bin/setwrapexec</span>.\
+ Això és crucial per a la seguretat d'aquesta instal·lació.
+ !set name_warning3=Els següents permisos incorrectes són un risc per a aquesta instal·lació. Això\
+  s'ha pogut reparar, però ho ha de tenir en compte i revisar els permisos d'accés \
+  més sovint. Si el problema torna a aparèixer, ha de comprovar\
+  la possibilitat d'intrusió en el sistema, ja que el servidor de dades\
+  podria estar danyat.
+ !exit
+!endif
+
+!if $job=backup
+
+ !distribute lines La còpia de seguretat de les dades no està activada en aquest servidor.\
+ Cliqueu aquí\
+ per configurar la còpia de seguretat quotidiana de les dades.\
+ Darrera còpia de seguretat de dades\
+ Descarregar arxius de còpia de seguretat\
+ Per restaurar un fitxer de còpia de seguretat antic, donar el nom de fitxer (ha de ser un fitxer *.tgz)\
+ Es necessita una connexió ràpida si el fitxer de descàrrega és gran.\
+into name_backup,name_click,name_daily,name_last,name_download,name_restore,name_fast
+ !exit
+!endif
+
+!if $job=badconf
+
+  !set name_warning1=!nosubst El fitxer $fname és llegible per tothom!\
+    Hi ha un gran risc que la configuració del lloc i/o la contrasenya siguin \
+     piratejades. També ha de canviar els permisos del fitxer $fname perquè sigui llegible \
+     només pel seu propietari
+  !set name_warning2=i posar les definicions de seguretat tan aviat com sigui possible.
+  !set name_warning3=i establir una nova contrasenya d'administrador.
+ !set name_warning4=Un cop fet això, torneu a provar-ho.
+
+ !exit
+!endif
+
+!if $job iswordof class bestclass
+  !set title=
+  !distribute lines Cliqueu aquí\
+   per configurar la política d'accés a les aules virtuals.\
+    No hi ha cap classe virtual que coincideixi amb la recerca. \
+    Llista d'institucions i agrupaments de classes\
+    creat\
+    expira\
+    significa el nombre d'hores de connexió acumulat des de\
+    millor activitat de classe durant aquest període\
+    Estudiant\
+    Llista de classes indedendents\
+    significa les connexions hora-estudiant acumulades des de\
+    Les classes amb més hores de connexió acumulades des de\
+    La vostra classe virtual WIMS\
+    Llista de classes\
+    càrrega\
+    format\
+  into name_click,name_config,name_noclass,name_list,name_created,name_expire,name_cumul,name_best,\
+  name_part,name_listindependant,name_cumul_student,name_bestcumul,name_yourclass,name_listclass,\
+  name_load,name_format
+
+  !set name_search1=Hi ha moltes classes virtuals en aquest lloc. Per trobar una classe, si us plau escriviu una paraula de cerca.
+  !set name_search2=Encara hi ha massa classes que responen a la seva recerca. Fer una cerca més precisa.
+  !set name_total=!nosubst Hi ha $nbcls classes o agrupaments de classes en aquest servidor.
+
+  !if $job2 iswordof modify erase
+  !set title=
+  !distribute lines Propietats importants de la classe virtual\
+     de\
+     número de sèrie\
+     Aquesta classe prové de la distribució WIMS.\
+     Contrasenya d'administrador \
+     Contrasenya per al registre dels estudiants\
+     Esborrar aquesta contrasenya fa la classe accessible per a tothom.\
+     Llocs segurs\
+    Data de caducitat\
+    notificar a l'administrador\
+    de la classe els canvis fets.\
+    Altres classes\
+    Límit del nombre d'estudiants\
+    Segur que vols eliminar aquesta classe?\
+    La seva classe virtual WIMS\
+    Modificació de classe WIMS\
+  into name_prop,name_of,name_serial,name_distrib,name_supervisor_p,name_supervisor_r,\
+    name_warning,name_secure,name_expire,name_notify,name_change,name_other,name_limit,name_erase,\
+    name_yourclass,name_yourclassmod
+  !set name_creation=!nosubst s'ha creat la $class_creation i
+  !set name_expires=!nosubst caduca el $class_expiration
+  !set name_remark=<b>Nota</b>. Canviar aquests camps només té sentit si li ho demana \
+      l'administrador de la classe (que va perdre el control de la classe). I probablement ho ha de fer
+!exit
+!endif
+
+ !exit
+!endif
+
+!if $job=conf
+  !set title=!nosubst Configuració de $cattit
+  !distribute lines La configuració no ha canviat perquè no ha fet canvis.\
+defecte\
+Recommended\
+   into name_config,name_default,name_recommended
+
+ !set name_updated=!nosubst El fitxer <span class="tt">wims.conf</span> s'actualitza. La informació sobre l'antiga\
+   configuració es troba a l'arxiu <span class="tt">$backdir/wims.conf.old</span>.
+
+  !set name_warning=Els paràmetres amb un `*' en el títol són importants. \
+Aquells amb un `! 'poden fer malbé la instal·lació si no es posa res.<br />\
+De totes maneres, eliminar el fitxer<span class="tt">log/wims.conf</span> permet \
+tornar a la configuració per defecte. Les configuracions guardades anteriorment també es poden trobar\
+a la carpeta <span class="tt">log</span>.
+!!confcat=6
+ !distribute lines Cliqueu aquí\
+   per a la gestió de còpies de seguretat i\
+   aquí\
+  per a la gestió manual dels mòduls.\
+ into name_click,name_backup,name_here,name_manual
+
+!!ressources
+  !set name_config_site=per configurar la política d'accés al lloc.
+!!graphics and software
+   !distribute line per comprovar la nova configuració.\
+   Comproveu el programari de càlcul utilitzat per diversos mòduls WIMS\
+   per verificar els gràfics dinàmics\
+   ordre\
+   importància\
+   disponibilitat\
+   No disponible\
+   Exemple de mòduls que en depenen\
+   Aquest programari està unit a la distribució WIMS. La seva compilació pot haver fallat\
+   per comprovar la nova configuració.\
+ into name_check,name_checksoftware,name_checkgraphics,name_command,name_importance,\
+   name_availability,name_Unavailable,name_dependingonit,name_fail,name_refresh
+
+
+!set name_warning_program=WIMS no pot trobar els següents programes utilitzats en alguns \
+dels seus mòduls. És possible que aquests programes no es van instal·lar al sistema\
+(en aquest cas, fer-ho) o es van instal·lar en una carpeta que no és\
+a la ruta de cerca de WIMS. En aquest cas, afegiu el nom de la carpeta\
+al paràmetre PATH
+
+!set name_imagemagick=No hem trobat ImageMagick en el sistema.\
+ Sense aquest programa, la majoria de les imatges i animacions WIMS no estaran disponibles. \
+ Així que es recomana instal·lar ImageMagick abans de continuar.
+
+!set name_dynamic=Comprovació dels gràfics dinàmics (pot fer la comprovació amb diferents navegadors)
+
+!set name_tex= Aquesta fórmula utilitza la inserció dinàmica de TeX. Si no apareix  \
+correctament, és que TeX no està instal·lat correctament en el vostre sistema.
+!set name_size=També pot canviar la mida de la font si no us sembla correcta.
+!set name_mathml=Aquesta fórmula utilitza la inserció dinàmica de MathML. Si no apareix \
+correctament, és que el navegador que utilitzeu no maneja bé MathML.
+
+!set name_drawing=Les següents dues imatges es creen amb el programa de disseny intern \
+a WIMS (flydraw). Una és estàtica i l'altra està animada. Es veuen correctament? \
+Si no, proveu altres formats d'imatge.
+
+
+!set name_gnuplot1=El següent gràfic utilitza <b>gnuplot</b>
+!set name_gnuplot2=Les corbes han de tenir diferents colors. Si no és així, proveu altres formats d'imatge.
+
+!set name_graphviz1=El següent gràfic de colors utilitza <b>graphviz</b> i és independent dels altres programes de disseny. \
+  Si no apareix,
+!set name_graphviz2=no està instal·lat correctament.
+
+!set name_povray1=El gràfic següent fet amb Povray és independent dels altres formats gràfics. \
+  Si no apareix,
+!set name_povray2=no està instal·lat correctament.
+ !exit
+!endif
+
+
+!if $job=crontab
+  !set title=Manteniment diari automàtic
+ !distribute lines S'ha trobat una instal·lació manual de crontab. S'ha de seguir administrant les tasques manualment o eliminar el crontab manual abans de canviar a l'eina en línia.\
+   No utilitzeu aquesta eina si teniu un crontab personalitzat!\
+   Estrany error: No puc trobar la carpeta de treball. Revisi la seva instal·lació: no funciona normalment.\
+   Feines de manteniment disponibles\
+   Còpia de seguretat diària a\
+   Tria un moment en què el servidor te poca feina.\
+   Recompte d'activitats (necessari per a les estadístiques del lloc)\
+into name_manually,name_warning,name_strange,name_available,name_daily,name_notbusy,name_accounting
+
+
+ !exit
+!endif
+
+!if $job2=del1
+  !set name_warning=Segur que vols eliminar el compte de desenvolupador
+
+ !exit
+!endif
+
+!if $job=developer
+  !set title=
+  !set wims_name_adddevel=Afegir un nou compte de desenvolupador
+  !set wims_name_develaccount=Llista de comptes dels desenvolupadors
+  !set name_dev=Desenvolupadors enregistrats en aquest servidor
+
+  !set name_allowed=Desenvolupadors amb permís per instal·lar mòduls \
+  a la carpeta local d'aquest servidor (introduir contrasenya):
+
+ !exit
+!endif
+
+!if $job=file
+  !distribute lines Aquest és l'arxiu de descàrrega\
+     De veres voleu eliminar el fitxer\
+     darrera modificació\
+     octets\
+     és una imatge\
+     és un arxiu binari\
+     és massa llarg per a ser visualitzat o editat.\
+     Aquest arxiu correspon a la distribució, no es pot modificar\
+     Descarregui l'arxiu\
+     Contingut de\
+   into name_file,name_erase,name_last,name_bytes,name_image,name_binary,name_toolong,\
+   name_distrib,name_download,name_content
+
+!exit
+!endif
+
+!if $job=fs
+!distribute lines Directori actual\
+   Subdirectoris (feu clic per anar-hi)\
+   Enllaços simbòlics\
+   Afegir-li un nou arxiu\
+   Fitxers\
+   Cap arxiu en aquest directori.\
+into name_current,name_sub,name_symbolic,name_add,name_files,name_file
+
+ !exit
+!endif
+
+!if $job=no_right
+  !set name_warning=Ho sentim però no se'l reconeix com administrador d'aquest lloc. \
+   Vostè no té permís per accedir a aquest mòdul.
+!exit
+!endif
+!if $job=mkindex
+  !set title=Reconstruir índex de recursos
+  !distribute lines La indexació dels recursos s'ha programat. Vostè rebrà un correu electrònic amb el resultat.\
+     La indexació dels recursos utilitza l'hora del servidor, així que eviti fer-ho quan el servidor està molt ocupat.\
+     Resultat de la darrera indexació de recursos a\
+     Cliqueu aquí \
+     per iniciar la indexació dels recursos (no hauria).\
+     per reiniciar la indexació dels recursos.\
+  into name_scheduled,name_rebuilding,name_result,name_click,name_restart,name_start
+!exit
+!endif
+
+!if $job=mod2
+  !set name_error1=!nosubst El login <span class="tt">$devlogin</span> ja és utilitzat per un altre\
+ compte. Gràcies de triar-ne un de diferent.
+  !set name_error2=!nosubst El camp <span class="tt">$badfield</span> no s'ha entrat \
+  correctament. Gràcies per corregir-lo.
+
+!exit
+!endif
+
+!if $job=modform
+  !set name_modification=Canviar les propietats d'un compte de desenvolupador (deixar el camp de la contrasenya en blanc \
+     si no voleu canviar la contrasenya).
+ !set name_add=Per afegir un nou compte de desenvolupador, especifiqui: (tots els camps són obligatoris)
+!exit
+!endif
+
+!if $job=modules
+  !set title=Descàrrega de mòduls
+  !set name_scheduled=!nosubst L'execució de la seva comanda <span class="tt wims_code_words">$auto</span> està programada.\
+  Un correu electrònic serà enviat una vegada executada. No repeteixi aquesta comanda fins que la descàrrega s'ha completat.
+  !distribute lines mòduls publicats\
+     zona\
+     categoria\
+     mòduls modificats des d'almenys\
+     dies\
+     Configuració de descàrrega\
+  into name_mod,name_zone,name_cat,name_change,name_ago,wims_name_config_module
+
+  !distribute lines Error en carregar el mòdul \
+       Error d'instal·lació/actualització\
+       Instal·lació/Actualització \
+       exitosa\
+       Necessitaràs\
+       Provar\
+       reconstruir l'índex dels mòduls\
+       Instal·lar\
+       Actualitzar\
+       versus\
+       Canvis\
+       Nova versió de\
+       Nou mòdul\
+       Has de\
+       després de l'actualització dels mòduls\
+       Cliqueu aquí\
+       per configurar els centres de publicació i descàrregues utilitzats, per configurar l'actualització diària dels mòduls o per triar els centres de publicació disponibles per als desenvolupadors d'aquest lloc.\
+       També pot actualitzar\
+       Aquí pot actualitzar/carregar els mòduls.\
+    into name_error1,name_error2,name_install,name_successful,name_need,name_test,name_rebuild,name_Install,\
+      name_Update,name_versus,name_Changes,name_version,name_newmodule,name_youneed,name_after,\
+      name_click,name_automatic,name_rss,name_canupdate
+
+!!check
+  !distribute lines Cap publicació de mòdul correspon a la recerca.\
+     Cliqueu a l'adreça del mòdul a comprovar/instal·lar/actualitzar. \
+     Noves versions de mòduls\
+     Nous mòduls\
+     actualitzar tot\
+     instal·lar tot\
+     actualitzat per\
+     Nova versió\
+     Nous mòduls\
+     Versió<br />del servidor\
+     publicat<br />per\
+  into name_check1,name_click_adress,name_foundv,name_foundm,name_all_u,name_all_i,name_updated,name_newv,name_newm,name_server,name_published
+
+!exit
+!endif
+
+!if $job=restore
+
+   !set name_warning1=Arxiu incorrecte: el contingut no és compatible.
+   !set name_warning2=Les dades dels següents arxius s'han restaurat/instal·lat correctament
+ !exit
+!endif
+
+!if $job=sess
+  !set title=Sessió d'usuari
+  !distribute lines Contingut de la sessió\
+     Contingut de l'arxiu de les variables de la sessió\
+     Contingut de l'arxiu \
+     Llista de sessions actives\
+  into name_content_s,name_content_v,name_content_f,name_listsessions
+!exit
+!endif
+
+!if $job=upload
+ !set name_warning=Per carregar els recursos al servidor, inseriu el CD-ROM o clau USB que conté\
+   el recurs al vostre ordinador i trobar un arxiu anomenat <span class="tt">wims-resource.tgz</span>\
+   o <span class="tt">wimsres-*.tgz</span> en el camp següent
+ !set name_need=Es necessita una connexió ràpida si el fitxer de descàrrega és gran.
+!exit
+!endif
+
+!if $job=rss
+   !set title= Reconstruir els fils RSS
+   !set name_start=per iniciar la reconstrucció dels fils RSS.
+ !exit
+!endif
+
+!if $job=otherdownload
+  !set name_text1=Altres recursos es poden descarregar de forma manual.
+  !set name_shtooka=Descarregar recursos Shtooka (paraules d'àudio)
+
+!exit
+!endif
+
+!if $job=swac
+  !set name_mkindex=Refer l'índex
+  !set name_text_swac=Podeu descarregar els arxius mp3 d'alguns paquets \
+   del projecte Shtooka.<p> Si els mòduls que els criden s'utilitzen molt en el\
+   servidor WIMS, hauries de fer-ho. Si no és així, aquests mòduls aniran a buscar els mp3 al lloc http://shtooka.net\
+</p><p>\
+Per carregar les col·leccions, utilitzeu l'script <span class="tt">$wims_home/bin/swac </span> \
+a la línia de comandes. Instal·larà alguns paquets SWAC en el lloc correcte.\
+</p><p class="small">Com els arxius WIMS es codifiquen en iso-latin, no és possible \
+actualment utilitzar els paquets ciríl·lics.</p>
+!exit
+!endif
+
+!if $job=sendmail
+ !distribute item Assumpte,Missatge \
+into name_subject,name_message
+ !let name_dest=Destinataris,Administrador del servidor,Administrador d'una classe individual,Administrador d'un agrupament de classes,Administrador d'una institució,Professor d'un agrupamement de classes,Professor d'una institució
+ !let name_sending=El seu missatge ha estat enviat a tots els destinataris
+ !exit
+!endif
+
+!if $job=classrestore
+  !distribute lines Seleccioneu la classe a restaurar de la llista següent\
+   No hi ha classes per restaurar.\
+   There are many archived classes. You must enter the identifier of the class to restore.\
+into name_restore_choose, name_restore_noclass,name_toomuchbackup
+!set name_restore_done=!nosubst La classe $clrestore ha estat restaurada. Si us plau informeu\
+el professor que la nova data de caducitat és el $date. No s'aconsella tornar a fer aquesta operació una segona vegada.
+
+  !exit
+!endif
+

@@ -1,0 +1,119 @@
+
+!goto $gstep
+
+:1
+!reset table_center
+<fieldset class="property_fields blockcenter">
+  <legend>$name_create_or_edit</legend>
+  <div class="field box">
+   !if $vote_status>0
+     <strong>$name_namevar <span class="field_required">*</span></strong>
+    $namevar
+   !else
+    <label for="up_namevar">$name_namevar <span class="field_required">*</span></label>
+    !let up_codevar=$codevar
+    !formselect up_codevar list $tv_listlocalcode prompt $tv_listlocalname
+   !endif
+   <div class="formHelp">$(name_$(reg_model)_help)</div>
+  </div>
+  <div class="field box">
+   !if $vote_status>0
+   <strong>$name_textconnip</strong>
+    $defconnip
+   !else
+    <label for="defconnip">$name_textconnip</label>
+    <input size="12" name="up_defconnip" id="defconnip" value="$defconnip" />
+   !endif
+   <div class="formHelp">$name_textconnip2</div>
+  </div>
+</fieldset>
+<input type="hidden" name="gstep" value="2" />
+
+!exit
+:2
+<p>$name_introtext ($name_introtext2)</p>
+!!<div class="wimscenter">
+<textarea class="iEdit" id="testointro" rows="10" cols="80" name="up_testointro">
+!replace internal \( by &#92;( in $testointro
+</textarea>
+!!</div>
+
+<p>$name_session_select</p>
+!reset table_center
+$table_header
+$table_hdtr
+
+!! needed by datemenu.phtml.$lang
+!default creyear=!char 1 to 4 of $class_creation
+!default expyear=!char 1 to 4 of $class_expiration
+
+!if $jyear=$empty
+ !let jyear=!char 1 to 4 of $wims_now
+ !let jmonth=!char 5 to 6 of $wims_now
+ !let jday=!char 7 to 8 of $wims_now
+!endif
+  <th>$name_group1</th>
+  <th>$name_numstud</th>
+  <th>$name_sessiondate</th>
+  <th>$name_begintime</th>
+  <th>$name_endtime</th>
+  <th>$name_connip</th>
+  <th>$name_extra</th>
+ </tr>
+ !for i=1 to $numsess
+$table_tr
+  <td>$(listval[$i])
+  <td>
+  <input size="4" name="up_nstud$i" id="nstud$i" value="$(nstud$i)" />
+  </td>
+  <td>
+   !default up_bday$i=$jday
+   !default up_byear$i=$jyear
+   !default up_bmonth$i=$jmonth
+   !distribute item $[$(up_bday$i)],$[$(up_bmonth$i)],$[$(up_byear$i)] into up_bday$i,up_bmonth$i,up_byear$i
+!if $vote_status=0
+   !read adm/lang/datemenu.phtml.$moduclass_lang 1, up_bday$i,up_bmonth$i,up_byear$i
+!else
+  $(bday$i) $(months[$(bmonth$i)]) $(byear$i)
+!endif
+  </td>
+  <td>
+!if $vote_status=0
+   !read adm/lang/datemenu.phtml.$moduclass_lang 6,up_bhour$i,up_bmin$i
+!else
+   $(bhour$i):$(bmin$i)
+!endif
+  </td>
+  <td>
+!if $vote_status=0
+   !read adm/lang/datemenu.phtml.$moduclass_lang 6,up_ehour$i,up_emin$i
+!else
+   $(ehour$i):$(emin$i)
+!endif
+  <td>
+!if $vote_status=0
+   !default up_exconnip$i=$defconnip
+   <input size="10" name="up_exconnip$i" id="exconnip$i" value="$(up_exconnip$i)" />
+!else
+   $(exconnip$i)
+!endif
+  </td>
+  <td>
+   <input size="10" name="up_testoextra$i" id="testoextra$i" value="$(testoextra$i)" />
+  </td>
+ </tr>
+ !next i
+ $table_end
+ <div class="formHelp">$name_remark_numstud</div>
+ <input type="hidden" name="gstep" value="3" />
+!exit
+
+:3
+$name_describesource
+<p>$name_yourvariable.</p>
+<pre>
+$reg_src
+</pre>
+$(name_$(reg_model)_instr)
+<input type="hidden" name="gstep" value="0" />
+

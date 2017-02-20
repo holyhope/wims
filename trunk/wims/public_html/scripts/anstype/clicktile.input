@@ -1,0 +1,270 @@
+!reset xsize ysize background_color return_all_objects
+!set appletdir=java/Clicktile
+!set anstype=yes
+!set anstyle=dprompt
+!set ans_require=clicktile
+
+!if $wims_read_parm=def
+ !exit
+!endif
+!!########################
+!!###traitement des options (qui se trouvent dans \embed)
+!set oef_applet_option=!replace internal $	$ by $\
+$ in $inputsize
+
+!set oef_applet_option=!replace internal ; by $\
+$ in $oef_applet_option
+!set oef_applet_option=!nonempty lines $oef_applet_option
+!set Inputsize=!line 1 of $oef_applet_option
+!set test=!text remove 0123456789x in $Inputsize
+!if $test issametext $empty
+ !set Inputsize=!replace internal x by , in $Inputsize
+ !set oef_applet_option=!line 2 to -1 of $oef_applet_option
+ !set oef_applet_option=!declosing $oef_applet_option
+ !distribute items $Inputsize into xsize,ysize
+!endif
+!set oef_applet_option=!translate [] to $  $ in $oef_applet_option
+!set list=
+!set oef_applet_option_cnt=!linecnt $oef_applet_option
+
+!reset applet_parm applet_image
+!set cmt=0
+!for a=1 to $oef_applet_option_cnt
+  !set line=!line $a of $oef_applet_option
+  !set w=!word 1 of $line
+  !set l=!word 2 to -1 of $line
+  !set l1=!nospace $(l[2..-1])
+  !if xrange isin $w
+    !distribute item $[$(l[1])],$[$(l[2])-$(l[1])] into  xmin, xn
+  !endif
+  !if yrange isin $w
+    !distribute item $[$(l[1])],$[$(l[2])-$(l[1])+1] into ymin, yn
+  !endif
+  !if square isin $w
+    !set click_color=!append item "$(l[1])" to $click_color
+    !set l1cnt=!itemcnt $l1
+    !for pp=1 to $l1cnt
+      !set point=!item $pp of $l1
+      !set point=!replace : by , in $point
+      !set id=$[$(point[1])-($xmin) + 1000*$[$(point[2])-($ymin)]]
+      !set list=!append item "$id" to $list
+      !set applet_parm=!append line var obj=document.getElementById($id);\
+   obj.setAttributeNS(null,"fill","$(l[1])");\
+    to $applet_parm
+    !next
+   !else
+    !if $w iswordof segment line point polygon
+      !increase cmt
+     !set ll=!replace internal : by , in $(l[2..-1])
+     !if $w iswordof line segment
+      !set tmp=var obj$cmt = document.createElementNS('http://www.w3.org/2000/svg', 'line');\
+     obj$cmt.setAttribute('x1', $[$(ll[1])-($xmin)]*w);\
+     obj$cmt.setAttribute('y1',($[$(ll[2])+($ymin)]+yn)*h);\
+     obj$cmt.setAttribute('x2', $[$(ll[3])-($xmin)]*w);\
+     obj$cmt.setAttribute('y2',($[$(ll[4])+($ymin)]+yn)*h);\
+     obj$cmt.setAttribute('stroke', '$(l[1])');\
+     obj$cmt.setAttribute('stroke-width', 3);
+      !endif
+      !if $w iswordof polygon
+      !!!set tmp=var obj$cmt = document.createElementNS('http://www.w3.org/2000/svg', 'path');\
+     obj$cmt.setAttribute('points', $[$(ll[1])-($xmin)]*w, ($[$(ll[2])+($ymin)]+yn)*h\
+      $[$(ll[3])-($xmin)]*w, ($[$(ll[4])+($ymin)]+yn)*h);\
+     obj$cmt.setAttribute('stroke', '$(l[1])');\
+     obj$cmt.setAttribute('stroke-width', 3);\
+     obj$cmt.setAttribute('fill', 'none');
+      !endif
+      !if $w iswordof point
+      !set tmp=var obj$cmt = document.createElementNS('http://www.w3.org/2000/svg', 'circle');\
+     obj$cmt.setAttributeNS(null, 'cx', $[$(ll[1])-($xmin)]*w);\
+     obj$cmt.setAttributeNS(null, 'cy', ($[$(ll[2])+($ymin)]+yn)*h);\
+     obj$cmt.setAttributeNS(null, 'r',  3);\
+     obj$cmt.setAttributeNS(null,'fill', '$(l[1])');
+      !endif
+     !set applet_parm=!append line $tmp\
+      wims_svg$i.appendChild(obj$cmt);\
+      to $applet_parm
+    !else
+      !if $w iswordof return_all_objects background_color colors
+        !set $w=$l
+        !if $l=yes
+         !set $w=1
+        !endif
+      !else
+       !if $w iswordof copy
+        !set image=$(l[3])
+        !set l1=!nospace $(l[1..2])
+        !set applet_image=!append line \
+        <image xlink:href="$image" x="$(l1[1])" y="$(l1[2])" width="100%" height="100%"></image>\
+         to $applet_image
+        !set stroke_opacity=0.70
+        !set fill_opacity=0.50
+      !endif
+     !endif
+   !endif
+  !endif
+!next
+!if $colors!=$empty
+   !set colors=!makelist "x" for x in $colors
+!endif
+!set click_color=!append item $colors to $click_color
+
+!default background_color=green
+!default oef_applet_option=xrange 0,10\
+yrange 0,1\
+colors red,blue\
+background_color $background_color
+!set listtotal=!makelist p + 1000*q for p=0 to $xn
+!set listtotal=!values $listtotal for q=1 to $yn
+!set listtotal=!makelist "x" for x in $listtotal
+!set listc=!listcomplement $list in $listtotal
+!set listc_cnt=!itemcnt $listc_cnt
+!default xsize=200
+!default ysize=30
+!set xsize=$[(ceil($xsize/$xn))*$xn]
+!set ysize=$[(ceil($ysize/$yn))*$yn]
+!set Inputsize=$xsize,$ysize
+!default return_all_objects=0
+
+!default stroke_opacity=0.99
+!default fill_opacity=0.99
+!!############################
+!!####partie importante
+<style type="text/css">
+/*<![CDATA[*/
+      .clicktile_button{
+        width:3em;
+        opacity:$fill_opacity
+      }
+/*]]>*/
+</style>
+
+<input type="hidden" name="reply$i" id="Clicktilereply$i" value="" />
+
+<div id="Clicktile$i" style="width:100%;height:$[$ysize+30]px;">
+    <svg version="1.1" baseProfile="full"
+     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     xmlns:ev="http://www.w3.org/2001/xml-events"
+     id="svgClicktile$i" width="$xsize" height="$ysize"
+     viewBox="0 0 $xsize,$ysize">
+     <g id="svg_transformClicktile$i">
+$applet_image
+    </g>
+    </svg>
+ <div>
+  <input type="button" class="clicktile_button" style="background_color:$background_color;"
+  onclick="javascript:change_color();" id="change" name="change" />
+ </div>
+</div>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+var num = 0;
+var xmin=$xmin;var ymin=$ymin;
+var return_all_objects=$return_all_objects;
+var wims_svg$i = document.getElementById("svgClicktile$i");
+wims_svg$i.addEventListener("click", svg_mouse, false);
+var xn = $xn;
+var yn = $yn;
+var w = $[$xsize/$xn];
+var h = $[$ysize/$yn];
+var x,y;
+var line_width = 1;
+var stroke_color = "black";
+var fill_color = "$background_color";
+var stroke_opacity = $stroke_opacity;
+var fill_opacity = $fill_opacity;
+
+!set click_color=!listuniq $click_color
+!set click_color_cnt=!itemcnt $click_color
+
+var num_colors =$[$click_color_cnt];
+var click_color = new Array("$background_color",$click_color);
+var listc=new Array($listc);
+var start_color = click_color[0];
+for(var p = 0 ; p < xn ; p = p+1){
+     for(var q = 1 ; q < yn; q = q+1){
+         var id=p+1000*q;
+         var rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+         rect.setAttributeNS(null,"x",p*w);
+         rect.setAttributeNS(null,"y",(yn-q)*h);
+         rect.setAttributeNS(null,"width",w);
+         rect.setAttributeNS(null,"height",h);
+         rect.setAttributeNS(null,"id",id);
+         rect.setAttributeNS(null,"stroke-width",line_width);
+         rect.setAttributeNS(null,"stroke",stroke_color);
+         rect.setAttributeNS(null,"stroke-opacity",stroke_opacity);
+         rect.setAttributeNS(null,"fill-opacity",fill_opacity);
+         for(var a = 0 ; a < listc.length ; a = a+1){
+             var b=listc[a];
+             if(b==id){
+               rect.setAttributeNS(null,"fill",start_color);
+               rect.setAttributeNS(null,"onmousedown","javascript:paint_color("+id+")");
+               break;}
+         }
+         wims_svg$i.appendChild(rect);
+     }
+}
+
+$applet_parm
+
+function paint_color(myid){
+    var obj = document.getElementById(myid);
+    obj.setAttributeNS(null,"fill",click_color[num]);
+    return;
+}
+
+function change_color(myid){
+    num++;
+    if(num > num_colors){num = 0;}
+    document.getElementById("change").style.backgroundColor=click_color[num];
+    return(num);
+    return
+}
+function svg_mouse(action){
+    return 0;
+}
+
+function read_svg$i(){
+  var reply=" ";
+  for(var pr = 0 ; pr < xn; pr = pr+1){
+     for(var qr = 1 ; qr < yn; qr = qr+1){
+        var id1=pr + 1000*qr;
+        if (return_all_objects==1) {
+           var obj=document.getElementById(id1);
+           var bb=obj.getAttributeNS(null,'fill');
+               if(bb != click_color[0]){
+                 var pr1 = pr + xmin;
+                 var qr1 = qr + ymin;
+                 reply += bb + "@" + pr1  + ":" + qr1 + ";";
+               }
+          } else {
+            for(var a = 0 ; a < listc.length ; a = a+1){
+              var b=listc[a];
+              if(b==id1){
+               var obj=document.getElementById(id1);
+               var bb=obj.getAttributeNS(null,'fill');
+               if(bb != click_color[0]){
+                 var pr1 = pr + xmin;
+                 var qr1 = qr + ymin;
+                 reply += bb + "@" + pr1  + ":" + qr1 + ";";
+               };
+               break
+            }
+          }
+        }
+     }
+  };
+  document.getElementById("Clicktilereply$i").value=reply;
+}
+
+/*]]>*/
+</script>
+
+
+!!###on garde les options pour le retour, variable de nom imposé oef_applet_option
+!set oef_answer_option$i=$Inputsize\
+$oef_applet_option
+
+!set oef_js_submit=$oef_js_submit read_svg$i();
+
+

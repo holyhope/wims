@@ -1,0 +1,59 @@
+
+!if $ucnt>$maxuser
+ error=too_many_users
+ method=list
+ !exit
+!endif
+
+!bound cc between integer 1 and $gcnt+1 default $[$gcnt+1]
+!bound percent between 0 and 100 default 0
+
+!if $reg=$empty or $title=$empty
+ !exit
+!endif
+
+!for i=1 to $uucnt
+ l_=!record $i+1 of wimshome/log/classes/$wims_class/.grades
+ n_=!item 1 of $l_
+ n_=!hex $n_
+ g_$n_=$l_
+!next i
+
+title=!translate ,\
+$ to ; $ in $title
+weight=$[$weight]
+!bound weight between 0 and 1000 default 1
+!if $gcnt<$cc
+ titles=!append item $title to $titles
+ weights=!append item $weight to $weights
+!else
+ titles=!replace item number $cc by $title in $titles
+ weights=!replace item number $cc by $weight in $weights
+!endif
+
+!writefile wimshome/log/classes/$wims_class/.grades :$percent\
+title,title,$titles\
+weights,weights,$weights
+
+!for i=1 to $ucnt
+ c$i=$[$(c$i)]
+ !bound c$i between 0 and $maxscore default 0
+ n_=!item $i of $ulist
+ f_=!item $i of $flist
+ l_=!item $i of $llist
+ h_=!hex $n_
+ v_=!item 3 to -1 of $(g_$h_)
+ t_=!itemcnt $v_
+ !if $t_<$cc
+  !for k=$t_ to $cc-2
+   v_=!append item $ to $v_
+  !next k
+  v_=!append item $(c$i) to $v_
+ !else
+  v_=!replace item number $cc by $(c$i) in $v_
+ !endif
+ !appendfile wimshome/log/classes/$wims_class/.grades :$n_,$f_ $l_,$v_
+!next i
+
+!read var.init
+

@@ -1,0 +1,56 @@
+
+$table_header
+<caption>Steutelwoorden voor spreadsheet bestanden</caption>
+$table_hdtr<th scope="col">Sleutelwoord</th><th scope="col">Betekenis</th>
+$table_tr<td class="tt wims_code_variable">login</td><td>$wims_name_Login</td></tr>
+!if $special_parm!=upload
+$table_tr<td class="tt wims_code_variable">name</td><td>achternaam en voornaam (in die volgorde en twee kolommen)</td></tr>
+!endif
+$table_tr<td class="tt wims_code_variable">lastname</td><td>achternaam</td></tr>
+$table_tr<td class="tt wims_code_variable">firstname</td><td>voornaam</td></tr>
+$table_tr<td class="tt wims_code_variable">password</td><td>wachtwoord van de student.<br />Wordt met encryptie verstuurd: misschien wel leesbaar op de server.</td></tr>
+
+$table_tr<td class="tt wims_code_variable">email</td><td>email adres van de student</td></tr>
+$table_tr<td class="tt wims_code_variable">regnum</td><td>registratie nummer van de student [mits gedefinieerd]</td></tr>
+$table_tr<td class="tt wims_code_variable">photourl</td><td>URL van een foto</td></tr>
+$table_tr<td class="tt wims_code_variable">comments</td><td>opmerkingen over deze student</td></tr>
+$table_tr<td class="tt wims_code_variable">external_auth</td><td>login for an external authentification</td></tr>
+
+!if $special_parm!=upload
+$table_tr<td class="tt wims_code_variable">allscore</td><td>scores en gemiddelden [alles]</td></tr>
+$table_tr<td class="tt wims_code_variable">averages</td><td>gemiddelden [van zowel handmatige ingevoerde als op de server behaalde scores]</td></tr>
+$table_tr<td class="tt wims_code_variable">average1</td><td>gemiddelden [van op de server behaalde scores ]</td></tr>
+$table_tr<td class="tt wims_code_variable">average2</td><td>gemiddelden [van de handmatig ingevoerde cijfers]</td></tr>
+$table_tr<td class="tt wims_code_variable">sheets</td><td>cijfers voor alle werkbladen [1 voor 1]</td></tr>
+$table_tr<td class="tt wims_code_variable">sheetexo1,sheetexo2,...</td><td>indicators of the exercises of the sheet 1, of the sheet 2, ...
+  (there are two indicators : percentage of points, quality note)</td></tr>
+$table_tr<td class="tt wims_code_variable">sheet1,sheet2,...</td><td>cijfers voor werkblad no.1, werkblad no.2 ,... etc.</td></tr>
+$table_tr<td class="tt wims_code_variable">exams</td><td>cijfers voor alle proefwerken</td></tr>
+$table_tr<td class="tt wims_code_variable">exam1,exam2,...</td><td>cijfers voor proefwerk no.1, proefwerk no.2 ,... etc</td></tr>
+$table_tr<td class="tt wims_code_variable">manuals</td><td>alle handmatig ingevoerde cijfers [1 voor 1]</td></tr>
+!else
+$table_tr<td><span class="tt wims_code_variable">participate</span> (alleen voor de administrator van een institutionele protaal structuur)</td><td>
+aantal klassen in de vorm abcdefg/1/101
+waarin  abcdefg het protaal nummer  is.
+Zijn er meerdere clusters, worden deze gescheiden door spaties.</td></tr>
+!endif
+
+$table_tr<td class="tt wims_code_variable">manual1,manual2,...</td><td>handmatig ingevoerd cijfers, gespecificeerd</td></tr>
+$table_tr<td class="tt wims_code_variable">var_xxx</span></td><td>de waarde van de technische variabele <span class="tt">xxx</td></tr>
+$table_tr<td class="tt wims_code_variable">regprop1,regprop2,...</td><td>variables d'inscriptions complémentaires<span class="tt">xxx</span></td></tr>
+
+
+$table_end
+<p>
+Velden met een onbekend of foutief sleutelwoord worden stilletjes genegeerd.
+De technische variabelen zijn gereserveerd voor experts: er kunnen o.a. zaken zoals "specifieke begin/eind proefwerk tijdsstippen" voor speciale [individuele] gevallen mee worden ingesteld.
+</p>
+!if $special_parm=upload
+<p>
+In het veld <span class="tt wims_code_variable">participate</span>, kunnen wel klassen worden toegevoegd, echter niet verwijderd.
+</p>
+<p>
+Dans le cas du champ <span class="tt wims_code_variable">var_xxx</span>,
+la variable technique doit déjà être créée et seules les valeurs définies lors de la création de la variable sont utilisables.
+</p>
+!endif

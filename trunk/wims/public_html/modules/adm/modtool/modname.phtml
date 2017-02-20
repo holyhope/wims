@@ -1,0 +1,63 @@
+
+!if $totalcnt>0
+ !if $totalcnt>=$sellist
+$name_moddevcnt
+!href cmd=reply&jobreq=prop <span class="small">$wims_name_account_property</span>
+  !form reply
+  <label for="selectshow">$name_browselist</label>
+  <input id="selectshow" type="text" size="30" name="selectshow" value="$selectshow" />
+  <input type="submit" value="$wims_name_search" />
+    $
+  !set wims_ref_class=wims_button_help
+  !href cmd=help&special_parm=regex $wims_name_help
+  !formend
+ !endif
+ $name_clicktitle
+ !if $totalcnt>=$maxlist and $existcnt>=$maxlist
+ ($name_limited).
+ !endif
+ !reset table_center
+ $table_header
+ $table_hdtr<th scope="col">$wims_name_Address</th><th scope="col">$wims_name_title</th><th scope="col">$wims_name_action</th><th scope="col">$wims_name_Description</th>
+ </tr>
+ !for n in $existing
+  !readdef wimshome/public_html/modules/devel/$auth_login/$n/INDEX
+  $table_tr<td class="wims_fname nowrap">
+ !! !replace internal ~ by ~ $ in $n $
+  $n
+  !if ~ notin $n
+   !set wims_ref_class=wims_button
+   !href cmd=reply&jobreq=move&original=devel/$auth_login/$n $name_rename
+  !endif
+  </td><td>
+  !href cmd=reply&jobreq=flist&modreq=$n $title
+  </td><td class="wimscenter">
+  !set wims_ref_class=wims_button
+  !href cmd=reply&jobreq=index&modreq=$n $wims_name_properties
+!set wims_ref_class=wims_button wims_warning
+  !href cmd=reply&jobreq=del&modreq=$n $wims_name_erase
+  </td><td class="wims_mod_desc">$description</td>
+  </tr>
+ !next n
+ $table_end
+ !set wims_menu_items=!append line itemsep,0,$wims_name_navigation\
+ createnew,1,cmd=reply&jobreq=create\
+ restore,1,cmd=reply&jobreq=restore\
+to $wims_menu_items
+ !read themes/_procs/othermethods.proc
+ !read themes/_procs/othertools.proc
+!else
+$name_nomodule
+ !href cmd=reply&jobreq=create $name_create
+ $wims_name_or
+ !href cmd=reply&jobreq=restore $name_restore
+.
+!endif
+!if $wims_theme=default
+!!drownbox now
+  !set wims_menu_items=!append line itemsep,0,\
+account_property,1,cmd=reply&jobreq=prop\
+to $wims_menu_items
+!endif
+
+!reset target target1 target2 target3 target4 selectshow

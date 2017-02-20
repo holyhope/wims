@@ -1,0 +1,18 @@
+
+dd=!deaccent $(reply$i)
+
+m_reply$i=$dd
+
+gg=!deaccent $(replygood$i)
+gg=!rows2lines $gg
+gg=!line 1 of $gg
+
+!readproc slib/chemistry/chemeq_compare $dd,$gg
+
+!if $slib_out=good
+ diareply$i=good
+ !advance freegot
+!else
+ diareply$i=bad
+!endif
+

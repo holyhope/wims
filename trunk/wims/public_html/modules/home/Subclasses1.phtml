@@ -1,0 +1,126 @@
+!!!make the list of all subclasses classified by their type in a portal
+!!! for supervisor
+!!! at the end something on the test zone
+
+!set wims_realuser=!defof wims_realuser in wimshome/$wims_sesdir/var.stat
+!set user_supervise=!defof user_supervise in wimshome/log/classes/$wims_superclass/.users/$wims_realuser
+!set classes=!record 0 of wimshome/log/classes/$wims_class/classes
+!set classcnt=!linecnt $classes
+!set progs=!record 0 of wimshome/log/classes/$wims_class/programs
+!set progcnt=!linecnt $progs
+!!if $classcnt+$progcnt>=1
+ !set courses=!record 0 of wimshome/log/classes/$wims_class/courses
+ !set coursecnt=!linecnt $courses
+!!endif
+!set icourses=!record 0 of wimshome/log/classes/$wims_class/icourses
+!set icoursecnt=!linecnt $icourses
+!!if $[$classcnt+$progcnt+$coursecnt+$icourses]=0
+  !goto nosubclass
+!!endif
+
+!!! not useful now, but as I am not quite sure, leave it !!!
+ <ul class="wims_nopuce">
+!if $classcnt>0
+ <li>
+ $(CL_Names[2]):
+  <ul class="inline">
+ !for i=1 to $classcnt
+  !set l=!line $i of $classes
+  !distribute items $l into c_,s_,t_
+  <li>
+  <div class="wims_classes_direct_class">
+   !if $wims_superclass/$c_ isitemof $user_supervise or $wims_realuser=supervisor
+     !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_&auth_user=supervisor $t_
+   !else
+     !!!href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
+      $t_
+   !endif
+  </div>
+  </li>
+ !next i
+ </ul></li>
+!endif
+!if $progcnt>0
+  <li>
+ $(CL_Names[3]):
+ <ul class="inline">
+ !for i=1 to $progcnt
+  !set l=!line $i of $progs
+  !distribute items $l into c_,s_,t_
+  <li>
+  <div class="wims_classes_direct_program">
+   !if $wims_superclass/$c_ isitemof $user_supervise or $wims_realuser=supervisor
+     !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_&auth_user=supervisor $t_
+   !else
+     !!!href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
+     $t_
+   !endif
+  </div>
+  </li>
+ !next i
+ </ul></li>
+!endif
+
+!!if $classcnt+$progcnt>=1
+ !if $coursecnt>0
+  <li>
+  $(CL_Names[4]):
+  <ul class="inline">
+  !for i=1 to $coursecnt
+   !set l=!line $i of $courses
+   !distribute items $l into c_,s_,t_
+   <li>
+   <div class="wims_classes_direct_course">
+   !if $wims_superclass/$c_ isitemof $user_supervise or $wims_realuser=supervisor
+     !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_&auth_user=supervisor $t_
+   !else
+    !!!href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
+    $t_
+   !endif
+   </div>
+   </li>
+  !next i
+  </ul></li>
+ !endif
+ !if $icoursecnt>0
+  <li>
+  $(CL_Names[5]):
+  <ul class="inline">
+  !for i=1 to $icoursecnt
+   !set l=!line $i of $icourses
+   !distribute items $l into c_,s_,t_
+   <li>
+   <div class="wims_classes_direct_course">
+   !if $wims_superclass/$c_ isitemof $user_supervise or $wims_realuser=supervisor
+     !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_&auth_user=supervisor $t_
+   !else
+     !!!href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
+     $t_
+   !endif
+   </div>
+   </li>
+  !next i
+  </ul></li>
+!endif
+</ul>
+:nosubclass
+!if $class_typename=program
+ !set test=!defof class_defined in wimshome/log/classes/$wims_class/0/.def
+ !if $test=yes
+  <ul class="wims_subclasses"><li>
+  <span class="wims_classes_direct_testclass">
+  !href module=adm/class/classes&type=authsupervisor&class=$wims_class/0 $N_go
+  </span>
+  </li>
+  </ul>
+  !read classlegend.phtml
+  !set wims_ref_class=wims_button
+  !href module=adm/class/config&job=neighbor&job2=import&nei=$wims_class/0 $wims_name_import
+  $name_importfromtest
+  !set wims_menu_items=!append line testgo,1,module=adm/class/classes&type=authsupervisor&class=$wims_class/0 \
+  import,1,adm/class/config&job=neighbor&job2=import&nei=$wims_class/0\
+  to $wims_menu_items
+  !exit
+ !endif
+!endif
+!read classlegend.phtml

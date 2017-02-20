@@ -1,0 +1,73 @@
+# encoding
+encoding=iso-8859-1
+
+# header returned by the module
+header=Content-Type: text/plain ; charset=$encoding\
+
+# header returned by the module within xmlformat
+header_xml=Content-Type: text/xml ; charset=$encoding\
+
+# header returned by the module within json
+header_json=Content-Type: application/json ; charset=$encoding\
+
+# header returned by the module within gz /tgz
+header_zip=Content-Type: multipart/x-gzip ; charset=$encoding\
+
+# List of allowed file-mode jobs
+allowed_file_jobs= getcsv, getclassfile, getclasstgz, getexofile, getibookwidget
+
+# List of jobs allowed to make some actions on wims classes
+allowed_actions_jobs=checkclass, addclass, modclass, delclass, getclass,\
+    cleanclass, copyclass, repairclass, getclassmodif,\
+	checkuser, adduser, moduser, deluser, recuser, getuser, getexamlog,\
+	getscore, getscores, getsheetscores, getexamscores, getlog, putcsv, search,\
+	checkident, update, authuser, gettime, listmodules, getmodule,\
+	addsheet, listsheets, delsheet, getsheet, checksheet, modsheet,\
+	putexo, listexams, addexam, getexam, checkexam, linkexo, linksheet,\
+	modexam, delexam, listlinks, getexo, addexo, delexo,\
+	getexamsessions, addcontent, listclasses, getclassesuser, testexo,\
+	movexo, movexos, listexos, sharecontent, getexosheet, modexosheet,\
+	getinfoserver, getsheetstats
+
+# List of jobs allowed without authentication
+allowed_jobs_without_auth=listmodules, getmodule, getinfoserver
+
+#List class descriptions (in .def class file) - "creation" and "connections" are voluntary not here
+#low_classdefs list minor informations
+low_classdefs=supervisor, description, institution, \
+	lang, email, expiration, limit, topscores, superclass, \
+	type, level, parent, typename, \
+	bgcolor, bgimg, scorecolor, css, logo, logoside, \
+	refcolor, ref_menucolor, ref_button_color, ref_button_bgcolor, \
+	ref_button_help_color, ref_button_help_bgcolor, theme , theme_icon
+
+#high_classdefs list security informations (not to be displayed in non secure requests)
+high_classdefs=password, creator, secure, \
+	external_auth, mixed_external_auth, cas_auth, php_auth, authidp
+
+classdefs=$high_classdefs,$low_classdefs,
+
+#List class types
+# 0 : class , 1 : class in a group (name is "class"), 2 : group , 3 : portal , 4 : ???
+classtypes=class, class, group, portal
+
+#List of user descriptions
+userdefs=firstname, lastname, password, email, comments, regnum, photourl, participate, courses,\
+ classes, supervise, supervisable, external_auth, agreecgu,\
+ regprop1, regprop2, regprop3, regprop4, regprop5
+
+#List of module descriptions
+moduledefs=title, description, language, category, domain, level, keywords, require, scoring, copyright, author, address, version,wims_version, vardef, translator, translator_address
+
+#List of sheet descriptions, ordered as in .sheets file
+sheetdefs=status, expiration, title, description
+
+#List of exam descriptions, ordered as in .exams file
+examdefs=status, expiration, duration_and_attempts, title, description, cut_hours
+
+#List of some WIMS limitations
+edesc_limit=250
+etitle_limit=40
+MAX_EXOS = !defof MAX_EXOS in wimshome/public_html/bases/sys/define.conf
+MAX_EXAMS = !defof MAX_EXAMS in wimshome/public_html/bases/sys/define.conf
+MAX_SHEETS = !defof MAX_SHEETS in wimshome/public_html/bases/sys/define.conf

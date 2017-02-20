@@ -1,0 +1,76 @@
+<br class="spacer" />
+
+!if $class_defined!=yes
+ <div class="wims_msg alert">
+   <span class="wims_warning">$wims_name_Error</span>. $name_warning
+ </div>
+ !exit
+!endif
+
+!read adm/class/initclass $class,auth
+!if $class_mixed_external_auth>0 and $auth_user !=supervisor
+  <div class="wims_external_auth">
+    $(class_external_auth)
+  </div>
+  !if $class_mixed_external_auth=2
+    !exit
+  !endif
+  $name_warning_external
+  <hr />
+!endif
+
+!if no_cgu notwordof $error
+ !reset user_auth
+ !set wims_form_method=post
+ !!FIXME for PHP
+
+ !if $auth_method notitemof cas
+   $name_enter
+   !form reply
+   !set auth_user=$auth_user_connection
+   <fieldset class="property_fields halfwidth blockcenter">
+      <legend>$wims_name_connexion</legend>
+
+      <div class="field box">
+       <label for="login">$wims_name_Login</label>
+       <input size="20" name="auth_user" value="$auth_user" id="login" required="required" placeholder="$wims_name_Login"/>
+      </div>
+      <div class="field box">
+       <label for="password">$wims_name_Password</label>
+       <input type="password" size="20" name="auth_password" id="password" required="required" placeholder="$wims_name_Password"/>
+      </div>
+      <div class="actions center">
+        <input type="submit" value="$wims_name_Enter" />
+        !if $auth_method notitemof ldap
+            !set wims_ref_class=wims_button wims_secondary_button small
+            !href cmd=reply&type=forgetpwd&class=$class $wims_name_n_forgetpwd
+        !endif
+      </div>
+   </fieldset>
+
+   !formend
+
+   !!FIXME too much !if
+   !if $idp_method notwordof ldap
+     $name_new_participant:
+   !endif
+
+ !! else :  $auth_method is cas
+ !else
+   !if $idp_method notwordof ldap
+     $name_new_participant_external:
+   !endif
+ !endif
+
+ !if $idp_method notwordof ldap
+  !if $subclass=yes
+    !set tmp_=&subclass=$subclass
+  !else
+    !reset tmp_
+  !endif
+  !set wims_ref_class=wims_button
+  !href module=adm/class/reguser&class=$class$tmp_ $name_register
+  !reset tmp_
+ !endif
+
+!endif

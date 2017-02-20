@@ -1,0 +1,87 @@
+!if $wims_read_parm=$empty
+   !let code=$wims_class
+!else
+  !let code=$wims_read_parm
+!endif
+!readproc adm/language adm/lang/links
+!readproc adm/lang/links.$modu_lang
+
+$name_link_introduce :
+!if $auth_method=php
+ !if $class_type>=2
+  !set accesscode=$class_superclass
+ !else
+  !set accesscode=$code
+ !endif
+ <ul>
+  <li>$name_link_link
+   <a href="$host_auth?enter=$accesscode">$host_auth?enter=$accesscode</a>
+   $name_link_enterall</li>
+ !if $class_type>=2
+   <li>$name_link_link
+   <a href="$host_auth?enter=$accesscode&authtype=teacher">$host_auth?enter=$accesscode&authtype=teacher</a>
+   $name_link_regsuperv</li>
+ !endif
+ </ul>
+!else
+ <ul>
+  <li>$name_link_link
+   <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?module=adm/class/classes&type=authsupervisor&class=$code">http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?module=adm/class/classes&type=authsupervisor&class=$code</a>
+  $name_link_supervisor.
+  </li>
+  !if $Cltype>=2
+!!portal
+    <li>$name_link_teacher
+    !set script_out=$wims_ref_name?module=adm/class/classes&type=authparticipant&class=$code
+    !if $class_auth=cas
+      !read adm/codeurl $script_out
+      <a href="$(link_)$script_out">$(link_)$script_out</a>
+    !else
+      <a href="$script_out">$script_out</a>
+    !endif
+   </li>
+  !endif
+  <li>$name_link_link
+   !set script_out=$wims_ref_name?module=adm/class/classes&type=authparticipant&class=$code&subclass=yes
+   !if $class_auth=cas
+    !read adm/codeurl $script_out
+     <a href="$(link_)$script_out">$(link_)$script_out</a>
+   !else
+     <a href="$script_out">$script_out</a>
+   !endif
+   $name_link_user
+   <div class="wimscenter">
+    !read adm/QRcode.phtml $script_out
+   </div>
+   !if $Cltype>=2
+    $name_link_grpclass.
+   !endif
+   !if $password!=$empty
+    ($name_link_withpwd.).
+   !endif
+   <br/>$name_link_user2.
+  </li>
+ !if $Cltype>=2
+  <li>$name_link_link
+   !set script_out=$wims_ref_name?module=adm/class/reguser&class=$code
+   !if $class_auth=cas
+     !read adm/codeurl $wims_ref_name?module=adm/class/reguser&class=$code
+   !endif
+   <a href="$(link_)$script_out">$(link_)$script_out</a>
+   $name_link_regsup
+   !if $password!=$empty
+     ($name_link_withpwd.).
+   !else
+    .
+   !endif
+  </li>
+ !endif
+ </ul>
+!endif
+<span class="wims_warning">$name_link_important</span> : $name_link_importantmes.
+!if adm/class/config notin $module
+ $name_link_importantmes2
+!endif
+<p>
+$name_link_classnumber : <span class="tt wims_code_words">$code</span>.
+</p>

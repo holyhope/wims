@@ -1,0 +1,70 @@
+<!-- _widgets/docmenubox.phtml -->
+!if help isin $wims_session
+ <div id="wimsmenubox" class="footer">
+  <div class="wimsmenu">
+   <div class="menuitem">
+    !href cmd=reply&job=source $n_source0
+   </div>
+  </div>
+ </div>
+ !exit
+!endif
+
+!!transfert dans adm/doc
+<div id="wimsmenubox" class="footer">
+ <div class="wimsmenu">
+  !if $editable=yes
+   <div class="menuitem">
+    !read $oneitem properties,1,cmd=reply&job=prop
+   </div>
+   !if $job!=file
+     <div class="menuitem">
+     !read $oneitem doch_upload,1,cmd=reply&job=file
+     </div>
+   !endif
+  !endif
+
+  !if $wims_developer!=$empty and COPYING isin $module_copyright
+   !set V_=!char 1 of $module
+   !set M_=!translate internal / to , in $module
+   !set M_=!item 1 of $M_
+   !if $V_ isin ABCDEFGHIJKLMNOPQRTSUVWXYZ or $M_ iswordof local contrib tool
+    <div class="menuitem">
+     !read $oneitem modify,1,module=adm/modtool&original=$module
+    </div>
+   !endif
+  !endif
+
+  !if ($wims_user=supervisor or $wims_developer!=$empty) and $sheetdata!=$empty and $job!=exosource
+    <div class="menuitem">
+     !read oneitem.phtml shsource,1,cmd=reply&job=exosource
+    </div>
+  !endif
+
+  !if $wims_user=supervisor and _adm/doc notin _$module and $job!=exosource
+    <div class="menuitem">
+!! deja dans homeref_supervisor
+     !!read oneitem.phtml adddoc,1,module=adm/class/adddoc&dir=$module
+    </div>
+  !endif
+
+  !if $job=exosource
+   <div class="menuitem">
+    !read $oneitem doch_back,1,cmd=reply&job=read
+   </div>
+  !else
+   !if $job=print
+    <div class="menuitem">
+     !read $oneitem doch_interactive,1,cmd=reply&job=read&doc=$doc&block=$startblock
+    </div>
+    !if $wims_user=supervisor and $sheetdata!=$empty
+     <div class="menuitem">
+      !read $oneitem source,1,cmd=reply&job=exosource&block=$startblock
+     </div>
+    !endif
+   !endif
+  !endif
+ </div><!--end of wimsmenu-->
+</div><!--end of wimsmenubox-->
+
+<!-- end _widgets/docmenubox.phtml -->

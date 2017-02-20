@@ -1,0 +1,97 @@
+<b>Géométrie avec canvasdraw</b>
+(nom : <span class="tt wims_code_words">draw</span>).
+<br/>
+
+Ce type est encore en développement (ne pas traduire encore la documentation).
+
+<p>
+Ce type de réponse permet à l'utilisateur de tracer des objets
+géométriques (parmi des points, cercles, droites, segments, flèches, rectangles).
+</p><p>
+La bonne réponse doit être donnée sous la forme d'une matrice (le
+séparateur de lignes est le point-virgule `;').
+La première ligne est le code dans la syntaxe canvasdraw/flydraw entre
+[ ].
+La seconde ligne est la forme pouvant être dessinée parmi
+<span class="tt wims_code_words">points, circles, lines, segments, arrows, rects</span>
+suivie des bonnes réponses.
+
+Les coordonnées des points doivent être dans le repère mathématique défini dans le
+code de canvasdraw.
+</p><p>
+Les dimensions du dessin doivent être mises sur la première ligne du champ
+<span class="tt wims_code_words">\embed{}</span>.
+</p><p>
+Les options possibles sont pour l'instant la couleur
+(<span class="tt wims_code_words">color=_couleur_</span>) ainsi
+que les options de calcul de notes
+<span class="tt wims_code_words">eqweight split</span>.
+</p><p>
+Dans le cas où l'on désire analyser la réponse par des conditions, mettre
+le code <span class="tt wims_code_words">canvasdraw/flydraw</span>
+comme troisième ligne du champ de
+ <span class="tt wims_code_words">embed</span>, la deuxième ligne
+étant le type de tracé par l'élève.
+</p>
+<h3>Exemples :</h3>
+<textarea id="wims_show1" cols="100" rows="16" name="wims_show" readonly="readonly">
+\text{canvas_code=xrange -4,4
+  yrange -4,4
+  opacity 155,155
+  linewidth 1
+  grid 1,1,grey
+  opacity 255,255
+  hline 0,0,black
+  vline 0,0,black
+  precision 10
+  linewidth 2
+  snaptogrid
+}
+\statement{
+\embed{r1,200x200}
+}
+\answer{}{[\canvas_code];arrows,0,3,3,0,0,3,-3,0}{type=draw}{option=eqweight split}
+</textarea>
+<textarea id="wims_show2" cols="100" rows="17" name="wims_show" readonly="readonly">
+\text{canvas_code=xrange -4,4
+  yrange -4,4
+  linewidth 1
+  opacity 155,155
+  grid 1,1,grey
+  opacity 255,255
+  hline 0,0,black
+  vline 0,0,black
+  precision 10
+  linewidth 2
+  snaptogrid
+}
+
+\statement{
+  \embed{r1,200x200}
+}
+\answer{}{[\canvas_code];lines,0,0,3,0,0,0,3,3}{type=draw}{option=color=orange}
+</textarea>
+<div>
+Exemple sans analyse :
+<textarea id="wims_show3" cols="100" rows="20" name="wims_show" readonly="readonly">
+\text{canvas_code=xrange -4,4
+  yrange -4,4
+  opacity 155,155
+  linewidth 1
+  grid 1,1,grey
+  opacity 255,255
+  hline 0,0,black
+  vline 0,0,black
+  precision 10
+  linewidth 2
+  snaptogrid
+}
+
+\statement{
+\embed{r1,200x200
+arrows
+[\canvas_code]}
+}
+\answer{}{\rep}{type=draw}{option=eqweight split}
+</textarea>
+</div>

@@ -1,0 +1,206 @@
+!set typelist1=!trim\
+default,Auto,scelta automatica tra alcune tipologie base\
+raw,Testo `raw',con confronto di stringhe a seconda delle opzioni\
+numeric,Numeri, con possibilità di impostare la precisione\
+function,Funzioni numeriche, funzioni con controllo numerico\
+equation,Equazioni numeriche,equazioni con controllo numerico\
+exp|algexp litexp formal,Espressioni matematiche, con un controllo della correttezza formale dell'espressione\
+text|case nocase,Testo, parole o frasi\
+multiple|checkbox click menu radio mark flashcard multipleclick,Scelte multiple ,bottoni o menu\
+
+
+!set typelist2=!trim\
+atext,Testo approssimativo, con riconoscimento di singolare/plurale etc.\
+chembrut,Formule di molecole,in chimica\
+chemdraw,Disegno di una molecola,richiede Java\
+chemclick,Seleziona atomi o legami in una molecola,richiede Java\
+chemeq,Equazioni chimiche, con analisi dell'equilibrio\
+chset,Insieme di caratteri,\
+clickfill|clickfill dragfill,Drag-and-drop,trascina-e-rilascia oggetti (testo, formule e immagini) \
+clicktile,Colora quadrettature, richiede java\
+complex,Numero complesso,confronto numerico con approssimazione fissata\
+compose,Composizione, utilizzando elementi dati\
+coord,Click su una immagine, con riconoscimnti delle coordinate del click\
+correspond,Corrispondenza, stabilisci una corrispondenza accoppiando oggetti\
+crossword,Parole crociate\
+chessgame,Posizionamento di pezzi su una scacchiera\
+geogebra,Costruzione geometrica,utilizza GeoGebra\
+javacurve,Disegno (Java),\
+jmolclick,Click on 3D atoms, use applet Jmol\
+jsxgraph,Disegni dinamici,utilizzando l'applet JSXGraph\
+jsxgraphcurve, JSXgraph Draw, permettant des tracés avec des formes prédéfinies ou libres\
+keyboard,Testo, mostra una tastiera\
+matrix,Matrice, matematica\
+numexp,Numero razionale, richiede una frazione\
+puzzle,Riordina un'immagine, come in un puzzle\
+range,Numero in un intervallo, è accettato qualsiasi valore nell'intervallo\
+reorder,Riordino, di una lista di oggetti\
+set|set fset aset,Insiemi finiti,letterale, formale o approssimativo\
+sigunits,Sigunits,numero con verifica unità di misura e cifre significative\
+symtext,Symtext,analisi di testo avanzata\
+units,Numero con unità di misura, in particolare per fisica\
+vector,Vettore,con verifica formale delle componenti\
+wlist,Elenco di parole,\
+
+
+!set namelist=Tipologie di base, Tipologie specifiche o avanzate
+!set symtextlist=text atext raw compose
+
+<h2 id="freestyle">Tipi di risposte</h2>
+<p>
+Un esercizio OEF può prevedere tipi di risposta molto diversi. Oltre alle
+più comuni domande a scelta multipla e alle risposte aperte standard,
+WIMS mette a disposizione molte altre possibilità.
+Le risposte date dall'utente sono analizzate in base al tipo. È anche
+possibile creare dei
+!href cmd=help&special_parm=feedback commenti
+ che vengono mostrati all'utente solo se la risposta soddisfa determinate
+condizioni (ad esempio per commentare un errore tipico).
+
+Nell'attuale implementazione di WIMS, in un esercizio è possibile inserire
+  fino a $answerlim risposte aperte. </p><p>
+La sintassi del comando è la seguente (gli ultimi 3 campi sono opzionali):
+</p>
+<pre>
+\answer{Testo}{\risposta}{type=...}{option=...}{weight=...}
+</pre>
+
+<h3>Il parametro <span class="tt wims_code_words">type</span></h3>
+<p>
+Le domande aperte possono essere, indipendentemente l'una dall'altra, di uno dei tipi seguenti.
+</p>
+!for k=1 to 2
+ <h4>$(namelist[$k])</h4>
+ !set n=!linecnt $(typelist$k)
+ <ul>
+ !for j=1 to $n
+  !set l=!line $j of $(typelist$k)
+  !distribute item $l into name,title
+  !set desc=!item 3 to -1 of $l
+  !set name=!replace internal | by , in $name
+  !set name1=!item 2 to -1 of $name
+  !set name=!item 1 of $name
+  !default name1=$name
+  !if $name isitemof $special_parm or all isitemof $special_parm
+   <li id="_$name">
+   !read help/anstype.$lang/$name.phtml
+   !if $name iswordof $symtextlist
+    <p><b>ATTENZIONE</b>.
+    Questo tipo di risposta accetta l'opzione symtex. Se la parola
+  <span class="tt wims_code_words">symtext</span> è presente tra le opzioni, allora l'analisi
+    della risposta sarà eseguita come per il tipo
+    !href cmd=help&special_parm=reply,symtext#_symtext symtext
+, in particolare non verrà eseguita nessuna manipolazione del testo prima dell'analisi della risposta. E sono utilizzabili tutte
+le opzioni valide per il tipo di risposta symtext.
+    </p>
+   !endif
+  !else
+   <li>
+   !href cmd=help&special_parm=reply,$name#_$name $title
+   (<span class="tt wims_code_words">$name1</span>) $desc.
+  !endif
+  </li>
+ !next j
+ </ul>
+!next i
+
+!read help/$lang/embedans.phtml
+
+<h3 id="weight">Il parametro opzionale <span class="tt wims_code_words">weight</span></h3>
+È possibile assegnare un peso alle risposte.
+<p>Esempio:</p>
+<pre>\answer{}{1}{type=numeric}{weight=8}
+\answer{}{1}{type=numeric}{weight=2}
+</pre>
+<p>
+Il punteggio sarà calcolato tenendo conto anche del livello di severità
+selezionato dal docente per l'esercizio, la percentuale sarà calcolata
+a partire da una percentuale fissata in base a livello di severità.
+</p><p>
+Si possono anche utilizzare variabili nell'opzione <span class="tt wims_code_words">weight</span>
+purché queste variabili siano definite prima del comando <span class="tt wims_code_variable">\statement</span>.
+</p><p>
+Esempio:
+</p>
+<pre>
+\text{w = \t = 1 ? 1 : 2}
+\answer{}{1}{type=numeric}{weight=\w}
+\answer{}{1}{type=numeric}{weight=3}
+</pre>
+
+<h3 id="option">Il parametro opzionale <span class="tt wims_code_words">option</span></h3>
+ In caso di più opzioni, queste vanno separate con uno spazio.
+ Per esempio <span class="tt wims_code_words">option=default noanalyzeprint</span>
+
+I comandi <span class="tt wims_code_variable">\answer</span> o
+<span class="tt wims_code_variable">\condition</span> accettano le seguenti opzioni
+<ul>
+  <li><span class="tt wims_code_words">option=default</span>: L'opzione <span class="tt wims_code_words">default</span> è valida per tutte le risposte aperte.
+  La risposta di default va assegnata in questo modo
+  <span class="tt wims_code_words">default="valore_di_default"</span>. Se l'utente
+  invia una risposta vuota, viene utilizzato il valore valore_di_default.
+  </li>
+  <li>
+  <span class="tt wims_code_words">option=split</span>: L'opzione è valida per i tipi <span class="tt wims_code_words">correspond</span>, <span class="tt wims_code_words">checkbox</span> o <span class="tt wims_code_words">mark</span>,
+  e assegna un voto proporzionale in caso di risposta parziale.
+  </li>
+  <li>
+  <span class="tt wims_code_words">option=nonstop</span>: In caso di esercizi a passi, indica di continuare l'esercizio con le domande successive anche in caso di risposta sbagliata.
+  </li>
+  <li>
+  <span class="tt wims_code_words">option=noanalyzeprint</span>: Il testo automatico di analisi della risposta non viene mostrato. L'autore dell'esercizio dovrebbe in questo caso fornire un commento/feedback adeguato.
+  Questo può essere utile per certi tipi di risposta, come <span class="tt wims_code_words">mark</span> per cui il testo automatico è spesso inadeguato. Se si
+  usa questa ozione non viene mostrato alcun commento sulla risposta,
+  ma solo il punteggio ottenuto.
+  </li><li>
+  Il comando <span class="tt wims_code_words">condition</span> accetta anche l'opzione
+  <span class="tt wims_code_words">option=hide</span>: in questo caso viene effettuata la verifica, ma non viene mostrato alcun testo.
+  </li>
+</ul>
+Altre opzioni sono descritte nella documentazione dei tipi di risposta per cui
+sono utilizzabili. For precision, return to the documentation of the answer type.
+!read help/option.phtml
+
+<h3>Verifiche della correttezza delle risposte aperte</h3>
+<p>
+Le risposte aperte possono essere verificate in base a condizioni elaborate
+(domande che ammettono più di una risposta corretta, esercizi che
+richiedono esempi, risposte determinate da diseguaglianze, ecc.).
+Ciò può essere ottenuto in WIMS nel modo seguente.</p><p>
+Se nel comando <span class="tt wims_code_variable">\answer</span>
+come <span class="tt wims_code_variable">\risposta</span> si utilizza una
+variabile non definita in precedenza, la risposta dell'utente viene
+salvata in questa variabile. Questa variabile può essere utilizzata
+per definire condizioni da verificare. Il punteggio assegnato viene
+quindi calcolato in base al numero di condizioni che sono verificate
+dalle risposta, non dal numero di risposte che sono indicate come giuste.
+</p><p>
+Nell'attuale implementazione di WIMS, un esercizio può contenere fino a
+$condlim verifiche simultanee. La sintassi è la seguente (l'ultimo campo è opzionale).
+</p>
+<pre>
+\condition{testo mostrato}{condizione da verificare}{weight=...}
+</pre>
+<p>
+Di seguito alcuni esempio di verifiche possibili dove <span class="tt wims_code_variable">\ans1</span> e
+<span class="tt wims_code_variable">\ans2</span> sono variabili non
+definite indicate nel comando answer come descritto.
+
+!href target=wims_mhelp cmd=help&special_parm=if Elenco completo delle relazioni
+</p>
+$table_header
+$table_hdtr<th>Condizione</th><th>significato</th></tr>
+$table_tr<td class="tt wims_code_words">\rep1>=0 and \rep1<=1</td>
+    <td>vera se <span class="tt wims_code_words">rep1</span> appartiene all'intervallo [0,1].</td></tr>
+$table_tr<td class="tt wims_code_words">\rep1=1 or \rep1=3 or \rep1=5</td>
+    <td>vera se <span class="tt wims_code_words">rep1</span> è 1, 3 o 5.</td></tr>
+$table_tr<td class="tt wims_code_words">(\rep1)*(\rep2)=6 and (\rep1)+(\rep2)=5</td>
+    <td>vera se <span class="tt wims_code_words">rep1</span> e <span class="tt wims_code_words">rep2</span> sono le radici del polinomio
+    x<sup>2</sup>-5x+6.</td></tr>
+$table_tr<td class="tt wims_code_words">sin(\rep1)=0</td>
+    <td>vera se <span class="tt wims_code_words">rep1</span> è un multiplo intero di $m_pi.</td></tr>
+$table_end
+Si veda
+!href cmd=help&special_parm=oef l'aiuto sul formato oef
+ per la sintassi dei comandi.
+

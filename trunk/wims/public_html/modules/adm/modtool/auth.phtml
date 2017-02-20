@@ -1,0 +1,41 @@
+<div class="wims_content">
+!set wims_form_method=post
+!form reply
+  $name_intro
+ <span class="small">(
+ !mailurl $wims_site_manager $name_manager\
+$module password
+ $name_forget).</span>
+ <fieldset class="property_fields halfwidth blockcenter">
+   <legend>$wims_name_connexion</legend>
+   <div class="field box">
+   <label for="login">$wims_name_Login</label>
+   <input size="20" name="login" value="$auth_login" id="login"
+     required="required" placeholder="$wims_name_Login" />
+  </div>
+  <div class="field box">
+   <label for="passwd">$wims_name_Password</label>
+   <input type="password" size="20" name="passwd" id="passwd"
+     required="required" placeholder="$wims_name_Password" />
+  </div>
+  <div class="wimscenter">
+   <input type="submit" value="$wims_name_send" />
+  </div>
+ </fieldset>
+
+!formend
+
+<p>
+$name_developer
+!mailurl $wims_site_manager $name_manager\
+WIMS new developer
+$name_identification
+</p><p>
+$name_createxo1
+!href module=adm/createxo $wims_name_createxo
+$name_createxo2
+</p>
+
+!read themes/_procs/othermethods.proc
+
+</div>

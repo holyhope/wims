@@ -1,0 +1,24 @@
+
+!read adm/language lang/names.phtml
+!read adm/lang/date.phtml.$modu_lang
+!read adm/class/classname.phtml $description\
+$institution
+!read adm/levelname.phtml
+wims_prefix=class user tmp n sharing sharable
+!read adm/class/limits
+wims_helper=chapter=3&open=3_creat#creat
+
+!if $sjob=$empty
+ sjob=emptyclass
+!endif
+
+!bound job within emptyclass,cloneexemple default $sjob
+
+!read $job.proc
+
+!if $job=cloneexemple
+  !set wims_title_title=$name_cloning
+!else
+  !set wims_title_title=$name_classe
+!endif
+

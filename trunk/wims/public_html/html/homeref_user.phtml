@@ -1,0 +1,172 @@
+!if _check isin $session
+ !exit
+!endif
+
+!read name.phtml.$module_language
+!read themes/$wims_theme/lang/name.phtml.$lang
+!default wims_homeref_bgcolor=$wims_ref_bgcolor
+!read themes/$wims_theme/local.phtml
+
+!if exam isin $wims_session
+  !read examclock.proc
+  !goto rmend
+!endif
+
+!if $wims_rm_1=no
+ !reset wims_rm_1
+ !goto local
+!endif
+!if $wims_rm_1!=$empty
+ !goto rm2
+!endif
+!reset 1_
+
+!if _ isin $wims_subsession
+ !!set 1_=!append line back2,3,window.close() to $1_
+!else
+ !!set 1_=!append line class_home,1,session=$wims_session.1 to $1_
+!endif
+
+!!!if $wims_sheet>0 or P isin $wims_sheet or $wims_sequence>0
+!! !if $wims_sequence>0 and $wims_sheet=$empty
+!!  !set tmp_=sequence,1,module=home&seq=$wims_sequence
+!! !else
+!!  !!set tmp_=sheet,1,module=adm/sheet&sh=$wims_sheet&
+!! !endif
+!!   !let wims_menu_items=!append line $tmp_ to $wims_menu_items
+!!!endif
+!if ($wims_sheet>0 or P isin $wims_sheet) and $cmd=reply and $module_score!=$empty
+ !if $wims_exo>1
+  !let wims_menu_items=!append line previousseries,1,module=home&directworksheet=$wims_sheet.$[$wims_exo-1] to $wims_menu_items
+ !endif
+ !if $wims_exo<$wims_sheetmax
+  !let wims_menu_items=!append line nextseries,1,module=home&directworksheet=$wims_sheet.$[$wims_exo+1] to $wims_menu_items
+ !endif
+!endif
+
+!if $wims_sheet!=$empty or _exam isin $wims_session
+  !set wims_menu_items=!append line tools,4,module=home,tool to $wims_menu_items
+!endif
+
+!if $wims_sheet>0 or P isin $wims_sheet
+ !if $(wims_exofeedback[$wims_exo;])!=$empty
+  !set feedexo=$(wims_exofeedback[$wims_exo;])
+  !if $module_score!=$empty and $module_score < $(feedexo[2]) and $module_score >= $(feedexo[3])
+    !if $(feedexo[3])=0 or $(feedexo[3])=$empty
+      !set 5_=!append line feedbackexo,7,$(feedexo[1]),mfeed to $5_
+    !else
+      !set 5_=!append line feedbackplus,7,$(feedexo[1]),mfeed to $5_
+    !endif
+  !endif
+ !endif
+!endif
+!if $cmd=help or $cmd=hint
+ !!set 1_=!append line resume,1,cmd=resume to $1_
+!endif
+
+!if $module_has_intro=yes and $cmd notwordof intro help and\
+        $wims_sheet=$empty and exam notin $wims_session and mfeed notin $wims_session
+ !!set 1_=!append line intro,1,module=$module&cmd=intro&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3 to $1_
+!endif
+!if $module_has_help=yes and $cmd notwordof intro help
+ !if $module_help=$empty or $module_help=popup
+  !!set 1_=!append line help,4,module=$module&cmd=help&special_parm=$wims_help_parm,mhelp to $1_
+ !else
+  !!set 1_=!append line help,1,module=$module&cmd=help&special_parm=$wims_help_parm to $1_
+ !endif
+!endif
+
+!!********* Link : "About"
+!if $module_has_about=yes and $cmd notwordof help intro and ($wims_user=supervisor or $wims_user=$empty)
+   !!set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
+!endif
+
+!if print isin $job,$job2 or $print!=
+  !set 1_=!append line print,3,window.print() to $1_
+!endif
+!set wims_rm_1=$1_
+
+:local
+!reset 1_
+!! add module links to general links with a separation
+!if $wims_menu_items!=$empty
+  !set 1_=!append line itemsep,0,\
+$wims_menu_items to $1_
+!endif
+!set wims_rm_0=$1_
+!set wims_rm_3=!append line $wims_menu_tabs to $wims_rm_3
+:rm2
+!if $wims_rm_2!=$empty
+ !goto rmend
+!endif
+
+!set 3_=!mailurl $wims_supervisormail $wims_name_wsup\
+$module_title
+!set 2_=you,0,$wims_name_you\
+ class,0,$wims_classname ($wims_institutionname)\
+ wsup,0,$3_
+!reset 4_
+!if $wims_sheet>0
+ !set wims_homeref_scorestat=!getscorestatus sheet=$wims_sheet
+ !if $wims_homeref_scorestat=yes and $wims_exodep!=pending
+  !if $wims_scorereg!=suspend
+   !set wims_homeref_req=!getscorerequire sheet=$wims_sheet work=$wims_exo
+   !set wims_homeref_mean=!getscoremean sheet=$wims_sheet work=$wims_exo
+   !set wims_homeref_last=!getscorelast sheet=$wims_sheet work=$wims_exo
+   !reset wims_name_score
+   !if $(wims_severity[2])!=1 or $(wims_severity[2])=$empty or $wims_homeref_mean<=2
+     !set wims_name_score=$(wims_name_thsheet[7]): $[ceil(100*$[$wims_homeref_mean])/100]/10
+   !endif
+   !if $(wims_severity[3])=2
+     !set wims_homeref_level=!getscorelevel sheet=$wims_sheet work=$wims_exo
+     !set wims_name_score=$wims_name_score<br />$(wims_name_thsheet[13]): $wims_homeref_level/10
+     !! I1
+   !else
+     !if $(wims_severity[3])=1
+       !set wims_homeref_best=!getscorebest sheet=$wims_sheet work=$wims_exo
+       !set wims_name_score=$wims_name_score<br />$(wims_name_thsheet[10]): $[ceil(100*$wims_homeref_best/$wims_homeref_req)] %
+       !!I2
+     !else
+       !set wims_homeref_got=!getscore sheet=$wims_sheet work=$wims_exo
+       !set wims_name_score=$wims_name_score<br />$(wims_name_thsheet[5]): $[ceil(100*$wims_homeref_got/$wims_homeref_req)]%
+       !!I0
+
+     !endif
+   !endif
+   !set 4_=!append line score,0,$wims_name_score to $4_
+   !if $wims_authscoresuspend!=no
+    !!set wims_rm_0=!append line scoreclose2,1,module=adm/sheet&sh=$wims_sheet&exo=$wims_exo&job=suspend to $wims_rm_0
+   !endif
+  !else
+   !set 4_=!append line score,0,$wims_name_scoresuspend to $4_
+   !if $wims_authscoresuspend!=no
+    !!set wims_rm_0=!append line scorereopen,1,module=adm/sheet&sh=$wims_sheet&exo=$wims_exo&job=reopen to $wims_rm_0
+   !endif
+  !endif
+ !else
+  !set 4_=!append line score,0,$wims_name_scoreclose to $4_
+ !endif
+ !if $module_score!=$empty and $wims_class_exolog>0 and E notin $wims_sheet
+  !set wims_rm_0=!append line exolog,1,module=adm/class/exolog&cmd=new&job=log&logsheet=$wims_sheet&logexo=$wims_exo to $wims_rm_0
+ !endif
+!endif
+
+
+!set wims_rm_2=$2_
+!set wims_rm_4=$4_
+!set wims_rm_5=$5_
+
+:rmend
+!set wims_homeref_n1=!linecnt $wims_rm_1
+!set wims_homeref_n2=!linecnt $wims_rm_2
+!set wims_homeref_n0=!linecnt $wims_rm_0
+!!nothing inside
+!set wims_homeref_n3=!linecnt $wims_rm_3
+!! about activation and score
+!set wims_homeref_n4=!linecnt $wims_rm_4
+!! about feedback
+!set wims_homeref_n5=!linecnt $wims_rm_5
+!set wims_homeref_local_n0=!linecnt $wims_local_menu_items
+!!</div><!--div dans homeref_user-->
+!read themes.phtml tail
+!robottrap

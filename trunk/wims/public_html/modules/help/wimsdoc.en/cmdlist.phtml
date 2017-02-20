@@ -1,0 +1,63 @@
+!set lstyle=<span class="command_attr">
+!set lstyle2=<span class="tt">
+!set lstend=</span>
+!set lst_tit=!char 5 to -1 of $tit
+!set lst_titend=$titend
+!set lst_type=$lstyle Type$lstend:
+!set type_exec= execution command
+!set type_pexec= execution command (only valid for phtml files)
+!set type_var = variable command
+!set type_adm = only for for trusted modules (in particular administrative modules).
+!set type_both= both execution and variable command
+!set lst_syntax=$lstyle Syntax$lstend:$lstyle2
+!set lst_syntaxend=</span>
+!set lst_alias=$lstyle Aliases$lstend:
+!set lst_mean =$lstyle Meaning$lstend:
+!set lst_sample =$lstyle Sample(s)$lstend:
+
+<p>WIMS commands can be used in variable processing files and phtml files.
+  A command is a word preceeded by the character $emph!$emphend.</p>
+<p>Commands has two types:</p>
+
+<ul>
+ <li>Execution commands, which are placed as the first word of a line.</li>
+ <li>Variable commands, which are placed at the beginning of a definition of
+   a variable.</li>
+</ul>
+
+<p>Some commands can be used both as execution command and as variable command.</p>
+<p>Commands may accept parameters which are words following it. Parameter
+fields are separated by white spaces or special words (depending on the command).</p>
+
+<hr/>
+
+<h4 id="cmdlist_list">Here is the list of $emph$(choose_$cmd_choose)$emphend commands.</h4>
+
+!if $style!=integral
+ <p>You may switch to another list of commands:</p>
+ <ul>
+ !for i in $cmd_choose_list
+  !if $i != $cmd_choose
+   <li class="wims_label inline command_list">
+    !href cmd=resume&cmd_choose=$i#cmdlist_list $(choose_$i)
+   </li>
+  !endif
+ !next i
+ </ul>
+!endif
+<ul class="wims_nopuce">
+!for c in $cmdfiles
+ <li class="wims_command" id="cmdlist_$(c)_">
+ !if $style != folding
+   !read cmdone.phtml $c
+ !else
+  !if cmdlist_$(c)_ isin $expand
+   <a href="$httpd_SCRIPT_NAME?session=$session&+cmd=resume&+op=close&+subject=cmdlist_$(c)_#cmdlist_$(c)_"></a>
+   !read cmdone.phtml $c
+  !else
+   !href cmd=resume&op=open&subject=cmdlist_$(c)_#cmdlist_$(c)_ $c
+  !endif
+ !endif
+ </li>
+!next c
+</ul>

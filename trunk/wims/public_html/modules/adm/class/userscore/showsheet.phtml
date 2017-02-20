@@ -1,0 +1,233 @@
+
+!read adm/css.phtml
+!header1
+
+!read lang/names.phtml.$moduclass_lang
+!read adm/class/classname.phtml $wims_classname\
+$wims_institutionname
+
+!read adm/title.phtml 1\
+$classname\
+$name_title_showsheet
+
+!if $error!=$empty
+ <div class="wims_msg alert">
+ !read lang/msg.phtml.$moduclass_lang
+ </div>
+ <p>
+ !href module=home $wims_name_class_home
+. </p>
+ !goto end
+!endif
+!if $varfilter!=$empty
+  !set name_classAverage=$name_groupAverage
+!endif
+!form reply
+<input type="hidden" name="job" value="showsheet">
+<input type="hidden" name="numshowsheet" value="$numshowsheet">
+!if $tv_listtechvar!=$empty
+ !read adm/vfilter/varfilter html
+!endif
+</form>
+!if $usercnt==0
+ $name_noyetparticipant
+!else
+<p>$name_click
+ $wims_name_or
+$name_post
+</p>
+<div class="wimscenter">
+   !set wims_ref_class=wims_button
+    !if $job_affi=quality
+     <span class="wims_button disabled"> $(name_affi[1])</span>
+     !href cmd=reply&job_affi=points&job=showsheet&numshowsheet=$numshowsheet $(name_affi[2])
+     !set wims_ref_class=wims_button
+     !href cmd=reply&job_affi=best&job=showsheet&numshowsheet=$numshowsheet $(name_affi[4])
+     !set wims_ref_class=wims_button
+     !href cmd=reply&job_affi=level&job=showsheet&numshowsheet=$numshowsheet $(name_affi[5])
+    !endif
+    !if $job_affi=points or $job_affi=notes
+     !href cmd=reply&job_affi=quality&job=showsheet&numshowsheet=$numshowsheet $(name_affi[1])
+     <span class="wims_button disabled"> $(name_affi[2])</span>
+     !set wims_ref_class=wims_button
+     !href cmd=reply&job_affi=best&job=showsheet&numshowsheet=$numshowsheet $(name_affi[4])
+     !set wims_ref_class=wims_button
+     !href cmd=reply&job_affi=level&job=showsheet&numshowsheet=$numshowsheet $(name_affi[5])
+    !endif
+    !if $job_affi=best
+     !href cmd=reply&job_affi=quality&job=showsheet&numshowsheet=$numshowsheet $(name_affi[1])
+     !set wims_ref_class=wims_button
+     !href cmd=reply&job_affi=points&job=showsheet&numshowsheet=$numshowsheet $(name_affi[2])
+     <span class="wims_button disabled"> $(name_affi[4])</span>
+     !set wims_ref_class=wims_button
+     !href cmd=reply&job_affi=level&job=showsheet&numshowsheet=$numshowsheet $(name_affi[5])
+    !endif
+    !if $job_affi=level
+     !href cmd=reply&job_affi=quality&job=showsheet&numshowsheet=$numshowsheet $(name_affi[1])
+     !set wims_ref_class=wims_button
+      !href cmd=reply&job_affi=points&job=showsheet&numshowsheet=$numshowsheet $(name_affi[2])
+     !set wims_ref_class=wims_button
+      !href cmd=reply&job_affi=best&job=showsheet&numshowsheet=$numshowsheet $(name_affi[4])
+      <span class="wims_button disabled"> $(name_affi[5])</span>
+    !endif
+</div>
+
+ $table_header
+ !bound job_affi within points,quality, best, level default points
+ !if $job_affi=points
+  !let sign=%
+  !set sign1=100
+  !set sign2=1
+  !set pos=1
+  <caption>$name_percentagegot</caption>
+ !endif
+ !if $job_affi=quality
+   !let sign=$empty
+   !set sign1=10
+   !set sign2=1
+   <caption>$name_qualitygot</caption>
+   !set pos=2
+ !endif
+ !if $job_affi=best
+  !let sign=%
+  !set sign1=100
+  !set sign2=1
+  !set pos=3
+   <caption>$name_percentagebest</caption>
+ !endif
+ !if $job_affi=level
+  !let sign=$empty
+  !set sign1=10
+  !set sign2=10
+  !set pos=4
+   <caption>$(wims_name_thsheet[13])</caption>
+ !endif
+ !if $job_affi=
+  !let sign=%
+  !set sign1=100
+   <caption>$name_percentagedone</caption>
+  !endif
+ $table_hdtr<th>$wims_name_lastname, $wims_name_firstname</th>
+ <th>$name_Average</th>
+ !let tot_0=0
+ !let nonzero_0=0
+ !for j=1 to $nbexo
+  !set e=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$(numshowsheet)
+  !distribute line $e into m_,n_,bidon,bidon,t_
+  <th class="small">
+  !set wims_ref_title=$t_
+  !href target=wims_internal cmd=new&module=$m_&$n_ $name_Exercise $j
+  </th>
+  !let tot_$j=0
+  !let nonzero_$j=0
+ !next j
+ </tr>
+ !set trueusercnt=0
+ !for m=1 to $usercnt
+  !set uu=!record $m of wimshome/log/classes/$wims_class/.userlist
+  !distribute items $uu into user_lastname,user_firstname,uu
+  !if $varfilter_!=$empty
+    !reset var_filter_test
+!read adm/vfilter/testfilter $uu\
+$varfilter_
+    !if $var_filter_test!=1
+      !goto enduser
+    !endif
+   !endif
+  !increase trueusercnt
+  $table_tr
+  !reset css_connected
+  !if $uu isitemof $wims_connectedlogin
+    !set css_connected=class="wims_connected"
+    !set wims_ref_title=connected
+  !endif
+  <td><span $css_connected>
+   !href cmd=reply&job=getuser&getuser=$uu $name_studentloc
+  </span></td>
+   !let tot=!getscorepercent user=$uu sheet=$numshowsheet
+   !let t=!word $pos of $tot
+     !let tot_0=$[$tot_0+$t]
+     !if $t!=0
+      !read adm/class/colors $[ceil(10*$t/$sign1)]
+      <td style=$style_note>
+      $[ceil(10*$t)/10/$sign2] $sign
+      !increase nonzero_0
+     !else
+      <td>--
+     !endif
+     </td>
+    !if $job_affi=points
+      !let tmp=!getscore user=$uu sheet=$numshowsheet
+    !endif
+    !if $job_affi=quality
+      !let tmp=!getscoremean user=$uu sheet=$numshowsheet
+    !endif
+    !if $job_affi=best
+      !let tmp=!getscorebest user=$uu sheet=$numshowsheet
+    !endif
+    !if $job_affi=level
+      !let tmp=!getscorelevel user=$uu sheet=$numshowsheet
+    !endif
+    !for k=1 to $nbexo
+      !let t=!word $k of $tmp
+      !let try=!getscoretry user=$uu sheet=$numshowsheet work=$k
+      !if $t!=0
+       !increase nonzero_$k
+      !endif
+      !if $job_affi iswordof points best
+        !let div=!word $k of $require
+        !if $div!=0
+         !let t=$[rint($t/$div*10000)/100]
+        !else
+         !let t=100
+        !endif
+      !endif
+      !if $try>0
+       !read adm/class/colors $[ceil(10*$t/$sign1)]
+       <td style=$style_note>
+       $t $sign
+       !let tot_$k=$[$(tot_$k)+$t]
+      !else
+       <td>--
+      !endif
+      </td>
+    !next k
+  </tr>
+:enduser
+ !next m
+ $table_hdtr<th>$name_classAverage</th>
+ !read adm/class/colors $[ceil($tot_0/$trueusercnt*10)/$sign1/$sign2]
+ <td style=$style_note>$[rint($tot_0/$trueusercnt*10)/10/$sign2]$sign</td>
+ !for j=1 to $nbexo
+  !if $(tot_$j)>0
+   !read adm/class/colors $[ceil($(tot_$j)/$trueusercnt*10/$sign1)]
+   <td style=$style_note>$[rint($(tot_$j)/$trueusercnt*10)/10]$sign
+  !else
+   <td>--
+  !endif
+    </td>
+ !next j
+ </tr>
+ !if $nonzero_0>0
+  $table_hdtr<th>$name_posAverage</th>
+   !read adm/class/colors $[ceil($tot_0/$nonzero_0*10/$sign1/$sign2)]
+   <td style=$style_note>$[rint($tot_0/$nonzero_0*10)/10/$sign2]$sign </td>
+  !for j=1 to $nbexo
+    !if $(nonzero_$j)>0
+      !read adm/class/colors $[ceil($(tot_$j)/$(nonzero_$j)*10/$sign1)]
+      <td style=$style_note>
+    $[rint($(tot_$j)/$(nonzero_$j)*10)/10]$sign
+    !else
+       <td>--
+    !endif
+   </td>
+  !next j
+  </tr>
+ !endif
+$table_end
+
+!set wims_menu_items=!append line part_list,1,cmd=reply&job_affi=notes\
+refresh,1,cmd=reply&job=showsheet&numshowsheet=$numshowsheet\
+to $wims_menu_items
+:end
+!tail

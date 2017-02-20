@@ -1,0 +1,17 @@
+!set special_list=drawinput,imagefill,imageinput,mathmlinput,codeinput,expandlines,help,rename,tooltip
+
+!if $lang iswordof ca cn es fr it nl si
+  !set ll=$lang
+!else
+  !set ll=en
+!endif
+
+!read help/$ll/oefspecial.phtml
+
+!for sp in $special_list
+ <h2 class="wimscenter">$sp</h2>
+ <div class="wimscenter wims_code_words large spacer">\special{$sp <i>parameters</i>}</div>
+ <div>
+  !read help/$ll/special/$sp.phtml
+ </div>
+!next sp

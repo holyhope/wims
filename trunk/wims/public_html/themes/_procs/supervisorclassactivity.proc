@@ -1,0 +1,16 @@
+<!-- supervisormenubox.proc -->
+!! Adds all Supervisor links in wims_rm_0
+
+!if $class_typename notsametext program
+     !set wims_rm_0 = $wims_rm_0\
+SE_mod,1,module=adm/class/motd
+!endif
+
+!if $exist_cdt=yes
+  !set wims_rm_0 = $wims_rm_0\
+cdt,1,module=adm/class/cdt
+!endif
+!set wims_rm_0 = $wims_rm_0\
+sendmail,1,module=adm/class/sendmail
+
+!read themes/_procs/supervisorforum.proc 0

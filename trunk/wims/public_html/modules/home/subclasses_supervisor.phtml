@@ -1,0 +1,89 @@
+!if $wims_superclass=$empty
+  !let wims_superclass=$wims_class
+!endif
+!set wims_realuser=!defof wims_realuser in wimshome/$wims_sesdir/var.stat
+!set user_supervise=!defof user_supervise in wimshome/log/classes/$wims_superclass/.users/$wims_realuser
+!set levels=!record 0 of wimshome/log/classes/$wims_class/levels
+!set levelcnt=!linecnt $levels
+!set classes=!record 0 of wimshome/log/classes/$wims_class/classes
+!set classcnt=!linecnt $classes
+!set progs=!record 0 of wimshome/log/classes/$wims_class/programs
+!set progcnt=!linecnt $progs
+
+!!if $classcnt+$progcnt>=1
+ !set courses=!record 0 of wimshome/log/classes/$wims_class/courses
+ !set coursecnt=!linecnt $courses
+!!endif
+!set icourses=!record 0 of wimshome/log/classes/$wims_class/icourses
+!set icoursecnt=!linecnt $icourses
+
+!let user_supervise=!defof user_supervise in wimshome/log/classes/$wims_superclass/.users/$wims_realuser
+!if $wims_user=supervisor and $wims_realuser=supervisor
+  !set user_supervise=!column 1 of $levels\
+$classes\
+$progs\
+$courses\
+$icourses
+  !set user_supervise=!nonempty items $user_supervise
+  !set user_supervise=!makelist $wims_superclass/x for x in $user_supervise
+!endif
+
+!! ----------- definition des droits de connexion supervisor
+
+!!! as a supervisor
+!reset compsup
+!for cls in $user_supervise
+  !if $wims_class isin $cls
+    !let tmp=!replace internal / by , in $cls
+    !if $tmp!=$empty
+      !let compsup=!append line $tmp to $compsup
+    !endif
+  !endif
+!next cls
+!let compsup=!sh echo "$compsup" | sort | uniq;
+
+!if $user_supervisable=yes and $wims_superclass isitemof $user_supervise and $wims_superclass=$wims_class
+  !let don=!defof class_typename,class_description,class_supervisor in wimshome/log/classes/$classrad/.def
+    <ul class="wims_subclasses"><li><span class="wims_classes_direct_portal">
+     !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass&auth_user=supervisor $class_description (supervisor)
+    </span></li>
+   </ul>
+!endif
+!let user_participate=!defof user_participate in wimshome/log/classes/$wims_superclass/.users/$wims_realuser
+
+!if $class_type=3 and $class_typename!=level
+!!in a class
+    $U_gotoclass31
+!else
+    $U_gotoclass3
+!endif
+!let user_supervise_=$user_supervise
+!read adm/class/graphclass supervise\
+$compsup
+
+!if $user_participate=$empty or $wims_class/ notin $user_participate
+  !exit
+!endif
+
+!!! as a student
+!reset compsup
+!if $class_type=3 and $class_typename!=level
+!!in a class
+    $U_gotoclass11
+!else
+    $U_gotoclass1
+!endif
+
+!for cls in $user_participate
+  !if $wims_class isin $cls
+    !let tmp=!replace internal / by , in $cls
+    !if $tmp!=$empty
+      !let compsup=!append line $tmp to $compsup
+    !endif
+  !endif
+!next cls
+
+!let compsup=!sh echo "$compsup" | sort | uniq;
+!let user_participate_=$user_participate
+!read adm/class/graphclass participate\
+$compsup

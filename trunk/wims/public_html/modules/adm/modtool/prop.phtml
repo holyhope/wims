@@ -1,0 +1,39 @@
+
+!if $passchange!=yes
+$name_accountchange
+ <span class="tt wims_fname">$auth_login</span>
+ - <span class="tt wims_fname">$httpd_SERVER_NAME</span>
+ <span class="small">($name_empty)</span>
+!else
+ $name_change
+!endif
+
+
+!form reply
+
+<fieldset class="property_fields halfwidth blockcenter">
+<legend>$name_prop</legend>
+ <div class="field box">
+  <label for="p_name">$wims_name_name</label>
+  <input type="text" size="40" name="p_name" value="$auth_name" id="p_name" />
+  <div class="formHelp">$wims_name_firstname,$wims_name_lastname</div>
+ </div>
+ <div class="field box">
+  <label for="p_email">$wims_name_email</label>
+  <input type="text" size="40" name="p_email" value="$auth_email" id="p_email" />
+ </div>
+ <div class="field box">
+  <label for="p_pass1">$wims_name_Password:</label>
+  <input type="password" size="20" name="p_pass1" id="p_pass1" />
+ </div>
+ <div class="field box">
+  <label for="p_pass2">$wims_name_repeat_pass</label>
+  <input type="password" size="20" name="p_pass2" id="p_pass2" />
+ </div>
+ <div class="wimscenter wimsform">
+  <input type="submit" name="confirm" value="$wims_name_tosave" />
+  <input type="submit" value="$wims_name_giveup" class="wims_secondary_button" />
+ </div>
+</fieldset>
+
+!formend

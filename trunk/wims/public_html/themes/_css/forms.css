@@ -1,0 +1,159 @@
+/** themes/_css - forms.css */
+/**  Somes styles designed to display fields in forms, tableless **/
+/* Currently used in exam and documents properties **/
+
+/*form{
+    line-height: 2em;
+}*/
+
+/* corrects attributes color:inherit from normalize.css */
+input, textarea {
+    color:black;
+}
+input[disabled], textarea[disabled] {
+    color:#444;
+    background-color:#DFDFDF;
+}
+/* corrects margin from normalize.css */
+input[type="radio"],input[type="checkbox"]{
+    margin-right: 5px;
+}
+
+
+/* this is generaly a fieldset class */
+.property_fields{
+    position: relative;
+    margin-top:1em;
+    margin-bottom:1em;
+    max-width:900px;
+    padding:.5em 3px;
+    /*Background-image is here to lighten background color */
+    background-image: linear-gradient(to bottom,  rgba(255,255,255,0.7) 0%,rgba(255, 255, 255, 0.9) 48%,rgba(255,255,255,0.4) 100%); /* W3C */
+}
+
+/*.property_fields .field {
+	margin: auto;
+}*/
+
+.property_fields .actions,
+.property_fields .wimsform{
+    padding:.5em;
+    margin-top:.5em;
+}
+
+.property_fields .box{
+    padding: .4em; /*.4em seems max for Chrome 2-columns layout */
+    border:1px solid #CFCFCF;
+    /*margin-bottom:1px;*/
+    line-height:1.2em;
+}
+.property_fields p{
+    padding:0 1em;
+}
+
+.box>div, .box>input, .box>textarea, .box>select{
+    margin-left:1em;
+}
+
+.property_fields .halfwidth{
+    /*display: inline-block;
+    vertical-align: middle;*/
+    float:left;
+    /*min-width: 380px;*/
+    /*min-height could be suppressed when all browsers will render welle "flexbox"*/
+    min-height:4em;
+}
+
+.property_fields .field:nth-child(even){
+  background-color: #DFDFDF;
+  background-color: rgba(240,240,240,.4);
+}
+
+.property_fields .field:nth-child(odd){
+  background-color: #EFEFEF;
+  background-color: rgba(255,255,255,.8);
+}
+
+.formHelp{
+    font-size: 9pt;
+    color:#666;
+}
+
+.property_fields legend{
+    font-size: 1.2em;
+    font-weight: bold;
+    text-shadow: -1px -1px #000;
+    padding: 0 .5em;
+    margin-left:1em;
+    border:1px solid #BBB;
+    border-radius:5px;
+}
+
+.property_fields label{
+    font-weight:bold;
+    display:inline-block;
+    vertical-align: middle;
+}
+/*.property_fields .field>label{
+    min-width:10em;
+}*/
+
+.property_fields select{
+    vertical-align: middle;
+}
+
+.property_fields input[type="text"]{
+    min-width:50%;
+}
+
+.fullwidth input[type="text"],
+.fullwidth select{
+    width:95%;
+}
+
+.field textarea{
+    min-width:80%;
+}
+
+.fullwidth textarea{
+    width:96%;
+}
+
+.field input.small_input{
+    width:6em;
+    min-width:6em;
+}
+
+input[type="color"]{
+    vertical-align: bottom;
+}
+
+li.wims_formradio{
+    display: block;
+}
+.wims_formradio label {
+  min-width:0;
+  font-weight:normal;
+}
+
+
+
+/* Small screens */
+@media only screen and (max-width: 40em) {
+    .property_fields .halfwidth, .halfwidth{
+        width:100%;
+        display:block;
+        min-width: 0;
+    }
+} /* max-width 640px, mobile-only styles, use when QAing mobile issues */
+
+/* Medium screens */
+@media only screen and (min-width: 40.063em) and (max-width: 64em) {
+    .property_fields .halfwidth{
+        min-width: 310px;
+    }
+} /* min-width 641px and max-width 1024px, use when QAing tablet-only issues */
+
+/* Large screens */
+@media only screen and (min-width: 64.063em) { } /* min-width 1025px, large screens */
+

@@ -1,0 +1,52 @@
+
+ <b>Click on an image.</b>
+ (name: <span class="tt wims_code_words">coord</span>)
+ <br/>
+ This reply type allows the user to click on an image, and can analyze the
+ position of the click according to various zoning criteria.
+ <p>
+ The good reply must be given in the form of a matrix (row separator:
+ semi-colon `;'). The first row is the image URL. The image must be for the moment
+ in format gif.
+ The second row is the position of the criteria for the click coordinates
+ to be considered as good. And starting from the eventual third row, each one
+ can contain some criteria (bad positions).
+ All the point coordinates must be in pixels.
+ </p><p>
+ The user reply is considered as being good when the conditions in the second
+ row are met. Otherwise, if criteria for bad positions exist (third row and
+ up), the reply is bad if one of the bad conditions are met; or ambiguous if
+ no condition is met (in the latter case the user will be asked to retry).
+ If there is no bad position, any answer not meeting the second row will be
+ judged as bad.
+ </p><p>
+ The number of the first row met by the user reply minus one will be kept
+ in a variable <span class="tt wims_code_variable">\result</span><em>n</em>
+ where <em>n</em> is the number
+ of the input field, which can be used in a \feedback.
+ </p><p>
+ Several conditions can be combined in a same row, using connectors
+ `&' (intersection), `|' (union), `^' (complement), as well as parentheses.
+ </p><p>
+ It is recommended that this input field be embedded in the statement. It
+ cannot coexist with other input fields, for the obvious reason that any user
+ click on the image will send the form.
+</p>
+
+!set p=anstype/coord
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td class="tt wims_code_words">
+!line 1 of $l_
+    </td><td>
+!line 2 to -1 of $l_
+   </td>
+  !next
+$table_end

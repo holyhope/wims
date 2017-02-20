@@ -1,0 +1,38 @@
+!set methtit2=Transformation entre inégalités strictes et non-strictes
+!set methtit=Inégalités strictes et non-strictes
+!set methenv=ZZ QQ RR
+!set methparmtype=choice 4,parm inequality >,\
+	parm inequality <
+!set methparmrelax=2,3
+!set methhelp=Cette méthode transforme une inégalité stricte en non-stricte\
+ ou vice versa. Elle peut être utilisée de plusieurs manières&nbsp;:
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ !if $methsubstep=1
+  Cette méthode permet la transformation entre inégalité stricte et
+  non-stricte. Vous pouvez choisir parmi les modes d'opération
+  suivantes&nbsp;: <p><ol>
+   <li> (Affaiblir) Déduire une inégalité non-stricte d'une inégalité
+    stricte dans l'hypothèse.
+   <li> (Renforcer) Remplacer une inégalité non-stricte du but par 
+    l'inégalité stricte.
+   <li> (Combiner) "&gt;" ou "=" \(<=>) "$m_ge", ou
+    "$m_ge" et "$m_ne" \(<=>) "&gt;".
+   <li> (Séparer)  "$m_ge" \(<=>) "&gt;" ou "=", ou
+    "&gt;" \(<=>) "$m_ge" et "$m_ne".
+  </ol>
+  !setmethsubstep=2
+ !else
+ 
+  methsubstep=1 
+ !endif
+!exit
+:check
+
+!exit
+

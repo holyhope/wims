@@ -1,0 +1,53 @@
+# Variable calculations should be done in this file.
+# It is read and interpreted by wims for all valid calls to the module.
+!if $wims_class=$empty
+ !restart module=home
+!endif
+!readproc adm/whoconnect
+wims_prefix=class user tmp n sharing sharable
+!read adm/class/authchars
+max_sheets=!defof MAX_SHEETS in wimshome/public_html/bases/sys/define.conf
+title_limit=80
+desc_limit=4000
+!read tabletheme
+wims_helper=chapter=3
+userdir=!item -1 of $wims_superclass
+!default userdir=$wims_class
+sclassdir=log/classes/$userdir
+userdir=log/classes/$userdir/.users
+tooltip_parm=FONTSIZE,'11pt',ABOVE,'true'
+picto=<img src="gifs/picto.gif" alt="picto" />
+
+!if $wims_user=$empty
+ error=not_supervisor
+ !exit
+!endif
+
+
+!if $wims_user!=supervisor
+ !reset deluser,delprep
+ !bound job within userprop default userprop
+ getuser=$wims_user
+ !if $abandon!=$empty
+    !restart module=home
+ !endif
+!else
+    !readproc adm/vfilter/varfilter proc
+    !if $wims_typename iswordof group and $wims_supertype=2
+	!bound job within userprop,delprep,deluser,recover,transfer,teacher,userlist,regmanage default userlist
+    !else
+	!bound job within userprop,delprep,deluser,recover,transfer,teacher,userlist default userlist
+    !endif
+!endif
+
+!read adm/class/classlang
+
+!if $cmd=help
+ !exit
+!endif
+
+
+wims_module_log=$job
+!changeto $job.proc
+
+

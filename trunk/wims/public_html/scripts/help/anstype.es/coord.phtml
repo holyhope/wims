@@ -1,0 +1,59 @@
+
+<b>Clic sobre una imagen.</b>
+(nombre : <span class="tt">coord</span>)
+<br/>
+Este tipo de respuesta permite al usuario presionar una imagen,
+y puede analizar la posición del clic siguiente distintos criterios de zona.
+<p>
+La buena respuesta debe darse en forma de una matriz (el
+separador de líneas es el punto y coma  `;'). La primera línea es
+el URL de la imagen. L'image doit être actuellement dans le format gif.
+La segunda línea es la posición de los criterios que permiten
+dar los datos del clic por correctas.  Y a partir de
+la tercera posible línea, cada una puede contener criterios
+(malas posiciones).
+ All the point coordinates must be in pixels.
+</p><p>
+La respuesta del usuario se da por buena cuando
+se cumplen las condiciones de la segunda línea. Si no, si los criterios
+de malas posiciones existen (a partir de la 3.a línea),
+la respuesta es mala si una de estas malas condiciones se cumple,
+y ambigua si ninguna condición se cumple (en este último caso,
+el usuario deberá volver a intentar de responder). Si no hay criterio de mala posición,
+toda respuesta por la que no se cumplen las condiciones
+de la segunda línea se juzgará mala.
+</p><p>
+El número de la primera de las líneas de acuerdo con la respuesta
+del usuario, disminuido en 1, se almacena en una variable
+<span class="tt">\result</span><em>n</em>, donde <em>n</em> es el número del campo de
+respuesta, y puede utilizarse en un \feedback.
+</p><p>
+Varias condiciones pueden combinarse en la misma línea,
+utilizando los conectores lógicos
+`&' (intersección), `|' (unión), `^' (complementario), así como
+los paréntesis.
+</p><p>
+Se recomienda insertar este campo de respuesta en la declaración.
+No puede coexistir con otros campos de respuesta, por la razón
+evidente que todo clic del usuario sobre una imagen
+enviará el formulario de respuesta.
+</p>
+
+!set p=anstype.$lang/coord
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td class="tt">
+!line 1 of $l_
+    </td><td>
+!line 2 to -1 of $l_
+   </td>
+   </tr>
+  !next
+$table_end

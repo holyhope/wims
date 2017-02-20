@@ -1,0 +1,80 @@
+
+!if class = $doctype or $abandon!=$empty
+ job=read
+ !changeto read.proc
+!endif
+
+!if $coderr1$coder1=$empty
+ !exit
+!endif
+oldcode=!record 0 of $docdir/$doc/.code
+oldcoder=!line 2 of $oldcode
+oldcoder=!word 1 of $oldcoder
+oldcode=!line 1 of $oldcode
+oldcode=!word 1 of $oldcode
+
+!if $coder1!=$empty
+ !if $oldcode!=$coder1
+ error=bad_oldcode
+ !exit
+ !endif
+ coder=!trim $coder
+ coder2=!trim $coder2
+ m1=!charcnt $coder
+ m2=!charcnt $coder2
+ coder=!text select $namechars in $coder
+ coder2=!text select $namechars in $coder2
+ n1=!charcnt $coder
+ n2=!charcnt $coder2
+ !if $m1!=$n1 or $m2!=$n2
+  error=bad_newcode
+  !exit
+ !endif
+ !if $coder!=$coder2
+  error=code_discord
+  !exit
+ !endif
+ n=!charcnt $coder
+ !if $n<$codemin
+  error=small_code
+  !exit
+ !endif
+ !if $n>$codemax
+  error=big_code
+  !exit
+ !endif
+!endif
+
+!if $coderr1!=$empty
+ coderr=!trim $coderr
+ coderr2=!trim $coderr2
+ m1=!charcnt $coderr
+ m2=!charcnt $coderr2
+ coderr=!text select $namechars in $coderr
+ coderr2=!text select $namechars in $coderr2
+ n1=!charcnt $coderr
+ n2=!charcnt $coderr2
+ !if $m1!=$n1 or $m2!=$n2
+  error=bad_newcode
+  !exit
+ !endif
+ !if $coderr!=$coderr2
+  error=code_discord
+  !exit
+ !endif
+ n=!charcnt $coderr
+ !if $n<$codemin
+  error=small_code
+ !exit
+ !endif
+ !if $n>$codemax
+  error=big_code
+  !exit
+ !endif
+!endif
+!default coderr=$oldcoder
+!default coder=$oldcode
+
+!mexec scripts/setcode.sh
+job=recode2
+

@@ -1,0 +1,124 @@
+max_votes=!defof MAX_VOTES in wimshome/public_html/bases/sys/define.conf
+max_parms=!defof MAX_VOTES in wimshome/public_html/bases/sys/define.conf
+
+!! NEED TO BE FIXED
+!!wims_prefix=user class sharable sharing
+!!wims_trustfile=primitives.phtml primitives/checkbox.phtml primitives/list.phtml primitives/list.phtml primitives/uservar.phtml
+!!wims_readable=wims_read_parm noprint serial prim parmcnt
+!!wims_writable=serial prim parms wims_read_parm
+
+!if $wims_class=$empty or $wims_user=$empty
+ error=not_class
+ !exit
+!endif
+!if $seq!=
+ !set wims_sequence=$seq
+!endif
+!read adm/lang/date.phtml.$moduclass_lang
+limit_textarea=600
+
+wims_nw=votedir Votedir userdef vote Vote job empty
+wims_nr=wims_sesrandom
+Votedir=classes/$wims_class/vote
+votedir=wimshome/log/$Votedir
+!read adm/class/userdef classes,$wims_class,$wims_user
+userfile=$userdef
+!read adm/class/classlang names.phtml
+
+!bound vote between integer 1 and $max_votes default 0
+
+
+!default gstep=0
+
+vote_class=!defof sharing_vote in wimshome/log/classes/$wims_class/neighbors
+!default vote_class=$wims_class
+!default wims_superclass=$wims_class
+!if $wims_superclass != $wims_class
+ Votevar=!replace internal $wims_superclass/ by $ in $vote_class
+ Votevar=!translate internal / to _ in $Votevar
+ Vote=$(Votevar)_$vote
+!else
+ Vote=$vote
+ Votevar=
+!endif
+
+!if $rEg!=$empty
+ job=reg
+ rEg=
+!endif
+!if $abandon!=$empty
+!!!FIXME edit or home
+ job=edit
+ !set gstep=$[max($gstep-2,0)]
+ abandon=
+!endif
+
+readjobs=home,read,help,vote,showresult
+editjobs=creat,guided,edit,reg,erase,preview,csv,getsource
+!if $wims_user=supervisor
+ !bound job within $readjobs,$editjobs default home
+!else
+ !bound job within $readjobs default home
+!endif
+!if $job=help or robot isin $session
+ !exit
+!endif
+
+!read tabletheme
+!for i=1 to $max_votes
+ m_parm$i=$(parm$i)
+!next i
+
+votecnt=!recordcnt $votedir/.votes
+!if $votecnt<1 and $job notwordof reg creat csv
+ job=home
+ !changeto home.proc
+!endif
+!if $job=creat
+   !reset gstep
+ !if $votecnt>=$max_votes
+  error=too_many_votes
+  !exit
+ !else
+  vote=$[$votecnt+1]
+  !increase votecnt
+  job=edit
+ !endif
+!endif
+
+!default vote_model=$reg_model
+!if $vote>0 and $vote<=$votecnt
+ vdata=!record $vote of $votedir/.votes
+ !distribute lines $vdata into vote_status,vote_title,vote_option,vote_show,vote_whovoteshow,vote_model
+ !default vote_option=anonymous
+ !default vote_status=0
+ !default vote_show=1
+!! !default vote_model=free
+ vote_src=!record 0 of $votedir/$vote.src
+ !readproc adm/vfilter/msgchange.proc read\
+$vote_src
+ vote_src=$out_script
+!endif
+!default reg_model=$vote_model
+!! at some gstep these variables are not in the form but are required by reg.proc, so
+!! we need to be sure to have found defaults
+!default reg_status=$vote_status
+!default reg_option=$vote_option
+!default reg_show=$vote_show
+!default reg_whovoteshow=$vote_whovoteshow
+!if $vote<1
+ job=home
+!endif
+
+!! don't allow to use model if vote is sharing or sharable (waiting sharin/sharable techvar)
+test_share=!defof sharable_vote,sharing_vote in wimshome/log/classes/$wims_class/neighbors
+test_share=!nonempty item $test_share
+!if $test_share=$empty
+ !set vmodellist=accessvar,group
+ !set name_vmodellist=$(name_accessvar), $(name_group)
+!else
+ vmodellist=$empty
+ name_vmodellist=$empty
+!endif
+!read $job.proc
+

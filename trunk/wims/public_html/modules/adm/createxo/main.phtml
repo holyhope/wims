@@ -1,0 +1,114 @@
+!if $oef_test=yes
+ !set wims_html_header=!append line $header_js to $wims_html_header
+ !set wims_html_header=!append line $oefcss to $wims_html_header
+!endif
+!!test pour ne charger les javascripts de l'editeur que dans le mode brut et lorsqu'on ne teste pas
+!if $mode=raw and  $oef_test notsametext yes and $level<7
+ !read header_js.phtml
+ !set wims_html_header=!append line $header_js_editor to $wims_html_header
+!endif
+!if $modtoolhelp=yes or ($cmd=help and $special_parm iswordof examples oefspecial)
+ !set wims_show_liste=!makelist wims_show x for x=1 to 5
+ !if $special_parm iswordof oefspecial
+   !for y=1 to 3
+    !set wims_show_liste1=!makelist wims_show x $y for x=0 to 10
+    !set wims_show_liste=!append item $wims_show_liste1 to $wims_show_liste
+   !next
+ !endif
+ !set wims_show_liste=!nospace $wims_show_liste
+ !for id in wims_show,$wims_show_liste
+   !read js/edit_area.phtml $id wimsoef
+ !next
+!endif
+!read adm/css.phtml
+!header
+
+!if $modtoolhelp=yes
+ !read help.phtml
+ !goto end
+!endif
+
+!if $deleted!=$empty
+ !read delete.phtml
+ !goto end
+!endif
+
+!if $level=3 and $catsource=yes
+ $name_save
+ !href cmd=resume $name_menuback
+ <hr />
+<pre>
+!mexec catsrc.sh
+</pre>
+ <hr /> <div class="wimscenter">
+ !href cmd=resume $name_menuback
+ </div>
+ !set catsource=no
+ !goto end
+!endif
+
+!if $oef_test=yes
+ <div class="wimscenter">$name_realisation
+ !if $wims_theme_version=0 or $wims_theme_version=
+ <br />
+ !href cmd=resume&realtest=no $name_backmodule $module_title.
+ !endif
+ </div>
+ <hr />
+ !changeto oef/Main.phtml
+!endif
+
+!if $error!=$empty
+ <div class="wims_msg alert">
+ !read lang/msg.phtml.$modu_lang
+ </div>
+ <p>
+ !href cmd=reply&level=1 $name_correction.
+ </p>
+ !goto end
+!endif
+
+!if $mode!=$empty and $level<=2
+ !read $mode$level.phtml
+!else
+ !read level$level.phtml
+!endif
+
+!if $wims_theme=default
+!!ARIANE
+  !set wims_menu_items=!append line createxo,1,module=adm/createxo\
+to $wims_menu_items
+!endif
+
+!if $level iswordof 0 1
+  !set wims_menu_items=!append line createxo,0,Createxo\
+model,1,cmd=reply&mode=model&level=1\
+normalmode,1,cmd=reply&mode=normal&level=1\
+rawmode,1,cmd=reply&rawinp=yes&level=1\
+filemode,1,cmd=reply&mode=file&level=1\
+ to $wims_menu_items
+  !read themes/_procs/othermethods.proc
+!endif
+!if $level iswordof 2 and $mode=model
+!!modellist ARIANE
+!set wims_menu_items=!append line itemsep,0,\
+modellist,1,cmd=reply&level=1&mode=model\
+rawmode,1,cmd=reply&rawinp=yes\
+to $wims_menu_items
+!endif
+
+!!!developpers tools
+!if $wims_user=supervisor or $wims_developper!=$empty
+  !set wims_menu_items=!append line tools,0,$wims_name_tools\
+  coordclick,1,module=adm/tool/coordclick\
+ to $wims_menu_items
+!endif
+!if $wims_developper!=$empty
+  !set wims_menu_items=!append line tools,0,$wims_name_tools\
+  chemtool,1,module=adm/tool/chemtool\
+ to $wims_menu_items
+!endif
+:end
+!tail
+
+!reset wims_deposit, delfile

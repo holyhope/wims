@@ -1,0 +1,18 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+
+slib_author=Gang, XIAO
+slib_example=9/br3close
+!exit
+
+:proc
+slib_type=!item 1 of $wims_read_parm
+slib_c=!char 1 of $slib_type
+!if $slib_c isin 123456789
+ slib_prefix=data/circuits
+!else
+ slib_prefix=
+!endif
+slib_rec=$slib_prefix/$slib_type.data
+slib_out=!record 2 of $slib_rec

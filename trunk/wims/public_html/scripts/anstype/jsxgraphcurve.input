@@ -1,0 +1,52 @@
+!!author: Julien Lyotard
+!set anstype=yes
+!set anstyle=dprompt
+!set ans_require=jsxgraph
+
+!if $wims_read_parm=def
+ !exit
+!endif
+
+!set input_type=!text remove 0123456789. in $(replygood$i[2;1])
+!default input_type=points
+!set input_img=$(replygood$i[1;1])
+!set inputsize=!replace internal $	$ by $\
+$  in $inputsize
+
+!set inputsize=!nonempty lines $inputsize
+!if ?analyze isin $input_img
+  !set input_img=!line 2 of $inputsize
+  !set input_other=!line 3 to -1 of $inputsize
+  !set input_type=!word 1 of $input_other
+!endif
+!set Inputsize=!line 1 of $inputsize
+!set test=!text remove 0123456789x in $Inputsize
+
+!if $test issametext $empty
+  !set Inputsize=!replace internal x by , in $Inputsize
+  !distribute items $Inputsize into xsize,ysize
+!endif
+!default xsize=200
+!default ysize=200
+
+!if debug iswordof $m_oefenv
+  !set showinfobox=true
+!else
+  !set showinfobox=false
+!endif
+!set oef_answer_option$i=$xsize,$ysize\
+ $input_img\
+ $input_other
+
+<div class="jsxgraph_button">
+    <span onclick="zoom_in_jsx$i();" class="wims_button larger" style="cursor:pointer;">+&#x1f50d;</span>
+    <span onclick="zoom_reset_jsx$i();" class="wims_button larger" style="cursor:pointer;">=</span>
+    <span onclick="zoom_out_jsx$i();" class="wims_button larger" style="cursor:pointer;">&#x1f50e;-</span>
+</div>
+!read anstype/jsxgraphcurve.inc $input_type,jsreply$i,$xsize,$ysize,$input_img,$i
+<div class="jsxgraph_button">
+    <span onclick="efface$i();" class="wims_button wims_warning" style="cursor:pointer;">$wims_name_erase</span>
+</div>
+<input type="hidden" name="reply$i" id="jsreply$i" value="" />
+
+!set oef_js_submit=$oef_js_submit capture$i();

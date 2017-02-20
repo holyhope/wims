@@ -1,0 +1,13 @@
+!!browsesite.proc :
+!! Adds browse links in wims_rm_0 for navigation menus
+
+!set wims_name_browse=$N_browse2
+
+!if $has_browse=yes
+    !set wims_rm_0 = !append line browse,1,module=adm/browse&$browse_parm\
+to $wims_rm_0
+!endif
+
+!!set wims_rm_0 = $wims_rm_0\
+sheet,1,cmd=new&module=home&search_keywords=&search_category=S#searchform\
+n_example,1,module=adm/class/classes&type=example

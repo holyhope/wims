@@ -1,0 +1,21 @@
+# GetUser
+# Fournit les informations de l'utilisateur quser
+
+#on commence par verifier la classe $qclass
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+!read scripts/check.user
+!if $error!=$empty
+ !exit
+!endif
+
+!readdef $userdeffile
+
+option=!listintersect $option and $userdefs
+
+!if $option=$empty
+ option=!listcomplement password in $userdefs
+!endif

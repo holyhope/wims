@@ -1,0 +1,41 @@
+!set p_=!word 1 of $wims_read_parm
+!bound p_ within none,header,source,html default none
+!goto $p_
+:none
+!exit
+:header
+!set m_subject=WIMS and new Linux kernel
+!set m_date=20031105
+!set m_time=16:17:53
+!set m_from=Gang XIAO
+!set m_sender_ip=127.0.0.1
+!set m_sender_id=
+!set m_sender_class=
+!set m_email=xiao@unice.fr
+!set m_to=
+!set m_prec=O200311/1
+!set m_exists=yes
+!exit
+:source
+<pre>
+Recent Linux kernel versions, such as 2.4.20 coming by default with RedHat 9, supports an important new feature called 'journaling file system'. This feature will be activated if you format your hard disks with 'ext3' file systems.
+
+This feature, at least under its default mode, adds a considerable performance overhead to applications like WIMS, DIVIDING the capacity of the latter by a factor of 5 to 10&#33; Moreover, you won't notice anything unusual until a mass connections of students overload the server.
+
+Therefore, it is highly recommended that the journaling feature be disabled for production WIMS servers. To check whether you are using this feature, take a read of the file /etc/mtab. If you see the word &lt;tt>ext3&lt;/tt> appear in this file, you are in trouble.
+
+The solution is simple&#58; modify the file /etc/fstab, changing every appearance of &lt;tt>ext3&lt;/tt> into &lt;tt>ext2&lt;/tt>, then reboot the system.
+
+</pre>
+!exit
+:html
+Recent Linux kernel versions, such as 2.4.20 coming by default with RedHat 9, supports an important new feature called 'journaling file system'. This feature will be activated if you format your hard disks with 'ext3' file systems.
+<p>
+This feature, at least under its default mode, adds a considerable performance overhead to applications like WIMS, DIVIDING the capacity of the latter by a factor of 5 to 10&#33; Moreover, you won't notice anything unusual until a mass connections of students overload the server.
+<p>
+Therefore, it is highly recommended that the journaling feature be disabled for production WIMS servers. To check whether you are using this feature, take a read of the file /etc/mtab. If you see the word <tt>ext3</tt> appear in this file, you are in trouble.
+<p>
+The solution is simple&#58; modify the file /etc/fstab, changing every appearance of <tt>ext3</tt> into <tt>ext2</tt>, then reboot the system.
+<p>
+
+

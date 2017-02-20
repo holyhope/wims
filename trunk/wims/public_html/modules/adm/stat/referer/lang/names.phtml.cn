@@ -1,0 +1,55 @@
+!set lang_exists=yes
+
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
+
+!set name_site=网站
+!set name_stem=此地址的网页
+!set name_uniq=网页
+!set names_site=网站
+!set names_stem=网站目录
+!set names_uniq=网页
+
+!distribute items 天,周,月,年,至\
+  into name_day,name_week,name_month,name_year,name_to
+
+!distribute lines 网站名\
+  基础目录\
+  完整地址\
+  链接可根据网页的\
+  列举, 表格限于前\
+  个地址. 搜索引擎的地址可被\
+  包含在内或\
+  排除在外\
+  作为选项, 你可以把表格限于包含以下关键词的网站/网页:\
+ into name_site1,name_stem,name_uniq,name_listlink,name_limited,name_searchengine,\
+ name_included,name_excluded,name_option
+
+!set name_list1=!nosubst 把访问者带到我们这里的网站 $(names_$type) 表, 时间范围从
+
+!set name_sum=!nosubst 共 $laps 天
+
+!set name_list2=第二栏是网站 $(name_$type), 第一栏是从上述网站链接过来的访问者人数.
+
+!set name_visit1=从以下链接过来的访问者总数
+!set name_visit2=!nosubst 至少有 $auto 位其它访问者没有显示能公开查看的网页.\
+不计入在 $httpd_HTTP_HOST 内的网页.
+
+ !!!set title=反向链接表
+
+!set name_warning=此网站的反向链接计数没有激活. 没有反向链接表可用. 抱歉.
+
+!set name_choose=列举周期: 从
+
+!exit
+:intro
+<p>
+一般说来, 把许多访问者带到我们这里的网页也是我们的其它访问者感兴趣的.
+因此当你搜寻与此服务器有关的网络资源时, 这样的网页表正是你需要的.
+</p><p>
+另一方面, 如果你是包含有到我们这里的链接的网页作者,
+这样的表也能衡量你的链接的有效性. 这也是感谢你的链接的一种方式.
+</p><p>
+我们的反向链接表是动态生成的, 根据下列菜单选择参数.
+</p>

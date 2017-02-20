@@ -1,0 +1,249 @@
+!set wims_module_log=error: $error
+
+!default wims_name_passsup=$wims_name_Password ($name_sup)
+!default wims_name_password=$wims_name_Password ($name_classesss)
+!default wims_name_institution=$name_Name_portal
+!default wims_name_description=$wims_name_name $name_classesss
+
+!if no_subclass iswordof $error
+ No teniu dret a crear sub-classes en la situació
+ actual.
+ !set restart=no
+ !exit
+!endif
+
+!if no_right iswordof $error
+ Ho sento, no teniu dret a crear classes virtuals en aquest lloc.
+ Si us plau
+ !mailurl $wims_site_manager contacteu amb el gestor del lloc\
+Creació de classes virtuals
+ per a més detalls.
+ !set restart=no
+ !exit
+!endif
+
+!if not_manager iswordof $error
+ Ho sento, només l'administrador del lloc té el dret de crear un portal
+ de centre.
+ !exit
+!endif
+
+!if getpass iswordof $error
+ !if $sendmail!=$empty
+  <div class="wimscenter">
+  La contrasenya s'ha enviat per email a l'adreça $sendmail.
+  </div>
+ !endif
+ !if $regpass!=$empty
+  Ho sento, la contrasenya és incorrecta. Si us plau, torneu-ho a provar.
+ !else
+  !set cname=!item $cltype+1 of classes virtuals,,grups de classes,,\
+        portals de centre
+  La creació de $cname en aquest lloc està protegit per una
+  contrasenya. Heu d'introduir aquesta contrasenya abans de continuar.
+ !endif
+
+ !form reply
+  <input type="hidden" name="step" value="0" />
+  Entreu la contrasenya : <input size="16" name="regpass" type="password" />
+  <input type="submit" name="Enviar" value="$wims_name_send" />
+
+!formend
+<div>
+ Nota. La contrasenya necessària per crear classes virtuals pot obtenir-se a partir del
+ !mailurl $wims_site_manager gestor\
+Contrasenya per a la creació de classes virtuals
+ d'aquest lloc WIMS.
+ !if $regpassmail!=$empty and $sendmail=$empty
+ !form reply
+  També es pot rebre la contrasenya per correu electrònic introduint la teva adreça de correu electrònic a continuació:
+  <input type="text" name="adresse1" value="$adresse1" size="20" />
+  <input type="hidden" name="step" value="0" />
+  !let nbaddr=!itemcnt $regpassmail
+  !if $nbaddr=1
+   <font size="+1">@$regpassmail</font>
+   <input type="hidden" name="adresse2" value="$regpassmail" />
+  !else
+   @
+   !formselect adresse2 list $regpassmail
+  !endif
+  &nbsp;
+  <input type="submit" value="Recevoir" name="Rebre" />
+
+!formend
+ !else
+  !reset sendmail
+ !endif
+ </div>
+ !set restart=no
+ !exit
+!endif
+
+!if getid iswordof $error
+ !if $regpass$regid!=$empty
+  Ho sento, la contrasenya és incorrecta. Si us plau, torneu-ho a provar.
+ !else
+  La creació de classes virtuals en aquest lloc està protegit per un sistema
+  d'autenticació. Si us plau identifiqueu-vos.
+ !endif
+
+ !form reply
+  <table class="wimscenter wimsnoborder">
+  <tr><td style="text-align:right">
+  Entreu el vostre nom d'usuari :</td><td><input size="20" name="regid" /></td>
+  </tr><tr><td style="text-align:right">
+  I la contrasenya :</td><td><input size="16" name="regpass" type="password" />
+  <input type="submit" value="$wims_name_tosave" /></td>
+  </tr></table>
+
+!formend
+
+ Nota. Si us plau escriviu a
+ !mailurl $wims_site_manager gestor\
+Contrasenya per a la creació de classes virtuals
+ en aquest lloc si voleu un compte per crear classes virtuals.
+</p>
+ !set restart=no
+ !exit
+!endif
+
+!if class_quota=$error
+ Teniu el dret a instal·lar fins a $r_quota1 classes. Ja no us en
+ queden&nbsp;; no en podeu instal·lar més.
+ !set restart=no
+ !exit
+!endif
+
+!if bad_secure=$error
+ La vostra situació actual no consta a la vostra definició
+ d'accés segur (<span class="tt">$secure</span>)&nbsp;! Això és probablement un error que
+ provocarà la prohibició d'accedir al control de la vostra classe.
+ <p>
+ Llegiu atentament la documentació següent. També podeu
+ deixar aquest camp en blanc (o posar un espai): us enviarem els codis secrets
+ temporals per les operacions sensibles, o poseu la paraula <span class="tt">all</span>
+ per desactivar aquesta mesura de seguretat.
+ </p><hr />
+ !read help/hosts.phtml
+ !reset secure
+ !exit
+!endif
+
+!if has_empty=$error
+ No heu donat tota la informació necessària per a la creació
+ d'una classe. Si us plau, completeu les dades abans d'enviar-les.<br/>
+ <span class="tt wims_code_words">$(wims_name_$error_subject) required.</span>
+ !exit
+!endif
+
+!if too_short=$error
+ El camp de dades <span class="tt wims_code_words">$(wims_name_$(error_subject))</span> sembla ser massa curt.
+ !exit
+!endif
+
+!if bad_date=$error
+ La vostra data de caducitat no és correcta.
+ !exit
+!endif
+
+!if anti_date=$error
+ La vostra classe té una data de caducitat anterior a avui. Estaria per tant
+ caducada abans de ser creada!
+ !exit
+!endif
+
+!if bad_level=$error
+ Valor del nivell incorrecte.
+ !exit
+!endif
+
+!if bad_email=$error
+ La vostra adreça de correu electrònic, òbviament no és vàlida.
+ <p>
+La creació de la classe només pot tenir èxit si
+ envieu la vostra adreça de correu electrònic real.
+</p>
+ !exit
+!endif
+
+!if existing=$error
+ Sembla que la classe $classname ja existeix. No podeu tornar a crear
+ la mateixa classe.
+ !exit
+!endif
+
+!if pass_discord=$error
+ La contrasenya que heu tornat a escriure no coincideix amb la primera. La
+ creació de la classe no es té en compte&nbsp;; podeu intentar-ho de nou
+ una altra vegada.
+ !exit
+!endif
+
+!if bad_pass=$error
+ El vostre $(wims_name_$(error_subject)) conté caràcters no permesos. <p>
+ Si us plau, escolliu una paraula que només contingui números o lletres
+ sense accent i sense espais entre ells.
+ !exit
+!endif
+
+!if bad_code=$error
+ No heu introduït el codi correcte per a la classe. L'adreça de correu electrònic
+ que heu utilitzat és correcta&nbsp;?<p>
+ Hem registrat aquest fracàs.
+</p>
+ !exit
+!endif
+
+!if define_fail=$error or abuse=$error
+ El servidor no ha pogut afegir la vostra classe a la base de
+ dades. Això és un error intern de programari.
+ <p>
+ Si us plau, informeu del problema a
+ !mailurl $wims_site_manager gestor d'aquest lloc\
+user registration failure
+. Gràcies!
+</p>
+ !exit
+!endif
+
+!if duplicate=$error
+ Heu intentat tornar a crear una classe ja creada. Potser
+ heu clicat al botó <span class="tt">actualitzar</span>&nbsp;? En tot cas, la vostra classe
+ $classname ja està en aquest lloc i el segon intent de crear-la
+ s'ha ignorat.
+<div>
+ !read adm/lang/links.phtml.$modu_lang
+</div>
+ !exit
+!endif
+
+!if classdontexists=$error
+ Aquesta classe no existeix.
+ !exit
+!endif
+
+!if notexempleclass=$error
+ Aquesta classe no és una classe d'exemple: impossible copiar-la.
+ !exit
+!endif
+
+!if badcpmethod=$error
+ Mètode de còpia no identificable. Començar de nou. Si l'error persisteix, poseu-vos en contacte amb l'administrador del servidor.
+ !exit
+!endif
+
+!if cloningnotallow=$error
+ La duplicació d'aquesta classe no està autoritzada pel seu administrador.
+ !exit
+!endif
+
+!if badcloningpwd=$error
+ Contrasenya de duplicació incorrecta.
+ !exit
+!endif
+
+!if disallowcloning=$error
+ No es pot fer cap duplicació d'aquesta classe.
+ !exit
+!endif
+!msg $error

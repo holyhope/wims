@@ -1,0 +1,83 @@
+<div class="wimscenter">--- $title ---</div>
+!if $successdelete=yes
+  <div class="wims_msg success">
+  $wims_deposit $name_successdeletefile $bin_dir.
+  </div>
+  !reset successdelete
+!endif
+!if $success=yes
+  <div class="wims_msg success">
+  $name_successfile ($bin_dir/$wims_deposit)
+  </div>
+!else
+  !if $wims_deposit!=noname.file and $bin_job=deposit and $bin_dir!=$empty
+  <div class="wims_msg alert">
+  $name_nosuccessfile
+<code>/
+..</code>
+</div>
+  !endif
+!endif
+!set wims_form_method=file
+!form reply
+<input type="hidden" name="bin_job" value="deposit" />
+!set doctest1=!module category devel/$auth_login/$mod
+!if oef isin $doctest1
+  !set doctest1=oef
+!endif
+
+<fieldset class="property_fields halfwidth blockcenter">
+   <legend>$wims_name_addfile</legend>
+   <div class="field box">
+     <label>$name_depos</label>
+   !set wims_ref_class=wims_button_help float_right
+    !href cmd=help&special_parm=binfile&special_parm2=$doctest1 $wims_name_help
+    !formselect bin_dir list $dir
+ / <input type="file" name="wims_deposit" size="30" />
+  </div>
+  <div class="wimscenter wimsform">
+    <input type="submit" value="$wims_name_send" />
+  </div>
+</fieldset>
+!formend
+
+!if document isin $doctest1
+!!the script src2def should be launched for oefexercises also, but I do not see
+!! the need for the moment
+  !set testsrc=!record 0 of wimshome/public_html/$devdir/$mod/doc/srctex/0index
+  !if $testsrc!=$empty
+   !form reply
+   !reset mkdoc
+   <input type="submit" name="mkdoc" value="$name_compile" />
+   !set wims_ref_class=wims_button_help
+   !href cmd=help&special_parm=mkdoc $wims_name_help
+   !formend
+  !endif
+!endif
+
+!if $bcnt>0
+ $table_header
+ <caption>$name_file</caption>
+ $table_hdtr<th>$wims_name_name</th><th>&nbsp;</th><th>&nbsp;&nbsp;$name_size&nbsp;&nbsp;</th></tr>
+ !for i=1 to $bcnt
+  !set l=!line $i of $bfiles
+  !distribute items $l into n_,s_
+  $table_tr
+  <td class="wims_fname">$n_</td><td>
+  &nbsp;
+  <a class="wims_button" target="wims_external" href="$devdir/$mod/$n_">$wims_name_Show</a>&nbsp;
+  !set wims_ref_class=wims_button wims_warning
+  !href cmd=reply&bin_job=erase&fname=$n_ $wims_name_erase
+  &nbsp;</td>
+  <td>$s_</td>
+  </tr>
+ !next i
+ $table_end
+!else
+ <p>$name_nofile</p>
+!endif
+
+
+
+!reset bin_job
+

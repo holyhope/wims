@@ -1,0 +1,25 @@
+!read adm/title.phtml 1\
+$classname
+
+<div class="wimscenter">$name_exam_session
+ !href module=adm/class/usermanage&job=userprop&getuser=$getuser $name_studentloc
+<br /><span class="small">$wims_name_Login: <span class="tt">$getuser</span>
+!if $user_email!=$empty
+ &nbsp;$wims_name_email: <a href="mailto:$user_email">$user_email</a>
+!endif
+</span>
+</div>
+
+ $table_header
+ $table_tr<td style="text-align:right">$name_Session</td>
+ <td class="tt">$esession</td></tr>
+ $table_tr<td style="text-align:right">$name_connecting</td>
+ <td class="tt">$ehost</td></tr>
+ $table_tr<td style="text-align:right">$name_remaining_time</td>
+ <td>$eremain $name_minutes</td></tr>
+ $table_end
+
+!set wims_menu_items=!append line partexamclose,1,cmd=reply&job=userexamclose&getuser=$getuser\
+scores,1,cmd=reply&job=getuser&getuser=$getuser\
+part_list,1,cmd=resume\
+to $wims_menu_items

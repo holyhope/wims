@@ -1,0 +1,8 @@
+!default getraw=$getuser
+showsheet_=!nospace $showsheet
+raw=!mexec getraw.sh
+log_dir=$wims_home/log/classes/$wims_class
+session_dir=$wims_home/sessions/$wims_session
+data=!mexec stat.pl --sheet=$sheetcnt --option=exobyday:$showsheet_ $session_dir/user.getraw
+databyday=!line 2 to -1 of $data
+data=!line 1 of $data

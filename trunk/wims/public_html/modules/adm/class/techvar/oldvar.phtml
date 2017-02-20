@@ -1,0 +1,48 @@
+!if $version_class>=5
+  !exit
+!endif
+
+<div class="wims_content">
+$name_descoldvar
+$table_header
+<caption>$name_listoldvar</caption>
+<thead>
+       $table_hdtr
+         <th>$wims_name_name</th>
+         <th>&nbsp;</th>
+         <th>&nbsp;</th>
+       </tr>
+     </thead>
+     <tbody>
+   !form reply
+       !for name in $listnew
+          $table_tr
+         <td>$name</td>
+         <td>
+            !set wims_ref_class=wims_button
+            !href cmd=reply&job=oldvar&subjob=make&techvar=$name $name_make
+         </td>
+         <td>$name_listnew_co</td>
+       !next name
+       !for name in $listmodify
+          $table_tr
+         <td>$name</td>
+         <td>
+            !set wims_ref_class=wims_button
+            !href cmd=reply&job=oldvar&subjob=modify&techvar=$name $wims_name_change
+         </td>
+         <td>$name_listmodify_co</td>
+       !next name
+       !for k=1 to 3
+          !for name in $(listforbname$k)
+             $table_tr
+            <td>$name</td>
+            <td>&nbsp;</td>
+            <td>$(name_listforbname$(k)_co)</td>
+          !next name
+       !next k
+   !formend
+</tbody>
+$table_end
+!endif
+</div>

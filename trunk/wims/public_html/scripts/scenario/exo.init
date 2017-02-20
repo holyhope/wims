@@ -1,0 +1,24 @@
+
+exo=!listintersect $exo and $exolist
+nn=!itemcnt $exo
+wims_intro_parm=$exo
+!if $nn<=0
+ exo=$exolist
+ nn=!itemcnt $exolist
+!endif
+
+shlist=
+!ifval $random=0
+ shufflelist=$exo
+!else
+ shuffle=!shuffle $nn
+ shufflelist=!item $shuffle of $exo
+!endif
+
+ !if $nn>4
+  loglist=$nn
+ !else
+  loglist=$shufflelist
+ !endif
+ wims_module_log=$cmd: level $level, style $style on $shufflelist
+

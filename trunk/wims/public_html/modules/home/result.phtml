@@ -1,0 +1,176 @@
+!nocache
+
+!if $test_exist!=$empty
+  !set gottype=search
+!endif
+
+!if $s_category isin ADTXRPOS
+  !read adm/search_engine/search_clear.phtml
+!endif
+
+!if $error!=$empty and $(ER_$error)!=
+  <p class="wims_msg alert">
+   $(ER_$error)
+   !read adm/search_engine/search_empty.phtml
+  </p>
+!endif
+!set tt=<span class="wims_emph">$(CC_A)</span>
+
+!if $gottype=search and ($Gotcnt>1 or $gotcnt>1)
+ !if $Gotcnt<1
+   !set Gotcnt=$gotcnt
+  !endif
+ !if $warning notsametext $empty
+   !set Gotcntplus=!replace internal , by + in $warning
+ !endif
+ !set Gotcnt=$[$Gotcntplus+$Gotcnt]
+ <div class="RE_found">
+  $RE_found
+   <p class="wimscenter small">$wims_ref_name?$search_adresse</p>
+  !if $warning notsametext $empty
+    $RE_warning_more
+  !endif
+ </div>
+
+!else
+ !if $s_keywords!=$empty and $Gotcnt<1
+ <div class="wims_msg info">
+  $RE_nomatch.
+  !if $(rel_$s_category)!=$empty
+   <div class="RE_try">
+     $RE_try
+     !for i in $(rel_$s_category)
+      !href module=home&cmd=reply&search_category=$i&search_keywords=$s_keywords $(CC_$i)
+      &nbsp;
+     !next i
+     !if $has_browse=yes
+      $wims_name_or
+      !href module=adm/browse&$browse_parm $N_browsesite
+     !endif has_browse=yes
+   </div>
+  !endif $(rel_$s_category)
+ </div>
+ !endif $s_keywords!=$empty
+
+ !if $s_category isin ADXOTR and $gotcnt1<1 and $gotcnt>0 and $Gotcnt<1
+  <p class="RE_pop">
+  !if $list_start>0
+   !set wims_ref_title = $RE_prev
+   !href module=home&cmd=reply&list_start=$[$list_start-$list_batch] &lt;&lt;
+   &nbsp;
+   $RE_pop2.
+  !else
+   $RE_pop.
+  !endif
+  !if $list_start<$list_cc-$list_batch
+   &nbsp;
+   !set wims_ref_title = $RE_next
+   !href module=home&cmd=reply&list_start=$[$list_start+$list_batch] &gt;&gt;
+  !endif
+ </p>
+  !reset list_start
+ !else
+  !if $s_category isin ADXOTR and $s_keywords=$empty
+    <p class="wims_msg info">
+     $RE_noKeyword.
+    </p>
+  !endif
+  !if $s_keywords!=$empty
+   <p class="wimscenter small">$wims_ref_name?$search_adresse</p>
+  !endif
+ !endif
+
+!endif
+
+!if $s_category isin PLSC
+ <div class="wims_emph">$(CC_$s_category)</div>
+ !changeto result.$s_category
+!endif
+
+!!arrive here for example if the address of the module has been given in the search_engine
+
+!if $Gotcnt=1 and $gotcnt=1
+  <div class="RE_found">
+    !read result.A
+ </div>
+ !exit
+!endif
+
+!if $gottype=search or $gotcnt1=0
+  !reset tt
+  !if $test_exist!=$empty
+    <p>$RE_found2</p>
+    !if $jquery_defined=yes
+      <script type="text/javascript">
+        /*<![CDATA[*/
+        jQuery(function($$) {
+            $$("#searchresult").tabs();
+          });
+        /*]]>*/
+      </script>
+    !endif
+  !endif
+
+ <div id="searchresult">
+ !if $s_category=A
+   <ul>
+   !for cat in X,D,T,R,M,S,C
+    !if $(gotcnt$cat)>0
+      <li>
+       <a href="#content_$cat">
+         $(CC_$cat) ($(gotcnt$cat))</a>
+       </li>
+    !endif
+   !next
+   !if $gotcnt1 >0
+     <li >
+      <a href="#content_P">
+      $(CC_P) ($gotcnt1)</a>
+      </li>
+   !endif
+   </ul>
+   !for cat in X,D,T,R,M
+     !if $(gotcnt$cat) >0
+       <div id="content_$cat">
+         <p class="wims_emph">$(CC_$cat)</p>
+         !read result.A $cat
+       </div> <!-- end C_$cat -->
+     !endif
+   !next
+
+ !else
+!! tt is used in lang/names.$lang
+  !if $s_category notin CS
+   !set tt=<p class="wims_emph">$(CC_$s_category)</p>
+  !endif
+   <p class="wims_emph">$(CC_$s_category)</p>
+       !read result.A $s_category
+ !endif
+ !if $Gotcnt=0
+  !read result.A
+ !endif
+
+ !if $gotcntS > 0
+  <div id="content_S">
+    <p class="wims_emph">$CC_S</p>
+    !read result.S
+  </div> <!-- end C_S -->
+ !endif
+ !if $gotcntC > 0
+  <div id="content_C">
+    <p class="wims_emph">$CC_C</p>
+    !read result.C
+  </div> <!-- end C_C -->
+ !endif
+
+ !if $s_category isin A,T and $gotcnt1>0
+  !exchange gotcnt,gotcnt1
+  !exchange gottype,gottype1
+  !exchange gotm,gotm1
+  <div id="content_P">
+    <p class="wims_emph">$(CC_P)</p>
+    !read result.P
+  </div><!-- end C_P -->
+ !endif
+ </div>
+!endif

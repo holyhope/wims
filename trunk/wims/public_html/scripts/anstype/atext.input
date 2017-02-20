@@ -1,0 +1,27 @@
+!set anstype=yes
+!set anstyle=symtext
+!set ans_require=translator
+!if $wims_read_parm=def
+ !exit
+!endif
+!if debug iswordof $m_oefenv and ?analyze notin $(replygood$i)
+ !set replydefaulted=yes
+ !if $oef_default=yes
+  !set r_=!row 1 of $(replygood$i)
+  !set r_=!translate | to $\
+$ in $r_
+  !default reply$i=!line 1 of $r_
+ !endif
+!endif
+!if $wims_read_parm!=noprompt
+ <tr><td><label for="reply$i">$(replyname$i)</label></td><td>
+!endif
+
+!read anstype/inputcss.inc
+
+!bound inputsize between integer 1 and 100 default 40
+<input id="reply$i" size="$inputsize" name="reply$i" value="$(reply$i)" $inputoption />
+!if $wims_read_parm!=noprompt
+ </td></tr>
+!endif
+!reset inputsize inputoption option

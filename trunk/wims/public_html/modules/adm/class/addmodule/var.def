@@ -1,0 +1,38 @@
+#This is the variable definition file of the tool module `...'.
+#It is part of the software wims. Author: XIAO Gang
+
+#Each non-comment line defines a variable. Format of the line:
+#
+#name	allow	log	default	llim	ulim
+#
+#name: name of the variable
+#log: log priority. 0: no log. 1: little log. 2: more log. etc.
+#allow: when allow the user to override the defined value.
+#       it maybe any, deny, init, config, reply.
+#llim, ulim: lower and upper limits. (Not valid for string variable)
+#
+#
+#name	allow	log	llim	    ulim
+
+dir		any
+iniparm		any
+scoring		any
+doc		any
+
+picksheet	reply
+title	reply	0
+desc	reply	0
+require reply	1
+weight	reply	1
+job		any
+step		any
+exo		any
+note		any
+smodule 	deny
+obs any
+reply: new_desc update_ex[MAX_EXOS]
+init: moduclass_lang
+deny:get_exo
+
+reply: intro_qcmpresent intro_check intro_presentsol random qnum qcmlevel \
+  scoredelay lang_choice expert_

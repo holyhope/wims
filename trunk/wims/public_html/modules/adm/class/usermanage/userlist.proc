@@ -1,0 +1,13 @@
+!! display list of participant in the class
+
+
+usercnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
+
+
+!!## it is dangerous to register directly a student in a level
+!if $typen!=level
+ !set deleted=!sh cd $wims_home/log/classes/$wims_class/.users; ls .[0-9a-zA-Z]* 2>/dev/null
+ !set deleted=!trim $deleted
+!endif
+!readproc adm/vfilter/listvarfilter.proc
+nbtechvar=!linecnt $tv_listtechvar

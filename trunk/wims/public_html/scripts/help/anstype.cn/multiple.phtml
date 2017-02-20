@@ -1,0 +1,57 @@
+<b>可控多重选择</b>: <span class="tt">checkbox</span>,
+ <span class="tt">click</span>, <span class="tt">menu</span>, <span class="tt">radio</span>, <span class="tt">mark</span>, <span class="tt">flashcard</span><br/>
+这些可用来代替标准的多重选择 (<span class="tt">\choice</span>), 使作者对其形式有更多的控制权.
+正确的回答应该包括两个区段, 它们之间用分号 ``<span class="tt">;</span>'' 间隔. 
+第二个区段(分号以后)是选择文字的表, 而第一个区段则是正确选择的号码表.
+在 <span class="tt">checkbox</span> 和 <span class="tt">flashcard</span> 的情形, 用户必须在所有正确的选择前标注,
+而其它情形只要选一个正确的即可. 
+在 <span class="tt">flashcard</span> 的情形, 第 3 行给出显示在正面朝下的纸牌表面上的内容,
+其默认值是问号.
+ <p>
+对于 <span class="tt">checkbox</span>, <span class="tt">menu</span>, <span class="tt">radio</span> 以及 <span class="tt">flashcard</span>, 
+有一个选项是 <span class="tt">shuffle</span>, 就是把出现在学生面前的多重选择作随机乱排. 
+ <p>
+没有选项 <span class="tt">shuffle</span> 时, 不会自动乱排.
+而且供选择的项的个数不会自动截断.
+ <p>
+另一个效果相反的选项 <span class="tt">sort</span> 则是把有关条目按字母顺序显示.
+ <p>
+ <span class="tt">click</span> 只被用于没有别的回答或选择的情形.
+ <p>
+类型 <span class="tt">menu</span> 可使用选项 <span class="tt">multiple</span> 加上一个数值. 
+这个数值决定了选择窗口的大小 (默认值是 8).
+例如 <span class="tt">multiple=5</span> 给出了 5 行高的多重菜单窗口.
+ <p>
+ <span class="tt">mark</span> 类似于 <span class="tt">checkbox</span>, 只是不用按钮， 而是使用颜色变化.
+所以主要用在文字叙述里. 同样的选择可以出现好几处, 它在段落里的位置也是考虑因素之一.
+在分析回答时, 绿色表示正确, 红色表示错误, 蓝色表示遗漏的选择.
+例如: 点击下文内的所有定冠词...
+ <p>
+在 <span class="tt">flashcard</span> 的情形, 选择是正面朝下的(纸牌), 正确的选择是翻转过来的.
+选项 <span class="tt">show</span> 允许看牌. 正确的选择应该是翻转过来的.
+每张牌上的点击次数记录在变量 <span class="tt">\reply</span>n 的第二行. 
+ <p>
+对于可有多个选择的类型 (<span class="tt">checkbox</span>,
+ <span class="tt">mark</span>, 以及带选项 <span class="tt">multiple</span> 的 <span class="tt">menu</span> ),
+在默认的情形, 回答只要与正确答案不同, 就判 0 分. 
+如果你对部分对的情形想给一点部分成绩的话, 可以使用选项 <span class="tt">split</span> 
+(同义词: <span class="tt">partialscore</span>). 在这种情形部分成绩按学生答对的比例计算,
+另一方面, 给出一个错误的回答会扣去两个正确回答的分数, 直至扣到 0 分.
+这是对投机的惩罚.
+ <p>
+你也可以使用选项 <span class="tt">eqweight</span>, 这时每个错答只扣去一个正确回答的分数.
+
+在使用命令 <span class="tt">\embed</span> 时, 可以把第 k 项写成 <span class="tt">\embed{r</span>n<span class="tt">,k}</span>
+其中 <span class="tt">n</span> 是问题的序号. 在 <span class="tt">flashcard</span> 的情形,
+还可以在后面加上两行以规定纸牌的 css 格式
+(它们对于每张牌都应该是相同的, 否则就采用最后出现的说明).
+ 例如,
+<pre>
+\embed{r1,4
+style="display:inline-block;min-width:30px;min-height:30px;padding-top:10px;padding-bottom:5px;background-color:red;"
+style="display:inline-block;min-width:30px;min-height:30px;padding-top:10px;padding-bottom:5px;background-color:blue;"
+}
+</pre>
+
+
+

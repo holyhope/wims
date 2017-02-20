@@ -1,0 +1,87 @@
+!if $nbsheet>=$max_sheets
+ error=toomuchsheet
+ !exit
+!endif
+
+docu=!record $sdoc of wimshome/log/classes/$wims_class/doc/.docindex
+autosheet=!line 7 of $docu
+!if $autosheet!=$empty
+ !exit
+!endif
+dir=!line 1 of $docu
+
+donnees=!sh grep -a primitives.phtml $wims_home/public_html/modules/$dir/doc/1/*.def | grep exercise
+nbexo=!linecnt $donnees
+donsh=$empty
+!for k=1 to $nbexo
+ exodon=!line $k of $donnees
+ test=!item 2 of $exodon
+ !if exercise iswordof $test
+  liniparm=!item -2 of $exodon
+  title=!item -1 of $exodon
+  !read getparm $liniparm module,worksheet,cmd
+  test=!getdef category in wimshome/public_html/modules/$get_module/INDEX
+  !if exercise isin $test or oef isin $test
+   !for name in cmd,worksheet,module
+    liniparm=!replace internal $name=$(get_$name) by $empty in $liniparm
+   !next name
+   liniparm=!singlespace $liniparm
+   liniparm=!replace internal & by , in $liniparm
+   liniparm=!nonempty item $liniparm
+   liniparm=!replace internal , by & in $liniparm
+   helpcmd=!item 1 of $exodon
+   helpcmd=!replace internal : by , in $helpcmd
+   helpcmd=!replace internal / by , in $(helpcmd[1])
+   helpcmd=!replace internal . by , in $(helpcmd[-1])
+   tmp=:$get_module\
+$liniparm\
+10\
+1\
+$title\
+\
+\
+\
+module=$dir&block=$(helpcmd[1])&cmd=new,10
+
+   donsh=!append line $tmp to $donsh
+  !endif
+ !endif
+!next k
+
+!if $donsh=$empty
+ error=noexo
+ wims_menu_items=!append line back2,1,cmd=reply&job=prop to $wims_menu_items
+ !exit
+!endif
+
+autosheet=$[$nbsheet+1]
+
+!writefile wimshome/log/classes/$wims_class/sheets/.sheet$autosheet $donsh
+
+title=!line 3 of $docu
+desc=!line 4 of $docu
+date=!defof class_expiration in wimshome/log/classes/$wims_class/.def
+
+!appendfile wimshome/log/classes/$wims_class/sheets/.sheets :0\
+$date\
+$title\
+$desc\
+\
+autogenerate for document
+
+message=$name_confirmmksheet
+docu=!nonempty line $docu
+n=!linecnt $docu
+!if $n<=6
+ docu=!append line $autosheet to $docu
+!else
+ docu=!replace line number 7 by $autosheet in $docu
+!endif
+docu=!replace line number 6 by $autosheet in $docu
+!read proc/updatefield.proc wimshome/log/classes/$wims_class/doc/.docindex\
+$sdoc\
+\
+$docu
+!distribute lines $docu into dir,param,title,desc,status,wksheet,autosheet
+nbsheet=$[$nbsheet+1]
+job=prop

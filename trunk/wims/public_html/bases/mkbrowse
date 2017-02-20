@@ -1,0 +1,23 @@
+#! /bin/sh
+dir=`pwd`;
+cd classification;
+perl ./classif.pl
+cd $dir;
+
+### clean
+rm -f ../modules/adm/browse/taxoext/*
+rm -f ../modules/adm/tool/classification/keywords/*
+rm -f sys/taxonomy/unisciel.*
+###
+
+cd sys;
+
+for a in en fr ; do
+  perl taxonomy/taxo.pl --module=1 --output=adm/browse/taxoext --lang=$a
+done;
+
+for a in en fr it nl ca es si ; do
+  perl taxonomy/taxo.pl --option=1  --output=adm/browse --lang=$a
+done;
+
+perl taxonomy/taxo.pl --output=adm/tool/classification/keywords

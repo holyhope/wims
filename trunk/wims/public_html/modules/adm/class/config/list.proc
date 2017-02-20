@@ -1,0 +1,26 @@
+
+!if $save!=$empty
+ !read scripts/setdef.proc
+ !if $up_exotitleform!=$class_exotitleform
+!! change value of wims_exotitleform for connected student
+  !readproc adm/whoconnect 1
+  !for k=1 to $wims_numpartconnected
+   !let s=!itemcnt $(wims_whoconnect[$k])
+   !for ses=3 to $s
+    !setdef wims_exotitleform=$up_exotitleform in wimshome/sessions/$(wims_whoconnect[$k;$ses])/var.stat
+   !next ses
+  !next se
+  !setdef wims_exotitleform=$up_exotitleform in wimshome/sessions/$wims_session/var.stat
+ !endif
+ !defread wimshome/log/classes/$wims_class/.def
+ wims_class_log=Modify class configuration by $wims_realuser
+!endif
+
+!read adm/du $wims_home/log/classes/$wims_class
+
+!if $wims_superclass!=$empty
+ supertype=!defof class_type in wimshome/log/classes/$wims_superclass/.def
+ class_expiration=!defof class_expiration in wimshome/log/classes/$wims_superclass/.def
+ classdepth=!translate internal / to , in $wims_class
+ classdepth=!itemcnt $classdepth
+!endif

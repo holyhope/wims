@@ -1,0 +1,70 @@
+maxcomp=20
+maxpalier=5
+!if $wims_user=supervisor
+ livret_supervise=yes
+!else 
+ livret_supervise=no
+!endif
+livret_dir=wimshome/log/classes/$wims_class/livret
+Livret_dir=$wims_home/log/classes/$wims_class/livret
+
+!readdef $livret_dir/.def
+
+!if $livret_defined!=yes
+ !sh mkdir -p $Livret_dir;
+ !filewrite $livret_dir/.def !set livret_title=$wims_name_livret\
+!set livret_description=$empty\
+!set livret_defined=yes\
+!set livret_scoreview=-1\
+!set livret_scoreoption=class
+ !readdef $livret_dir/.def
+!endif
+
+!distribute line $livret_scorecolor\
+$livret_scoreview into wims_scorecolor,wims_scoreview
+!default wims_scorecolor=#9C9C9C,red,red,red,orange,orange,orange,yellow,yellow,green,green
+!default wims_scoreview=-1
+!if class isin $livret_scoreoption
+ wims_scorecolor=!defof class_scorecolor in wimshome/log/classes/$wims_class/.def
+!endif
+
+shcnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+asheets=$empty
+nssheets=$empty
+!for i=1 to $shcnt
+ l=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+ l=!word 1 of $l
+ !if $l>0
+  asheets=!append item $i to $asheets
+  !if $l>=2
+   nssheets=!append item $i to $nssheets
+  !endif
+ !endif
+ nbs=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
+ sheet$i=$empty
+ !for k=1 to $nbs
+  d=!record $k of wimshome/log/classes/$wims_class/sheets/.sheet$i
+  !distribute line $d into bla,bla,bla,bla,r5,r6
+  sheet$i=!append line <span class="bold">$r5</span> <span class="small">$r6</span> to $(sheet$i)
+ !next k
+!next i
+
+convert_table=$empty
+tmp=!record 0 of wimshome/log/classes/$wims_class/sheets/.weight
+ntmp=!linecnt $tmp
+cpt=1
+!for k=1 to $ntmp
+ t=!line $k of $tmp
+ !if $t!=$empty
+  t=$cpt
+  !increase cpt
+ !else
+  t=$empty
+ !endif
+ convert_table=$convert_table,$t
+!next k
+convert_table=!item 2 to -1 of $convert_table
+convert_table=!nospace $convert_table
+
+v=!values v for v=1 to $shcnt
+nasheets=!listcomplement $asheets in $v

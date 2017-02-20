@@ -1,0 +1,19 @@
+!! +exec+ +var+ +string+
+tit:replace
+type:$type_both
+syntax:!replace [internal] ``s1'' by ``s2'' in ``string''\
+!replace ``obj'' ``ident'' by ``s'' in ``string''
+mean:String manipulation. <p>\
+  Under the first syntax, variable substitution is first done on ``string''.\
+  Then all occurences of substring ``s1'' are replaced by ``s2''. <br/>\
+  When the keyword ``internal'' is absent, the Linux utility ``sed'' is called to make the replacements,\
+  therefore regular expressions are accepted in ``s1'' and ``s2''.\
+  Please refer to the man page of ``sed'' for details. </p><p>\
+  Under the second syntax, ``obj'' can be ``char'', ``word'', ``item'' or ``line''.\
+  Then the word, item or line identified by ``ident'' in ``string'' is replaced\
+  by ``s'', after variable substitutions. <br/>\
+  ``ident'' can be a string, in this case all objects (words, items or lines) matching ``ident'' \
+  will be replaced. It can also be a number (positive or negative integer ``n''), preceded\
+  by the word ``number''. In this case the object number ``n'' will be replaced.\
+  (In the case where n&lt;0, it is the last -n th object which is replaced.)\
+  </p>

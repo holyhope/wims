@@ -1,0 +1,14 @@
+!!!!read adm/class/classlang names.phtml
+alertmsg_limit=100
+nbuser=!recordcnt wimshome/log/classes/$wims_class/.userlist
+!sh mkdir -p $wims_home/log/classes/$wims_class/motd;
+
+!reset listiduser,listnameuser
+!for k=1 to $nbuser
+ l=!record $k of wimshome/log/classes/$wims_class/.userlist
+ !distribute item $l into user_firstname,user_lastname,id
+ listiduser=!append item $id to $listiduser
+ !default name_student=!nosubst $user_firstname $user_lastname
+ listnameuser=!append item $name_student to $listnameuser
+!next k
+

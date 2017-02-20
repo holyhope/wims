@@ -1,0 +1,25 @@
+<!-- _widgets/supervisorssheet.phtml -->
+!for i=1 to $sheetcnt
+ !set sh=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+ !distribute lines $sh into ac,t_,ti
+ !let exocnt_=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
+ $table_tr
+  <td>$wims_name_Sheet $i</td>
+  <td>
+    <div class="sheet_link">
+      !href module=adm/class/sheet&sheet=$i $ti
+    </div>
+    <div class="exocnt smaller">$exocnt_ $wims_name_Exercise(s)</div>
+  </td>
+  <td>$exocnt_</td>
+  !if $seq_open=yes
+    !read themes/_procs/supervisorseq.proc sheet,$ac
+  !endif
+  <td>$(wims_name_shstatus[$[$ac+1]])</td>
+  <td>
+   !read adm/sheet/sheetaction.phtml sheet,$i,$ac,1
+  </td>
+ </tr>
+!next i
+!reset exocnt_
+<!-- end _widgets/supervisorssheet.phtml -->

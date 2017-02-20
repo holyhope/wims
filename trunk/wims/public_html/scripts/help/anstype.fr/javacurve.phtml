@@ -1,0 +1,31 @@
+<b>Dessiner une droite, un polygone, des points, un segment, un vecteur,
+un rectangle, une courbe.</b>
+(nom : <span class="tt wims_code_words">javacurve</span>)
+<br />
+
+!read help/anstype.$lang/jcurve.inc general
+!set p=anstype.$lang/javacurve
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record-1
+    !set l_=!record $u of help/$p
+    $table_tr<td class="tt wims_code_variable">
+!line 1 of $l_
+    </td><td>
+!line 2 to -1 of $l_
+   </td>
+  </tr>
+  !next
+$table_end
+
+Des options peuvent être ajoutées dans le champ d'option :
+<span class="tt wims_code_words">precision</span>.
+
+Le paramètre <span class="tt wims_code_words">precision</span> doit être manié avec précaution ...
+
+!read help/anstype.$lang/jcurve.inc reply

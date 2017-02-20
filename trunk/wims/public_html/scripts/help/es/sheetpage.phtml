@@ -1,0 +1,35 @@
+<h3>Utilizar un bloque de documento para la presentación de una hoja de trabajo</h3>
+
+Pueden poner la dirección de un bloque de documento (como <span class="tt wims_fname">c1/main</span>)
+para la página de presentación de una hoja de trabajo.
+El propio documento no tiene necesidad de ser legible de los participantes.
+<p>
+Dejar este campo vacio si desean utilizar la página de presentación normal.
+<p>
+Los vínculos a los ejercicios individuales deben ser definidos por el pedido
+<span class="tt wims_code_variable">\exercise</span>.
+Pueden utilizar las variables siguientes predefinidas: <ul>
+<li><span class="tt wims_code_variable">\scorerequire</span> Puntos requeridos por cada ejercicio
+</li><li><span class="tt wims_code_variable">\scoregot</span> Trabajo del participante por cada ejercicio
+</li><li><span class="tt wims_code_variable">\scoremean</span> Resultado medio del participante por cada ejercicio
+</li><li><span class="tt wims_code_variable">\expiration</span> fecha de expiración de la hoja, aaaammdd
+</li><li><span class="tt wims_code_variable">\today</span> Fecha del día, aaaammdd
+</li>
+</ul>
+
+La valeur des variables de score est une liste de nombres, chacun des items
+correspond au nombre demandé pour un exercice de la feuille de même position.
+
+<p>
+<b>Un exemple</b> : vous êtes en train de créer la feuille d'exercices numéro 5.
+Dans le bloc du document <span class="tt wims_fname">c1/main</span>, écrivez par exemple
+<pre>
+\exercise{5/1} : Points à obtenir : \scorerequire[1] 
+                 Points déjà obtenus : \scoregot[1]
+
+\exercise{5/2} : Points à obtenir  : \scorerequire[2]
+                 Points déjà obtenus : \scoregot[2]
+
+\exercise{5/3}{Un autre titre} : Points à obtenir \scorerequire[3] ; 
+                Points déjà obtenus \scoregot[3]
+</pre>

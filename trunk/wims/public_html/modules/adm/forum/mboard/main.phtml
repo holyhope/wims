@@ -1,0 +1,52 @@
+!if $wims_class=
+  !read adm/language lang/names.phtml
+!else
+  !read adm/class/classlang names.phtml
+  !set modu_lang=$moduclass_lang
+!endif
+!if $cf_title$mb_title=
+ !if $(module_title_$modu_lang)!=
+  !set module_title=$(module_title_$modu_lang)
+ !endif
+!else
+ !if $cf_title!=
+  !set module_title_$modu_lang=$cf_title
+ !else
+  !set module_title_$modu_lang=$mb_title
+ !endif
+!endif
+!read lang/names.phtml.$modu_lang
+
+!read adm/css.phtml
+!if $job=compose
+  !read js/speckedit.phtml name_deposit
+!endif
+!if $job notwordof read list config
+ !!set nextline= $(n_$job)
+!else
+  !reset nextline
+!endif
+
+!header1
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+$(module_title_$modu_lang)\
+$nextline
+
+!if $error!=$empty
+ <div class="wims_msg alert">
+ !read lang/msg.phtml.$modu_lang
+ </div>
+ <hr />
+ !if $fatal=yes
+  <div class="wimscenter">
+  !href module=adm/forum/forum $n_listforum
+  </div>
+  !tail
+  !exit
+ !endif
+!endif
+
+!read $job.phtml
+
+!tail

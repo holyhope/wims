@@ -1,0 +1,27 @@
+!read adm/class/classname.phtml $wims_classname\
+$wims_institutionname
+
+!read adm/title.phtml 1\
+$classname\
+$wims_name_save
+
+!if $livret_nbcomp>0
+ $name_get
+ <div class="wimscenter">
+ !getfile $file $wims_name_source
+ </div>
+ <hr />
+!endif
+
+!set wims_form_method=file
+!form reply
+<input type="hidden" name="job" value="save" />
+$name_put
+&nbsp;
+<p>
+<input type="file" name="wims_deposit" size="40" />
+</p>
+<div class="wimscenter wimsform"><input type="submit" value="$wims_name_send" /></div>
+
+!formend
+

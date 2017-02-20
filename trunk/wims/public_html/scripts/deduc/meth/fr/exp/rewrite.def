@@ -1,0 +1,38 @@
+!set methtit2=Réécriture algébrique d'une expression
+!set methtit=Réécrire une expression
+!set methenv=ZZ QQ RR CC
+!set methparmtype=parm algexp nocomma nonesting, function
+!set methhelp=Déduction par réecriture algébrique. Seules les équivalences\
+ arithmétiques sont acceptées dans cette réécriture.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ Réécrire l'expression
+ !read deduc/methparm.phtml 1
+ en
+ !read deduc/methparm.phtml 2,20
+ !set methremark=Seules les équivalences arithmétiques sont acceptées dans\
+  cette réécriture.
+!exit
+:check
+ !distribute items $methparmobj1 into data,exp
+ !read deduc/sub/checkzero ($exp)-($methparm2)
+ !if $out=$empty
+  error=bad_data
+  !exit
+ !endif
+ !if $out!=yes
+  error=unjustified
+  !exit
+ !endif
+ methexp=Réécriture de \($exp)
+
+ newobject1=$methparm2
+ oldobject=1
+
+!exit
+

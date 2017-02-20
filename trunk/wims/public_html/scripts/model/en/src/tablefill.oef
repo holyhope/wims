@@ -1,0 +1,166 @@
+type=datalist
+textarea="data"
+
+:Classify the items according to their properties by filling in a table.
+
+A list of items with various properties is presented.
+The table has to be filled in by filling on the relevant boxes for each item.
+
+<p>
+To make an exercise with this model, type the list of items and a list of properties.
+If an item has a property write 1, if it does not, write 0 in the same order as the list of properties.
+ The properties should be separated by a comma.
+<p>
+This exercise can easily be modified if it is intended to be included in an OEF module and  you wish to
+include the data in a separate file.
+<p>
+Author of the model: Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Remove the above header if you destroy the model tags i.e. the lines starting
+with a ':'. Otherwise the exercise might not be recognised by Createxo.
+
+:%%%%%%%% Example parameters to be redefined %%%%%%%%%%%%%%%%%
+
+:\title{Classification (table to fill)}
+:\author{Csilla, Ducrocq}
+:\email{csilla.ducrocq@u-psud.fr}
+:\credits{}
+:Instruction
+\text{instruction=Fill in the table.}
+
+:Number of items chosen randomly
+\integer{N=3}
+
+:Name of the data file
+Only enter a name if you wish to create a separate data file
+(in an OEF module)
+of the following type
+<pre>
+fur,feathers,four legs,wings
+ :magpie,0,1,1,1
+ :cow,1,0,1,0
+</pre>
+Dans ce cas, les données suivantes ne seront pas prises en compte.
+Sinon, remplissez les données.
+
+\text{file=}
+:Liste des attributs
+\text{attribut=poils,plumes,quatre membres,ailes}
+:Données
+une ligne par objets.
+\text{data=pie,0,1,1,1
+boeuf,1,0,1,0
+chat,1,0,1,0
+moustique,0,0,0,1}
+:Textes pour la réponse
+mettre les textes correspondant aux nombres 0,1, ... dans les données des attributs
+\text{nonoui=--,X}
+
+:%%%%%%%%%%%%%% Nothing to modify before the statement%%%%%%%%%%%%%%%%
+maximum 40 cases
+\integer{w=\size[1]+10}
+
+\css{<style type="text/css">
+   .question {background-color: #FFFFCC;margin: 2% 2%;padding: 1%;}
+   table.tableau {border:solid 1px;margin-left:auto;margin-right:auto;
+    border-collapse:collapse;}
+    table.tableau td, th {text-align:center;border:solid 1px;min-width:50px;}
+   ol li {list-style: upper-alpha; }
+    table.tableau th { background-color:#CCCFFF;}
+ </style>}
+\if{\file notsametext}{
+  \text{file=randitem(\file)}
+  \text{attribut=wims(record 0 of \file)}
+  \integer{datacnt=wims(recordcnt \file)}
+  \integer{N=min(\N,\datacnt)}
+  \text{choix=shuffle(\datacnt)}
+  \text{choix=\choix[1..\N]}
+  \text{data=}
+  \for{s in \choix}{
+    \text{data=\data
+wims(record \s of \file)}
+  }
+  \matrix{data=\data}
+  \text{data=wims(replace internal ;; by ; in \data)}
+}{
+  \text{objet_cnt=rows(\data)}
+  \integer{N=min(\N,\objet_cnt)}
+  \text{bat=shuffle(\objet_cnt)}
+  \text{bat=\bat[1..\N]}
+  \matrix{data=\data}
+  \matrix{data=\data[\bat;]}
+}
+\integer{attribut_cnt=items(\attribut)}
+\integer{ch_cnt=items(\nonoui)}
+\text{Data=}
+\text{STEP=}
+\for{u=1 to \N}{
+  \text{STEP=\STEP
+   wims(makelist r x for x = (\u-1)*\attribut_cnt + 1  to  (\u)*\attribut_cnt)}
+  \text{Data=wims(append item \data[\u;2..-1] to \Data)}
+  \for{c=0 to \ch_cnt-1}{
+  \text{Data=wims(replace internal \c by \nonoui[\c+1] in \Data)}
+  }
+}
+\matrix{STEP=\STEP}
+\text{STEP1=wims(replace internal ; by , in \STEP)}
+\text{STEP1=wims(nonempty items \STEP1)}
+\steps{\STEP1}
+\statement{<div class="question">\instruction
+
+<table class="tableau"><tr><th></th>
+\for{k=1 to \attribut_cnt}{<th>\attribut[\k]</th>}
+</tr>
+\for{j=1 to \N}{
+  <tr><th>\data[\j;1]</th>
+   \for{k=1 to \attribut_cnt}{
+     <td>\embed{\STEP[\j;\k], \size[1] x \size[2]}</td>
+    }
+  </tr>
+}
+</table>
+
+</div>
+}
+\answer{}{\Data[1]}{type=clickfill}
+\answer{}{\Data[2]}{type=clickfill}
+\answer{}{\Data[3]}{type=clickfill}
+\answer{}{\Data[4]}{type=clickfill}
+\answer{}{\Data[5]}{type=clickfill}
+\answer{}{\Data[6]}{type=clickfill}
+\answer{}{\Data[7]}{type=clickfill}
+\answer{}{\Data[8]}{type=clickfill}
+\answer{}{\Data[9]}{type=clickfill}
+\answer{}{\Data[10]}{type=clickfill}
+\answer{}{\Data[11]}{type=clickfill}
+\answer{}{\Data[12]}{type=clickfill}
+\answer{}{\Data[13]}{type=clickfill}
+\answer{}{\Data[14]}{type=clickfill}
+\answer{}{\Data[15]}{type=clickfill}
+\answer{}{\Data[16]}{type=clickfill}
+\answer{}{\Data[17]}{type=clickfill}
+\answer{}{\Data[18]}{type=clickfill}
+\answer{}{\Data[19]}{type=clickfill}
+\answer{}{\Data[20]}{type=clickfill}
+\answer{}{\Data[21]}{type=clickfill}
+\answer{}{\Data[22]}{type=clickfill}
+\answer{}{\Data[23]}{type=clickfill}
+\answer{}{\Data[24]}{type=clickfill}
+\answer{}{\Data[25]}{type=clickfill}
+\answer{}{\Data[26]}{type=clickfill}
+\answer{}{\Data[27]}{type=clickfill}
+\answer{}{\Data[28]}{type=clickfill}
+\answer{}{\Data[30]}{type=clickfill}
+\answer{}{\Data[31]}{type=clickfill}
+\answer{}{\Data[32]}{type=clickfill}
+\answer{}{\Data[33]}{type=clickfill}
+\answer{}{\Data[34]}{type=clickfill}
+\answer{}{\Data[35]}{type=clickfill}
+\answer{}{\Data[36]}{type=clickfill}
+\answer{}{\Data[37]}{type=clickfill}
+\answer{}{\Data[38]}{type=clickfill}
+\answer{}{\Data[39]}{type=clickfill}
+\answer{}{\Data[40]}{type=clickfill}
+

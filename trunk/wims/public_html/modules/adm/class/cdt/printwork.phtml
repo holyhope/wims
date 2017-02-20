@@ -1,0 +1,100 @@
+!read adm/class/classname.phtml $wims_classname\
+$wims_institutionname
+
+!read adm/title.phtml 1\
+$classname\
+$cdt_title
+
+<div class="wimscenter" style="font-weight:bold;">
+ $name_worktodo
+ !if $jour_begin!=$jour_end
+  $name_between <span class="wims_emph">
+    !read date.phtml $jour_begin,notime
+  </span>
+  $name_and <span class="wims_emph">
+    !read date.phtml $jour_end,notime
+  </span>
+ !else
+  $name_for
+  <span class="wims_emph">
+    !read date.phtml $jour_begin,notime
+  </span>
+ !endif
+</div>
+
+
+!if $cdt_nbdate=0
+ $name_noinfo1.
+ !goto end
+!else
+ !if $nbligne=0
+  !if $jour_begin=$jour_end
+   $name_noinfo2.
+  !else
+   $name_noinfo3.
+  !endif
+  !goto end
+ !endif
+!endif
+
+ !let table_border=1
+ $table_header
+ $table_hdtr
+  <th>$name_Day</th>
+  !if no isin $cdt_supervise
+   <th>$name_discipline</th>
+  !endif
+  <th>$name_inclass</th><th>$name_worktodo</th><th style="width:30px">$name_for</th>
+ </tr>
+ !for i=1 to $nbligne
+  !let don=!line $i of $list
+  !distribute item $don into jour,file,matiere
+  !let m_filedir=$wims_ref_name?session=$wims_session&cmd=getfile&special_parm=cdt/$file
+  !let file=wimshome/log/classes/$file/cdt/def/$jour
+  !read $file
+  !let nbtodo=!itemcnt $date_todo
+  !let snbtodo=$[max(1,$nbtodo)]
+  <tr class="$(table_colors[$i%2+1])">
+   <td rowspan="$snbtodo">
+    !read adm/lang/datemenu.phtml.$moduclass_lang 5,$jour,$dateoption
+   </td>
+   !if no isin $cdt_supervise
+    <td rowspan="$snbtodo">$matiere</td>
+   !endif
+   <td rowspan="$snbtodo" valign="top">
+    !read $file content
+   </td>
+   !if $nbtodo>0
+    <td valign="top">
+    !read $file todo1
+    </td>
+    <td>
+     !read adm/lang/datemenu.phtml.$moduclass_lang 5,$date_todo,$dateoption
+    </td>
+   !else
+    <td>&nbsp;</td><td>&nbsp;</td>
+   !endif
+  </tr>
+   !if $nbtodo>1
+    !for j=2 to $nbtodo
+     <tr class="$(table_colors[$i%2+1])">
+      <td valign="top">
+       !read $file todo$j
+      </td>
+      <td>
+       !let tmp=!item $j of $date_todo
+       !read adm/lang/datemenu.phtml.$moduclass_lang 5,$tmp,$dateoption
+      </td>
+     </tr>
+    !next j
+   !endif
+ !next i
+ $table_end
+
+:end
+!if _ notin $wims_session
+ !set wims_menu_items=!append line back2,1,module=$module \
+ to $wims_menu_items
+!endif
+
+!tail

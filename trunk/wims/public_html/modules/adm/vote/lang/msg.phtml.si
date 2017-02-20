@@ -1,0 +1,67 @@
+!set wims_module_log=error: $error
+
+<span class="wims_warning">$wims_name_Error</span>.
+!if $error=badvariablename
+ L'une, au moins, des variables techniques que vous utilisez n'existe pas ou n'est pas modifiable à ce niveau. Votre questionnaire ne fonctionnera pas correctement. 
+ !exit
+!endif
+
+!if $error=notechvar
+ Aucune variable technique définie dans cette classe. Pour utiliser ce modèle de questionnaire vous devez d'abord définir une variable technique dans la classe en utilisant le gestionnaire de variable technique.
+ !exit
+!endif
+
+!if $error = not_user
+ Sistem anket je dostopen le v virtualnih uèilnicah.
+ !exit
+!endif
+
+!if $error = bad_vote
+ Anketa, ki jo i¹èete, ne obstaja.
+ !exit
+!endif
+
+!if $error = already_voted
+ Svoj glas ste ¾e oddali. V anonimni anketi veèkratno glasovanje ni dovoljeno.
+ !exit
+!endif
+
+!if $error = too_many_votes
+ V va¹i uèilnici je preveè anket.
+ Ali jih res potrebujete toliko?
+ !exit
+!endif
+
+!if $error = no_content
+ Anketnega vpra¹alnika niste izpolnili.
+ !exit
+!endif
+
+!if $error = no_title
+ Anketi morate dati naslov.
+ !exit
+!endif
+
+!if $error = bad_data
+ Nekatere va¹i podatki niso smiselni. Prosim, da jih popravite.
+ !exit
+!endif
+
+!if $error = no_vote
+ Vous n'avez pas encore voté donc vous ne pouvez pas voir les résultats.
+ !exit
+!endif
+
+!if $error = no_variable
+   Vous n'avez pas donné de nom de variable ou il n'est pas valide.
+   !exit
+!endif
+
+!if $error = bad_variable
+   Le nom de variable que vous avez donné (<span class="tt wims_code_words">$namevar</span>) ne convient pas car il 
+   est peut-être utilisé par le logiciel.
+   !exit
+!endif
+
+!msg $error
+

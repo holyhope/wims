@@ -1,0 +1,1110 @@
+!reset weight output ggblang typeu precisionn feedbackbutton listcoord
+!if $wims_read_parm=nocompare
+  !if ? isin $(reply$i)
+    !exit
+  !endif
+!endif
+
+### see if he pressed the "I have no clue" button...
+!if ? isin $(reply$i)
+    freegot=$[$freegot + 0.1]
+    diareply$i=bad
+    reply$i=Je ne sais pas.
+    !exit
+!endif
+
+!reset scenario scenario_cnt scenario_tab scenario_list zdzd
+scenario=!trim $(replyoption$i)
+scenario=!items2lines $scenario
+scenario=!replace internal $	$ by $\
+$ in $scenario
+scenario=!rows2lines $scenario
+scenario=!replace internal @ by $\
+$ in $scenario
+scenario=!line 2 to -1 of $scenario
+default scenario_cnt=1
+scenario_cnt=!linecnt $scenario
+
+!for qs=1 to $scenario_cnt
+  zdzd=!line $qs of $scenario
+  zdzd=!replace internal : by , in $zdzd
+  scenario_tab=!append line $zdzd to $scenario_tab
+!next
+
+!for rr=1 to $scenario_cnt
+  blbl=!charcnt $(scenario_tab[$rr;1])
+  !if $blbl=0 or $(scenario_tab[$rr;1]) isin $(reply$i)
+!!A améliorer avec $scenario_test pour effectuer des tests plus complexes mais l'expression n'est pas évaluée
+!!scenario_test=!replace internal reponse by $(reply$i) in $(scenario_tab[$rr;1])
+!!if $scenario_test
+    scenario_list=!append item $rr to $(scenario_list)
+!!endif
+  !endif
+!next
+!default scenario_list=0
+
+extra=!getopt extra in $(replyoption$i)
+output=!getopt output in $(replyoption$i)
+!if $output notwordof coord nocoord formal nothing noobjet
+  !reset output
+!endif
+
+replyoption$i=!replace internal weights by weight in $(replyoption$i)
+weight=!getopt weight in $(replyoption$i)
+weight=!replace internal & by , in $weight
+precisionn=!getopt precision in $(replyoption$i)
+!default precisionn=18
+!!precision=$[2*$precisionn]
+!default weight=1,0.2,1
+!default output=coord
+parameters=$(oef_answer_option$i)
+ggblang=!getopt language in $(oef_answer_option$i)
+!default ggblang=$lang_choice
+!default ggblang=$module_language
+!read lang/geogebra.phtml.$ggblang
+!if $lang_exists!=yes
+  !read lang/geogebra.phtml.en
+!endif
+!!Insert the variable $type/langue
+!read anstype/geogebra_translation
+!set typecnt=!linecnt $typelangue
+
+!reset name_listtype
+!!dictionnary with pari programs in geogebra.inc.
+!for a=1 to $typecnt
+  !set ltype=!line $a of $typelangue
+  !set ltype=!replace internal = by , in $ltype
+  !set ltype=!nospace $ltype
+  !set w_$(ltype[2])=$(ltype[1])
+  !set name_listtype=!append item $(ltype[2]) to $name_listtype
+  !set ltype=!line $a of $typelangue
+  !set ltype=!replace internal = by , in $ltype
+  !set ltype=!nospace $ltype
+  !!set en_w_$(ltype[2])=$(ltype[1])
+!next
+
+!read anstype/geogebra.inc
+!!exec pari $pari_header
+
+!set feedbackscript=!getopt feedbackscript in $(replyoption$i)
+!if $feedbackscript!=$empty
+    !set namebutton=!getopt namebutton in $(replyoption$i)
+    !default namebutton=$name_ggbcorrection
+    !set feedbackbutton=<input id="geogebra_feedback" style="display:inline;" \
+type="button" value="$namebutton" onClick="$(feedbackscript)();" />
+!endif
+
+#######################
+###INITIALISATION
+
+conic=circle,line,conic,parabola,ellipse,hyperbola,ray
+
+yourlist_name=!row 1 of $(reply$i)
+yourlist_name=!replace internal " by $ $ in $yourlist_name
+yourlist_name=!nospace $yourlist_name
+yourlist_name=!replace internal && by $\
+$ in $yourlist_name
+
+###yourlist_name: A=point,2,3\
+a=line,2x+5y-((3)) \
+b=circle,(x-2)^2+(y+3)^2-((4))
+
+### name list in the same order
+your_name=!replace internal = by , in $yourlist_name
+your_type=!column 2 of $your_name
+your_name=!column 1 of $your_name
+your_coord=!column 2 to -1 of $yourlist_name
+ynamecnt=!itemcnt $your_name
+yourlistformal=!row 2 of $(reply$i)
+yourlistformal=!nospace $yourlistformal
+yourlistformal=!replace internal && by $\
+$ in $yourlistformal
+
+yourlist_name_nonignore=$yourlist_name
+yourlist_nonignore=!replace internal = by , in $yourlist_name_nonignore
+yourlist_nonignore=!column 2 to -1 of $yourlist_nonignore
+
+### yourlist1= A=point,b ; a=Segment,A,C .....
+### add trivial relations A=point a=Segment,A,C => A=point&A=point,a
+
+##liste des objets avec commentaires , useful to replace instruction by language
+## as in lang/geogebra.phtml.xx
+## on le place ici pour pouvoir analyser les polygones
+!if $output iswordof coord nocoord
+ yourlist$output=
+ !for a = 1 to $ynamecnt
+   ob=!line $a of $yourlist_name
+   M_objet=!replace internal = by , in $ob
+   M_objet=!replace internal -(( by = in $M_objet
+   M_objet=!replace internal )) by in $M_objet
+   type=!nospace $(M_objet[2]) $output
+   type=!lowercase $type
+   ob1=$ob
+   ob=$($type)
+   !if $(M_objet[2]) issametext segment
+     obcnt=!itemcnt $ob1
+     !if $obcnt>=5
+       !reset ob
+     !endif
+   !endif
+   yourlist$output = !append line $ob to $(yourlist$output)
+   !reset type M_objet
+ !next
+!endif
+
+###Traduction des instruction ggb Line -> line
+!!!no more useful ??
+yourlist1=$yourlistformal
+!for a=1 to $typecnt
+  !if $(w_$(name_listtype[$a]))!=$empty
+  !set yourlist1=!replace internal $(w_$(name_listtype[$a]))[ by $(name_listtype[$a])[ in $yourlist1
+  !endif
+!next
+
+yourlist1=!replace internal [ by , in $yourlist1
+yourlist1=!replace internal ] by  in $yourlist1
+yourlist11=!rows2lines $yourlist1
+yourlist1=$yourlist11
+
+!for li = 1 to $ynamecnt
+  ligne=!line $li of $yourlist11
+  ligne1=!replace internal = by , in $ligne
+!! case where a point has been built by A=(1,2)
+!! to check, the test is minimal !(is there some parenthesis in other cases ?)
+!! should be changed in the javascript ?
+!! A=1,2 seems to create a cursor ??
+  par=(
+  !if $par isin $(ligne1[2])
+    ligne1=!line $li of $yourlist_name
+  !endif
+  vartemp=!lower $(ligne1[2])
+  vartemp=!deaccent $vartemp
+  vartemp=!getopt $vartemp in $typelangue
+  !if $vartemp iswordof segment line ray midperpendicular parallel perpendicular middle
+   !for u = 3 to 4
+    !if $(ligne1[$u]) notsametext
+      b=!positionof item $(ligne1[$u]) in $your_name
+      ligneb=!line $b of $yourlist_name
+      lignebb=!replace internal = by , in $ligneb
+      ligneb1=!line $b of $yourlist1
+      !if $(lignebb[2]) iswordof point
+        yourlist1=!replace line number $b by $ligneb1&&point,$(ligne1[1]) in $yourlist1
+      !endif
+    !endif
+   !next
+  !endif
+  !if $(ligne1[2]) iswordof $w_ARC
+     !for u = 3 to 5
+        !if ($(ligne1[5]) issametext and $u=4) or $(ligne1[2]) iswordof $(w_ARC[2]) or ($(ligne1[5]) notsametext \
+          and (($(ligne1[2]) notwordof $(w_ARC[3]) or $u>3)))
+          !if $(ligne1[$u]) notsametext
+            b=!positionof item $(ligne1[$u]) in $your_name
+            ligneb=!line $b of $yourlist_name
+            lignebb=!replace internal = by , in $ligneb
+            ligneb1=!line $b of $yourlist1
+            !if $(lignebb[2]) iswordof point
+              yourlist1=!replace line number $b by $ligneb1&&point,$(ligne1[1]) in $yourlist1
+            !endif
+          !endif
+        !endif
+        !if ($(ligne1[5]) issametext and $(ligne1[2]) notwordof $(w_ARC[3]) and $u=3)
+          !if $(ligne1[$u]) notsametext
+            b=!positionof item $(ligne1[$u]) in $your_name
+            ligneb=!line $b of $yourlist_name
+            lignebb=!replace internal = by , in $ligneb
+            ligneb1=!line $b of $yourlist1
+            !if $(lignebb[2]) iswordof point
+             yourlist1=!replace line number $b by $ligneb1&&$center,$(ligne1[1]) in $yourlist1
+            !endif
+          !endif
+        !endif
+     !next
+  !endif
+  !if $vartemp iswordof intersection
+    !for u = 3 to 4
+      !if $(ligne1[$u]) notsametext
+        ligneb=!line $li of $yourlist1
+        yourlist1=!replace line number $li by $ligneb&&point,$(ligne1[$u]) in $yourlist1
+      !endif
+    !next
+  !endif
+  !if $vartemp iswordof point
+     ligne1=!line $li of $yourlist_name
+     ligne1=!replace = by , in $ligne1
+     !set listcoord=!append line setCoords('$(ligne1[1])',$(ligne1[3]),$(ligne1[4])) to $listcoord
+  !endif
+!next li
+#### read intersections
+!for li = 1 to $ynamecnt
+  ligne=!line $li of $yourlist1
+  ligne1=!replace internal && by $\
+$ in $ligne
+  ligne1=!replace internal = by $\
+$ in $ligne1
+  pos=!column 1 of $ligne1
+  v=!positionof item point in $pos
+  vcnt =!itemcnt $v
+  !if $vcnt > 1
+   !for r= 1 to $vcnt-1
+    !for j=$[$r+1] to $vcnt
+      !if $(ligne1[$(v[$r]);2]) notsametext  and $(ligne1[$(v[$j]);2]) notsametext
+        rab=$intersection,$(ligne1[$(v[$r]);2]),$(ligne1[$(v[$j]);2])
+        !if $rab notin $ligne
+          ligne=$ligne&&$rab
+        !endif
+      !endif
+    !next
+   !next
+   yourlist1=!replace line number $li by $ligne in $yourlist1
+  !endif
+!next
+
+yourlist_nonignore_cnt=!linecnt $yourlist_nonignore
+
+## in yourlist, there are the initial objects
+## pour chacun des noms, coordinates or equations and the type
+## if no relation (detected by [ ]) in the definition
+## used for reconstruction: yourggb
+## the points are fixed in the answer
+### conditions of type eq_c:equation
+
+yourggb=
+js_fix=
+!for p = 1 to $ynamecnt
+  ob=!line $p of $yourlistformal
+  ob1=!replace internal = by , in $ob
+  ob1=!replace internal [ by , in $ob1
+  ob1=!replace internal ] by , in $ob1
+  name=!item 1 of $ob1
+  type=!item 2 of $ob1
+  !if [ notin $ob
+    js_fix = !append line setFixed('$name',true) to $js_fix
+    ob1=!getopt $name in $yourlist_name
+    typetest=!item 1 of $ob1
+    typetest=!lowercase $typetest
+    ob1=!item 2 to -1 of $ob1
+    !if $typetest isitemof point,vector
+      ob=!nospace $name = ( $ob1 )
+    !else
+      ob=!nospace $name = $ob1
+    !endif
+  !endif
+  ob=!replace internal -(( by = in $ob
+  ob=!replace internal )) by $ $ in $ob
+  ob=!nospace $ob
+  !if $type=function
+   ob=!line $p of $yourlist_name
+   ob=!replace internal function, by in $ob
+  !endif
+  !if $type=line
+   ob = !replace internal = by , in $ob
+   ob=$(ob[1]):$(ob[2])=$(ob[3])
+  !endif
+  yourggb=!append line $ob to $yourggb
+!next p
+yourggb1=$yourggb
+
+!! - traitement verbeux -- type=segment, polygon, intersection
+!! - too much lines for polygons: segment wtih 3 arguments (this should be deleted)
+
+yourggb=
+!for p = 1 to $ynamecnt
+  ob=!line $p of $yourggb1
+  ob1=!replace internal = by , in $ob
+  ob1=!replace internal [ by , in $ob1
+  ob1=!replace internal ] by , in $ob1
+  name=!item 1 of $ob1
+  type=!item 2 of $ob1
+  type=!lower $type
+  type=!getopt $type in $typelangue
+  !if $type issametext segment
+    obcnt=!itemcnt $ob1
+    !if $obcnt>5
+       !reset ob
+    !endif
+  !endif
+  !if $type issametext polygon
+    ob1=!getopt $name in $yourlist_name
+    !if $(ob1[1]) notsametext polygon
+      !reset ob
+    !endif
+  !endif
+  !if $type issametext intersection
+    ob1=!getopt $name in $yourlist_name
+    ob2=!replace internal [ by , in $ob
+    ob2=!replace internal ] by , in $ob2
+    name1=$(ob2[2])
+    name2=$(ob2[3])
+    name1=!positionof item $name1 in $your_name
+    name2=!positionof item $name2 in $your_name
+    name1=!line $name1 of $yourlist_name
+    name1=!replace internal = by , in $name1
+    name2=!line $name2 of $yourlist_name
+    name2=!replace internal = by , in $name2
+    !if circle iswordof $(name1[2]) $(name2[2])
+     !if $test_inter=$empty
+      test_inter=!getopt $name in $ob
+      !if ,1] notin $ob and ,2] notin $ob
+        ob=!replace internal ] by ,1] in $ob
+      !endif
+     !else
+       test_inter2=!getopt $name in $ob
+       !if $test_inter issametext $test_inter2
+        ob=!replace internal ] by ,2] in $ob
+       !endif
+       !reset test_inter test_inter2
+     !endif
+    !endif
+  !endif
+  yourggb=!append line $ob to $yourggb
+!next
+
+yourlistformal=
+!for a = 1 to $ynamecnt
+  ob=!line $a of $yourggb1
+  M_objet=!replace internal = by , in $ob
+  !if ]] isin $(M_objet)
+    M_objet=!replace internal [ by , in $(M_objet)
+    M_objet=!replace internal ] by  in $(M_objet)
+    M_objet=$(M_objet[1]),$(M_objet[2])$(M_objet[3]),$(M_objet[4..-1])
+  !else
+    M_objet=!replace internal [ by , in $(M_objet)
+    M_objet=!replace internal ] by  in $(M_objet)
+  !endif
+  vartemp=!lower $(M_objet[2])
+  vartemp=!deaccent $vartemp
+  type=!getopt $vartemp in $typelangue
+  !if $type!=
+    cn = !itemcnt $M_objet
+    cn = $[$cn-2]
+    type1=$type
+    !if $type notwordof polygon or $cn<=3
+      !for u = 1 to $cn
+        !if $(M_objet[2+$u]) notsametext
+          typeu=!positionof item $(M_objet[2+$u]) in $your_name
+          !if $typeu issametext
+            typeu=numeric
+          !else
+            !!typeu=!line $typeu of $yourlist_name
+            !!typeu=!replace internal = by , in $typeu
+            !!typeu=!deaccent $(typeu[2])
+            typeu=$(your_type[$typeu])
+          !endif
+          type=$type $typeu
+        !endif
+      !next
+      test=!text select 012345678 in $[$(M_objet[5])]
+      !if $test=$(M_objet[5])] and $[$(M_objet[5])] <=8 and $type1 iswordof polygon
+        type = $type1 $(M_objet[5])
+      !endif
+    !else
+       !if $cn <=8
+         type=$type point $cn
+       !endif
+    !endif
+    type=!nospace $type formal
+    yourlistformal = !append line $($type) to $yourlistformal
+  !else
+     yourlistformal = !append line $ob to $yourlistformal
+  !endif
+   !reset type M_objet
+!next
+
+!if $wims_read_parm=nocompare
+ !goto end
+!endif
+
+###############################################################################################################################################
+### traitement de replygood en incluant l'option scenario
+### numerical conditions
+### mylist2= x_A > x_B,texte1 ; (x_A)^2+(x_B)^2 < 3,texte2 ....
+!reset gg ggg uu mylist
+!for gg in $scenario_list
+  !for ggg in $(scenario_tab[$gg;2..-1])
+    good$gg=!append line $(replygood$i[$ggg;]) to $(good$gg)
+  !next ggg
+  mylist=$(good$gg)
+
+  !default mylist=$(replygood$i)
+
+### set "all" possible scores zero
+  !distribute items 0,0,0,0,0,0,0,0,0 into name_score, num_cond_score, formal_cond_score, \
+total_name,total_num_cond, total_formal_cond, check, cond,score
+
+ !for geoword in $name_listtype
+   !if $(w_$geoword)!=$empty
+     mylist=!replace internal $(w_$geoword)[ by $geoword[ in $mylist
+   !endif
+ !next
+
+  mylist=!rows2lines $mylist
+  mylist=!replace internal ; by $\
+$ in $mylist
+
+  mylist_cnt=!linecnt $mylist
+  !reset mylist1 mylist2
+  !distribute items 0,0 into tmp1,tmp2
+
+  fn=f,n
+  memory=
+#separe numerical conditions and formal conditions
+#keep the order in memory
+  !for k = 1 to $mylist_cnt
+    ligne=!line $k of $mylist
+    !if $(ligne[1]) iswordof f n formal numeric
+      v=!text select fn in $(ligne[1])
+      j=!positionof item $v in f,n
+      mylist$j=!append line $(ligne[2..-1]) to $(mylist$j)
+      tmp$j=$[$(tmp$j)+1]
+      memory=!append line $j,$(tmp$j) to $memory
+    !endif
+  !next
+
+### rem: 1 to 1 permet de garder en colonnes
+  mylist1display=!column 2 to -1 of $mylist1
+  mylist1=!column 1 to 1 of $mylist1
+
+  mylist1=!replace internal [ by , in $mylist1
+  mylist1=!replace internal ] by  in $mylist1
+
+  mylist1_cnt=!linecnt $mylist1
+  mylist2_cnt=!linecnt $mylist2
+  mylist2orig=$mylist2
+
+### unfinish
+### transform some formal conditions in numerical conditions
+### see geogebra_translation
+### ray line midperpendicular perpendicular middle angle anglegeom bisector circle
+
+  !if $precisionn>12
+    pr=13
+  !else
+   pr=$precisionn
+  !endif
+
+ !for p= 1 to $mylist2_cnt
+  ligne=!line $p of $mylist2
+  lignetest=!text select =] in $ligne
+  lignetest=!nospace $lignetest
+  !if ]= isin $lignetest
+    ??
+  !endif
+  ligne=!replace internal = by , in $ligne
+  ligne=!replace internal [ by , in $ligne
+  ligne=!replace internal ] by , in $ligne
+  vartemp=!lower $(ligne[2])
+  vartemp=!deaccent $vartemp
+  vartemp=!getopt $vartemp in $typelangue
+  !if $vartemp iswordof ray line
+    name=!positionof item  $(ligne[4]) in $your_name
+    !!type=!line $name of $yourlist_name
+    !!type=!replace internal = by , in $type
+    ### delete , after checks
+    type=$(your_type[$name])
+    !if $type=point
+      ligne_num=eq_$(ligne[1]):(y_$(ligne[4])-y_$(ligne[3]))*(x-x_$(ligne[3])) - (x_$(ligne[4])-x_$(ligne[3]))*(y-y_$(ligne[3]))=0
+    !endif
+    !if $type=vector
+      ligne_num=eq_$(ligne[1]):y_$(ligne[4]*(x-x_$(ligne[3])) - (x_$(ligne[4]))*(y-y_$(ligne[3]))=0
+    !endif
+    !if $type=line
+      ligne_num=eq_$(ligne[1]):a_$(ligne[4])*(x-x_$(ligne[3])) + b_$(ligne[4])*(y-y_$(ligne[3]))=0
+    !endif
+    mylist2=!replace line number $p by $ligne_num in $mylist2
+  !endif
+  !if $vartemp iswordof midperpendicular
+    ligne_num=eq_$(ligne[1]):(x_$(ligne[4])-x_$(ligne[3]))*(x-(x_$(ligne[3])+x_$(ligne[4]))/2) + (y_$(ligne[4])-y_$(ligne[3]))*(y-(y_$(ligne[3])+y_$(ligne[4]))/2)=0
+    mylist2=!replace line number $p by $ligne_num in $mylist2
+  !endif
+  !if $vartemp iswordof perpendicular
+    ligne_num=eq_$(ligne[1]):b_$(ligne[4])*(x-(x_$(ligne[3]))) - (a_$(ligne[4]))*(y-(y_$(ligne[3])))=0
+    mylist2=!replace line number $p by $ligne_num in $mylist2
+  !endif
+  !if $vartemp iswordof middle
+    ligne_num=abs(x_$(ligne[1])-(x_$(ligne[3])+x_$(ligne[4]))/2)<10^(-$pr)&&abs(y_$(ligne[1])-(y_$(ligne[3])+y_$(ligne[4]))/2)<10^(-$pr)
+    mylist2=!replace line number $p by $ligne_num in $mylist2
+  !endif
+  !if $vartemp iswordof angle
+    ligne_num=abs(arg((x_$(ligne[6])-x_$(ligne[5])+i*(y_$(ligne[6])-y_$(ligne[5])))/(x_$(ligne[4])-x_$(ligne[3])+i*(y_$(ligne[4])-y_$(ligne[3]))))*180/pi-$(ligne[1]))<10^(-$pr)
+    mylist2=!replace line number $p by $ligne_num in $mylist2
+  !endif
+  !if $vartemp iswordof anglegeom
+    ligne_num=abs(abs(arg((x_$(ligne[5])-x_$(ligne[4])+i*(y_$(ligne[5])-y_$(ligne[4])))/(x_$(ligne[3])-x_$(ligne[4])+i*(y_$(ligne[3])-y_$(ligne[4])))))*180/pi-abs($(ligne[1])))<10^(-$pr)
+    mylist2=!replace line number $p by $ligne_num in $mylist2
+  !endif
+  !if $vartemp iswordof bisector
+    _x1=x_$(ligne[3])-x_$(ligne[4])
+    _x2=x_$(ligne[4])
+    _x3=x_$(ligne[5])-x_$(ligne[4])
+    _y1=y_$(ligne[3])-y_$(ligne[4])
+    _y2=y_$(ligne[4])
+    _y3=y_$(ligne[5])-y_$(ligne[4])
+    _c1=sqrt(($_x1)^2+($_y1)^2)
+    _c3=sqrt(($_x3)^2+($_y3)^2)
+    _X1=$_x2 + ($_x1)/$_c1
+    _X3=$_x2 + ($_x3)/$_c3
+    _Y1=$_y2 + ($_y1)/$_c1
+    _Y3=$_y2 + ($_y3)/$_c3
+     ligne_num=eq_$(ligne[1]):($_X1-($_X3))*(x-$_x2)+($_Y1-($_Y3))*(y-$_y2)=0
+     mylist2=!replace line number $p by $ligne_num in $mylist2
+  !endif
+  !if $vartemp iswordof circle
+    test = !text remove 0123456789. in $(ligne[4])
+    !if $test=$empty
+     ligne_num=eq_$(ligne[1]):(x-x_$(ligne[3]))^2 +(y-y_$(ligne[3]))^2=($(ligne[4]))^2
+    !else
+     ligne_num=eq_$(ligne[1]):(x-x_$(ligne[3]))^2 +(y-y_$(ligne[3]))^2=(x_B-x_A)^2 + (y_B-y_A)^2
+    !endif
+    mylist2=!replace line number $p by $ligne_num in $mylist2
+  !endif
+ !next
+
+#### donnees presentes dans l'applet
+cnt=!linecnt $oef_applet_command
+feed=
+### bogue s'il y a des informations sur les points en doubles
+mylist11=
+!for a = 1 to $cnt
+   ligne=!line $a of $oef_applet_command
+   ligne1=!replace internal = by ,=, in $ligne
+   !if $(ligne1[2]) notsametext =
+     feed=!append line $ligne to $feed
+   !else
+     mylist11=!append line $ligne to $mylist11
+   !endif
+!next
+
+mylist11=!append line $mylist1 to $mylist11
+
+mylist_name= !replace internal = by , in $mylist11
+mylist11=!replace internal [ by , in $mylist11
+mylist11=!replace internal ] by , in $mylist11
+
+my_name= !column 1 of $mylist_name
+##version verbeuse
+mylistformal=
+!for a = 1 to $mylist1_cnt
+  ob=!line $a of $mylist1
+  M_objet=!replace internal = by , in $ob
+  !if ]] isin $(M_objet)
+    M_objet=!replace internal [ by , in $(M_objet)
+    M_objet=!replace internal ] by  in $(M_objet)
+    M_objet=$(M_objet[1]),$(M_objet[2])$(M_objet[3]),$(M_objet[4..-1])
+  !else
+    M_objet=!replace internal [ by , in $(M_objet)
+    M_objet=!replace internal ] by  in $(M_objet)
+  !endif
+  vartemp=!lower $(M_objet[2])
+  vartemp=!deaccent $vartemp
+  type=!getopt $vartemp in $typelangue
+  !if $type!=
+    cn = !itemcnt $M_objet
+    !for lll = 1 to $[$cn]
+     !if $(M_objet[$lll]) issametext
+       M_objet=!replace internal item number $lll by ?? in $M_objet
+     !endif
+    !next
+    cn = $[$cn-2]
+    !if $type notwordof polygon or $cn<=3
+      !for u = 1 to $cn
+        !reset typeu
+        !if $(M_objet[2+$u]) notsametext  and $(M_objet[2+$u]) notsametext ??
+          typeu=!positionof item $(M_objet[2+$u]) in $my_name
+          ## il peut ne pas exister si defini par eq_c .
+          !if $typeu issametext
+            typeu=numeric
+          !else
+            typeu=!line $typeu of $mylist11
+            typeu=!replace internal = by , in $typeu
+            vartemp=!lower $(typeu[2])
+            vartemp=!deaccent $vartemp
+            typeu=!getopt $vartemp in $typelangue
+            !default typeu=point
+            !if $typeu iswordof center
+              typeu=point
+            !endif
+          !endif
+        !endif
+        !if $(M_objet[2+$u]) issametext ??
+          typeu= _
+        !endif
+        type=$type $typeu
+      !next
+     !else
+       !if $cn <=8
+         type=$type point $cn
+       !endif
+    !endif
+    type=!nospace $type formal
+    ligne=$($type)
+    !if $ligne notsametext
+      mylistformal = !append line $ligne to $mylistformal
+    !else
+      mylistformal = !append line $ob to $mylistformal
+    !endif
+  !else
+    mylistformal = !append line $ob to $mylistformal
+  !endif
+  !reset type M_objet
+!next
+mylist1=!replace internal ?? by in $mylist1
+
+###FORMAL CONDITION
+## j'avais mis une liste "déjà utilisée", puis j'ai commenté. A voir
+##Cela évitait qu'un nom serve plusieurs fois.
+# pour les conditions formelles, il faudrait un passage supplémentaire :
+## faire auparavant les calculs correspondants de manière à avoir pour mylist
+##les informations numériques
+used_list=
+mscr=
+total=
+display=
+displaylist1=
+!for p=1 to $mylist1_cnt
+  mobj2=!line $p of $mylistformal
+  klaar=0
+  result=
+  !increase total_formal_cond
+  cond=!line $p of $mylist1
+  display=!line $p of $mylist1display
+  display=!declosing $display
+  !if $display notsametext
+    display2=$display
+  !else
+    display2=$mobj2
+  !endif
+  result=$display2 <span class="oef_indbad">$w_no</span>
+  mscr2=0
+  cond=!nospace $cond
+  cond=!replace internal = by , in $cond
+  !distribute item $cond into name,type
+  type=!lower $type
+  type2=!getopt $type in $typelangue
+  !if $type2 issametext
+     type2=$type
+  !endif
+  obj=!item 3 to -1 of $cond
+  obj=!nospace $obj
+  !if $obj$name issametext
+  ### the author must define enough objects
+  ### must give the name or a hint for definition
+    Test=bad $i
+    !exit
+  !endif
+  !if $type2 iswordof segment line intersection bissector center middle midperpendicular
+    obj=$obj $(obj[2]),$(obj[1])
+  !endif
+  !if $type2 iswordof angle
+    obj=$obj $(obj[3]),$(obj[2]),$(obj[1])
+  !endif
+  !if $type2 iswordof polygon
+     obcn=!itemcnt $obj
+     obj1 = $obj
+      !for j=1 to $obcn
+          perm=!values (h+$j)%$obcn + 1 for h = -1 to $obcn-2
+          o=!nospace $(obj1[$perm])
+          obj=$obj $o
+          perm=!values ($obcn-h+$j)%$obcn + 1 for h = 0 to $obcn-1
+          o=!nospace $(obj1[$perm])
+          obj=$obj $o
+      !next
+  !endif
+  !if $name != $empty
+    !increase total_name
+    ypos=!positionof item $name in $your_name
+    yobj2=!line $ypos of $(yourlist$output)
+    !if $output issametext nothing
+      yobj2=
+    !endif
+  !!used_list=!append item $ypos to $used_list
+    yobj1=!getopt $name in $yourlist1
+    yobj1=!replace internal && by $\
+$ in $yobj1
+    yoblinecnt=!linecnt $yobj1
+    !for li = 1 to $yoblinecnt
+     !if $klaar=0
+      yobj=!line $li of $yobj1
+      vartemp=!lower $(yobj[1])
+      !if $vartemp iswordof $type $type2
+        yobj=!item 2 to -1 of $yobj
+        yobj=!nospace $yobj
+        yobj=!replace internal , by virgule in $yobj
+        obj=!replace internal , by virgule in $obj
+        ycnt=!wordcnt $obj
+        !if $ycnt=0
+          klaar=1
+          !increase formal_cond_score
+          !increase name_score
+          result=$display2 <span class="oef_indgood">$w_yes</span>
+          !if $output=coord
+           result=$result ($yobj2)
+          !endif
+          mscr2=1
+        !else
+          !for r = 1 to $ycnt
+           !if $klaar=0
+            ob=!word $r of $obj
+            !if $ob isin $yobj
+              klaar=1
+              !increase formal_cond_score
+              !increase name_score
+              result=$display2 <span class="oef_indgood">$w_yes</span>
+              !if $output=coord
+                result=$result  ($yobj2)
+              !endif
+              mscr2=1
+             !endif
+            !endif
+           !next r
+       !endif
+     !endif
+   !endif
+    !next li
+  !endif
+##if no result with formal condition and object names, try up to the object name
+  !if $klaar=0
+    !for s = 1 to $ynamecnt
+      !if $klaar=0
+        yobj=!line $s of $yourlist1
+        yobj=!replace internal = by , in $yobj
+        yname=!item 1 of $yobj
+        ypos=!positionof item $yname in $your_name
+        !if $ypos notitemof $used_list
+      !!   used_list=!append item $ypos to $used_list
+         yobj2=!line $ypos of $(yourlist$output)
+         !if $output issametext nothing
+           yobj2=
+         !endif
+         ytype=!item 2 of $yobj
+         ytype=!lower $ytype
+         yobj=!item 3 to -1 of $yobj
+         yobj=!nospace $yobj
+         ycnt=!wordcnt $obj
+         !if $ycnt=0
+          !if $ytype iswordof $type $type2
+            klaar=1
+            !increase formal_cond_score
+            !if $name=$empty
+              result=$display2 <span class="oef_indgood">$w_yes</span>
+              mscr2=1
+            !else
+              result=$display2 <span class="oef_indpartial">$w_uname ($yobj2)</span>
+              mscr2=0.5
+            !endif
+          !endif
+         !endif
+         !for r = 1 to $ycnt
+          !if $klaar=0
+            ob=!word $r of $obj
+            !if $ob isin $yobj and $ytype iswordof $type $type2
+              klaar=1
+              !increase formal_cond_score
+              !if $name=$empty
+                result= $display2 <span class="oef_indgood">$w_yes</span>
+                mscr2=1
+              !else
+                result=$display2 <span class="oef_indpartial">$w_uname ($yobj2)</span>
+                mscr2=0.5
+              !endif
+            !endif
+          !endif
+        !next r
+      !endif used
+    !endif
+    !next s
+  !endif
+  !if $display notsametext hiden or $display issametext
+    displaylist1=!append line <li>$result</li> to $displaylist1
+  !else
+    displaylist1=$displaylist1\
+
+!!!! let empty the previous line
+  !endif
+  mscr=!append item $mscr2 to $mscr
+!next p
+
+###NUMERICAL CONDITION
+displaylist2=
+!for p=1 to $mylist2_cnt
+  result=<span class="oef_indbad">$w_no</span>
+  !increase total_num_cond
+  cond=!line $p of $mylist2
+  displayl=!line $p of $mylist2orig
+  display=$(displayl[2..-1])
+  !if $display issametext
+    display=$(displayl[1])
+    !if [ notin $display
+      display=!replace internal & by \) $w_and \( in \($display\)
+    !else
+      display=!replace internal & by  $w_and  in $display
+    !endif
+    display=!replace internal == by $ = $   in $display
+    display=!replace internal > by $ > $   in $display
+    display=!replace internal < by $ < $   in $display
+    display=!replace internal >= by $ >= $   in $display
+    display=!replace internal <= by $ <= $   in $display
+    display=!replace internal eq_: by in $display
+    display=!replace internal eq_ by in $display
+    display=!replace internal v_ by in $display
+  !endif
+  mscr2=0
+  #### study condition with && (no complex condition)
+  cond=!item 1 of $cond
+  cond=!nospace $cond
+  condligne=!replace internal && by $\
+&&, in ,$cond
+   condligne=!replace internal || by $\
+||, in $condligne
+   condligne_cnt =!linecnt $condligne
+   cond1=
+   !for m = 1 to $condligne_cnt
+     cond=!line $m of $condligne
+     cond1=$cond1 $(cond[1])
+     cond=$(cond[2..-1])
+     !for n = 1 to $yourlist_nonignore_cnt
+       obj = !line $n of $yourlist_name_nonignore
+       name = !replace internal = by , in $obj
+       name=!item 1 of $name
+       coord=!getopt $name in $obj
+       type=!item 1 of $coord
+       coord=!item 2 to -1 of $coord
+       !if $type isitemof $conic
+        coord=!rawmath $coord
+        coord=!exec pari c=$coord; [polcoeff(c,2,x),polcoeff(c,2,y),polcoeff(polcoeff(c,1,x),1,y),polcoeff(polcoeff(c,1,x),0,y),polcoeff(polcoeff(c,0,x),1,y),polcoeff(polcoeff(c,0,x),0,y)]
+       !endif
+       !if $type isitemof function
+         coord=!rawmath $coord
+       !endif
+   ###for a point coord=x,y
+    ###for a conic coord=x2,y2,xy,x,y,cst
+      !if $type isitemof segment,function,angle,numeric,text,boolean
+        cond=!replace internal v_$(name)= by ($coord)== in $cond
+        cond=!replace internal v_$(name) by ($coord) in $cond
+      !endif
+      !if $type isitemof point,vector
+        cond=!replace internal x_$(name) by ($(coord[1])) in $cond
+        cond=!replace internal y_$(name) by ($(coord[2])) in $cond
+      !endif
+    !if $type=line
+      cond=!replace internal m_$(name) by ($[-$(coord[4])/$(coord[5])]) in $cond
+      cond=!replace internal p_$(name) by ($[-$(coord[6])/$(coord[5])]) in $cond
+      cond=!replace internal a_$(name) by ($(coord[4])) in $cond
+      cond=!replace internal b_$(name) by ($(coord[5])) in $cond
+      cond=!replace internal c_$(name) by (-($(coord[6]))) in $cond
+    !endif
+    !if $type=circle
+      cond=!replace internal R_$(name) by ($[($(coord[4])/(2*$(coord[1])))^2+($(coord[5])/(2*$(coord[2])))^2-$(coord[6])]) in $cond
+      cond=!replace internal x_$(name) by ($[-$(coord[4])/(2*$(coord[1]))]) in $cond
+      cond=!replace internal y_$(name) by ($[-$(coord[5])/(2*$(coord[2]))]) in $cond
+    !endif
+    !if $type isitemof $conic
+        cond=!replace internal x2_$(name) by ($(coord[1])) in $cond
+        cond=!replace internal y2_$(name) by ($(coord[2])) in $cond
+        cond=!replace internal xy_$(name) by ($(coord[3])) in $cond
+        cond=!replace internal yx_$(name) by ($(coord[3])) in $cond
+        cond=!replace internal x_$(name) by ($(coord[4])) in $cond
+        cond=!replace internal y_$(name) by ($(coord[5])) in $cond
+        cond=!replace internal cst_$(name) by ($(coord[6])) in $cond
+        cond=!replace internal cstt_$(name) by ($(coord[6])) in $cond
+        !if eq_ isin $cond
+          cond=!replace internal == by = in $cond
+          cond=!replace internal = by %% in $cond
+          cond=!replace internal : by , in $cond
+         !if eq_$(name) issametext $(cond[1]) or $(cond[1]) issametext eq_
+            my=$(cond[2..-1])
+            my=!replace internal %% by , in $my
+            !if $(my[1])$(my[2]) notsametext
+             my=!rawmath $(my[1])-($(my[2]))
+             my=!exec pari c=$my ; [polcoeff(c,2,x),polcoeff(c,2,y),polcoeff(polcoeff(c,1,x),1,y),polcoeff(polcoeff(c,1,x),0,y),polcoeff(polcoeff(c,0,x),1,y),polcoeff(polcoeff(c,0,x),0,y)]
+             test=!exec pari myy=[$my];c=vecmax(abs(myy)) ; myy=myy/c ;\
+             yo=[$coord] ; c=vecmax(abs(yo)) ; yo=yo/c ;\
+             if( vecmax(abs(yo - myy)) < 10^(-(max(3,$precisionn/2))) || vecmax(abs(yo + myy)) < 10^(-(max(3,$precisionn/2))),1,0)
+             test=!trim $test
+             !if $test=1
+               cond=$test==1
+             !endif
+            !endif
+           !endif
+        !endif
+    !endif
+    !next n
+    cond1=$cond1\
+    $cond
+  !next m
+
+  cond=!lines2words $cond1
+  cond=!nospace $cond
+  !if eq_ isin $cond
+    cond=0==1
+  !endif
+  ### replace equalities by numerical conditions even if the developper has not done it ??
+  #### should replace the && (and the ||) by lines (begining with &&), replace lines
+  #### with == par abs(eq1 -(eq2))< 10^(-precision) et reconstituer
+
+  check=!exec pari ($cond)
+  !if $check=$empty
+    check=0
+  !endif
+  num_cond_score=$[$num_cond_score+$check]
+  !if $check=1
+    result=<span class="oef_indgood">$w_yes</span>
+    mscr2=1
+  !endif
+  !if $display notsametext hiden
+     displaylist2=!append line <li> $display : $result </li> to $displaylist2
+  !else
+  ## laisser la ligne vide
+     displaylist2=$displaylist2\
+
+  !endif
+  mscr=!append item $mscr2 to $mscr
+!reset display
+!next p
+
+### on remet dans l'ordre des conditions
+  Displaylist$gg=
+  Mscr$gg=
+ !for k = 1 to $mylist_cnt
+   mem=!line $k of $memory
+   ligne=!line $(mem[2]) of $(displaylist$(mem[1]))
+   !if $ligne notsametext
+     Displaylist$gg=!append line $ligne to $(Displaylist$gg)
+   !endif
+   mscr2=!item $(mem[2]) of $mscr
+   Mscr$gg=!append item $mscr2 to $(Mscr$gg)
+ !next k
+### a modifier ?? 0,1,0 is "dangerous" ?
+ !if $[$(weight[1])+$(weight[3])] = 0
+   weight=$(weight[2]),$(weight[2]),$(weight[2])
+ !endif
+
+###SCORE AND OUTPUT
+ !if $total_name=0
+   name_score=0
+   weight=$(weight[1]),0,$(weight[3])
+ !else
+   name_score=$[$name_score/$total_name]
+ !endif
+ !if $total_num_cond=0
+   num_cond_score=0
+   weight=$(weight[1]),$(weight[2]),0
+ !else
+   num_cond_score=$[$num_cond_score/$total_num_cond]
+ !endif
+ !if $total_formal_cond=0
+   formal_cond_score=0
+   weight=0,$(weight[2]),$(weight[3])
+ !else
+   formal_cond_score=$[$formal_cond_score/$total_formal_cond]
+ !endif
+ score=$[$(weight[1])*$(formal_cond_score)+$(weight[2])*$(name_score)+$(weight[3])*$(num_cond_score)]
+ score$gg=$[$score/($(weight[1])+$(weight[2])+$(weight[3]))]
+ scorenoname=$[$(weight[3])*$(num_cond_score)+$(weight[1])*$(formal_cond_score)]
+ scorenoname$gg=$[$scorenoname/($(weight[1])+$(weight[3]))]
+ !if $(score$gg)=1
+    mscr$gg=1
+ !else
+    !if $(scorenoname$gg)=1
+      mscr$gg=0.5
+    !else
+      mscr$gg=0
+    !endif
+ !endif
+ Mscr$gg=$(mscr$gg);$(Mscr$gg);$gg
+
+ msg$gg=<span class="oef_indbad">
+
+ !if $extra!=yes
+   !if $total_formal_cond < $ynamecnt
+     score$gg=$[$(score)*$total_formal_cond/$ynamecnt]
+     scorenoname$gg=$[$(scorenoname)*$total_formal_cond/$ynamecnt]
+     msg$gg=$(msg$gg) $w_penalty<br />
+   !endif
+ !endif
+
+ !increase uu
+ !if $uu=1
+   score_max=$(score$gg)
+ !endif
+ !if $uu>=2
+   !if $(score$gg) >= $score_max
+    final=$gg
+    score_max=$(score$gg)
+   !endif
+   !if $final=$empty
+     final=1
+   !endif
+ !endif
+!next gg
+###############################################################################################################################
+
+!default final=0
+
+######NOTATION#######
+!!On peut ne demander aucun nom et alors cela ne va pas
+!if ($(scorenoname$final)=0 and $(score$final) < 1) or $(scorenoname$final)=NaN
+    diareply$i=bad
+!else
+  !if $(scorenoname$final) < 1 or $(score$final) < 1
+    partialgood$i=yes
+    diareply$i=good
+  !else
+    diareply$i=good
+  !endif
+!endif
+#### diareply=good only if $score=1
+freegot=$[$freegot+$(score$final)]
+msg$final=<br />$(msg$final)</span>
+
+####PREPARATION des feedback
+:end
+
+!readproc slib/geo2D/geogebra $parameters\
+$feed\
+$yourggb\
+$listcoord\
+$js_fix
+
+#### On ne fait afficher que les points nouveaux
+!reset yourlistnew$output
+!for p = 1 to $ynamecnt
+  u = !item $p of $your_name
+  u=!getopt $u in $oef_applet_command
+  !if $u issametext
+    u=!line $p of $(yourlist$output)
+    yourlistnew$output = !append line $u to $(yourlistnew$output)
+  !endif
+  !reset u
+!next
+
+### Answer printed instead of the embed
+reply_$i = $feedbackbutton\
+$slib_out
+
+m_reply$i=$yourggb
+
+!if $wims_read_parm=nocompare
+  !exit
+!endif
+
+### Answer in the automatic answer analysis
+!if $output=nothing
+  reply__$i=&nbsp;
+!else
+  reply__$i=<hr style="width:50%"/>\
+<table><tr><td><ul type="square">$(Displaylist$final)</ul>$(msg$final) </td>\
+</tr></table>
+!endif
+!if $output iswordof coord nocoord formal
+  reply__$i=$w_analyze\
+<pre>$(yourlistnew$output)\
+</pre>\
+$(reply__$i)
+!endif
+
+### Answer for \reply1
+m_reply$i=$ynamecnt\
+$yourggb\
+$yourlist_name
+
+m_sc_reply$i=$(Mscr$final)

@@ -1,0 +1,89 @@
+$techvar=$[$techvar*1]
+nblocalvar=!itemcnt $tv_listlocal
+!if ($techvar<1 or $techvar>$nblocalvar)
+    error=badtechvarnumber
+    job=listvar
+    !changeto $job.proc
+    !exit
+!endif
+
+!if $stechvar=$empty
+    stechvar=$techvar
+    !reset tc_abandon,tc_set
+    don=!record $stechvar of wimshome/log/classes/$wims_class/.techvar
+    !distribute line $don into ol_name,ol_value
+    tc_name=$ol_name
+    tc_value=$ol_value
+!endif
+
+
+!if $tc_abandon!=$empty
+    !reset tc_abandon,tc_value,tc_name,tc_set,stechvar
+    job=listvar
+    !changeto $job.proc
+    !exit
+!endif
+
+!if $tc_set!=$empty
+!! check name validity
+    tc_name=!text select 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ in $tc_name
+    tc_name=!nospace $tc_name
+    tc_name=!lower $tc_name
+    n=!charcnt $tc_name
+    !if $n>$MAXcharname or $n<1
+	error=badnamelen
+	!reset tc_set
+	!exit
+    !endif
+
+!! check list of name already in use
+    !if $tc_name isitemof $tv_listallname and $tc_name!=$ol_name
+	error=namealreadyuse
+	!reset tc_set
+	!exit
+    !endif
+
+!! check list of value
+    tc_value=!listuniq $tc_value
+    tc_value=!listcomplement _EMPTY_ in $tc_value
+    n=!itemcnt $tc_value
+    !if $n<1 or $n>$MAXnbvalue
+	error=badvaluenb
+	!reset tc_set
+	!exit
+    !endif
+!! old list must be include (or delete value not in use in the class TODO).
+!! il y a une amélioration à faire pour poster un message et effacer les valeurs qui ne sont plus disponibles.
+    li=!listcomplement $tc_value in $ol_value
+    !if $li!=$empty
+	error=valuedisappear
+	!reset tc_set
+    !endif
+!! save
+    donnees=$empty
+    !for k=1 to $nblocalvar
+	!if $k=$stechvar
+	    donnees=!append line :$tc_name\
+$tc_value to $donnees
+	!else
+	    tmp=!record $k of wimshome/log/classes/$wims_class/.techvar
+	    donnees=!append line :$tmp to $donnees
+	!endif
+    !next k
+    !filewrite wimshome/log/classes/$wims_class/.techvar $donnees
+    !if $ol_name!=$tc_name
+        nb=!recordcnt wimshome/log/classes/$tv_Sclass/.indextechvar
+	donnees=$empty
+	!for k=1 to $nb
+	    tmp=!record $k of wimshome/log/classes/$tv_Sclass/.indextechvar
+	    !if $(tmp[2])=$wims_class and $(tmp[3])=$stechvar
+		donnees=!append line :$tc_name,$wims_class,$stechvar to $donnees
+	    !else
+		donnees=!append line :$tmp to $donnees
+	    !endif
+	!next k
+	!filewrite wimshome/log/classes/$tv_Sclass/.indextechvar $donnees
+    !endif
+    !restart module=adm/class/techvar
+!endif
+

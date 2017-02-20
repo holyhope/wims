@@ -1,0 +1,82 @@
+!set lang_exists=yes
+!if $wims_read_parm=$empty
+ !exit
+!endif
+
+!goto $wims_read_parm
+
+:file
+
+<p>Fichiers disponibles dans ce document&nbsp;:
+ !for f in $flist
+  !getfile doc/$f $f
+  &nbsp;
+ !next f
+</p>
+ !form reply
+ <input type="hidden" name="job2" value="erase" />
+ Effacer un fichier&nbsp;:
+ !formselect job2 list $flist
+ <input type="submit" value="$wims_name_erase" />
+
+ !formend
+ <p>
+ Ces fichiers sont accessibles dans le document à l'aide de la variable
+ <span class="tt wims_code_variable">\filedir</span>. Par exemple,
+</p>
+<p class="wimscenter">
+ <span class="tt wims_address">&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</span>
+</p>
+(<b>copiez ce texte après avoir chargé votre fichier</b>)
+ crée un lien vers le fichier <a href="$m_filedir/$f1" alt="$f1">$f1</a>.
+ 
+ Vous pouvez aussi écrire
+<p class="wimscenter">
+ <span class="tt wims_address">&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</span>
+</p><p>
+pour inclure un fichier d'image <span class="tt wims_fname">myfile.jpg</span> dans la page.
+
+ Les fichiers déposés dans ce document sont accessibles uniquement à ceux
+ ayant le droit de lire le document.
+
+</p><p>
+Une nouvelle commande <span class="tt wims_code_words">\href{}{}</span> est en test. 
+Pour obtenir un lien sur le fichier, il suffit alors d'écrire
+</p><p class="wimscenter">
+<span class="tt wims_code_words">\href{$f1}</span> ou <span class="tt wims_code_words">\href{$f1}{lien}</span>.
+</p>
+!exit
+
+:readauth
+ Si vous êtes auteur du document, sachez que vous avez besoin de 
+ l'approbation du
+ !mailurl $wims_site_manager gestionnaire du site\
+Demande d'ouverture du document WIMS $doc
+ pour rendre le document lisible par le public.
+!exit
+
+:erase1
+Pour des raisons de sécurité, seul le gestionnaire du site peut effacer les
+ documents publics.
+ <p>
+ Veuillez
+ !mailurl $wims_site_manager demander le gestionnaire du site
+ d'effacer votre document pour vous.
+ </p>
+!exit
+
+:erase2
+<span class="wims_warning">ATTENTION</span>. Un document effacé ne peut pas être
+récupéré&nbsp;!
+<p>
+Êtes-vous sûr de vouloir effacer le document <span class="tt wims_fname">$tit</span>&nbsp;?
+</p>
+!exit
+
+:public
+ 
+ <b>Remarque</b>. Vous devez demander l'approbation du
+ !mailurl $wims_site_manager gestionnaire du site\
+Demander de publier le document WIMS $doc
+ pour le rendre accessible au public.
+!exit

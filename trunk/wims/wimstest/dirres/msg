@@ -1,0 +1,333 @@
+
+
+!set m_v1=4
+
+
+
+!set m_v2=$[rint(2*$m_a)]
+
+
+!set m_v3=essai !
+
+
+
+!set t_=!rawmath 20/15
+!set m_v4=!exec pari print($t_)
+
+
+!set t_=!rawmath 3*(1+i) -2
+!set t_=!exec pari print($t_)
+!set m_v5=!mathsubst I=i in $t_
+
+
+!set m_v6=$[pi]
+
+
+!set m_v7=!rawmath x^2+1
+
+
+!set tmp0=!nosubst x:y
+
+!set m_v8=$(tmp0)
+
+
+
+!set tmp=!translate ;";': to $     $ in x^2+1,x
+
+!set tmp=!lower $tmp
+!set tmp0=!exec maxima diff($tmp);
+!set m_v9=$(tmp0);
+
+
+
+!set tmp=!translate ";': to $     $ in 4+5*(x+1)
+
+!set tmp=!lower $tmp
+!set tmp0=!exec maxima fullratsimp($tmp);
+!set m_v10=$(tmp0)
+
+
+
+!set tmp=!translate ;";': to $     $ in $m_g,1, 3
+!set tmp=!lower $tmp
+!readproc slib/function/integrate $tmp
+!set tmp0=$slib_out
+!set m_v11=$(tmp0)
+
+
+
+!set evaltmp=$m_v10
+
+!set evaltmp=!mathsubst x=(4) in $evaltmp
+!set tmp0=($evaltmp)
+!set m_v12=$(tmp0)
+
+
+
+!set tmp0=$m_v10
+
+!set m_v13=$(tmp0)
+
+
+
+!set tmp0=!texmath  2x
+
+!set m_v14=$(tmp0)
+
+
+<br/>
+
+!set tmp=!trim 1,2	3,4
+!set m_v15=!translate internal $	$ to ; in $tmp
+
+
+!set tmp=!translate $	$ to ; in $m_v15
+
+!set tmp0=!exec pari matdet([$tmp])
+!set m_v16=$(tmp0)
+
+
+<br/>
+
+!set tmp=!replace internal .. by , in x^2-1,0,1
+
+!distribute items $tmp into tmp1,tmp2,tmp3
+!set tmp2=!replace internal = by , in $tmp2
+!distribute items $tmp2 into tmp4,tmp5
+!set tmp0=!solve $tmp1 for $tmp4 = $tmp5 to $tmp3
+!set m_v17=$(tmp0)
+
+
+
+!set t_=!replace internal \( by ( in 2*[3,4]
+!set tmp0=!exec pari $t_
+
+!set m_v18=$(tmp0)
+
+
+
+!set tmp0=3
+
+!set m_v19=$(tmp0)
+
+
+
+!set tmp0=!shuffle 3,5,6,7
+
+!set m_v20=$(tmp0)
+
+
+
+!set tmp=!translate $	$ to ; in [2,3;4,5]
+
+!set tmp0=!exec pari matdet([$tmp])
+!set m_v21=$(tmp0)
+
+
+
+!set t_=!replace internal \( by ( in 3+8;
+!set tmp0=!exec maxima $t_
+
+!set m_v22=$(tmp0)
+
+
+
+!set t_=!replace internal \( by ( in 3+8;
+!set tmp0=!exec yacas $t_
+
+!set m_v23=$(tmp0)
+
+
+
+!set tmp0=!htmlmath 3^3
+
+!set m_v24=$(tmp0)
+
+
+
+
+!readproc docu/primitives/canvasdraw.phtml 200,200 \
+xrange -1 1	yrange -1, 1
+!set tmp0=$canvasdraw_out
+!set m_v26=$(tmp0)
+
+
+
+!read primitives.phtml 1, draw, 200,200, xrange -1 1	yrange -1, 1
+
+<br/>
+
+!if a=a
+
+
+!set m_b=1
+
+
+
+!else
+
+
+!set m_b=2
+
+
+
+!endif
+
+
+!ifval 0.5=1/2
+
+
+!set m_b=1
+
+
+
+!else
+
+
+!set m_b=2
+
+
+
+!endif
+
+
+!set m_a=0
+
+
+
+!for m_j=1 to 4
+
+
+!set m_a=$m_a+$m_j
+
+
+
+!next
+
+
+!readproc slib/numeration/ecriturenombre 5678
+!set tmp0=$slib_out
+!set m_v28=$(tmp0)
+
+
+
+!set tmp0=!random 1, 5
+
+!set m_v29=$(tmp0)
+
+
+
+!set tmp0=!item 1 of 7,8,9
+
+!set m_v30=$(tmp0)
+
+
+
+!set tmp=!nonempty items 1,7,8,9
+
+!set tmp0=!randitem $tmp
+!set m_v31=$(tmp0)
+
+
+
+!set tmp=!translate internal $	$ to ; in 1,7	8,9
+
+!set tmp=!row 2 of $tmp
+!set tmp0=!translate internal $\
+$ to ; in $tmp
+!set m_v32=$(tmp0)
+
+
+
+!set tmp=!translate internal $	$ to ; in 2,1,7	8,9
+
+!set tmp0=!rowcnt $tmp
+!set m_v33=$(tmp0)
+
+
+
+!set tmp=!translate internal $	$ to ; in 2,1,7	8,9
+
+!set tmp=!nonempty rows $tmp
+!set tmp=!randrow $tmp
+!set tmp0=!translate internal $\
+$ to ; in $tmp
+!set m_v34=$(tmp0)
+
+
+
+!set tmp0=!nonempty items 2,1,7	8,9
+
+!set m_v35=$(tmp0)
+
+
+
+!set tmp=!translate internal $	$ to ; in 1,7	8,9
+
+!set tmp=!column 2 of $tmp
+!set tmp0=!translate internal $\
+$ to ; in $tmp
+!set m_v36=$(tmp0)
+
+
+<br/>
+
+!if a=a
+
+ b=1
+
+!else
+
+ b=2
+
+!endif
+
+
+!ifval 0.5=1/2
+
+ b=1
+
+!else
+
+ b=2
+
+!endif
+
+a=0
+
+!for m_j=1 to 4
+
+a=$m_a+$m_j
+
+!next
+
+<br/>
+
+!insmath  r^6
+
+
+!insmath  \frac{1}{2}
+
+( parent [ gg ] ) $m_f
+<br/>
+
+!set m_c=0
+
+
+
+!while $m_c<3
+
+
+!set m_c=$[rint($m_c+1)]
+
+
+!endwhile
+
+<br/>
+
+!set tmp0=!nospace aaa bbb
+
+!set m_a=$(tmp0)
+
+
+

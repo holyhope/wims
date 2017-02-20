@@ -1,0 +1,40 @@
+!!preliminary version for non administrative modules
+!! must be called by
+!!  !read language xxx
+!! if the language files are in xxx.$language
+!! in var.proc and in intro.phtml before !header
+!let script_file=!nospace $wims_read_parm
+!!compatibility with adm modules ?
+!! try the $lang, then en, then $module_language
+!!
+!!the variable $modu_lang can be used to call other language files
+!!  eventually
+!reset lang_exists
+
+!default modu_lang=$lang
+!read $(script_file).$modu_lang
+!! try to do that for headmenu
+!!!if lang/ notin $(script_file)
+!!  !read themes/$wims_theme/lang/$(script_file).$modu_lang
+!!  !if $class_theme!=$empty
+!!    !read themes/$class_theme/lang/$(script_file).$modu_lang
+!!  !endif
+!!  !if $theme_class!=$empty
+!!    !read themes/$theme_class/lang/$(script_file).$modu_lang
+!!  !endif
+!!!endif
+
+!if $lang_exists!=yes
+ !set modu_lang=en
+ !read $(script_file).$modu_lang
+ !if $lang_exists!=yes
+   !set modu_lang=$module_language
+   !read $(script_file).$modu_lang
+ !endif
+!endif
+
+!set module_language=$modu_lang
+!set title_=!module title_$modu_lang
+!if $title_!=$empty
+   !set module_title=$title_
+!endif

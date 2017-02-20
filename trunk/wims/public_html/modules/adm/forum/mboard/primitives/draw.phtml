@@ -1,0 +1,27 @@
+!if $parms=$empty
+ !exit
+!endif
+
+!distribute items $parms into sx,sy
+!set pp=!item 3 to -1 of $parms
+!set pp=!replace internal $	$ by $\
+$ in $pp
+!set pp=!replace internal \\ by ///?/?/?/// in $pp
+!set pp=!replace internal \ by $$m_ in $pp
+!set pp=!replace internal ///?/?/?/// by \\ in $pp
+
+!set a=!word 1 of $pp
+!if $a=animate
+ !set a=!line 1 of $pp
+ !set a=!word 2 to -1 of $a
+ !set pp=!line 2 to -1 of $pp
+ !set ins_anim_frames=!item 1 of $a
+ !set ins_anim_delay =!item 2 of $a
+ !set ins_anim_loop  =!item 3 of $a
+!endif
+
+!set insdraw_filebase=$docdir
+!set insdraw_size=$sx,$sy
+!set ins_align=middle
+!insdraw $pp
+

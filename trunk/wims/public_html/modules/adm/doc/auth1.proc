@@ -1,0 +1,22 @@
+!if class = $doctype
+ job=home
+ error=class_no_right
+ !exit
+!endif
+
+!!if $doctype!=class
+!!  noedit=yes
+!!!endif
+
++!!if read code is empty, permission to read is given
++!if $doctype notwordof class devel
++  secret=!record 0 of $docdir/$doc/.code
++  secret=!line 2 of $secret
++  secret=!word 1 of $secret
++  !if $secret=$empty
++    readable=yes
++    !if $noedit=yes
++      job=read
++    !endif
++  !endif
++!endif

@@ -1,0 +1,55 @@
+<!-- Start Nikaia topbox Widget -->
+<div id="wimstopbox">
+
+  !!Site Title
+  !read themes/_widgets/site_title.phtml
+
+  !if $wims_lightpopup!=yes
+    !!Institution logo
+    !set positionlogo=right
+    !read themes/_widgets/institution_logo.phtml
+    <br class="clearall"/>
+  !endif
+
+  !distribute items li into div1
+  <div class="menuglobal">
+    <ul class="wimsmenu float_left wimscenter">
+      !!module_path = $module_path
+      !!wims_hm_cnt = $wims_hm_cnt
+
+      !if $[$wims_home_items_cnt + $wims_hm_cnt + $wims_link_close_cnt]!=0 or ($module_path notitemof home,adm,classes and _exam notin $session and $module_init_parm == $empty)
+        !!read themes/_widgets/headhome.phtml
+        !!read themes/_widgets/headmenu.phtml
+        !distribute items li,div into div0,div1
+        !read themes/$wims_theme/widgets/permalink.phtml
+        !reset div0 div1
+      !endif
+
+      !! s'affiche sur la page d'accueil des visiteurs
+      !if $module isitemof home,adm/class/classes and $wims_user=$empty
+        !if $type!=participant
+          !! Participants Zone
+          <li class="menuitem n_participant">
+            !read ./adm/oneitem.phtml n_participant,1,module=adm/class/classes&type=participant
+          </li>
+        !endif
+        !if $type!=supervisor
+          !! Teachers Zone
+          <li class="menuitem n_supervisor">
+            !read ./adm/oneitem.phtml n_supervisor,1,module=adm/class/classes&type=supervisor
+          </li>
+        !endif
+      !endif
+    </ul>
+    !if $module=home and $wims_user=$empty
+       !! Help link
+      !set wims_hm = !append line help,4,module=help/main,help to $wims_hm
+      !increase $wims_hm_cnt
+    !endif
+    !read themes/_widgets/user_links.phtml
+  </div><!-- /menuglobal -->
+</div><!-- fin de wimstopbox-->
+!if $wims_lightpopup!=yes
+  !read themes/_widgets/ariane.phtml
+!endif
+<!-- End Nikaia topbox Widget -->

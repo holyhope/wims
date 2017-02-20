@@ -1,0 +1,213 @@
+
+!set swlist=coq, gap, graphviz, m2, maxima, octave, pari, povray, geogebra
+!set swname=COQ, Gap, Graphviz, Macaulay 2, Maxima, Octave, PARI/GP, Povray, GeoGebra
+!set year=!char 1 to 4 of $wims_now
+
+!if $title=$empty or $modreq=.new
+ !set this=$name_this1
+!else
+ !set this=$name_this2
+!endif
+
+!!# Si les librairies Jquery sont chargées, on affiche des onglets.
+!if $jquery_defined=yes
+  <script type="text/javascript">
+    /*<![CDATA[*/ jQuery(function(jq) {jq( "#tabs" ).tabs();}); /*]]>*/
+  </script>
+!endif
+
+!form reply
+<input type="hidden" name="jobreq" value="flist" />
+
+<p>$name_prop $this</p>
+
+<div id="tabs">
+  <ul>
+    <li><a href="#general">$wims_name_General</a></li>
+    <li><a href="#Author">$wims_name_Author</a></li>
+    <li><a href="#Language">$wims_name_Language</a></li>
+    <li><a href="#version">$wims_name_Version</a></li>
+  </ul>
+
+  <div id="general">
+  <fieldset class="property_fields blockcenter">
+    <legend>$wims_name_General</legend>
+    <div class="field box">
+      <strong>$wims_name_Address</strong>
+      <span class="wims_fname">
+        !if $title!=$empty and $modreq!=.new
+          $modreq
+  $
+          !set wims_ref_class=wims_button
+          !href cmd=reply&jobreq=move&original=devel/$auth_login/$modreq $name_rename
+  $
+          !set wims_ref_class=wims_button
+          !href cmd=reply&jobreq=copy&original=devel/$auth_login/$modreq $name_duplicate
+        !else
+          !set modreq=.new
+          !read scripts/addressform.phtml nook
+        !endif
+      </span>
+    </div>
+    <div class="field box">
+      <label for="i_title">$wims_name_title</label>
+      <input type="text" name="i_title" id="i_title" value="$i_title" required="required"/>
+    </div>
+    <div class="field box">
+      <label for="i_description">$wims_name_Description</label>
+      <input type="text" name="i_description" id="i_description" value="$i_description" required="required" />
+    </div>
+    <div class="field box">
+      <strong>$wims_name_Type</strong>
+      !set wims_ref_class=wims_button_help float_right
+      !href cmd=help&special_parm=type $wims_name_help
+      !set wims_formselect_switch=multiple
+      !set wims_ref_class=wims_formradio
+      !formcheckbox i_category list oef,document,exercise,tool,recreation,deductio\
+       prompt $name_type
+    </div>
+    <div class="field box">
+      <label for="i_domain">$wims_name_Domain</label>
+      !set wims_ref_class=wims_button_help float_right
+      !href cmd=help&special_parm=domain $wims_name_help
+      <input type="text" name="i_domain" id="i_domain" class="multicomplete" value="$i_domain" />
+      <script type="text/javascript">
+        /*<![CDATA[*/
+           var tags =
+           !record 0 of wimshome/public_html/bases/sys/domain/domain.json
+            ;
+            set_multicomplete(tags);
+        /*]]>*/
+      </script>
+    </div>
+    <div class="field box">
+      <label for="i_keywords">$wims_name_Keywords</label>
+      !set wims_ref_class=wims_button_help float_right
+      !href cmd=help&special_parm=keywords $wims_name_help
+      <input type="text" name="i_keywords" id="i_keywords" value="$i_keywords" />
+    </div>
+    <div class="field box">
+      <strong>$wims_name_Levels</strong>
+      !set wims_ref_class=wims_formradio
+      !formcheckbox i_level list $levellist
+      <br /><span class="small">$name_levellist</span>
+    </div>
+    <div class="field box fullwidth">
+      <strong>$wims_name_Scoring</strong>
+      !default i_scoring=no
+      !set wims_ref_class=wims_formradio
+      !formradio i_scoring list yes,no prompt $wims_name_yes, $wims_name_no
+      <div class="formHelp">$wims_name_Scoringhelp</div>
+    </div>
+  </fieldset>
+  </div>
+
+  <div id="Author">
+  <fieldset class="property_fields blockcenter">
+    <legend>$wims_name_Author</legend>
+    <div class="field box halfwidth">
+      <label for="i_author">$wims_name_Author</label>
+      !set wims_ref_class=wims_button_help float_right
+      !href cmd=help&special_parm=namewriting $wims_name_help
+      !default i_author=!words2items $auth_name
+      !set i_author=!nonempty items $i_author
+      <input type="text" name="i_author" id="i_author" value="$i_author" />
+      <div class="formHelp tt">$wims_name_firstname,$wims_name_lastname</div>
+    </div>
+    <div class="field box halfwidth">
+      <label for="i_address">$wims_name_auth_email</label>
+      !default i_address=$auth_email
+      <input type="text" name="i_address" id="i_address" value="$i_address" />
+      <div class="formHelp tt">&nbsp;</div>
+    </div>
+    <div class="field box halfwidth">
+      <label for="i_maintainer">$wims_name_Maintainer</label>
+      !set wims_ref_class=wims_button_help float_right
+      !href cmd=help&special_parm=maintainer $wims_name_help
+      <input type="text" name="i_maintainer" id="i_maintainer" value="$i_maintainer" />
+      <div class="formHelp tt">$wims_name_firstname, $wims_name_lastname</div>
+    </div>
+    <div class="field box halfwidth">
+      <label for="i_maintainer_address">$wims_name_maint_email</label>
+      <input type="text" name="i_maintainer_address" id="i_maintainer_address" value="$i_maintainer_address" />
+      <div class="formHelp tt">&nbsp;</div>
+    </div>
+    <div class="field box halfwidth">
+      <label for="i_translator">$wims_name_Translator</label>
+      <input type="text" name="i_translator" id="i_translator" value="$i_translator" />
+      <div class="formHelp tt">$wims_name_firstname, $wims_name_lastname</div>
+    </div>
+    <div class="field box halfwidth">
+      <label for="i_translator_address">$wims_name_tr_email</label>
+      <input type="text" name="i_translator_address" id="i_translator_address" value="$i_translator_address" />
+    </div>
+  </fieldset>
+  </div>
+
+  <div id="Language">
+   <fieldset class="property_fields blockcenter">
+    <legend>$wims_name_Language</legend>
+    <div class="field box halfwidth">
+      <label for="i_language">$wims_name_Language</label>
+      !default i_language=$module_language
+      !formselect i_language list $langlist prompt $langname
+    </div>
+    <div class="field box halfwidth">
+      <label for="i_translation_language">$name_translation_language</label>
+      <input name="i_translation_language" id="i_translation_language" value="$i_translation_language" />
+      <br />
+      !set translation_language=!words2items $i_translation_language
+      !set translation_language=!listintersect $translation_language and $langlist
+      !if $translation_language !=
+        !read translationindex.phtml
+      !endif
+    </div>
+   </fieldset>
+  </div>
+
+  <div id="version">
+   <fieldset class="property_fields blockcenter">
+    <legend>$wims_name_Version</legend>
+    <div class="field box halfwidth">
+      <label for="i_version">$wims_name_Version</label>
+      !set wims_ref_class=wims_button_help float_right
+      !href cmd=help&special_parm=version $wims_name_help
+      !default i_version=1.00
+      <input type="text" class="small_input" name="i_version" id="i_version" value="$i_version" />
+      <div class="formHelp">$name_increment</div>
+    </div>
+    <div class="field box halfwidth">
+      <label for="i_wims_version">$wims_name_Required_WIMS_version</label>
+      !set wims_ref_class=wims_button_help float_right
+      !href cmd=help&special_parm=wimsversion $wims_name_help
+      !default i_wims_version=$wims_version
+      <input type="text" class="small_input" name="i_wims_version" id="i_wims_version" value="$i_wims_version" />
+    </div>
+    <div class="field box fullwidth">
+      <strong>$wims_name_require</strong><br/>
+       !set wims_ref_class=wims_formradio
+       !formcheckbox i_require list $swlist prompt $swname
+    </div>
+    <div class="field box">
+      <label for="i_data">$wims_name_datamodule</label>
+      !set wims_ref_class=wims_button_help float_right
+      !href cmd=help&special_parm=datamodule $wims_name_help
+      <input type="text" name="i_data" id="i_data" value="$i_data" />
+    </div>
+    <div class="field box">
+      <label for="i_copyright">$wims_name_Copyright</label>
+      !set wims_formselect_switch=
+      !formselect i_copyright list gnu prompt GNU General Public License
+    </div>
+   </fieldset>
+  </div>
+ </div><!-- id="tabs" -->
+
+  <div class="wimscenter wimsform">
+   <input type="submit" name="inddef" value="$wims_name_tosave" />
+ $
+   <input type="submit" value="$wims_name_giveup" class="wims_giveup"/>
+ </div>
+
+!formend
+

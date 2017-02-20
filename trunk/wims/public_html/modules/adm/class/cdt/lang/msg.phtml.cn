@@ -1,0 +1,44 @@
+!set wims_module_log=error: $error
+<b>$wims_name_Error: </b>
+!if $error iswordof not_supervisor bad_jday bad_date day_exists same_devoir\
+  same_devoir2 toomany_todo day_dontexist
+  !goto $error
+!else
+ !msg $error
+ !exit
+!endif
+
+:not_supervisor
+抱歉, 只有班级的教师才能修改记事本.
+!exit
+
+:bad_jday
+作业的日期无效.
+!exit
+
+:bad_date
+你要修改的日期不存在.
+!exit
+
+:day_exists
+记事本内已经有了你输入的日期.
+!exit
+
+:same_devoir
+在指定作业时不能重复输入同一日期.
+!exit
+
+:same_devoir2
+在指定作业时不能重复输入同一日期.<br />
+请使用链接来替代
+ !href cmd=new&job=adddate&filename=$jyear$jmonth$jday 修改日期
+ .
+!exit
+
+:toomany_todo
+你已经达到这个日期所能指定作业的最大数量.
+!exit
+
+:day_dontexist
+输入的日期无效.
+!exit

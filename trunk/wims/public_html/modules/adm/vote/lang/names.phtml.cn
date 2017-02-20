@@ -1,0 +1,130 @@
+!set lang_exists=yes
+
+!set name_remark_numstud=Vous pouvez saisir 0 dans la deuxi鑝e colonne pour indiquer qu'il n'y a pas de limite.
+!set name_introtext_group=Saisir l'effectif de chaque groupe ainsi qu'un commentaire (関entuel).
+!set name_cardinal=Effectif
+
+!set name_0=预备
+!set name_1=开放
+!set name_2=关闭
+!set name_3=隐藏
+!set name_publish=发布
+!set name_publish2=发布
+!set name_hide=隐藏
+!set name_hide2=隐藏
+!set name_nominative=记名
+!set name_anonymous=匿名
+!set name_trace=匿名但可追踪
+!set name_question=问题
+!set name_data=数据
+!set name_global=整体
+!set name_detail=详情
+!set name_yourchoice=你的选择:&nbsp;
+!set title_data=电子表格数据
+!set title_nominative=记录
+!set title_vote=投票
+!set title_anonymous=投票
+!set name_choose=-- 选择 --
+!set wims_name_vote=投票表
+!set name_result=投票结果
+!set name_content=内容
+!set name_creation=创建一个投票.
+!set name_edition=编辑一个投票.
+!set name_remaining=剩余位置
+!set name_untitled=无标题
+!set name_showresult=显示结果
+!set name_nowritable=当激活时不能对投票修改. 这里是源码:
+!set name_novotant=没有投票
+!set name_notenough=缺乏足够多的投票者以公布列表
+!set name_showlist=按投票人显示结果
+!set name_showglobal=显示整体结果
+!set name_showlistbystudent=按投票者列举结果
+!set name_showstudentbyitem=按选择显示
+
+!distribute lines 你的班级还没有投票.\
+请与你的主持教师核实.\
+没有已激活的投票.\
+这里是你的班级的投票/注册.\
+投票数\
+into name_novote,name_novotecheck,name_noactivevote,name_class_vote,\
+name_cnt_votes
+
+ !distribute line 这是匿名投票.\
+   这是可追踪的匿名投票\
+   这是记名投票.\
+   已经关闭.\
+   票\
+   你已经投过票了.\
+   你已经表示过你的选择, 不过你还可以改变主意.\
+   你的选择\
+   记录的详情.\
+   评论的文字\
+   如果想发表评论, 请使用论坛.\
+into name_thisvote_anomymous,name_thisvote_trace,name_thisvote_nominatif,\
+   name_thisvote_closed,name_thisvote_answer,name_thisvote_already1,\
+   name_thisvote_already2,name_give_your_choice,name_details,\
+   name_comments,name_textarea
+
+!set name_textarea_limit=!nosubst 限 $limit_textarea 个字符
+!set name_whovote=投票人表
+!set name_whodontvote=非投票人表
+
+!set name_csv1=这里是一个文件 你可以下载并用你自己的电子表软件打开
+!set name_csv2=!nosubst 你想下载  第 $vote 个问题表里的数据吗
+!set name_format=格式
+
+!set name_option=选项
+!set name_value=值
+
+!! guided mode
+
+!set name_optionclosed=已关闭, 只有其他选项满足时才会打开
+
+!distribute lines 多少会话?\
+多少组?\
+至多\
+uservar 名\
+默认主机 IP \
+可在下页修改\
+引言 \
+例如给学生的一般性指示\
+Num.Stud.\
+会话<br />日期\
+会话<br />开始时间\
+会话<br />结束时间\
+主机 IP\
+附加信息\
+取消注册\
+into name_howmany,name_howmanygroups,name_atmost,name_namevar,name_textconnip,\
+  name_textconnip2, name_introtext,name_introtext2,name_numstud,name_sessiondate,\
+  name_begintime,name_endtime,name_connip,name_extra,\
+  name_cancellation
+
+!set name_numsess=!nosubst $numsess 个会话可用.
+!set name_session_select=!nosubst 选择 $numsess 个可用会话的日期和时间\
+
+!set name_describesource=!nosubst 这里你可以见到投票的源码. 检查数据并点击 <span class="wims_button disabled">$wims_name_tosave</span>.
+
+!if $vote_mode!=free
+ !readproc adm/lang/sheetexam.phtml.$lang
+!endif
+
+!set name_yourvariable=!nosubst 与你已选的问题表对应的变量名是 <span class="tt wims_code_variable">$namevar</span>
+!set name_accessvar_instr=!nosubst <strong>在练习页或考试中的使用</strong>: \
+在激活的练习页或考试中, 在 <span class="tt wims_code_words">$(name_shinfo[6])</span> 中, 请选取\
+ <span class="tt wims_code_words">$(name_allowtype[4])</span>.
+
+!set name_group_instr=!nosubst <strong>班级里的应用</strong>: 你可以按照这个变量\
+对某些班级活动过滤参加者.
+
+!set name_group_help=允许按组 (目前为电邮或相片集) 选择参加者.
+
+!set name_accessvar_help=允许参加者个性化进入练习页或考试.
+
+!distribute items 自由模式 ,进入练习页或考试,构建组,组 into name_free,name_accessvar, name_group,name_group1
+
+!set name_model=模型
+!set name_nextstep=下一步
+
+!set name_getsource=这是源代码. 在两行 `*' 之间的代码\
+  可以复制到一个新文件以供重复使用.

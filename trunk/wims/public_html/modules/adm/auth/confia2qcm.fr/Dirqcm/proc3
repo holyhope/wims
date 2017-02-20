@@ -1,0 +1,63 @@
+!!! fichier de traitement des données !!!
+
+## l'étape 3
+!if $navig!=$etape
+  rpmat=
+  rindic=
+  etape=$navig
+  !exit
+!endif
+
+!if $propsrep=$empty
+  exalert=$(alerts[1;])
+  !exit
+!endif
+
+errnp=!itemcnt $propsrep  
+
+!if ($[$propsnb+1] isitemof $propsrep) and $errnp>1
+  exalert=$(alerts[5;])
+   propsrep=
+   !exit
+!endif
+
+!if ($errnp>1 and $multirep=$empty)
+  multirep=1
+!endif
+
+propsrep=!sort numeric item $propsrep
+chronobs=$[$chronobs+1]
+rpmat=!append line $propsrep to $rpmat
+
+
+temp_indic=!translate $\
+$ to $ $ in $exo_indic
+temp_indic=!trim $temp_indic
+!if $temp_indic=$empty
+  temp_indic=(0,0)
+ !else
+   temp_indic=(1,$temp_indic)
+!endif
+  
+rindic=!append line $temp_indic to $rindic
+
+!if $propsrepList!=$empty
+  propsrepList=!replace line number $chronobs by $propsrep in $propsrepList
+!endif
+
+!if $indicList!=$empty
+  indicList=!replace line number $chronobs by $temp_indic in $indicList
+!endif
+
+!if $chronobs=$obsnb
+  etape=$[$etape+1]
+  propsrepList=$rpmat
+  indicList=$rindic
+  rpmat=
+  rindic=
+!endif
+  
+propsrep=
+exo_indic=
+!exit
+

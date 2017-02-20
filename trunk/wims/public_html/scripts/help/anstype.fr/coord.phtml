@@ -1,0 +1,66 @@
+<b>Clic sur une image.</b>
+(nom : <span class="tt wims_code_words">coord</span>)
+
+<br/>
+Ce type de réponse permet à l'utilisateur de cliquer sur une image,
+et peut analyser la position du clic suivant divers critères de zone.
+<p>
+La bonne réponse doit être donnée sous la forme d'une matrice (le
+séparateur de lignes est le point-virgule `;').
+La première ligne est l'URL de l'image.
+La seconde ligne est la position des critères permettant de
+considérer les coordonnées du clic comme correctes. Et à partir de la
+troisième ligne éventuelle, chacune peut contenir des critères
+(mauvaises positions). Toutes les coordonnées de points doivent
+être en pixels.
+</p><p>
+La réponse de l'utilisateur est considérée comme bonne lorsque les
+conditions de la deuxième ligne sont remplies. Sinon, si les critères
+de mauvaises positions existent (à partir de la 3ème ligne), la
+réponse est mauvaise si l'une de ces mauvaises conditions est remplie, et
+ambigue si aucune condition n'est remplie (dans ce dernier cas,
+l'utilisateur devra réessayer de répondre). S'il n'y a pas de critère
+de mauvaise position, toute réponse ne remplissant pas les conditions
+de la deuxième ligne sera jugée mauvaise.
+</p><p>
+Le numéro de la première des lignes en accord avec la réponse de
+l'utilisateur, diminué de 1, est stocké dans une variable
+<span class="tt wims_code_variable">\result</span><em>n</em>,
+où <em>n</em> est le numéro du champ de
+réponse et peut être utilisé dans un <span class="tt wims_code_variable">feedback</span>.
+</p>
+<p>
+Plusieurs conditions peuvent être combinées dans la même ligne, en
+utilisant les connecteurs logiques
+`&' (intersection), `|' (union), `^' (complémentaire), ainsi que les
+parenthèses.
+</p><p>
+Il est recommandé d'insérer ce champ de réponse dans l'énoncé. Il ne
+peut pas coexister avec d'autres champs de réponse, pour la raison
+évidente que tout clic de l'utilisateur sur une image enverra le
+formulaire de réponse.
+</p>
+!!! to check
+L'option <span class="tt">feedback=[ligne 1 de code; ligne 2 de code ; ...]</span> permet d'insérer
+une ligne de dessin supplémentaire dans la réponse (attention, cette ligne doit être codée
+en pixels). Pour des raisons techniques, il est recommandé de mettre au préalable
+<span class="tt">ligne 1 de code; ligne 2 de code ; ...</span> dans une variable.
+!!!!
+!set p=anstype.$lang/coord
+!readproc tabletheme
+!reset table_center
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td class="tt">
+!line 1 of $l_
+    </td><td>
+!line 2 to -1 of $l_
+   </td></tr>
+  !next
+$table_end

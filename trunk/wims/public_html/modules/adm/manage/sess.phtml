@@ -1,0 +1,32 @@
+
+!read adm/title.phtml 3\
+\
+$title
+<p>
+$name_content_s <span class="tt">$checkses</span>: <span class="small">[
+!href cmd=reply $wims_name_refresh
+ ]</span> </p>
+<pre class="small">----------------------------------------------------------------
+$content
+----------------------------------------------------------------</pre>
+<p>
+
+$name_content_v <span class="tt">var</span>:</p>
+<pre class="small">----------------------------------------------------------------
+!sh cat $wims_home/sessions/$checkses/var
+----------------------------------------------------------------</pre>
+
+
+!if $varstat!=$empty
+<p>
+$name_content_f <span class="tt">var.stat</span>:</p>
+<pre class="small">----------------------------------------------------------------
+$varstat
+----------------------------------------------------------------</pre>
+
+!endif
+
+<div class="wimscenter">
+!href cmd=reply&job=activ $name_listsessions
+</div>
+

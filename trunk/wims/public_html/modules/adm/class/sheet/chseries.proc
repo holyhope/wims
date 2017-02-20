@@ -1,0 +1,31 @@
+!distribute item $num into sheet,exo
+
+nbsh=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+!if $sheet<1 or $sheet>$nbsh
+ error=bad_sheet
+ !exit
+!endif
+
+don=!record $sheet of wimshome/log/classes/$wims_class/sheets/.sheets
+t=!line 1 of $don
+!if $t!=0
+ error=active_sheet
+ !exit
+!endif
+
+nbexo=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+!if $exo<1 or $exo>$nbexo
+ error=bad_series
+ !exit
+!endif
+
+update_field=2
+t=$ 
+tmp=!replace internal & by $t  in $iniparm
+tmp2=!getopt scoredelay in $tmp
+tmp3=!replace internal + by , in $tmp2
+iniparm=!replace internal scoredelay=$tmp2 by scoredelay=$tmp3 in $iniparm
+update_content=$iniparm
+!read adm/class/update.exo
+!restart module=adm/class/sheet&+sheet=$sheet
+

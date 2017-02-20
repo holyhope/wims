@@ -1,0 +1,81 @@
+!nocache
+
+!if $hasembedding!=yes
+  <fieldset class="oefform">
+!endif
+
+!nocache
+<!-- Begin form.phtml-->
+!if $oefsteps!=$empty
+ !set fieldtot=!itemcnt $thisstep
+!else
+ !set fieldtot=$[$choicecnt+$replycnt]
+!endif
+
+!if $fieldtot<1
+ !changeto oef/noreply.phtml
+!endif
+
+!set N_=!itemcnt $embedded
+!if $fieldtot<=$N_
+ !goto send
+!endif
+<legend>
+!if $error=$empty
+$name_enterreply:
+!else
+ $name_correctreply:
+!endif
+</legend>
+
+!if $hasembedding!=yes
+ <a id="oefform"> </a>
+ !form reply name="replyform" onsubmit="return formcheck();"
+!endif
+
+!if $oefsteps!=$empty and $oefstepcnt>1
+ !if $dynsteps=yes
+  ($name_step $oefstep)
+ !else
+  ($name_step $oefstep/$oefstepcnt)
+ !endif
+!endif
+<br />
+<table class="oefnoembed">
+!distribute item 1,1 into cntr,cntc
+!for t in $ansorder
+ !if $oefsteps=$empty or $t$(cnt$t) isitemof $thisstep
+  !read oef/form$t.phtml $(cnt$t)
+ !endif
+ !advance cnt$t
+!next t
+</table> <!-- end table oefnoembed -->
+:send
+!if $wims_fill_list!=$empty and $fillcnt>0 and $wims_fill_type!=$empty
+ !read anstype/$wims_fill_type.after
+!endif
+!if $oef_formnosubmit!=yes
+ !if $oef_js_submit!=
+  !set oef_js_submit=onclick="javascript:$oef_js_submit;"
+ !else
+  !set oef_js_submit=
+ !endif
+ <p class="send_answer">
+ !if _check notin $wims_session
+   <input type="submit" $oef_js_submit value="$name_sendanswer" />
+ !else
+   <input type="submit" $oef_js_submit value="$name_sendanswer" disabled="disabled"/>
+ !endif
+ </p>
+!endif
+
+!formend
+!if $hasembedding!=yes
+  </fieldset>
+  !! end of "oefform" fieldset
+!endif
+
+!if $qcmgood<1 and $choicecnt>0
+  <p class="small">$name_remark</p>
+!endif
+

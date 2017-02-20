@@ -1,0 +1,32 @@
+
+!read adm/title.phtml 3\
+\
+$wims_name_addconnection
+
+!read connect/remote.phtml
+
+!if $error!=$empty
+ !exit
+!endif
+
+!form reply
+<input type="hidden" name="job2" value="add2" />
+$name_toconnect
+<br />
+$name_identifier
+<input size="20" name="addclass" />
+<br /><span class="small">$name_help
+</span>
+<br />
+$name_automatically
+!formselect connupd1 list 0,1 prompt $wims_name_no,$wims_name_yes
+<br />
+$name_allow
+!formselect connupd2 list 0,1 prompt $wims_name_no,$wims_name_yes
+
+<div class="wimscenter wimsform"><input type="submit" value="$wims_name_tosave" /></div>
+
+!formend
+
+!reset addclass
+

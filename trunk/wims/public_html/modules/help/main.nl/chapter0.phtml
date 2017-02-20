@@ -1,0 +1,26 @@
+
+<ol type=I>
+!for i=1 to $chaptercnt
+ !set n=!linecnt $(chapter$i)
+ !set a=!line 1 of $(chapter$i)
+ <li><p><font size="+1">
+ !href module=$module&chapter=$i $a
+ </font>
+ !if robot notin $session and $n >=2
+  <ol>
+  !for j=2 to $n
+   !set l=!line $j of $(chapter$i)
+   !set t=!item 1 of $l
+   !set s=!item 2 to -1 of $l
+   <li>
+   !href module=$module&chapter=$i&open=$open,$(i)_$t#$t $s
+  !next j
+  </ol>
+ !endif
+!next i
+ <li><p><font size="+1">
+ !href module=help/wimsdoc.en Technische documentatie
+  &nbsp;voor ontwikkelaars van digitaal interactief lesmateriaal [engels]
+ </font>
+</ol>
+

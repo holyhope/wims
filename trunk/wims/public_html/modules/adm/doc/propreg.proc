@@ -1,0 +1,101 @@
+
+!bound copyrightr within gnu,opl,private default gnu
+!if class != $doctype
+ !bound docopenr within yes, no default no
+!else
+ !if $wims_user!=supervisor
+  !goto end
+ !endif
+ !bound docopenr within 0,1,2 default 0
+!endif
+titr=!detag $titr
+titr=!translate internal !$$ to $      $ in $titr
+titr=!singlespace $titr
+titr=!char 1 to $titlim of $titr
+titr=!trim $titr
+authorr=!translate internal !$$ to $      $ in $authorr
+authorr=!singlespace $authorr
+authorr=!char 1 to $titlim of $authorr
+authorr=!trim $authorr
+emailr=!translate internal !$$ to $      $ in $emailr
+!!emailr=!word 1 of $emailr
+emailr=!replace internal ; by , in $emailr
+emailr=!char 1 to $titlim of $emailr
+!if $emailr!=$empty
+  etest0=!replace internal ; by , in $emailr
+  etest0_cnt=!itemcnt $etest_0
+  !for et_ =1 to $etest0
+     emailr0=!item $et_ of $etest0
+     etest=!translate @ to , in $emailr0
+     etes2=!translate @ to $ $ in $emailr0
+     ecnt=!itemcnt $etest
+     ecnt2=!wordcnt $etes2
+    !distribute items $etest into e1,e2
+    !if $ecnt!=2 or $ecnt2!=2 or . notin $e2
+      error=bad_email
+      !exit
+    !endif
+   !next
+!endif
+descr=!translate internal $	\
+$ to $ 		   $ in $descr
+descr=!trim $descr
+dl=!words2items $dlangr
+dlangr=
+!for l in $dl
+ l=!lower $l
+ l=!text select abcdefghijklmnopqrstuvwxyz in $l
+ n=!charcnt $l
+ !ifval $n=2 or $l=all
+  dlangr=$dlangr $l
+ !endif
+!next l
+dlangr=!trim $dlangr
+!default dlangr=all
+headerr=!translate internal $	 \
+$ to $ 		$ in $headerr
+
+!if $titr=$empty
+ error=no_tit
+ !exit
+!endif
+
+!if $authorr=$empty
+ error=no_author
+ !exit
+!endif
+
+!if class != $doctype
+ otest=!lower $titr $authorr
+ otest=!singlespace $otest
+ otest=!deaccent $otest
+ otest=!text select $ $namechars in $otest
+ translator_unknown=
+ dictionary=bases/sys/abuse.$module_language
+ otest=!exec translator $otest
+ !if abuse isin $otest
+  error=abuse
+  !exit
+ !endif
+!endif
+
+!mexec scripts/mkdocdir.sh
+
+!writefile $docdir/$doc/.def tit=$titr\
+author=$authorr\
+email=$emailr\
+copyright=$copyrightr\
+docopen=$docopenr\
+doctoc=$doctocr\
+dlang=$dlangr\
+header=$headerr\
+desc=$descr
+
+!read adm/docindex.proc
+!read $docdir/$doc/.def
+
+:end
+block=main
+!read $docdir/$doc/main.def
+job=read
+

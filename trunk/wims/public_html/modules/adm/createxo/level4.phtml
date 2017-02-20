@@ -1,0 +1,52 @@
+!if $wims_developer!=$empty and ..devel/ isin ..$catmodule
+ !if $reg1=success
+  $name_update1
+  <span class="tt wims_fname">$catmodule</span>
+  
+ !else
+ $name_update2
+  <span class="tt wims_fname">$catmodule</span>.
+  <pre>$wims_exec_error</pre>
+ !endif
+ !set wims_menu_items=!append line modtool,1,module=adm/modtool\
+ to $wims_menu_items
+ <p>
+ !href cmd=reply&level=3 $name_prevstep
+ </p>
+ !exit
+!endif
+
+!if $wims_user=$empty
+ !read level5.phtml
+!else
+ !if $already!=yes
+  $name_update3
+ !else
+  $name_update4
+ !endif
+ $name_update5
+
+ !if $wims_user!=supervisor
+  <p>
+  $name_youcan
+  !href module=classes/$lang&special_parm=.nocache. $name_consult
+.
+ <p>
+ !else
+  <p>
+  $name_youcan
+  </p>
+  <ul>
+  <li>
+  !href module=classes/$lang&special_parm=.nocache. $name_consult
+  ($name_sheet).
+  </li><li>
+  !href cmd=reply&level=3&success=1 $name_prevstep.
+  </li>
+  <li>
+  !href cmd=reply&level=6 $wims_name_downloadbinary
+  </li>
+  </ul>
+ !endif
+!endif
+

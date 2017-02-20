@@ -1,0 +1,82 @@
+
+<b>Click in tiles.</b>
+(name : <span class="tt wims_code_words">clicktile</span>)
+<br/>
+
+An applet shows colored tiles. Some polygonal lines or (exclusive) one point
+can be showed. Some tiles must be colored differently by the student by clicking on them.
+
+<p>Command <span class="tt wims_code_words">\embed</span> must be used. Each tile is given by the left-top corner
+by something like <span class="tt wims_code_words">integer:integer</span>.
+The first line of the command <span class="tt wims_code_words">\embed</span> is the size X x Y  in pixels of the applet.
+The second line inside  <span class="tt wims_code_words">[</span> <span class="tt wims_code_words">]</span> contains commands precising the colored tiles
+which will be presented (they can not be modified by the student) : for example,
+<pre>
+\embed{r1, 200 x 200
+[xrange -5,5
+yrange -5,5
+background_color yellow
+square blue,1:1,1:2,1:3
+square green,2:3,2:4
+point red,0:0]}
+</pre>
+The bounds (<span class="tt wims_code_words">xrange</span> and <span class="tt wims_code_words">yrange</span>) must be integers.
+The good answer is given by lines as
+<span class="tt wims_code_words">color,a:b,c:d</span>
+The tile points must be of the form <span class="tt wims_code_words">a:b</span>
+wherein <span class="tt wims_code_words">a</span> and <span class="tt wims_code_words">b</span> are integers.
+
+For the background draw, one of the following lines is possible
+<pre>
+polygon white,0:0,0:1,1:1
+point red,0:0
+line white,-5:0,5:0
+</pre><br/>
+It is also possible to present an image in the background.
+<pre>copy,x,y,url</pre>
+If done with flydraw, the url is the result of the function <span class="tt wims_code_words">draw()</span>. It is recommended
+to take the same <span class="tt wims_code_words">xrange</span> and <span class="tt wims_code_words">yrange</span>.
+
+The variable <span class="tt wims_code_words">reply</span>n is the matrix of selected tiles (one line for each color).
+If the line
+<pre>
+return_all_objects yes
+</pre>
+is in the second line of the command <span class="tt wims_code_words">\embed</span>, all tiles will be returned in <span class="tt wims_code_words">reply</span>n.
+The variable <span class="tt wims_code_words">sc_reply</span>n is equal to 0.5 if all clicked tiles are correct, but not of the asked color
+
+<p>An empty variable can be put in the good reply. The analysis must be done with conditions in this
+case.
+</p>
+<p>
+<b>Example</b> :
+<pre>
+\statement{
+  \embed{r1,200 x 200
+  [xrange -5,5
+   yrange -5,5
+   background_color yellow
+   square blue,1:1,1:2,1:3
+   square green,2:3,2:4
+   line white,-5:0,5:0
+  ]}
+}
+\answer{}{blue,1:0,1:-1,1:-2; green,2:-2,2:-3}{type=clicktile}
+</pre>
+$table_header
+$table_hdtr<th></th><th>Explication</th></tr>
+$table_tr<td>xrange x1,x2</td><td></td></tr>
+$table_tr<td>yrange y1,y2</td><td></td></tr>
+$table_tr<td>background_color [color]</td><td></td></tr>
+$table_tr<td>square [color],x1:y1,x2:y2,...</td><td></td></tr>
+$table_tr<td>segment [color],x1:y1,x2:y2</td><td></td></tr>
+$table_tr<td>polygon [color],x1:y1,x2:y2,x2:y2,...</td><td></td></tr>
+$table_tr<td>return_all_objects yes/no</td><td></td></tr>
+$table_tr<td>colors</td><td>List of colors</td></tr>
+</table>
+
+Allowable colors are
+<span class="tt">white,red, green, blue, orange, yellow, purple, lightgreen, lightblue, cyan,
+brown, salmon, pink</span>.
+
+

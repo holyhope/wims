@@ -1,0 +1,157 @@
+/* SHEET STYLES */
+
+.wims_sheet_title {text-align:center;}
+
+.wims_sheet_desc, .wims_work_desc, .wims_vote_desc, .wims_exam_desc, .wims_doc_desc {
+  padding:.5em;
+  font-style: italic;
+  display: block;
+}
+
+.wims_user_sheet .wims_user_info {
+ margin-left:30%;
+}
+
+.wims_work_legend{
+    text-align: right;
+}
+
+ul.wims_work_list, ul.wims_user_sheet{
+   list-style:none;
+   padding:.5em;
+   margin:0;
+}
+
+.wims_work_list>li, .wims_user_sheet>li, .wims_sheet_list>li, .wims_work_legend li {
+    display: inline-block;
+    border:1px solid gray;
+    border-radius: 5px;
+}
+.wims_work_legend>p, .wims_work_legend>ul{
+    margin:0;
+}
+
+.wims_work_list>li, .wims_user_sheet>li, .wims_sheet_list>li {
+    padding:1em;
+    padding-bottom: 1.5em;
+    margin-right: 3px;
+    margin-bottom: 1.5em;
+    width:46%;
+    /*box-sizing: border-box;*/
+    min-width: 20em;
+    min-height:3em;
+    vertical-align:top;
+}
+
+/* Color and icon legend */
+.wims_work_legend li {
+   vertical-align:middle;
+   padding:0 .5em;
+}
+.wims_work_legend li:before{
+    font-size:1.2em;
+    padding-right:.2em;
+}
+/*.wims_sheet .wims_sheet_list li {
+    padding:1em;
+    border:1px solid gray;
+    background-color: #FDFDFD;
+    border-radius: 5px;
+    margin: 3px;
+    display: inline-block;
+    width:45%;
+}*/
+
+/* Default colors for sequences */
+.wims_work_list>li:before{ font-size:1.4em;}
+.wims_sheet_item { background-color:#CCF;}
+.wims_sheet_item:before { content:"\270E";}
+.wims_doc_item   { background-color:#99F;}
+.wims_doc_item:before { content:"\2691";}
+.wims_vote_item  { background-color:#66F;}
+.wims_vote_item:before { content:"\2713";}
+.wims_exam_item  { background-color:#9CF;}
+.wims_exam_item:before { content:"\270D";}
+
+
+/* Display ol list numbers before each li (even when display=inline)*/
+.wims_sheet_list
+{
+  /* List will start at 1 */
+  counter-reset: LIST-ITEMS;
+}
+
+.wims_sheet_list li:before
+{
+  content: counter( LIST-ITEMS ) ".";
+  counter-increment: LIST-ITEMS;
+  padding-right: 0.25em;
+}
+
+
+
+.wims_exo_item   {
+  /*background-color:#FC9;*/
+  background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, .25));
+}
+
+.wims_sheet_item, .wims_doc_item, .wims_vote_item, .wims_exam_item, .wims_exo_item
+{position:relative;}
+
+/* default style for scores. will be customised by score colors */
+.wims_sheet_score {
+    text-align:center;
+    margin:1px;
+    padding:5px;
+    border:2px solid #666;
+    background-color: #FFF;
+    border-radius: 2px;
+}
+
+div.menuitem.score{
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+    padding: .5em;
+    width:80%;
+    margin:auto;
+}
+
+.wims_user_info{
+    position: absolute;
+    right: .5em;
+    /* attention si on place wims_user_info en bas, il faut décaler wims_score_bar*/
+    top:-.75em;
+    /*bottom:-.5em;*/
+}
+/*.wims_exo_item .wims_user_info{
+    top:auto;
+    bottom: 0;
+}*/
+
+/* could be used
+.wims_sheet_weight{}
+.wims_style_expire{}
+*/
+
+/* Small and Medium screens */
+/* max-width 1024px  */
+@media only screen and (max-width: 64em) {
+   .wims_work_list>li, .wims_user_sheet>li, .wims_sheet_list>li{
+        width:inherit;
+        display:block;
+    }
+}
+
+/* Small screens */
+/* max-width 640px, mobile-only styles, use when QAing mobile issues */
+@media only screen and (max-width: 40em) { }
+
+/* Medium screens */
+/* min-width 641px and max-width 1024px, use when QAing tablet-only issues */
+@media only screen and (min-width: 40.063em) and (max-width: 64em) { }
+
+/* min-width 1025px, large screens */
+/* Large screens */
+@media only screen and (min-width: 64.063em) { }
+

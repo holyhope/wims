@@ -1,0 +1,235 @@
+
+# This line prevents clashes of users with same login.
+adduser_replace=nopass
+wims_priv_cryptpass=allow
+wims_deposit=!word 1 of $wims_deposit
+!if $wims_deposit=$empty
+ !exit
+!endif
+
+!if / isin $wims_deposit or .. isin $wims_deposit
+ error=bad_filename
+ !exit
+!endif
+
+d=!translate . to $ $ in $wims_deposit
+d=!word -1 of $d
+!if $d notwordof csv tsv txt
+ error=bad_filename
+ !exit
+!endif
+
+sdir=$wims_home/$wims_sesdir
+t=!exec ftype $sdir/user-deposit
+!if $t=$empty
+ !exit
+!endif
+!if $t=binary
+ error=binary_upload
+ !exit
+!endif
+
+!sh grep . $sdir/user-deposit | awk '{print ":"$$0}' | tr '	"' ', ' >$sdir/user_deposit
+file=wimshome/$wims_sesdir/user_deposit
+
+!read csv/gotlogin $file,login
+
+!if $gotlogin=$empty
+ !read adm/class/initclass $wims_class,auth
+ !if $auth_method notitemof $auth_method_list
+  error=no_login
+  !exit
+ !else
+   !read csv/gotlogin $file,external_auth
+   !if $(gotexternal_auth)=$empty
+     error=no_login_external_auth
+     !exit
+   !else
+    extern=yes
+   !endif
+ !endif
+!endif
+
+remark=
+!if sheet isin $types or exam isin $types or average isin $types
+ remark=$remark noauto
+!endif
+
+prop=no
+!if noauto iswordof $remark or manual isin $types
+ remark=$remark noprop
+!else
+!! pourquoi cette condition ???
+ !if firstname isitemof $types and lastname isitemof $types
+  prop=yes
+ !endif
+ !read adm/class/userremain.proc
+!endif
+
+!if manual isin $types
+ manual=yes
+!endif
+
+replacelist=$types
+types=!replace , by ,up_ in up_$types
+types_cnt=!itemcnt $types
+gotcnt=!itemcnt $loglist
+propcnt=0
+gradecnt=0
+!reset missing erased bad added change badlogin
+processed=yes
+!! on parcourt la liste des lignes des bons logins
+!for i = 1 to $gotcnt
+  l=$(loglist[$i])
+  l__=$(logtest[$i])
+  !reset up_firstname,up_lastname,up_email,up_password,up_comments,up_regnum,up_photourl,\
+    up_vars,up_participate,up_external_auth,up_supervise,up_supervisable
+  !! fill in the fields ...
+  !distribute items $(dep_$l__) into $types
+  !for m = 1 to $types_cnt
+    typ=$(types[$m])
+    !if Aup_var_ isin A$typ
+      typ1=!replace internal up_var_ by  in $typ
+      !if $typ1 isitemof $tv_listlocalname
+       up_vars=!append line $typ1=$($typ) to $up_vars
+      !endif
+    !endif
+  !next m
+  up_vars=!lines2rows $up_vars
+  !if $extern=yes
+    up_external_auth=!lowercase $l
+    l=!lookup $l in wimshome/$sclassdir/.userlist_external
+    !if $l=$empty
+      l=!lookup $l in wimshome/$sclassdir/.teacherlist_external
+    !endif
+    !if $l=$empty
+       !if $idp_method=ldap
+!!define login_method
+        !read adm/class/initldap
+       !endif
+      !read adm/class/hashlogin $up_external_auth,$wims_class,$login_method
+      l=$login
+      !default up_password=!randint 1999999,3000000
+    !endif
+  !endif extern=yes
+
+!! $l is now the login in all cases
+  exist=!defof user_exists in wimshome/$userdir/$l
+  existsup=$exist
+  !if $existsup=yes
+     lfname=!defof user_lastname,user_firstname,user_external_auth in wimshome/$userdir/$l
+     !default up_firstname=$(lfname[2])
+     !default up_lastname=$(lfname[1])
+     !default up_external_auth=$(lfname[3])
+     !if $up_firstname!=$empty and $up_lastname!=$empty
+       prop=yes
+     !endif
+  !else
+!!FIXME
+    !if $idp_method isitemof $idp_method_list and ($up_firstname=$empty or $up_lastname=$empty)
+!! I am not sure of what we must do : priority to the idp or to the modification of the teacher ??
+      !distribute item $up_firstname, $up_lastname into up_firstname_ , $up_lastname_
+      !read adm/class/idp_$idp_method $up_external_auth
+      !if $up_lastname_!=$empty
+        up_lastname=$up_lastname_
+      !endif
+      !if $up_firstname_!=$empty
+        up_firstname=$up_firstname_
+      !endif
+      !if $up_firstname!=$empty and $up_lastname!=$empty
+       prop=yes
+      !endif
+    !endif
+  !endif
+  !if $wims_superclass!=$empty and $wims_superclass!=$wims_class
+   participate=!defof user_participate in wimshome/$userdir/$l
+   !if $wims_class notitemof $participate
+    exist=
+   !endif
+  !endif
+  !if $exist=yes
+    !if $prop=yes
+     !read adm/class/adduser $l
+    !endif
+  !else
+   exist2=!defof user_exists in wimshome/$userdir/.$l
+   !if $exist2=yes
+    erased=!append item $l to $erased
+   !else
+    missing=!append item $l to $missing
+    !! ici aussi on a besoin d'avoir le nom et prenom
+    !if $existsup=yes or ($up_firstname!=$empty and $up_lastname!=$empty and $up_password!=$empty)
+     !if $prop=yes
+      !if $userremain>0
+       !read adm/class/adduser $l
+       !if $l notitemof $bad
+        added=!append item $l to $added
+	    userremain=$[$userremain-1]
+       !endif  l notitemof bad
+      !else
+       remark=$remark full
+      !endif userremain
+     !endif prop=yes
+     !else
+      !if $up_password=$empty
+        pass_missing=yes
+      !endif
+    !endif firstname ... non empty
+   !endif exist2=yes
+  !endif exist=yes
+!next l
+!if $change!=$empty
+ !read adm/class/mkuserlist
+ !if $classtype isin 24
+  !read adm/gateway/mkteacherlist
+ !endif
+ !read adm/class/stat
+ wims_class_log=spreadsheet userinfo by $wims_realuser
+!endif
+missing=!listcomplement $added in $missing
+change=!listcomplement $added in $change
+added=!listcomplement $missing in $added
+
+!if $manual=yes
+ fn=wimshome/log/classes/$wims_class/.grades
+ fu=wimshome/log/classes/$wims_class/.userlist
+ l=!record 1 of $fn
+ t=!line 2 of $l
+ n=!itemcnt $t
+ n=$[$n-2]
+ !if $n<1
+  error=no_manual
+  !exit
+ !endif
+ otypes=nn
+ !for i=1 to $n
+  otypes=$otypes,o_$i
+ !next i
+ first=$l
+ cnt=!recordcnt $fn
+ !for u=2 to $cnt
+  l=!record $u of $fn
+  uu=!item 1 of $l
+  orig_$uu=!item 2 to -1 of $l
+ !next u
+ !writefile $fn :$first
+ cnt=!recordcnt $fu
+ !for i=1 to $cnt
+  l_=!record $i of $fu
+  u=!item 3 of $l_
+  !distribute items $(dep_$u) into $types
+  !distribute items $(orig_$u) into $otypes
+  t_=!defof user_firstname user_lastname in wimshome/$userdir/$u
+  !for i=1 to $n
+   l_=$[$(up_manual$i)]
+   !if NaN isin $l_ or Inf isin $l_ or $l_<0 or $l_>100000 or $(up_manual$i)=$empty
+    l_=
+   !endif
+   !default l_=$(o_$i)
+   t_=!append item $l_ to $t_
+  !next i
+  !appendfile $fn :$u,$t_
+ !next u
+ wims_class_log=spreadsheet grades by $wims_realuser
+!endif
+

@@ -1,0 +1,34 @@
+!default target1=$o1
+!default target4=$o4
+!set wims_ref_class=wims_button_help float_right
+!href cmd=help&special_parm=addressing $wims_name_help
+
+<table class="wimsborder wimscenter">
+	<thead><tr>
+		<th>$name_zone</th>
+		<td></td>
+		<th>$name_Category</th>
+		<td></td>
+		<th>$wims_name_name</th>
+		<td></td>
+		<th>$wims_name_Language</th>
+	</tr></thead>
+	<tbody><tr>
+		<td>
+		!formselect target1 list $zonelist
+		</td><td>~</td><td>
+		<input type="text" size="12" name="target2" value="$o2" />
+		</td><td>~</td><td>
+		<input type="text" size="12" name="target3" value="$o3" />
+		</td><td>.</td><td>
+		!default target4=$module_language
+		!formselect target4 list $langlist
+		</td>
+	</tr></tbody>
+</table>
+<p class="wimscenter wimsform">
+!if nook notwordof $wims_read_parm
+!set wims_ref_class=wims_button
+ &nbsp;<input type="submit" value="$wims_name_tosave" />
+!endif
+</p>

@@ -1,0 +1,144 @@
+!read adm/language lang/names.phtml
+!set wims_form_method=file
+!read tabletheme
+
+!if $wims_developer=$empty
+   error=no_auth
+   !exit
+!endif
+
+!if $list_module=$empty and $save=1
+     error=$error accountempty
+!endif
+!set wims_ariane_self=no
+!set wims_ariane=!append line modtool,1,module=adm/modtool\
+   to $wims_ariane
+
+!if $cmd!=reply
+   !set wims_ariane=!append line chemtool,8\
+   to $wims_ariane
+!endif
+
+dev_dir=$wims_home/public_html/modules/devel/$wims_developer
+s2_dir=$wims_home/s2/$wims_session/
+sesdir=$wims_home/$wims_sesdir
+!sh mkdir -p $sesdir/getfile ;
+
+# how to detect the need to compute?
+!if $cmd=reply
+ !set wims_ariane=!append line chemtool,1,module=$module&cmd=resume\
+   to $wims_ariane
+  !if $type=$empty
+     error=notype
+     !exit
+  !endif
+ compute=yes
+ !default optionD=--gen2D
+ !reset option_
+  option_=-xx $optionD
+  optionsvg_cnt=!itemcnt $optionsvg
+  !for l in $optionsvg
+    option_=!append word -x$l to $option_
+  !next
+  height_=!text select 0123456789 in $height
+  !if $height_!=$empty
+    option_=!append word -xP$height_ to $option_
+  !endif
+ format_out_=$format_out
+  !default format_out_=svg
+  !if $type iswordof 1 2
+    !goto 12
+  !endif
+  !goto $type
+
+:0
+   !if noname.file isin $wims_deposit or $wims_deposit=$empty
+     error=noname
+     !exit
+   !endif
+    f_depo=!replace internal . by , in $wims_deposit
+    f_depo=!item 1 of $f_depo
+    !default f=svg
+    !sh mv $wims_home/$wims_sesdir/user-deposit $sesdir/$wims_deposit;\
+    perl -npi -e 's/.*// if ($$.==1)'  $sesdir/$wims_deposit
+
+    !sh obabel $sesdir/$wims_deposit -O $s2_dir$f_depo.$f $option_
+
+    !sh perl -npi -e 's:<title>[^<]*</title>::' $s2_dir$f_depo.$f;\
+    cp $s2_dir/$f_depo.$f $wims_home/$wims_sesdir/getfile/
+!!reset wims_form_method
+
+!goto end
+:12
+
+ !if $type=1
+   data_=$data
+ !else
+   data_=$database
+ !endif
+ !if $data_ issametext $empty
+   error=$error empty_data
+ !endif
+  data_=!nonempty lines $data_
+  data_=!lines2rows $data_
+  data_1=$(data_[;1])
+  data_2=$(data_[;2])
+  data_1=!nonempty items $data_1
+  data_2=!nonempty items $data_2
+  data_1cnt=!itemcnt $data_1
+  data_2cnt=!itemcnt $data_2
+  !if $data_1cnt!=$data_2cnt
+    error=$error bad_data
+  !endif
+  data_cnt=$[min(10,$data_1cnt)]
+  !for f in $format_out_
+!!etre plus astucieux, inutile de refaire le mol
+    !for sm=1 to $data_cnt
+      smi_=$(data_1[$sm])
+      smi_=!nospace $smi_
+      fi_=$(data_2[$sm])
+      fi_=!nospace $fi_
+      !if $type=1 and $test=1
+        !sh obabel -:"$smi_" -O $s2_dir/$fi_.$f $option_
+        !sh cp $s2_dir/$fi_.$f $wims_home/$wims_sesdir/getfile/
+      !endif
+      !if $type=2 or $test=2
+        !sh export wims_exec_parm="https://cactus.nci.nih.gov/chemical/structure/$smi_/file?format=$f" ;\
+        bin/webget > $s2_dir/$fi_.$f ;\
+        cp $s2_dir/$fi_.$f $wims_home/$wims_sesdir/getfile/
+      !endif
+    !next
+  !next
+!set smod=!replace internal ? by in $smod
+!if $smod=$empty and $save=1
+  error=$error no_module
+  save=0
+!endif
+!if $smod!=$empty and $save=1
+   !sh mkdir -p $dev_dir/$smod/data
+   !for f in $format_out_
+      !for sm=1 to $data_cnt
+        smi_=$(data_1[$sm])
+        smi_=!nospace $smi_
+        fi_=$(data_2[$sm])
+        fi_=!nospace $fi_
+       !if $fi_ notsametext $empty
+         !sh cp $s2_dir$fi_.$f $dev_dir/$smod/data/$fi_.$f
+       !endif
+     !next
+   !next
+   save_old=$save
+   !reset save
+   !goto end
+
+:end
+
+!endif cmd reply
+
+!if $list_module=$empty and $save=1
+     error=$error accountempty
+!endif
+
+!!obabel -:"c1cc(C=O)ccc1C(=O)O" -O out.svg
+       --genalias -xA
+!!!obabel infile.mol -O new.smi -m puts each molecule into new1.smi new2.sm

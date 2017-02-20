@@ -1,0 +1,86 @@
+<script type="text/javascript">
+//<![CDATA[
+<!-- no validator -->
+    function dontknow(){
+	myConfirm('$dontknow','?','$wims_ref_name','$session','$module','$counter','$nok_send_color');
+    }
+
+//]]>
+</script>
+!set n=$counter
+!! multiplechoice=1 choose from $options possibilities
+!! each possibility is called ex1,ex2,ex3...ex10 etc
+<table id="exercise" class="exercise"><!-- begin table id="exercise" -->
+    <tr>
+    <td class="exercise_t">
+	$(question$n)
+	!if $(formula$n) != $empty
+	    <br />
+	    !if $display=1234
+		!insmath $$$$ $(formula$n) $$$$
+	    !else
+		!insmath $(formula$n)
+	    !endif
+	!endif
+	!if $applet=1
+	    <br />
+	    $(object$n)
+	!endif
+	!if $exotext != $empty
+	    <br />
+	    $exotext
+	!endif
+    <td>
+!if $make_tr=1
+    </tr>
+    <tr>
+    !endif
+    <td class="exercise_m">
+	<table class="exercise"><!-- begin table with click stuff -->
+	    <tr>
+	!if $[$options*$xsize]>840
+	    !set one_row=2
+	!else
+	    !set one_row=1
+	!endif
+	!set t=0
+	!for p=1 to $options
+	    !increase t
+	    <td style="vertical-align:top;background-color:lightblue;padding:10px;border-spacing:5px" onmouseover="this.style.backgroundColor='yellow';" onmouseout="this.style.backgroundColor='lightblue';">
+		<a style="cursor:pointer" onclick="javascript:myConfirm('<br />$send : no. $p ?<br />','$p','$wims_ref_name','$session','$module','$counter','$ok_send_color');">
+	    !if $multiimage=1
+		!if $draw=1
+		    !set insdraw_size=$xsize,$ysize
+		    !insdraw $(ex$p)
+		!else
+		    !if $plot=1
+			!set insplot_set=$(image_settings$n)
+			!insplot $(ex$p)
+		    !else
+			$(ex$p) 
+		    !endif
+		!endif
+	    !else
+		!if $math=0
+		    <span class="schaersvoorde_link">$(ex$p)</span>
+		!else
+		    !insmath $(ex$p)
+		!endif
+	    !endif
+		</a>
+	    </td>
+	    !if $t=2 and $one_row=2
+	    </tr>
+	    <tr>
+		!set t=0
+	    !endif
+	!next p
+	    </tr>
+	</table><!-- end table with click stuff -->
+    </td>
+</table><!-- end table id="exercise" -->
+
+<div id="send_buttons" class="embedded_central">
+    <input type="button" id="schaersvoorde_nok_button" onclick="javascript:dontknow();" value="$dontknow" />
+</div>
+!exit

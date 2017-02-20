@@ -1,0 +1,127 @@
+# AuthUser
+# permet d'authentifier l'utilisateur quser dans la classe qclass
+
+#on commence par verifier la classe $qclass
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+!if hashlogin iswordof $option
+ quser_orig=$quser
+ !read adm/class/hashlogin $quser_orig,$qclass,
+ quser=$login
+!endif
+
+#Puis on verifie l'existence de $quser
+!read scripts/check.user
+!if $error!=$empty
+ !if hashlogin iswordof $option
+   error=hashlogin: $login
+ !endif
+ !exit
+!endif
+
+!readdef $userdeffile
+!if $qpasswd != $empty and $qpasswd != $user_password
+ error=user authentification failure
+ !exit
+!endif
+
+wims_mode=
+!readdef $classdeffile
+
+class_superclass=!defof class_superclass in $classdeffile
+!default class_superclass=$wims_class
+
+!default class_typename=class
+!default class_type=0
+
+# Il faut tout d'abord verifier que l'utilisateur n'etait pas en session d'examen
+parmreg=!record 0 of wimshome/log/classes/$wims_class/.parmreg/$quser.exam
+nb_parms=!wordcnt $parmreg
+
+### Schema du fichier .parmreg/user.exam ###
+##
+##    IP  SESS_ID   ??? exam_ID
+## exemple : 134.59.121.121 UI99D09012 1315494761 3
+##
+############
+
+num_session=$wims_session
+
+#data1 doit contenir l'ip du user et non du serveur appelant
+remote_addr= !word 1 of $data1
+
+
+!if $nb_parms>=4
+
+ !distribute words $parmreg into sess_IP,sess_ID,sess_time,exam_id
+
+ !set r_=!record 0 of wimshome/sessions/$sess_ID/examreg.$exam_id
+ !set now=$wims_nowseconds
+
+ !set ws=!translate _ to $ $ in $wims_session
+ !set ws=!word 1 of $ws
+
+ !set restrictions=!record 0 of wimshome/log/classes/$wims_class/.E$exam_id
+
+ !if $r_!=$empty and $sess_ID!=$ws and $sess_time>$now and $sm!=#
+   !if $sess_IP != $remote_addr
+
+     !sh rm -f ../sessions/$ws/var.stat >/dev/null
+     !if $remote_addr = $empty
+        error= $quser is already in an exam session, but your server didn't provided the user actual IP in data1.
+     !else
+        error= $quser is in an exam session started on another IP ($sess_IP != $remote_addr). Go back quickly to this computer !
+     !endif
+     !exit
+   !endif
+   num_session=$sess_ID
+ !endif
+
+ #si la session d'examen est terminee, on reinitialise les parametres de session
+ !if $sess_time<$now or $r_=$empty
+   !writefile wimshome/log/classes/$wims_class/.parmreg/$quser.exam
+ !endif
+
+!endif
+
+dir_session=sessions/$num_session
+
+!if $remote_addr!=$empty
+	!setdef REMOTE_ADDR=$remote_addr in wimshome/$dir_session/var
+!endif
+
+
+!writefile wimshome/$dir_session/var.stat wims_class=$wims_class\
+wims_user=$quser\
+wims_firstname=$user_firstname\
+wims_lastname=$user_lastname\
+wims_email=$user_email\
+wims_external_auth=$user_external_auth\
+wims_classname=$class_description\
+wims_institutionname=$class_institution\
+wims_supervisor=$class_supervisor\
+wims_supervisormail=$class_email\
+wims_css=$class_css\
+wims_theme=$class_theme\
+wims_theme_icon=$class_theme_icon\
+wims_participate=$user_participate\
+wims_superclass=$class_superclass\
+wims_supervise=$user_supervise\
+wims_supertype=$class_type\
+wims_typename=$class_typename
+
+!if $quser!=supervisor
+!appendfile wimshome/$dir_session/var.stat wims_realuser=$quser
+!endif
+
+!if lightpopup iswordof $option
+ !setdef wims_lightpopup=yes in wimshome/$dir_session/var.stat
+ !setdef w_wims_lightpopup=yes in wimshome/$dir_session/var
+!endif
+
+!sh mkdir $wims_home/$dir_session/getfile
+
+!sh ln -s $wims_home/log/classes/$qclass/src/images $wims_home/$dir_session/getfile/oefimages

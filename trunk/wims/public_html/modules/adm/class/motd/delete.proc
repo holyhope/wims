@@ -1,0 +1,19 @@
+test=!defof class_defined in wimshome/log/classes/$wims_class/.def
+!if $test!=yes
+ error=bad_class
+ !reset job
+ !exit
+!endif
+
+!if $action=register
+ !if $listusersave!=$empty
+    !for user in $listusersave
+	!sh rm -f $wims_home/log/classes/$wims_class/motd/$user;
+    !next user
+ !else
+    !sh rm -f $wims_home/log/classes/$wims_class/.motd;
+ !endif
+ !reset job,listuser,action,listusersave
+!else
+ listusersave=$listuser
+!endif

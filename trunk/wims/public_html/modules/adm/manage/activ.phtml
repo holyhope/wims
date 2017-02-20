@@ -1,0 +1,66 @@
+
+!read adm/title.phtml 3\
+\
+$title
+
+<p class="wimstech">$name_servor_time: $nowtime.</p>
+!if $load15!=$empty
+ $name_Load: $load1% ($name_last 1 $name_min), $load5% ($name_last 5 $name_mins),
+ $load15% ($name_last 15 $name_mins).
+!endif
+$table_header
+<caption>$name_requests</caption>
+$table_hdtr
+<th>$name_since 10 $name_mins</th>
+<th>$name_since 30 $name_mins</th>
+<th>$name_since 1 $name_hour</th>
+<th>$name_since 3 $name_hours</th></tr>
+$table_tr
+<td>$access10m</td>
+<td>$access30m</td>
+<td>$access1h</td>
+<td>$access3h</td></tr>
+$table_end
+
+<a id="sessions"></a>
+$table_header
+<caption>$name_activesessions
+<span class="small">[
+!href cmd=reply#sessions $wims_name_refresh
+ ]</span>
+</caption>
+$table_hdtr<th>#</th>
+<th>$name_session</th><th>$name_IP</th>
+<th>$name_Requests</th>
+<th>$name_module</th><th>$wims_name_class</th></tr>
+!set n=!linecnt $ses
+!set k=1
+!for i=1 to $n
+ !set l=!line $i of $ses
+ !distribute words $l into r_,s_,i_,m_,c_
+ !if o notin $s_ and - notin $s_
+  $table_tr
+  <td style="text-align:right;">$k</td>
+  <td><span class="tt small">
+  !set v_=!charcnt $s_
+  !if $v_>6
+   !href cmd=reply&job=sess&checkses=$s_ $s_
+  !else
+   $s_
+  !endif
+</span></td>
+  <td class="tt">$i_</td>
+  <td>$r_</td>
+  <td>$m_</td>
+  !if , isin $c_
+   <td>$c_</td>
+  !else
+   <td>--</td>
+  !endif
+  </tr>
+  !advance k
+ !endif
+!next i
+$table_end
+
+

@@ -1,0 +1,73 @@
+
+st_sample=!singlespace $(reply$i)
+st_sample=!trim $st_sample
+st_tester=!rows2lines $(replygood$i)
+st_opt=$(replyoption$i)
+st_tmp=!translate internal | to $\
+$ in $st_tester
+replyGood$i=!line 1 of $st_tmp
+m_reply$i=$st_sample
+
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+
+!if $st_sample=$empty
+ error=empty_data
+ !exit
+!endif
+
+st_style=!getopt style in $st_opt
+!if $st_style=
+ st_opt=$st_opt style=generic
+!endif
+
+st_tester=!trim $st_tester
+st_tcnt=!linecnt $st_tester
+
+st_lim=!getopt goodlim in $st_opt
+!bound st_lim between integer 1 and $st_tcnt default 1
+
+!if $st_lim<$st_tcnt
+ st_tester=$st_tester\
+ [**] [Neg:[W:]] [Out:badword,[*]] [**]
+!endif
+
+st_out=!exec symtext match $st_opt\
+$st_sample\
+$st_tester
+
+m_result$i=$st_out
+
+!if ERROR iswordof $st_out
+ wims_exec_error=$st_out
+ Test=bad $i
+ !exit
+!endif
+
+!distribute word $st_out into st_1,st_2
+
+!if $st_1=MATCH
+ !if $st_2 <= $st_lim
+  freegot=$[$freegot+($st_lim-$st_2+1)/$st_lim]
+  diareply$i=good
+  !if $st_2 > 1
+   partialgood$i=yes
+  !endif
+ !else
+  !if $st_2 > $st_tcnt
+   st_badword=!getopt badword in $st_out
+   st_badword=!declosing $st_badword
+   !if $st_badword!=$empty
+    test=NaN unknownword $st_badword
+   !else
+    diareply$i=bad
+   !endif
+  !else
+   diareply$i=bad
+  !endif
+ !endif
+!else
+ diareply$i=bad
+!endif
+

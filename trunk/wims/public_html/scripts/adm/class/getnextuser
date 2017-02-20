@@ -1,0 +1,23 @@
+!! classe, student login, job, name of the variable used for the login
+
+!distribute items $wims_read_parm into gn_cl_,gn_st,gn_job,gn_getu_
+
+!default gn_getu_=gn_job
+!default gn_cl_=$wims_class
+!set tmp=!replace internal / by , in $wims_class
+!set wims_class1=$wims_class
+!if $(tmp[4])!=$empty
+ !set wims_class1=!item 1 to 3 of $tmp
+ !set wims_class1=!replace internal , by / in $wims_class1
+ !set wims_class1=!nospace $wims_class1
+!endif
+!set prevuser=!lookup $gn_st in wimshome/log/classes/$wims_class1/.userprevlist
+!if $prevuser!=$empty
+   !set wims_menu_items=!append line prev_participant,1,cmd=reply&job=$gn_job&$gn_getu_=$prevuser\
+  to $wims_menu_items
+!endif
+!set nextuser=!lookup $gn_st in wimshome/log/classes/$wims_class1/.usernextlist
+!if $nextuser!=$empty
+   !set wims_menu_items=!append line next_participant,1,cmd=reply&job=$gn_job&$gn_getu_=$nextuser\
+  to $wims_menu_items
+!endif

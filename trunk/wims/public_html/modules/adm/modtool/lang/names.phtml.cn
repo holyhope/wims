@@ -1,0 +1,257 @@
+!set lang_exists=yes
+
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
+
+!set name_auth=开发者身份
+!set name_prop=账户属性
+!set name_modname=!nosubst <em>$(auth_name[2]) $(auth_name[1])</em>的模块目录表
+!set name_create=创建模块
+!set name_diff=检查差别
+!! must be the same as wims_name_modcontent in html/names.phtml.$lang
+!! dont succeed not to duplicate
+!set name_flist=文件表
+!set name_files_binfile=二进制文件
+!set name_del=删除模块
+!set name_size=大小
+!set name_restore=从备份恢复
+!set name_publish=发布$i_title $mod
+!set name_publication=Publication
+!set name_validation_message=要求网站管理员对安装作验证.
+!set name_compile=编译 latex2wims
+!set name_backup=Backup
+!set name_edfile=File modification
+!set name_showfile=File content
+
+!distribute line Files OEF/src\
+Files OEF/src/cpp\
+Editable data files\
+Translation files\
+Configuration files\
+Help Files\
+into name_files_src,name_files_cpp, name_files_other,name_files_lang,name_files_phtml,name_files_help
+
+!! wims_name_properties
+!set name_index=性质\
+
+!set name_file=已有二进制文件
+!set name_file1=文件
+!set name_nofile=模块里没有二进制文件.
+!set name_depos=存放二进制文件
+!set name_in_module=在模块内
+!set name_replace=替换的文件
+!set name_addfile=增加新文件
+!set name_successfile=The file has been uploaded in the module.
+!set name_nosuccessfile=The file has not been uploaded in the module.\
+  Check that its name does not contain a stressed letter or \
+  one of the following character!set name_successdeletefile=has been deleted from the directory
+!set name_changefile=Rename
+!set name_changenamefile=New name of the file
+!set name_warning_changenamefile=Be cautious, changing the file name can break worksheets \
+  in virtual classes.That is in particular the case of exercise files with extension
+
+!set name_help_addfile=Le nom <span class="tt wims_fname">name_file</span> doit contenir\
+  que des caract鑢es alphanum閞iques sans accents ni espaces (ne pas mettre de signe -).
+!set name_help_addfile_src=OEF 格式练习的源文件名称\
+应该是 <span class="tt"> src/name_file.oef</span>
+!set name_help_addfile_cpp=Le nom du fichier contenant le source d'un fichier ccp d'un exercice OEF\
+ doit 阾re de la forme <span class="tt wims_fname">src/cpp/name_file.cpp</span>.
+!set name_help_addfile_other=Le nom du fichier doit 阾re de la forme \
+ <span class="tt wims_fname">name_file</span>.
+!set name_help_addfile_lang=Le nom du fichier doit 阾re de la forme \
+ <span class="tt wims_fname">lang/name_file.xx</span> o鵟
+ <span class="tt wims_fname">xx</span> est le symbole repr閟entant la langue.
+!set name_help_addfile_phtml=Vous pouvez modifier certains de ces fichiers pour\
+   une configuration plus pouss閑 de votre module.
+
+!set name_gestion=对于文件, 点击链接 <span class="tt">$wims_name_docgestion</span>
+!set name_your_module=你的模块
+!set name_your_module_OEF=is a module of exercises written in OEF format and
+!set name_file2=包含以下文件
+!set name_updateadress=升级地址
+!set name_simpl_address=这个模块只有一个简化地址
+!set gnu=!nosubst &copy; $year (<a href=\"COPYING\">GNU GPL</a>)
+
+!set name_type=OEF,文件, 练习, 工具, 娱乐, 推导
+!set name_zone=区域
+!set name_Category=范畴
+!set name_category=!nosubst $wims_name_Type
+!set name_createnew=创建新模块
+!set name_noquicktool=本服务器没有安装 quicktool
+!set name_rename=重新命名
+!set name_duplicate=复制
+!set name_increment=当你发布新版本时不要忘了增加版本号!
+!set name_backto=!nosubst 返回 $otit
+!set name_this1=你的新模块
+!set name_this2=当前开发中的模块
+!set name_levellist=E: 小学; H: 中学; U: 大学; <br />G: 研究生; R: 研究工作
+
+!set name_accountchange=改变你的开发者帐户的性质
+!set name_empty=如果你不想改变密码则密码栏留空
+!set name_change=你的帐户密码已经修改.
+!set name_translation_language=其它语言
+
+!distribute lines 测试选项\
+  公式\
+  低像素,高像素, Mathml\
+  缩放\
+  字母间空隙\
+  正常,增大\
+  数学公式的大小\
+into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name_useropts3,\
+  name_useropts4
+
+!if $job=modname
+  !set name_moddevcnt=!nosubst 你有$totalcnt个模块在开发中.
+  !set name_limited=!nosubst 列表限 $maxlist 个项
+
+  !distribute lines 只显示地址中含有以下字符串的模块\
+  在模块名称上点击以开始工作.\
+   你没有开发中的模块. 请点击\
+   从备份文件恢复\
+  into name_browselist,name_clicktitle,name_nomodule,name_restore
+!endif
+
+!distribute lines 复制,改名,复制,改名\\
+ into name_choice
+!set name_move=$(name_choice[2])
+!set name_copy=$(name_choice[3])
+!if $job iswordof copy move
+  !distribute lines    复制\
+   模块改名后会影响到所有用到它的作业页. 请确认这种情况不会发生,\
+ into name_copy,name_warning1
+!set name_public_module=!nosubst 供公众使用的模块 <span class="wims_mod_title">$otit</span>\
+(<span class="tt wims_fname">$original2</span>)到开发空间, 地址为
+!set name_warning2=改名或复制公共地址的模块会导致重复发布.\
+  请小心行事! <p>\
+ 如果你要测试此模块, 请把它放到测试区.
+!set name_warning3=如果你已经发布过此模块, 请你把它的地址改成已发布的地址.\
+  否则就会造成重复发布.
+!endif
+
+!if $job=auth
+  !set name_intro=这个工具用于在 WIMS 里在线开发正规模块.\
+   只有已注册的开发者才能进入.\
+   <p>请给出你的开发者身份.</p>
+
+  !distribute lines 给网站管理员发电邮\
+如果你忘记了你的密码\
+如果你想开发 WIMS 模块, 请\
+为了得到开发者身份 (登录名, 密码).\
+注意你也可以使用\
+以写出简单的互动式练习, 并且不需要身份验证\
+  into name_manager,name_forget,name_developer,name_identification,name_createxo1,\
+    name_createxo2
+
+!endif
+
+!if $job=backup
+ !set name_save=这里是模块的备份文件
+ !set name_internal_error=内部错误: 不能生成备份文件. 请联系
+!endif
+
+!if $job=publish
+  !distribute lines 发布者帐号\
+发布类型\
+开发版,稳定版 - 修改已有模块,稳定版 - 添加新模块\
+是其它语言版本<br /> 的翻译吗?\
+授权的修改者\
+先看这里!\
+已发布的模块将在几分钟后出现在网站的搜索引擎里.\
+如果这是一个错误, 请要求网站管理员手工除去你的已发布的模块.\
+你将收到一个确认你的发布的电邮\
+好的, 请继续\
+以下领域不存在\
+ into name_publishaccount,name_publishtype,name_prompt,name_translation,name_authorized,name_readhelp,\
+   name_local,name_error,name_emailsend,name_goahead,name_warning_nodomain
+
+ !set name_warning0=!nosubst 这是一个公众地址的模块, \
+  它将发布在中心 $publishname 上.
+ !set name_warning01=请输入你的发布身份.
+ !set name_warning1=如果你是发布一个已有模块的新版本的话, \
+ 有没有增加版本号? 如果没有, 就不会有人升级到你的新版本.
+ !set name_warning2=你的模块有一个局部地址. 它只能发布在本服务器的局部空间里. \
+   要继续吗?
+!set name_warning3=发布在局部空间里的主要优点是能被本地服务器的搜索引擎看到.
+  !set name_cheat1=!nosubst 这个模块声称只需 WIMS-$Wver2 就能运行, \
+   而它已经在这个版本为 $wims_version 的服务器上修改过.\
+   你应该修改模块的 INDEX 文件使它反映正确的版本.
+  !set name_cheat2=如果你<b>确实</b>知道你在做些什么,\
+   你可以欺骗服务器使它以为这是一个老版本的服务器 (<b>风险很大</b>)!
+   !set name_warning_domain=!nosubst 你应该检查模块的性质,\
+   并使用帮助中提到的领域及关键词\
+     <span class="wims_label">$wims_name_Domain</span>及\
+     <span class="wims_label">$wims_name_Keywords</span>. \
+     如果其中没有合适的, 您可以把您的建议发送到
+  !set name_warning_domain2=!nosubst 点击帮助\
+     <span class="wims_label">$wims_name_Domain</span> 或\
+     <span class="wims_label">$wims_name_Keywords</span> 以找出列表
+  !set name_warning_keywords=!nosubst 为改进公众模块的查询,\
+   请检查领域及关键词 (使用帮助\
+   <span class="wims_label">$wims_name_Domain</span> 及 \
+   <span class="wims_label">$wims_name_Keywords</span>),\
+   请使用英语术语.\
+   您可以把您对领域及关键词的建议发送到
+!set name_warning_keywords_unknown=以下关键词不在 WIMS 的正式关键词表中.
+ !set name_warning_keywords2=只有正式关键词才能在搜索引擎里自动完成. \
+ 请检查你的关键词在正式表中有没有等价的词. \
+ 请注意搜索引擎会检查标题及描述中所有的词.
+ !set name_warning_suggestion=你可以把对领域及关键词的建议发到
+!endif
+
+!if $job=diff
+  !distribute lines 在此服务器的开发版与公开版之间没有发现差别.\
+此服务器的开发版与公开版之间有很大不同.\
+此服务器的开发版与公开版之间的差别为:\
+  into name_diff1,name_diff2,name_diff3
+!endif
+
+!if $job=restore
+ !set name_warning1=你的文件不像是模块备份文件!\
+ <p>你只能恢复以前从模块创建工具下载的文件. 请再试.
+
+ !distribute lines 你的文件不像是模块备份文件, 文件有错!\
+在(开发空间里的)已有模块与备份档案间没有差别.\
+(开发空间里的)已有模块与备份档案间差别很大.\
+(开发空间里的)已有模块与备份档案间的差别是\
+请给出备份文件以恢复\
+只检查与现有模块的区别.\
+返回模块继续工作\
+恢复的模块\
+  into name_norecognize,name_diff1,name_diff2,name_diff3,name_restoref,name_show_diff,name_gotowork,\
+    name_restored
+
+!set name_illegal=你的档案含有非法类型的文件! 不能恢复.\
+<p>是旧版的备份吗? 你只能一个一个文件复制.
+!set name_warning2=只能接受以前用创建模块工具备份的文件或从发布中心 \
+  <a href="$downloadsite">$downloadsite</a> \
+  下载的文件. 备份文件不能作手工修改.
+!set name_warning_diff=!nosubst 备份模块的恢复将完全取代同一地址的已有模块, 不能再复原. \
+不过你可以
+
+!endif
+
+!exit
+:del
+
+ 被删的模块不能再恢复. 请先
+!href cmd=reply&jobreq=backup 做备份!
+<b>别忘记</b>: 如果有虚拟班或作业引用你的模块,
+模块删除后, 作业将不可用!
+
+你肯定要删除模块
+!exit
+
+:delconfirm
+文件
+ <span class="wims_fname">$fname</span>
+已从模块 <span class="wims_mod_title">$title</span>删除.
+!exit
+
+:delfile
+你肯定要从模块
+<span class="wims_fmod_title">$title</span>
+删除文件
+<span class="wims_fname">$fname</span>
+!exit

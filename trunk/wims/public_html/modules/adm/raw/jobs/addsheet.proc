@@ -1,0 +1,106 @@
+# AddSheet
+# permet d'ajouter une feuille vide à la classe qclass
+
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+#### RAPPEL : ################
+## FORMAT of the /sheets/.sheets INDEX file :
+#:SHEET STATUS
+#EXPIRATION DATE
+#SHEET TITLE
+#SHEET DESCRIPTION
+#######################
+## FORMAT of a /sheets/.sheetN file :
+#:MODULE (classes/$lang if it is an exercice of the class)
+#PARAMS
+#EXO REQUIRED POINTS
+#EXO WEIGHT
+#EXO TITLE
+#EXO DESCRIPTION
+#################################
+
+list1=.,..,.sheets,.require,.weight,.severity
+list2=!listfile -a $wims_home/log/classes/$qclass/sheets
+list2=!lines2items  $list2
+
+list2=!listcomplement $list1 in $list2
+
+n=!itemcnt $list2
+!increase n
+
+data1=!nonempty lines $data1
+
+n1=!linecnt $data1
+!for i=1 to $n1
+  l=!line $i of $data1
+  l=!translate = to $\
+$ in $l
+  !distribute lines $l into name_,value_
+  !! remove leading, ending and multiples spaces
+  value_=!trim $value_
+  value_=!singlespace $value_
+  !if $name_ issametext expiration and $value_<=20150101
+    error= bad expiration date ($value_)
+    !exit
+  !endif
+  sh_$name_=$value_
+!next i
+
+sh_creation=!char 1 to 8 of $wims_now
+sh_creation=!eval $sh_creation
+## Ici par defaut je place la date d'expiration de la feuille a creation+1an.
+## On pourrait aussi mettre simplement la meme date d'expiration que la classe
+
+!default sh_expiration=$[$sh_creation+10000]
+!default sh_title=Feuille d'exercices #$n
+!default sh_description=Feuille d'exercices #$n
+!default sh_sheetmode=0
+
+############# contenu de la nouvelle feuille ##############################
+## Par défaut, le contenu de la feuille est vide, autrement c'est une ligne
+## dont les points-virgules seront interprétés comme des retours à la ligne
+## les signes = sont interdits, il faut les remplacer par %3D
+## la structure du contenu n'est pas vérifiée, c'est à vos risques et périls !
+###########################################################################
+!default sh_contents=
+sh_contents=!translate ; to $\
+$ in $sh_contents
+sh_contents=!translate @ to = in $sh_contents
+
+sheetcnt=!recordcnt wimshome/log/classes/$qclass/sheets/.sheets
+
+!if $sheetcnt >= $MAX_SHEETS
+ error= error : The number of worksheets is limited to $MAX_SHEETS. You may not create worksheet #$[$sheetcnt+1].
+ !exit
+!endif
+
+!appendfile wimshome/log/classes/$qclass/sheets/.sheets \
+:$sh_sheetmode\
+$sh_expiration\
+$sh_title\
+$sh_description\
+
+sheetcnt=!recordcnt wimshome/log/classes/$qclass/sheets/.sheets
+
+!if $sheetcnt!=$n
+ error= error in sheet count ($sheetcnt records / $n files)
+ !exit
+!endif
+
+!writefile wimshome/log/classes/$qclass/sheets/.sheet$sheetcnt $sh_contents
+
+#Pour la creation de la premiere feuille, on cree le fichier .severity
+# On y definit la note maximale de la classe (par defaut, 10)
+# A la place de ce test, il faudrait peut etre plutot verifier l'existence du fichier .severity
+!if $sheetcnt=1
+	!writefile wimshome/log/classes/$qclass/sheets/.severity 10
+!endif
+
+# On definit le poids et la severité de cette feuille dans .severity (par defaut, 1 et 1)
+!appendfile wimshome/log/classes/$qclass/sheets/.severity 1 1
+
+
+wims_sheet=$n

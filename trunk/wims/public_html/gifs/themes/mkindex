@@ -1,0 +1,81 @@
+#! /bin/sh
+###############################################################################
+# gifs/theme/mkindex
+#
+# Create an automatic file "icon.css" for each theme icon directory.
+# wimsedu only :
+# when adding a new icon, delete the file wimsedu/test
+###############################################################################
+
+cd `dirname $0`
+type_list="png gif svg"
+
+if [ ! -f wimsedu/test ] ; then
+  cd wimsedu ;
+  for i in `ls *.png 2>/dev/null`; do convert -resize 30 $i ../wimsedu2/$i; done
+  for i in `ls *.png 2>/dev/null`; do convert -resize 18 $i ../wimsedu1/$i; done
+  touch test;
+  cd .. ;
+fi;
+
+for j in `ls` ; do
+  if [ -d "$j" ] ; then
+    if [ ! -s "$j/icon_orig.css" ] ; then
+      if [ -s "$j/icon.css" ] ; then rm $j/icon.css ; fi;
+      touch $j/icon.css ;
+      w=0; h=0
+      for a in $type_list ; do
+        if [ -s $j/home.$a ]; then
+          w=`identify -format \%w $j/home.$a`;
+          h=`identify -format \%h $j/home.$a`;
+        fi;
+      done;
+      w=`expr $w + 4`
+      h=`expr $h + 0`
+      pad_left=`expr $w + 2`
+      echo ".menuitem a, .icon_button span, .menuitem h2, .text_icon, .menuitem>.text_item{
+  background-repeat:no-repeat;
+  min-height:"$h"px;
+  padding-left:"$w"px;
+  display:inline-block;
+}
+.footer .menuitem>a, #wimstopbox .menuitem>a{
+  line-height:"$h"px;
+  background-position:0% 50%;
+}
+.text_icon{
+  line-height:"$h"px;
+  background-position:2px 50%;
+  border:thin solid #CCC;
+  padding-top:2px;
+  padding-bottom:2px;
+  padding-right:2px;
+  padding-left:"$pad_left"px;
+}
+.menuitem a:hover, .icon_button:hover{
+  opacity:.8;
+}
+.menuitem a:active, .icon_button:active{
+  opacity:.5;
+}
+" > icon.css
+      for a in $type_list ; do
+        for i in `ls $j/*.$a 2>/dev/null` ; do
+          file=`basename $i .$a` ; echo ".$file{background-image:url($file.$a);}" >> icon.css;
+        done
+      done
+      echo "
+.menuitem{background-image:none;}" >> icon.css;
+      mv icon.css $j ;
+    fi;
+
+    #Si un fichier "icon_orig.css" existe, alors c'est celui-ci qui est minifie
+    if [ -s "$j/icon_orig.css" ] ; then
+      java -jar ../../themes/yuicompressor $j/icon_orig.css -o $j/icon-min.css -v;
+    else
+      java -jar ../../themes/yuicompressor $j/icon.css -o $j/icon-min.css -v;
+    fi;
+    echo "$j icon theme done."
+  fi;
+
+done

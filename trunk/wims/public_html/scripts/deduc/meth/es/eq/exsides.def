@@ -1,0 +1,27 @@
+!set methtit=Echanger les deux côtés d'une équation
+!set methparmtype=parm equation
+!set methhelp=Cette méthode réécrit l'équation \(a = b) en \(b = a).
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ Echanger les deux côtés de l'équation
+ !read deduc/methparm.phtml 1
+
+!exit
+:check
+ !distribute items $methparmobj1 into data,left,sign,right
+ methexp=Echanger les deux côtés de \($left $sign $right)
+
+ newobject1=$right $sign $left
+ oldobject=1
+
+ contextlist=$ct_Always,\
+	$ct_Onlywhen les deux côtés sont positifs,\
+	$ct_Onlywhen les deux côtés sont de même signe
+
+!exit
+

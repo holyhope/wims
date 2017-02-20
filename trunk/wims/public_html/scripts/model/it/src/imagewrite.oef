@@ -1,0 +1,65 @@
+type=image
+textarea="data"
+
+:Scrivere una parola corrispondente all'immagine (o al testo presentato)
+Attenzione, questo modello funziona solo se si caricano le immagini su wims.
+<p>
+Per costruire un esercizio basato su questo modello è sufficiente inserire l'elenco delle immagini e delle parole corrispondenti.
+</p>
+$image_help
+<p>
+Autore del modello: Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+</p>
+:%%%%%%%%%%%%%%%%%      ATTENZIONE      %%%%%%%%%%%%%%%%%%%%
+
+Se si rimuovono le indicazioni del modulo modelli (le righe che
+cominciano con ':') è necessario rimuovere tutta questa parte
+introduttiva del file. Altrimenti Createxo potrebbe non accettare il
+codice dell'esercizio.
+
+:%%%%%%%% Parametri che possono essere ridefiniti %%%%%%%%%%%%%%%%%
+
+:\title{Riconoscere una immagine}
+:\author{Bernadette, Perrin-Riou}
+:\email{bpr@math.u-psud.fr}
+:\credits{}
+:Consegna
+\text{instruction=Scrivere la parola corrispondente all'immagine.
+(l'esercizio funziona solo nel momento in cui si caricano le immagini nell'eserczio)}
+
+:Dati
+\text{data=amphitheatre.png, l'anfiteatro
+aqueduc.png, l'acquedotto
+arcdetriomphe.png, l'arco di trionfo
+cirque.png, il circo
+domus.png, la domus
+temple.png, il tempio
+theatre.png, il teatro
+thermes.png, le terme
+}
+
+:Dimensione delle risposte (pixel).
+\text{sizeh=40}
+:%%%%%%%%%%%%% Enunciato (in html). %%%%%%%%%%%%%%%%%%%%
+
+\text{mot = randrow(\data)}
+\text{mot=wims(embraced randitem \mot)}
+\text{image=\mot[1]}
+\text{ext=item(2,wims(replace internal . by , in wims(lowercase \image)))}
+\text{mot =\mot[2]}
+
+\statement{
+\instruction
+<p class="wimscenter">
+\if{\ext isitemof png,gif,jpg,jpeg}{
+  \img{\imagedir/\image}
+  }
+  {\image}</p>
+
+<div class="wimscenter">
+\embed{r1,\sizeh
+default
+autocomplete="off"}
+</div>
+}
+\answer{}{\mot}{type=case}

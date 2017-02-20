@@ -1,0 +1,30 @@
+!read adm/class/classname.phtmlw $wims_classname\
+$wims_institutionname
+
+!read adm/title.phtml 1\
+$classname\
+$livret_title\
+$name_job
+
+
+!form reply
+<fieldset class="property_fields">
+  <legend>$name_n_palier</legend>
+  <div class="field box">
+    <label for="cf_title">$name_title_palier</label>
+    <input type="text" name="cf_title" value="$name_palier" size="40" id="cf_title" />
+  </div>
+  <div class="field box">
+$name_cocher
+ !let echoose=$eold
+ !read adm/class/transfertexo.phtml
+   </div>
+   <div class="wimscenter wimsform">
+    <input type="submit" value="$wims_name_tosave" name="cf_set" />
+   </div>
+</fieldset>
+!formend
+
+!set wims_menu_items=!append line back2,1,cmd=reply&job=home\
+to $wims_menu_items
+!reset eold,echoose

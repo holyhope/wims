@@ -1,0 +1,234 @@
+!read adm/css.phtml
+!if $(module_title_$moduclass_lang)!=$empty
+  !set module_title=$(module_title_$moduclass_lang)
+!endif
+!read lang/names.phtml.$moduclass_lang
+!read adm/class/classname.phtml $wims_classname\
+$wims_institutionname
+
+!set js=!record 0 of js/chooselist.js
+!set wims_html_header=!append line $js to $wims_html_header
+!header1
+!read adm/title.phtml 1\
+$classname\
+$module_title\
+($supervisormail)
+
+!set wims_menu_items=!append line usermanage,1,module=adm/class/usermanage\
+ to $wims_menu_items
+
+!if $error!=$empty
+  <div class="wims_msg alert">
+  !read lang/msg.phtml.$moduclass_lang
+  </div>
+  !if $error isitemof notsupervisor,noclass,nosupervisoremail
+    !exit
+  !endif
+  !set job=
+!endif
+
+!if $cmd!=reply or $error!=$empty or $step=0
+$name_intro
+ !form reply
+ <fieldset class="property_fields blockcenter">
+   <legend>$module_title</legend>
+   <div class="field block">
+     <label for="subject">$name_subject</label>
+     <input name="subject" id="subject" size="45" value="$subject" />
+   </div>
+   <div class="field block">
+     <label for="msg">$name_message</label>
+     <textarea name="msg" id="msg" cols="40" rows="5">$msg</textarea>
+   </div>
+   <div class="wimscenter">
+     <input type="submit" name="reg" value="$wims_name_send" />
+   </div>
+</fieldset>
+
+!set file=wimshome/log/classes/$wims_class/.userlist
+!set cnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
+!for lu =1 to $cnt
+  !set us_=!record $lu of $file
+  !if $(us_[3]) notitemof $select_user
+   !set option=!append line <option value="$(us_[3])">$(us_[1]) $(us_[2]) ($(us_[3]))</option> to $option
+  !else
+   !set option_select=!append line <option value="$(us_[3])">$(us_[1]) $(us_[2]) ($(us_[3]))</option> to $option_select
+  !endif
+!next lu
+!if $option=$empty
+  !set option=<option value=""></option>
+!endif
+!if $option_select=$empty
+  !set option_select=<option value=""></option>
+!endif
+<fieldset class="property_fields blockcenter">
+ <legend>$name_menu</legend>
+$name_expert0
+
+!set wims_ref_class=wims_button_help float_right
+!href cmd=help&special_parm=general $wims_name_help
+!set wims_ref_class=wims_formradio
+!set wims_ref_id=job1
+<p>
+!formradio job list all prompt $name_allparticipants
+</p>
+!set wims_ref_class=wims_formradio
+!set wims_ref_id=job2
+<p>
+!formradio job list select prompt <b>$name_select</b>:
+$name_expert1
+</p>
+!set wims_chooselist_select=$option
+!set wims_chooselist_checked=$option_select
+
+<div class="wimscenter">
+!read js/chooselist.phtml select_user1,select_user2,select_user
+</div>
+!set wims_ref_class=wims_formradio
+!set wims_ref_id=job3
+<p>
+!formradio job list login prompt <b>$name_loginlist</b>:
+$name_expert2
+</p>
+
+<div class="wimscenter">
+   <textarea name="loginlist" cols="20" rows="5">$loginlist</textarea>
+</div>
+!default job=$job
+!if $tv_listtechvar!=$empty
+!set wims_ref_class=wims_formradio
+!set wims_ref_id=job4
+<p>
+!formradio job list filter prompt <b>$wims_name_filter:</b>
+$name_expert3
+</p>
+
+ !read adm/vfilter/varfilter htmldiv
+!endif
+</fieldset>
+
+!formend
+!goto end
+!endif
+
+!if $confirm=$empty and $reg!=
+ !if $email_exists=0
+!! $list_user$list_noemail
+  !if $list_user$list_noemail notsametext
+  $name_noemail
+  ($wims_name_Login : $(list_noemail[3]))
+  !else
+   $name_nouser
+  !endif
+  <p>
+  !set wims_menu_items=!append line back2,1,cmd=resume\
+ to $wims_menu_items
+  !goto end
+ !endif
+$name_warning
+<div class="wimscenter">
+<input name="subject" size="45" value="$subject" readonly="readonly" />
+<br />
+<textarea cols="40" rows="5" readonly="readonly">
+$msg
+</textarea>
+</div>
+<pre>
+$list_user
+</pre>
+<pre>
+$list_teacher
+</pre>
+!if $list_noemail notsametext
+$name_noemail2
+<pre>
+$list_noemail
+</pre>
+!endif
+ !form reply
+<div class="wimscenter">
+!set wims_ref_class=wims_button
+!href cmd=reply&confirm=yes $wims_name_send
+&nbsp;
+!set wims_ref_class=wims_button
+!href cmd=resume $wims_name_giveup
+</div>
+
+!formend
+
+!endif
+ !set wims_menu_items=!append line back2,1,cmd=resume\
+ to $wims_menu_items
+!endif
+
+!if $confirm=yes
+ !set test=!defof mailback_opt in wimshome/log/wims.conf
+ !default test=--
+ !if $test=-r
+   !set mailheader=!nosubst -r $supervisormail $us
+ !else
+   !set mailheader=!nosubst $us -- -f $supervisormail
+ !endif
+ !set cmp=0
+ !set cmp_tr=0
+ !set cnt=!linecnt $list_user
+ !for l_ =1 to $cnt
+   !set u=!line $l_ of $list_user
+   !if $(u[4])!=
+     !set us=$(u[4])
+     !mailto $mailheader\
+   [WIMS $wims_classname] $subject\
+ $msg\
+ \
+
+   !endif
+   !reset u
+ !next
+ !set cnt=!linecnt $list_teacher
+ !if $job!=all
+  !set msgmod=$msg\
+\
+#######\
+Send : $(list_user[;2])\
+#######\
+
+ !else
+   !set msgmod=$msg
+ !endif
+ !for l_ =1 to $cnt
+   !set u=!line $l_ of $list_teacher
+   !if $(u[4])!=
+     !set us=$(u[4])
+     !mailto $mailheader\
+   [WIMS $wims_classname] $subject\
+ $msgmod\
+ \
+
+   !endif
+  !reset u
+ !next
+!endif
+!if $cmd=reply and $confirm=yes
+<p>
+$name_participant1
+<pre>$(list_user[;1..2])</pre>
+<hr />
+<pre>$(list_teacher[;1..2])</pre>
+!if $list_noemail notsametext
+$name_participant2
+<pre>
+$(list_noemail[;1..2])
+</pre>
+!endif
+
+!set wims_module_log=class $class: sendmail
+!set date=!translate : to . in $wims_now
+!appendfile wimshome/log/classes/$wims_class/.log $date $httpd_REMOTE_ADDR	$supervisormail send mail to $(list_user[;1]), $(list_teacher[;1])
+
+ !reset list_user list_noemail
+
+!endif
+:end
+!reset confirm reg abandon error
+
+!tail

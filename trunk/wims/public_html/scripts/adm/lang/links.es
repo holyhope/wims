@@ -1,0 +1,16 @@
+!let lang_exists=yes
+!let name_link_introduce=Diversos enlaces a su $name_classe
+!let name_link_link=El enlace
+!let name_link_supervisor=le lleva a la página de mantenimiento $name_classesss (preparación de hojas de trabajo, lista de los participantes y de sus progresos, etc.)
+!let name_link_user=lleva a los estudiantes inscritos a la página inicial $name_classesss
+!let name_link_grpclass=cuando haya creado las clases del $name_classe
+!let name_link_withpwd=necesitarán la contraseña de la clase para inscribirse por sí mismos
+!let name_link_user2=Las hojas de trabajo que prepare les serán accesibles desde esta página de inicio
+!let name_link_teacher=allows teachers to enter in the portal
+!let name_link_regsup=permite a los profesores inscribirse en su $name_classe (o le permite a usted inscribirles)
+!let name_link_important=Importante
+!let name_link_importantmes=¡Guarde estos enlaces antes de salir de esta página
+!let name_link_importantmes2=Vous pourrez aussi les retrouver dans la zone de configuration de votre classe (if you change the type of authentification these links might change).
+!let name_link_classnumber=También le aconsejamos que anote el número de la clase
+!let name_link_enterall=will redirect all users to he homepage of the class (they will need the class password for the registration).
+!let name_link_regsuperv=!nosubst allows teachers to register to the $wims_name_group.

@@ -1,0 +1,23 @@
+!set ans_require=chemeq
+
+!if $wims_read_parm=def
+ !exit
+!endif
+!if $wims_read_parm!=noprompt
+ <tr><td><label for="reply$i">$(replyname$i)</label>&nbsp;=</td><td>
+!endif
+
+!if debug iswordof $m_oefenv and ?analyze notin $(replygood$i)
+ !set replydefaulted=yes
+ !if $oef_default=yes
+  !set tt=!row 1 of $(replygood$i)
+  !default reply$i=$tt
+ !endif
+!endif
+
+!bound inputsize between 1 and 100 default 50
+<input id="reply$i" size="$inputsize" name="reply$i" value="$(reply$i)" />
+!if $wims_read_parm!=noprompt
+ </td></tr>
+!endif
+!reset inputsize

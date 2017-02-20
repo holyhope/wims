@@ -1,0 +1,44 @@
+!if $vote_status=$empty or \
+	($wims_user!=supervisor and $vote_status notwordof 1 2)
+ error=bad_vote
+ job=home
+ !changeto home.proc
+!endif
+
+wims_multiexec=pari maxima yacas
+insmath_rawmath=yes
+wims_backslash_insmath=yes
+parmcnt=0
+!reset uvname, uvval, uvcnt
+!readdef $userfile
+!readdef $votedir/$vote.votes
+!default vcnt=0
+
+!if $wims_user=supervisor or $vote_show>0
+ !if $wims_user=supervisor
+  showres=2
+ !else
+  showres=1
+ !endif
+!!## user_vote_$Vote is created if the user has voted - the value can be yes
+!!##or a list of numbers according of the vote_option
+!!## should we be more precise ?
+ whovote_login=!sh cd $wims_home/log/classes/$wims_superclass/.users;\
+grep -r "!set user_vote_$Vote=" * | cut -d":" -f1;
+ whovote_login=!lines2items $whovote_login
+ whovote=$empty
+ whodontvote=$empty
+ nb=!recordcnt wimshome/log/classes/$wims_class/.userlist
+ !for k=1 to $nb
+  tmp=!record $k of wimshome/log/classes/$wims_class/.userlist
+  !distribute item $tmp into fn,ln,ll
+  !if $ll isitemof $whovote_login
+   whovote=!append item $fn $ln to $whovote
+  !else
+   whodontvote=!append item $fn $ln to $whodontvote
+  !endif
+ !next k
+!else
+ showres=0
+!endif
+

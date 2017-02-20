@@ -1,0 +1,141 @@
+!set lang_exists=yes
+
+!if $wims_read_parm!=
+ !goto $wims_read_parm
+!endif
+
+!set name_donchoose=Choix des données
+!set name_studentloc=!nosubst $user_firstname $user_lastname
+!set name_studentglo=!nosubst $wims_name_firstname $wims_name_lastname
+
+!distribute line Moyenne de la classe\
+Moyenne\
+Moyenne des notes positives\
+Moyenne globale&nbsp;\
+Moyenne du groupe\
+into name_classAverage,name_Average,name_posAverage,name_globalaverage,\
+name_groupAverage
+
+!set name_partdeleted=Participants supprimés
+!set wims_name_reg_ex=Liste des exercices enregistrés
+!!set name_transfer=Transférer ses activités des autres classes
+
+!set name_minmax=min/moy/max de la classe&nbsp;
+
+!set name_manualscore=Notes attribuées par l'enseignant&nbsp;
+!set name_autoscore=Notes enregistrées par le serveur
+!set name_manual_notes=globale,enseign.,auto
+!set name_examnote=Notes d'examens
+
+!set name_severitylevels=Règles de calcul des feuilles de travail
+!set name_formula=No,Poids,Règles de calcul
+!set name_sheetstatut=en préparation,active,périmée,cachée
+
+!distribute items Examen,Feuille,Exercice,Début,Notes,Session,\
+ Pourcentage des points cumulés,équiv., Durée\
+into name_Exam,name_Sheet,name_Exercise,name_Start,name_Score,name_Session,\
+name_done,name_equiv,name_Duration
+
+!set name_formula_comment=Vous pouvez définir les règles de calcul et les poids des feuilles de \
+travail dans le tableau suivant. Ici, Q est relatif à la note de qualité, \
+vous pouvez choisir I parmi les trois indicateurs suivants : I0 relatif\
+au nombre de points cumulés, I1 relatif à la moyenne des n meilleures notes obtenues si 10n est \
+le nombre de points requis (niveau de réussite) et I2 relatif au minimum des n \
+meilleures notes précédentes (niveau d'acquisition).\
+Vous pouvez regarder l'aide pour plus de détails.\
+Les notes seront calculées sur
+!set name_formula2=!nosubst Notes calculées sur $scoremax
+!set name_pickup=Sélectionnez les feuilles pour montrer les résultats par feuille.
+!set name_warning= Vous avez soumis une requête illégale.
+
+!set name_click=Cliquez sur un nom pour voir le détail de son travail
+!set name_affi=la qualité,le pourcentage des points cumulés,les notes, le niveau de réussite, le niveau d'acquisition
+!set name_workdetail=Détail du travail de
+!set name_activesession=Ce participant a une session d'examen active&nbsp;
+
+!distribute items Poste de connexion, Temps restant, Session d'examen de ,minutes\
+into name_connecting,name_remaining_time,name_exam_session,name_minutes
+
+!set name_noyetparticipant=Cette classe n'a pas encore de participant.
+
+!set name_warning_no_sequence=Vous avez activé la réorganisation par séquences mais \
+ vous n'avez défini aucune séquence. Aucune note ne peut donc apparaître.
+
+!set name_title_showsheet=!nosubst Détail du travail sur la feuille $numshowsheet<br />$sh_title
+!set name_percentagegot=Pourcentage des points cumulés
+!set name_qualitygot=Qualité du travail calculée sur un maximum de 10
+!set name_percentagedone=Pourcentage des points cumulés
+!set name_percentagebest=Taux de réussite sur les meilleures notes
+
+!set name_post=faites afficher
+!set name_Post=Faites afficher
+
+!set name_sheetdetail=Vous pouvez cliquer sur l'entête de la colonne correspondant \
+ à la feuille pour obtenir une vue globale des résultats de tous les élèves\
+ sur tous les exercices de la feuille que vous venez de sélectionner.
+
+!if $job iswordof userprop teacher
+  !distribute items Changer,Numéro d'inscription,Commentaires,URL d'une photo,Variables (techniques),\
+  Mot de passe de la classe,Entrez le mot de passe d'inscription de participant,\
+  Identifiant externe,Accès d'élève, Accès de gestion,\
+  Obligatoire\
+  into name_change,name_regnum,name_comments,name_photourl,name_vars,\
+  name_classpassword,name_enterpassword,name_external_auth,name_inscript,name_gestion,\
+  name_userprop_warning
+  !goto end
+!endif
+
+!if $job=examcheck
+ !set name_title_examcheck=!nosubst Détails d'examens faits par $name_studentloc
+ !set name_no_exampart=Ce participant n'a pas encore fait d'examen.
+ !set name_exampart=Voici les sessions d'examen effectuées par ce participant. Cliquez sur un \
+  exercice pour voir son contenu.
+ !goto end
+!endif
+!if $job=getraw
+  !set name_title_getraw=!nosubst Détail du travail de $name_studentloc<br />(en données brutes)
+  !goto end
+!endif
+
+!set name_direct_score=liste et notes en direct
+
+!if $job=csv
+  !distribute line Voici le fichier\
+    que vous pouvez télécharger et ouvrir dans votre logiciel tableur préféré.\
+    Les informations ont été changées pour les participants suivants&nbsp;\
+    Participants ajoutés&nbsp;\
+    L'addition de nouveaux participants est ignorée car il n'y a plus de place disponible.\
+    Les informations de participants n'ont pas été changées car des notes sont reçues.\
+    Les notes calculées par le serveur (moyennes et notes de feuilles/examens) ne peuvent pas être changées&nbsp;\
+    Les données concernant des participants effacés ont été ignorées&nbsp;\
+    Les noms de login suivants ne peuvent pas être ajoutés car le login est trop court&nbsp;\
+    Les noms de login suivants n'existent pas et ne peuvent pas être ajoutés, à cause d'information insuffisante/incorrecte dans les données envoyées&nbsp;\
+    Les noms de login suivants n'existent pas et ne peuvent pas être ajoutés (mauvaises données ou classe pleine)&nbsp;\
+    Les notes manuelles sont enregistrées seulement pour des colonnes déjà existantes.\
+    Aucune différence entre les données envoyées et les données existant dans la classe.\
+    Vérifier les notes\
+    Pour charger les données de la classe dans votre tableur (uniquement les élèves), veuillez préciser&nbsp\
+    Format\
+    Colonnes\
+    Pour envoyer des données de votre tableur à la classe, veuillez préciser\
+    Fichier de données\
+    Formats acceptés&nbsp;\
+    Pour les nouveaux inscrits, la colonne mot de passe (password) est obligatoire.\
+  into name_file,name_download,name_infochanged,name_added,name_warning1,name_warning2,\
+  name_warning3,name_warning4,name_badlogin,name_nologin1,name_nologin2,name_manual1,name_data1,\
+    name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2,\
+    name_passwarning
+
+  !set name_deposit=!nosubst Le fichier de tableur <span class="tt">$wims_deposit</span> est reconnu avec succès.
+  !set name_indicateur=Indicateur&nbsp;
+  !set name_techvar=Variables techniques&nbsp;
+  !set name_regvar=Variables d'inscription&nbsp;
+  !set name_all=Tout
+  !set name_allscore=Tous les scores
+!endif
+
+!set name_topten=!nosubst Top $class_topscores des moyennes de la classe
+
+:end
+!exit
+

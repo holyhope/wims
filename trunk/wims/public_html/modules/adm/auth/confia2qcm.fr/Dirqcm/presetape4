@@ -1,0 +1,96 @@
+!!! fichier de présentation de l'étape 4 !!!
+  <h3 class="wimscenter"> Etape $etape: rédaction de l'énoncé</h3>
+      <p>
+        Modifiez l'énoncé type suivant pour l'adapter à votre exercice.
+      </p>
+  !if ($propsnb>2 and $ckchnb=0)
+    !set ckchnb=2
+    !set par_defaut=<code>Par défaut: un nombre aléatoire compris entre 2 et $propsnb</code>.
+    <div style="background-color:darkseagreen">
+    N'oubliez pas de préciser au passage le nombre de possibilités de choix à
+    afficher avec l'énoncé.
+	  <span style="background-color:white">$par_defaut </span>
+      </div>
+  !endif
+<h4>Enoncé type</h4>
+<div>
+$enonceR
+</div><div>
+  Modifiez le code source ci-dessous pour l'adapter à votre exercice.
+</div>
+<div class="wims_remark"><b>Note</b>: dans le fichier source, la question est stockée dans
+la variable <em><span class="color:red">obj</span></em> et est invoquée en entrant
+la <b>commande</b> <code><span class="color:red">\obj</span></code>.
+ </div>
+
+!set wims_backslash_insmath=no
+!set enonceR=!reinput $enonceR
+
+<h4>Texte à modifier</h4>
+<textarea name="enonceR" rows="20" cols="70">
+$enonceR
+</textarea>
+
+!if $propsnb>2
+<h4>Nombre de possibilités de choix</h4>
+   <ul><li>
+      <input type="radio" name="ckchnb" value="0"
+      !if $ckchnb=0
+        checked="checked"
+      !endif
+      /> Toutes
+    </li><li>
+      <input type="radio" name="ckchnb" value="1"
+        !if $ckchnb=1
+	  checked="checked"
+	!endif
+       />
+        Afficher <input size="5" name="fixchnb" value="$fixchnb" /> possibilités (au moins 2).
+    </li><li>
+       <input type="radio" name="ckchnb" value="2"
+         !if $ckchnb=2
+	  checked="checked"
+	!endif
+	/>
+         Nombre aléatoire compris entre 2 et $propsnb
+ </li><li>
+       <input type="radio" name="ckchnb" value="3"
+         !if $ckchnb=3
+	  checked="checked"
+	!endif
+	/>
+         Nombre aléatoire compris entre <input size="5" name="borng" value="$borng" /> et
+	 <input size="5" name="bornd" value="$bornd" />
+</li></ul>
+!endif
+
+!if $multirep=1
+  <div style="text-align:justify;background-color:lightblue;width:65%">
+    Certaines de vos questions comportent plusieurs réponses.
+    <br />
+    Veuillez donc préciser:
+    <ul>
+      <li>
+        <b>Option 1</b>: <span class="tt">on ne peut cocher qu'une réponse</span>
+	<input type="radio" name="chbox_u_radio" value="radio"
+	!if $chbox_u_radio!=checkbox
+	  checked
+	!endif
+	/>
+      </li>
+      <li>
+        <b>Option 2</b>: <span class="tt">on doit cocher toutes les bonnes réponses</span>
+	<input type="radio" name="chbox_u_radio" value="checkbox"
+	!if $chbox_u_radio=checkbox
+	  checked
+	!endif
+	/>
+      </li>
+    </ul>
+  </div>
+ !else
+   !set chbox_u_radio=radio
+!endif
+
+
+!read comsDir/valideb

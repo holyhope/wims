@@ -1,0 +1,73 @@
+
+!if $target1!=$empty
+ !if $original2=$empty
+  !reset target1,target2,target3,target4
+  !goto start
+ !endif
+ !read scripts/target
+ !if $error!=$empty
+  !reset target1 target2 target3 target4
+  original=$originheader$original2
+ !endif
+!endif
+
+!if $target1=$empty or $target4=$empty
+ :start
+ !if .. isin $original or $original=$empty
+  error=badoriginal
+  !exit
+ !endif
+ otit=!module title $original
+ !if $otit=$empty
+  error=badoriginal
+  !exit
+ !endif
+ orig2=!translate internal ~/. to ,,, in $original
+ orig2=!nonempty items $orig2
+ orig2=!nospace $orig2
+ !distribute items $orig2 into O1,O2
+ orig2=!item -4,-3,-2,-1 of $orig2
+ orig2=!nonempty items $orig2
+ !distribute items $orig2 into o1,o2,o3,o4
+ ocnt=!itemcnt $orig2
+ copyright=!module copyright $original
+ original2=$original
+ originheader=
+ !if ../devel/$auth_login/ isin ../$original2
+  originheader=devel/$auth_login/
+  orig=!translate internal / to , in $original2
+  original2=!item 3 to -1 of $orig
+  original2=!nospace $original2
+  original2=!translate internal , to / in $original2
+ !endif
+ !if $originheader=$empty and \
+   ($job=move or $O1 notitemof contrib,$zonelist or COPYING notin $copyright)
+  error=badoriginal
+  !exit
+ !endif
+ ltest=!sh find modules/$original -type l -print
+ !if $ltest!=$empty and $O1/$O2!=devel/$auth_login
+  error=symlink
+  !exit
+ !endif
+ !if $o4 notitemof $langlist
+  !reset o1,o2,o3,o4
+ !endif
+ orig2=!item -3 to -1 of $orig2
+ orig2=!translate internal , to / in $orig2
+ orig2=!nospace $orig2
+ !exit
+!endif
+
+!if $job=move and $originheader!=$empty
+ !sh cd $devdir; mv $original2 $target
+!else
+ !sh cd modules; \
+	mkdir -p devel/$auth_login\
+	cp -pr $originheader$original2 devel/$auth_login/$target
+!endif
+!setdef language=$target4 in wimshome/public_html/modules/devel/$auth_login/$target/INDEX
+modreq=$target
+job=flist
+!changeto $job.proc
+

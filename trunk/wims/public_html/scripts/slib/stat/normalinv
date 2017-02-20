@@ -1,0 +1,33 @@
+
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+
+slib_author=Sophie, Lemaire; Bernadette, Perrin-Riou
+
+slib_parms=5\
+,[data]\
+0,mu\
+1,sigma
+
+slib_example=[0.2,0.4,0.5],0,1
+slib_require=octave
+!exit
+
+:proc
+
+!distribute  item $wims_read_parm into slib_data,slib_mean,slib_var
+slib_out=
+!default slib_mean=0
+!default slib_var=1
+
+slib_data=!declosing $slib_data
+
+!!deprecated syntax
+!!slib_out=!exec octave normal_inv([$slib_data], $slib_mean,$slib_var^2)
+slib_out=!exec octave norminv([$slib_data], $slib_mean,$slib_var)
+
+
+slib_out=!words2items $slib_out
+
+slib_out=!trim $slib_out

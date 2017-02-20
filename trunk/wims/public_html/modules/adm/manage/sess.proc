@@ -1,0 +1,7 @@
+content=!sh ls -la $wims_home/sessions/$checkses | awk 'BEGIN {a=0};\
+	{a++};\
+	a>3 {print $$1" "substr($$0,36)};'
+
+!if var.stat iswordof $content
+ varstat=!sh cat $wims_home/sessions/$checkses/var.stat
+!endif

@@ -1,0 +1,96 @@
+!read adm/class/classlang names.phtml
+max_sheets=!defof MAX_SHEETS in wimshome/public_html/bases/sys/define.conf
+max_exos=!defof MAX_EXOS in wimshome/public_html/bases/sys/define.conf
+
+wims_prefix=class user tmp n sharing sharable
+!if $wims_class=$empty or $wims_user=$empty
+ :home
+ !restart module=home&cmd=new
+!endif
+
+!if $wims_user!=supervisor
+ checkuser=$wims_user
+!else
+  !default checkuser=supervisor
+!endif
+
+!bound job within log,llist,list,check,examcheck,erase default list
+sdir=$wims_home/$wims_sesdir
+cdir=$wims_home/log/classes/$wims_class
+!bound $logsheet between integer 1 and $max_sheets default $
+!bound $logexo between integer 1 and $max_exos default $
+!if $job=erase
+  !if $source!=$empty
+   !sh rm $cdir/$source
+  !endif
+  job=list
+!endif
+!if $job=log
+ !if ($logsheet>0 and $logexo>0) or $checkuser=supervisor
+   !if ($logsheet>0 and $logexo>0)
+     ext1=$logsheet.$logexo
+     ext2=-$ext1
+     ext1=.$ext1
+   !else
+     !reset ext1 ext2
+   !endif
+
+   wimsnow=$wims_now
+   !sh mkdir -p $cdir/exolog/$checkuser\
+  cp $sdir/exolog$ext1 $cdir/exolog/$checkuser/$wimsnow-$wims_session$ext2\
+  rm -f $sdir/exolog$ext1\
+  list=`ls -r $cdir/exolog/$checkuser | tail -n +$[$wims_class_exolog+1]`\
+  if [ ! -z "$$list" ]; then rm -f $cdir/exolog/$checkuser/$$list; fi
+   job=list
+!! replace the name of images by rename by the true name when saving
+   rename_list =!record 0 of wimshome/$wims_sesdir/.rename
+   rename_list_cnt=!linecnt $rename_list
+   !for l=1 to $rename_list_cnt
+     rename_l=!line $l of $rename_list
+     rename_l=!replace internal : by , in $rename_l
+     rename_l=!replace internal ? by \? in $rename_l
+     !sh perl -np -i -e 's:$(rename_l[2]):$(rename_l[1]):g' $cdir/exolog/$checkuser/$wimsnow-$wims_session$ext2
+   !next
+ !else
+  job=llist
+ !endif
+!endif
+
+!if $job iswordof check examcheck
+ !if _check isin $wims_session
+  !default checkexo=$logcheck
+  logfile=classes/$wims_class/exolog/$checkuser/$checkexo
+  exos=!filelist $wims_home/log/classes/$wims_class/exolog/$checkuser
+  exos=!words2items $exos
+  !read adm/class/exocheck
+ !endif
+ job=list
+!endif
+
+!if $job=list
+ exologs=!filelist -r $wims_home/log/classes/$wims_class/exolog/$checkuser
+ exolog2=!translate - to , in $exologs
+ exologcnt=!linecnt $exolog2
+ !sh cd $wims_home/$wims_sesdir\
+  mkdir -p getfile\
+  rm -f getfile/exolog\
+  ln -s $wims_home/log/classes/$wims_class/exolog/$checkuser getfile/exolog
+  userdir=!item -1 of $wims_superclass
+  !default userdir=$wims_class
+  userdir=log/classes/$userdir/.users
+  !set names=!getdef user_firstname,user_lastname in wimshome/$userdir/$checkuser
+  !default names=$checkuser
+!endif
+
+!if $job=llist
+ !if $logsheet=$empty
+  !goto home
+ !endif
+ prelogs=!filelist $wims_home/$wims_sesdir/exolog.$logsheet.*
+ !if $prelogs=$empty
+   prelogs=!filelist $wims_home/$wims_sesdir/exolog
+ !endif
+ prelog2=!words2items $prelogs
+ prelog3=!translate internal . to , in $prelogs
+ prelogcnt=!itemcnt $prelog2
+!endif

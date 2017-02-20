@@ -1,0 +1,72 @@
+!if $docadm=1
+ !exit
+!endif
+
+!default doc=1
+!set modu_lang=$lang
+!read docu/$lang/names
+!if $lang_exists!=yes
+   !let modu_lang=en
+   !read docu/$lang/names
+!endif
+!set module_language=$lang
+
+!read INDEX
+translation_language=!items2words $translation_language
+!if $lang iswordof $translation_language
+  doc=1_$modu_lang
+!endif
+
+module_title2=!detag $module_title
+
+!read docu/$modu_lang/names
+!if $cmd=help
+ !exit
+!endif
+
+!read docu/docdef
+
+!bound job within read,print,list,exosource default read
+!if robot isin $session
+ job=print
+!endif
+
+!read tabletheme
+!for i=1 to 20
+ m_parm$i=$(parm$i)
+ parm$i=
+!next i
+!if $seq>0
+ !set m_wims_sequence=$seq
+!endif
+
+block=!text select $namechars in $block
+docdir=doc
+Docdir=$module_dir/$docdir
+readable=yes
+editable=no
+!default readcnt=0
+!read $docdir/$doc/.def
+!! common_files is defined in the var.proc of the document can be yes now
+!! or the address of a datamodule should be in $docdir/$doc/.def
+!if datamodule isin $common_files
+    m_filedir=!replace datamodule by modules/data in $common_files
+  !else
+  !if $common_files=yes
+    m_filedir=$Docdir/files
+  !else
+    m_filedir=$Docdir/$doc/files
+  !endif
+!endif
+
+!if $tit!=$empty
+  !default block=main
+  block=!char 1 to $namelim of $block
+  !read $docdir/$doc/$block.def
+!else
+  error=doc_not_exist
+!endif
+
+!set wims_module_log=$job $doc $block
+!read getparm $module_init_parm wksheet
+!read docu/$job.proc

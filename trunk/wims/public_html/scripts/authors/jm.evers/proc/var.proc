@@ -1,0 +1,83 @@
+!if $use_mathml=1
+ force_mathml=yes
+!endif
+!if $cmd=reply and $status!=waiting
+ error=double_reply
+ !exit
+!endif
+
+n=$counter
+
+# firm anti-back-button-policy
+!if exam notin $session
+    # because of strange behaviour of "help_in_exam bug_fix" the help-page starts a copy of the exam-page...
+    !if $status=waiting and $cmd=reply
+	session_done=!append item $session to $session_done
+        t=!positionof item $session in $session_done
+	t=!itemcnt $t
+        !if $t!=1
+    	    # disable !insmath $(reply$n)
+	    math=0
+	    status=done
+	    !for counter=$n to $total_exos
+		reply$counter=<b>$no_back_button</b>
+	        remark$counter=$NOK
+	    !next p
+	    !readproc $procdir/score.proc
+	    !exit
+	!endif
+    !endif
+!endif
+
+!if $status=waiting and $cmd=reply
+    !readproc $checkfile
+	
+    !if $try>$maxtry
+	# give some points for what was good...
+	modulescore=$[$modulescore/$total_exos]
+	total_exos=$counter
+	status=done
+	!readproc $procdir/score.proc
+	!exit
+    !endif
+    
+    !if $goback=1
+	!increase try
+	!exit
+    !else
+	!if $goodbadsign=2
+	    !if $maxscore>0.9
+		fine=!randitem $ok
+		clr=green
+	    !else
+		!if $maxscore>0.4
+		    fine=!randitem $bok
+		    clr=#ff7900
+		!else
+		    fine=!randitem $nok
+		    clr=red
+		!endif
+	    !endif
+	    remark$n=!append line $ <br /><span style="color:$clr;font-style:italic;">$fine</span> $ to $(remark$n)
+	!endif
+	#wims_module_log=!append line $(answer$n) to $wims_module_log 
+	!if $counter=$total_exos
+	    status=done
+	    !readproc $procdir/score.proc
+	    !exit
+	!else
+	    counter=$[$counter+1]
+	    # reset maxscore 
+	    # in some checkfiles we give small penalties for little mistakes 
+	    # and maxscore=$[$penalty*$maxscore]
+	    maxscore=1
+	    goback=0
+	    errortext=$empty
+	    # typical: modulescore=$[$modulesecore + $maxscore]
+	    !readproc exos/exo$subject
+	!endif
+    !endif
+!endif
+
+
+

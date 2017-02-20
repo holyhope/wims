@@ -1,0 +1,55 @@
+!! display list of participant with usual information
+
+!reset table_center
+!set typen=!defof class_typename in wimshome/log/classes/$wims_class/.def
+!if $usercnt=0
+    <div class="wimscenter">
+    $name_noyetparticipant
+    </div>
+!else
+!! ------ manage ask for technical variable selection (use new varfilter variable)
+    !form reply
+	<input type="hidden" name="job" value="userlist" />
+	!read adm/vfilter/varfilter html
+    !formend
+!! ----- displaying table of participant
+    $table_header
+    $table_hdtr
+        <th>$name_studentglo</th>
+	!for k in $tv_listname
+	    <th>$k</th>
+	!next k
+   </tr>
+   !for i=1 to $usercnt
+    !set uu=!record $i of wimshome/log/classes/$wims_class/.userlist
+    !distribute items $uu into bl,bl,uu
+    !if $varfilter_!=$empty
+       !read adm/vfilter/testfilter $uu\
+$varfilter_
+    !endif
+    !if $(var_filter_test)=1 or $varfilter_=$empty
+          !reset user_exists,$lttechvarid
+          !readproc adm/class/userdef classes,$wims_class,$uu
+          !readdef $userdef
+      $table_tr
+        !reset css_connected
+        !if $uu isitemof $wims_connectedlogin
+    	!set css_connected=class="wims_connected"
+       !set wims_ref_title=connected
+      !endif
+      <td $css_connected>
+      !if $tv_listlocal!=$empty
+          !href cmd=reply&job=userprop&user=$uu $name_studentloc
+      !else
+    	  $name_studentloc
+      !endif
+      </td>
+      !for k in $lttechvarid
+	    <td>$($k)</td>
+      !next k
+      </tr>
+    !endif
+   !next i
+</table>
+!endif
+

@@ -1,0 +1,26 @@
+<p><b> $name_content </b>:
+
+!if $vote_status>0
+  <br />$name_nowritable
+<pre>
+ !let tmp=!record 0 of $votedir/$vote.src
+ !readproc adm/msgchange.proc read
+ $out_script
+</pre>
+!else
+ &nbsp;
+ !set wims_ref_class=wims_button_help
+ !href cmd=help $wims_name_help
+ </p>
+<div class="wimscenter">(
+ !if $speckedit=no
+    !set msgsrc1=<textarea id="src" name="reg_src" cols="80" rows="20">$src</textarea>
+    !href cmd=reply&job=edit&speckedit=yes  $wims_name_active
+ !else
+   !set msgsrc1=<textarea class="iEdit" id="src" name="reg_src" cols="80" rows="20">$src</textarea>
+   !href cmd=reply&job=edit&speckedit=no $wims_name_desactive
+ !endif
+ - <span class="small">$wims_name_speck_warning</span>)
+ </div>
+ $msgsrc1
+!endif

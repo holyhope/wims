@@ -1,0 +1,20 @@
+!if $listuser=$empty
+  file=.motd
+!else
+  !default user=$(listuser[1])
+  file=motd/$user
+!endif
+
+!if $action=register
+ !if $listuser!=$empty
+  !for id in $listuser
+   !writefile wimshome/log/classes/$wims_class/motd/$id $motd
+   !writefile wimshome/log/classes/$wims_class/motd/.$id
+  !next id
+ !else
+  !writefile wimshome/log/classes/$wims_class/$file $motd
+ !endif
+ !reset job,user,action,listuser
+!endif
+
+motd=!record 0 of wimshome/log/classes/$wims_class/$file

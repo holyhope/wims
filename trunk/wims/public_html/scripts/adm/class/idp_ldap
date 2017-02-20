@@ -1,0 +1,49 @@
+!!!this file must be in the module directory because of the !mexec !!!!
+INPUT external_login
+OUTPUT : the up_xxx needed for the register of the user
+!readproc adm/class/initldap
+!set l_=$wims_read_parm
+!default l_=$auth_user
+!set sup_=!item 2 to -1 of $l_
+!set l_=!item 1 of $l_
+ldap_user=!sh ldapsearch -x -LLL -t -H ldap://$ldap_auth:$ldap_port -b "$ldap_base" $ldap_uid="$l_" $ldap_code_ | grep -v "^[d]n:"
+ldap_user=!replace internal http: by httpxx in $ldap_user
+ldap_user=!replace internal : by = in $ldap_user
+ldap_user=!replace internal httpxx by http: in $ldap_user
+!!    f=!replace internal .. by $adonis in $f
+ !!gestion des accents (avec l'option -h ou -t ? de ldapsearch)
+ldap_user=!replace internal < file=///../tmp/sessions/$wims_session/ by file_save, in $ldap_user
+### field can be on several lines (photo for example)
+ldap_user=!replace internal $\
+$ $ by in $ldap_user
+ldap_user=!replace internal $ $ by _ in $ldap_user
+
+### datauser ne sert pas ici mais dans la creation d'un fichier csv. Je laisse pour l'instant
+!reset data_user
+
+!for field in $ldap_code
+  !reset f
+  f=!getopt $field in $ldap_user
+  !if $(f[1])=file_save
+    f=!sh cat $wims_home/tmp/sessions/$wims_session/$(f[2]) | perl -e 'use Encode;while (<>) {print encode("iso-8859-1",decode("utf-8",$$_))}'
+  !endif
+  f=!replace internal _ by $ $ in $f
+  !if $field=$l_login
+    login=!nospace $f
+    char=!charcnt $f
+    !if $char=3
+      f=!nospace $f 0
+      login=$f
+    !endif
+  !endif login
+  !if $field=password
+      f=!randint 100000,400000
+  !endif password
+  data_user=!append item $f to $data_user
+  !if $f !=$empty
+      nfield=!positionof item $field in $ldap_code
+      wfield=$(wims_code[$nfield])
+      up_$wfield=$f
+      replacelist=!append item $wfield to $replacelist
+   !endif
+ !next

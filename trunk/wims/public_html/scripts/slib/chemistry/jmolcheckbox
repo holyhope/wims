@@ -1,0 +1,22 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+
+
+slib_author=Yves, Noël; Bernadette, Perrin-Riou
+
+slib_example=select all;color atoms blue; select none\
+bleu
+!exit
+
+:proc
+!distribute items $wims_read_parm into slib_scriptWhenChecked, slib_scriptWhenUnchecked, slib_labelHtml, slib_isChecked, slib_id, slib_title
+!!if $slib_id!=
+!!!!  slib_id=,'$slib_id'
+!!!endif
+
+slib_out=<script type="text/javascript">\
+/*<![CDATA[*/\
+jmolCheckbox('$slib_scriptWhenChecked', '$slib_scriptWhenUnchecked', '$slib_labelHtml', '$slib_isChecked', '$slib_id','$slib_title')  \
+/*]]>*/\
+</script>

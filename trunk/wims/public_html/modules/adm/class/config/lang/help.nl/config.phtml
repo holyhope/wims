@@ -1,0 +1,351 @@
+
+!set sp2=$special_parm2
+!bound sp2 within secure,supervisor,email,lang,level,limit,expiration,modtoolchg,\
+	bgcolor,homepage,bgimg,theme,css,theme_icon,logo,lock,exolog,examlog,examshow,ent,option,authtype,authtype2,topscores\
+	default $
+
+!if $sp2=$empty
+ !exit
+!endif
+
+!goto $sp2
+
+:secure
+<b>Secure hosts</b>.
+<p>Bedenk de mogelijkheid van het "weglekken" van een supervisor wachtwoord:
+Stel de supervisor logt in en een leerling kijkt mee over de schouder en spiekt het wachtwoord.
+</p><p>
+De consequentie van het wegleken van dit wachtwoord kan zijn, dat alle confidenti&euml;le data
+op de server onbetrouwbaar worden. En de supervisor zelfs niet meer kan inloggen.
+</p><p>
+Het vastleggen van secure hosts zorgt dus voor een extra beveilingslaag: alle server gevoelige
+handelingen zijn alleen bereikbaar vanaf deze <em>secure hosts</em>.
+Zelfs het weglekken van een wachtwoord hoeft dan geen grotere consequenties meer te hebben.
+</p><div>
+!read help/hosts.phtml
+</div>
+Ook het gebruik van &eacute;&eacute;nmalige wachtwoorden een goede oplossing.
+!exit
+
+:supervisor
+ <b>Supervisor naam</b>. Geef hier gewoon een naam.
+!exit
+
+:email
+ <b>Supervisor email</b>.
+ Alle belangrijke berichten (geheime aanmeldingscodes, beindigings data van uw klassen enz.)
+ worden naar dit adres gestuurd. Er moet dus een bestaand en actief emailadres opgeven worden.
+!exit
+
+:option
+ <b>Tonen configuratie opties op homepagina van klas</b>. 
+ De volgende 'woorden' kunnen worden gebruikt:
+ <ul>
+ <li><span class="tt wims_code_words">showshexpire</span> 
+ Laat de einddatum van werkbladen zien aan studenten.
+ </li><li><span class="tt wims_code_words">showexexpire</span>
+ Laat de einddatum van proefwerken [examens] zien aan studenten.
+ </li><li><span class="tt wims_code_words">showshweight</span>
+ Laat het gewicht van een werkblad zien aan studenten
+ </li><li><span class="tt wims_code_words">exrandomlist</span> 
+ Geef de oefeningen voor leerlingen in een examen in een willekeurige volgorde
+(de volgorde voor de supervisor verandert niet).
+ </li></ul> 
+!exit
+
+:lang
+Kies de taal waarin deze klas moet worden getoond.
+Afhankelijk van de ondersteuning op deze wims server kan gekozen worden uit
+de talen: <ul>
+ <li>ca (Catalaans)
+ </li><li>cn (Chinees gb)
+ </li><li>de (Duits)
+ </li><li>en (Engels)
+ </li><li>es (Spaans)
+ </li><li>fr (Frans)
+ </li><li>it (Italiaas)
+ </li><li>nl (Nederlands)
+ </li><li>si (Sloveens)
+ </li><li>tw (Chinees big5)
+</li></ul>
+!exit
+
+:level
+ Betekenis van de diverse niveaus: <ul>
+ <li>E1 - E6: Lagere school, klas 1 tot 6.
+ </li><li>H1 - H6: Middelbare school, klas 1 tot 6.
+ </li><li>U1 - U5: Universiteit, jaar 1 tot 5.
+ </li><li>G: Universiteit, Afstudeer-richting.
+ </li><li>R: Onderzoek.
+</li></ul>
+!exit
+
+:limit
+ <b>Deelnemer limiet</b>. 
+ De aanmelding van nieuwe deelnemers of leerlingen wordt geweigerd als deze limiet is bereikt.
+ Deze server heeft een harde limiet van ($wims_class_user_limit) welke niet kan worden overschreden.
+!exit
+
+:expiration
+ <b>Verloop datum</b>. De klas wordt opgeheven wanneer deze datum is bereikt.
+ U kunt deze datum altijd verlengen.
+<p>
+Als U deze klas langer dan een jaar wilt gebruiken, zijn er dus een tweetal opties:
+Of U verlengt deze datum regelmatig op de normale manier, of U richt een 
+ <a href="mailto:$wims_site_manager?subject=Verzoek tot verlenging  van een virtuele Klas">email</a> aan de systeem administrator. 
+ </p><p>
+ Deze datum moet dan  worden opgegeven in de 8-digit vorm (yyyymmdd).
+ Bijvoorbeeld: 20120523 betekend  23 Mei 2012.
+ </p>
+!exit
+
+:bgcolor
+<b>Pagina achtergrond &amp; menu kleur</b>.
+ <p>
+ Deze twee kleuren kunnen helpen de herkenbaarheid van de virtuele leeromgeving te vergroten.
+ Deze kleurwaarden moeten standaard HTML kleurcodes zijn.
+ </p><p>
+ <b>Kleuren van links in menus en tabellen</b>
+Als deze optie wordt gebruikt is het verstandig een tabel achtergrondkleur te defini&euml;ren,
+ook al dit dezelfde kleur als de 'default' -kleur.
+ </p><p>
+ "Default" waarden worden bepaald door de sitemanager.
+ </p>
+!exit
+
+:homepage
+ <b>Deelnemer homepage</b>.
+ Hier mag het adres van een "wims document-blok" invoerd worden.
+ (zoals <span class="tt wims_fname">c1/main</span>) als homepagina.
+ Het document zelf hoeft niet leesbaar te zijn voor leerlingen.
+ <p>
+ Laat dit veld leeg als de standaard layout wordt gebruikt.
+  </p><p>
+ Alle links in dit document-blok moeten worden gedefinieerd met het <span class="tt wims_code_variable">\adm</span> commando.
+ De volgende voorgedefinieerde wims-variabelen kunnen worden gebruikt:
+ </p>
+ $table_header
+ $table_tr<td class="tt wims_code_variable">\firstname</td><td>
+ Voornaam van de leerling/deelnemer
+ </td></tr>
+ $table_tr<td class="tt wims_code_variable">\lastname</td><td>
+ Achternaam van de leerling/deelnemer
+ </td></tr>
+ $table_tr<td class="tt wims_code_variable">\scores</td><td>
+ Score informatie van deze deelnemer. 
+ Dit is dus een lijst getallen, corresponderende met één werkblad: percentage of punten
+  en een gemiddelde score
+  </td></tr>
+ $table_tr<td class="tt wims_code_variable">\newmsgcnt</td><td>
+ Ongelezen berichten in het klasse forum.
+ </td></tr>
+ $table_tr<td class="tt wims_code_variable">\today</td><td>
+ Datum van vandaag, yyyymmdd.
+ </td></tr>
+ $table_tr<td class="tt wims_code_variable">\sheets</td><td>
+ Aantal beschikbare werkbladen
+ </td></tr>
+ $table_tr<td class="tt wims_code_variable">\exams</td><td>
+ Aantal digi-toetsen/tentamens.
+ </td></tr>
+ $table_tr<td class="tt wims_code_variable">\expiration1</span>, <span class="tt wims_code_variable">\expiration2</span>, <span class="tt wims_code_variable">\expirationE1, ...</td><td>
+ uiterste datum van werkblad 1, werkblad 2, tentamen 1, ..., yyyymmdd.
+ </td></tr>
+$table_tr<td><span class="tt wims_code_variable">\status1</span>, <span class="tt wims_code_variable">\status2</span>, <span class="tt wims_code_variable">\statusE1</span>, ...</td><td>
+ Status van werkblad 1, werkblad 2, tentamen 1, ... dit is een niet negatief geheel getal; 0
+ = nog niet klaar voor gebruik, 1 = actief, 2 = verlopen, 3 = onzichtbaar.
+ </td></tr>
+ $table_tr<td class="tt wims_code_variable">\daymessage</td><td>
+ message du jour de la classe.
+ </td></tr>
+$table_tr<td class="tt wims_code_variable">\userdaymessage</td><td>
+message du jour individuel de chaque participant.
+</td></tr>
+$table_end
+!goto end
+
+:bgimg
+ Achtergrond plaatje (tegel) voor de pagina's in de digi-klas.
+ Elke valide URL mag worden gebruikt.
+ Er zijn ook reeds ge&iuml;nstalleerde achtergrond plaatjes, die  gebruikt kunnen worden zonder url-adres:<p>
+ <pre>$bgimgs</pre>
+!exit
+
+:theme
+Het stijl-thema van een klas.
+!exit
+
+:theme_icon
+De iconen in het menu
+!exit
+
+:css
+Het style sheet beinvloed bijna alle pagina's van een klas.
+<p>
+Kies <span class="tt wims_code_words">----</span> om de stylesheets uit te schakelen.
+</p><p>
+Kies <span class="tt wims_code_words">class</span> om een eigen style sheet (css) te gebruiken.
+Gebruik de standaard css-syntax.
+</p><p>
+ <b>Opmerking</b>. 
+ Wanneer een eigen css wordt gebruikt, test deze dan uitvoerig op 
+ <b>alle</b> beschikbare browsers ,om zo compatibiliteits problemen te vermijden
+</p><p>
+De andere keuzes zijn voor-ingestelde styles van deze WIMS server.
+ </p>
+!exit
+
+:logo
+<p>
+Het logo van de klas is een plaatje dat wordt links of rechts bovenaan de pagina geplaatst.
+(Zowel op de leerlingpagina als ook op de supervisor pagina.)
+</p><p>
+Kies <span class="tt wims_code_words">none</span> als geen logo wordt gewenst.
+</p><p>
+Als er niets of <span class="tt wims_code_words">wims</span> is invult, wordt het standaard WIMS logo gebruikt.
+</p><p>
+Elke plaatje met een geldige / bereikbare URL kan worden gebruikt. 
+</p>
+!exit
+
+:lock
+Connection lock helpt gebruikers te traceren en kan helpen server-misbruik te achterhalen.
+Er zijn 7 lock niveaus. <ul>
+<li>0: Geen connection lock wordt gebruikt.
+
+</li><li>1: Cookie-tracking is geactiveerd. Verbindingen zonder correct antwoord cookie worden geweigerd.
+
+</li><li>2: Secure (https) verbinding is vereist. 
+De verbindsingsopbouw gebruikt het https protocol. 
+HTTP verzoeken zullen worden geweigerd.
+Kontroleer wel eerst of de server https ondersteund !
+
+</li><li>3: Host IP-adres lock is geactiveerd. 
+Deelnemers mogen binnen een sessie niet van IP-adres veranderen.
+Er kunnen zich dus problemen voordoen bij dynamische IP adressen.
+
+</li><li>4: Cookie-tracking + https.
+</li><li>5: Cookie-tracking + Host lock.
+</li><li>6: Alle methodes geactiveerd.
+</li><li>7: De klas is gesloten. Geen deelnemers toegestaan.
+</li></ul> <p>
+!exit
+
+:exolog
+Het maximale aantal gelogde oefeningen (beperkt tot $wims_exolog_limit)
+<p>
+Dit is het maximale aantal gelogde oefeningen die een leerling kan laten bewaren op deze server. 
+<p>
+Deze lijst gegevens kan als basis dienen voor "studie vorderings gesprekken" tussen leerling en docent.
+<br />
+Bij overschrijding van de toegestane hoeveelheid gelogde oefeningen, wordt de oudste oefening gewist.
+!goto logs
+
+:examlog
+Aantal proefwerk registraties (beperkt tot $wims_examlog_limit)
+<p>
+Dit is het maximum aantal proefwerk-sessies dat wordt vastgelegd  en bewaard op deze server voor een elke leerling.
+<p>
+Deze logfiles geven het precieze verloop van een proefwerk sessie weer: oefening voor oefening.
+En kan worden gebruikt voor het naspelen van een kompleet proefwerk.
+<p>
+De registratie / vastlegging verloopt automatisch.
+Wanneer het maximum is bereikt , wordt het oudste tentamen gewist.
+!exit
+
+:logs
+<p>
+Geef een 0 als geen registratie gewenst is.
+
+<b>ATTENTIE</b> 
+Dit type registratie kan een zeer groot beslag leggen op de harde schijf ruimte.
+Bij een te hoge instelwaarde loopt U het risico dat het diskquotum wordt overschreden !
+!exit
+
+:examshow
+Als deze optie op <span class="tt wims_code_words">$wims_name_no</span> staat, kunnen de studenten de resultaten van een tentamen niet zien.
+De docent natuurlijk wel.
+!exit
+
+:authtype
+!read help/$lang/authentification.phtml
+!!!!!!!!!!!!!!!! old help, these lines may probably be erased 
+!!!!!!!!!!!!!!!! after translation of help/nl/authentification.phtml :
+!! <b>Soort authentificatie</b> : 
+!! Er kan worden gekozen tussen authentificatie via <span class="tt wims_code_words">ldap</span> of via het wims eigen authentificatie systeem.
+!! In het geval dat een inloggen cia <span class="tt wims_code_words">ldap</span> mislukt wordt geprobeerd een wims authentificatie op te starten..
+!! <p>
+!! Voorbeeld <span class="tt wims_code_words">ldap</span> configuratie:
+!! <pre>
+!! ldap_host: ldap.schaersvoorde.nl
+!! ldap_port: 389
+!! ldap_version: 3
+!! ldap_base: ou=people,dc=schaersvoorde,dc=nl
+!! ldap_branch: ou=people,dc=schaersvoorde,dc=nl
+!! ldap_uid: uid
+!! ldap_login: supannAliasLogin
+!! </pre>
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!exit
+
+:authtype2
+<p>
+<span class="tt wims_code_words">class_connections</span>:
+If you use the standard
+Bij gebruik van een standaard <span class="tt">index.php</span> zal de variabele <span class="tt">class_connections</span> een waarde kunnen bevatten <span class="tt">+phpidp/available+</span>. 
+Meerdere waarden (gescheiden door spaties) kunnen worden toegevoegd. Voor een fijnere inregeling van deze variabele, zie ook de <span class="bold">$wims_name_config_otherserver</span> sectie.
+</p>
+!exit
+
+:modtoolchg
+<b>Modtool account</b> :
+Wanneer u -ingelogd- op de link <span class="tt">modtool</span> klikt wordt er een account aangemaakt.
+
+!exit
+:ent
+<b>Verbinding met andere digitale leerplatformen</b> :
+Hier kan een link worden geplaatst naar een andere ELO:
+<pre> link_titel,link_adres</pre>
+Bijvoorbeeld,
+<pre>It's learning ,http://-------</pre>
+Zijn er meerdere links gewenst, scheidt deze door een ";".
+!exit
+
+:external_auth
+<b>Adres ingeval van een externe authentificatie</b> : 
+<i>
+Dit is voor experts en het maakt het mogelijk om bijv. een CAS-authenticatie te gebruiken. 
+</i>
+Het adres moet in html zijn: <span class="tt wims_address">&lt;a href="http:...">link naam &lt;/a&gt;</span>.
+Het adres kan ook worden geplaatst in een html iframe :
+<span class="tt wims_address">&lt;iframe https:...." width="100%" height="400">&lt;/iframe&gt;</span>. 
+<p>
+Deze optie kan worden gedeactiveerd door te klikken op <span class="tt wims_code_words">$wims_name_no</span>.
+Controleer het adres <span class="tt wims_code_words">$name_mix_auth</span> en de alternatieve authentificatie methoden binnen wims
+U moet valide html invoeren: er wordt niet op html fouten en op authentificatie problemen gecontroleerd.
+!exit
+
+:topscores
+<p class="wimscenter" style="font-weight:bold;"><b>Hoogste cijfers, anoniem of op naam</p>>
+<p> 
+Wanneer het nummer <em>n</em> &ge; 1 is, zal een student bij het bestuderen van zijn/haar resultaten
+tevens een lijst zien van de <em>n</em> beste medeleerlingen.
+Als anonymity=yes worde de namen van deze leerlingen niet getoond (bij anonymity=no, worden deze wel geprint)
+Deze voorziening geldt niet voor de handmatig ingevoerde scores/cijfers. 
+</p><p>
+Default=0/$wims_name_yes
+</p>
+!exit
+
+:cloning
+Het klonen / kopieren van een klas door andere docenten kan worden toegestaan.
+Uw klas wordt dan in totaliteit gekopieerd. Echter leerlingen en/of docenten accounts worden niet mee gekopieerd.
+Alleen docenten in bezit van een 'klonerings' wachtwoord kunnen deze procedure uitvoeren.
+<br/>
+De gekloneerde / gekopieerde klas is onafhankelijk van de originele klas. 
+
+
+!exit
+
+:end
+

@@ -1,0 +1,106 @@
+!if $class_type notwordof 2 3 4
+ error=bad_context
+ !exit
+!endif
+!!FIXME propagation for class password should not be done
+!! allows inscription of teachers in portal and of participants in classes
+
+propall=secure,colors,css,logo,theme,theme_icon,level,security,supass,exolog,ent,oefdefault
+propagate=!listintersect $propagate and $propall
+
+!if $propagate=$empty or $confirm=$empty
+ !exit
+!endif
+subclasses=!sh cd $wims_home/log/classes/$wims_class\
+	find . -type d -name '[0-9]*'
+!if $class_typename=program and $class_superclass!=$empty
+ courses=!sh cd $wims_home/log/classes/$wims_class\
+	cat courses icourses 2>/dev/null | cut -d, -f1 | grep .
+ courses=!words2items $courses
+ courses=!makelist $class_superclass/x for x in $courses
+!endif
+!if $subclasses=$empty and $courses=$empty
+ !exit
+!endif
+
+propag=!replace item colors by bgcolor,bgimg,refcolor,ref_menucolor,ref_button_help_color,ref_button_help_bgcolor,ref_button_color,ref_button_bgcolor in $propagate
+propag=!replace item logo by logo,logoside in $propag
+propag=!replace item exolog by exolog,examlog in $propag
+
+!if security isitemof $propag
+ propag=!listcomplement security in $propag
+ security=!record 0 of wimshome/log/classes/$wims_class/.security
+ propag_security=yes
+!else
+ propag_security=no
+!endif
+
+!if supass isitemof $propag
+ propag=!listcomplement supass in $propag
+ supass=!defof user_password in wimshome/log/classes/$wims_class/supervisor
+ propag_supass=yes
+!else
+ propag_supass=no
+!endif
+
+!if oefdefault isitemof $propag
+ propag=!listcomplement oefdefault in $propag
+ propag_oefdefault=yes
+!else
+ propag_oefdefault=no
+!endif
+ 
+
+!defread wimshome/log/classes/$wims_class/.def
+setup=
+
+!for s in $propag
+ setup=!append line !set class_$s=$(class_$s) to $setup
+!next s
+
+subclasses=!words2items $subclasses
+subclasses=!makelist $wims_class/x for x in $subclasses
+!if $courses!=$empty
+ subclasses=!append item $courses to $subclasses
+!endif
+css=!record 0 of wimshome/log/classes/$wims_class/css
+!for s in $subclasses
+ test=!defof class_defined in wimshome/log/classes/$s/.def
+ !if $test=yes
+  !setdef $setup in wimshome/log/classes/$s/.def
+  !if css isitemof $propagate
+   !writefile wimshome/log/classes/$s/css $css
+  !endif
+  !if $propag_security=yes
+   !writefile wimshome/log/classes/$s/.security $security
+  !endif
+  !if $propag_supass=yes
+   !setdef !set user_password=$supass in wimshome/log/classes/$s/supervisor
+  !endif
+  !if $propag_oefdefault=yes
+   !setdef !set user_qnum=$wims_oefdefault_qnum\
+!set user_qcmlevel=$wims_oefdefault_qcmlevel\
+!set user_scoredelay=$wims_oefdefault_scoredelay\
+!set user_qcmpresent=$wims_oefdefault_qcmpresent\
+!set user_presentsol=$wims_oefdefault_presentsol\
+!set user_check=$wims_oefdefault_check_\
+!set user_sepow=$wims_oefdefault_sepow\
+!set user_expow=$wims_oefdefault_expow\
+!set user_precw=$wims_oefdefault_precw\
+in wimshome/log/classes/$s/supervisor
+  !endif
+ !endif
+!next s
+
+!exit
+rajouter qui se trouve dans le fichier supervisor
+ !setdef !set user_qnum=$nw_qnum\
+!set user_qcmlevel=$nw_qcmlevel\
+!set user_scoredelay=$nw_scoredelay\
+!set user_qcmpresent=$nw_qcmpresent\
+!set user_presentsol=$nw_presentsol\
+!set user_check=$nw_check_\
+!set user_sepow=$nw_sepow\
+!set user_expow=$nw_expow\
+!set user_precw=$nw_precw\
+in wimshome/log/classes/$wims_class/supervisor

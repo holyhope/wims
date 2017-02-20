@@ -1,0 +1,81 @@
+!read adm/class/classname.phtml $wims_classname\
+$wims_institutionname
+
+!read adm/title.phtml 1\
+$classname\
+$livret_title
+
+!if $usercnt==0
+ $name_noyetparticipant
+!! !exit
+!endif
+!if $livret_nbcomp==0
+ $name_no_competence
+ !exit
+!endif
+!default note=0
+
+!! add varfilter
+!if $tv_listtechvar!=$empty
+!form reply
+ !read adm/vfilter/varfilter html
+!formend
+!endif
+
+!read proc/legend.proc legend
+
+$table_header
+ $table_hdtr
+   <th rowspan="2">$wims_name_lastname, $wims_name_firstname</th>
+   !for k=1 to $livret_nbcomp
+    <th valign="middle" colspan="$(nbpalier_$k)">
+     !set wims_ref_title=$(title_$k)
+     !href cmd=renew&job=addcomp&comp=$k $(name_icompetence)$k
+     !set wims_ref_class=wims_button
+     &nbsp;
+     !href cmd=renew&job=addcomp&comp=$k $wims_name_change
+    </th>
+    !if $k<$livret_nbcomp
+     <td style="width:3px;" rowspan="$[2+$usercnt]"></td>
+    !endif
+   !next k
+ </tr>
+ $table_hdtr
+  !for k=1 to $livret_nbcomp
+   !for j=1 to $(nbpalier_$k)
+    !let desc=!record $j of $livret_dir/.comp$k
+    !let desc=!line 1 of $desc
+    !let desc=!replace internal ' by \' in $desc
+    <th valign="middle">
+    <a onmouseover="Tip('$desc',$tooltip_parm)">$(name_ipalier)$j</a></th>
+   !next j
+  !next k
+ </tr>
+ !for i=1 to $usercnt
+  !set uu=!line $i of $userlist
+  !if $varfilter_!=$empty
+   !reset var_filter_test
+   !readproc adm/vfilter/testfilter $(uu[1])\
+$varfilter_
+  !endif
+  !if $var_filter_test=1 or $varfilter_=$empty
+	  $table_tr
+      <td>
+        !set link_content = $(uu[2])
+        !if $(uu[1]) isitemof $wims_connectedlogin and $wims_user=supervisor
+          !set link_content = $link_content <i class="wims_connected wims_tooltip" title="($SU_partconnected)"><span class="hidden_text">($SU_partconnected)</span></i>
+        !endif
+	      !href cmd=reply&job=user&user=$(uu[1]) $link_content
+        !reset link_content
+	    </td>
+	    !for k=1 to $livret_nbcomp
+	      !for j=1 to $(nbpalier_$k)
+	        !read adm/class/colors $(skillu_$i[$k;$j]),livret
+	        <td style=$style_note>$output_note</td>
+	      !next j
+	    !next k
+	  </tr>
+  !endif
+ !next i
+$table_end
+

@@ -1,0 +1,107 @@
+!!! fichier de présentation de l'étape 3 !!!
+<h3 class="wimscenter">
+   Etape $etape: saisie des bonnes réponses
+</h3>
+<p>
+      Indiquez pour la question ci-dessous, la liste des réponses valides
+      (c'est-à-dire considérées comme justes) pour cette question, en
+      cochant les bonnes cases.
+</p>
+!set obtemp=!line $[$chronobs+1] of $obsrecord
+!set obtemp=!trim $obtemp
+!set obtemp=!char 2 to -2 of $obtemp
+
+!set L=!line $[$chronobs+1] of $propsrepList
+!for i=1 to $[$propsnb+1]
+  !set prop=!line $i of $propsrecord
+  !set prop=!trim $prop
+  !if ; isin $prop
+    !set p$(i)=!char 2 to -2 of $prop
+   !else
+    !set p$(i)=$prop
+  !endif
+!next i
+
+!set indictemp=!trim $(indicList[$[$chronobs+1];])
+!set com=!char 4 to -2 of $indictemp
+!set indictemp=!trim $com
+
+  <table class="wimscenter wimsborder">
+    <tr>
+      <th style="background-color:lightblue">
+       Question
+      </th>
+      <th bgcolor=wheat>
+       Réponses
+      </th>
+    </tr>
+    <tr>
+      <td bgcolor=lightblue width="30%">
+	  <table>
+	    <tr>
+	      <td bgcolor=white>
+	        $obtemp
+	      </td>
+	    </tr>
+	  </table>
+      </td>
+      <td bgcolor=darkcyan>
+        <table cellpadding=4>
+	 !for i=1 to $rowsnb
+	 !set bg$(i)=$(coulors[$[((2*$i-1)%3)+1];])
+         !set bg2$(i)=$(coulors[$[((2*$i)%3)+1];])
+	  <tr>
+	    <td bgcolor="$(bg$(i))">
+	      <input type="checkbox" name="propsrep" value="$i"
+	        !if $i isitemof $L
+		  checked
+		!endif
+	      />
+	    </td>
+	    <td bgcolor="$(bg$(i))">
+	      $(p$(i))
+	    </td>
+	    <td>
+	      &nbsp;
+	    </td>
+	    <td bgcolor="$(bg2$(i))">
+	      <input type="checkbox" name="propsrep" value="$[$i+$rowsnb]"
+	        !if $[$i+$rowsnb] isitemof $L
+		  checked
+		!endif
+	      />
+	    </td>
+	    <td bgcolor="$(bg2$(i))">
+	      $(p$[$i+$rowsnb])
+	    </td>
+	  </tr>
+	 !next i
+	 !if $extrarow!=0
+	  <tr>
+	    <td bgcolor="$(coulors[$[($propsnb+1)%3+1];])" colspan="5">
+	      <input type="checkbox" name="propsrep" value="$[$propsnb+1]"
+	        !if [$propsnb+1] isitemof $L
+		  checked
+		!endif
+	      />
+		  &nbsp; $(p$[$propsnb+1])
+	    </td>
+	  </tr>
+	 !endif
+	</table>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" bgcolor="white">
+        <hr />
+        Saisir ici si besoin, une indication pour cette question:
+	<br />
+	  !set wims_backslash_insmath=no
+	  !set indictemp=!reinput $indictemp
+	  <textarea name="exo_indic" rows=5 cols=60>$indictemp</textarea>
+	  !set wims_backslash_insmath=yes
+	</td>
+    </tr>
+  </table>
+
+!read comsDir/valideb

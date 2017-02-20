@@ -1,0 +1,48 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+
+slib_author=Bernadette, Perrin-Riou
+
+slib_example=[ogg="\imagedir/exemple.ogg" mp4="http://xxx"],,poster="gifs/logo.gif"\
+[ogg="http://url_for_ogg" mp4="url_for_mp4", webm="url_for_webm]\
+
+!exit
+
+:proc
+!!!if ...adm/ isin ...$module or .. isin $wims_read_parm or !!$wims_read_parm=$empty
+!! !exit
+!!!endif
+!reset slib_out
+!set slib_Type=mp4,webm,ogg,flv
+
+!distribute items $wims_read_parm into slib_media,slib_option,slib_option2
+!default slib_option2=poster="gifs/wims_logo.png"
+!set slib_media=!declosing $slib_media
+!set slib_media=!items2words $slib_media
+
+!for slib_type in $slib_Type
+  !reset slib_media_$slib_type
+  slib_media_$slib_type=!getopt $slib_type in $(slib_media)
+  slib_media_$slib_type=!replace internal $	$ by = in $(slib_media_$slib_type)
+  !if $(slib_media_$slib_type)!=
+    !set slib_out=!append line <source src="$(slib_media_$slib_type)" type="video/$slib_type" />\
+    to $slib_out
+  !endif
+!next
+!if $slib_out=$empty or $(slib_media_flv)!=$empty
+ !if $slib_media_flv=$empty
+   slib_media_flv=$slib_media
+ !endif
+  slib_out=<object type="application/x-shockwave-flash" data="flash/player_flv_maxi.swf" $slib_option>\
+<param name="movie" value="flash/player_flv_maxi.swf" />\
+<param name="allowFullScreen" value="true" />\
+<param name="FlashVars" value="flv=$slib_media_flv" /></object>
+ !exit
+!endif
+!default slib_option=preload="auto" height="320" width="600" controls="controls" style="width:50 %;padding:15px;margin:0px;border:5px solid black; border-radius:15px; box-shadow:10px 10px 5px gray; box-sizing: border-box;"
+slib_option=$slib_option $slib_option2
+slib_out=<video $slib_option>\
+ $slib_out\
+ Your browser does not support HTML5 : Download <a href="$slib_media_mp4">vidéo</a>.\
+</video>

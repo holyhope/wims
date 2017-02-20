@@ -1,0 +1,106 @@
+!set wims_module_log=error: $error
+!read adm/class/classname.phtml $description\
+$institution
+
+!if bad_classtype=$error
+ Non è possibile registrarsi
+ !exit
+!endif
+
+!if no_class=$error
+ Il corso selezionato non esiste! Potrebbe essere un bug nel software o 
+ il corso potrebbe essere ormai terminato. Se invece state giocherellando
+ con il server, sappiate che tutte le attività sono `loggate'.
+ !exit
+!endif
+
+!if complete=$error
+ Spiacente. Il corso selezionato è completo. Non ci sono 
+ più posti disponibili.
+ !exit
+!endif
+
+!if no_real=$error
+ Manca il nome.
+ !exit
+!endif
+
+!if login_size=$error
+ Il `login' scelto è troppo 
+ !if $n<4
+  corto.
+ !else
+   lungo.
+ !endif
+ Utilizzare almeno 4 e non più di 16 caratteri.
+ !exit
+!endif
+
+!if pass_size=$error
+ La password scelta è troppo
+ !if $n<4
+  corta.
+ !else
+   lunga.
+ !endif
+ Utilizzare almeno 4 e non più di 16 caratteri.
+ !exit
+!endif
+
+!if bad_classpass=$error
+ La password per il corso
+ $classname
+ non è corretta. Assicurarsi di conoscere la password 
+ esatta e riprovare.
+ !exit
+!endif
+
+!if login_double=$error
+ Il login <span class="tt wims_login">$login</span>
+ è già stato utilizzato per questo corso
+ $classname.
+ <p>
+ Verifica di non esserti già registrato, altrimenti scegli un altro
+ login.
+  </p>
+ !exit
+!endif
+
+!if login_empty=$error
+ Non è stato possibile creare l'utente perché i dati inviati sono insufficienti. Verificare i parametri di autenticazione o l'identificativo esterno.
+ !exit
+!endif
+
+!if pass_error=$error
+ La password di verifica non corrisponde alla password inserita.
+ Ripetere 
+ la registrazione.
+ !exit
+!endif
+
+!if site_complete=$error
+ Spiacenti. <p>
+ Il sito ha raggiunto il numero massimo di utilizzatori ($wims_user_limit).
+ Le iscrizioni sono pertanto sospese.
+ <p>È possibile 
+ !mailurl $wims_site_manager contattare il gestore del sito\
+site user limit
+ per richiedere un aumento di questo limite o
+ !href $ connettersi a Wims senza registrazione
+. </p>
+ !exit
+!endif
+
+!if internal_total=$error
+ Errore interno del sistema: non è possibile determinare il numero
+ di utenti registrati.
+ !exit
+!endif
+
+!if no_cgu=$error
+ Per iscriversi è necessario prendere visione e accettare le condizioni generali di utilizzo.
+ !exit
+!endif
+
+!msg $error
+

@@ -1,0 +1,82 @@
+!!for the documentation
+:option:absolute comma nolegend
+!reset test_comma
+!if comma iswordof $(replyoption$i)
+  !if , isin $(reply$i)
+   test_comma=yes
+   reply$i=!replace internal , by . in $(reply$i)
+   replyGood$i=!replace internal . by &#44; in $(replygood$i)
+  !endif
+!endif
+!default  replyGood$i= $(replygood$i)
+
+reply$i=!rawmath $(reply$i)
+reply$i=!trim $(reply$i)
+parleft=(
+dd=$(reply$i)
+c=!char 1 of $dd
+!if $c=+ or $c=-
+ dd=!char 2 to -1 of $dd
+!endif
+!if $computeanswer!=yes and \
+	( + isin $dd or - isin $dd or * isin $dd or ^ isin $dd \
+	or $parleft isin $dd or ( . isin $dd and / isin $dd ) )
+ test=NaN nocompute
+ !exit
+!else
+ test=$[$(reply$i)]
+!endif
+
+m_reply$i=$(reply$i)
+!if $test_comma=yes
+  m_reply$i=!replace internal . by , in $(m_reply$i)
+  reply_$i= $(m_reply$i)
+!endif
+
+!if $wims_read_parm=nocompare
+ !if NaN isin $test
+  !exit
+ !endif
+ !exit
+!endif
+
+good=$[$(replygood$i)]
+!if NaN isin $good or Inf isin $good
+ Test=bad $i
+ !exit
+!endif
+
+!if NaN isin $test
+ !exit
+!endif
+
+!default precision=1000
+tot=$[max(abs($test)+abs($good),1/$precision)]
+diff=$[abs($test-($good))]
+!if NaN isin $tot $diff or Inf isin $tot $diff
+ test=NaN
+ !exit
+!endif
+!if absolute iswordof $(replyoption$i)
+ !if $diff < 1/$precision
+   diareply$i=good
+   !advance freegot
+ !else
+   !if $diff < 10/$precision
+     !advance precgood
+      precreply$i=yes
+   !endif
+   diareply$i=bad
+ !endif
+!else
+ !if $precision*$diff<=$tot
+   diareply$i=good
+   !advance freegot
+ !else
+  !if sqrt($precision)*$diff<=$tot
+   !advance precgood
+   precreply$i=yes
+  !endif
+  diareply$i=bad
+ !endif
+!endif

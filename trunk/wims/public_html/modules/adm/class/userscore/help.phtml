@@ -1,0 +1,56 @@
+!if $special_parm iswordof authentification filter
+  !changeto help/$moduclass_lang/$special_parm.phtml
+  !exit
+!endif
+!set special_parm_=!text remove 0123456789 in $special_parm
+
+!if $special_parm_!=$empty
+ !changeto lang/help.$moduclass_lang/$special_parm.phtml
+!endif
+
+!set list=max(I,Q)\
+I\
+I*Q^0.3\
+I*Q^0.5\
+I*Q\
+I^2*Q\
+(I*Q)^2
+
+!set wims_backslash_insmath=yes
+!set help_sw=!line $[$special_parm+1] of $shweights
+!set help_score_max=!line 1 of $shweights
+!set help_level=!word 2 of $help_sw
+!set help_sw=!word 3 of $help_sw
+!default help_sw=0
+!default help_level=2
+!default help_score_max=10
+
+!read lang/help.phtml.$moduclass_lang
+!if $wims_user!=supervisor
+  !goto end
+!endif
+!for rule=1 to 6
+ !set r=$(list[$rule;])
+<table class="wimsborder">
+<caption> $rule : \($(list[$rule;])\)</caption>
+<tr>
+  <th>Q  \   I</th>
+   !for ih = 0 to 10
+   <th>$ih</th>
+   !next
+   </tr>
+   !for qh=0 to 10
+
+   <tr><th>$qh</th>
+  !for ih = 0 to 10
+   <td>
+   !set r1=!mathsubst I=$[$ih/10] in $r
+   !set r1=!mathsubst Q=$[$qh/10] in $r1
+    $[ceil(100*$r1)/10]
+   </td>
+   !next
+</tr>
+!next
+</table>
+!next
+:end

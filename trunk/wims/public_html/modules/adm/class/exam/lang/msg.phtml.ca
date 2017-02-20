@@ -1,0 +1,129 @@
+!set wims_module_log=error: $error
+
+!if bad_maxexams=$error
+ Le nombre d'examens est limité à $max_exams.
+ !exit
+!endif
+
+!if not_supervisor=$error
+ Ho sentim, però l'operació de preparació / modificació d'un examen
+  està reservat al professor registrat d'una classe.
+ !exit
+!endif
+
+!if $error=no_sheet
+ <p>
+ El contingut d'un examen s'ha d'agafar dels fulls de treball activats (actius o
+  caducats).
+ </p><p>
+ La vostra classe encara no té fulls de treball activats. Si us plau, definiu els vostres
+  fulls de treball, poseu-hi exercicis i activeu els fulls
+  abans de definir un examen per a la classe.
+ </p>
+ !exit
+!endif
+
+!if bad_exam=$error
+ El vostre número d'examen no és vàlid. Fallada del programari?
+ !exit
+!endif
+
+!if $error=simuchange
+ Aquest full d'examen ha canviat el seu estat. Si us plau
+ !href cmd=reply&job=scorereg cliqueu aquí
+ per acabar la vostra sessió.
+ !exit
+!endif
+
+!if already_registered=$error
+ La vostra puntuació ja està registrada.
+ !exit
+!endif
+
+!if no_more_registration=$error
+ Aquest examen només us permet registrar la puntuació $stries vegades.
+ Ja no teniu dret a fer altres enregistraments.
+ !exit
+!endif
+
+!if bad_source=$error
+ L'item número $bad_source del codi font que acabeu d'enviar
+ no és vàlid..
+ !href cmd=reply&job=prep_putsource&source=$source Corregir el codi
+ .
+ !exit
+!endif
+
+!if no_title=$error
+ Voleu enregistrar un examen sense títol, la qual cosa no és aconsellable.
+  Error de manipulació?
+ !exit
+!endif
+
+!if prep_activate=$error
+ Has demanat activar l'examen $exam, és a dir, fer-lo
+ accessible als participants de la classe. <p>
+ Pensa que una vegada acticat l'examen, ja no el podràs modificar.
+ Vols continuar&nbsp;?
+  <div class="wimscenter">
+ !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
+ .&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ . </div>
+ !exit
+!endif
+
+!if prep_erase=$error
+ Vols realment esborrar aquest examen número $exam ($title)?
+  <div class="wimscenter">
+  !set wims_ref_class=wims_button wims_warning
+ !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
+ !set wims_ref_class=wims_button
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ . </div>
+ !exit
+!endif
+
+!if prep_expire=$error
+ Aquest examen número $exam ($title) caduca normalment el $expday
+ !item $expmon of $months
+ $expyear. Vols que caduqui ara?
+  <div class="wimscenter">
+ !href cmd=reply&job=expire $wims_name_yes; $(wims_name_actionlist[2])
+ .&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ . </div><b>Observació.</b> Els vostres alumnes no poden seguir treballant en un
+  examen caducat. No obstant això, els seus resultats anteriors es conserven (i es tindran en
+  compte en les estadístiques), i sempre podeu consultar aquests resultats.
+ !exit
+!endif
+
+!if nodeactivate=$error
+  L'examen no pot ser desactivat perquè
+  !if badstructure isin $deactivate
+   l'estructura de la vostra classe no ho permet !
+  !else
+   !if score isin $deactivate
+    els participants ja han començat a treballar en aquest examen !
+   !else
+    comparteixes els teus exàmens amb una altra classe !
+   !endif
+  !endif
+!endif
+
+!if active_exam=$error
+   Ho sento, aquest examen està actiu, de manera que no es pot modificar. No es poden canviar els seus exercicis.
+ !exit
+!endif
+
+!if $error=prep_noexercise
+  El contingut de l'exercici $exo de l'examen està vuit. Torna a començar.
+  !exit
+!endif
+
+!if $error=addexook
+  Ajout de l'exercice effectué correctement.
+  !exit
+!endif
+
+!msg $error

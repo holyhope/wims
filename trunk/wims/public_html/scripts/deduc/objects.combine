@@ -1,0 +1,21 @@
+
+!distribute items >,,< into v_context,v_equivalence,v_goal
+!for tt in context,equivalence,goal
+ !reset $tt
+ t=!translate internal $	$ to $\
+$ in $(m_$tt)
+ t=!nonempty lines $t
+ n=!linecnt $t
+ !for i=1 to $n
+  l=!line $i of $t
+  $tt=!append line $(v_$tt) $l to $($tt)
+ !next i
+!next tt
+
+!if fixedgoal iswordof $m_options
+ goal=
+!endif
+objects=!nonempty lines $context\
+$equivalence\
+$goal
+

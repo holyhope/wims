@@ -1,0 +1,46 @@
+eq/addnum:Ajouter un nombre aux deux côtés d'une équation
+eq/addterm:Ajouter une expression aux deux côtés d'une équation
+eq/divnum:Diviser une équation par un nombre non-nul
+eq/exsides:Echanger les deux côtés d'une équation
+eq/lincomb:Addition d'équations avec coefficients
+eq/mulnum:Multiplier une équation par un nombre non-nul
+eq/rewrite:Réécrire une équation
+eq/spliteq:Séparer les cas selon une (in)équation
+eq: addnum addterm divnum exsides lincomb mulnum rewrite spliteq
+exp/rewrite:Réécriture algébrique d'une expression
+exp/substit:Substitution dans une expression algébrique globale ou partielle
+exp/substitg:Substitution dans une expression globale
+exp: rewrite substit substitg
+ineq/addeqineq:Ajouter une équation à une inégalité
+ineq/addineq:Ajouter deux inégalités
+ineq/addnum:Ajouter un nombre aux deux côtés d'une inégalité
+ineq/addterm:Ajouter une expression aux deux côtés d'une inégalité
+ineq/constineq:Introduire une inégalité constante
+ineq/divexp:Diviser une inégalité par une expression à signe constant
+ineq/divnum:Diviser une inégalité par un nombre non-nul
+ineq/exsides:Echanger les deux côtés d'une inégalité
+ineq/lincomb:Addition d'inégalités avec coefficients
+ineq/mulexp:Multiplier une inégalité par une expression à signe constant
+ineq/mulineq:Multiplier deux inégalités positives
+ineq/mulnum:Multiplier une inégalité par un nombre non-nul
+ineq/obvineq:Introduire une inégalité évidente par simple arithmétique
+ineq/rewrite:Réécrire une inégalité
+ineq/simpdeduc:Simple déduction d'inégalité
+ineq/splitineq:Séparer les cas selon une inégalité
+ineq/sqrpos:Le carré d'un nombre réel est positif ou nul
+ineq/trans:Appliquer la transitivité des inégalités
+ineq: addeqineq addineq addnum addterm constineq divexp divnum exsides lincomb mulexp mulineq mulnum obvineq rewrite simpdeduc splitineq sqrpos trans
+integrate/basic:Formule d'intégration de base
+integrate/basic0:Formule d'intégration de base minimale
+integrate/byparts:Intégration par parties
+integrate/chvar:Changement de variable direct
+integrate/chvarinv:Changement de variable inverse
+integrate/const:Intégration d'une constante
+integrate/cut:Couper une intégration en deux
+integrate/rewrite:Réécrire une intégrale
+integrate/sincos:Formule d'intégration de sin/cos/sh/ch
+integrate: basic basic0 byparts chvar chvarinv const cut rewrite sincos
+prf/cleanhyp:Effacer des hypothèses inutiles
+prf/contrapose:Contraposer
+prf/splitgoal:Montrer un but séparément (quand il y en a plusieurs)
+prf: cleanhyp contrapose splitgoal

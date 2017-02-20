@@ -1,0 +1,99 @@
+!set lang_exists=yes
+
+!set name_password_check=Password security check
+!set name_listclass=class,class,group of classes,class,portal
+
+!default Cltype=$cltype
+!if $Cltype iswordof 2 4
+   !if $Cltype=2
+    !set name_classe=$(name_listclass[$Cltype+1])
+    !set name_sup=teacher-supervisor
+   !else
+    !set name_classe=$(name_listclass[$Cltype+1])
+    !set name_sup=supervisor
+   !endif
+     !set name_classes= the $name_classe
+     !set name_classess= a $name_classe
+     !set name_classesss= $name_classe
+     !set name_classessss= The $name_classe
+ !else
+   !set name_classe=$(name_listclass[$Cltype+1])
+   !set name_classes=the $name_classe
+   !set name_classess=a $name_classe
+   !set name_classesss= $name_classe
+   !set name_classessss= The $name_classe
+   !set name_sup=teacher
+ !endif
+
+!distribute lines Continue\
+  Restart the operation.\
+  Creation of $name_classess\
+  Nom de l'établissement\
+  at most\
+  at least\
+  For experts\
+  characters\
+  Back to the beginning of the operation.\
+  Choose the type of virtual class you want to create.\
+  between 4 and 16 characters, digits or letters without accent\
+ into name_continue,name_again,title,name_Name_portal,name_atmost,name_atleast,name_expert,\
+   name_characters,name_comeback,name_choose,name_warningpass
+
+!if $regpolicy=file
+  !set noright=You do not have the right to do so.
+ !else
+  !set noright=Only the webmaster can do it.
+ !endif
+
+ !set name_regpolicy=The operation of creation of $name_classesss will not succeed \
+   unless you give your email address which works right now.
+
+!set name_help1=This password will allow you to access the $name_classe as its $name_sup.\
+  You should be the only person to know it.
+
+!set name_help2=The password of the $name_classesss will be required for the register of\
+  participants of the class; you can therefore diffuse it to your students.
+
+!set name_help3=The password of the $name_classesss will be required for the register of\
+  teachers of the $name_classesss ; you must not diffuse it to your students.
+
+!distribute lines This is the data at which an automated archive of your class is generated.\
+Limit of the number of participants of the $name_classe\
+Secured access\
+Optional\
+Names of hosts from which you will perform sensitive operations on the $name_classe.\
+This code is only used once here. It cannot be used to connect to the $name_classe !\
+Code of the class\
+External authentification CAS\
+into name_help_date,name_help_limit,name_secure,name_optional,name_warning_code,name_code,name_cas
+
+!set name_host=!nosubst Noms des postes à partir desquels vous effectuerez les opérations sensibles \
+ dans votre $name_classe. Si vous ne mettez rien, un email vous sera envoyé à chaque opération \
+ sensible (conseillé). Mettre le mot <span class="tt wims_code_words">all</span> désactivera cette mesure de sécurité.
+
+!set name_cas_help=Ne remplissez ce champ que si vous désirez utiliser l'authentification externe du type CAS\
+(fourni par votre ENT par exemple).
+
+!set name_cpexempleintro=!nosubst Vous allez créer une copie de la classe <span class="tt wims_code_words">$source_title</span>
+!set name_choosemode=Vous devez choisir le mode de copie de cette classe
+!distribute item Intégrale,Partielle into name_btcpexemplemeth0,name_btcpexemplemeth1
+
+!set name_cpexemplemeth0=Toutes les ressources seront copiées. Les ressources pourront être désactivées puis supprimées ou adaptées en fonction des dépendances.
+!set name_cpexemplemeth1=Les examens ne seront pas copiés. Les ressources seront désactivées automatiquement. Vous pourrez alors décider de celles que vous souhaitez supprimer, adapter ou garder.
+!set name_cpexemplecomment=Dans tous les cas, les dates d'expiration seront adaptées à la date de fermeture de la classe créée.
+!set name_research1=Il y a beaucoup de classes virtuelles sur ce site. Tapez une partie d'un mot se trouvant dans son titre ou dans le nom de l'enseignant pour trouver celle que vous cherchez.
+!set name_research2=Il y a encore trop de classes correspondant à votre mot de recherche. Veuillez donner un mot plus précis.
+!set name_searchclass=Rechercher une classe
+!set name_nofound=Aucune classe ne correspond à votre recherche.
+
+!distribute items Libre, Protégé, Non autorisé, Duplication, \
+Cliquez sur la classe à dupliquer\
+into name_free,name_protected,name_disallowed,name_cloning,name_clickclone
+
+!set name_getcloningpwd=!nosubst Vous allez créer une copie de la classe <span class="tt wims_code_words">$source_title</span>. \
+Pour cela vous devez saisir le mot de passe de duplication que l'administrateur de la classe vous a communiqué.
+!set name_subclass=Sous-classe de
+
+!distribute lines Location (town, country)\
+ En remplissant ce champ, vous acceptez que nous indiquions que WIMS est utilisé dans votre ville (sans aucune autre mention)\
+into name_location,name_location_help

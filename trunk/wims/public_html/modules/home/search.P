@@ -1,0 +1,19 @@
+!!#P for popup ...
+!if $srch=$empty
+ gottype=fail
+ gotcnt=0
+ !exit
+!endif
+
+formdir=$module_P.$search_lang/form
+mP=!replace wimshome/public_html/modules/ by $ in $module_P
+#formdir=$mP.$search_lang/form
+dictionary=modules/$mP.$search_lang/dic/form
+!read $module_P.$search_lang/search.proc
+
+!if $gotcnt>0
+ gottype=search
+  Gotcnt=$[$Gotcnt + $gotcnt]
+!else
+ gottype=fail
+!endif

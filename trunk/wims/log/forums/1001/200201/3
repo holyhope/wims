@@ -1,0 +1,54 @@
+!set p_=!word 1 of $wims_read_parm
+!bound p_ within none,header,source,html default none
+!goto $p_
+:none
+!exit
+:header
+!set m_subject=Version 3.10: bug in class registration
+!set m_date=20020126
+!set m_time=08:22:35
+!set m_from=Gang XIAO
+!set m_sender_ip=127.0.0.1
+!set m_sender_id=
+!set m_sender_class=
+!set m_email=xiao@unice.fr
+!set m_to=
+!set m_prec=O200201/3
+!set m_exists=yes
+!exit
+:source
+<pre>
+Due to a typo introduced in version 3.10, the user registrations of virtual classes become wrong. The newly registered users' firstname, lastname and email all become firstn, lastn, email respectively, instead of the real names and email addresses.
+
+To patch the bug (for version 3.10 only), replace file public_html/modules/adm/class/reguser.??/var.proc, line 133:
+&lt;pre>
+  l_=!singlespace $n
+&lt;/pre>
+by
+&lt;pre>
+  l_=!singlespace $($n)
+&lt;/pre>
+
+For users already registered, you can modify their registers online as supervisor (or they can also modify th records themselves). To do so, you have just to click on 'participants and scores', then the name of the user in question (lastn,firstn), then in the page for that user, click on the title 'lastn,firstn'.
+
+The modification by the user himself can be done by clicking on the link 'my score', then the title 'lastn,firstn'.
+
+</pre>
+!exit
+:html
+Due to a typo introduced in version 3.10, the user registrations of virtual classes become wrong. The newly registered users' firstname, lastname and email all become firstn, lastn, email respectively, instead of the real names and email addresses.
+<p>
+To patch the bug (for version 3.10 only), replace file public_html/modules/adm/class/reguser.??/var.proc, line 133&#58;
+<pre>
+  l_=&#33;singlespace &#36;n
+</pre>
+by
+<pre>
+  l_=&#33;singlespace &#36;(&#36;n)
+</pre>
+<p>
+For users already registered, you can modify their registers online as supervisor (or they can also modify th records themselves). To do so, you have just to click on 'participants and scores', then the name of the user in question (lastn,firstn), then in the page for that user, click on the title 'lastn,firstn'.
+<p>
+The modification by the user himself can be done by clicking on the link 'my score', then the title 'lastn,firstn'.
+<p>
+

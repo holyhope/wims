@@ -1,0 +1,17 @@
+!!$wims_read_parm should be sheet exam vote doc c
+!!present the sequence where the ressource is inserted
+
+<td>
+   !set vis=!lookup $(wims_read_parm[1]) $i in wimshome/log/classes/$wims_class/seq/.seqinverse
+   !for v_ in $vis
+     !set test=!record 1 of wimshome/log/classes/$wims_class/seq/.sequence$v_
+     !set test=!line 4 of $test
+     !if $test=0 or $test=$empty or $(wims_read_parm[2])=0
+       <span title="$(wims_name_status[1])">$v_</span>
+     !else
+       <span class="wims_visible" title="$(wims_name_status[2])">
+       !href module=adm/class/sequence&job=addseq&seq=$v_ $v_
+       </span>
+     !endif
+   !next
+</td>

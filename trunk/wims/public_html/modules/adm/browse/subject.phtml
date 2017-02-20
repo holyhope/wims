@@ -1,0 +1,130 @@
+
+!read adm/title.phtml 2\
+$title
+!set taxo=keywords
+!set cat=A
+
+<div class="job_desc spacer">$job_desc</div>
+
+!! what follows is not useful, I keep it for a while.
+!goto newmethod
+!if $parm=$empty
+ $name_domain
+<div class="wims_widget_box">
+<ul class="box_content inline">
+!for dom in $Tot_dom
+  !set dom_n=!lookup $dom in $dir_lang
+  !default dom_n=$dom
+  <li>
+  !set wims_ref_class=wims_button
+  !href module=$module&cmd=new&job=subject&parm=$dom $dom_n
+  </li>
+!next
+</ul>
+</div>
+!else
+ $name_available
+!set wims_menu_items=!append line other,1,module=$module&cmd=new&job=subject\
+  to $wims_menu_items
+!set search_and=yes
+<ul>
+ !for t in $list
+  <li id="$t">
+  !read script.phtml $t,$name
+     !if $cnt > 1
+       <ul>
+        !for ttt in $tt
+         <li id="$ttt">
+          !read script.phtml $ttt,$name
+           !if $cnt > 1
+           <ul>
+            !for tttt in $tt
+             <li id="$tttt">
+             !read script.phtml $tttt,$name
+             </li>
+            !next
+           </ul>
+          !endif
+         </li>
+        !next
+        </ul>
+     !endif
+  </li>
+  !next t
+ </ul>
+!endif
+
+:newmethod
+!set search_and=yes
+<div id="taxonomy_list">
+  <ul class="tabs">
+    !for dom in $Tot_dom
+      !set dom_title=!defof title in taxo/$dom.phtml.$lang
+      <li><a href="#$dom">$dom_title</a></li>
+    !next
+  </ul>
+
+  !distribute items 0,0 into i, active_index
+  !for dom in $Tot_dom
+    <div id="$dom">
+       !read taxo/$dom.phtml.$lang
+       !if $dom isitemof $parm
+          !set active_index = $i
+       !endif
+       !increase i
+     </div>
+  !next
+</div>
+
+<!-- JS for dynamic tree display -->
+<script type="text/javascript" src="scripts/js/tree_JS/tree.js"></script>
+
+<!-- JS for Tabs display -->
+<script type="text/javascript">
+    /*<![CDATA[*/
+    jQuery(function($$) {
+        $$( "#taxonomy_list" ).tabs({
+          active: $active_index
+        });
+      });
+    /*]]>*/
+</script>
+
+!exit
+ $table_header
+ !for t in $list
+  $table_tr
+  !!keep key - use in search_addr.
+  !reset key
+    !set key=!lookup $t in $dir
+    !default key=$t
+    !set key_l=!lookup $t in $dir_lang
+    !set name_$t=!lookup $t in $dir_lang
+    !default name_$t=$t
+    !set key=!replace internal _ by $ $  in $t
+    !set key=$key,$key_l
+    !set more=!lookup $t in $dir
+    <th>
+    !if $more!=$empty
+      !href module=$module&cmd=new&job=$job&parm=$t $(name_$t)
+    !else
+      $(name_$t)
+    !endif
+    </th>
+  !for i in A,T,P,X,S
+   !set cat=$i
+   <td >
+   !if $i!=A
+   <span class="small">
+   !href $search_addr $(name_$i)
+   </span>
+   !else
+   !href $search_addr $(name_$i)
+   !endif
+  </td>
+  !next i
+ </tr>
+  !next t
+ </table>
+!endif
+

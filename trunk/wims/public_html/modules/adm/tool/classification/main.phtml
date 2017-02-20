@@ -1,0 +1,68 @@
+!read adm/language lang/names.phtml
+
+!set wims_html_header=!append line <style type="text/css">\
+.wims_formradio, .wims_formradio input{font-size: 80%;}\
+.tree label{font-weight: normal;display:inline;}\
+.tooltip {\
+      position:relative;\
+      cursor:help;\
+}\
+.box p{margin-top:0;}\
+.tooltip:hover::after {\
+       display: block;\
+       position: absolute;\
+       top: 1.2em;\
+       left: 2em;\
+       background: white;\
+       padding: 5px;\
+       border: 1px solid $wims_refcolor;\
+       border-left: 10px solid $wims_ref_bgcolor;\
+       content: attr(title);\
+}\
+</style>\
+<!-- CSS for dynamic tree display -->\
+<link type="text/css" rel="stylesheet" href="scripts/js/tree_JS/tree.css" /> to $wims_html_header
+
+
+!!# Si les librairies Jquery sont chargées, on affiche des onglets.
+!!if $jquery_defined=yes
+    !set wims_html_header=!append line <script type="text/javascript">\
+        /*<![CDATA[*/ jQuery(function(jq) {jq( "#classifications" ).tabs();}); /*]]>*/\
+      </script> to $wims_html_header
+!!endif
+
+!header1
+
+!read adm/title.phtml 2\
+$tit\
+$refdir0/$exo
+
+!!set wims_menu_items=!append line back,1,cmd=resume to $wims_menu_items
+!if $compute=yes
+ !if $error!=$empty
+  <div class="wims_msg alert">
+  !read msg.phtml
+  </div>
+  !goto end
+  <p>$name_what_keyword</p>
+  !read menu.phtml
+
+ !else
+  <p>$name_thank_you</p>
+  <p>$name_recap_keywords</p>
+  !read answer.phtml
+ !endif
+!else
+
+ !read menu.phtml
+!endif compute=yes?
+
+
+:end
+
+!set wims_menu_items=!append line back,cmd=resume to $wims_menu_items
+
+!tail
+
+<!-- JS for dynamic tree display -->
+<script type="text/javascript" src="scripts/js/tree_JS/tree.js"></script>

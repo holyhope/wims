@@ -1,0 +1,64 @@
+!!@# translate between !!@# et !!#@
+!if nom_fichier iswordof $error
+  <span class="wims_warning">
+!!@#
+Il nome del file scelto non è valido: non è possibile utilizzare
+né <span class="tt">..</span> né <span class="tt"> / </span> nel nome del file.
+!!#@
+</span>
+  !exit
+!endif
+!if bad_data iswordof $error
+!!@#
+<b>Errore.</b> Non è stato possibile comprendere i valori inviati. Errore di battitura?
+!!#@
+ !exit
+!endif
+
+!if $error!=$empty
+  !if target iswordof error
+    <span class="wims_warning">
+!!@#
+ Scegli un modulo.
+!!#@
+</span>
+    !exit
+  !endif
+<span class="wims_warning">
+!!@#
+Non dimenticare di compilare i campi obbligatori contrassegnati da *.
+!!#@
+</span>
+!endif
+!if type_exo iswordof $error or file iswordof $error
+!!@#
+In particolare:
+!!#@
+<dl>
+!if type_exo iswordof $error
+ <dt>
+!!@#
+Scegliere il tipo di quesito a risposta multipla.
+!!#@
+ </dt>
+!endif
+
+!if file iswordof $error
+  <dt>
+!!@#
+Questo esercizio dipende da dati che voi dovete inserire in un file seguendo il
+formato indicato nell'help on line, altrimenti non potrà funzionare.
+In questa fase dovete indicare il nome del file con conterrà tali dati.
+!!#@
+</dt>
+!endif
+</dl>
+!if oefempty iswordof $error and $transfert=yes
+!!@#
+Come prima cosa è necessario creare un modulo OEF nel vostro account Modtool.
+!!#@
+!endif
+!exit
+
+
+!msg $error

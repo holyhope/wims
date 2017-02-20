@@ -1,0 +1,204 @@
+<b>Sélectionner des atomes d'une molécule en 3D</b> (nom : <span class="tt wims_code_words">jmolclick</span>)
+
+<p>
+Une molécule est présentée dans l'applet <b>Jmol</b> et certains des atomes doivent être sélectionnés.
+Ce type de réponse doit être utilisé avec la commande <span class="tt wims_code_words">\embed{}</span>.
+D'autres objets 3D que des molécules peuvent être représentés grâce aux capacités de <b>Jmol</b>
+</p><p>
+La bonne réponse est formée de deux lignes (séparateur ; ) : la première est la
+bonne réponse, la seconde indique la molécule à montrer : le fichier de structure de la molécule (dans un
+format reconnu par <b>Jmol</b>) peut
+être dans un répertoire <span class="tt wims_code_words">data</span> du module,
+dans le répertoire data de la distribution WIMS (adresse <span class="tt wims_fname">data/xxx</span>) ou
+dans un module de données dans <span class="tt wims_fname">modules/data</span> (dans ce cas, l'adresse est de la forme
+<span class="tt wims_fname">datamodule/xxx</span>) ou dans le répertoire <span class="tt wims_fname">images</span> (l'adresse est alors <span class="tt wims_fname">\imagedir/xxx</span>).
+On peut aussi mettre simplement le texte décrivant la molécule.
+<b>Jmol</b> peut aussi interroger <a href="http://cactus.nci.nih.gov"> le serveur du <i>National Cancer Institute</i></a>. Ce serveur permet à <b>Jmol</b> de charger une molecule à partir de son nom (anglais) ou de son code <a href="http://fr.wikipedia.org/wiki/Simplified_Molecular_Input_Line_Entry_Specification">SMILES</a>. Pour cela, il suffit de faire précéder le nom ou le code SMILES d'un @.
+</p><p>
+La première partie de la bonne réponse est donnée par
+la liste des numéros des atomes à sélectionner (comme dans le fichier de structure) ou par une commande dans la syntaxe
+<b>Jmol</b> (des exemples sont donnés ci-dessous). Ainsi, <span class="tt wims_code_words">1, 2, 3</span> est équivalent à
+<span class="tt wims_code_words">atomno=1 or atomno=2 or atomno=3</span> ou encore à <span class="tt wims_code_words">({0,1,2})</span> (les deux dernières étant
+en syntaxe <b>Jmol</b>).
+</p><p>
+Il est possible de donner plusieurs réponses possibles ; dans ce cas-là, elles doivent être séparées
+par un <span class="tt wims_code_words">|||</span> (afin de ne pas confondre avec le <span class="tt wims_code_words">|</span> qui peut être utilisé dans la syntaxe
+<b>Jmol</b>).
+Attention : si <span class="tt wims_code_words">no_select=2</span>, <span class="tt wims_code_words">_O ||| 1|2|4</span> signifie qu'on doit sélectionner deux atomes
+d'oxygène (exactement) ou deux des atomes parmi les numéros 1, 2 et 4.
+</p><p>
+La première ligne de la commande <span class="tt wims_code_words">\embed</span> est formée de la taille X x Y en pixels de l'applet.
+Sur les trois lignes suivantes, des scripts <b>Jmol</b>
+(cf <a href="http://chemapps.stolaf.edu/jmol/docs/">la documentation de Jmol</a>)
+peuvent être mis :
+le premier sera exécuté lors de la  première requête de l'exercice ET lors de la réponse.
+Le deuxième sera exécuté lors de la première requête de l'exercice uniquement.
+Le troisième sera exécuté uniquement lors de la réponse.
+Il est aussi possible de donner l'adresse d'un fichier contenant un script.
+Les mêmes règles que pour le fichier de structure de la molécule sont applicables
+(<span class="tt wims_fname">data/scriptsimple.spt</span>).
+Pour être reconnu,
+le fichier doit avoir l'extension <span class="tt">.spt</span>.
+</p>
+<b>Exemple complet</b>:<br />
+<textarea id="wims_show" cols="100" rows="10" name="wims_show" readonly="readonly">
+\title{Exemple simpliste (et idiot) de jmolclick}
+\statement{
+Sélectionnez les atomes d'oxygène.
+\embed{r1, 300x300
+   select atomno=3; spacefill 0.8;select none;
+  set echo top left; echo "avant la réponse";
+  set echo bottom right; echo "après la réponse";}
+}
+\answer{}{5,6;@cafeine}{type=jmolclick}
+</textarea>
+<br />
+<b>Exemples (partie embed uniquement)</b>:
+<br /> Un exemple très simple:
+<pre>
+ \embed{r1, 200x200}
+</pre>
+<br /> Exemple  avec un script explicite (commun à la question et à la réponse) :
+<br />
+<textarea id="wims_show1" cols="100" rows="4" name="wims_show" readonly="readonly">
+ \embed{r1, 200x200
+  select all; wireframe 0.2;select none;
+ }
+</textarea>
+Exemple avec un script dans un fichier (dans le dossier
+<span class="tt wims_code_words">data</span> du module)
+
+<textarea id="wims_show2" cols="100" rows="4" name="wims_show" readonly="readonly">
+  \embed{r1, 300x300
+  data/scriptsimple.spt
+  set echo top left; echo "avant la réponse";
+  set echo bottom right; echo "après la réponse";}
+</textarea>
+
+Il est aussi possible  lorsque ce script est créé par l'exercice (par exemple,
+lorsqu'il contient des variables aléatoires) d'utiliser
+le slib <span class="tt wims_code_words">oef/newfile</span> <br />
+exemple :
+<br />
+<textarea id="wims_show3" cols="100" rows="5s" name="wims_show" readonly="readonly">
+\text{filescript=slib(oef/newfile spt,\text_script)}
+.
+.
+.
+ \embed{r1, 200x200
+\filescript
+  select all; wireframe 0.2;select none; }
+</textarea>
+où la variable <span class="tt wims_code_words">text_script</span> contient le texte du script. La variable <span class="tt wims_code_words">filescript</span> contient l'adresse
+du fichier créé.
+<br />
+<br />
+<b>Exemples (partie answer uniquement)</b>:
+Avec le nom courant
+<pre>
+\answer{}{_O;@tnt}{type=jmolclick}
+</pre>
+ou avec le nom IUPAC
+<pre>
+\answer{}{_O;@2,4,6-Trinitrotoluene}{type=jmolclick}
+</pre>
+ou encore avec le code SMILES
+<pre>
+\answer{}{_O;@Cc1c(cc([N+](=O)[O-])cc1[N+](=O)[O-])[N+](=O)[O-]}{type=jmolclick}
+</pre>
+ou enfin à l'aide d'un fichier .mol (qui serait dans le dossier data du module contenant l'exercice)
+<pre>
+\answer{}{_O;data/trinitrotoluene.mol}{type=jmolclick}
+</pre>
+<p>
+Le dernier format est à privilegier car il est indépendant de l'accès à la base de données NCI.<!--On peut utiliser Chemtool pour stocker localement les fichiers de structure. -->
+</p><p>
+Les options suivantes du type de réponse <span class="tt wims_code_words">jmolclick</span> sont possibles :
+</p>
+$table_header
+$table_tr<td><span class="tt wims_code_words">split</span> ou <span class="tt wims_code_words">partialscore
+</span></td><td>
+Le score tient compte d'une réponse bonne partielle, mais surpénalise les mauvaises réponses.
+</td></tr>
+$table_tr<td class="tt wims_code_words">
+eqweight
+</td><td>
+les mauvaises réponses ont le même poids que les bonnes réponses.
+</td></tr>$table_tr<td class="tt wims_code_words">
+noselect="liste de numéros d'atomes"
+</td><td>
+les atomes en question ne pourront pas être sélectionnés.
+</td></tr>$table_tr<td><span class="tt wims_code_words">
+nb_select=</span>m</td><td>Contraint à ce que le nombre d'atomes sélectionnés soit exactement <span class="tt wims_code_words">m</span>.
+Un message d'alerte invite à corriger dans le cas contraire.
+</td></tr>
+$table_tr<td><span class="tt wims_code_words">
+target=</span>numéro</td><td>Si plusieurs applets (soit jmolclick, soit jmolshow)
+se trouvent dans votre exercice,  elles doivent toutes avoir des numéros différents
+et la première doit avoir le numéro 0. Ce numéro est utile pour associer des boutons (ou autre) à une applet.
+Le numéro par défaut est 0.
+</td></tr>$table_tr<td class="tt wims_code_words">
+type=Java</td><td>Pour experts : La version Java de <b>Jmol</b> sera utilisée mais le
+chargement de structures liées à serveur externe (structures précédées de @)
+est impossible (la présence du symbole @, fait basculer automatiquement vers
+la version sans Java).
+</td></tr>$table_tr<td class="tt wims_code_words">
+applet=imagedir</td><td>Pour experts : l'applet utilisée sera celle mise dans le
+répertoire <span class="tt wims_code_words">images</span> du module. N'utilisez cette solution que si vous avez réellement besoin d'une version
+plus récente de <b>Jmol</b>.
+</td></tr>$table_end
+
+La variable <span class="tt">reply</span>n contient trois listes séparées par des points-virgule :
+la liste des bonnes réponses de l'étudiant; la liste des réponses fausses; la liste des atomes oubliés.
+
+Dans le cas où le premier champ de la bonne réponse est une variable de contenu vide, la variable
+<span class="tt">reply</span>n contient simplement la liste des atomes sélectionnés.
+
+!set p=anstype.fr/jmolclick1
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td class="tt">
+!line 1 of $l_
+    </td><td class="tt wims_code_words">
+!line 2 of $l_
+   </td></tr>
+  !next
+$table_end
+
+<p>
+Les conditions peuvent être combinées dans <b>Jmol</b> par les opérateurs d'ensembles
+<span class="tt wims_code_words">OR</span>, <span class="tt wims_code_words">AND</span>
+et <span class="tt wims_code_words">NOT</span>. Pour plus de détails, voir la
+<a href="http://chemapps.stolaf.edu/jmol/docs/#atomexpressions">documentation de Jmol</a>.
+</p>
+
+!set p=anstype.fr/jmolclick2
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td class="tt wims_code_words">
+!line 1 of $l_
+    </td><td>
+!line 2 of $l_
+   </td></tr>
+  !next
+$table_end
+
+
+<p>
+Des slibs sur Jmol sont accessibles.
+!href module=help/wimsdoc&+subject=slib#slib slib
+</p>

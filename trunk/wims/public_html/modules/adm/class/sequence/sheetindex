@@ -1,0 +1,38 @@
+!if $seq_cnt!=
+ !for j =1 to $seq_cnt
+  !set s_=!record 1 of wimshome/log/classes/$wims_class/seq/.sequence$j
+  !set s_=!line 3 of $s_
+  !set scnt=!itemcnt $s_
+  list_exsh=!append line $j\
+  to $list_exsh
+  list_all=!append line $j to $list_all
+  !for k=1 to $scnt
+    !if exam isin $(s_[$k]) or sheet isin $(s_[$k])
+     list_exsh=!append item $(s_[$k]) to $list_exsh
+    !endif
+    list_all=!append item $(s_[$k]) to $list_all
+  !next k
+ !next j
+
+ !writefile wimshome/log/classes/$wims_class/seq/.sequences $seq_cnt\
+$list_exsh\
+
+!!create .seqinverse with all ressources
+ !reset seqinverse
+ scnt=!linecnt $list_all
+ !for ll_ = 1 to $scnt
+   l_=!line $ll_ of $list_all
+   num=!item 1 of $l_
+   cnt_=!itemcnt $l_
+   !for v_ = 2 to $cnt_
+     test=!select $seqinverse where column 1 = $(l_[$v_])
+     !if $test!=$empty
+      seqinverse=!replace $test by $test,$num in $seqinverse
+     !else
+      seqinverse=!append line $(l_[$v_]),:$num to $seqinverse
+     !endif
+   !next
+ !next
+ seqinverse=!replace internal ,: by : in $seqinverse
+ !writefile wimshome/log/classes/$wims_class/seq/.seqinverse $seqinverse
+!endif

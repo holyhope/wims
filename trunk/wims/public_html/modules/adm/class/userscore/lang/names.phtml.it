@@ -1,0 +1,153 @@
+!set lang_exists=yes
+
+!if $wims_read_parm!=
+ !goto $wims_read_parm
+!endif
+
+!set name_donchoose=Scelta dei dati
+!set name_studentloc=!nosubst $user_firstname $user_lastname
+!set name_studentglo=!nosubst $wims_name_firstname $wims_name_lastname
+
+!distribute line Media del corso\
+Media\
+Media dei punteggi effettivi\
+Media globale\
+Media di gruppo\
+into name_classAverage,name_Average,name_posAverage,name_globalaverage,\
+name_groupAverage
+
+!set name_partdeleted=Studenti esclusi
+!set wims_name_reg_ex=Elenco degli esercizi salvati
+!!set name_transfer=Importa la sua attività da altro corso
+
+!!!set name_thsheet=Numero,Titolo,Punti<br />richiesti,Peso,Punti<br />ottenuti,%,Media,Severità,Voto,\
+  Best scores,Number of tries,Last result,Acquired level
+!! % sui migliori,Tentativi,Ultimo punteggio
+!set name_minmax=min/media/max del corso
+
+!set name_manualscore=Voti assegnati dal docente
+!set name_autoscore=Voti registrati dal server
+!set name_manual_notes=globale,docente,auto
+!set name_examnote=Voti d'esame
+
+!set name_severitylevels=Calcolo dei voti nei test di autovalutazione
+!set name_formula=Numero,Peso,Livello
+!set name_sheetstatut=prep,in corso,terminato,nascosto
+
+!distribute items Esame,Test di autovalutazione,Esercizio,Iniziato il,Punteggio,Sessione,\
+ completato il,equivalente a,Durata\
+into name_Exam,name_Sheet,name_Exercise,name_Start,name_Score,name_Session,\
+name_done,name_equiv,name_Duration
+
+!set name_formula_comment=Nella tabella seguente potete definire la formula di calcolo dei voti \
+assegnati nei test di autovalutazione. \
+In tale tabella, Q indica l'indice di qualità \
+e il paramtro I può essere scelto tra i tre indicatori seguenti: I0 ovvero \
+il numero di punti accumulati, I1 ovvero la media degli n migliori punteggi ottenuti, se 10n è \
+il numero di punti richiesti e I2 ovvero il minimo degli n migliori voti precedenti. \
+Nelle istruzioni sono disponibili più dettagli.\
+I voti saranno calcolati con massimo=
+!set name_formula2=!nosubst Voti calcolati su un massimo di $scoremax
+!set name_pickup=Seleziona uno o più test di autovalutazione per \
+  visulizzarne i punteggi
+!set name_warning=La richiesta non è valida.
+
+!set name_click=Seleziona un nome per visualizzare i dettagli
+!set name_affi=indice di qualità,% punti richiesti, voto assegnato, % di successo sui voti migliori, livello acquisito
+!set name_workdetail=Dettagli del lavoro svolto da
+!set name_activesession=Questo studente ha una sessione d'esame in corso
+
+!distribute items IP, Tempo rimanente, Sessione d'esame di ,minuti\
+into name_connecting,name_remaining_time,name_exam_session,name_minutes
+
+!set name_noyetparticipant=Non ci sono ancora studenti.
+
+!set name_warning_no_sequence=Avete impostato la pagina &ldquo;per percorsi&rdquo;, ma non avete definito alcun \
+percorso. In questo modo non può apparire alcun punteggio.
+
+!if $manual>0
+ !set name_manual_explanation=<b>Spiegazione.</b> Nelle colonne <span class="tt">media</span>,  \
+<span class="tt">auto</span> indica i voti assegnati automaticamente dal sistema a partire \
+dai risultati nei test, <span class="tt">docente</span> indica i voti assegnati manualmente dal docente.\
+Il voto <span class="tt">globale</span> &egrave; calcolato utilizzando la formula seguente \
+(il coefficiente $[$manual/100] è modificabile nella pagina di inserimento \
+dei voti manuali)
+!endif
+
+!set name_title_showsheet=!nosubst Dettagli del lavoro portato a termine sul test di autovalutazione $numshowsheet<br />$sh_title
+!set name_percentagegot=Percentuale dei punti ottenuti
+!set name_qualitygot=Qualità calcolata su un massimo di 10
+!set name_percentagedone=Percentuale di lavoro portato a termine
+!set name_percentagebest=Media sui voti migliori
+
+!set name_Post=Mostra
+!set name_post=mostra
+
+!set name_sheetdetail=Una volta selezionati uno o più test di autovalutazione, puoi cliccare sull'intestazione della colonna \
+ per visualizzare il lavoro svolto dagli studenti in tutti gli esercizi \
+  del test corrispondente.
+!if $job iswordof userprop teacher
+  !distribute items Cambia,Matricola,Commenti,URL di una foto,Variabili (tecniche),\
+  Password pubblica del corso,Inserire la password <em>pubblica</em> del corso e cio&egrave;quella utilizzata per effettuare la prima iscrizione,\
+  Identificativo per autenticazione esterna,Iscrizione,Accesso come docente,\
+   Richiesto\
+  into name_change,name_regnum,name_comments,name_photourl,name_vars,\
+  name_classpassword,name_enterpassword,name_external_auth,name_inscript,name_gestion,\
+  name_userprop_warning
+  !goto end
+!endif
+
+!if $job=examcheck
+ !set name_title_examcheck=!nosubst Dettagli degli esami di $name_studentloc
+ !set name_no_exampart=Questo studente non ha ancora concluso alcun esame.
+ !set name_exampart=Queste sono le sessioni d'esame di questo studente. Seleziona un esercizio \
+  per verderne lo svolgimento.
+ !goto end
+!endif
+!if $job=getraw
+  !set name_title_getraw=!nosubst Dettagli del lavoro svolto da $name_studentloc<br />(dati non elaborati)
+  !goto end
+!endif
+
+!set name_direct_score=torna alla visualizzazione dei voti
+
+!if $job=csv
+  !distribute lines  Questo è il file\
+    che una volta salvato pu&ograve; essere aperto con un qualsiasi foglio eletronico.\
+    Sono state modificati i dati relativi a\
+    È stato aggiunto/sono stati aggiunti\
+    Non è stato possibile inserire nuovi partecipanti perché si è superato il limite di spazio.\
+    Non sono state modificate le informazioni perché si è cercato di modificare anche i punteggi.\
+    Non sono state modificate le informazioni di media e voti di test/esami perché si tratta di voti calcolati dal server che non possono essere modificati manualmente.\
+    Sono stati ignorati i seguenti dati, relativi a partecipanti esclusi\
+    I seguenti login non sono stati inseriti in quanto il login è troppo corto\
+    I seguenti login non esistono e non possono essere creati perché le informazioni fornite sono insufficienti o incorrette\
+    I seguenti login non esistono e non possono essere creati (dati inconsistenti e spazio esaurito)\
+    I voti manuali possono essere registrati solo per colonne che già esistono.\
+    I dati forniti coincidono con quelli già inseriti sul server.\
+    Verifica i voti manuali\
+    Per salvare i dati in formato foglio elettronico, specificare\
+    Formato\
+    Campi\
+    Per caricare sul server dati in formato foglio elettronico, specificare\
+    Nome del file\
+    Formati accettati\
+    For the new participants, the password column is compulsory.\
+  into name_file,name_download,name_infochanged,name_added,name_warning1,name_warning2,\
+  name_warning3,name_warning4,name_badlogin,name_nologin1,name_nologin2,name_manual1,name_data1,\
+    name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2,\
+    name_passwarning
+
+  !set name_deposit=!nosubst Il file <span class="tt">$wims_deposit</span> &egrave; elaborato con successo.
+  !set name_indicateur=Indicatori
+  !set name_techvar=Variabili tecniche
+  !set name_regvar=Variabili d'iscrizione
+  !set name_all=Tutti
+  !set name_allscore=Tutti i punteggi
+!endif
+
+!set name_topten=!nosubst Migliori $class_topscores punteggi medi del corso
+
+:end
+!exit
+

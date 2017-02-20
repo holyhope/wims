@@ -1,0 +1,41 @@
+# Variable initialisation file.
+# This file is read by wims for new sessions.
+
+# content of the file: initialisation of the problem.
+
+!if $wims_developer=$empty
+   error=no_auth
+   !exit
+!endif
+
+temp=!sh obabel -V
+!if $temp=$empty
+ test=2
+!else
+ temp= !word 3 of $temp
+ temp= !replace internal . by , in $temp
+ v1=!item 1 of $temp
+ v2=!item 2 of $temp
+ v3=!item 3 of $temp
+ !if $v1 > 2 or ($v1==2 and $v2>=3)
+  test=1
+ !else
+  test=2
+ !endif
+!endif
+
+!if $wims_developer!=$empty
+   dev_dir=$wims_home/public_html/modules/devel/$wims_developer
+   list_mod=!sh ls $dev_dir
+   list_mod=!words2items $list_mod
+   list_module=
+   !for a in $list_mod
+       category = !module category devel/$wims_developer/$a
+       !if oef isin $category
+          list_module=!append item $a to $list_module
+      !endif
+   !next
+!endif
+
+status=waiting
+wims_module_log=$cmd

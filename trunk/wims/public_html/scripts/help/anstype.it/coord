@@ -1,0 +1,47 @@
+:Condizioni disponibili per verificare la correttezza del click dell'utente</caption>
+:Sintassi,Significato
+
+:point,x,y
+Punto di coordinate (x,y). &Egrave; un punto ``spesso'', di dimensioni assegnate.
+
+:rectangle,x1,y1,x2,y2
+La regione interna al rettangolo di vertici (x1,y1) e (x2,y2).
+
+:circle,x,y,d
+La regione interna a un cerchio di centro (x,y) e diametro d.
+
+:ellipse,x,y,w,h
+La regione interna a un'ellisse di centro (x,y), larghezza w, e altezza h.
+
+:polygon,x1,y1,x2,y2,x3,y3,...
+La regione interna a un poligono di vertici
+  (x1,y1), (x2,y2), (x3,y3), ...
+
+:bound,NOMEF,x,y
+zona deliminata dall'imagine contenuta nel file NOMEF, che deve avere le stesse
+dimensioni dell'immagine su cui si deve cliccare (ma che può essere un'immagine differente).
+La risposta è corretta se (x,y) nella stessa zona del punto in cui l'utente ha
+cliccato.
+ Se <span class="tt wims_code_words">fill</span> è presente nel campo <span class="tt wims_code_words">option</span> della risposta, l'intera zona di click è colorata di rosso o di verde (di default viene
+disegnato un punto).
+<span class="wims_warning">$wims_name_warning</span>. Se Createxo è utilizzato all'interno di
+un corso, allora il file NOMEF deve essere copiato:
+<pre>\text{cache=draw(\size[1],\size[2]
+copy 0,0,-1,-1,-1,-1,NOMEF)}
+\text{cache = slib(oef/insfilename)}
+</pre>
+Se l'esercizio oef è parte di un modulo, è sufficiente scrivere il nome del file.
+
+Two options are available:
+<ul><li>
+ <span class="tt wims_code_words">fill</span> : the zone is filled instead of
+  indicated by a ball in the answer (do not use in the case where an
+  auxiliary image FNAME has been used).
+</li><li>
+ <span class="tt wims_code_words">goodanswershown</span>: show the good answer
+  on the image in case of bad answer.
+</li></ul>
+:bound,FNAME
+come sopra, la risposta è corretta se il punto in cui l'utente ha cliccato ha un colore
+DIVERSO rispetto al primo pixel nell'angolo in alto a sinistra del file NOMEF.
+

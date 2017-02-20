@@ -1,0 +1,42 @@
+# Variable calculations should be done in this file.
+# It is read and interpreted by wims for all valid calls to the module.
+
+!read adm/class/classlang names.phtml
+!read tabletheme
+
+t=$
+tmp=!replace internal & by $t  in $iniparm
+tmp2=!getopt scoredelay in $tmp
+tmp3=!replace internal + by , in $tmp2
+iniparm=!replace internal scoredelay=$tmp2 by scoredelay=$tmp3 in $iniparm
+
+sheettot=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+wims_helper=chapter=3
+wims_prefix=none
+require_limit=!defof MAX_REQUIRE in wimshome/public_html/bases/sys/define.conf
+#### for transitional periode
+require_limit=200
+####
+require_limit=$[$require_limit/10]
+
+!read getparm $iniparm exo random qnum
+exocnt_=!itemcnt $get_exo
+class=$wims_class
+!if $wims_user!=supervisor
+ error=not_supervisor
+ !exit
+!endif
+
+!bound job within exo,helpexo,addallexo default exo
+
+!set wims_ariane_self=no
+!if $job iswordof helpexo
+  !set wims_title_title=!nosubst $wims_name_addh
+  !set wims_ariane=!append line addh,8\
+to $wims_ariane
+!else
+  !set wims_ariane=!append line "$$wims_title_title",8\
+to $wims_ariane
+!endif
+
+!changeto $job.proc

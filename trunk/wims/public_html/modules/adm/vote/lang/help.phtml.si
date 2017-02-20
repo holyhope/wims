@@ -1,0 +1,121 @@
+!if $special_parm!=$empty
+ !changeto help/$module_language/$special_parm.phtml
+!endif
+
+!if $wims_user!=supervisor
+ Sorry, there is no help for participant.
+ !tail
+ !exit
+!endif
+
+!if $wims_read_parm=$empty
+Vsebino ankete oblikujete kot html besedilo, ki ga lahko obogatite z ukazi WIMS za matematiène
+simbole in naslednjimi posebnimi ukazi za anketo:
+<dl>
+  <dt><span class="tt wims_code_variable">\menu{Yes,No}</span>
+	<dd>Izbira odgovorov iz seznama.
+    </dd>
+ <dt><span class="tt wims_code_variable">\list{A,B,C,D}</span>
+	<dd>Izbira odgovorov z navpiènimi gumbi.
+    </dd>
+ <dt><span class="tt wims_code_variable">\radio{very bad, rather bad, rather good, very good}</span>
+	<dd>Izbira odgovorov z vodoravnimi gumbi.
+    </dd>
+ <dt><span class="tt wims_code_variable">\checkbox{A,B,C,D}</span>
+	<dd>Several choices by horizontal buttons.
+	</dd>
+ <dt><span class="tt wims_code_variable">\uservar{vname,val0,val1,...}</span>
+	<dd>Register the immediately preceding choice in an individual
+	variable for the participant, under the name <span class="tt">vname</span>. This
+	variable will take the value <span class="tt">val0</span> by default, <span class="tt">val1</span>
+	if the participant chooses the first option, etc. <br />
+	This variable may then be used to define individualized access to
+	sheets or exams, by putting the word <span class="tt wims_code_variable">\vname</span> among the
+	restrictions of the sheet or exam.
+	In this case, it is possible to give the maximum number of participants allowed to choose
+	an option : each choice must begin by this followed by <span class="tt wims_code_words">:</span>
+	For instance,
+<pre>
+\list{46:Seance 1 at 8.00,
+46:Seance 2 at 10.00,
+40:Seance 3 at 13.00}
+</pre>
+Attention cependant, utiliser la même variable technique dans plusieurs questionnaire peut générer des conflits.
+  </dd>
+ <dt><span class="tt wims_code_variable">\textarea</span>
+ <dd>Textarea only when the vote is anonymous.
+ </dd>
+</dl>
+
+A vote may contain up to $max_parms choice fields.
+!tail
+!exit
+!endif
+
+!if generalinfo iswordof $wims_read_parm
+<ul>
+ <li><b>$wims_name_title</b> : the title of the questionnaire.</li>
+ <li><b>$wims_name_Type</b>:
+  <ul>
+   <li><b>$name_anonymous </b>: in an anonymous questionnaire nobody knows
+   who answered what (it is for instance impossible to go back
+   and double check what your own answer was.)
+</li>
+   <li><b>$name_trace with log files</b>: this type is similar to the anonymous type questionnaire
+   except that the answers provided by a participant can be identified,
+   however the identity of the participant is not revealed.</li>
+   <li><b>$name_nominative</b>:  each participant's answers can be consulted ( the "free response"
+   area cannot be used with this type of questionnaire.)</li>
+</ul>
+ </li>
+ <li><b>$wims_name_Status</b>: refers to one of the statuses described below:
+     <ul>
+      <li><b>$name_0</b>: the questionnaire can be modified, the participants cannot see it.</li>
+      <li><b>$name_1</b>: the questionnaire cannot be modified, the participants can respond to the questions</li>
+      <li><b>$name_2</b>: the questionnaire cannot be modified, the participants cannot respond to the questions </li>
+      <li><b>$name_3</b>: the questionnaire cannot be modified, the participants cannot see the questions.</li>
+     </ul>
+ </li>
+ <li><b>$name_result</b>: if the results are published, the participants can consult
+ them after having voted, if not, only the administrator of the class can access the results.
+ <li><b>$name_whovote</b>: if this list is published, both the administrator of the class
+ and the participants can consult the list ( providing that there are enough participants who have voted),
+ if not, nobody can see who has voted.
+</ul>
+ !goto guidedmode
+!tail
+!exit
+!endif
+
+!if guidedmode iswordof $wims_read_parm
+:guidedmode
+Plusieurs modes sont possibles :
+<ul><li>
+  <b>$name_free</b> :  vous pouvez créer
+  un questionnaire en utilisant librement les commandes qui se trouvent dans l'aide.
+  </li><li>
+!readproc adm/lang/sheetexam.phtml.$lang
+  <b>$name_accessvar</b> : avec ce formulaire, vous pourreez permettre l'inscription sur des tranches horaires.
+  La variable technique alors créée vous permettra par exemple de définir un accès individualisé
+  à des feuilles ou à des examens.  Pour cela, il vous suffira de sélectionner
+  <span class="tt wims_code_words">$(name_allowtype[4])</span>.
+  </li><li>
+  <b>$name_group</b> : vous pourrez constituer des groupes. Un nom de variable vous sera demandé
+  (disons que vous l'avez appelé <span class="tt wims_code_variable">ma_variable</span>. A l'aide
+  de celui-là, vous pourrez ensuite envoyer des mails ou constituer le trombinoscope selon le groupe,
+  trier les fichiers csv obtenus dans la classe selon le groupe (à condition <b>dans ce dernier cas</b>
+  d'avoir demandé la variable <span class="tt wims_code_variable">var_ma_variable</span>).
+  D'autres utilisations sont en prévision.
+  </li>
+<li>Attention cependant, utiliser la même variable technique dans plusieurs questionnaire peut générer des conflits.</li></ul>
+
+Le nom des variables doit être différent des variables déjà utilisés par WIMS (par exemple,
+ne pas utiliser <span class="tt wims_code_variable">exam1</span>, ... , <span class="tt wims_code_variable">sheet1</span>, ...,
+<span class="tt wims_code_variable">manual1</span>, ...).
+<br/>
+Les modèles <span class="tt wims_code_words">$name_free</span> et <span class="tt wims_code_words">$name_group</span> ne sont pas disponibles lorsque les questionnaires sont partagés avec une autre classe.
+!tail
+!exit
+!endif
+!tail
+

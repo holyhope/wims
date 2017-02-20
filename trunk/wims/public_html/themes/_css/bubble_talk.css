@@ -1,0 +1,286 @@
+/* bubble_talk.css */
+/* display a comic bubble talk */
+/* credits : http://codepen.io/Founts/pen/gmhcl */
+
+/** Minimum html required : 
+<div class="talk-bubble">
+  <div class="talktext">
+    <p>CSS Talk Bubble configured by classes. Defaults to square shape, no triangle. Height is auto-adjusting to the height of the text.</p>
+  </div>
+</div>
+**/
+
+/*** Availables options for "talk-bubble" : 
+* triangle : puts a triangle indicating from where comes the speaker. Must be positioned in on of these position : 
+  ** left-top
+  ** left-in
+  ** btm-left
+  ** btm-left-in
+  ** btm-right
+  ** btm-right-in
+  ** right-in
+  ** right-top
+* border : an 8px border around bubble
+* round  : rounded borders
+* shadow : a light shadow around bubble
+
+*****************************/
+
+
+/***************
+ example of OEF if you want to test it : 
+****************
+
+\text{A1=slib(text/balloon [Abracadabra ],,200)}
+\text{B1=slib(text/balloon [Que vaut \(\frac{1}{2}\) de 6 ? ],lightblue,400,100,
+rectangle noshadow triangle=btm-left)}
+
+\text{A2=slib(text/balloon [Abracadabra ],red,,,triangle=btm-right)}
+\text{B2=slib(text/balloon [Que vaut \(\frac{1}{2}\) de 6 ? ],lightblue,200,100,
+rectangle border triangle=right-in)}
+
+\statement{
+<div>Bernadette\A1 Olivier\B1</div>
+<div>Aziz\A2 Roberto\B2</div>
+}
+
+*********************/
+
+/* talk bubble Main class */
+.talk-bubble {
+  margin: 0 20px 20px 20px;
+  /*display: inline-block;*/
+  position: relative;
+  /*width: 200px;*/
+  height: auto;
+  background-color: lightyellow;
+}
+
+/* optional styles : border round shadow */
+.talk-bubble.border{
+  border: 8px solid #666;
+  margin: 0 30px 30px 30px;
+}
+.talk-bubble.round{ border-radius: 30px;}
+.talk-bubble.shadow{
+  box-shadow: 8px 4px 5px 0 #ccc;
+  /*margin-bottom: 10px;*/
+}
+
+/* Optional : a triangle indicating who's speaking direction */
+.triangle:before, .triangle:after {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+/* Triangle placed top left flush. */
+.triangle.border.left-top:before {
+  left: -40px;
+  right: auto;
+  top: -8px;
+  bottom: auto;
+  border: 32px solid;
+  border-color: #666 transparent transparent transparent;
+}
+.triangle.left-top:after{
+  left: -20px;
+  right: auto;
+  top: 0;
+  bottom: auto;
+  border: 22px solid transparent;
+}
+
+/* Right triangle, left side slightly down */
+.triangle.border.left-in:before {
+  left: -40px;
+  right: auto;
+  top: 30px;
+  bottom: auto;
+  border: 20px solid;
+  border-color: #666 #666 transparent transparent;
+}
+.triangle.left-in:after{
+  left: -20px;
+  right: auto;
+  top: 38px;
+  bottom: auto;
+  border: 12px solid transparent;
+}
+
+/* Triangle, placed bottom left side slightly in*/
+.triangle.border.btm-left:before {
+  left: -8px;
+  right: auto;
+  top: auto;
+  bottom: -40px;
+  border: 32px solid;
+  border-color: transparent transparent transparent #666;
+}
+.triangle.btm-left:after{
+  left: 0;
+  right: auto;
+  top: auto;
+  bottom: -20px;
+  border: 22px solid transparent;
+}
+
+/* Triangle, placed bottom left side slightly in*/
+.triangle.border.btm-left-in:before {
+  left: 30px;
+  right: auto;
+  top: auto;
+  bottom: -40px;
+  border: 20px solid;
+  border-color: #666 transparent transparent #666;
+}
+.triangle.btm-left-in:after{
+  left: 38px;
+  right: auto;
+  top: auto;
+  bottom: -20px;
+  border: 12px solid transparent;
+}
+
+/* Triangle, placed bottom right side slightly in*/
+.triangle.border.btm-right-in:before {
+  left: auto;
+  right: 30px;
+  bottom: -40px;
+  border: 20px solid;
+  border-color: #666 #666 transparent transparent;
+}
+.triangle.btm-right-in:after{
+  left: auto;
+  right: 38px;
+  bottom: -20px;
+  border: 12px solid transparent;
+}
+/*
+  left: -8px;
+  right: auto;
+  top: auto;
+  bottom: -40px;
+  border: 32px solid;
+  border-color: transparent transparent transparent #666;
+  left: 0px;
+  right: auto;
+  top: auto;
+  bottom: -20px;
+  border: 22px solid;
+  border-color: transparent transparent transparent lightyellow;
+
+/* Triangle, placed bottom right side slightly in*/
+.triangle.border.btm-right:before {
+  left: auto;
+  right: -8px;
+  bottom: -40px;
+  border: 20px solid;
+  border-color: #666 #666 transparent transparent;
+}
+.triangle.btm-right:after{
+  left: auto;
+  right: 0;
+  bottom: -20px;
+  border: 12px solid transparent;
+}
+
+/* Triangle, right side slightly down*/
+.triangle.border.right-in:before {
+  left: auto;
+  right: -40px;
+  top: 30px;
+  bottom: auto;
+  border: 20px solid;
+  border-color: #666 transparent transparent #666;
+}
+.triangle.right-in:after{
+  left: auto;
+  right: -20px;
+  top: 38px;
+  bottom: auto;
+  border: 12px solid transparent;
+}
+
+/* Triangle placed top right flush. */
+.triangle.border.right-top:before {
+  left: auto;
+  right: -40px;
+  top: -8px;
+  bottom: auto;
+  border: 32px solid;
+  border-color: #666 transparent transparent transparent;
+}
+.triangle.right-top:after{
+  left: auto;
+  right: -20px;
+  top: 0;
+  bottom: auto;
+  border: 20px solid transparent;
+}
+
+/* talk bubble contents */
+.talktext{
+  padding: 1em;
+  text-align: left;
+  line-height: 1.5em;
+}
+
+/* triangle color */
+.triangle:not(.btm-left):after{border-top-color: lightyellow;}
+
+.triangle.left-in:after{     border-right-color: lightyellow;}
+.triangle.btm-left:after{    border-left-color:  lightyellow;}
+.triangle.btm-left-in:after{ border-left-color:  lightyellow;}
+
+.triangle.btm-right-in:after{border-right-color: lightyellow;}
+.triangle.btm-right:after{   border-right-color: lightyellow;}
+.triangle.right-in:after{    border-left-color:  lightyellow;}
+
+
+/* creates the larger circle */
+.talk-bubble.thought:before {
+  content:"";
+  position:absolute;
+  bottom:-20px;
+  left:50px;
+  width:30px;
+  height:30px;
+  background:#075698;
+  /* css3 */
+  border-radius:30px;
+}
+
+/* creates the smaller circle */
+.talk-bubble.thought:after {
+  content:"";
+  position:absolute;
+  bottom:-30px;
+  left:30px;
+  width:15px;
+  height:15px;
+  background:#075698;
+  /* css3 */
+  border-radius:15px;
+}
+
+.talk-bubble.thought{margin-bottom:2.5em;}
+
+/* Bubble speaker : display the name of the speaker at the right place (cf slib/balloon) */
+.bubble_speaker.left-top,.bubble_speaker.right-top{vertical-align:top}
+.talk-bubble.left-top,.talk-bubble.right-top{margin-top:.5em;}
+.bubble_speaker.btm-left{left:.5em}
+.bubble_speaker.btm-left-in{left:40px}
+.bubble_speaker.btm-right-in{right:40px;}
+.bubble_speaker.btm-right{ right:.5em;}
+/*
+.bubble_speaker.right-in{}
+.bubble_speaker.left-in{}
+*/
+
+/*.talktext p{
+  /* remove webkit p margins */
+  /*-webkit-margin-before: 0em;
+  -webkit-margin-after: 0em;*/
+/*}*/

@@ -1,0 +1,204 @@
+
+<h2 class="wimscenter">Possibilités avancées de OEF</h2>
+
+<h3>Cacher le nom d'images</h3>
+Si l'exercice demande de reconnaître une image prise au hasard, le nom de l'image peut donner
+une indication à l'exercice. Pour cacher ce nom d'image, vous pouvez écrire
+
+<pre>\img{\imagedir/picture.jpg alt="picture"}</pre>
+
+Ainsi dans le source de la page html, l'étudiant pourra voir
+
+<pre>&lt;img src="a_random_unrelated_file_name" alt="picture" /&gt;</pre>
+
+Le vrai nom de l'image est ainsi caché.
+
+<p><b>Remarque</b>. N'utilisez pas directement la commande WIMS <em>rename</em> pour
+traiter le nom de fichier, sinon l'exercice ne fonctionnera pas correctement dans
+l'environnement sauvegardé. D'autre part, le nom sera changé uniquement dans le
+cas où l'exercice est sauvé dans un module et non dans une classe.
+</p>
+<h3>Exercices à plusieurs étapes</h3>
+Des exercices à plusieurs étapes peuvent être conçus grâce à la commande
+ <span class="tt wims_code_variable">\steps</span>. Par exemple, si vous définissez (parmi d'autres paramètres)
+
+<pre>\steps{choice 1, reply 1
+choice 2, reply 2, reply 3
+choice 3
+}</pre>
+l'exercice sera présenté en trois étapes, la première proposant
+un choix multiple (choice 1) et une réponse de type <span class="tt wims_code_words">reply</span> (reply 1),
+la seconde proposant un choix multiple et deux réponses de type <span class="tt wims_code_words">reply</span>, etc.
+<p>
+L'argument de <span class="tt wims_code_variable">\steps</span> accepte des paramètres définis auparavant aussi bien que des définitions
+conditionnelles de la même manière que pour la définition de paramètres. Cela permet
+de présenter des champs de réponses sélectivement selon des variations aléatoires de
+paramètres, même dans le cas où il n'y a qu'une seule étape.
+</p><p>
+Il faut noter que si une erreur est faite à une étape, les étapes suivantes ne sont pas
+proposées et sont donc considérées comme fausses.
+</p><p>
+Le numéro de l'étape en cours est accessible dans le champ <span class="tt wims_code_words">statement</span>
+dans la variable
+<span class="tt wims_code_variable">\step</span> qui prend donc successivement les valeurs
+ 1,2,... à mesure que l'utilisateur avances dans ses réponses.
+</p><p>
+Pour faire des exercices dynamiques à plusieurs étapes
+(étapes variant selon les réponses de l'étudiant), vous pouvez utiliser
+la commande <span class="tt wims_code_variable">\nextstep{...}</span>. L'argument de
+<span class="tt wims_code_variable">\nextstep</span> est semblable à celui de <span class="tt wims_code_variable">\steps</span> mais seule la première
+ligne est effective. Elle n'est utile que si cet argument est une variable qui change
+après avec les définitions de paramètres après soumission.
+L'exercice s'arrête quand le contenu de <span class="tt wims_code_variable">\nextstep</span> est vide.
+</p><p>
+Dans tous les cas, une seule déclaration parmi <span class="tt wims_code_variable">\steps</span> ou <span class="tt wims_code_variable">\nextstep</span>
+doit apparaître dans un source OEF.
+</p>
+<h3>Branchements conditionnels et boucles</h3>
+
+Commandes disponibles:
+
+<pre>
+\if{condition}{contenu conditionnel}
+\if{condition}{contenu_conditionnel}{autre_contenu_conditionnel}
+\ifval{condition}{contenu conditionnel}
+\ifval{condition}{contenu_conditionnel}{autre_contenu_conditionnel}
+\for{var=n1 to n2}{contenu_de_la_boucle}
+\while{condition}{contenu_de_la_boucle} (uniquement dans l'environnement principal)
+</pre>
+Les commandes de branchements conditionnels et de boucles peuvent être utilisées
+dans l'environnement principal ou (sauf pour <span class="tt wims_code_words">while</span>)
+à l'intérieur de l'énoncé (<span class="tt wims_code_words">statement</span>), d'une aide (<span class="tt wims_code_words">hint</span>),
+d'une solution (<span class="tt wims_code_words">solution</span>), d'un feedback (<span class="tt wims_code_words">feedback</span>).
+Lorsque ces commandes sont dans l'environnement principal, elles n'affectent
+que la définition de paramètres.
+
+<a id="special"></a>
+<h3>Méthodes spéciales</h3>
+
+La commande <span class="tt wims_code_words">\special{...}</span> dans le corps d'un exercice (<span class="tt wims_code_words">statement</span>)
+permet de faire les méthodes suivantes :
+
+!if $special_parm=all
+ !for sp in $special_list
+  <h4 class="wimscenter">La méthode spéciale <span class="tt wims_code_words">$sp</span></h4>
+  Syntaxe générale : <span class="tt wims_code_words">\special{$sp <i>paramètres</i>}</span> <div>
+
+  !read oef/special/$sp.phtml help
+  </div>
+ !next sp
+!else
+ !for sp in $special_list
+  !href cmd=help&special_parm=oefadv&special_parm2=$sp#special $sp
+  $
+ !next sp
+!endif
+
+!if $special_parm2 isitemof $special_list
+<h4 class="wimscenter">La méthode spéciale <span class="tt wims_code_words">$special_parm2</span></h4>
+Syntaxe générale : <span class="tt wims_code_words">\special{$special_parm2 <i>parameters</i>}</span> <div>
+
+!read oef/special/$special_parm2.phtml help
+</div>
+!endif
+
+<h3>Fichiers source prétraités</h3>
+
+Cette fonctionnalité n'est pas disponible pour Createxo. Vous pouvez
+l'utiliser si vous écrivez des exercices OEF (et Deductio) sous Modtool.
+<p>
+Elle vous permet d'inclure des parties de codes communes dans plusieurs fichiers OEF.
+Vous pouvez également l'utiliser pour fabriquer par lots plusieurs oef à partir d'un
+pré-source, chacun différant des autres par quelques définitions de macros.
+</p><p>
+Pour utiliser cette possibilité, un sous-répertoire cpp/ doit être créée sous src. Y mettre
+les fichiers de pré-source d'extension .cpp. Dans ces fichiers, vous pouvez ajouter
+des directives cpp comme <span class="tt wims_code_words">#include</span>,
+<span class="tt wims_code_words">#define</span> ou
+<span class="tt wims_code_words">#if</span>. (Veuillez vous référer aux
+manuels cpp et aux spécifications c pour les détails de la syntaxe.)
+</p><p>
+La première ligne du fichier cpp doit définir une liste de cibles (targets), dans le format
+</p><pre>
+target=targ1 targ2 targ3 ...
+</pre>
+Cette ligne indique que ce fichier cpp doit fabriquer targ1.oef, targ2.oef, etc
+(l'extension .oef sera donc ajoutée aux noms de sortie). Lors de la génération du fichier
+cible <em>targ1.oef</em>, une macro <em>TARGET_targ1</em> est définie.
+Par conséquent, dans le source cpp, vous pouvez ajouter des lignes comme
+<pre>
+#if defined TARGET_targ1
+ \title{Exercise 1}
+ \integer{v1=3}
+ \text{t1=this is target 1}
+#endif
+#if defined TARGET_targ2
+ \title{Exercise 2}
+ \integer{v1=5}
+ \text{t1=this is target 2}
+#endif
+</pre>
+afin de rendre le contenu dépendant de la cible.
+<p>
+Le nom du fichier (dans l'exemple
+<span class="tt wims_code_words">targ1</span>, ...) est accessible par la variable
+<span class="tt wims_code_words">OEFFILE</span>.
+</p><p>
+Dans l'exemple suivant, le titre de l'exercice sera
+<span class="tt wims_code_words">targ1</span>
+</p>
+<pre>
+#if defined TARGET_targ1
+ \title{OEFFILE}
+ \integer{v1=3}
+ \text{t1=dit is target 1}
+#endif
+</pre>
+<p>
+Les fichiers <span class="tt wims_code_words">include</span> doivent également être placés dans le répertoire src/cpp, avec extension
+.inc. Une ligne
+</p><pre>
+#include "common.inc"
+</pre>
+va insérer le contenu de common.inc dans le fichier généré OEF.
+Veuillez noter que pour des raisons de sécurité, il est interdit de
+spécifier des répertoires de fichiers include.
+<p>
+Une remarque spéciale: cpp s'embrouille lorsque votre fichier contient dans le texte
+des apostrophes ou guillemets qui ne sont pas fermés. Dans ce cas, vous pouvez protéger
+les commandes contenant ces textes par des commentaires C (<span class="tt wims_code_words">/* ... */</span>).
+</p>
+
+<div class="wims_warning">
+<span class="wims_warning">$wims_name_warning</span> : Dans les commandes commençant par # comme dans
+<span class="tt">#include</span>, le caractère <span class="tt">#</span> doit être le
+premier caractère de la ligne. Il ne faut pas non plus utiliser
+<span class="tt">#</span> comme caractère de commentaires.
+</div>
+
+<h3>Environnement dans un exercice</h3>
+La variable spéciale <span class="tt wims_code_variable">\oefenv</span> est utilisée pour tester un exercice
+(si elle n'est pas redéfinie dans l'exercice).
+<p>
+Pour l'instant, le seul contenu possible de cette variable est le mot
+``debug''. Ce mot apparaît à l'intérieur de <span class="tt wims_code_variable">\oefenv</span>
+dans les situations suivantes.
+</p>
+<ol>
+<li>quand l'exercice est exécuté à l'intérieur de Createxo ;</li>
+<li>quand il est testé dans Modtool par le développeur lui-même</li>
+<li>quand l'exercice est dans une classe et exécuté par l'administrateur de la classe.
+</li>
+</ol>
+Dans ces cas, la bonne réponse apparaît par défaut dans les champs de réponse
+si vous le demandez, vous permettant de voir ce que l'exercice attend comme
+réponse sans avoir besoin de remplir vous-même les champs.
+<p>
+Vous pouvez ajouter des informations de débogage à l'intérieur de votre exercice
+en utilisant des conditions comme
+</p>
+<pre>
+\if{debug iswordof \oefenv}{informations de débogage à ajouter ici}
+</pre>
+Ces informations sont alors automatiquement montrées quand l'exercice
+est sous test et automatiquement cachées quand les étudiants y travaillent.

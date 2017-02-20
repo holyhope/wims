@@ -1,0 +1,106 @@
+!set lang_exists=yes
+
+!set name_password_check=Vérification des mots de passe
+!set name_listclass=classe,classe,groupement de classes,classe,portail d'établissement
+
+!default Cltype=$cltype
+!if $Cltype iswordof 2 4
+   !if $Cltype=2
+    !set name_classe=$(name_listclass[$Cltype+1])
+    !set name_sup=de l'enseignant-administrateur
+   !else
+    !set name_classe=$(name_listclass[$Cltype+1])
+    !set name_sup=de l'administrateur
+   !endif
+   !set name_classes= le $name_classe
+   !set name_classess= un $name_classe
+   !set name_classesss= du $name_classe
+   !set name_classessss= Le $name_classe
+!else
+   !set name_classe=$(name_listclass[$Cltype+1])
+   !set name_classes=la $name_classe
+   !set name_classess=une $name_classe
+   !set name_classesss= de la $name_classe
+   !set name_classessss= La $name_classe
+   !set name_sup=de l'enseignant
+!endif
+
+!distribute lines Continuer\
+  Recommencer l'opération\
+  Création d'une structure\
+  Nom de l'établissement\
+Au plus\
+Au moins\
+  Réservé aux experts\
+  caractères\
+  Revenir au début de l'opération.\
+  Choisissez le type de structure que vous voulez créer.\
+  Entre 4 et 16 caractères, chiffres ou lettres sans accent\
+ into name_continue,name_again,title,name_Name_portal,name_atmost,name_atleast,name_expert,\
+   name_characters,name_comeback,name_choose,name_warningpass
+
+!if $regpolicy=file
+  !set noright=Vous n'avez pas les droits pour cela.
+ !else
+  !set noright=Seul le gestionnaire du site peut le faire.
+ !endif
+
+!set name_regpolicy=!nosubst L'opération de création $name_classesss ne peut aboutir que \
+   si vous fournissez une adresse électronique correcte et accessible en ce moment même.
+
+!set name_help1=Ce mot de passe vous permettra d'accéder à votre $name_classe en tant\
+  que responsable. Vous devez être le seul à le connaître.
+
+!set name_help2=Le mot de passe $name_classesss sera exigé lors de l'inscription\
+ des participants de la classe ; vous pouvez donc le diffuser auprès\
+  de vos étudiants/élèves.
+
+!set name_help3=Le mot de passe $name_classesss sera exigé lors de l'inscription\
+ des <strong>enseignants</strong> $name_classesss ; <span class="wims_warning">\
+ vous ne devez pas le diffuser auprès de vos étudiants/élèves.</span>
+
+!distribute lines C'est la date à laquelle votre classe sera automatiquement archivée. Elle ne sera alors plus accessible.\
+  Limite du nombre de participants $name_classesss\
+  Accès sécurisé\
+  Facultatif\
+  Ce code ne sert qu'une seule fois. Il ne peut pas être utilisé pour vous connecter à votre $name_classe&nbsp;!\
+  Code de votre $name_classe\
+  Adresse d'authentification CAS\
+  into name_help_date,name_help_limit,name_secure,name_optional,name_warning_code,name_code,name_cas
+
+!set name_host=!nosubst Noms des postes à partir desquels vous effectuerez les opérations sensibles \
+ dans votre $name_classe. Si vous ne mettez rien, un email vous sera envoyé à chaque opération \
+ sensible (conseillé). Mettre le mot <span class="tt wims_code_words">all</span> désactivera cette mesure de sécurité.
+
+!set name_cas_help=Ne remplissez ce champ que si vous désirez utiliser l'authentification externe du type CAS\
+(fourni par votre ENT par exemple).
+
+!set name_cpexempleintro=!nosubst Vous allez créer une copie de la classe \
+  <span class="tt wims_code_words">$source_title</span>
+!set name_choosemode=Vous devez choisir le mode de copie de cette classe
+!distribute item Intégrale,Partielle into name_btcpexemplemeth0,name_btcpexemplemeth1
+
+!set name_cpexemplemeth0=Toutes les ressources seront copiées. Les ressources pourront être désactivées\
+ puis supprimées ou adaptées en fonction des dépendances.
+!set name_cpexemplemeth1=Les examens ne seront pas copiés. Les ressources seront désactivées\
+ automatiquement. Vous pourrez alors décider de celles que vous souhaitez supprimer, adapter ou garder.
+!set name_cpexemplecomment=Dans tous les cas, les dates d'expiration seront adaptées\
+ à la date de fermeture de la classe créée.
+!set name_research1=Il y a beaucoup de classes virtuelles sur ce site. \
+ Tapez une partie d'un mot se trouvant dans son titre ou dans le nom de l'enseignant pour trouver celle que vous cherchez.
+!set name_research2=Il y a encore trop de classes correspondant à votre mot de recherche. \
+  Veuillez donner un mot plus précis.
+!set name_searchclass=Rechercher une classe
+!set name_nofound=Aucune classe ne correspond à votre recherche.
+
+!distribute items Libre, Protégé, Non autorisé, Duplication, \
+Cliquez sur la classe à dupliquer\
+into name_free,name_protected,name_disallowed,name_cloning,name_clickclone
+
+!set name_getcloningpwd=!nosubst Vous allez créer une copie de la classe <span class="tt wims_code_words">$source_title</span>. \
+Pour cela vous devez saisir le mot de passe de duplication que l'administrateur de la classe vous a communiqué.
+!set name_subclass=Sous-classe de
+
+!distribute lines Localisation (ville, pays)\
+ En remplissant ce champ, vous acceptez que nous indiquions que WIMS est utilisé dans votre ville (sans aucune autre mention)\
+into name_location,name_location_help

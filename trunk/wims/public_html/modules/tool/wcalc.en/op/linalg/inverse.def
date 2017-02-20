@@ -1,0 +1,49 @@
+!goto $wims_read_parm
+
+:def
+title=Inverse matrix
+synonyme=matrix inverse
+input=square_matrix
+!exit
+
+:proc
+
+result=!exec pari print([$mat]^-1)
+result=!translate internal ; to $\
+$ in $result
+!exit
+
+:output
+!set pars=$[max(min($rows,10),1)]
+<center>
+<table border=0 cellpadding=2>
+!for i=1 to $rows
+ !set l=!line $i of $formula
+ !set v=!line $i of $result
+ <tr>
+ !if $i=1
+  <td nowrap rowspan=$rows>$(m_leftpar$pars)
+ !endif
+ !for j=1 to $cols
+  !set k=!item $j of $l
+  <td nowrap align=center>
+  !htmlmath $k
+ !next j
+ !if $i=1
+  <td nowrap rowspan=$rows>$(m_rightpar$pars)
+  <td nowrap rowspan=$rows valign=top><sup>-1</sup>
+  <td nowrap rowspan=$rows> = $(m_leftpar$pars)
+ !endif
+ !for j=1 to $cols
+  !set k=!item $j of $v
+  <td nowrap align=center>
+  !htmlmath $k
+ !next j
+ !if $i=1
+  <td nowrap rowspan=$rows>$(m_rightpar$pars)
+ !endif
+!next i
+
+</table></center>
+!exit
+

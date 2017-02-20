@@ -1,0 +1,96 @@
+!! copy of ressources of class
+    !sh cp -r $wims_home/log/classes/$ssourcecls/sheets $wims_home/log/classes/$code;\
+cp -r $wims_home/log/classes/$ssourcecls/doc $wims_home/log/classes/$code;\
+cp -r $wims_home/log/classes/$ssourcecls/livret $wims_home/log/classes/$code/;\
+cp -r $wims_home/log/classes/$ssourcecls/seq $wims_home/log/classes/$code/;\
+cp -r $wims_home/log/classes/$ssourcecls/def $wims_home/log/classes/$code/;\
+cp -r $wims_home/log/classes/$ssourcecls/src $wims_home/log/classes/$code/;\
+cp $wims_home/log/classes/$ssourcecls/Exauthors $wims_home/log/classes/$code/;\
+cp $wims_home/log/classes/$ssourcecls/Exindex $wims_home/log/classes/$code/;\
+cp $wims_home/log/classes/$ssourcecls/Extitles $wims_home/log/classes/$code/;
+
+    date=!defof class_expiration in wimshome/log/classes/$code/.def
+    !if $smethodecp=0
+	!sh cp -r $wims_home/log/classes/$ssourcecls/exams $wims_home/log/classes/$code/;\
+cp $wims_home/log/classes/$ssourcecls/.E* $wims_home/log/classes/$code/;
+	nb=!recordcnt wimshome/log/classes/$code/exams/.exams
+	!if $nb>0
+	    save=$empty
+	    !for k from 1 to $nb
+		t=!record $k of wimshome/log/classes/$code/exams/.exams
+		t=!replace line number 2 in $t by $date
+		save=!append line :$t to $save
+	    !next k
+	    !writefile $wims_home/log/classes/$code/exams/.exams $save
+	!endif
+    !else
+	newstatut=0
+    !endif
+    nb=!recordcnt wimshome/log/classes/$code/sheets/.sheets
+    !if $nb>0
+	save=$empty
+	!for k from 1 to $nb
+	    t=!record $k of wimshome/log/classes/$code/sheets/.sheets
+	    t=!replace line number 2 in $t by $date
+	    !if $smethodecp=1
+		t=!replace line number 1 in $t by 0
+	    !endif
+	    save=!append line :$t to $save
+	!next k
+	!writefile wimshome/log/classes/$code/sheets/.sheets $save
+	!! delete of exam in sequence (only if smethodecp!=0)
+        !if $smethodecp!=0
+		seq=!record 0 of wimshome/log/classes/$code/seq/.sequences
+		nb=!line 1 of $seq
+		!if $nb!=$empty and $nb>0
+		    newseq=$nb
+		    !for k from 1 to $nb
+			old=!line $k+1 of $seq
+			nbit=!itemcnt $old
+			!if $nbit>0
+			    newlist=$empty
+			    !for j from 1 to $nbit
+				!if exam notin $(old[$j])
+				    newlist=!append item $(old[$j]) to $newlist
+				!endif
+			    !next j
+			!endif
+			newseq=!append line $newlist to $newseq
+			tmp=!record 1 of wimshome/log/classes/$code/seq/.sequence$k
+			old2=!line 3 of $tmp
+			nbit=!itemcnt $old2
+			!if $nbit>0
+			    newlist2=$empty
+			    !for j from 1 to $nbit
+				!if exam notin $(old2[$j])
+				    newlist2=!append item $(old2[$j]) to $newlist2
+				!endif
+			    !next j
+			!endif
+			tmp=!replace line number 3 in $tmp by $newlist2
+			!writefile wimshome/log/classes/$code/seq/.sequence$k :$tmp
+		    !next k
+		    !writefile wimshome/log/classes/$code/seq/.sequences $newseq
+		!endif
+	!endif
+    !endif
+!! keep configuration classes data.  
+ cls_list=topscores,anonymtopscores,authscoresuspend,supconnectshowed,exotitleform,exolog,examlog,examscore_withoutip,examshow,\
+connections,option,lock,bgcolor,refcolor,ref_menucolor,ref_button_help_bgcolor,ref_button_help_color,ref_button_bgcolor,\
+ref_button_color,bgimg,theme,theme_icon,css,actcolor,showlivret
+ nb=!itemcnt $cls_list
+ !for v=1 to $nb
+    t=!defof class_$(cls_list[$v]) in wimshome/log/classes/$ssourcecls/.def
+   !if $t!=$empty
+      cls_data=!append line !set class_$(cls_list[$v])=$t to $cls_data
+   !endif
+ !next v
+ nb2=!linecnt $t
+ !setdef $cls_data in wimshome/log/classes/$code/.def
+ cls_list=qnum,qcmlevel,scoredelay,qcmpresent,presentsol,check,sepow,expow,precw
+ nb=!itemcnt $cls_list
+ !for v=1 to $nb
+    t=!defof user_$(cls_list[$v]) in wimshome/log/classes/$ssourcecls/supervisor
+    cls_data=!append line !set user_$(cls_list[$v])=$v to $cls_data
+ !next v
+ !setdef $cls_data in $wims_home/log/classes/$code/supervisor

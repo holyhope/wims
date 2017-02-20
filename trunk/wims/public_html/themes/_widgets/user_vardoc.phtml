@@ -1,0 +1,11 @@
+!set dcnt=!recordcnt wimshome/log/classes/$wims_class/doc/.index
+!reset ds_list dt_list
+!for i=1 to $dcnt
+ !set d_=!record $i of wimshome/log/classes/$wims_class/doc/.index
+ !distribute lines $d_ into s_,t_,a_,e_,c_,o_
+ !if $o_>0
+  !set ds_list=!append line $s_ to $ds_list
+  !set dt_list=!append line $t_ to $dt_list
+ !endif
+!next i
+!set dcnt=!linecnt $ds_list

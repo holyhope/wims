@@ -1,0 +1,61 @@
+examtest=!sh cat $wims_home/$wims_sesdir/examreg.* 2>/dev/null
+!if $examtest!=$empty
+ et=!words2items $examtest
+ !for i in $et
+  !if $i>0
+   error=in_exam
+   type=none
+   !exit
+  !endif
+!endif
+
+!if $wims_user=supervisor
+ nam=sup
+!else
+ nam=part
+!endif
+!read adm/class/userdef classes,$wims_class,$wims_realuser
+!set user_supervisable=!defof user_supervisable in $userdef
+!if $user_supervisable=yes
+  !set user_supervise=!defof user_supervise in $userdef
+!endif
+if $wims_user=supervisor
+  !set user_supervise=!append item $wims_class to $user_supervise
+!endif
+!set user_participate=!defof user_participate in $userdef
+
+neib=!defof n_$nam in wimshome/log/classes/$wims_class/neighbors
+pass=!defof user_password in $userdef
+pass=!word 1 of $pass
+
+directlist=
+
+!if $pass!=$empty
+ !for c in $neib
+  t=!defof n_$nam in wimshome/log/classes/$c/neighbors
+  !read adm/class/userdef classes,$c,$wims_user
+  np=!defof user_password in $userdef
+  np=!word 1 of $np
+  np=!passcrypt $np
+  passc=!passcrypt $pass
+  !if $wims_class isitemof $t and $np=$passc
+   !if $auth_method isitemof $auth_method_list
+     directlist=!append item $c $user_auth_external to $directlist
+   !else
+     directlist=!append item $c $wims_user to $directlist
+   !endif
+  !endif
+ !next c
+!endif
+
+directlist=!append item $directlist to $wims_otherclass
+directlist=!listuniq $directlist
+directlist=!listcomplement $wims_class $wims_user in $directlist
+directlist=!nonempty items $directlist
+directlist=!sort items $directlist
+directcnt=!itemcnt $directlist
+!if $directcnt>0
+!!! should be commented
+ current_pass=$pass
+!endif
+

@@ -1,0 +1,60 @@
+
+wims_print_precision=15
+a_=!randint 10^8,10^10
+b_=!randint 10^8,10^10
+cn_code=$a_$b_
+
+url=$back_url?module=adm/raw&ident=$back_ident&passwd=$back_password&code=$cn_code&qclass=$cn_class&rclass=$wims_class&quser=$cn_user
+!for p in option,data1,data2,format
+ CN_$p=!httpquery $(cn_$p)
+!next p
+URL=$url&job=$cn_method&format=$CN_format&option=$CN_option&data1=$CN_data1&data2=$CN_data2
+
+!if $cn_method notwordof getlog getcsv getclassfile getclasstgz
+!! cfr. auth-cas: deal with gzipped data (Content-Encoding: gzip)
+ tmpdir=$wims_home/tmp/sessions/$wims_session
+ cn_data=!sh export wims_exec_parm="$URL" ; \
+    bin/webget > $tmpdir/getdata.gz ; gunzip -c -f $tmpdir/getdata
+!! cn_data=!exec webget $URL
+ cn_status=!line 1 of $cn_data
+ cn_data=!line 2 to -1 of $cn_data
+ cn_status=!trim $cn_status
+ cn_status=!upper $cn_status
+ !distribute words $cn_status into cn_status,cnr_code
+ !if $cn_status=OK and $cn_method iswordof authuser addclass
+  cn_data=!word 1 of $cn_data
+ !endif
+!else
+ !if $cn_method iswordof getcsv
+  tmpdir=$wims_home/tmp/sessions/$wims_session
+  cn_data=!sh export wims_exec_parm="$URL" ; \
+    bin/webget > $tmpdir/getdata.gz ; gunzip -c -f $tmpdir/getdata
+  !sh gunzip -c -f $tmpdir/getdata> $wims_home/$wims_sesdir/webget.data
+!! these lines used to work when getcsv returned the OK+ctl
+!! it does not behave like that any longer (except for ERRORS??)
+  cn_status=!sh head -1 $wims_home/$wims_sesdir/webget.data
+  !distribute words $cn_status into cn_status,cnr_code
+  !if $cn_status issametext ERROR
+   cn_data=!record 0 of wimshome/$wims_sesdir/webget.data
+  !endif
+!! if getcsv, we are ok if the first word is "login" (FIXME: CHECK THIS)
+  !if login isitemof $cn_status
+   cn_status=OK
+   cn_code=$cnr_code
+  !endif
+ !else
+!! FIXME: the only remaining should be getclasstgz?? how about getlog getclassfile
+  tmpdir=$wims_home/tmp/sessions/$wims_session
+  cn_data=!sh export wims_exec_parm="$URL" ; \
+    bin/webget > $wims_home/$wims_sesdir/webget.data 
+!! FIXME: need to insert some check!!
+  cn_status=OK
+  cn_code=$cnr_code
+ !endif
+!endif
+
+!if $cn_status=OK and $cn_code!=$cnr_code
+ cn_status=ERROR
+ cn_data=return code discord
+!endif
+

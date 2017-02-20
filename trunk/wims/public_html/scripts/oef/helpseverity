@@ -1,0 +1,46 @@
+<style type="text/css">
+.wims_matrix, .wims_matrix tr, .wims_matrix td {border: 1px solid #999;
+  padding: 0.5em; margin-right:auto;margin-left:auto;text-align:center;
+  border-collapse:collapse;}
+  .wims_matrix th {border: 1px solid #999; padding: 0.5em;}
+  .wims_matrix th:first-child {text-align:left;}
+</style>
+
+!distribute lines 1,2,3,4,5,6,7,8,9\
+1,1,1,1,0,0,0,0,0\
+0,0,0,0,0,1,1,1,1\
+1,1,1,1,1,1,0,0,0\
+2,2,1,0,0,0,0,0,0\
+1,1,1,1,1,0,0,0,0\
+1,1,1,1,1,1,0,0,0\
+1,1,1,1.1,1.3,1.5,1.7,2,2.6\
+1,1.5,2,2.5,3,3.5,4,4.5,5\
+0.9,0.8,0.7,0.55,0.4,0.25,0.1,0,0\
+into t_severity,t_qcmpresent,t_qcmgood,t_penalty,t_presentsol,t_presentgood,t_givehint,t_scorepower,\
+  t_freepower,t_precweight
+
+!for j in presentsol
+  !set t_$j=!replace internal 0 by $wims_name_no in $(t_$j)
+  !set t_$j=!replace internal 1 by $name_sometimes in $(t_$j)
+  !set t_$j=!replace internal 2 by $wims_name_yes in $(t_$j)
+!next
+!for j in qcmpresent, givehint,penalty,qcmgood, presentgood
+  !set t_$j=!replace internal 0 by $wims_name_no in $(t_$j)
+  !set t_$j=!replace internal 1 by $wims_name_yes in $(t_$j)
+!next
+
+!readproc slib/text/matrixhtml [$name_levelseverity,$t_severity\
+$(name_solutiongiven),$t_presentsol\
+$(name_choice_check[3]),$t_qcmpresent\
+$(name_choice_check[4]),$t_givehint\
+\
+$(name_expower), 1,1.5,2,2.5,3,3.5,4,4.5,5\
+$(name_sepower),1,1,1,1.1,1.3,1.5,1.7,2,2.6\
+$(name_precweight),0.9,0.8,0.7,0.55,0.4,0.25,0.1,0,0\
+\
+$name_qcm\
+$(name_qcmanswer),2,3,4,5,5,6,7,8,8\
+$(name_choice_check[2]),$t_penalty\
+$(name_choice_check[1]),$t_presentgood],,TH=[1;1]
+
+$slib_out

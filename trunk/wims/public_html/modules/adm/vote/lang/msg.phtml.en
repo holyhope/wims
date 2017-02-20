@@ -1,0 +1,72 @@
+!set wims_module_log=error: $error
+
+<span class="wims_warning">$wims_name_Error</span>.
+!if $error=badvariablename
+ L'une, au moins, des variables techniques que vous utilisez n'existe pas ou n'est pas modifiable à ce niveau. Votre questionnaire ne fonctionnera pas correctement. 
+ !exit
+!endif
+
+!if $error=notechvar
+ No technical variable defined in this class. To use this vote model you should first define a technical variable in the class using the technical variable manager.
+ !exit
+!endif
+
+!if $error = not_user
+ The vote system is only available for virtual classes.
+ !exit
+!endif
+
+!if $error = bad_vote
+ The vote / registration that you asked for does not exist.
+ !exit
+!endif
+
+!if $error = already_voted
+ You have already voted. You cannot vote again because this is anonymous.
+ !exit
+!endif
+
+!if $error = too_many_votes
+ There are too many votes / registrations in your class.
+ Why do you need so many?
+ !exit
+!endif
+
+!if $error = no_content
+ You have not filled the content of the vote / registration.
+ !exit
+!endif
+
+!if $error = no_title
+ Please give a title to your vote / registration.
+ !exit
+!endif
+
+!if $error = bad_data
+ Some of your definitions are not valid. Please correct.
+ !exit
+!endif
+
+!if $error = not_secure
+ You can only access the spreadsheet data from a secure host.
+ !exit
+!endif
+
+!if $error = no_vote
+ You have not yet voted so you can not see the results.
+ !exit
+!endif
+
+!if $error = no_variable
+   You have not given any variable name or it is invalid.
+   !exit
+!endif
+
+!if $error = bad_variable
+   The variable name you gave (<span class="tt wims_code_words">$namevar</span>) is not suitable ; it
+    may be used by the software.
+   !exit
+!endif
+
+!msg $error
+

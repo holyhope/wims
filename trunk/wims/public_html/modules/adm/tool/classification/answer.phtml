@@ -1,0 +1,64 @@
+!! Give answers in this file.
+!readdef $refdirbase_/$refdir0/$exo
+
+<div id="classifications">
+!! Tab links
+<ul>
+  !for t=1 to $ref_list_cnt
+    !set tt=$(ref_list[$t])
+    !if $tt!=keywords
+      !set name_$tt=!defof title in keywords/$tt.phtml.fr
+    !endif
+    <li><a href="#$tt">$(name_$tt)</a></li>
+  !next
+</ul>
+
+!for t=1 to $ref_list_cnt
+   !set tt=$(ref_list[$t])
+   <fieldset class="property_fields blockcenter" id="$tt">
+     !if $(ref_address_$t)!=$empty
+       <a class="float_right wims_button_help" target="wims_external" href="$(ref_address_$t)">$tt</a>
+     !endif
+     !!if $tt=keywords
+      !!set wims_ref_class=float_right wims_button_help
+      !!set wims_target=wims_internal
+       !!href cmd=help $tt
+     !!endif
+     !set ref_$(tt)_cnt=!itemcnt $(ref_$tt[;1])
+     !set ref1_$(tt)=!lines2rows $(ref_$(tt))
+     !if  $(ref_$(tt)_cnt)>0
+      !for j = 1 to $(ref_$(tt)_cnt)
+       !if $(ref1_$tt[$j;1])!=$empty
+        !set key=$(ref1_$(tt)[$j;1])
+        !reset fullkey
+        !if $tt issametext keywords
+          !set fullkey=!lookup $key in wimshome/public_html/bases/sys/domain/domain.$lang
+          !default fullkey=$key
+        !else
+          !set keycut=!replace internal _ by , in $key
+          !set keycutcnt=!itemcnt $keycut
+          !set asc=$(keycut[1])_$(keycut[2])
+          !set fullkey=!lookup $asc in $taxodir/$tt.fr
+          !for s=3 to $keycutcnt
+            !set asc=$(asc)_$(keycut[$s])
+            !set keyasc=!lookup $asc in $taxodir/$tt.fr
+            !set fullkey=$fullkey > $keyasc
+          !next
+        !endif
+         <div class="box"><span class="small">$fullkey</span>
+         !set evl=!declosing $(ref1_$(tt)[$j;2])
+          <ul><li>
+           $(name_prompt[1]) ($[-$(evl[1])])
+           </li><li>
+           $(name_prompt[3]) ($(evl[2]))
+           </li>
+          </ul>
+         </div>
+        !endif
+       !next
+     !else
+       <div class="box">$name_no_keyword</div>
+     !endif
+     </fieldset>
+!next
+</div>

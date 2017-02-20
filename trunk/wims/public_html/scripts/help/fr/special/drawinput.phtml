@@ -1,0 +1,46 @@
+:signification
+ Met des champs de types de réponses texte sur un dessin fait avec canvasdraw (syntaxe
+ pour la plus grande partie compatible avec la syntaxe de flydraw).
+ Doit être utilisé dans le <span class="tt wims_code_words">statement</span> d'un exercice OEF.
+
+<p>
+ La première ligne est formée du code du dessin (entre crochets) suivi de la taille
+du dessin en pixels et de la taille générique des champs de réponse (obligatoire).
+ Les lignes suivantes sont de la forme
+</p>
+<pre>
+ reply <span class="tt">n</span>, p_X x p_Y,size,css
+</pre>
+ où <span class="tt">p_X</span> et <span class="tt">p_Y</span>
+ donnent la position dans le repère choisi dans le code du dessin,
+ <span class="tt">size</span> est la taille du champ (facultatif)
+
+:example
+<div class="wims_help_example">
+ <span class="wims_help_example">Exemple</span>
+<div>
+  <textarea id="wims_show01" cols="100" rows="12" readonly="readonly">
+\text{dessin=xrange -10,10
+yrange -10,10
+hline 0,0,black}
+\statement{
+ \special{drawinput [\dessin], 200 x 200, 20
+ reply1,-3 x -3
+ reply2,3 x 3
+ }
+}
+\answer{}{au dessous|dessous}{type=nocase}
+\answer{}{au dessus|dessus}{type=nocase}
+  </textarea>
+ </div>
+ xxx
+</div>
+Contrairement aux méthodes spéciales <span class="wims_code_words">imageinput</span>,
+<span class="wims_code_words">imagefill</span>, les positions des champs de réponse
+ne sont pas données en pixels.
+
+<div class="wims_warning">
+Attention : il peut y avoir un bogue pour l'instant dans le cas où un autre
+champ de réponses se trouve sur la page (numérotation dans l'analyse)
+que l'on espère corriger.
+</div>

@@ -1,0 +1,177 @@
+!!INDEX
+!let module_title=Préférences d'affichage
+!let module_description=définir préférences pour wims
+!let module_language=fr
+!!INDEXEND
+
+!let tip=<ul><li><strong>FireFox</strong> gère nativement MathML sans extension</li><li><strong>Safari</strong> gère nativement MathML sans extension</li><li><strong>Google Chrome</strong> nécessite <a target="new" href="https://chrome.google.com/webstore/detail/mathjax-for-chrome/elbbpgnifnallkilnkofjcgjeallfcfa">MathJax Extension </a></li><li><strong>Internet Explorer</strong> nécessite <a target="new" href="http://www.dessci.com/en/products/mathplayer/">DESSCI MathPlayer plugin</a></li><li><strong>Opera</strong> nécessite <a target="new" href="http://xml-maiden.com/userjs/mathml/">UserJS MathML plugin</a></li></ul>
+
+!read proc/useropts.proc
+
+!header
+
+<p>Cette page vous permet de régler quelques préférences sur WIMS.</p>
+
+<div id="widget_useropts">
+  <ul>
+    <li><a href="#formula">Formules mathématiques</a></li>
+    !if $wims_user=$empty
+      <li><a href="#language_selector">Langue par défaut</a></li>
+    !endif
+    <li><a href="#accessibility">Accessibilité</a></li>
+  </ul>
+
+  !if $wims_user=$empty
+    <div id="language_selector">
+      <h2>Langue par défaut</h2>
+      <p>
+        Choisissez la langue d'affichage du site :
+        !read themes/_widgets/language_selector.phtml
+      </p>
+    </div>
+  !endif
+
+  <div id="formula">
+    <h2>Formules mathématiques</h2>
+      <p>
+        Ce serveur permet 2 modes d'affichage des formules : le mode image, ou l'utilisation de MathML (à condition que votre navigateur le supporte).</p>
+!!      <p>
+      !if $texalign=2
+        <p>Actuellement, les formules sont affichées en mode MathML.</p>
+      !endif
+        Voici quelques exemples :
+        <ul>
+          <li>
+            Lettres grecques :
+              <pre>
+               !insmath alpha != pi
+              </pre>
+          </li>
+          <li>
+           Expressions mathématiques :
+           !let ins_align=middle
+        !! we need to force dynamic insertion
+           !set pw=2
+           <pre>
+            !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{$pw} - 4a c}}{2a}
+           </pre>
+          </li>
+          <li>
+           Une inégalité mixte :
+            <pre>
+             !insmath | a + b | <= epsilon + 123.45
+            </pre>
+          </li>
+        </ul>
+
+    !if $texalign=2
+      <p>
+        Si les exemples ci-dessus n'apparaissent pas correctement, vous pouvez utiliser un autre
+        navigateur ou mettre le serveur en mode image.
+        </p>
+        <h3>Mode d'affichage</h3>
+        <p>
+         Vous êtes en mode MathML
+          !set wims_ref_class=wims_button
+          !href cmd=resume&useropts=$(arg)0$font Passer au mode image
+        </p>
+        <h3 id="formula_options">Option du mode MathML :</h3>
+          <p>Le mode MathML permet un zoom sur les formules par un click de souris.</p>
+          !set wims_ref_class=wims_button
+          !if $useropts=$texsize$(texalign)0$font
+            Le zoom est <span class="disabled">désactivé</span>.
+            !href cmd=resume&useropts=$texsize$(texalign)1$font#formula_options activer
+            <span class="wims_button disabled">désactiver</span>
+          !else
+            Le zoom est <span class="oef_indgood success">activé</span>.
+            <span class="wims_button disabled">activer</span>
+            !href cmd=resume&useropts=$texsize$(texalign)0$font#formula_options désactiver
+          !endif
+        <h3>Navigateurs compatibles MathML</h3>
+        $tip
+    !else
+      <p>
+        Actuellement, vous utilisez le serveur en <strong>mode image</strong>.<br/>
+        Avec un navigateur compatible, vous pouvez utiliser le mode MathML.
+      </p>
+      <h3>Mode d'affichage</h3>
+      <p>
+        Vous êtes en mode Image
+        !set arg=!nospace $texsize 2
+        !set wims_ref_class=wims_button
+        !href cmd=resume&useropts=$(arg)0$font Passer au mode MathML
+      </p>
+      <h3>Options du mode image</h3>
+      <ul><li>
+         Réglage de la taille des symboles.
+         !let ts1=!eval $texsize-1
+         !let ts2=!eval $texsize+1
+         !if $ts1<1
+           !let ts1=1
+         !endif
+         !if $ts2>9
+          !let ts2=9
+         !endif
+         !set wims_ref_class=wims_button
+         !href cmd=resume&useropts=$ts1$texalign$zoom$font#formula <img src="gifs/doc/dgauche.gif" style="width:1em" />
+         !set wims_ref_class=wims_button
+         !href cmd=resume&useropts=$[$wims_texbasesize-1]$texalign$zoom$font#formula Normal
+         !set wims_ref_class=wims_button
+         !href cmd=resume&useropts=$ts2$texalign$zoom$font#formula <img src="gifs/doc/ddroite.gif" style="width:1em" />
+      </li><li>
+    Réglage de la position verticale. Si l'expression
+      !insmath (x+y)/(x^$pw + y^2)
+      est
+      !if $texalign=1
+       trop haute par rapport à la ligne de texte,
+       !set wims_ref_class=wims_button
+       !href cmd=resume&useropts=$(texsize)0$zoom$font cliquez ici pour la faire descendre.
+      !else
+       trop basse par rapport à la ligne de texte,
+       !set wims_ref_class=wims_button
+       !href cmd=resume&useropts=$(texsize)1$zoom$font cliquez ici pour la faire monter.
+      !endif
+    </li>
+    </ul>
+    !endif
+  </div>
+
+  <div id="accessibility">
+    <h2>Accessibilité</h2>
+
+    <p>Vous pouvez régler l'espacement des lettres et des mots
+         !if $useropts=$(texsize)$texalign$(zoom)1
+            !set secondary1=wims_button disabled
+            !set secondary2=wims_button
+          !else
+            !set secondary2=wims_button disabled
+            !set secondary1=wims_button
+          !endif
+        !set wims_ref_class=$secondary2
+        !href cmd=resume&useropts=$(texsize)$texalign$(zoom)0 Normal
+
+        !set wims_ref_class=$secondary1
+        !href cmd=resume&useropts=$(texsize)$texalign$(zoom)1 Lecteur dyslexique
+    </p>
+    <p>Le mode espacé est particulièrement adapté dans le cas d'un lecteur dyslexique.</p>
+  </div>
+
+</div>
+!if $jquery_defined=yes
+  !read adm/tabscript useropts
+!endif
+
+<p class="spacer">
+!if $wims_user=$empty
+  Quand tout correspond exactement à ce que vous désirez, mettez
+  !set wims_ref_class=wims_button
+  <a href="$wims_ref_name?lang=$lang&+useropts=$texsize$texalign$zoom$font"
+     title="WIMS">ce lien</a>
+  dans les signets de votre navigateur pour conserver ces préférences pour vos connections ultérieures.
+!else
+  Vos préférences seront préservées dans vos futures connexions dans cette classe.
+!endif
+</p>
+
+!tail
+

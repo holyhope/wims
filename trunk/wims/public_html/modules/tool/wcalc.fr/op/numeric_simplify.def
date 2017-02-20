@@ -1,0 +1,24 @@
+!goto $wims_read_parm
+
+:def
+!set title=Simplifier
+synonyme=simplifier numeriquement, numerique simplification
+input=mixed
+!exit
+
+:proc
+
+formula=!rawmath $formula
+
+result=!exec pari simplify($formula)
+
+!exit
+
+:output
+
+!htmlmath $formula
+ =
+!insmath $result
+ .
+!exit
+

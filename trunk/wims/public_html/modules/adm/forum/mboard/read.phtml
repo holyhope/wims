@@ -1,0 +1,61 @@
+
+!if $error!=$empty
+ !exit
+!endif
+
+ <p class="wimscenter">
+ !read readref.phtml
+ !if $erased=yes and $forumuser!=supervisor
+  </p>
+  $n_erasedmsg.
+  !exit
+ !endif
+ !!<br />$n_follow&nbsp;:
+ !!!href cmd=reply&job=compose&c_prec=$r_month/$r_ident&c_quote=1 $n_with
+ !! $wims_name_or
+ !! !href cmd=reply&job=compose&c_prec=$r_month/$r_ident&c_quote=-1 $n_without
+ !! $n_citation.
+ <div class="wims_forum_intro">
+ <i>
+ !if $m_email!=$empty
+  !mailurl $m_email $m_from
+ !else
+  $m_from
+ !endif
+ </i>
+ !!FIXME the next three lines are no more useful.
+ !set y_=!char 1 to 4 of $m_date
+ !set m_=!char 5,6 of $m_date
+ !set d_=!char 7,8 of $m_date
+ <span class="small">(
+ !read date.phtml $m_date.$m_time
+ )</span>:
+ <b>$m_subject</b>
+
+!if $readtype=html
+!set wims_ref_class=wims_button
+ !href cmd=reply&readtype=source $n_source
+!else
+ !set wims_ref_class=wims_button
+ !href cmd=reply&readtype=html $n_format
+!endif
+!if $forumuser=supervisor
+ $ $
+ !set wims_ref_class=wims_button wims_warning
+ !href cmd=reply&job=erase $wims_name_erase
+!endif
+ </div>
+ <hr />
+ <div class="wims_forum_msg">
+ !read $msg $readtype
+ $tag_escaper
+  </div>
+
+<hr />
+<div class="wimscenter">
+!set wims_ref_class=wims_button
+!href cmd=reply&job=compose&c_prec=$r_month/$r_ident&c_quote=1 $n_follow_c
+&nbsp;
+!set wims_ref_class=wims_button
+!href cmd=reply&job=compose&c_prec=$r_month/$r_ident&c_quote=-1 $n_follow_nc
+</div>

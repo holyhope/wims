@@ -1,0 +1,377 @@
+
+reply$i=!items2lines $(reply$i)
+reply$i=!replace internal @ by , in $(reply$i)
+reply$i=!replace internal ; by $\
+$ in $(reply$i)
+
+replygood$i=!replace internal $	$ by $\
+$ in $(replygood$i)
+replygood$i=!replace internal ; by $\
+$ in $(replygood$i)
+!reset applet_parm color_r rep_r score color_g rep_g
+
+cnt_r=!linecnt $(reply$i)
+
+!for a_ = 1 to $cnt_r
+  l=!line $a_ of $(reply$i)
+  color_r=!append item $(l[1]) to $color_r
+  $(l[1])_r$i=!append item $(l[2]) to $($(l[1])_r$i)
+  $(l[1])_r$i=!nonempty items $($(l[1])_r$i)
+!next
+
+color_r=!listuniq $color_r
+
+!for c_ in $color_r
+   col=$(c_)_r$i
+   rep_r=!append line $c_,$($col) to $rep_r
+!next
+m_reply$i=$(rep_r)
+!if $wims_read_parm=nocompare
+  reply$i=$(m_reply$i)
+  !goto applet
+!endif
+cnt_g=!linecnt $(replygood$i)
+color_g=
+!for a_ = 1 to $cnt_g
+  l=!line $a_ of $(replygood$i)
+  l=!nospace $l
+  color_g=!append item $(l[1]) to $color_g
+  $(l[1])_g$i=!append item $(l[2..-1]) to $($(l[1])_g$i)
+  $(l[1])_g$i=!nonempty items $($(l[1])_g$i)
+!next
+color_g=!listuniq $color_g
+diag=1
+
+color_rg=!listintersect $color_r and  $color_g
+
+!if $color_rg!=$empty
+ !for a_ in $color_rg
+   !set r_=!lines2items $($(a_)_r$i)
+   g$a_=!listcomplement $r_ in $($(a_)_g$i)
+   h$a_=!listcomplement $($(a_)_g$i) in $r_
+   !if $(g$a_) notsametext
+     score=!append item 0 to $score
+   !else
+     score=!append item 1 to $score
+   !endif
+   !if $(h$a_) notsametext
+     score=!append item 0 to $score
+   !else
+     score=!append item 1 to $score
+   !endif
+ !next
+!else
+ score=0
+!endif
+analyse sans les couleurs :
+!reset g_tot
+!for a_ in $color_g
+   g_tot=!append item $($(a_)_g$i) to $g_tot
+!next
+r_tot=
+!for a_ in $color_r
+   !set r_=!lines2items $($(a_)_r$i)
+   r_tot=!append item $r_ to $r_tot
+   r_tot=!replace internal $a_ by in $r_tot
+!next
+!set r_tot=!nonempty items $r_tot
+sr_tot=!listcomplement $r_tot in $g_tot
+sg_tot=!listcomplement $g_tot in $r_tot
+
+!if $(sr_tot) notsametext
+     diag=0
+     score=!append item 0 to $score
+!else
+     score=!append item 1 to $score
+!endif
+!if $(sg_tot) notsametext
+     diag=0
+     score=!append item 0 to $score
+!else
+     score=!append item 1 to $score
+!endif
+
+!if 0 notin $score
+ diareply$i=good
+ !advance freegot
+!else
+  !if $(score[-1])+$(score[-2])>=2
+    partialgood=yes
+    freegot=$[$freegot + 0.5]
+    diareply$i=good
+  !else
+    diareply$i=bad
+  !endif
+!endif
+
+:applet
+!set size=!line 1 of $(oef_answer_option$i)
+!distribute items $size into xsize,ysize
+
+!set oef_applet_option=!line 2 to -1 of $(oef_answer_option$i)
+!set oef_applet_option_cnt=!linecnt $oef_applet_option
+!reset applet_parm applet_parm_init applet_parm_initg color_i
+!reset list_r listcolor_r
+!set cmt=0
+!for a=1 to $oef_applet_option_cnt
+  !set line=!line $a of $oef_applet_option
+  !set w=!word 1 of $line
+  !set l=!word 2 to -1 of $line
+  !set l1=!nospace $(l[2..-1])
+  !if xrange isin $w
+    !distribute item $[$(l[1])],$[$(l[2])-$(l[1])] into  xmin, xn
+  !endif
+  !if yrange isin $w
+    !distribute item $[$(l[1])],$[$(l[2])-$(l[1])+1] into ymin, yn
+  !endif
+  !if square isin $w
+    !set click_color=!append item "$(l[1])" to $click_color
+    !set l1cnt=!itemcnt $l1
+    !for pp=1 to $l1cnt
+      !set point=!item $pp of $l1
+      !set point=!replace : by , in $point
+      !if $(point[3])!=$empty
+        !set point=$(point[2,3])
+      !endif
+      !set id=$[$(point[1])-($xmin) + 1000*$[$(point[2])-($ymin)]]
+      !set list_init=!append item "$id" to $list_init
+      !set listcolor_init=!append item "$(l[1])" to $listcolor_init
+    !next
+     !else
+   !if $w iswordof segment line point polygon
+    !increase cmt
+     !set ll=!replace internal : by , in $(l[2..-1])
+     !if $w iswordof line segment
+      !set tmp=obj$cmt=document.createElementNS('http://www.w3.org/2000/svg', 'line');\
+     obj$cmt.setAttribute('x1', $[$(ll[1])-($xmin)]*w);\
+     obj$cmt.setAttribute('y1',($[$(ll[2])+($ymin)]+yn)*h);\
+     obj$cmt.setAttribute('x2', $[$(ll[3])-($xmin)]*w);\
+     obj$cmt.setAttribute('y2',($[$(ll[4])+($ymin)]+yn)*h);\
+     obj$cmt.setAttribute('stroke', '$(l[1])');\
+     obj$cmt.setAttribute('stroke-width', 3);\
+     obj$cmt.setAttribute('fill', 'none');
+      !endif
+      !if $w iswordof polygon
+      !set tmp=obj$cmt =obj$cmt=document.createElementNS('http://www.w3.org/2000/svg', 'path');\
+     obj$cmt.setAttribute('points', $[$(ll[1])-($xmin)]*w, ($[$(ll[2])+($ymin)]+yn)*h\
+      $[$(ll[3])-($xmin)]*w, ($[$(ll[4])+($ymin)]+yn)*h);\
+     obj$cmt.setAttribute('stroke', '$(l[1])');\
+     obj$cmt.setAttribute('stroke-width', 3);\
+     obj$cmt.setAttribute('fill', 'none');
+      !endif
+      !if $w iswordof point
+      !set tmp=obj$cmt=document.createElementNS('http://www.w3.org/2000/svg', 'circle');\
+     obj$cmt.setAttributeNS(null, 'cx', $[$(ll[1])-($xmin)]*w);\
+     obj$cmt.setAttributeNS(null, 'cy', ($[$(ll[2])+($ymin)]+yn)*h);\
+     obj$cmt.setAttributeNS(null, 'r',  3);\
+     obj$cmt.setAttributeNS(null,'fill', '$(l[1])');
+     !endif
+     !set applet_parm_init=!append line $tmp\
+     wims_svg_r$i.appendChild(obj$cmt); to $applet_parm_init
+     !set applet_parm_initg=!append line $tmp\
+    wims_svg_g$i.appendChild(obj$cmt); to $applet_parm_initg
+    !else
+     !if $w iswordof return_all_objects background_color colors
+       !set $w=$l
+     !else
+      !if $w iswordof copy
+        !set image=$(l[3])
+        !set l1=!nospace $(l[1..2])
+        !set applet_image=!append line \
+        <image xlink:href="$image" x="$(l1[1])" y="$(l1[2])" width="100%" height="100%"></image>\
+         to $applet_image
+        !set stroke_opacity=0.70
+        !set fill_opacity=0.50
+      !endif
+      !endif
+     !endif
+   !endif
+  !endif
+!next
+!if $colors!=$empty
+   !set colors=!makelist "x" for x in $colors
+!endif
+!set click_color=!append item $colors to $click_color
+
+!default stroke_opacity=0.99
+!default fill_opacity=0.99
+
+color_p=!listcomplement $color_i in $color_g,$color_r
+
+!set list_r=$list_init
+!set listcolor_r=$listcolor_init
+!for co in $color_p
+   !if $($(co)_r$i)!=
+     !set lll= $($(co)_r$i)
+     !set lcnt=!itemcnt $(lll)
+     !for pp=1 to $lcnt
+       !set point=!item $pp of $lll
+       !set point_=!replace : by , in $(point)
+       !if $(point_[3])!=$empty
+          !set point_=$(point_[2,3])
+       !endif
+          !set id=$[$(point_[1])-($xmin) + 1000*$[$(point_[2])-($ymin)]]
+          !set list_r=!append item "$id" to $list_r
+          !set listcolor_r=!append item "$co" to $listcolor_r
+          !set applet_parm=!append line var obj=document.getElementById($id);\
+   obj.setAttributeNS(null,"fill","$co");\
+    to $applet_parm
+    !next
+   !endif
+!next
+
+reply_$i=\
+<div id="Clicktile$i" style="display:inline;width:$[$xsize+20]px;height:$[$ysize+20]px;overflow:auto">\
+    <svg version="1.1" baseProfile="full"\
+     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" \
+     id="svgClicktile$i" width="$xsize" height="$ysize" viewBox="0 0 $xsize,$ysize">\
+     <g id="svg_transformClicktile$i">\
+     $applet_image\
+     </g>\
+   </svg>\
+</div>\
+<script type="text/javascript">\
+/*<![CDATA[*/\
+var xmin=$xmin;var ymin=$ymin;\
+var wims_svg_r$i = document.getElementById("svgClicktile$i");\
+wims_svg_r$i.addEventListener("click", svg_mouse, false);\
+var xn = $xn;\
+var yn = $yn;\
+var w = $[$xsize/$xn];\
+var h = $[$ysize/$yn];\
+var x,y;\
+var line_width = 1;\
+var stroke_color = "black";\
+var fill_color = "$background_color";\
+var stroke_opacity = $stroke_opacity;\
+var fill_opacity = $fill_opacity;
+
+
+!set click_color=!listuniq $click_color
+!set click_color_cnt=!itemcnt $click_color
+
+!set reply_$i=$(reply_$i)\
+var num_colors =$[$click_color_cnt +1];\
+var click_color = new Array("$background_color",$click_color);\
+var list_r=new Array($list_r);\
+var listcolor_r=new Array($listcolor_r);\
+var start_color = click_color[0];
+
+!set reply_$i=$(reply_$i)\
+   for(var p = 0 ; p < xn ; p = p+1){\
+     for(var q = 1 ; q < yn; q = q+1){\
+         var id=p+1000*q;\
+         var rect = document.createElementNS('http://www.w3.org/2000/svg','rect');\
+         rect.setAttributeNS(null,"x",p*w);\
+         rect.setAttributeNS(null,"y",(yn-q)*h);\
+         rect.setAttributeNS(null,"width",w);\
+         rect.setAttributeNS(null,"height",h);\
+         rect.setAttributeNS(null,"id",id);\
+         rect.setAttributeNS(null,"stroke-width",line_width);\
+         rect.setAttributeNS(null,"stroke",stroke_color);\
+         rect.setAttributeNS(null,"stroke-opacity",stroke_opacity);\
+         rect.setAttributeNS(null,"fill-opacity",fill_opacity);\
+         tmp=0;\
+         for(var a = 0 ; a <= list_r.length ; a = a+1){\
+             var b=list_r[a];\
+             if(b==id){\
+               rect.setAttributeNS(null,"fill",listcolor_r[a]);\
+               tmp=1; break;}\
+         };\
+         if(tmp==0){rect.setAttributeNS(null,"fill",start_color);}\
+         wims_svg_r$i.appendChild(rect);\
+     }\
+}\
+function svg_mouse(action){\
+    return 0;\
+}\
+\
+$applet_parm_init\
+$applet_parm\
+/*]]>*/\
+</script>
+
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+
+!if 0 isin $score
+!set oef_applet_option_cnt=!linecnt $oef_applet_option
+
+!reset color_i applet_parm
+!set list_g=$list_init
+!set listcolor_g=$listcolor_init
+
+!for co in $color_g
+   !if $($(co)_g$i)!=
+     !set lll= $($(co)_g$i)
+     !set lcnt=!itemcnt $(lll)
+     !for pp=1 to $lcnt
+       !set point=!line $pp of $lll
+       !set point=!nonempty items $point
+       !set ll_=!itemcnt $point
+         !for j=1 to $ll_
+          !set point_=!replace : by , in $(point[$j])
+          !if $(point_[3])!=$empty
+            !set point_=$(point_[2,3])
+          !endif
+          !set id=$[$(point_[1])-($xmin) + 1000*($(point_[2])-($ymin))]
+          !set list_g=!append item "$id" to $list_g
+          !set listcolor_g=!append item "$co" to $listcolor_g
+          !set applet_parm=!append line var obj=document.getElementById(g$id);\
+   obj.setAttributeNS(null,"fill","$co")\
+    to $applet_parm
+         !next
+     !next
+   !endif
+ !next
+!set reply_$i=$(reply_$i) \
+<div id="Clicktile_g$i" style="display:inline;width:$[$xsize+20]px;height:$[$ysize+20]px;overflow:auto">\
+    <svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" id="svgClicktile_g$i" width="$xsize" height="$ysize" viewBox="0 0 $xsize,$ysize" >\
+     <g id="svg_transformClicktile_g$i">\
+     $applet_image\
+   </g>\
+   </svg>\
+</div>\
+<script type="text/javascript">\
+/*<![CDATA[*/\
+var list_g=new Array($list_g);\
+var listcolor_g=new Array($listcolor_g);\
+var wims_svg_g$i = document.getElementById("svgClicktile_g$i");\
+wims_svg_g$i.addEventListener("click", svg_mouse, false);\
+   for(var p = 0 ; p < xn ; p = p+1){\
+     for(var q = 1 ; q < yn; q = q+1){\
+         var id=p+1000*q;\
+         var rect = document.createElementNS('http://www.w3.org/2000/svg','rect');\
+         rect.setAttributeNS(null,"x",p*w);\
+         rect.setAttributeNS(null,"y",(yn-q)*h);\
+         rect.setAttributeNS(null,"width",w);\
+         rect.setAttributeNS(null,"height",h);\
+         rect.setAttributeNS(null,"id",'g' + id);\
+         rect.setAttributeNS(null,"stroke-width",line_width);\
+         rect.setAttributeNS(null,"stroke",stroke_color);\
+         rect.setAttributeNS(null,"stroke-opacity",stroke_opacity);\
+         rect.setAttributeNS(null,"fill-opacity",fill_opacity);\
+         var tmp=0;\
+         for(var a = 0 ; a < list_g.length ; a = a+1){\
+             var b=list_g[a];\
+             if(b==id){\
+               rect.setAttributeNS(null,"fill",listcolor_g[a]);\
+               tmp=1; break;}\
+         };\
+         if(tmp==0){ rect.setAttributeNS(null,"fill",start_color);}\
+         wims_svg_g$i.appendChild(rect);\
+     }\
+};\
+$applet_parm_initg\
+/*]]>*/\
+</script>
+
+!else
+ !set reply_$i=<div class="wimscenter">$(reply_$i)</div>
+!endif
+
+!reset reply$i
+
+
+

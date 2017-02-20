@@ -1,0 +1,20 @@
+!!should menumodubox (what about n5 in case of doc).
+
+!if $wims_rm_0!=$empty
+ <!-- _widgets/docmenumodubox.phtml -->
+ <div id="wimsmenumodubox">
+  <div class="wimsmenu">
+   !for i_=1 to $wims_homeref_n0
+    !set 1_=!line $i_ of $wims_rm_0
+    !if $(1_[1])=
+     <div class="itemsep"></div>
+    !else
+     <div class="menuitem">
+      !read oneitem.phtml $1_
+     </div>
+    !endif
+   !next i_
+  </div><!--wimsmenu-->
+ </div><!--wimsmenumodubox-->
+ <!-- end _widgets/docmenumodubox.phtml -->
+!endif

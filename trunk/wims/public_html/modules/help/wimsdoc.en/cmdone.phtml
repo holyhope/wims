@@ -1,0 +1,37 @@
+ !set cc=$wims_read_parm
+ <ul class="wims_nopuce">
+ !for ff in tit,type,syntax, mean,alias,sample
+   !set text=!lookup $ff in cmd/$cc.phtml
+   !if $text!=$empty
+ <li>
+   $(lst_$ff)
+   !set text=!replace internal `` by $emph in $text
+   !if $ff=syntax
+     !set text=!replace internal $\
+$ by $(lst_$(ff)end) <br/>$lstyle2 in $text
+   !endif
+   !replace internal '' by $emphend in $text
+   $(lst_$(ff)end)
+  </li>
+  !endif
+ !next
+  </ul>
+  !if $cc iswordof if
+    !read help/if.phtml
+  !endif
+  !if $cc iswordof randfile record recordcnt
+    <div>
+    !read cmd/datafile.phtml
+   </div>
+  !endif
+  !if $cc iswordof word column char item line record
+      <div>
+    !set numlist_type=$cc
+    !read cmd/numlist
+      </div>
+  !endif
+  !set text=!lookup numlist in cmd/$cc.phtml
+  !if $text!=$empty
+    !set text=!replace internal ` by $emph in $text
+    !replace internal ' by $emphend in $text
+  !endif

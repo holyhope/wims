@@ -1,0 +1,24 @@
+numsheet=!listintersect $numsheet and $asheets
+!if $numsheet=$empty
+ !exit
+!else
+ key_title=!singlespace $keytitle
+ key_title=!char 1 to $title_limit of $key_title
+ nbexo=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$numsheet
+ listdon=$empty
+ tmp=$key_title 
+ !for k=1 to $nbexo
+  !if $key_title=$empty
+   tmp=!record $k of wimshome/log/classes/$wims_class/sheets/.sheet$numsheet
+   tmp=!line 5 of $tmp
+  !endif
+  exodon=:1\
+$numsheet.$k\
+$tmp\
+
+ listdon=!append line $exodon to $listdon
+ !next k
+ !appendfile wimshome/log/classes/$wims_class/exams/.exam$exam $listdon
+ !reset job,numsheet
+ !read var.proc
+!endif

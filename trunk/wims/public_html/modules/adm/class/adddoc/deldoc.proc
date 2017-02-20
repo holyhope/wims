@@ -1,0 +1,25 @@
+!! delete doc $sdoc
+
+!if $sdoc=$empty
+ !if NaN isin $[$doc/10] or $doc<1 or $doc>$doctot
+    error=baddocnumber
+    !exit
+ !endif
+ sdoc=$doc
+ tmp=!record $sdoc of wimshome/log/classes/$wims_class/doc/.docindex
+ title=!line 4 of $tmp
+!endif
+!bound step within 0,1 default 0
+
+!if $step=1
+ !if $sdoc>=1 and $sdoc<=$doctot
+    !read proc/updatefield.proc wimshome/log/classes/$wims_class/doc/.docindex\
+$sdoc\
+delete\
+
+!! update seq directory
+ !readproc adm/updatesequence.proc doc,$sdoc
+
+ !endif
+ !restart module=home
+!endif

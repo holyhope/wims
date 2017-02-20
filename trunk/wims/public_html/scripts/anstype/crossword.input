@@ -1,0 +1,334 @@
+
+!set anstype=yes
+!set anstyle=dprompt
+!set oef_js_submit=sendanswer()
+!set author=Bernadette Perrin-Riou
+!set ans_require=pari,tooltip
+
+!read lang/crossword.phtml.$lang
+!if $wims_read_parm=def
+ !exit
+!endif
+!set name_vertical=<img src="gifs/arrows/down1.32.gif" alt="vertical"/>
+!set name_horizontal=<img src="gifs/arrows/right1.32.gif" alt="horizontal"/>
+
+!set dir=!randint 2
+!set color=!getopt color in $(replyoption$i)
+!set color=!declosing $color
+!set color=!words2items $color
+
+!default color=orange,black,white
+!set style=.cw_case {background-color:$(color[1]);text-align:left;width:10px;height:10px;min-width:10px;min-width:10px;font-size:90%;}\
+.cw_input {background-color:$(color[1]);border:0;text-align:center;font-size:17px;}\
+.cw_no {color:blue;float:left;padding:2px;background-color:$(color[3])}\
+.cw_no2 {color:white;float:left;margin-right:1px;background-color:blue;}\
+.cw_black {background-color:black;}\
+.cw_HV {font-weight:bold;color:$(color[2]);display:inline;}\
+table.cw_grille { text-align:center;border:1px solid black;}\
+table.cw_grille td {border:1px solid white;text-align:center;min-width:40px;min-height:40px;}
+
+!set oef_applet_option=$style
+<style type="text/css">$style</style>
+!if tooltip iswordof $(replyoption$i)
+!read primitives/tooltip.phtml
+!endif
+!distribute item $(replygood$i) into MotC,def
+
+!set MotC=!declosing $MotC
+!set MotC=!replace internal $	$ by $\
+$ in $(MotC)
+!set MotC=!rows2lines $MotC
+
+!set def=!declosing $def
+!set def=!replace internal $	$ by $\
+$ in $def
+!set def=!rows2lines $def
+
+!set ligne_cnt= !linecnt $MotC
+!set col_cnt = 1
+!for j = 1 to $ligne_cnt
+  !set col = !itemcnt $(MotC[$j;])
+  !set col_cnt=!sort numeric item $col_cnt, $col
+  !set col_cnt=!item 2 of $col_cnt
+!next j
+!if $dir = 2
+  !set MotCT=$empty
+  !for a = 1 to $col_cnt
+    !set V =!column $a of $MotC
+    !set MotCT= !append line $V to $MotCT
+  !next a
+  !set MotC =$MotCT
+  !set col1 = $ligne_cnt
+  !set ligne_cnt=$col_cnt
+  !set col_cnt=$col1
+!endif
+!set Mpos=!exec pari  Mpos=matrix($ligne_cnt,$col_cnt)
+
+!!je cherche les mots et mets des numéros.
+!set cnt=0
+!set listemot=
+!set listepos=
+!set end_no=1
+!for k = 1 to $ligne_cnt
+  !for j = 1 to $col_cnt
+   !if $(MotC[$k;$j]) != $empty and ($(MotC[$k;$j-1])=$empty or $(MotC[$k-1;$j])=$empty)
+      !if $(Hseen$(k)x$j) !=1
+        !set j_=$j
+        !while $(MotC[$k;$j_])!=$empty
+        !set motH=!append item $(MotC[$k;$j_]) to $motH
+        !set Hseen$(k)x$j_=1
+        !increase j_
+       !endwhile
+      !endif
+      !if $(Vseen$(k)x$j) !=1
+       !set k_=$k
+       !while $(MotC[$k_;$j])!=$empty
+        !set motV=!append item $(MotC[$k_;$j]) to $motV
+        !set Vseen$(k_)x$j=1
+        !increase k_
+       !endwhile
+      !endif
+      !if $j_>$j+1 or $k_>$k+1
+       !increase cnt
+       !set listepos=!append line $k,$j to $listepos
+       !set  Mpos=!exec pari Mpos[$k,$j]=$cnt ; Mpos
+       !set ends=!append line table2[$cnt]='$(k)_$j' to $ends
+       !if $j_>$j+1
+        !set motH=!replace internal , by in $motH
+        !set listemot=!append line H$cnt,$motH to $listemot
+       !endif
+       !if $k_>$k+1
+        !set motV=!replace internal , by in $motV
+        !set listemot=!append line V$cnt,$motV to $listemot
+       !endif
+      !endif
+      !reset j_ k_ motH motV
+    !endif
+  !next
+!next
+!for k = 1 to $ligne_cnt
+  !for j = 1 to $col_cnt
+    !if  $(MotC[$k;$j]) != $empty
+     !set js=!append line table[$[$k+$ligne_cnt*$j]]=1; to $js
+    !else
+     !set js=!append line table[$[$k+$ligne_cnt*$j]]=0; to $js
+    !endif
+  !next
+!next
+!set oef_answer_option$i=[$MotC]
+!set def=!embraced randitem $def
+!reset defH defV
+!set listemotV=!select $listemot where V isin column 1
+!set listemotH=!select $listemot where H isin column 1
+!set def=!rows2lines $def
+!set listemotV_cnt=!linecnt $listemotV
+!set listemotH_cnt=!linecnt $listemotH
+!for s_ = 1 to $(listemotV_cnt)
+  !set l_=!line $s_ of $listemotV
+  !set def_mot= !select $def where column 1 issametext  $(l_[2])
+  !set defV=!append line $(l_[1]), $(def_mot[2..-1]) to $defV
+!next
+!for s_ = 1 to $(listemotH_cnt)
+  !set l_=!line $s_ of $listemotH
+  !set def_mot=!select $def where column 1 issametext  $(l_[2])
+  !set defH=!append line $(l_[1]), $(def_mot[2..-1]) to $defH
+!next
+!set oef_answer_option$i=$(oef_answer_option$i),[$defH],[$defV],$ligne_cnt,$col_cnt,[$Mpos],$style
+<script type="text/javascript">
+/*<![CDATA[*/
+!!if tooltip notwordof $(replyoption$i)
+!set help=
+!set cnt=0
+!if allhelp iswordof $(replyoption$i)
+  !set none=block
+!else
+  !set none=none
+!endif
+!for k = 1 to $listemotH_cnt
+  !set u = !line $k of $defH
+  !if $u <> $empty
+    !increase cnt
+    !set u=!replace internal http: by httphttp in $u
+    !set u=!replace internal : by , in $u
+    !set u=!replace internal httphttp by http: in $u
+    !set un=!replace internal H by in $(u[1])
+    !set help=$help\
+    <div id="$(u[1])" style="display:$none;"><div class="cw_HV">$name_horizontal</div>$un : $(u[2..-1])</div>
+    !endif
+!next k
+!for k = 1 to $listemotV_cnt
+ !set u = !line $k of $defV
+   !if $u <> $empty
+     !increase cnt
+     !set u=!replace internal : by , in $u
+     !set un=!replace internal V by in $(u[1])
+      !set help=$help\
+      <div id="$(u[1])" style="display:$none;"><div class="cw_HV">$name_vertical</div>$un : $(u[2..-1])</div>
+   !endif
+!next k
+ !if allhelp  notwordof $(replyoption$i)
+  !if tooltip notwordof $(replyoption$i)
+  function showdef(n)
+  {
+   for (var j=1 ; j <= $cnt ;j++) {
+    var defV = document.getElementById('V' + j)
+    if (defV) {
+      defV.style.display ='none';
+      if (j==n) {defV.style.display = 'block'; pos_auto('v');}
+    }
+    var defH=document.getElementById('H' + j)
+    if (defH) {
+      defH.style.display = 'none';
+      if (j==n) {defH.style.display = 'block'; pos_auto('h');}
+    }
+   }
+ }
+ !else
+  function showdef(n)
+  {
+   for (var j=1 ; j <= $cnt ;j++) {
+    var defV = document.getElementById('V' + j);
+    if (defV) { if (j==n) { pos_auto('v');}}
+    var defH=document.getElementById('H' + j) ;
+    if (defH) {  if (j==n) {pos_auto('h');}
+    }
+  }
+}
+ !endif
+ !else
+ function showdef(n)
+  {
+   for (var j=1 ; j <= $cnt ;j++) {
+    var defV = document.getElementById('V' + j)
+    if (defV) {
+      defV.style.color ='black';
+      if (j==n) {defV.style.color = 'green'; pos_auto('v');}
+
+    }
+    var defH=document.getElementById('H' + j)
+    if (defH) {
+      defH.style.color = 'black';
+      if (j==n) {defH.style.color = 'green' ;pos_auto('h');}
+    }
+  }
+}
+!endif
+!!!endif
+
+var table=Array();
+$js
+var table2=Array();
+$ends
+
+function sendanswer()
+  { var test=0;
+    var reply='';
+       for (var t = 1 ; t <= $ligne_cnt ; t ++){
+         for (var s = 1 ; s <= $col_cnt ; s ++){
+          cell=document.getElementById('case_' + t + '_' + s)
+          if (cell.value == '') {if (table[t + $ligne_cnt * s]==1) { test=1 ; break} };
+          if (cell.value != '' && cell.value != undefined) {reply=reply + cell.value + ','} else {reply=reply + ','};
+          }
+          reply = reply + '\n';
+        }
+        if (test==1 ) {reply=''}
+     document.getElementById('oefvar$i').value=reply
+  }
+var newposr = 1 ;
+var newposc = 1 ;
+var sens = 'h' ;
+var fleche ='gifs/arrows/right1.32.gif' ;
+var V ='gifs/arrows/down1.32.gif'  ;
+var H ='gifs/arrows/right1.32.gif' ;
+function posfleche(k,j) {
+  if (sens=='v'){ var k1 = k+1 ; if(table[k1 + $ligne_cnt * j]==1){newposr= k1 ; newposc=j ;}
+  }
+  else { var j1=j+1 ;
+    if(table[k + $ligne_cnt * j1]==1){newposr=k ; newposc=j1}
+  };
+  //if(fleche==H){sens='v';fleche=V;} else {sens='h'; fleche=H;}
+  //document.getElementById('img_' + k + '_' + j).src=fleche;
+  //for (var k1=1 ; k1 <= $ligne_cnt ;k1++) {
+  //    for (var j1=1 ; j1 <= $col_cnt ;j1++) {
+  //      cell=document.getElementById('img_' + k1 + '_' + j1) ;
+  //      if (cell != null && ( newposr != k1 || newposc != j1)) {
+  //          document.getElementById('img_' + k1 + '_' + j1).src='gifs/transparent.gif';
+  //      }
+  //   }
+  //}
+  //document.getElementById('img_' + newposr + '_' + newposc).src=fleche;
+  document.getElementById('case_' + newposr + '_' + newposc).focus() ;
+return true;
+}
+//function position1(k,j) {
+//   fleche = document.getElementById('img_' + k + '_' + j).src ;
+//  if(fleche.substring(fleche.length-20,fleche.length)==H.substring(H.length-20,H.length)){ sens="v"; fleche=V;} else { sens="h"; fleche=H;}
+//    //document.getElementById('img_' + k + '_' + j).src=fleche;
+//    document.getElementById('case_' + k + '_' + j).focus() ;
+//    document.getElementById('FF').src=fleche;
+//   return true;
+//   }
+
+ function position() {
+   fleche = document.getElementById('FF').src ;
+   if(fleche.substring(fleche.length-20,fleche.length)==H.substring(H.length-20,H.length)){ sens="v"; fleche=V;} else { sens="h"; fleche=H;}
+    document.getElementById('FF').src=fleche;
+   return true;
+ }
+ function pos_auto(s) {
+   sens=s;
+   if(s=='h'){ document.getElementById('FF').src=H; } else {document.getElementById('FF').src=V;}
+   return true;
+ }
+ /*]]>*/
+</script>
+
+<table><caption><div class="wims_instruction">$ans_warning1 <img id="FF" src="gifs/arrows/right1.32.gif" alt="right" onclick="position();"/></div>
+</caption><tr>
+<td style="text-align:center;">
+<table class="cw_grille">
+!for k = 1 to $ligne_cnt
+<tr>
+  !for j = 1 to $col_cnt
+    !if  $(MotC[$k;$j]) = $empty
+     <td class="cw_black"><div id="case_$(k)_$(j)"></div></td>
+    !else
+       <td class="cw_case">
+        !set m=$(MotC[$k;$j])
+        !reset u_
+        !if $(Mpos[$k;$j])!=0
+         !if tooltip iswordof $(replyoption$i)
+          !set u = !select $defH where column 1 issametext H$(Mpos[$k;$j])
+          !if $u!=$empty
+           !set u_=$name_horizontal $(u[2..-1])
+          !endif
+          !set u = !select $defV where column 1 issametext V$(Mpos[$k;$j])
+          !if $u!=$empty
+           !set u_=$u_<p>\
+           $name_vertical $(u[2..-1])</p>
+          !endif
+          !set option=FONTSIZE, '12pt',STICKY, 'false', LEFT, 'true', ABOVE, 'true', WIDTH, '0', PADDING, 1,BGCOLOR,'#D3E3F6',TITLEBGCOLOR,'#D3E3F6'
+!!ABOVE,'true',STICKY,'true',FONTSIZE, '12pt',WIDTH,'3'
+          !readproc slib/utilities/tooltip $(Mpos[$k;$j]),[$option],$u_
+          <span id="number_$(k)_$(j)" class="cw_no" onclick="javascript:showdef($(Mpos[$k;$j]));">$slib_out</span>
+         !else
+          <span id="number_$(k)_$(j)" class="cw_no" onclick="javascript:showdef($(Mpos[$k;$j]))">$(Mpos[$k;$j])</span>
+         !endif
+        !else
+         &nbsp;
+        !endif
+      <input value="" size="1" class="cw_input" maxlength="1"
+      id="case_$(k)_$(j)" autocomplete="off" onkeyup="posfleche($k,$j);" />
+      </td>
+    !endif
+ !next j
+</tr>
+!next k
+</table>
+</td>
+!if tooltip notwordof $(replyoption$i)
+<td style="padding:30px;vertical-align:top;">$help</td>
+!endif
+</tr></table>
+
+<input type="hidden" name="reply$i" id="oefvar$i" value="" />

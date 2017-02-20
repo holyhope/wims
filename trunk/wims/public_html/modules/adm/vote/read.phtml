@@ -1,0 +1,121 @@
+$table_header
+ $table_hdtr
+  <th>$name_option</th><th>$name_value</th>
+ </tr>
+ $table_tr<td>$wims_name_title</td><td>$vote_title</td></tr>
+ $table_tr<td>$wims_name_Type</td>
+  <td>$(name_$(vote_option))</td>
+ </tr>
+ $table_tr
+  <td>$wims_name_Status</td>
+  <td>$(name_$(vote_status))</td>
+ </tr>
+ $table_tr
+  <td>$name_result</td>
+  <td>
+   !item $vote_show+1 of $name_hide,$name_publish
+   !if $showres>0
+     &nbsp;
+     !if $wims_user=supervisor or $(user_vote_$Vote)!=$empty
+      !set wims_ref_class=wims_button
+      !href cmd=reply&job=showresult&vote=$vote $name_showresult
+     !endif
+     &nbsp;
+     !if $wims_user=supervisor
+      !set wims_ref_class=wims_button
+      !href cmd=reply&job=csv $wims_name_csv
+     !endif
+   !endif
+  </td>
+ </tr>
+!!## list of voting names can be print even if there is few voters
+!!## in case of nominative vote
+ !if $vote_status > 0 and $vote_whovoteshow=1
+ $table_tr<td>$name_thisvote_answer</td><td>$vcnt</td></tr>
+ !set nbs=!itemcnt $whovote
+ !if $nbs<=5 and $vote_option notwordof nominative
+  !!!if $vote_whovoteshow!=1
+  !! !let aff=$name_hide2
+  !!!else
+   !let aff=$name_notenough
+  !!!endif
+  $table_tr
+   <td>$name_whovote</td>
+   <td rowspan="2">$aff</td>
+  </tr>
+  $table_tr
+   <td>$name_whodontvote</td>
+  </tr>
+ !else
+  !for ty in whovote,whodontvote
+   $table_tr
+    <td>$(name_$ty)</td>
+    <td>
+      !let nb=!itemcnt $($ty)
+      !if $nb=0
+       $name_novotant
+      !else
+       !replace internal , by , $ in $($ty)
+      !endif
+    </td>
+   </tr>
+  !next ty
+ !endif
+!endif
+$table_end
+
+!if $wims_user=supervisor
+ !if $wims_theme=default
+  !href cmd=reply&job=edit $wims_name_change
+
+  !href cmd=reply&job=csv $wims_name_csv
+ !endif
+ !set wims_menu_items=!append line change,1,cmd=reply&job=edit&gstep=0\
+  to $wims_menu_items
+!endif
+
+!if $vote_status=2
+ !read $votedir/$vote.def
+ !exit
+!endif
+
+!if $(user_vote_$Vote)!=$empty
+ !if $vote_option!=nominative
+  $name_thisvote_already1<p>
+  !exit
+ !else
+ </p>
+  $name_thisvote_already2</p>
+  !goto form
+ !endif
+!else
+<p>
+ $name_give_your_choice
+ </p>
+ :form
+ !if $wims_user!=supervisor
+  !form reply
+  <input type="hidden" name="job" value="vote" />
+  !set m_formed=yes
+ !endif
+!endif
+
+!read $votedir/$vote.def
+
+!if $m_formed=yes and $wims_user!=supervisor
+ <p class="wimscenter wimsform">
+ <input type="submit" value="$wims_name_tosave" />
+ </p>
+!formend
+!endif
+
+!if $wims_user=supervisor and $vote_status=0
+   !form reply
+   <p class="wimscenter wimsform">
+ !set wims_ref_class=wims_button
+ !href cmd=reply&job=edit $wims_name_back2
+ </p>
+
+ !formend
+!endif
+

@@ -1,0 +1,167 @@
+!read adm/language lang/names.phtml
+wims_prefix=class user tmp
+!if robot isin $session
+  !exit
+!endif
+!sh cd $wims_home/$wims_sesdir ; mkdir -p latex2wims
+!sh mkdir -p $wims_home/$wims_sesdir/getfile/ ; cp modules/$module/latex2wimsdoc.pdf $wims_home/$wims_sesdir/getfile/
+
+
+!if $wims_developer!=$empty
+   !goto debut
+!endif
+!read auth
+!if $wims_developer=$empty
+ !exit
+!endif
+
+:debut
+!set wims_ariane_self=no
+
+!default execut=0
+!if  / isin $wims_deposit or .. isin $wims_deposit
+  !exit
+!endif
+!sh cp modules/$module/fichier_test.tex $wims_home/$wims_sesdir/getfile/ ; \
+    cp modules/$module/style.css $wims_home/$wims_sesdir/getfile/ ;\
+    cp modules/$module/wims.sty $wims_home/$wims_sesdir/getfile/
+
+!if $wims_deposit!=noname.file and $wims_deposit!=$empty
+  !sh cd $wims_home/$wims_sesdir\
+  	mkdir -p latex2wims\
+  	mkdir -p getfile\
+	  mv user-deposit latex2wims/$wims_deposit
+!endif
+
+!ifval $exemple=1
+    !sh cp modules/$module/fichier_test.tex $wims_home/$wims_sesdir/latex2wims/ ; \
+    cp modules/$module/style.css $wims_home/$wims_sesdir/latex2wims/ ;\
+    cp modules/$module/wims.sty $wims_home/$wims_sesdir/latex2wims/
+    !!!reset exemple
+!endif
+
+# Enregistrer
+wims_module_log=$httpd_REMOTE_ADDR depose $wims_deposit
+
+# Quels sont les fichiers existants ?
+test=!sh cd $wims_home; find $wims_sesdir/latex2wims -type f
+fichiers=!replace internal / by , in $test
+fichiers=!column -1 of $fichiers
+
+Fichiers=!replace internal , by $ $  in $fichiers
+cnt_fichier=!itemcnt $fichiers
+!if $cnt_fichier >0
+    date=!sh cd $wims_home/$wims_sesdir/latex2wims; ls -al $Fichiers | awk '{ print $$6 " " $$7 " " $$8 }'
+    date=!trim $date
+    date= !lines2items $date
+!endif
+
+!if $cnt_fichier=1
+  principal=1
+!endif
+
+
+!if $execut=2 and $cnt_fichier=0
+  error=$error fichier
+  execut=1
+!endif
+
+!if $execut=2 and $principal=$empty
+  error = $error principal
+  execut=1
+!endif
+!if $execut=2 and ($document=$empty or $document=$choix)
+  error = $error document
+  execut=1
+!endif
+
+!if $error!=$empty
+  !exit
+!endif
+
+Document dans le compte Modtool
+
+!if $wims_developer!=$empty
+       list_mod=!sh ls $wims_home/public_html/modules/devel/$wims_developer
+       list_mod=!words2items $list_mod
+       list_module=
+       !for a in $list_mod
+           category = !module category devel/$wims_developer/$a
+           !if document isin $category
+              list_module=!append item $a to $list_module
+          !endif
+       !next
+       !if $list_module=$empty
+         error = $error documentempty
+       !endif
+!endif
+!if $principal!=$empty and ($execut=2 or $execut=3) and $document!=$empty and $document!=$choix
+   !default subdoc=1
+    execut=3
+    !if $confirm=0
+      auth_name1=!word 2 of $auth_name
+      fichier_p=!item $principal of $fichiers
+      !!!mexec dos2unix $fichier_p
+      docdir=$wims_home/public_html/modules/devel/$wims_developer/$document
+      docdirw=wimshome/public_html/modules/devel/$wims_developer/$document
+###common_files ?
+      !read $docdir/.def
+      !if $common_files=yes
+        docfile=doc/files
+      !else
+        docfile=doc/$subdoc/files
+      !endif
+      !sh rm -r $docdir/doc/$subdoc/* ; mkdir -p $docdir/doc/$subdoc/src; mkdir -p $docdir/doc/srctex
+!! inutile de passer par le repertoire provisoire - latex2wims envoyait directement des ficiers dans
+
+      dir=$wims_home/$wims_sesdir/latex2wims/
+!!!forget about that by using just src2def : --author=$auth_name1 --email=$auth_email --verbose=1
+      !!!mexec latex2wims.pl --subdir=$subdoc --dir=$dir --docdir=$docdir --author=$auth_name1 --email=$auth_email --worksheet=$wksheet --verbose=1 $fichier_p
+      !sh cp $dir/* $docdir/doc/srctex/
+!! create the file OIndex in srctex
+      Oindex=
+      Oindex=!append line $subdoc $fichier_p to $Oindex
+      Oindex=!replace internal .tex by in $Oindex
+      !filewrite $docdirw/doc/srctex/0index $Oindex
+
+      images=!sh cd $wims_home\
+      ls $wims_sesdir/latex2wims/*
+      images=!replace internal / by , in $images
+      images=!column -1 of $images
+      cnt_images=!itemcnt $images
+      !for i = 1 to $cnt_images
+        !if .css isin $(images[$i]) or .sty isin $(images[$i]) or .tex isin $(images[$i])
+         images=!replace item number $i by in $images
+        !endif
+      !next
+!!image transfer
+      images=!items2words $images
+      images=!trim $images
+      images=!singlespace $images
+      !sh mkdir -p $docdir/doc/$subdoc/$docfiles\
+       for a in $images ; do cp $wims_home/$wims_sesdir/latex2wims/$$a $docdir/doc/$doc/$docfiles/$$a ; done
+!!now src2def make latex2wims
+       !sh cd $docdir \
+       src2def 2>/dev/null
+   !else
+    !if $confirm=1
+      execut=1
+      !reset confirm
+    !else
+      execut=3
+    !endif
+  !endif
+!endif
+
+!set wims_ariane=!append line modtool,1,module=adm/modtool\
+to $wims_ariane
+!if $execut>0
+  !set wims_ariane=!append line latex2wims,1,module=adm/latex2wims&execut=0\
+to $wims_ariane
+!endif
+
+!if $wims_theme=default
+  !set wims_ariane=!append line $wims_ariane to $wims_menu_items
+  !reset wims_ariane
+!endif
+

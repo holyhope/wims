@@ -1,0 +1,208 @@
+type=datalist
+textarea="data explain"
+
+:Select items according to their properties (click).
+
+The exercise presents a list of items to be classified according to a criterion. Click on the
+items to select those that belong to the same group.
+<p>
+To make an exercise with this model, type the list of
+items and their properties.
+<p>
+With a slight modification, a variant of this model can accept images as items.
+<p>
+Author of the model: Gang Xiao <qualite@wimsedu.info>
+
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Remove the above header if you destroy the model tags i.e. the lines starting
+with a ':'. Otherwise the exercise might not be recognised by Createxo.
+
+:%%%%%%%% Example parameters to be redefined %%%%%%%%%%%%%%%%%
+
+:\title{Classification (click)}
+:\author{XIAO, Gang}
+:\email{qualite@wimsedu.info}
+:\credits{}
+
+:Number of items to classify per exercise: up to 100.
+Make sure you include  enough items in the main data for the exercise to be worthwile!
+\integer{tot=12}
+
+:The minimum number of items to be selected: at least 1.
+\integer{mingood=1}
+
+:The minimum number of items that should NOT be selected: at least 1.
+\integer{minbad=4}
+
+:List of properties. The properties to select will be randomly drawn from the list provided.
+\text{prop=French,Italian,German}
+
+:Main data.
+Define one item per line, first the name of the item, then the property,
+separated by a comma. <p>
+It is best to provide lot of data for each category. <p>
+Be careful to use exactly the same spelling and case when you type
+the properties (e.g. <b>French</b> and <b>french</b> will count as two categories)! Otherwise the exercise may not work .
+\matrix{data=
+Fabien Barthez,French
+Grégory Coupet,French
+Eric Abidal,French
+William Gallas,French
+Willy Sagnol,French
+Lilian Thuram,French
+Pascal Chimbonda,French
+Mickaël Silvestre,French
+Claude Makélélé,French
+Patrick Vieira,French
+Florent Malouda,French
+Zinedine Zidane,French
+Sylvain Wiltord,French
+Franck Ribéry,French
+Vikash Dhorasoo,French
+Sidney Govou,French
+Thierry Henry,French
+David Trézéguet,French
+Louis Saha,French
+
+Gianluigi Buffon,Italian
+Morgan De Sanctis,Italian
+Angelo Peruzzi,Italian
+Christian Abbiati,Italian
+Marco Amelia,Italian
+Flavio Roma,Italian
+Gianluca Zambrotta,Italian
+Alessandro Nesta,Italian
+Fabio Cannavaro,Italian
+Fabio Grosso,Italian
+Cristian Zaccardo,Italian
+Marco Materazzi,Italian
+Andrea Barzagli,Italian
+Massimo Oddo,Italian
+Mauro Camoranesi,Italian
+Andrea Pirlo,Italian
+Gennaro Gattuso,Italian
+Francesco Totti,Italian
+Daniele de Rossi,Italian
+Aimo Diana,Italian
+Simone Barone,Italian
+Manuele Blasi,Italian
+Simone Perrotta,Italian
+Alberto Gilardino,Italian
+Luca Toni,Italian
+Alessandro Del Piero,Italian
+Vicenzo Iaquinta,Italian
+Christian Vieri,Italian
+Antonio Cassano,Italian
+Cristiano Lucarelli,Italian
+Filippo Inzaghi,Italian
+
+Jens Lehmann,German
+Oliver Kahn,German
+Timo Hildebrand,German
+Philipp Lahm,German
+Arne Friedrich,German
+Robert Huth,German
+Jens Nowotny,German
+Per Mertesacker,German
+Christoph Metzelder,German
+Marcell Jansen,German
+Bernd Schneider,German
+Sebastian Kehl,German
+Torsten Frings,German
+Michael Ballack,German
+Tim Borowski,German
+Bastian Schweinsteiger,German
+David Odonkor,German
+Thomas Hitzlsperger,German
+Miroslav Klose,German
+Lukas Podolski,German
+Gerald Asamoah,German
+Mike Hanke,German
+Oliver Neuville,German
+}
+
+:Optional words.
+Add the word "split" if you allow a partial score for a
+partially correct answer.
+\text{option=split}
+
+:Options de présentation.
+Ajoutez ici le mot "liste" si vous voulez afficher les objets sous forme de liste
+\text{presentation=}
+
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
+\text{accolade=item(1,1 oui,
+2 non)}
+
+
+:%%%%%%%%%%%%%% Nothing to modify before the statement %%%%%%%%%%%%%%%%
+
+\text{prop=randitem(\prop)}
+
+\text{data=wims(nonempty rows \data)}
+\text{good=wims(select \data where column 2 issametext \prop)}
+\text{bad=wims(select \data where column 2 notsametext \prop)}
+\text{good=shuffle(wims(nonempty item \good[;1]))}
+\text{bad=shuffle(wims(nonempty item \bad[;1]))}
+\integer{goodcnt=items(\good)}
+\integer{badcnt=items(\bad)}
+\integer{tot=min(\tot,\goodcnt+\badcnt)}
+\integer{mingood=min(\mingood,\tot-1)}
+\integer{minbad=min(\minbad,\tot-\mingood-1)}
+\integer{pickgood=randint(min(\mingood,\goodcnt)..min(\tot-\minbad,\goodcnt))}
+\integer{pickbad=min(\tot-\pickgood,\badcnt)}
+\integer{tot=\pickgood+\pickbad}
+\text{ind=wims(makelist 1 for x=1 to \pickgood),wims(makelist 0 for x=1 to \pickbad)}
+\text{all=item(1..\pickgood,\good),item(1..\pickbad,\bad)}
+\text{list=wims(values x for x=1 to \tot)}
+\text{sh=shuffle(\list)}
+\text{all=item(\sh,\all)}
+\text{ind=item(\sh,\ind)}
+\text{tomark=positionof(1,\ind)}
+
+:%% Choix de la presentation : sous forme lineaire par defaut, ou sous forme de liste à puces.
+\if{liste iswordof \presentation}
+{
+ \text{pre=<ul>}
+ \text{separatorL=<li>}
+ \text{separatorR=</li>}
+ \text{post=</ul>}
+}
+{
+ \text{pre=<p>}
+ \text{separatorL=<span>}
+ \text{separatorR=</span>}
+ \text{post=</p>}
+}
+
+:%%%%%%%%%%%%% Now the statement in html. %%%%%%%%%%%%%%%%%%%%
+
+:Text to explain what should be done.
+Write <span class="tt">\prop</span> for the randomly drawn property.
+$embraced_randitem
+\text{explain=
+Among the players here below, who have participated to the World Football Cup 2006,
+please select those in the \prop team.
+}
+
+:%% Computations; do not modify
+\text{accolade=wims(word 1 of \accolade)}
+
+\text{explain=\accolade=1 ?wims(embraced randitem \explain)}
+
+::You don't need to modify this in general.
+
+\statement{
+<p>\explain</p>
+\pre
+ \for{k=1 to \tot-1}{\separatorL \embed{r1,\k},\separatorR }
+ \separatorL \embed{r1,\tot}.\separatorR
+\post
+}
+
+:%%%%%%%%%%%%% Nothing to modify after. %%%%%%%%%%%%%%%%%5
+
+\answer{The marking}{\tomark;\all}{type=mark}{option=\option}
+

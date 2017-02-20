@@ -1,0 +1,33 @@
+!set wims_theme_mhelpheader=yes
+<!-- begin of mhelpheader.phtml -->
+!!why is it not in the c code ??
+
+ !set modtitle=$(module_title_$lang)
+ !default modtitle=$module_title
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd">
+<html xml:lang="$lang" xmlns="http://www.w3.org/1999/xhtml" xmlns:mathml="http://www.w3.org/1998/Math/MathML">
+
+<head>
+
+!read name.phtml.$module_language
+!if $special_parm=about
+ !set wname_h=$wims_name_about
+!else
+ !set wname_h=$wims_name_help
+!endif
+!set module_title2=$wname_h : $modtitle
+!read adm/css.phtml
+$wims_html_header
+
+</head>
+
+<body $wims_htmlbody onload="window.focus();window.moveTo(150,120);window.resizeTo(700,600);">
+<div id="wimsmhelp">
+<div class="wimsbody wimscenter">
+  <h1>$modtitle</h1>
+----- $wname_h <span class="small">[<a href="#" onclick="window.close();">$wims_name_back2</a>]</span> -----
+<br/>
+</div>
+
+<!-- end of mhelpheader.phtml -->

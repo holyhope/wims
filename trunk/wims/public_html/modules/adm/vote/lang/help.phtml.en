@@ -1,0 +1,121 @@
+!if $special_parm!=$empty
+ !changeto help/$module_language/$special_parm.phtml
+!endif
+
+!if $wims_user!=supervisor
+ Sorry, there is no help for participant.
+ !tail
+ !exit
+!endif
+
+!if $wims_read_parm=$empty
+The content of a vote can be a html text, reinforced by the same facilities as
+for forum messages, plus the following commands.
+<dl>
+ <dt><span class="tt wims_code_variable">\menu{Yes,No}</span>
+	<dd>A choice by menu.
+	</dd>
+ <dt><span class="tt wims_code_variable">\list{A,B,C,D}</span>
+	<dd>A choice by buttons in a vertical list.
+	</dd>
+ <dt><span class="tt wims_code_variable">\radio{very bad, rather bad, rather good, very good}</span>
+	<dd>A choice by horizontal buttons.
+	</dd>
+ <dt><span class="tt wims_code_variable">\checkbox{A,B,C,D}</span>
+	<dd>Several choices by horizontal buttons.
+	</dd>
+ <dt><span class="tt wims_code_variable">\uservar{vname,val0,val1,...}</span>
+	<dd>Register the immediately preceding choice in an individual
+	variable for the participant, under the name <span class="tt">vname</span>. This
+	variable will take the value <span class="tt">val0</span> by default, <span class="tt">val1</span>
+	if the participant chooses the first option, etc. <br />
+	This variable may then be used to define individualized access to
+	sheets or exams, by putting the word <span class="tt wims_code_variable">\vname</span> among the
+	restrictions of the sheet or exam.
+	In this case, it is possible to give the maximum number of participants allowed to choose
+	an option: each choice must begin by this number followed by <span class="tt wims_code_words">:</span>
+	For instance,
+<pre>
+\list{46:Seance 1 at 8.00,
+46:Seance 2 at 10.00,
+40:Seance 3 at 13.00}
+</pre>
+  Beware though, using the same technical variable in several votes may generate conflicts.
+  </dd>
+ <dt><span class="tt wims_code_variable">\textarea</span>
+ <dd>Textarea only when the vote is anonymous.
+	</dd>
+</dl>
+
+A vote may contain up to $max_parms choice fields.
+!tail
+!exit
+!endif
+
+!if generalinfo iswordof $wims_read_parm
+<ul>
+ <li><b>$wims_name_title</b> : the title of the vote.</li>
+ <li><b>$wims_name_Type</b>:
+  <ul>
+   <li><b>$name_anonymous </b>: in an anonymous vote nobody knows
+   who answered what (it is for instance impossible to go back
+   and double check what your own answer was.)
+</li>
+   <li><b>$name_trace with log files</b>: this type is similar to the anonymous type vote
+   except that the answers provided by a participant can be identified,
+   however  the identity of the participant is not revealed.</li>
+   <li><b>$name_nominative</b>:  each participant's answers can be consulted ( the "free response"
+   area cannot be used with this type of vote.)</li>
+</ul>
+ </li>
+ <li><b>$wims_name_Status</b>: refers to one of the statuses described below:
+     <ul>
+      <li><b>$name_0</b>: the vote can be modified, the participants cannot see it.</li>
+      <li><b>$name_1</b>: the vote cannot be modified, the participants can respond to the questions</li>
+      <li><b>$name_2</b>: the vote cannot be modified, the participants cannot respond to the questions </li>
+      <li><b>$name_3</b>: the vote cannot be modified, the participants cannot see the questions.</li>
+     </ul>
+ </li>
+ <li><b>$name_result</b>: if the results are published, the participants can consult
+ them after having voted, if not, only the administrator of the class can access the results.
+ <li><b>$name_whovote</b>: if this list is published, both the administrator of the class
+ and the participants can consult the list ( providing that there are enough participants who have voted),
+ if not, nobody can see who has voted.
+</ul>
+ !goto guidedmode
+!tail
+!exit
+!endif
+
+!if guidedmode iswordof $wims_read_parm
+:guidedmode
+Several modes are available:
+<ul><li>
+  <b>$name_free</b> :  you can create
+  a vote simply using the commands given in the help.
+  </li><li>
+!readproc adm/lang/sheetexam.phtml.$lang
+  <b>$name_accessvar</b>: with this form, you can allow registration in different time slots.
+   The technical variable then created variable will allow you for instance to define individual access
+   to sheets or exams. To do this, simply select
+  <span class="tt wims_code_words">$(name_allowtype[4])</span>.
+  </li><li>
+  <b>$name_group</b> : you can create groups. The system will ask you a variable name
+   (let's say you called it <span class="tt wims_code_variable">my_variable</span>. Using
+   it, you can then send emails or provide the photo board by group,
+   sort csv files obtained in the class according to group (provided <b> in this case </ b>
+   that you asked the variable <span class="tt wims_code_variable">var_my_variable</span>).
+  Other uses are planned.
+  </li>
+<li>Beware however, using the same technical variable in several votes may generate conflicts.</li></ul>
+
+Variable names must be different from variable names already used by WIMS (e.g.
+do not use <span class="tt wims_code_variable">exam1</span>, ... , <span class="tt wims_code_variable">sheet1</span>, ...,
+<span class="tt wims_code_variable">manual1</span>, ...).
+<br/>
+The models <span class="tt wims_code_words">$name_free</span> and <span class="tt wims_code_words">$name_group</span> are not available when the votes are shared with another class.
+!tail
+!exit
+!endif
+!tail
+

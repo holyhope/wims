@@ -1,0 +1,19 @@
+
+!set wims_form_method=file
+!form reply
+<input type="hidden" name="level" value="3" />
+
+!if $existing=$empty
+ $name_modefile1
+ !href cmd=reply&mode=normal $name_normal
+. $name_modefile2
+ !href cmd=reply&mode=raw $name_raw
+ .
+ <p>
+<label for="wims_deposit">$name_source</label>
+ <input id="wims_deposit" type="file" name="wims_deposit" />
+ </p>
+ <div class="wimscenter">
+<input type="submit" value="$name_sendfile" /></div>
+
+!formend

@@ -1,0 +1,29 @@
+# GetSheet
+# Fournit toutes les informations de la feuille qsheet (ainsi que la liste des exercices qu'elle contient)
+
+#Pour commencer, on verifie la classe
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+type=sheets
+!read scripts/check.proc
+!if $error!=$empty
+ !exit
+!endif
+
+sheet_properties=!lines2items $qproperties\
+
+sheet_properties = !singlespace $sheet_properties
+sheet_status=!item 1 of $sheet_properties
+sheet_expiration=!item 2 of $sheet_properties
+sheet_title=!item 3 of $sheet_properties
+sheet_description=!item 4 of $sheet_properties
+
+exocnt=!recordcnt $qfile
+
+option=!listintersect $option and $sheetdefs
+!if $option=$empty
+ option=$sheetdefs
+!endif

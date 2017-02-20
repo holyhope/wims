@@ -1,0 +1,50 @@
+!!! barre de progression !!!
+
+<hr class="wimscenter" size="4" width="80%" />
+  <table class="wimscenter" bgcolor="azure" border="3">
+    <tr>
+    !for i=1 to $etapesnb
+      !if $i<$etape
+        <td class="nowrap" bgcolor="wheat">
+	     <input type="radio" name="navig" value="$i" />
+	        <span class="color:blue"><small><< Etape $i</small></span>
+	     <br />
+	      <table>
+	        <tr><td class="nowrap" bgcolor="white">$(labels$(exo)[$i;])</td>
+	        </tr>
+              </table>
+        </td>
+      !endif
+      !if $i=$etape
+        <td class="nowrap" bgcolor="palegreen">
+	  <input type="radio" name="navig" value="$i" checked="checked" />
+          Etape $i
+	  <br />
+	      <table>
+	        <tr><td class="nowrap" bgcolor="white">$(labels$(exo)[$i;])</td>
+	        </tr>
+              </table>
+        </td>
+      !endif
+      !if $i>$etape
+        <td class="nowrap">
+          <span class="color:darkgray">Etape $i</span>
+        </td>
+      !endif
+    !next i
+    </tr>
+  </table>
+
+!if $etape=$etapesnb
+  <table class="wimscenter wimsborder" bgcolor="wheat">
+    <tr>
+     <td bgcolor="lightblue">
+       <input type="submit" value="Retour" />
+       !if $exalert!=$empty
+         <br />
+         $exalert
+       !endif
+     </td>
+   </tr>
+  </table>
+!endif

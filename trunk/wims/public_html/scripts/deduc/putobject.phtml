@@ -1,0 +1,26 @@
+!set n_=$[$wims_read_parm]
+!if $wims_read_parm=$empty or $n_<1
+ !set obj=$newobject
+ !set Obj=$newObject
+!else
+ !set obj=!item $n_+1 of $statusline
+ !set obj=!char 2 to -2 of $obj
+ !set Obj=!item $n_+1 of $statusLine
+ !set Obj=!char 2 to -2 of $Obj
+!endif
+
+!set a_=!char 1 of $Obj
+!distribute items <,>,= into lt,gt,eq
+!reset objisgoal
+!if $a_ isin $lt$gt
+ !if $a_=$lt
+  !set objisgoal=yes
+ !endif
+!endif
+
+!if $obj!=$empty
+ !htmlmath $obj
+!else
+ &nbsp;
+!endif
+

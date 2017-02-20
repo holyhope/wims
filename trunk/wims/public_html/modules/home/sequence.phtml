@@ -1,0 +1,175 @@
+!distribute items $wims_read_parm into i,j
+!default j=1
+!set seq_=!record $j of wimshome/log/classes/$wims_class/seq/.sequence$i
+!distribute line $seq_ into tis_,cos_,obj_,o_
+
+
+!if $o_<1
+  !exit
+!endif
+!set wlist=!record 0 of wimshome/log/classes/$wims_class/sheets/.weight
+!set TI=!defof sequence_Title in wimshome/log/classes/$wims_class/seq/.def
+
+<div id="wims_seq_$i" class="wims_seq">
+  !if $jquery_defined!=yes and $i > 1 and $seq=$empty
+   !read themes/_widgets/topback.phtml wims_seq_summary
+  !endif
+  <div class="wims_title_seq">
+    <span class="wims_seq_id">$TI $i:</span>
+    <span class="wims_title_item">$tis_</span>
+  </div>
+  <div class="wims_comment_item">$cos_</div>
+
+!reset seq_item
+!set tmp=!defof DF_SEVERITY in wimshome/public_html/bases/sys/define.conf
+!distribute words $tmp into tmp_w,tmp_s,tmp_ss
+
+<ul class="wims_work_list">
+!set dcnt=!itemcnt $obj_
+!for i_=1 to $dcnt
+  !distribute word $(obj_[$i_]) into type,num
+  !if $type=c
+    !set d_=!record $num of wimshome/log/classes/$wims_class/doc/.index
+    !distribute lines $d_ into s_,t_,bidon,bidon,bidon,o_,bidon,bidon,de_
+    !if $o_>0
+      !increase seq_item
+      <li class="wims_doc_item">
+        <span class="wims_seq_item_n">$seq_item</span>
+        !href module=adm/doc&job=read&doc=$s_&block=main&seq=$i $t_
+        <div class="wims_doc_desc">$de_</div>
+      </li>
+    !endif
+  !endif
+  !if $type=doc
+    !set d_=!record $num of wimshome/log/classes/$wims_class/doc/.docindex
+    !distribute lines $d_ into s_,t_,ti_,de_,o_,w_
+    !if $o_>0
+      !increase seq_item
+      <li class="wims_doc_item">
+        <span class="wims_seq_item_n">$seq_item</span>
+        !href module=$s_&$t_&seq=$i&name=$wims_name_sequence&wksheet=$w_  $ti_
+        <div class="wims_doc_desc">$de_</div>
+      </li>
+    !endif
+    !reset s_,t_,ti_,de_,o_
+  !endif
+
+  !if $type=sheet
+    !set s_=!record $num of wimshome/log/classes/$wims_class/sheets/.sheets
+    !set sevlist=!record 0 of wimshome/log/classes/$wims_class/sheets/.severity
+    !distribute lines $s_ into a_,t_,ti,de
+    !if $a_>=1 and $a_<=2
+      !set formula_list=!record 0 of adm/class/sheetformula
+      !set scoremax=!line 1 of $sevlist
+      !default scoremax=10
+      !set sev_$num=!line $num + 1 of $sevlist
+      !distribute word $(sev_$num) into w_$num,s,ss
+      !bound s between integer 0 and 6 default $tmp_s
+      !bound ss between integer 0 and 2 default $tmp_ss
+      !set f_$num=!item $s+1 of $formula_list
+      !set f_$num=!replace internal I by I$ss in $(f_$num)
+      !set pe=!line $num of $percents
+      !set try=!getscoretry sheet=$num
+      !set try=!text select 123456789 in $try
+      !increase seq_item
+      <li class="wims_sheet_item">
+        <span class="wims_seq_item_n">$seq_item</span>
+        !href module=adm/sheet&sh=$num&seq=$i $ti
+        <ul class="wims_sheet_info">
+          !if showshweight iswordof $class_option
+          <li class="wims_sheet_weight small">$wims_name_coeff <span class="sheet_weight_num">$(w_$num)</span></li>
+          !endif
+          !if $a_>=2
+            <li class="wims_user_sheet_expire small">$U_expired</li>
+          !else
+            !if showshexpire iswordof $class_option
+              <li class="wims_user_sheet_expire small">
+                !read misc/expire.phtml.$lang $t_
+              </li>
+            !endif
+          !endif
+        </ul>
+        <div class="wims_user_info">
+          !if $try!=$empty
+            !distribute words $pe into p1,p2,p3,p4
+            !distribute item $[$p1/100],$[$p2/10],$[$p3/100],$[$p4/100] into x0_,y_,x1_,x2_
+            !set ff_$num=!mathsubst Q=$y_ in $(f_$num)
+            !for sev=0 to 2
+              !set ff_$num=!mathsubst I$sev=$(x$(sev)_) in $(ff_$num)
+            !next
+            <span class="wims_sheet_score">
+              $(wims_name_thsheet[9]): $[ceil(100*$scoremax*$(ff_$num))/100]/$scoremax
+      !!      $(wims_name_thsheet[5]): $p1%,
+      !!      $(wims_name_thsheet[7]): $[$p2]/10,
+      !!      $(wims_name_thsheet[10]): $p3%,
+      !!      $(wims_name_thsheet[13]): $[$p4/10]/10
+            </span>
+          !endif
+        </div>
+
+        <div class="wims_sheet_desc">
+          !set cut=!detag $de
+          !set lim=100
+          !set cut=!char 1 to $lim of $cut
+          !set cutcnt=!wordcnt $cut
+          !set cutchar=!charcnt $cut
+          !if $cutchar = $lim
+            !set cutlim=$[$cutcnt-1]
+          !else
+            !set cutlim=$[$cutcnt]
+          !endif
+          !word 1 to $cutlim of $cut
+          !if $cutchar=$lim
+            !set wims_ref_class=wims_button_help smaller
+            !set wims_ref_title= Voir la description complete.
+            !href module=adm/sheet&sh=$num&seq=$i [...]
+          !endif
+        </div><!--wims_sheet_desc-->
+!read theme.phtml _widgets/userbar.phtml $num
+      </li><!--wims_sheet_item-->
+      !reset a_,t_,ti,de
+    !endif
+  !endif
+  !if $type=vote
+    !set v_=!record $num of wimshome/log/classes/$wims_class/vote/.votes
+    !distribute lines $v_ into a_,t_,ti,de_
+    !if $a_>=1 and $a_<=2
+      !increase seq_item
+      <li class="wims_vote_item">
+        <span class="wims_seq_item_n">$seq_item</span>
+        !href module=adm/vote&job=read&vote=$num&seq=$i $t_
+        <div class="wims_vote_desc">$de_</div>
+      </li>
+    !endif
+    !reset a_,t_,ti,de_
+  !endif
+  !if $type=exam
+    !set e_=!record $num of wimshome/log/classes/$wims_class/exams/.exams
+    !distribute lines $e_ into a_,ex_,du_,t_,de_
+    !if $a_>=1 and $a_<=2
+      !increase seq_item
+      <li class="wims_exam_item">
+        <span class="wims_seq_item_n">$seq_item</span>
+        !href module=adm/class/exam&exam=$num&seq=$i $t_
+        <span class="wims_user_exam_expire">
+          !if $a_>=2
+            $U_expired
+          !else
+            !if showexexpire iswordof $class_option
+              !read misc/expire.phtml.$lang $ex_
+            !else
+              &nbsp;
+            !endif
+          !endif
+        </span>
+        <div class="wims_exam_desc">$de_</div>
+      </li>
+    !endif
+    !reset a_,ex_,du_,nb_,t_,de_
+  !endif
+
+  !reset s_ v_ d_ e_
+!next i_
+</ul>
+</div>
+!reset tmp  tmp_w tmp_s tmp_ss

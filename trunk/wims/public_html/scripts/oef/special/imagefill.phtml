@@ -1,0 +1,120 @@
+!if $wims_read_parm=$empty
+ !exit
+!endif
+!if $wims_read_parm=help
+  !read help/$lang/special/imagefill.phtml
+  !exit
+!endif
+
+!set parm=!replace internal $	$, by , in $wims_read_parm
+!set parm=!replace internal $	$ by $ ; $ in $parm
+!set parm1=!row 1 of $parm
+
+!distribute items $parm1 into imgurl,bigsize,smallsize
+
+!set bigsize=!translate x, to $  $ in $bigsize
+
+!distribute words $bigsize into bigsizex,bigsizey
+!set ssize=!translate x, to $  $ in $smallsize
+!distribute words $ssize into ssizex,ssizey
+!set parm2=!row 2 to -1 of $parm
+!set parm2=!nonempty rows $parm2
+!set icnt=!rowcnt $parm2
+
+!if $printing=yes or $cmd=hint
+ <img src="$imgurl" alt="$imgurl" style="width:$(bigsizex)px;height:$(bigsizey)px;vertical-align:text-top" />
+ !exit
+!endif
+
+!set fill_reposition=yes
+!reset flist hlist
+!default fillcnt=0
+!set oldfillcnt=$[$fillcnt+1]
+!for t=1 to $icnt
+ !set l=!row $t of $parm2
+ !set l=!translate x to , in $l
+ !distribute item $l into n_,x_,y_,sizei
+ !default sizei=1
+ !set n_=!text select 0123456789()+-*/ in $n_
+ !set n_=$[$n_]
+ !bound n_ between integer 1 and 100 default $
+ !if $n_!=$empty and r$n_ notitemof $embedded and\
+    $(replytype$n_) iswordof clickfill dragfill
+  !default wims_fill_type=$(replytype$n_)
+  !set embedded=!append item r$n_ to $embedded
+  !set flist=!append item $n_ to $flist
+  !set i=$n_
+  !set inputsize=$smallsize $sizei
+  !read anstype/fill.inc noshow
+  !set hlist=$hlist<input type="hidden" name="reply$n_" value="" />
+  !set fill_namelist=!append item $oldfillcnt to $fill_namelist
+  !increase fillcnt
+  !set serial_$fillcnt=$i
+  !set reposition_$fillcnt=$x_,$y_
+ !endif
+!next t
+
+<a id="fill$oldfillcnt"><img src="gifs/transparent.gif" alt="transparent"
+style="width:$(bigsizex)px; height:$(bigsizey)px;vertical-align:text-top" /></a>
+!set thisjs=var f_bigimage$oldfillcnt=new DynLayer();\
+f_bigimage$oldfillcnt.setAnchor({topA:'fill$oldfillcnt',leftA:'fill$oldfillcnt',\
+stretchH:$bigsizex,stretchV:$bigsizey});\
+dynapi.document.addChild(f_bigimage$oldfillcnt);\
+f_bigimage$oldfillcnt.setHTML('<img src="$imgurl" style="width:$(bigsizex)px; height:$(bigsizey)px" alt="" />');
+!if $q_form=yes
+ $hlist
+ !set fillafter_js=$fillafter_js\
+$thisjs
+!else
+ !distribute item 40C040,FF4040 into colorr_good,colorr_bad
+ !set colorr_ana=C8C8E0
+ !distribute item 20,15 into Sx,Sy
+ !set cc1='<table border="0" cellpadding="0" cellspacing="0" style="width:$(ssizex)px;height:$(ssizey)px"><tr><td align="center">'
+ !set cc2='<\/td><\/tr><\/table>'
+ !set wims_ins_alt=none
+ !read js/dynapi3.phtml
+ <script type="text/javascript">
+ /*<![CDATA[*/
+ dynapi.onLoad(function() {
+  $thisjs
+ !for c=$oldfillcnt to $fillcnt
+  !set i=$(serial_$c)
+  !set embcnt=!positionof item r$i in $embedded
+  !default reply_$i=$(reply$i)
+  !set p_=$(reply_$i)
+  !set tt=!word 1 of $(replygood$i)
+  !if $tt!=?analyze
+    !set cl=#$(colorr_$(diareply$i))
+  !else
+   !if transparent iswordof $wims_fill_option
+     !set cl=
+   !else
+     !set cl=#$colorr_ana
+   !endif
+    !set embedded_analyze=!append item $i to $embedded_analyze
+!!    !set embedded_bracket=$embedded_bracket [$embcnt]
+  !endif
+  !set replyname$i=[$embcnt]
+  !distribute item $(reposition_$c) into rx,ry
+  var f_l$c=new DynLayer();
+  var f_t$c=new DynLayer();
+  f_l$c.setAnchor({topA:'fill$oldfillcnt',leftA:'fill$oldfillcnt',
+    left:$rx,top:$ry,stretchH:$sizei*$ssizex,stretchV:$ssizey});
+  dynapi.document.addChild(f_l$c);
+  f_l$c.setBgColor('$cl');
+  !set ss=!replace internal " by \" in $(reply$i)
+  !set ss=!replace internal , by &nbsp; in $(reply$i)
+  !set ss=!replace internal ' by \' in $ss
+  f_l$c.setHTML($cc1+'$ss'+$cc2);
+  !if $tt!=?analyze
+   f_t$c.setAnchor({topA:'fill$oldfillcnt',leftA:'fill$oldfillcnt',
+    left:$[$rx+$ssizex-4],top:$ry,stretchH:$Sx,stretchV:$Sy});
+   dynapi.document.addChild(f_t$c);
+   f_t$c.setHTML('<small>[$embcnt]<\/small>');
+   f_t$c.setZIndex(100);
+  !endif
+ !next c
+ });
+ /*]]>*/
+ </script>
+!endif

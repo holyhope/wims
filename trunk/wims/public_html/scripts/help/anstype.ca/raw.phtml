@@ -1,0 +1,30 @@
+ <b>Texte brut.</b>
+ (nom: <span class="tt wims_code_words">raw</span>)
+ <br/> Un texte à comparer avec la bonne réponse donnée. 
+  Les options suivantes permettent de contrôler comment le texte
+ doit être transformé avant d'être comparé. 
+Si aucune option n'est indiquée, seuls les espaces en début et 
+ en fin du texte sont enlevés avant comparaison. 
+Il faut donc faire très attention en utilisant ce type de réponses : 
+par défaut, la réponse est considérée comme fausse même s'il y a 
+un espace de différence. Ce type est destiné aux auteurs désirant
+analyser eux-même la réponse. 
+<p>
+
+!set p=anstype.$lang/raw
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td class="tt wims_code_words">
+!line 1 of $l_
+    </td><td>
+!line 2 of $l_
+   </td>
+  !next
+$table_end

@@ -1,0 +1,53 @@
+!set methtit=Add a number to the two sides of an inequality
+!set methenv=ZZ QQ RR
+!set methparmtype=number,parm inequality
+!set methhelp=This method transforms an inequality of the form \(a > b)\
+ into an equivalent one \(a + n > b + n), where \(n) is a number.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ Add the number
+ !read deduc/methparm.phtml 1,15
+ to the two sides of the inequality
+ !read deduc/methparm.phtml 2
+
+!exit
+:check
+ !distribute items $methparmobj2 into data,left,sign,right
+ methexp=Add \(methparm1) to the two sides of \($left $sign $right)
+
+ !read deduc/sub/simplify $left + ($methparm1)\
+	$right + ($methparm1)
+ !distribute lines $out into newleft,newright
+ !if $newleft=$empty or $newright=$empty
+  error=bad_data
+  !exit
+ !endif
+ newsign=$sign
+ newobject2=$newleft $newsign $newright
+ oldobject=2
+ 
+ contextlist=$ct_Always,\
+	$ct_Onlywhen the number added is positive,\
+	$ct_Onlywhen the inequality is strict,\
+	$ct_Onlywhen the inequality is not strict
+
+ !if $askresult>1
+  !read deduc/sub/simplify $left - ($methparm1)\
+	$right - ($methparm1)
+  !distribute lines $out into badleft, badright
+  badsign=!translate internal <> to >< in $newsign
+ 
+  resultlist=$newobject2,\
+	$newleft $newsign $badright,\
+	$badleft $newsign $newright,\
+	$newleft $badsign $newright,\
+	$newleft $badsign $badright
+ !endif
+
+!exit
+

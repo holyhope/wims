@@ -1,0 +1,75 @@
+!!transfert in home/var.proc
+!!!set tmp=!defof cdt_nbdate in wimshome/log/classes/$wims_class/cdt/.def
+!!!if $tmp>0
+!!   !set exist_cdt=yes
+!!!endif
+<!-- _widgets/usermenumodubox_accordion.phtml -->
+<div id="wimsmenumodubox" class="usermenumodubox accordion">
+ <h2 class="menu_title">
+  $wims_name_myinfo
+ </h2>
+ <$div0 class="wimsmenu">
+  !read themes/_widgets/userprop.phtml
+  !if $auth_method notwordof cas ldap php
+   <$div1 class="menuitem">
+    !read ./adm/oneitem.phtml passwd,1,module=adm/class/passwd&job=user
+   </$div1>
+  !endif
+  <$div1 class="menuitem">
+    !read ./adm/oneitem.phtml pref,1,module=adm/light&phtml=useropts.phtml.$lang
+  </$div1>
+
+  !ifval $n+$m>0 and $is_interclass!=yes
+    !read themes/_widgets/userscore.phtml
+  !endif
+ </$div0>
+
+ <h2 class="menu_title">
+  $wims_name_classactivity
+ </h2>
+ <$div0 class="wimsmenu">
+  <$div1 class="menuitem">
+    $supmail
+  </$div1>
+  !if $exist_cdt=yes
+    !read themes/_widgets/menuitem.phtml cdt,1,module=adm/class/cdt
+  !endif
+  !read themes/_widgets/userforum.phtml
+ </$div0>
+
+  <h2 class="menu_title">
+    $wims_name_otherclasses
+  </h2>
+ <$div0 class="wimsmenu">
+  !read themes/_widgets/extlink.phtml
+   <$div0 class="menuitem">
+    !if $wims_superclass!=$wims_class and $wims_superclass!=$empty and $auth_method isitemof $auth_method_list
+      !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=authparticipant&auth_user=$ext_login&class=$wims_superclass
+    !else
+      !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=participant
+    !endif
+   </$div0>
+ </$div0>
+
+ !if $wims_user=supervisor
+  <h2 class="menu_title">
+    SUPERVISOR
+  </h2>
+  <$div0 class="wimsmenu">
+   <$div1 class="menuitem">
+    !read ./adm/oneitem.phtml backteacher,1,$
+   </$div1><!--end menuitem-->
+  </$div0>
+ !endif
+
+</div><!--end wimsmenumodubox-->
+!if $jquery_defined=yes
+    <script type="text/javascript">
+        /*<![CDATA[*/ jQuery(function(jq) {
+            jq( ".usermenumodubox.accordion" ).accordion({
+              heightStyle: "content"
+            });
+        });
+    </script>
+!endif
+<!-- end _widgets/usermenumodubox_accordion.phtml -->

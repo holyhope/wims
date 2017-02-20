@@ -1,0 +1,78 @@
+!!hotspot questions
+!set n=$counter
+<table id="exercise" class="exercise">
+    <tr>
+    <td class="exercise_t">
+	!if $(question$n) != $empty
+	    $(question$n)
+	    <br />
+	!endif
+	!if $(formula$n) != $empty
+	    !insmath $(formula$n)
+	    <br />
+	!endif
+	!if $exotext=$empty
+	    $exotext
+	!endif
+    </td>
+    !if $make_tr = 1
+    </tr><tr>
+    !endif
+    !if $image=2
+	<td>
+	    <table>
+		<tr>
+	    !if $draw=1
+		<th>
+		!set ins_attr = ismap
+    	        !href cmd=reply&$no_name
+		!set insdraw_size=$xsize,$ysize
+	        !insdraw $var1
+		</a>
+		</th>
+		<th>
+		!set ins_attr = ismap
+    		!href cmd=reply&$no_name
+	        !set insdraw_size=$XSIZE,$YSIZE
+		!insdraw $var2
+		</a>
+		</th>
+	    !endif
+	    !if $plot=1
+		<th>
+	        !set ins_attr = ismap
+    		!href cmd=reply&$no_name
+	        !set insplot_set=$(image_settings$n)
+		!insplot $var1
+	        </a>
+		</th>
+    		<th>
+		!set ins_attr = ismap
+    		!href cmd=reply&$no_name
+		!set insplot_set=$(image_settings$n)
+		!insplot $var2
+		</a>
+		</th>
+	    !endif
+		</tr>
+	</table>
+	</td>
+    !else
+    <td class="exercise_c">
+	!set ins_attr = ismap 
+    	!href cmd=reply&$no_name
+	!if $draw=1
+	    !set insdraw_size=$xsize,$ysize
+	    !insdraw $(image$n)
+	!endif
+	!if $plot=1
+	    !set insplot_set=$(image_settings$n)
+	    !insplot $(image$n)
+	!endif
+    </td>
+    !endif
+    </tr>
+</table>
+
+!exit
+

@@ -1,0 +1,31 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+
+slib_parms=3\
+,[data]\
+,a\
+,b
+
+slib_author=Sophie, Lemaire; Bernadette, Perrin-Riou
+slib_example=[0.2,0.4,0.7],6,8
+
+slib_require=octave
+!exit
+
+:proc
+slib_out=
+
+!distribute item $wims_read_parm into slib_data,slib_a, slib_b
+
+slib_data=!declosing $slib_data
+slib_c=$[$slib_b^(-1/$slib_a)]
+
+!!deprecated syntax
+!!slib_out=!exec octave weibull_inv([$slib_data], $slib_a,$slib_c)
+slib_out=!exec octave wblinv([$slib_data], $slib_c, $slib_a)
+
+slib_out=!words2items $slib_out
+
+slib_out=!trim $slib_out
+

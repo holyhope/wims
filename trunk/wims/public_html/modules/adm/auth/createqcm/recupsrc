@@ -1,0 +1,78 @@
+!!! fichier de récupération de code source !!!
+
+!mexec catsrc.sh
+
+!defread wimshome/sessions/$wims_session/tempsrc
+
+!if $toef_var4 notitemof 1,2,3
+  exalert=$(alerts[6;])
+  !exit
+!endif
+
+!for i=1 to $toef_varcnt
+  toef_var$(i)=!translate ¶ to $\
+  $ in $(toef_var$(i))
+  toef_var$(i)=!replace internal ? by &#63; in $(toef_var$(i))
+!next i
+
+### type1
+!if $toef_var4=1
+  titre=$toef_var1
+  auteur=$toef_var2
+  imel=$toef_var3
+  exo=$toef_var4
+  obsrecord=$toef_var5
+  propsrecord=$toef_var6
+  propsrepList=$toef_var7
+  ckchnb=$toef_var8
+  fixchnb=$toef_var9
+  borng=$toef_var10
+  bornd=$toef_var11
+  chnb=$toef_var12
+  enonceR=$toef_var13
+  chbox_u_radio=$toef_var14
+  indicList_obj=$toef_var15
+!endif
+
+### type2
+!if $toef_var4=2
+  titre=$toef_var1
+  auteur=$toef_var2
+  imel=$toef_var3
+  exo=$toef_var4
+  obsrecord=$toef_var5
+  foncsrecord=$toef_var6
+  foncsrepList=$toef_var7
+  foncstypList=$toef_var8
+  enonceR=$toef_var9
+  indicList_fonc=$toef_var10
+!endif
+
+### type3
+!if $toef_var4=3
+  titre=$toef_var1
+  auteur=$toef_var2
+  imel=$toef_var3
+  exo=$toef_var4
+  obsrecord=$toef_var5
+  propsrecord=$toef_var6
+  propsrepList=$toef_var7
+  ckchnb=$toef_var8
+  fixchnb=$toef_var9
+  borng=$toef_var10
+  bornd=$toef_var11
+  chnb=$toef_var12
+  foncsrecord=$toef_var13
+  foncsrepList=$toef_var14
+  foncstypList=$toef_var15
+  enonceR=$toef_var16
+  indicList_obj=$toef_var17
+  indicList_fonc=$toef_var18
+  chbox_u_radio=$toef_var19
+!endif
+
+### reinitialisation
+chexo=1
+prefixdir=Dirtyp$(exo)
+!read $prefixdir/init
+!exit

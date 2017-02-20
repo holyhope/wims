@@ -1,0 +1,120 @@
+<script type="text/javascript">
+//<![CDATA[
+<!-- no validator  -->
+"use strict";
+ function read_canvas(){if( typeof canvas_scripts === 'undefined' ){ return null;};var script_len = canvas_scripts.length;var draw_reply = "";var found_result = false;for(var p = 0 ; p < script_len ; p++){var fun = eval("read_canvas"+canvas_scripts[p]);if( typeof fun === 'function'){var result = fun();if( result  && result.length != 0){if( script_len == 1 ){return result;};found_result = true;draw_reply = draw_reply +"["+p+"]="+result+"\n";};};};if( found_result ){return draw_reply;}else{return null;};};
+ function read_dragdrop(){if( typeof canvas_scripts === 'undefined' ){ return null;};var script_len = canvas_scripts.length;var dragdrop_reply = "";var found_result = false;for(var p = 0 ; p < script_len ; p++){var fun = eval("read_dragdrop"+canvas_scripts[p]);if(typeof fun === 'function'){var result = fun();if( result && result.length != 0 ){if( script_len == 1 ){return result;};found_result = true;dragdrop_reply = dragdrop_reply+"["+p+"]="+result+"\n";};};};if( found_result ){return dragdrop_reply;}else{return null;};};
+!if $goback=1
+    !set r=!nospace $(reply$n)
+    !!! this is used for filling_in the inputfields myinput[n] after a return: the inputfields are present in a variable-string and thus can "not be filled" by wims... note: if $embed=1 ... WIMS will fill in the rejected answer...see below [id=myinput]
+    function refill(){var hi="$r";if(hi.length !=0){hi=hi.split(',');for(var i=0;i<hi.length;i++){document.getElementById("myinput"+i).value=hi[i];}}}
+!endif
+    <!-- do not use "' in description -->
+    var descr_list="$description";
+    var descr_cnt = 30;
+    var description = make_description(descr_list,descr_cnt);
+
+    function dontknow(){
+	myConfirm('$dontknow','?','$wims_ref_name','$session','$module','$counter','$nok_send_color');
+    }
+//]]>
+</script>
+<!-- standard the drag & drop library is included: images (static;fly;gnuplot [id=image$$n]) may be added by setting the "dhtml" variable -->
+<script type="text/javascript" src="$jsdir/wz_dragdrop.js"></script>
+<table id="exercise" class="exercise" ><!-- begin table id="exercise" -->
+    <tr>
+    <td class="exercise_t">
+    !if $(question$n) != $empty
+	$(question$n)
+    !endif
+    !if $(formula$n) != $empty
+	<table class="exercise">
+	    <tr>
+	    <td class="exercise_m">
+	    !if $display=1234
+		!insmath $$$$ $(formula$n) $$$$
+	    !else
+		!insmath $(formula$n)
+	    !endif
+	    </td>
+	!if $embed=1
+	    <td class="exercise_m">
+	    <!-- to read these inputfields use document.getElementById('myinput0') in tailormade javascript.js -->
+		!if $wims_user=supervisor
+		    <textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(answer$n)</textarea>
+		!else
+		    <textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(reply$n)</textarea>
+		!endif
+	    </td>
+	!endif
+	    </tr>
+	</table>
+    !endif
+    !if $exotext != $empty
+	<div id="exotext" style="display:block">$exotext</div>
+    !endif
+    </td>
+    !if $image=1 
+        !if $make_tr=1
+	    </tr>
+	    <tr>
+        !endif
+	<td class="exercise_t">
+	!if $draw=1
+	    !set ins_attr= id="myimage"
+	    !set insdraw_size=$xsize,$ysize
+	    !insdraw $(image$n)
+	!else
+	    !if $plot=1
+		!set ins_attr= id="myimage"
+		!set insplot_set=$(image_settings$n)
+		!insplot $(image$n)
+	    !else
+		$(image$n)
+	    !endif
+	!endif
+	</td>
+    !else
+	!if $applet=1
+    	    !if $make_tr=1
+		</tr>
+		<tr>
+	     !endif
+	<td class="exercise_t">
+	    $(object$n)
+	</td>
+	!endif
+    !endif
+    !if $make_tr=1
+	</tr>
+	<tr>
+    !endif
+    <td class="exercise_c"><!-- begin module_dir/js/*.js -->
+	!read $javascript
+    </td><!-- end module_dir/js/*.js -->
+    </tr>
+</table><!-- end table id="exercise" -->
+
+!if $inputs=yes
+    <div id="send_buttons" class="embedded_central">
+	<input type="button" id="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
+	<input type="button" id="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
+    </div>
+!else
+    !if $inputs=no
+	<div id="send_buttons" class="embedded_central">
+	    <input type="button" id="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
+	</div>
+    !endif
+!endif
+$dhtml
+!if $goback=1
+    !!! after the inputelements are in the DOM-tree: fill-in the previous answers
+    <script type="text/javascript">
+    //<![CDATA[
+	<!-- no validator  -->
+	try{document.onload=refill();}catch(e){}
+    //]]>
+    </script>
+!endif
+!exit

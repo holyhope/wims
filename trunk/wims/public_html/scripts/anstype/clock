@@ -1,0 +1,79 @@
+option:button=" " clocktype=" " init=" "
+!set xysize=!line 1 of $oef_applet_option
+!set replygood$i=!lines2rows $(replygood$i)
+rep$i=!replace internal : by , in $(reply$i)
+!distribute items $(rep$i) into hour,min,sec
+!set parm3=!line 1 to -1 of $oef_applet_option
+!set line=!line -1 of $parm3
+!set parm4=!replace internal line number -1 by clock 0,0,100,$hour,$min,$sec,$line in $parm3
+!set parmjs=!getopt button in $(replyoption$i)
+!set parmjs=!declosing $parmjs
+
+!if $wims_read_parm=nocompare
+ !read oef/canvasdraw.phtml $parm4
+  reply_$i=$canvasdraw_out
+ !exit
+!endif
+good=!replace internal : by , in $(replygood$i)
+!set parm2=!replace internal line number -1 by clock 0,0,100,$good,$line in $parm3
+score=0
+number=0
+!for j=1 to 3
+  !if $(parmjs[$j])!=0
+    l_=!item $j of $(rep$i)
+    !increase number
+    !if $(good[$j])=$l_
+      sc=!append item 1 to $sc
+      score=$[$score+1]
+    !else
+      sc=!append item 0 to $sc
+    !endif
+  !else
+     sc=!append item x to $sc
+  !endif
+!next
+m_result$i=$sc
+sc=!positionof item 0 in $sc
+
+!if $score=$number
+  score=1
+!else
+  score=$[min(1,ceil(10*$score/$number)/10)]
+!endif
+
+!if $score=1
+  diareply$i=good
+  !increase freegot
+  anscol=green
+!else
+  !if $score>=1/$number and split iswordof $(replyoption$i)
+    partialgood$i=yes
+    diareply$i=good
+    freegot=$[$freegot+$score]
+    anscol=orange
+  !else
+    diareply$i=bad
+    anscol=red
+  !endif
+!endif
+
+!read oef/canvasdraw.phtml $xysize\
+$parm4
+
+!if $canvasdraw_idclass!=$empty
+  reply_$i=<style type="text/css">\
+#$canvasdraw_idclass {border: 1px solid $anscol;}\
+</style>\
+$canvasdraw_out
+!else
+  reply_$i=$canvasdraw_out
+!endif
+reply__$i=&nbsp;
+!if $score <1
+  !read oef/canvasdraw.phtml $xysize\
+$parm2
+  replyGood$i=$canvasdraw_out
+!else
+  replyGood$i=&nbsp;
+!endif
+noshow$i=yes

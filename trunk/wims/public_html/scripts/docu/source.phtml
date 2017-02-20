@@ -1,0 +1,62 @@
+!nocache
+<h1 class="wimscenter">$tit</h1>
+
+!if $titb=$empty
+ <p>
+ $name_noncreate2
+ </p>
+ !exit
+!endif
+
+!if $datetest<0
+ <p>
+ $name_noread
+ </p>
+ !exit
+!endif
+
+!if $datetest>0
+ <p>
+ $name_expired
+ </p>
+ !exit
+!endif
+
+<h3>$titb ($name_src)
+<span class="smaller">
+ [
+ !href cmd=reply&job=read $n_formatted
+ ]</span>
+</h3>
+
+<pre wrap>
+!mexec scripts/cat.sh $module_dir/$docdir/$doc/src/$block
+</pre>
+
+<hr />
+!if $wims_class!=$empty and $wims_user!=supervisor
+ !exit
+!endif
+<table class="wimsnoborder">
+<tr><td align="left" class="small">
+!href cmd=reply&job=read $n_formatted
+&nbsp; $n_by
+!if $email=$empty
+ $author
+!else
+ !mailurl $email $author
+!endif
+!! &copy;
+</td>
+!if help notin $wims_session
+ <td align="right" class="small">
+ !href module=home WIMS
+  @
+ <a href="http://$httpd_HTTP_HOST/">$httpd_HTTP_HOST</a>
+ </td>
+!endif
+</tr></table>
+<div class="wimstech">
+$n_lastmod $datm
+
+</div>

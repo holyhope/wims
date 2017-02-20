@@ -1,0 +1,50 @@
+
+# Variables used: defaultformula in adm/class/userscore/var.proc
+!! defaultformula in wimshome/log/classes/$wims_class/sheets/.severity
+
+!! Output variables:
+!!
+!! f_$i: formula of sheet $i.
+!! w_$i: weight of sheet $i.
+!! totweight: total sum of weights.
+
+!set totweight=0
+!set totsheets=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+!set totexams=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
+!set examweights=!record 0 of wimshome/log/classes/$wims_class/exams/.eseverity
+!set formula_list=!record 0 of adm/class/sheetformula
+!set tmp=!defof DF_SEVERITY in wimshome/public_html/bases/sys/define.conf
+!distribute words $tmp into tmp_w,tmp_s,tmp_ss
+!for i_=1 to $totsheets
+ !set f_=!line $i_ of $defaultformula
+ !distribute word $f_ into w_$i_,s,ss
+ !bound w_$i_ between integer 0 and 100000 default $tmp_w
+ !bound s between integer 0 and 6 default $tmp_s
+ !bound ss between integer 0 and 2 default $tmp_ss
+!!  f_$i_=!line $s+1 of max($$x$(ss)_,$$y_)\
+$$x$(ss)_\
+$$x$(ss)_*$$y_^0.3\
+$$x$(ss)_*$$y_^0.5\
+$$x$(ss)_*$$y_\
+$$x$(ss)_^2*$$y_\
+($$x$(ss)_*$$y_)^2
+
+!set f_$i_=!record 0 of adm/class/sheetformula
+!set f_$i_=!item $s+1 of $(f_$i_)
+!set f_$i_=!replace internal I by I$ss in $(f_$i_)
+ !if $i_ isitemof $activesh
+  !set totweight=$[$totweight+$(w_$i_)]
+ !endif
+ !set s_$i_=$s
+ !set ss_$i_=$ss
+!next i_
+
+!for i_=1 to $totexams
+ !set ew_$i_=!line $i_ of $examweights
+ !default ew_$i_=1
+ !if $i_ isitemof $activexams
+  !set totweight=$[$totweight+$(ew_$i_)]
+ !endif
+!next i_
+
+!reset tmp tmp_s tmp_ss tmp_w

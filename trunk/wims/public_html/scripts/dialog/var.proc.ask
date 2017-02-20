@@ -1,0 +1,20 @@
+ask=!item 1 of $ask
+!if $ask notitemof $remlist
+ ask=
+ !exit
+!endif
+
+comment=
+!read $deffile info
+!if $(weight$ask)<0
+ badask=yes
+ badname=!line 1 of $(parm$ask)
+ !default comment=!line 4 of $(parm$ask)
+ ask=
+ !exit
+!endif
+
+gotlist=!append item $ask to $gotlist
+remlist=!listcomplement $ask in $remlist
+ask=
+

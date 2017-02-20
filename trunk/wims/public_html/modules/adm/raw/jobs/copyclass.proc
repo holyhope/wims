@@ -1,0 +1,88 @@
+!!CopyClass
+!! permet de dupliquer sa classe, sans les travaux effectues par les apprenants
+
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+!readdef $classdeffile
+
+!if $class_superclass != $empty
+  # cas ou on duplique une sous-classe
+
+  nb_subclass=!recordcnt wimshome/log/classes/$class_superclass/.subclasses
+
+  #On cherche alors le prochain sous-id disponible
+  :new_sub_id
+  !advance nb_subclass
+
+  new_class=$class_superclass/$nb_subclass
+
+  classdeffile=wimshome/log/classes/$new_class/.def
+  test=!defof class_defined in $classdeffile
+  !if $test=yes
+  	# si une sous-classe a ete supprimee, il se peut que $nb_subclass ne corresponde plus a la prochaine classe disponible. On avance donc jusqu'a trouver un id libre.
+    !goto new_sub_id
+  !endif
+
+!else
+  # Cas ou on duplique autre chose qu'une sous-classe
+  # On cherche alors un id disponible
+    :recode
+    cd=!randint 10^6,10^7-1
+     test=!defof class_defined in wimshome/log/classes/$new_class/.def
+    !if $test=yes
+      !goto recode
+    !endif
+
+!endif
+
+# On duplique alors $qclass
+!sh cp -R $wims_home/log/classes/$qclass $wims_home/log/classes/$new_class
+
+# puis on supprime les travaux effectués dans la classe dupliquée
+!sh cd $wims_home/log/classes/$new_class\
+  rm -f .log\
+  rm -f .def\
+  rm -f .log.auth\
+  rm -f .userlist\
+  rm -f .userlist_external\
+  rm -f .scoreavg\
+  rm -f scoreavg\
+  rm -f .grades\
+  rm -f .users/*\
+  rm -f $wims_home/log/classes/$new_class/score/*\
+  rm -f $wims_home/log/classes/$new_class/noscore/*\
+
+
+!! bizarrement, cette ligne ne fonctionne pas bien si elle est ajoutee aux precedentes
+!sh cd $wims_home/log/classes/$new_class\
+    rm -Rf examlog
+
+
+# la date de creation de la classe est automatiquement la date du jour.
+class_creation=!char 1 to 8 of $wims_now
+class_creation=!eval $class_creation
+
+class_creator=$httpd_REMOTE_ADDR
+
+cl_expiration=$[$class_creation+10000]
+!if $class_expiration < $cl_expiration
+    class_expiration = $cl_expiration
+!endif
+
+# On recrée le fichier .def avec des dates de creation /expiration mises à jour.
+!writefile wimshome/log/classes/$new_class/.def !set class_connections=$class_connections \
+!set class_defined=yes\
+!set class_creation=$class_creation
+
+!for t in $classdefs
+ !appendfile wimshome/log/classes/$new_class/.def !set class_$t=$(class_$t)
+!next t
+
+!if $class_superclass != $empty
+  log = !sh cd $wims_home/log/classes; ./.build-index $class_superclass
+!else
+  log = !sh cd $wims_home/log/classes; ./.build-index $new_class
+!endif

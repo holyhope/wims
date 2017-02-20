@@ -1,0 +1,46 @@
+!readproc jobs/supervisors.proc
+!if $cnt1>0
+ $table_header
+ <caption class="nowrap">$name_othergestion</caption>
+ $table_hdtr
+ <th>$wims_name_Login</th><th>$wims_name_firstname</th><th>$wims_name_lastname</th><th>$wims_name_action</th>
+ </tr>
+ !for i=1 to $cnt1
+  !set l=!line $(list1[$i]) of $teacherlist
+  !distribute items $l into last,first,log
+  $table_tr
+  <td class="tt">$log</td>
+  <td>$first</td><td>$last</td>
+  <td>
+  !set wims_ref_class=wims_button wims_warning
+  !href cmd=reply&actype=del&more=$log $wims_name_erase
+  </td></tr>
+ !next i
+ $table_end
+!endif
+!if $cnt2>0 or ($job=first and $teachercnt!=0)
+  <ul class="wims_nopuce">
+  !if $cnt2>0
+    <li class="spacer">
+    !form reply
+    <input type="hidden" name="actype" value="add" />
+    <input type="submit" value="$name_addgestion" />
+    !if $job!=first
+ (
+  !defof class_description in $classdir1/$($job)/.def
+ )
+    !endif
+    !set wims_html_mode=li
+    !formcheckbox more list $list2 prompt $prompt
+    !formend
+    </li>
+  !endif
+  !if $job=first and $teachercnt!=0
+    <li class="spacer">
+    !set wims_ref_class=wims_button
+    !href cmd=reply&job=addteacher $wims_name_addteacher
+    </li>
+  !endif
+  </ul>
+!endif
+!reset more actype

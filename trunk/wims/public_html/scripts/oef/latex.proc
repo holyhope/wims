@@ -1,0 +1,84 @@
+!set name_Solution=Solution
+!if $wims_developer= and $wims_supervisor= and $wims_user!=supervisor
+ !exit
+!endif
+!set filename=sheet
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!else
+  !exit
+!endif
+
+:begin
+!set latex_title=$module_title
+!readproc oef/togetfile.proc $filename.tex new\
+\documentclass{article}\
+\usepackage{amsmath,amssymb,amsfonts,amsthm}\
+%%put 0 to hide solutions\
+\def\hassolution{1}\
+\usepackage[latin1]{inputenc}\
+\usepackage[T1]{fontenc}\
+%\usepackage{xlop}\
+\usepackage{xkeyval,array,multirow}\
+\usepackage{tikz}\
+\usepackage[np,autolanguage]{numprint}\
+\theoremstyle{plain}\
+\usepackage{comment}\
+\newtheorem{statement}{$name_exo}\
+\theoremstyle{definition}\
+\newtheorem{solution}{$name_Solution}\
+\def\mytitle#1{\centering{#1}}\
+\def\RR{\mathbb{R}}\
+\def\QQ{\mathbb{Q}}\
+\def\CC{\mathbb{C}}\
+\def\ZZ{\mathbb{Z}}\
+\def\NN{\mathbb{N}}\
+\def\yes{1}\
+\if\hassolution\yes\
+ \
+\else\
+ \excludecomment{solution}\
+\fi\
+\begin{document}\
+\setcounter{page}{1}\
+\onecolumn\
+\mytitle{$latex_title}\
+
+!exit
+:exo
+
+!readproc $deffile latex
+!set wims_backslash_insmath1=$wims_backslash_insmath
+!set wims_backslash_insmath=no
+!set latex_src=!replace internal $  $ by $\
+$ in $latex
+!set latex_src=!replace internal $ $\ by $\
+$\  in $latex_src
+
+!set latex_src=!replace internal &#36; by $ $$$$$$$$$$$$$$$$ $  in $latex_src
+!if $latex_src!=
+  !set latex_exists=1
+!readproc oef/togetfile.proc $filename.tex append\
+\
+\
+$latex_src
+!reset latex latex_src
+!endif
+
+!set wims_backslash_insmath=$wims_backslash_insmath1
+!exit
+:end
+
+!readproc oef/togetfile.proc $filename.tex append\
+\
+\
+\end{document}
+
+!exit
+:print
+!if $name_latexprint=
+  !read oef/$lang/names
+!endif
+<a href="wims.tex?session=$session&+cmd=getfile&+special_parm=$filename.tex">
+$name_latexprint
+</a>

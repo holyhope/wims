@@ -1,0 +1,24 @@
+<!-- _widgets/doctailbox.phtml -->
+<div id="wimstailbox">
+ <div class="wimstail">
+  <div class="tailitem">
+   !href module=home WIMS
+   @
+   <a href="http://$httpd_HTTP_HOST/">$httpd_HTTP_HOST</a>
+  </div>
+
+  <div class="tailitem">$n_by
+   !if $email=$empty
+    $author
+   !else
+     !set authorcnt=!itemcnt $(author[;1])
+     !for a = 1 to $authorcnt
+      !mailurl $(email[$a]) $(author[$a;1]) $(author[$a;2])
+      &nbsp;
+     !next
+   !endif
+   $n_lastmod $datm
+  </div>
+ </div><!--end of wimstail-->
+</div><!--end of wimstailbox-->
+<!-- _widgets/doctailbox.phtml -->

@@ -1,0 +1,514 @@
+!read adm/language lang/names.phtml
+
+!read adm/language adm/lang/external_auth.phtml
+!read adm/css.phtml
+!header1
+
+!read adm/title.phtml 1\
+WIMS $httpd_HTTP_HOST\
+$name_title
+
+!if $cltype iswordof 2 4 and $classcnt>0
+ <p class="wimscenter">
+ ($name_reserved)
+ </p>
+!endif
+!if $error!=$empty
+ <div class="wims_msg alert">
+ !read lang/msg.phtml.$modu_lang
+ </div>
+ <p>
+ !set wims_ref_class=wims_button
+ !href cmd=new&step=1 $wims_name_back2
+ </p>
+ !goto end1
+!endif
+
+!if $classcnt=0
+  $name_warning1
+ !goto end
+!endif
+
+!if $class=$empty
+ $name_inscription
+
+ $table_header
+ !if $ctype=0
+  $table_hdtr
+  <th>$wims_name_name</th><th>$wims_name_nameteacher</th><th>$wims_name_level</th><th>$wims_name_Language</th>
+  <th>$name_remainig</th><th>$wims_name_Status</th>
+ !else
+  <caption>$institution_name</caption>
+  $table_hdtr
+  <th>$wims_name_name</th><th>$wims_name_Supervisor</th><th>$wims_name_level</th>
+  <th>$wims_name_Status</th></tr>
+ !endif
+ !for cl in $classlist
+  !reset class_supervisor,class_email,class_level,class_lang,class_institution,class_description,class_password,class_limit
+  !defread wimshome/log/classes/$cl/.def
+  !distribute char $class_level into l1,l2
+  !set part=!recordcnt wimshome/log/classes/$cl/.userlist
+  $table_tr<td>
+  !if $ctype=0
+   !href module=$module&cmd=reply&class=$cl $class_institution<br />$class_description
+  !else
+   !href module=$module&cmd=reply&class=$cl $class_description
+  !endif
+  </td><td>
+  !mailurl $class_email $class_supervisor
+  </td>
+  !if $class_level=$empty
+   !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
+    <td>$pname</td>
+  !else
+    <td>$(level$l1)<br />$name_year $l2</td>
+  !endif
+  !if $ctype=0
+   <td>$(lang_$class_lang)</td>
+   <td style="text-align:right">
+   !if $class_limit-$part>$site_dispo
+    $site_dispo
+   !else
+    $[$class_limit-$part]
+   !endif
+   </td>
+  !endif
+  !if $class_password=$empty
+   <td>$(name_statut[1])</td>
+  !else
+   <td>$(name_statut[2])</td>
+  !endif
+  </tr>
+ !next cl
+ $table_end
+
+ <span class="wims_warning">$wims_name_warning</span>. $name_remark1
+ !goto end1
+!endif class=empty
+
+!read adm/class/classname.phtml $description\
+$institution
+
+!! if class_mixed_external_auth not 0 show message in and class_external_auth
+!! and when class_mixed_external_auth=2 also disable the registration form
+!! please check! thanks!
+!default authreg=0
+!if $cltype=1
+  !set authreg=!defof class_mixed_external_auth in wimshome/log/classes/$class_parent/.def
+  !set extauth=!defof class_external_auth in wimshome/log/classes/$class_parent/.def
+  !set usuperv=!defof user_supervisable in wimshome/log/classes/$class_parent/.users/$wims_user
+!endif
+!if $cltype=0
+  !set super_mixed_auth=!defof class_mixed_external_auth in wimshome/log/classes/$class_superclass/.def
+  !if $super_mixed_auth=2
+    !set authreg=$super_mixed_auth
+    !set extauth=!defof class_external_auth in wimshome/log/classes/$class_superclass/.def
+  !else
+    !set authreg=$class_mixed_external_auth
+    !set extauth=!defof class_external_auth in wimshome/log/classes/$class/.def
+  !endif
+  !! do we really need this for $cltype=0?
+  !set usuperv=!defof user_supervisable in wimshome/log/classes/$class/.users/$wims_user
+!endif
+!! need to check if supervisor in order to allow user management by supervisor
+!! need to check if user_supervisable for direct access from module=home
+!!  anything else?
+!if $wims_user!=supervisor and $usuperv!=yes and $authreg iswordof 1 2 and $cltype iswordof 0 1
+  <div class="wims_external_auth">
+  $extauth
+  </div>
+  !if $authreg=2
+    !goto end1
+  !endif
+!endif
+
+!if $password!=$empty and $passverify=$empty
+ !if $cltype iswordof 2 4
+  $name_classessss
+  !href module=adm/class/classes&type=authparticipant&class=$class $classname
+ !else
+  $name_classessss
+  !href module=adm/class/classes&type=authparticipant&class=$class $classname
+ !endif
+ !if $cltype iswordof 4 2
+  $name_warning_protected
+  !if $classcnt>0
+  $name_inscription_student
+  !href cmd=new&module=$module&class=$class&subclass=yes $name_inyourclass
+.
+  !endif
+ !else
+  $name_isprotected
+ !endif
+ <p> $name_writepasswd
+ !if $cltype iswordof 2 4
+  $name_asateacher.
+ !else
+  $name_asaparticipant.
+ !endif
+ </p>
+
+ !form reply
+ <input type="hidden" name="step" value="1" />
+ <fieldset class="property_fields halfwidth blockcenter">
+   <legend>$name_title</legend>
+   <div class="field box">
+    <label for="classpass">$wims_name_Password</label>
+    <input type="password" name="classpass" id="classpass" required="required" placeholder="$wims_name_Password"/>
+   </div>
+   <div class="wimscenter wimsform">
+    <input type="submit" value="$wims_name_send" />
+   </div>
+ </fieldset>
+!formend
+ <span class="wims_warning">$wims_name_warning</span>.
+ !if $cltype iswordof 2 4
+  $name_access1
+ !else
+  $name_access2
+ !endif
+ $name_obtainpasswd
+(
+ !if $cltype iswordof 2 4
+  !mailurl $smail $name_write_adm
+ !else
+  !mailurl $smail $wims_name_wsup
+ !endif
+).
+ !if $cltype iswordof 2 4
+ <p>
+ <span class="wims_warning">$wims_name_warning</span>. $name_warning_direct
+  !href cmd=new&module=$module&class=$class&subclass=yes $name_inyourclass
+.
+  </p>
+ !endif
+ !goto end1
+!endif
+
+!if $step=$empty or $step<2
+ !if $ssclass!=$empty and $wims_class!=$ssclass and $wims_user=supervisor
+  !form reply
+  <input type="hidden" name="step" value="1" />
+  <label for="search">$name_research:</label>
+  <input size="20" name="search" id="search" value="$search" />
+  <input type="submit" value="$wims_name_tosave" />
+
+ !formend
+  !default foundcnt=0
+  !if $foundcnt>0
+   $table_header
+   <caption>$name_clickname</caption>
+   $table_hdtr<th>$wims_name_name</th><th>$wims_name_Login</th></tr>
+   !for i=1 to $foundcnt
+    !set l=!line $i of $found
+    !distribute item $l into l_,f_,L_
+    $table_tr<td>
+    !href cmd=reply&step=2&login=$L_ $l_, $f_
+    </td>
+    <td>$L_</td></tr>
+   !next i
+   $table_end
+   !goto end1
+  !endif
+  !if $search!=$empty and $foundcnt=0
+  <p> ($name_nofound) </p>
+  !endif
+  $name_newparticipant
+ !else
+  !if $idp_method notitemof $idp_method_list
+    !if $wims_user=supervisor
+      $name_inscription21
+    !else
+      $name_inscription2
+    !endif
+  !endif
+ !endif
+  !form reply
+!! check user supervisor??
+
+ !if $idp_method isitemof $idp_method_list and $auth_user$user_auth!=$empty and $wims_user!=supervisor
+   <input type="hidden" name="step" value="3" />
+$name_inscription4:
+<p>
+ !formcheckbox agreecgu list yes prompt <label for="agreecgu0">$name_cgu</label>
+   [
+  !href target=wims_mhelp cmd=help $name_seecgu
+  ]
+</p>
+<div class="wimscenter wimsform"><input type="submit" value="$wims_name_tosave" /></div>
+   !goto end1
+ !endif
+!!FIXME  $auth_user=$empty
+ !if $wims_user=supervisor and $auth_user=$empty
+
+!! teacher registering a student with idp ldap
+    !if $idp_method isitemof ldap
+    <span class="wims_warning">$name_login_external ($name_idp_external)</span>:
+
+!!!FIXME check the value of step
+        <input type="hidden" name="step" value="3" />
+        <fieldset class="property_fields halfwidth blockcenter">
+        <legend>$name_title</legend>
+          <div class="field box">
+            <label for="user_auth">$wims_name_Login ($name_external)</label>
+           <input size="16" name="user_auth" id="user_auth" value="$user_auth" />
+          </div>
+          !set ct=!defof class_type in wimshome/log/classes/$class/.def
+        !if $wims_user=supervisor and $class=$wims_class and $ct iswordof 2 4
+         <div class="field box">
+          <label for="utype">$name_accounttype</label>
+          !default utype=0
+          !set wims_ref_class=wims_formradio
+          !formradio utype list 0,1 prompt $wims_name_namestudent,$wims_name_nameteacher
+         </div>
+        !endif
+          <div class="wimscenter wimsform">
+            <input type="submit" value="$wims_name_tosave" />
+          </div>
+         </fieldset>
+
+!formend
+     !goto end1
+    !endif
+!! teacher registering a student with external auth without idp ldap
+    !if $auth_method isitemof $auth_method_list
+    <input type="hidden" name="step" value="3" />
+    <fieldset class="property_fields halfwidth blockcenter">
+      <legend>$name_title</legend>
+      <div class="field box halfwidth">
+       <label for="lastn">$wims_name_lastname</label>
+       <input size="20" name="lastn" id="lastn" value="$lastn" />
+      </div>
+      <div class="field box halfwidth">
+       <label for="firstn">$wims_name_firstname</label>
+       <input size="20" name="firstn" id="firstn" value="$firstn" />
+      </div>
+      <div class="field box">
+       <label for="user_auth">$wims_name_Login </label>
+       <input size="16" name="user_auth" id="user_auth" value="$user_auth" />
+       <div class="formHelp">$name_external,
+        <span class="wims_warning">$name_login_external_warning</span>
+       </div>
+      </div>
+      <div class="field box">
+       <label for="email">$wims_name_email</label>
+       <input type="email" size="60" name="email" id="email" value="$email" />
+       <div class="formHelp">$name_optional</div>
+      </div>
+      <div class="wimscenter wimsform">
+       <input type="submit" value="$wims_name_tosave" />
+      </div>
+    </fieldset>
+
+
+!formend
+     !goto end1
+    !endif
+ !endif
+ !if $auth_user=$empty or $auth_method notitemof $auth_method_list
+ !!read adm/language lang/names.phtml
+  <input type="hidden" name="step" value="2" />
+ !else
+  <input type="hidden" name="step" value="3" />
+ !endif
+  <fieldset class="property_fields halfwidth blockcenter">
+   <legend>$name_title</legend>
+   <div class="field box halfwidth">
+    <label for="lastn">$wims_name_lastname</label>
+    <input size="20" name="lastn" id="lastn" value="$lastn" />
+   </div>
+   <div class="field box halfwidth">
+    <label for="firstn">$wims_name_firstname</label>
+    <input size="20" name="firstn" id="firstn" value="$firstn" />
+   </div>
+ !if $wims_user=supervisor
+   !reset login
+ !endif
+ !if ($auth_user=$empty or $auth_method notitemof $auth_method_list) or $wims_user=supervisor
+   <div class="field box">
+    <label for="login">$wims_name_Login</label>
+    <input size="16" name="login" id="login" value="$login" />
+    !if $auth_method notitemof $auth_method_list or $wims_user!=supervisor
+       <div class="formHelp">$name_warning_login</div>
+    !endif
+   !if $auth_method isitemof $auth_method_list and $wims_user=supervisor
+    !reset login_ext
+     <label for="login_ext">$wims_name_Login</label>
+     <input size="16" name="login_ext" id="login_ext" value="$login_ext" />
+     <div class="formHelp">$name_external
+      <span class="wims_warning">$name_login_external_warning</span>
+     </div>
+   !endif
+   </div>
+   !if $auth_method notitemof $auth_method_list
+    <div class="field box">
+      <label for="pass">$wims_name_Password</label>
+      <input type="password" size="16" name="pass" id="pass" required="required"/>
+      <div class="formHelp">$name_passwd_warning</div>
+     </div>
+   !endif
+ !else
+    <div class="field box">
+     <label for="login">$wims_name_Login</label>
+     <input size="16" name="login" id="login" value="$login" readonly="readonly" />
+     <div class="formHelp">$name_internal</div>
+    </div>
+    <div class="field box">
+      <label for="login_ext">$wims_name_Login</label>
+      <input size="16" name="login_ext" id="login_ext" value="$login_ext" readonly="readonly" />
+      <div class="formHelp">$name_external, <span class="wims_warning"></span></div>
+   </div>
+ !endif
+   <div class="field box">
+    <label for="email">$wims_name_email</label>
+    <input type="email" size="60" name="email" id="email" value="$email" />
+    <div class="formHelp">$name_optional</div>
+   </div>
+ !if $wims_user=supervisor and $class=$wims_class and $cltype iswordof 2 4
+   <div class="field box">
+    <label for="utype">$name_accounttype</label>
+   !default utype=0
+   !set wims_ref_class=wims_formradio
+    !formradio utype list 0,1 prompt $wims_name_namestudent,$wims_name_nameteacher
+   </div>
+ !endif
+ !if $regvars_cnt>0
+    !read regvars.phtml
+ !endif
+ !if $wims_user!=supervisor
+   <div class="field box">
+   !set wims_ref_class=wims_formradio
+   !formcheckbox agreecgu list yes prompt <label for="agreecgu0">$name_cgu</label>
+   [
+  !href target=wims_mhelp cmd=help $name_seecgu
+  ]
+   </div>
+ !endif
+ <div class="wimscenter wimsform"><input type="submit" value="$wims_name_tosave" /></div>
+ </fieldset>
+
+
+!formend
+ !goto end1
+!endif
+
+!if $step=2
+ !if $wims_user!=supervisor
+   $name_hello, $name_student!<p>
+   $name_inscription3
+ !else
+   $name_inscription31
+ !endif
+  <span class="tt wims_login">$login</span>. </p>
+ !if $email=$empty
+ <p> $name_emptyemail </p>
+ !else
+<p>$wims_name_email: <span class="tt wims_address">$email</span> </p>
+ !endif
+
+ !form reply
+ <input type="hidden" name="step" value="3" />
+  <fieldset class="property_fields halfwidth blockcenter">
+  <legend>$name_title</legend>
+    <div class="field box">
+     <label for="pass2">$name_passwd_exact</label>
+     <input type="password" size="16" name="pass2" id="pass2" required="required" />
+    </div>
+    <div class="wimscenter wimsform">
+     <input type="submit" value="$wims_name_send" />
+    </div>
+  </fieldset>
+!formend
+ !goto end1
+!endif
+
+!if $step=3
+!! needed for $name_student after !endif ?
+  !readproc adm/class/userdef class,$class,$login
+  !set firstn=!defof user_firstname in $userdef
+  !set lastn=!defof user_lastname in $userdef
+ !if $wims_user=supervisor
+  !set login_wims=!defof user_external_auth in $userdef
+  !default login_wims=$Login
+  $name_studentadded
+  <span class="tt wims_login">
+  !href module=adm/class/usermanage&job=userprop&getuser=$Login $login_wims
+  </span>.
+  !if $wims_supertype iswordof 2 4
+   !readproc adm/gateway/transfer $login test
+   !if $transfer_test>0
+    <p>
+    $name_otheractivities
+    !href module=adm/class/usermanage&job=transfer&getuser=$login $name_transfer1
+    </p>
+   !endif
+  !endif
+  !set wims_menu_items=!append line usermanage,1,module=adm/class/usermanage\
+ addstudent,1,module=$module&step=1\
+ to wims_menu_items
+  !goto end
+ !endif
+ <p>$name_hello, $name_student!</p>
+ <p>$name_welcome
+ <span class="tt wims_login">$login</span>. </p>
+ $name_youcan
+ !read adm/class/initclass $class,auth
+
+
+ !if $wims_class!=$empty
+   !if $auth_method iswordof cas
+     !set url = $wims_ref_name?module=adm/class/classes&type=authparticipant&class=$class
+     !read adm/codeurl $url
+     !set class_cas_auth=!getdef class_cas_auth in wimshome/log/classes/$ssclass/.def
+     <a class="wims_button" href="$class_cas_auth/login?service=$script_out">$wims_name_Enter</a>
+   !else
+     !if $auth_method iswordof ldap php
+       !set tmp=!getdef user_external_auth in wimshome/log/classes/$ssclass/.users/$login
+       !href module=adm/class/classes&type=authparticipant&class=$class&auth_user=$tmp $name_gotowork
+      !else
+        !href module=adm/class/classes&type=authparticipant&class=$class&auth_user=$login $name_gotowork
+      !endif
+   !endif
+!!FIXME what about php here
+!! Pourquoi est-ce different : dans le second cas ouvre une autre session, demande de nouveau le mot de passe ???
+ !else
+   !if $auth_method isitemof cas
+      !set url = $wims_ref_name?module=adm/class/classes&type=authparticipant&class=$class
+      !read adm/codeurl $url
+      !set class_cas_auth=!getdef class_cas_auth in wimshome/log/classes/$ssclass/.def
+      <a class="wims_button" href="$class_cas_auth/login?service=$script_out">$wims_name_Enter</a>
+   !else
+     !if $auth_method iswordof ldap
+        !set tmp=!getdef user_external_auth in wimshome/log/classes/$ssclass/.users/$login
+        !href module=adm/class/classes&type=authparticipant&class=$class&auth_user=$tmp $name_gotowork
+     !else
+        <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&+module=adm/class/classes&+type=authparticipant&+class=$class&+auth_user=$login">
+ $name_gotowork</a> ($name_bookmark).
+     !endif
+   !endif
+ !goto end
+ !endif
+!endif
+
+:end1
+
+!if $wims_user=supervisor
+ !if $step=1
+ !set wims_menu_items=!append line back2,1,module=adm/class/usermanage\
+to $wims_menu_items
+ !endif
+ !goto end
+!endif
+
+!if $cltype iswordof 2 4
+ !set wims_menu_items=!append line classlist,1,module=adm/class/classes&type=supervisor\
+to $wims_menu_items
+!else
+ !set wims_menu_items=!append line classlist,1,module=adm/class/classes&type=participant\
+to $wims_menu_items
+!endif
+:end
+!tail
+
+!reset step, subclass
+

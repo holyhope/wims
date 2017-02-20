@@ -1,0 +1,101 @@
+!read adm/class/classname.phtml $wims_classname\
+$wims_institutionname
+!read adm/title.phtml 1\
+$classname\
+$wims_name_config
+
+$name_param_change
+&nbsp;
+!set wims_ref_class=wims_button_help
+ !href target=wims_mhelp cmd=help $wims_name_help
+
+!form reply
+ <input type="hidden" name="job" value="config" />
+<fieldset class="property_fields blockcenter">
+  <legend>$wims_name_config</legend>
+  <div class="field box">
+    <label for="cf_title">$wims_name_title</label>
+    <input size="60" name="cf_title" id="cf_title" value="$cf_title" />
+  </div>
+  <div class="field box">
+    <label for="cf_description">$wims_name_Description</label>
+    <textarea name="cf_description" id="cf_description" cols="60" rows="5">
+      $cf_description</textarea>
+  </div>
+  <div class="field box">
+   <label>$name_color</label>
+    !set wims_ref_class=wims_button_help float_right
+    !href target=wims_mhelp cmd=help&special_parm=color $wims_name_help
+    !default livret_scorecolor=$wims_scorecolor
+    <table class="wimscenter wimsborder">
+     <tr>
+      <td style="background-color: $(livret_scorecolor[1])">$name_nowork</td>
+      <td><input type="color" value="$(livret_scorecolor[1])" name="cf_scorecolor1" size="8" /></td>
+      <td>$name_nowork</td>
+     </tr>
+     !readproc proc/legend.proc
+     !let cpt=11
+     !let cpt2=0
+     !for k=2 to 11
+       <tr>
+        <td style="background-color: $(livret_scorecolor[$k]);text-align:center">$[($k-1)*10]%</td>
+        <td><input type="color" value="$(livret_scorecolor[$k])" name="cf_scorecolor$k" size="8" /></td>
+        !if $cpt<$(numcom[$cpt2])
+          !increase cpt
+        !else
+          !let cpt=1
+          !increase cpt2
+          <td rowspan="$(numcom[$cpt2])">
+            <input type="text" value="$(livret_legende$k)" name="cf_legende$cpt2" size="25" />
+            </td>
+	!endif
+       </tr>
+     !next k
+    </table>
+  </div>
+  <div class="field box">
+   <label for="cf_show2user">$name_configtext6</label>
+   !let cf_show2user=$class_showlivret
+   !formselect cf_show2user list yes,no prompt $wims_name_yes,$wims_name_no
+  </div>
+  <div class="field box">
+    <label for="cf_showempty">$name_configtext7</label>
+   !let cf_showempty=$livret_showempty
+    !formselect cf_showempty list yes,no prompt $wims_name_yes,$wims_name_no
+  </div>
+  <div class="field box">
+   <label for="cf_scoreoption">$name_configtext4</label>
+   !formselect cf_scoreoption list class,livret prompt $name_listscoreoption
+  </div>
+  <div class="field box">
+   <label for="cf_scoreview">$name_configtext5</label>
+   !formselect cf_scoreview list -1,0,2,3,4 prompt $name_listscoreview
+  </div>
+  <div class="field box">
+    <label for="cf_minac">$name_configtext3</label>
+    <input type="text" name="cf_minac" id="cf_minac" value="$livret_minac" size="5" />
+  </div>
+  <div class="field box">
+   <label for="">$name_score_modify</label>
+   <br />
+   !for i in $asheets
+    <input type="checkbox" name="cf_nonactivesheet" value="$i"
+    !if $i isitemof $cf_nonactivesheet
+     checked="checked"
+    !endif
+    />
+    !let t=!record $i of  wimshome/log/classes/$wims_class/sheets/.sheets
+    $i :
+    !line 3 of $t
+    <br />
+   !next i
+   </div>
+  <div class="wimscenter wimsform">
+   <input type="submit" name="cf_set" value="$wims_name_tosave" />
+ $
+   <input type="submit" name="cf_abandon" value="$wims_name_giveup" class="wims_secondary_button" />
+  </div>
+</fieldset>
+!formend
+
+!reset cf_nonactivesheet,cf_set,cf_title,cf_description

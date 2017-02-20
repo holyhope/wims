@@ -1,0 +1,26 @@
+!goto $wims_read_parm
+
+:def
+title=Simplify
+synonyme=evaluate simplify
+input=function
+!exit
+
+:proc
+
+formula=!rawmath $formula
+
+maxima_header=expon:3; expop:3; factlim:6; prederror: false;\
+	maxnegex:20; maxposex:20; ratfac:true; keepfloat:true;
+result=!exec maxima fullratsimp($formula);
+
+!exit
+
+:output
+
+!htmlmath $formula
+ =
+!insmath $result
+ .
+!exit
+

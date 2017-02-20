@@ -1,0 +1,64 @@
+<!-- Begin of Nikaia/visitor.phtml -->
+!! WIMS main entrance page theme.
+!nocache
+!if $module!=home
+ !exit
+!endif
+
+!! yet useful ??
+!!set wims_name_browse=$N_browse2
+
+!set home_theme=yes
+!set table_colors=$wims_ref_bgcolor,$wims_ref_bgcolor
+</div>
+
+<div id="wimsfrontpage">
+	<div id="wimsbodybox">
+		<div id="wimspagebox">
+
+			<div class="wimsbody">
+
+				!read themes/_widgets/manager.phtml
+
+				<!--Contenu de la page d'accueil-->
+
+    			<!--Recherche exercices-->
+    			!read themes/$wims_theme/widgets/search_engine.phtml
+    			<!--Recherche classes-->
+    			!read themes/$wims_theme/widgets/search_classe.phtml
+
+				<br class="clearall"/>
+
+				!!<!--Recherche avancée exercices-->
+				!!read themes/$wims_theme/lang/home.phtml.fr
+
+				!if $s_category=V
+				 <!--Exemples de contenus-->
+				 !read ./front.phtml
+				!else
+				 <!--Résultats recherche exercices-->
+				 !read ./result.phtml
+				!endif
+
+			</div><!--end wimsbody-->
+		</div><!--wimspagebox-->
+
+		!set wims_show_stat=!tolower $wims_show_stat
+
+	</div><!--wimsbodybox-->
+
+    !! User opts
+    !set wims_tail_home = !append line pref,4,module=adm/light&phtml=useropts.phtml.$lang,pref to $wims_tail_home
+    !increase $wims_tail_home_n0
+
+    !distribute items ul,li into div0,div1
+	!read themes/_widgets/visitormenubox.phtml
+    !reset div0 div1
+	!read themes/_widgets/tailbox.phtml
+
+ </div><!--wimsfrontpage-->
+
+
+ </body>
+</html>
+<!-- end of Nikaia/visitor.phtml -->

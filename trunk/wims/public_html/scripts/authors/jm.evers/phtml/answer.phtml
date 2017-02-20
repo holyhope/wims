@@ -1,0 +1,178 @@
+!set wims_texsize=$mytexsize
+!set n=$counter
+!if $showanswer=0
+    $finalresult
+    !! to ensure playback of the exam is possible
+    !if $wims_user=supervisor
+	<span class="schaersvoorde_alarm">Alert: these results are only visible for the supervisor</span>
+	<table id="answer" class="answer">
+	!for n=1 to $total_exos
+	    <tr>
+	    <td class="answer_t">
+		!if $total_exos >1
+		    $questionnumber <b>$n</b>)
+		    <br />
+		!endif
+		$(question$n)
+		!if $(formula$n) !=$empty
+		    <br />
+		    !insmath $(formula$n) 
+		!endif
+		!if $(texanswer$n) != $empty
+		    <hr />
+		    <div style="display:block;color:green">
+		    !insmath $(texanswer$n)
+		    </div>
+		!endif
+		!if $(textanswer$n) != $empty
+		    <br />
+		    <hr />
+		    <div style="display:block;color:green">
+			$(textanswer$n)
+		    </div>
+        	!endif
+	    </td>
+	    <td class="answer_t">
+		$youranswer
+		!if $(reply$n) != $empty
+		    <br />
+		    !if $multiimage=1
+			!if $(reply$n) = ?
+			    $dontknow
+			!else
+			    !if $plot=1
+				!insplot $(reply$n)
+			    !else
+				!if $draw=1
+				    !insdraw $(reply$n)
+				!endif
+			    !endif
+			!endif
+		    !else	
+			!if $math=1
+			    !insmath $(reply$n)
+			!else
+			    $(reply$n)
+			!endif
+		    !endif
+		!else
+		    $dontknow
+		!endif
+	    </td>
+	    </tr>
+	!next n
+	</table>
+    !else
+    !set correct=!record 112 of $remarkdir/commonremarks.$taal
+     <table id="answer" class="answer">
+	!for n=1 to $total_exos
+	<tr>
+	<td class="answer_t">
+	    !if $total_exos >1
+		$questionnumber <b>$n</b>)
+		<br />
+	    !endif
+	    $correct <span style="color:green">$(answer$n)</span>
+	</td>
+	<td class="answer_t">
+	 $youranswer :
+	 <br />
+	 $(reply$n)
+	</td>
+	</tr>
+	!next n
+    </table>
+    !endif
+!else
+    <table id="answer" class="answer">
+    !for n=1 to $total_exos
+	<tr>
+	<td class="answer_t">
+	!if $total_exos >1
+	    $questionnumber <b>$n</b>)<br />
+	!endif
+	$(question$n)
+	!if $(formula$n) !=$empty
+	    <br />
+	    !if $display = 1234
+		!insmath $$$$ $(formula$n) $$$$
+	    !else
+		!insmath $(formula$n)
+	    !endif
+	!endif
+	!if $(texanswer$n) != $empty
+	    <hr class="schaersvoorde_div" />
+	    <div style="display:block;color:green">
+		!insmath $(texanswer$n)
+	    </div>
+	!endif
+	!if $(textanswer$n) != $empty
+	    <br />
+	    <hr class="schaersvoorde_hr" />
+	    <div style="display:block;color:green">
+		$(textanswer$n)
+	    </div>
+    	!endif
+	</td>
+	!if $(image$n) != $empty
+	    <td class="answer_t">
+		!if $plot=1
+		    !set insplot_set=$(image_settings$n)
+		    !insplot $(image$n)
+		!else
+		    !if $draw=1
+			!set insdraw_size=$(image_settings$n)
+			!insdraw $(image$n)
+		    !endif
+		!endif
+	    </td>
+	!endif
+	!if $(object$n)!= $empty
+	    <td class="answer_t">
+		$(object$n)
+	    </td>
+	!endif
+	<td class="answer_t">
+	    $youranswer
+	!if $(reply$n) != $empty
+	    <br />
+	    !if $math=1
+		!insmath $(reply$n)
+	    !else
+		<kbd>
+		    $(reply$n)
+		</kbd>
+	    !endif
+	!else
+	    $dontknow
+	!endif
+	<hr />
+	!if $goodbadsign>0
+	    $(remark$n)
+	!endif
+	</td>
+	</tr>
+    !next n
+    </table>
+    $finalresult
+!endif
+
+!ifval $try >0
+    <p style="text-align:left">
+    !set s=!record 87 of $remarkdir/commonremarks.$taal
+	<span class="schaersvoorde_alarm">
+	    $s
+	</span>
+    </p>
+!endif
+!exit
+
+
+
+
+
+
+
+
+
+

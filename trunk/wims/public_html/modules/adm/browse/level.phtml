@@ -1,0 +1,75 @@
+!read adm/title.phtml 3\
+$title
+
+!form new
+<input type="hidden" name="module" value="home" />
+<input type="hidden" name="browse_job" value="level" />
+
+$table_header
+$table_tr
+<th>$wims_name_level</th>
+!for i=1 to 6
+  <th>$name_year $i</th>
+ !next i
+<th>$name_category</th></tr>
+ $table_tr
+<th>$name_primary</th>
+ !for i=1 to 6
+  <td>
+  <input type="checkbox" name="search_keywords" value="levelE$i"
+  !if E$i=$thislevel
+   checked="checked"
+  !endif
+  /></td>
+ !next i
+ <td>
+ !formradio search_category list A prompt \
+		$name_A
+ </td></tr>$table_tr<th>$name_secondary</th>
+ !for i=1 to 6
+  <td>
+  <input type="checkbox" name="search_keywords" value="levelH$i"
+  !if H$i=$thislevel
+   checked="checked"
+  !endif
+  /></td>
+ !next i
+ <td>
+ !formradio search_category list X prompt $name_X
+ </td>
+</tr>$table_tr<th>$name_university</th>
+ !for i=1 to 5
+  <td>
+  <input type="checkbox" name="search_keywords" value="levelU$i"
+  !if U$i=$thislevel
+   checked="checked"
+  !endif
+  /></td>
+ !next i
+ <td>-</td>
+  <td>
+ !formradio search_category list T prompt $name_T
+ </td></tr>$table_tr<th>$name_graduate</th>
+  <td class="nowrap" style="text-align:center;" colspan="6">
+  --- <input type="checkbox" name="search_keywords" value="levelG"
+  !if G=$thislevel
+   checked="checked"
+  !endif
+  /> ---
+  </td><td>
+!formradio search_category list R prompt $name_R
+</td></tr>$table_tr<th>$name_research</th>
+  <td class="nowrap wimscenter" colspan="6">
+  --- <input type="checkbox" name="search_keywords" value="levelR"
+  !if R=$thislevel
+   checked="checked"
+  !endif
+  /> ---
+  </td><td></td></tr>
+$table_end
+<div class="wimscenter wimsform">
+<input type="submit" value="$wims_name_search" />
+</div>
+
+!formend
+

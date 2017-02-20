@@ -1,0 +1,69 @@
+<hr style="width:35%" />
+
+!read Exindex
+!set exocnt=!itemcnt $exolist
+!set Askresult=0
+!set Askcontext=0
+!if $exocnt<1
+ Désolé, aucun exercice n'est disponible sous ce module pour l'instant. 
+ Revenez plus tard!
+ !exit
+!endif
+!if $exocnt=1
+ Ce module contient en ce moment un seul exercice, <b>
+ !item 1 of $titlelist
+ </b>.
+ !set exoo=!item 1 of $exolist
+ !href cmd=new&module=$module&exo=$exoo Essayez-le.
+ !exit
+!endif
+
+!form new
+<input type="hidden" name="module" value="$module" />
+<table class="wimscenter wimsnoborder"><tr>
+!set special_parm=!trim $special_parm
+!if $special_parm2=select and $special_parm!=$empty
+ <td>Exercices contenant<br/>
+ <em><span style="color:blue">$special_parm</span></em>&nbsp;:</td><td>
+!else
+ <td>Choisissez les exercices&nbsp;:</td><td>
+!endif
+!read deduc/select.phtml
+</tr><tr><td>Niveau de sévérité<td>
+!set qcmlevel=3
+!formselect qcmlevel from 1 to 9
+</td></tr><tr><td>Demander les conditions <br/>
+d'application des méthodes
+</td><td>
+!formselect Askcontext list -1,0,1 prompt Jamais, D'après les exercices, Toujours
+</td></tr><tr><td>Demander le résultat <br/>
+des méthodes
+</td><td>
+!formselect Askresult list -1,0,1 prompt Jamais, D'après les exercices, Toujours
+!read introhook.phtml
+</td></tr></table>
+<p class="wimscenter wimsform">
+<input type="submit" value="$wims_name_work" />
+</p>
+
+!formend
+
+!if $exocnt>10
+ !form intro
+ <input type="hidden" name="special_parm2" value="select" />
+ <input type="hidden" name="module" value="$module" />
+ Sélectionner les titres avec le mot
+ <input size="12" maxlength="12" name="special_parm" value="$oldparm" />
+ <input type="submit" value="OK" />
+
+ !formend
+!endif
+
+<b>Remarques</b>. Les exercices proposés seront pris aléatoirement parmi
+vos choix (ou parmi tous les exercices disponibles si votre choix est vide).
+!if * isin $titlelist
+ <p>Les exercices marqués par un * sont en général plus difficiles que les
+ autres.
+ </p>
+!endif
+

@@ -1,0 +1,149 @@
+Questo strumento permette di creare esercizi OEF che quindi vanno inseriti in un modulo OEF.
+Sono generalmente composti di due parti
+<ul>
+<li>il file di codice (oef) che viene creato automaticamente a partire
+dai parametri inseriti nel menu di Quicktool</li>
+<li>il file di dati che contiene gli elementi (domande o altre risorse)
+degli esercizi e che quindi devono essere formattati in modo da essere 
+interpretati correttamente da WIMS. L'utente deve creare a parte questi
+file di dati (e caricarli in Modtool come indicato nei menu relativi). 
+I file di dati in generale contengon più "insiemi" di elementi relativi
+agli esercizi che chiameremo da qui in poi "dati" (ad esempio domande, 
+testi da riempire, parole da confrontare, etc.).
+In generale un file contiene numerosi insiemi di dati (più numerosi sono
+i dati, più variazioni della domanda saranno disponibili) e sono 
+separti dal simbolo dei due-punti : posto all'inizio della prima riga
+dell'insieme di dati.
+
+<pre>
+&#58;inizio del primo insieme di dati
+dato
+dato
+dato
+fine del primo insieme di dati
+
+&#58;inizio del secondo insieme di dati
+data
+data
+data
+fine del secondo insieme di dati
+
+
+&#58;inizio del terzo insieme di dati
+data
+data
+data
+fine del terzo insieme di dati
+</pre>
+</li>
+</ul>
+<p>
+Un file di testo (<span class="tt">.txt</span>), file audio (audio (<span class="tt">.mp3</span>) 
+e/o immagini (<span class="tt">.jpg</span> or <span class="tt">.gif</span>)) 
+possono essere utilizzati in un esercizio (per fornire un testo da leggere
+o un audo da ascoltare). Questi file possono essere integrati nell'esercizio
+via Quicktool, ma devono essere inseriti direttamente in Modtool. In ogni
+caso i nomi di questi file devono essere specificati nel menu di Quicktool
+in modo che il codice OEF generato ne tenga conto. Nel momento in cui si 
+crea l'esercizio viene richiesto il nome del modulo Modtool in cui inserirlo
+(che quindi deve essere creato prima di generare l'esercizio).
+Possono esere anche utilizzati video, inserendone l'URL nel menu di 
+Quicktool.
+
+</p><p>
+Si può anche utilizzare un testo e/o un audio e/o una figura diversa per ogni
+insieme di dati (cioè per ogni versione dell'esercizio), in questo caso
+il formato del file di dati cambia lievemente. I dettagli sono documentati
+nella sezione "Opzioni relative a file di dati" dell'help relativo a ciascuna
+tipologia di esercizio.
+
+</p><p>
+WIMS seleziona casualmente uno degli insieme di dati contenuti nel file 
+ogni volta che l'utente richiama l'esercizio, in questo modo si producono 
+versioni differenti dell'esercizio.
+Se si utilizza questa generazione casuale e si forniscono numerosi insiemi 
+di dati si possono creare esercici che diventano interessanti e di stimolo
+per l'utente.
+</p><p>
+Nella maggior parte delle tipologie di esercizi costruibili con Quicktool
+si possono utilizzare numerosi insiemi di dati indipendenti in modo 
+da creare serie di esercizi, eventualmente presentati a passi successivi
+(il numero dei quali viene definito dall'autore dell'esercizio).
+</p><p>
+In questo caso in generale gli insiemi di dati sono scelti casualmente tra 
+tutti quelli presenti nel file di dati.
+Anche in questo caso perché l'esercizio risulti stimolante e utile è 
+necessario fornire un numero adeguato di insiemi di dati.
+Per esperienza, quando si stabilisce il numero di passi in un esercizio
+è meglio non includere troppe domande in ogni passo, perché lo studente
+può stancarsi e perdere la motivazione se l'esercizio diventa troppo
+lungo. La funzione random di WIMS in generale fa in modo che l'utente
+prima o poi incontri la maggior parte, se non tutti, i casi contenuti
+nel file di dati.
+</p>
+<h3 style="color: $wims_ref_menucolor; 
+background-color:$wims_ref_bgcolor
+text-align:left;">
+Spiegazioni relative all'interfaccia</h3>
+<ul>
+<li><b>name_of_data_file</b>: il nome che si vuole dare al file contenente i dati </li>
+<li><b>Consegna dell'esercizio</b>: istruzioni che vengono mostrate
+all'inizio dell'esercizio. È possibile anche inserire link a pagine
+web:
+<span class="tt">&lt;a target="wims_external" href="http=_adresse_url">testo&lt;/a></span>
+</li>
+<li><b>file da leggere</b>: testo di aiuto o testo da leggere per 
+rispondere alla domanda che si apre in una apposita finestra del 
+browser. Selezionare <span class="tt">no</span> se non si vuole fornire un testo 
+da leggere.
+</li>
+<li><b>file da ascoltare</b>: nome del file audio che l'utente deve
+ascoltare.
+Selezionare <span class="tt">no</span> se non si vuole fornire un audio da 
+ascoltare.
+</li>
+<li><b>file video</b>: URL di un video che si vuole includere nell'esercizio.
+Selezionare <span class="tt">no</span> se non si vuole fornire un video.
+</li>
+<li><b>file immagine</b>: nome dell'immagine che l'utente deve 
+osservare per poter rispondere all'esercizio.
+Selezionare <span class="tt">no</span> se non si vogliono utilizzare immagini.
+</li>
+<li><b>dimensione</b>: a volte può essere necessario specificare
+dimesioni (per esempio il numero di lettere in uno spazio da riempire,
+le dimensioni di una imamgine, "width x height" negli esercizi di
+tipo drag&amp;drop o "height x left width x right width" negli esercizi
+di tipo corrispondenza.
+</li>
+</ul>
+In generale i nomi dei file non devono contenere spazi, come pure caratteri
+speciali o lettere accentate. Devono essere indicate le estensioni 
+(per esempio <span class="tt">.mp3</span> o <span class="tt">.jpg</span>). 
+
+</p><p>
+È prevista la possibilità di inserire parametri di configurazione all'inizio 
+dei file di dati (cioè prima del primo insieme di dati che comincia con :)
+<pre>
+instruction= 
+reading_file1=no
+audio_file1=no
+video_file1=no
+image_file1=no
+size=
+
+&#58;primo insieme di dati
+
+&#58;secondo insieme di dati
+</pre>
+<p>
+Se non si vogliono utilizzare testi, audio, immagini e/o video, assicurarsi
+di selezionare <tt style='color:red;'>no</tt> in corrispondenza. 
+</p><p>
+Le informazioni inserite nell'interfacci avranno priorità rispetto alle altre.
+</p><p>
+In generale, si consiglia di evitare di utilizzare il carattere 
+punto-e-virgola e se necessario nei testi utilizzare invece il corrispondente 
+codice html, cioè &amp;#59; 
+</p>
+
+

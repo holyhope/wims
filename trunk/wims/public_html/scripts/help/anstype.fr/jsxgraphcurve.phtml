@@ -1,0 +1,73 @@
+<b>Dessiner une droite, un polygone, des points, un segment, un vecteur,
+un rectangle, une ligne brisée</b>
+(nom : <span class="tt wims_code_words">jsxgraphcurve</span>)
+<br />
+
+!read help/anstype.$lang/jcurve.inc general
+!set p=anstype.$lang/javacurve
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td class="tt wims_code_variable">
+!line 1 of $l_
+    </td><td>
+!line 2 to -1 of $l_
+   </td>
+  </tr>
+  !next
+$table_end
+
+Des options peuvent être ajoutées dans le champ d'option :
+<span class="tt wims_code_words">precision</span>,
+<span class="tt wims_code_words">color1</span> (couleur de la réponse donnée),
+<span class="tt wims_code_words">color2</span> (couleur de la bonne réponse).
+Par exemple
+<pre>
+\answer{}{...}{type=jsxgraphcurve}{option=color1=black color2=#B4B4FF precision=8}
+</pre>
+Le paramètre <span class="tt wims_code_words">precision</span> doit être manié avec précaution ...
+
+!read help/anstype.$lang/jcurve.inc reply
+<p>
+Si l'on désire centrer le résultat, on doit définir les classes css
+<span class="wims_code_words">jxgbox</span> et <span class="wims_code_words">jsxgraph_button</span>.
+Par exemple,
+</p>
+<pre>
+&lt;style type="text/css">
+.jxgbox {margin-left:auto;margin-right:auto}
+.jsxgraph_button {text-align:center;}
+&lt;/style>
+</pre>
+
+<p>Exemple :</p>
+<textarea id="wims_show" cols="100" rows="23" name="wims_show" readonly="readonly">
+\title{Exemple de jsxgraphcurve}
+
+\title{ Droite}
+\precision{100}
+\css{<style type="text/css">
+.jxgbox {margin-left:auto;margin-right:auto;}
+.jsxgraph_button {text-align:center;}
+</style>}
+
+\text{dessin=draw(200,200
+hline 100,100,black
+vline 100,100,black
+hline 100,50,black
+vline 150,100,black
+text black,100,100,large,O
+text black,150,50,large,A
+)
+}
+\statement{ Tracer la droite passant par 0 et par A.
+ \embed{r1,200x200}
+}
+\answer{}{\dessin;line,100,100,150,50}{type=jsxgraphcurve}
+</textarea>

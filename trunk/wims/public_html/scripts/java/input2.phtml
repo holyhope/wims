@@ -1,0 +1,37 @@
+!!##language independant
+!default java_inptype=!word 1 of $wims_read_parm
+!set java_inptype=!lower $java_inptype
+!bound java_inptype within\
+	curve,rect,rectangle,circle,line,lines,sline,segment,seg,poly,polygon,\
+	points,vector\
+	default curve
+!default java_width=300
+!default java_height=300
+!! java_bgcolor must use rgb coding. Color names bring security violations.
+!default java_bgcolor=#FFFFFF
+
+!default nojava=$wims_name_nojava
+!default java_retry=!trim $wims_name_erase
+!default java_prompt=$wims_name_send
+
+:prend
+<div class="wimscenter">
+<object type="application/x-java-applet;jpi-version=1.4" \
+   classid="java:input.class" width="$java_width" height="$[$java_height+25]">\
+   <param name="codebase" value="java/Input" />
+   <param name="code" value="input.class" />
+   <param name="archive" value="input.jar" />
+!if $java_background!=$empty
+   <param name="background" value="$java_background" />
+!endif
+   <param name="bgcolor" value="$java_bgcolor" />
+   <param name="type" value="$java_inptype" />
+   <param name="retry" value="$java_retry" />
+   <param name="prompt" value="$java_prompt" />
+   <param name="replyurl"
+value="$wims_ref_name?session=$wims_session.$[$wims_session_serial+1]&+$java_reply" />
+<span class="wims_warning">$nojava</span>
+</object>
+ </div>
+!reset java_inptype, java_background, java_bgcolor, java_retry, java_prompt, java_reply
+
