@@ -85,6 +85,7 @@ m_reply$i=$dd
     }\
     .fill_container{display: flex;flex-flow: row wrap;font-family:sans-serif;background-color:#ffd080;margin:2px;};\
   </style>\
+  <div $container_width_r>
 
   !set fill_css_defined=yes
 !else
@@ -92,6 +93,13 @@ m_reply$i=$dd
 !endif
 
 !if $wims_read_parm=nocompare
+  !for a = 1 to $dd_cnt
+    reply_$i=$(reply_$i)<div\
+      class="drag_label" style="text-align:$align_option;width:$(sizeh)px;height:$(sizev)px;">\
+      $(dd[$a])\
+      </div>
+  !next
+  reply_$i=$(reply_$i)</div>
   !exit
 !endif
 
@@ -149,7 +157,6 @@ ddo=!sort items $dd
   !endif split
 !next n
 
-reply_$i=$(reply_$i)<div $container_width_r>
   !for a = 1 to $dd_cnt
     reply_$i=$(reply_$i)<div\
       class="drag_label $(gr[$a])" style="text-align:$align_option;width:$(sizeh)px;height:$(sizev)px;">\
