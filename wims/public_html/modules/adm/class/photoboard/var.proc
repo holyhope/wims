@@ -11,9 +11,6 @@ job=!items2words $job
   !reset error
   !reset list_user1 list_user2 list_user3 list_user4 list_user5 list_user6 list_user7 list_user8 list_user9 list_user10
 !endif
-!if $cmd=reply
- !default job=all
- aim=photourl
 
 !readproc adm/vfilter/listvarfilter.proc
 !if $varfilterclear!=$empty
@@ -22,29 +19,33 @@ job=!items2words $job
  !reset step
 !endif
 !readproc adm/vfilter/varfilter proc
-rac=wimshome/log/classes/$wims_class
-wims_superclass=!defof class_superclass in $rac/.def
-class_type=!defof class_type in $rac/.def
-class_typename=!defof class_typename in $rac/.def
-!default wims_superclass=$wims_class
-file=$rac/.userlist
 
-!if select iswordof $job and login iswordof $job
+!if $cmd=reply and $step!=0
+ !default job=all
+ aim=photourl
+ rac=wimshome/log/classes/$wims_class
+ wims_superclass=!defof class_superclass in $rac/.def
+ class_type=!defof class_type in $rac/.def
+ class_typename=!defof class_typename in $rac/.def
+ !default wims_superclass=$wims_class
+ file=$rac/.userlist
+
+ !if select iswordof $job and login iswordof $job
    loginlist_=!listuniq $loginlist,$select_user
-!else
+ !else
   !if login iswordof $job
     loginlist_=$loginlist
   !else
     loginlist_=$select_user
   !endif
-!endif
-!if login notwordof $job and filter notwordof $job
+ !endif
+ !if login notwordof $job and filter notwordof $job
   loginlist_=all
-!endif
+ !endif
 
-$(aim)_exists=0
+ $(aim)_exists=0
 
-!reset list_user1 list_user2 list_user3 list_user4 list_user5 list_user6 list_user7 list_user8 list_user9 list_user10
+ !reset list_user1 list_user2 list_user3 list_user4 list_user5 list_user6 list_user7 list_user8 list_user9 list_user10
 
  !for lu =1 to $cnt
   ll=$[ceil($lu/$lim)]
@@ -53,26 +54,14 @@ $(aim)_exists=0
   !distribute item $us_ into l_name_,f_name_,login
   !defread wimshome/log/classes/$wims_superclass/.users/$login
   !if $varfilter=$empty
-    !if $loginlist_=all or (login iswordof $job and $login isitemof $loginlist_) or $varfilter=all
+    !if $loginlist_=all or (login iswordof $job and $login isitemof $loginlist_)
       TEST=1
-      !goto OK
     !endif
   !else
-    !if (login iswordof $job and $login isitemof $loginlist_) or $loginlist_=all
-      TEST=1
-      !goto OK
-    !else
-      !if $varfilter!=$empty
-       !read adm/vfilter/listvarfilter.proc
-       !read adm/vfilter/testfilter $login\
-$varfilter
-       TEST=$var_filter_test
-      !else
-       TEST=0
-     !endif
-   !endif
- !endif
-:OK
+    !read adm/vfilter/testfilter $login\
+$varfilter_
+    TEST=$var_filter_test
+  !endif
   !if $TEST=1
     aim_=!defof user_$aim in wimshome/log/classes/$wims_superclass/.users/$login
     !if $aim_!=
@@ -82,5 +71,6 @@ $varfilter
      list_user$ll=!append line $login,$l_name_,$f_name_, to $(list_user$ll)
     !endif
   !endif
-!next lu
+ !next lu
 !endif
+
