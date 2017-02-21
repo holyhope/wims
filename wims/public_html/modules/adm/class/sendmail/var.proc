@@ -58,29 +58,20 @@ $(aim)_exists=0
 
 !set cnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
 
-!!!if $varfilter=$empty and $job notwordof select login
-!!   varfilter=all
-!!!endif
 !for lu =1 to $cnt
   TEST=
   us_=!record $lu of $file
   !distribute item $us_ into l_name_,f_name_,login
   !defread wimshome/log/classes/$wims_superclass/.users/$login
-  !if $varfilter=$empty
-    !if $loginlist_=all or $login isitemof $loginlist_ or $varfilter=all
+  !if $job!=filter
+    !if $loginlist_=all or $login isitemof $loginlist_
       TEST=1
-      !goto OK
     !endif
   !else
-    !if ($login isitemof $loginlist_) or $loginlist_=all or ($filter!=all and $filter!=$empty)
      !read adm/vfilter/testfilter $login\
-$varfilter
+$varfilter_
      TEST=$var_filter_test
-    !else
-     TEST=0
-    !endif
- !endif
-:OK
+  !endif
   !if $TEST=1
     aim_=!defof user_$aim in wimshome/log/classes/$wims_superclass/.users/$login
     !if $aim_!=
