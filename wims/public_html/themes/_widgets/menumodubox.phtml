@@ -34,6 +34,9 @@
       !endif
       !set wims_ref_class = !item 1 of $1_
       !set wims_ref_class = !word 1 of $wims_ref_class
+      !if " isin $wims_ref_class
+        !reset wims_ref_class
+      !endif
       <$div1 class="menuitem $wims_ref_class">
        !read $(path)oneitem.phtml $1_
       </$div1>
@@ -75,6 +78,9 @@
     !for i_=1 to $wims_homeref_n4
      !set 1_=!line $i_ of $wims_rm_4
      !set wims_ref_class = !item 1 of $1_
+     !if " isin $wims_ref_class
+        !reset wims_ref_class
+      !endif
      <$div1 class="menuitem $wims_ref_class">
       !read $(path)oneitem.phtml $1_
      </$div1>
@@ -91,6 +97,9 @@
       <$div1 class="itemsep">&nbsp;</$div1>
      !else
       !set wims_ref_class = !item 1 of $1_
+      !if " isin $wims_ref_class
+        !reset wims_ref_class
+      !endif
       <$div1 class="menuitem $wims_ref_class">
        !read $(path)oneitem.phtml $1_
       </$div1>

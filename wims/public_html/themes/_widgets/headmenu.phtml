@@ -3,6 +3,9 @@
 !for i_=1 to $wims_hm_cnt
  !set 1_=!line $i_ of $wims_hm
  !set wims_ref_class = !item 1 of $1_
+ !if " isin $wims_ref_class
+   !reset wims_ref_class
+ !endif
  <$div1 class="menuitem $wims_ref_class">
   !read $(path)oneitem.phtml $1_
  </$div1>
