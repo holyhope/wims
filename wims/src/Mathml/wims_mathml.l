@@ -862,7 +862,7 @@ int wims_mathml_displaymode = 0;
 "\\nonumber"		{yylval=wims_mathml_copy_string("&nbsp;"); return MI;}
 
 "\\space"        {BEGIN(INT1); return SPACE;}
-"\\*"      {yylval=wims_mathml_copy_string("&nbsp;"); return MI;}
+"\\*"      {yylval=wims_mathml_copy_string("&InvisibleTimes;"); return MI;}
 
 "\\text" |
 "\\textrm" |
