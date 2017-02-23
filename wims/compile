@@ -76,19 +76,21 @@ for a in $(seq $#) ; do opt=$1;
  fi
  if [ "$opt" = "--geogebra" ] ; then
   echo "load geogebra"
-    vGeogebra=GeoGebraWeb-5.0.182.0
+    vGeogebra=GeoGebraWeb-WIMS-5.0.332.0
+    ggb_folder=public_html/scripts/js/geogebra
     cd tmp
-    wget http://dev.geogebra.org/download/web/$vGeogebra.zip
+    wget http://wims.unice.fr/download/others/$vGeogebra.zip
     unzip $vGeogebra.zip
     rm -f $vGeogebra.zip
     cd $dir
-    if [ -d "public_html/scripts/js/geogebra/geogebraweb" ] ; then
-      mv public_html/scripts/js/geogebra/geogebraweb public_html/scripts/js/geogebra/geogebraweb_tmp
+    if [ -d "$ggb_folder/geogebraweb" ] ; then
+      mv $ggb_folder/geogebraweb $ggb_folder/geogebraweb_tmp
     fi
-    mv -f tmp/$vGeogebra public_html/scripts/js/geogebra/geogebraweb
+    mv -f tmp/$vGeogebra $ggb_folder/geogebraweb
     rm -rf tmp/$vGeogebra
-    rm -rf public_html/scripts/js/geogebraweb_tmp
-    echo "geogebra_exists=yes" | cat > public_html/scripts/js/geogebra/test
+    rm -rf $ggb_folder/geogebraweb_tmp
+    echo "geogebra_exists=yes" | cat > $ggb_folder/test
+    exit
  fi
  if [ "$opt" = "--modules" ] ; then
     echo "load modules"
