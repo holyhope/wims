@@ -59,8 +59,6 @@ slib_script1=var $slib_brd = JXG.JSXGraph.initBoard('$slib_jxgbox', {\
  yaxis = $slib_brd.create('axis', [[0, 0], [0, 3]],{\
  ticks: {ticksDistance:2, insertTicks: false,visible:false},visible:false});
 !for slib_i=1 to $slib_choice
-   !set slib_script1=$slib_script1\
-var $(slib_jxgbox)_rep$slib_i=$slib_brd.create('text',[-3,$slib_i,$(slib_parm[$slib_i])]);
    !if $(slib_fix[$slib_i])=f
      !set slib_fixme=,fixed:true,visible:false
    !else
@@ -68,7 +66,7 @@ var $(slib_jxgbox)_rep$slib_i=$slib_brd.create('text',[-3,$slib_i,$(slib_parm[$s
    !endif
    !set slib_script1=$slib_script1\
 $(slib_jxgbox)_pt$slib_i$slib_number=$slib_brd.create('point',[$(slib_parm[$slib_i]),$slib_height], {face:'o', name:'', size:2, showInfobox: true$slib_fixme});\
-$(slib_jxgbox)_rep$slib_i=$slib_brd.create('text',[0,$slib_i,function() {return $(slib_jxgbox)_pt$slib_i$slib_number.X()}]);
+$(slib_jxgbox)_rep$slib_i=$slib_brd.create('text',[0,$slib_i,function() {return $(slib_jxgbox)_pt$slib_i$slib_number.X()}],{visible:false});
 !next
 !if $slib_choice=5
   !set slib_scriptmove=$slib_brd.on('move', function(){\
