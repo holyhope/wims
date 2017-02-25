@@ -69,9 +69,9 @@ slib_posxc=$[round((6*$slib_tmax+3*($slib_tmin))/9)]
 !for slib_j = 1 to $slib_cursorcnt
   slib_posy=$[$slib_ymax-$slib_cursor_dec*$slib_j]
   slib_script_cursor=$slib_script_cursor\
-   $(slib_cursor[$slib_j;2]) = $brd.createElement('slider', [[$[$slib_tmin+1],$slib_posy],[$slib_posx,$slib_posy],[$(slib_cursor[$slib_j;4..6])]],{name:'$(slib_cursor[$slib_j;2])',strokeColor:'black',fillColor:'black', snapWidth:0.1});\
+   $(slib_cursor[$slib_j;2]) = $brd.create('slider', [[$[$slib_tmin+1],$slib_posy],[$slib_posx,$slib_posy],[$(slib_cursor[$slib_j;4..6])]],{name:'$(slib_cursor[$slib_j;2])',strokeColor:'black',fillColor:'black', snapWidth:0.1});\
 \
-   $(slib_cursor[$slib_j;2])_name=$brd.createElement('text', [$slib_posxc,$slib_posy, "$(slib_cursor[$slib_j;3])"]);
+   $(slib_cursor[$slib_j;2])_name=$brd.create('text', [$slib_posxc,$slib_posy, "$(slib_cursor[$slib_j;3])"]);
   slib_f1=!replace internal $(slib_cursor[$slib_j;1]) by $(slib_cursor[$slib_j;2]) in $slib_f1
   slib_f2=!replace internal $(slib_cursor[$slib_j;1]) by $(slib_cursor[$slib_j;2]) in $slib_f2
 !next
@@ -80,9 +80,9 @@ slib_script_main=var $brd = JXG.JSXGraph.initBoard('jsxbox$slib_number', \
   {boundingbox:[$[$(slib_tmin)-1],$slib_ymax,$slib_tmax,$slib_ymin],axis:true,grid:true,showCopyright:false});\
 \
   $slib_script_cursor\
-  var L=$brd.createElement('line',[[$slib_tmin,0],[$slib_tmin,$slib_ymax]],{fixed:true});\
-    starty$slib_number = $brd.createElement('$slib_glider', [0, $(slib_init[2]), L], {name:'$slib_n_y',strokeColor:'$slib_colory',fillColor:'$slib_colory',snapWidth:1});\
-    startx$slib_number = $brd.createElement('$slib_glider', [0, $(slib_init[1]),L], {name:'$slib_n_x',strokeColor:'$slib_colorx',fillColor:'$slib_colorx'});\
+  var L=$brd.create('line',[[$slib_tmin,0],[$slib_tmin,$slib_ymax]],{fixed:true});\
+    starty$slib_number = $brd.create('$slib_glider', [0, $(slib_init[2]), L], {name:'$slib_n_y',strokeColor:'$slib_colory',fillColor:'$slib_colory',snapWidth:1});\
+    startx$slib_number = $brd.create('$slib_glider', [0, $(slib_init[1]),L], {name:'$slib_n_x',strokeColor:'$slib_colorx',fillColor:'$slib_colorx'});\
 \
     /* Variables for the JXG.Curves*/\
     var gy$slib_number = null;\
@@ -126,7 +126,7 @@ var data$slib_number = ode$slib_number(f$slib_number);\
         datax$slib_number[i] = data$slib_number[i][0];\
     };\
     /* Plot x*/\
-    gx$slib_number = $brd.createElement('curve', [t$slib_number, datax$slib_number], {strokeColor:'$slib_colorx', strokeWidth:'2px'});\
+    gx$slib_number = $brd.create('curve', [t$slib_number, datax$slib_number], {strokeColor:'$slib_colorx', strokeWidth:'2px'});\
     gx$slib_number.updateDataArray = function() {\
         var data = ode$slib_number(f$slib_number);\
         this.dataX = [];\
@@ -140,7 +140,7 @@ var data$slib_number = ode$slib_number(f$slib_number);\
 !if $slib_dim!=1
    slib_script_main= $slib_script_main\
    /* Plot y*/\
-    gy$slib_number = $brd.createElement('curve', [t$slib_number, datay$slib_number], {strokeColor:'$slib_colory', strokeWidth:'2px'});\
+    gy$slib_number = $brd.create('curve', [t$slib_number, datay$slib_number], {strokeColor:'$slib_colory', strokeWidth:'2px'});\
     gy$slib_number.updateDataArray = function() {\
         var data = ode$slib_number(f$slib_number);\
         this.dataX = [];\
@@ -160,7 +160,7 @@ var data$slib_number = ode$slib_number(f$slib_number);\
 
  slib_script_child=var $brd1 = JXG.JSXGraph.initBoard('jsxboxchild$slib_number', {boundingbox: [$slib_ymin,$slib_ymax,$slib_ymax,$slib_ymin], axis:true,grid:true,showCopyright:false});\
  $brd1.renderer.container.style.backgroundColor ='white';\
- var gxy$slib_number=$brd1.createElement('curve', [datax$slib_number, datay$slib_number], {strokeColor:'$slib_colorxy', strokeWidth:'2px'});\
+ var gxy$slib_number=$brd1.create('curve', [datax$slib_number, datay$slib_number], {strokeColor:'$slib_colorxy', strokeWidth:'2px'});\
     gxy$slib_number.updateDataArray = function() {\
         var data = ode$slib_number(f$slib_number);\
         this.dataX = [];\
