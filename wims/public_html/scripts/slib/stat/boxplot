@@ -2,7 +2,7 @@
 !goto proc
 !endif
 
-slib_parms=4\
+slib_ps=4\
 ,minimum, maximum de la fenêtre\
 ,[d1,q1,mediane,q2,d2] or [q1,mediane,q2] \
 ,vector with m (mobile) or f (fixed)\
@@ -10,7 +10,7 @@ slib_parms=4\
   raw (for the anstype jsxcurve, in progress)
 
 slib_out=Boite à moustaches. Peut être utilisé dans le type de réponse jsxgraph\
-  en prenant l'option raw.\
+  en prenant l'option raw.
 
 slib_author=Bernadette, Perrin-Riou
 slib_title=Box plot
@@ -25,109 +25,112 @@ slib_example=[0,10],[4,6,7],,number=1\
 :proc
 slib_out=
 
-!distribute item $wims_read_parm into slib_range,slib_parm,slib_fix,slib_option
-!set slib_size=600,300
+!distribute item $wims_read_parm into slib_range,slib_p,slib_fix,slib_opt
+!
 !set slib_fix=!declosing $slib_fix
 !set slib_range=!declosing $slib_range
-!distribute item $slib_range into slib_xmin,slib_xmax
-!set slib_stick=!getopt stick in $slib_option
+!distribute item $slib_range into slib_xmin,slib_xmax,slib_xsize,slib_ysize
+!default slib_xsize=300
+!default slib_ysize=100
+!set slib_stick=!getopt stick in $slib_opt
 !default slib_stick=1
-!set slib_parm=!declosing $slib_parm
-!set slib_parm=!sort numeric item $slib_parm
-!set slib_choice=!itemcnt $slib_parm
-!if $slib_choice=3
-  !distribute item $slib_parm into slib_q1,slib_med,slib_q3
+!set slib_p=!declosing $slib_p
+!set slib_p=!sort numeric item $slib_p
+!set slib_ch=!itemcnt $slib_p
+!if $slib_ch=3
+  !distribute item $slib_p into slib_q1,slib_med,slib_q3
 !else
-  !distribute item $slib_parm into slib_dec1,slib_q1,slib_med,slib_q3,slib_dec9
+  !distribute item $slib_p into slib_dec1,slib_q1,slib_med,slib_q3,slib_dec9
 !endif
-!set slib_option=!declosing $slib_option
-!set slib_number=!getopt number in $slib_option
-!if $slib_number!=$empty
-  slib_number=_$slib_number
+!set slib_opt=!declosing $slib_opt
+!set slib_nb=!getopt number in $slib_opt
+!if $slib_nb!=$empty
+  slib_nb=_$slib_nb
 !endif
-!set slib_brd=brd$slib_number
-!set slib_jxgbox=jxgbox$slib_number
-!set slib_height=3
-!set slib_height1=$[$slib_height-1]
-!set slib_height2=$[$slib_height+1]
-!set slib_height3=$[$slib_height-2]
-!set slib_height4=$[$slib_height+2]
-slib_script1=var $slib_brd = JXG.JSXGraph.initBoard('$slib_jxgbox', {\
- axis:false,boundingbox: [$slib_xmin, 7, $slib_xmax, -2], grid:true, shownavigation:false});\
+!set slib_brd=brd$slib_nb
+!set slib_jx=jxgbox$slib_nb
+!set slib_h=3
+!set slib_h1=$[$slib_h-1]
+!set slib_h2=$[$slib_h+1]
+!set slib_h3=$[$slib_h-2]
+!set slib_h4=$[$slib_h+2]
+slib_script1=var $slib_brd = JXG.JSXGraph.initBoard('$slib_jx', {\
+ axis:false,boundingbox: [$slib_xmin, 7, $slib_xmax, -1], grid:true, shownavigation:false});\
  xaxis = $slib_brd.create('axis', [[0, 0], [1, 0]], {\
  ticks: {ticksDistance: $slib_stick, insertTicks: false}});\
  yaxis = $slib_brd.create('axis', [[0, 0], [0, 3]],{\
  ticks: {ticksDistance:2, insertTicks: false,visible:false},visible:false});
  !set slib_font=face:'o', name:'', size:2, showInfobox: true
-!for slib_i=1 to $slib_choice
+!for slib_i=1 to $slib_ch
    !if $(slib_fix[$slib_i])=f
      !set slib_fixme=,fixed:true,visible:false
    !else
      !reset slib_fixme
    !endif
-   !if raw notwordof $slib_option
+   !if raw notwordof $slib_opt
      !set slib_script1=$slib_script1\
-$(slib_jxgbox)_rep$slib_i$slib_number=$slib_brd.create('point',[$(slib_parm[$slib_i]),$slib_height], {$slib_font$slib_fixme});
+$(slib_jx)_rep$slib_i$slib_nb=$slib_brd.create('point',[$(slib_p[$slib_i]),$slib_h], {$slib_font$slib_fixme});
    !else
      !set slib_script1=$slib_script1\
-$(slib_jxgbox)_rep$slib_i$slib_number=$slib_brd.create('point',$(slib_jxgbox)_var$slib_i$slib_number, {$slib_font$slib_fixme});
+$(slib_jx)_rep$slib_i$slib_nb=$slib_brd.create('point',$(slib_jx)_var$slib_i$slib_nb, {$slib_font$slib_fixme});
 
    !endif
 !next
-!if $slib_choice=5
+!if $slib_ch=5
   !set slib_scriptmove=$slib_brd.on('move', function(){\
-$(slib_jxgbox)_rep1$slib_number.moveTo([Math.min($(slib_jxgbox)_rep1$slib_number.X(),$(slib_jxgbox)_rep2$slib_number.X()), $slib_height]);\
-$(slib_jxgbox)_rep2$slib_number.moveTo([Math.min($(slib_jxgbox)_rep2$slib_number.X(),$(slib_jxgbox)_rep3$slib_number.X()), $slib_height]);\
-$(slib_jxgbox)_rep3$slib_number.moveTo([Math.min($(slib_jxgbox)_rep3$slib_number.X(),$(slib_jxgbox)_rep4$slib_number.X()), $slib_height]);\
-$(slib_jxgbox)_rep4$slib_number.moveTo([Math.min($(slib_jxgbox)_rep4$slib_number.X(),$(slib_jxgbox)_rep5$slib_number.X()), $slib_height]);\
-$(slib_jxgbox)_rep5$slib_number.moveTo([Math.max($(slib_jxgbox)_rep4$slib_number.X(),$(slib_jxgbox)_rep5$slib_number.X()), $slib_height]);
+$(slib_jx)_rep1$slib_nb.moveTo([Math.min($(slib_jx)_rep1$slib_nb.X(),$(slib_jx)_rep2$slib_nb.X()), $slib_h]);\
+$(slib_jx)_rep2$slib_nb.moveTo([Math.min($(slib_jx)_rep2$slib_nb.X(),$(slib_jx)_rep3$slib_nb.X()), $slib_h]);\
+$(slib_jx)_rep3$slib_nb.moveTo([Math.min($(slib_jx)_rep3$slib_nb.X(),$(slib_jx)_rep4$slib_nb.X()), $slib_h]);\
+$(slib_jx)_rep4$slib_nb.moveTo([Math.min($(slib_jx)_rep4$slib_nb.X(),$(slib_jx)_rep5$slib_nb.X()), $slib_h]);\
+$(slib_jx)_rep5$slib_nb.moveTo([Math.max($(slib_jx)_rep4$slib_nb.X(),$(slib_jx)_rep5$slib_nb.X()), $slib_h]);
 
 !else
   !set slib_scriptmove=$slib_brd.on('move', function(){\
-$(slib_jxgbox)_rep1$slib_number.moveTo([Math.min($(slib_jxgbox)_rep1$slib_number.X(),$(slib_jxgbox)_rep2$slib_number.X()), $slib_height]);\
-$(slib_jxgbox)_rep2$slib_number.moveTo([Math.min($(slib_jxgbox)_rep2$slib_number.X(),$(slib_jxgbox)_rep3$slib_number.X()), $slib_height]);\
-$(slib_jxgbox)_rep3$slib_number.moveTo([$(slib_jxgbox)_rep3$slib_number.X(), $slib_height]);
+$(slib_jx)_rep1$slib_nb.moveTo([Math.min($(slib_jx)_rep1$slib_nb.X(),$(slib_jx)_rep2$slib_nb.X()), $slib_h]);\
+$(slib_jx)_rep2$slib_nb.moveTo([Math.min($(slib_jx)_rep2$slib_nb.X(),$(slib_jx)_rep3$slib_nb.X()), $slib_h]);\
+$(slib_jx)_rep3$slib_nb.moveTo([$(slib_jx)_rep3$slib_nb.X(), $slib_h]);
 !endif
 
-!set slib_scriptmove=$slib_scriptmove\
-});
-!if $slib_choice=5
+!set slib_scriptmove=$slib_scriptmove });
+!if $slib_ch=5
   !set slib_script2=\
-$(slib_jxgbox)_pt1m$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep1$slib_number.X()},$slib_height2], {$slib_font,visible:false});\
-$(slib_jxgbox)_pt1p$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep1$slib_number.X()},$slib_height1], {$slib_font,visible:false});\
-$(slib_jxgbox)_pt5m$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep5$slib_number.X()},$slib_height2], {$slib_font,visible:false});\
-$(slib_jxgbox)_pt5p$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep5$slib_number.X()},$slib_height1], {$slib_font,visible:false});\
-$(slib_jxgbox)_pt2m$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep2$slib_number.X()},$slib_height4], {$slib_font,visible:false});\
-$(slib_jxgbox)_pt2p$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep2$slib_number.X()},$slib_height3], {$slib_font,visible:false});\
-$(slib_jxgbox)_pt3m$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep3$slib_number.X()},$slib_height4], {$slib_font,visible:false});\
-$(slib_jxgbox)_pt3p$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep3$slib_number.X()},$slib_height3], {$slib_font,visible:false});\
-$(slib_jxgbox)_pt4m$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep4$slib_number.X()},$slib_height4], {$slib_font,visible:false});\
-$(slib_jxgbox)_pt4p$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep4$slib_number.X()},$slib_height3], {$slib_font,visible:false});\
+$(slib_jx)_pt1m$slib_nb=$slib_brd.create('point',[function(){return $(slib_jx)_rep1$slib_nb.X()},$slib_h2], {$slib_font,visible:false});\
+$(slib_jx)_pt1p$slib_nb=$slib_brd.create('point',[function(){return $(slib_jx)_rep1$slib_nb.X()},$slib_h1], {$slib_font,visible:false});\
+$(slib_jx)_pt5m$slib_nb=$slib_brd.create('point',[function(){return $(slib_jx)_rep5$slib_nb.X()},$slib_h2], {$slib_font,visible:false});\
+$(slib_jx)_pt5p$slib_nb=$slib_brd.create('point',[function(){return $(slib_jx)_rep5$slib_nb.X()},$slib_h1], {$slib_font,visible:false});\
+$(slib_jx)_pt2m$slib_nb=$slib_brd.create('point',[function(){return $(slib_jx)_rep2$slib_nb.X()},$slib_h4], {$slib_font,visible:false});\
+$(slib_jx)_pt2p$slib_nb=$slib_brd.create('point',[function(){return $(slib_jx)_rep2$slib_nb.X()},$slib_h3], {$slib_font,visible:false});\
+$(slib_jx)_pt3m$slib_nb=$slib_brd.create('point',[function(){return $(slib_jx)_rep3$slib_nb.X()},$slib_h4], {$slib_font,visible:false});\
+$(slib_jx)_pt3p$slib_nb=$slib_brd.create('point',[function(){return $(slib_jx)_rep3$slib_nb.X()},$slib_h3], {$slib_font,visible:false});\
+$(slib_jx)_pt4m$slib_nb=$slib_brd.create('point',[function(){return $(slib_jx)_rep4$slib_nb.X()},$slib_h4], {$slib_font,visible:false});\
+$(slib_jx)_pt4p$slib_nb=$slib_brd.create('point',[function(){return $(slib_jx)_rep4$slib_nb.X()},$slib_h3], {$slib_font,visible:false});\
 
-!set slib_script3=$slib_brd.create('line',[$(slib_jxgbox)_rep1$slib_number,$(slib_jxgbox)_rep2$slib_number],{straightFirst:false, straightLast:false});\
-$slib_brd.create('line',[$(slib_jxgbox)_rep4$slib_number,$(slib_jxgbox)_rep5$slib_number],{straightFirst:false, straightLast:false});\
-$slib_brd.create('line',[$(slib_jxgbox)_pt1m$slib_number,$(slib_jxgbox)_pt1p$slib_number],{straightFirst:false, straightLast:false});\
-$slib_brd.create('line',[$(slib_jxgbox)_pt5m$slib_number,$(slib_jxgbox)_pt5p$slib_number],{straightFirst:false, straightLast:false});\
-$slib_brd.create('line',[$(slib_jxgbox)_pt2m$slib_number,$(slib_jxgbox)_pt2p$slib_number],{straightFirst:false, straightLast:false});\
-$slib_brd.create('line',[$(slib_jxgbox)_pt3m$slib_number,$(slib_jxgbox)_pt3p$slib_number],{straightFirst:false, straightLast:false});\
-$slib_brd.create('line',[$(slib_jxgbox)_pt4m$slib_number,$(slib_jxgbox)_pt4p$slib_number],{straightFirst:false, straightLast:false});\
-$slib_brd.create('line',[$(slib_jxgbox)_pt2m$slib_number,$(slib_jxgbox)_pt4m$slib_number],{straightFirst:false, straightLast:false});\
-$slib_brd.create('line',[$(slib_jxgbox)_pt2p$slib_number,$(slib_jxgbox)_pt4p$slib_number],{straightFirst:false, straightLast:false});
+!set slib_script3=\
+$slib_brd.create('line',[$(slib_jx)_rep1$slib_nb,$(slib_jx)_rep2$slib_nb],{straightFirst:false, straightLast:false});\
+$slib_brd.create('line',[$(slib_jx)_rep4$slib_nb,$(slib_jx)_rep5$slib_nb],{straightFirst:false, straightLast:false});\
+$slib_brd.create('line',[$(slib_jx)_pt1m$slib_nb,$(slib_jx)_pt1p$slib_nb],{straightFirst:false, straightLast:false});\
+$slib_brd.create('line',[$(slib_jx)_pt5m$slib_nb,$(slib_jx)_pt5p$slib_nb],{straightFirst:false, straightLast:false});\
+$slib_brd.create('line',[$(slib_jx)_pt2m$slib_nb,$(slib_jx)_pt2p$slib_nb],{straightFirst:false, straightLast:false});\
+$slib_brd.create('line',[$(slib_jx)_pt3m$slib_nb,$(slib_jx)_pt3p$slib_nb],{straightFirst:false, straightLast:false});\
+$slib_brd.create('line',[$(slib_jx)_pt4m$slib_nb,$(slib_jx)_pt4p$slib_nb],{straightFirst:false, straightLast:false});\
+$slib_brd.create('line',[$(slib_jx)_pt2m$slib_nb,$(slib_jx)_pt4m$slib_nb],{straightFirst:false, straightLast:false});\
+$slib_brd.create('line',[$(slib_jx)_pt2p$slib_nb,$(slib_jx)_pt4p$slib_nb],{straightFirst:false, straightLast:false});
+
 !else
   !set slib_script2=\
-$(slib_jxgbox)_pt1m$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep1$slib_number.X()},$slib_height4], {$slib_font,visible:false});\
-$(slib_jxgbox)_pt1p$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep1$slib_number.X()},$slib_height3], {$slib_font,visible:false});\
-$(slib_jxgbox)_pt2m$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep2$slib_number.X()},$slib_height4], {$slib_font,visible:false});\
-$(slib_jxgbox)_pt2p$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep2$slib_number.X()},$slib_height3], {$slib_font,visible:false});\
-$(slib_jxgbox)_pt3m$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep3$slib_number.X()},$slib_height4], {$slib_font,visible:false});\
-$(slib_jxgbox)_pt3p$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep3$slib_number.X()},$slib_height3], {$slib_font,visible:false});\
+$(slib_jx)_pt1m$slib_nb=$slib_brd.create('point',[function(){return $(slib_jx)_rep1$slib_nb.X()},$slib_h4], {$slib_font,visible:false});\
+$(slib_jx)_pt1p$slib_nb=$slib_brd.create('point',[function(){return $(slib_jx)_rep1$slib_nb.X()},$slib_h3], {$slib_font,visible:false});\
+$(slib_jx)_pt2m$slib_nb=$slib_brd.create('point',[function(){return $(slib_jx)_rep2$slib_nb.X()},$slib_h4], {$slib_font,visible:false});\
+$(slib_jx)_pt2p$slib_nb=$slib_brd.create('point',[function(){return $(slib_jx)_rep2$slib_nb.X()},$slib_h3], {$slib_font,visible:false});\
+$(slib_jx)_pt3m$slib_nb=$slib_brd.create('point',[function(){return $(slib_jx)_rep3$slib_nb.X()},$slib_h4], {$slib_font,visible:false});\
+$(slib_jx)_pt3p$slib_nb=$slib_brd.create('point',[function(){return $(slib_jx)_rep3$slib_nb.X()},$slib_h3], {$slib_font,visible:false});\
 
   !set slib_script3=\
-  $slib_brd.create('line',[$(slib_jxgbox)_pt1m$slib_number,$(slib_jxgbox)_pt1p$slib_number],{straightFirst:false, straightLast:false});\
-$slib_brd.create('line',[$(slib_jxgbox)_pt2m$slib_number,$(slib_jxgbox)_pt2p$slib_number],{straightFirst:false, straightLast:false});\
-$slib_brd.create('line',[$(slib_jxgbox)_pt3m$slib_number,$(slib_jxgbox)_pt3p$slib_number],{straightFirst:false, straightLast:false});\
-$slib_brd.create('line',[$(slib_jxgbox)_pt1m$slib_number,$(slib_jxgbox)_pt3m$slib_number],{straightFirst:false, straightLast:false});\
-$slib_brd.create('line',[$(slib_jxgbox)_pt1p$slib_number,$(slib_jxgbox)_pt3p$slib_number],{straightFirst:false, straightLast:false});
+  $slib_brd.create('line',[$(slib_jx)_pt1m$slib_nb,$(slib_jx)_pt1p$slib_nb],{straightFirst:false, straightLast:false});\
+$slib_brd.create('line',[$(slib_jx)_pt2m$slib_nb,$(slib_jx)_pt2p$slib_nb],{straightFirst:false, straightLast:false});\
+$slib_brd.create('line',[$(slib_jx)_pt3m$slib_nb,$(slib_jx)_pt3p$slib_nb],{straightFirst:false, straightLast:false});\
+$slib_brd.create('line',[$(slib_jx)_pt1m$slib_nb,$(slib_jx)_pt3m$slib_nb],{straightFirst:false, straightLast:false});\
+$slib_brd.create('line',[$(slib_jx)_pt1p$slib_nb,$(slib_jx)_pt3p$slib_nb],{straightFirst:false, straightLast:false});
 !endif
 
 !set slib_out=$slib_script1\
@@ -135,13 +138,13 @@ $slib_scriptmove\
 $slib_script2\
 $slib_script3
 
-!if raw notwordof $slib_option
-   !readproc slib/geo2D/jsxgraph $slib_jxgbox,$(slib_size[1]) x $(slib_size[2]),$slib_out
+!if raw notwordof $slib_opt
+   !readproc slib/geo2D/jsxgraph $slib_jx,$(slib_xsize) x $(slib_ysize),$slib_out
 !else
-   slib_out=$slib_jxgbox $slib_brd\
+   slib_out=$slib_jx $slib_brd Y=$slib_h\
 $slib_out\
-$(slib_jxgbox)_var1=[$(slib_parm[1]),$slib_height]
-  !for slib_i=2 to $slib_choice
-    slib_out=$slib_out;$(slib_jxgbox)_var$slib_i=[$(slib_parm[$slib_i]),$slib_height]
+$(slib_jx)_var1=[$(slib_p[1]),$slib_h]
+  !for slib_i=2 to $slib_ch
+    slib_out=$slib_out;$(slib_jx)_var$slib_i=[$(slib_p[$slib_i]),$slib_h]
   !next
 !endif
