@@ -126,27 +126,29 @@ to $wims_html_header
   !read oef/msg.phtml
   </div>
  !endif
- !read oef/form.phtml
-
- <div id="oef_actions">
- !if $hint!=$empty and $givehint>0
-  !set wims_ref_class=wims_button
-  !set wims_ref_id=oef_hint
-  !href cmd=hint $name_Hint
+ !if ($hint!=$empty and $givehint>0) or $help!=$empty
+   <div id="oef_helphint">
+   !if $hint!=$empty and $givehint>0
+    !set wims_ref_class=wims_button_help
+    !set wims_ref_id=oef_hint
+    !href cmd=hint $name_Hint
  $
- !endif
- !if $help!=$empty
+     !endif
+     !if $help!=$empty
 !!FIXME should be in src/exec.c
-   !if _exam isin $wims_session
+       !if _exam isin $wims_session
      <span class="disabled_link">$wims_name_help</span>
-   !else
+      !else
      !set wims_ref_class=wims_button_help
      !set wims_ref_id=oef_help
      !href cmd=help $wims_name_help
-   !endif
+      !endif
  $
+   !endif
+ </div>
  !endif
-
+ !read oef/form.phtml
+ <div id="oef_actions">
  !if _exam notin $wims_session
     !if $jquery_defined=yes
       !! Displays a Modal dialog box explaining what the "giveup" button will do.
