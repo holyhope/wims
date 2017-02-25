@@ -18,7 +18,7 @@ slib_example=[0,10],[4,6,7],,number=1\
 [0,10],[4,6,7],[m,f],number=2\
 [0,10],[1,4,6,7,8],,number=3\
 [10,100],[21,54,66,77,89],[m,f,f,m,f],number=4 stick=10\
-[0,10],[jxgbox_var1,jxgbox_var2,jxgbox_var3],,raw
+[0,10],[1,2,6],,raw
 
 !exit
 
@@ -58,48 +58,54 @@ slib_script1=var $slib_brd = JXG.JSXGraph.initBoard('$slib_jxgbox', {\
  ticks: {ticksDistance: $slib_stick, insertTicks: false}});\
  yaxis = $slib_brd.create('axis', [[0, 0], [0, 3]],{\
  ticks: {ticksDistance:2, insertTicks: false,visible:false},visible:false});
+ !set slib_font=face:'o', name:'', size:2, showInfobox: true
 !for slib_i=1 to $slib_choice
    !if $(slib_fix[$slib_i])=f
      !set slib_fixme=,fixed:true,visible:false
    !else
      !reset slib_fixme
    !endif
-   !set slib_script1=$slib_script1\
-$(slib_jxgbox)_pt$slib_i$slib_number=$slib_brd.create('point',[$(slib_parm[$slib_i]),$slib_height], {face:'o', name:'', size:2, showInfobox: true$slib_fixme});\
-$(slib_jxgbox)_rep$slib_i=$slib_brd.create('text',[0,$slib_i,function() {return $(slib_jxgbox)_pt$slib_i$slib_number.X()}],{visible:false});
+   !if raw notwordof $slib_option
+     !set slib_script1=$slib_script1\
+$(slib_jxgbox)_rep$slib_i$slib_number=$slib_brd.create('point',[$(slib_parm[$slib_i]),$slib_height], {$slib_font$slib_fixme});
+   !else
+     !set slib_script1=$slib_script1\
+$(slib_jxgbox)_rep$slib_i$slib_number=$slib_brd.create('point',$(slib_jxgbox)_var$slib_i$slib_number, {$slib_font$slib_fixme});
+
+   !endif
 !next
 !if $slib_choice=5
   !set slib_scriptmove=$slib_brd.on('move', function(){\
-$(slib_jxgbox)_pt1$slib_number.moveTo([Math.min($(slib_jxgbox)_pt1$slib_number.X(),$(slib_jxgbox)_pt2$slib_number.X()), $slib_height]);\
-$(slib_jxgbox)_pt2$slib_number.moveTo([Math.min($(slib_jxgbox)_pt2$slib_number.X(),$(slib_jxgbox)_pt3$slib_number.X()), $slib_height]);\
-$(slib_jxgbox)_pt3$slib_number.moveTo([Math.min($(slib_jxgbox)_pt3$slib_number.X(),$(slib_jxgbox)_pt4$slib_number.X()), $slib_height]);\
-$(slib_jxgbox)_pt4$slib_number.moveTo([Math.min($(slib_jxgbox)_pt4$slib_number.X(),$(slib_jxgbox)_pt5$slib_number.X()), $slib_height]);\
-$(slib_jxgbox)_pt5$slib_number.moveTo([Math.max($(slib_jxgbox)_pt4$slib_number.X(),$(slib_jxgbox)_pt5$slib_number.X()), $slib_height]);
+$(slib_jxgbox)_rep1$slib_number.moveTo([Math.min($(slib_jxgbox)_rep1$slib_number.X(),$(slib_jxgbox)_rep2$slib_number.X()), $slib_height]);\
+$(slib_jxgbox)_rep2$slib_number.moveTo([Math.min($(slib_jxgbox)_rep2$slib_number.X(),$(slib_jxgbox)_rep3$slib_number.X()), $slib_height]);\
+$(slib_jxgbox)_rep3$slib_number.moveTo([Math.min($(slib_jxgbox)_rep3$slib_number.X(),$(slib_jxgbox)_rep4$slib_number.X()), $slib_height]);\
+$(slib_jxgbox)_rep4$slib_number.moveTo([Math.min($(slib_jxgbox)_rep4$slib_number.X(),$(slib_jxgbox)_rep5$slib_number.X()), $slib_height]);\
+$(slib_jxgbox)_rep5$slib_number.moveTo([Math.max($(slib_jxgbox)_rep4$slib_number.X(),$(slib_jxgbox)_rep5$slib_number.X()), $slib_height]);
 
 !else
   !set slib_scriptmove=$slib_brd.on('move', function(){\
-$(slib_jxgbox)_pt1$slib_number.moveTo([Math.min($(slib_jxgbox)_pt1$slib_number.X(),$(slib_jxgbox)_pt2$slib_number.X()), $slib_height]);\
-$(slib_jxgbox)_pt2$slib_number.moveTo([Math.min($(slib_jxgbox)_pt2$slib_number.X(),$(slib_jxgbox)_pt3$slib_number.X()), $slib_height]);\
-$(slib_jxgbox)_pt3$slib_number.moveTo([$(slib_jxgbox)_pt3$slib_number.X(), $slib_height]);
+$(slib_jxgbox)_rep1$slib_number.moveTo([Math.min($(slib_jxgbox)_rep1$slib_number.X(),$(slib_jxgbox)_rep2$slib_number.X()), $slib_height]);\
+$(slib_jxgbox)_rep2$slib_number.moveTo([Math.min($(slib_jxgbox)_rep2$slib_number.X(),$(slib_jxgbox)_rep3$slib_number.X()), $slib_height]);\
+$(slib_jxgbox)_rep3$slib_number.moveTo([$(slib_jxgbox)_rep3$slib_number.X(), $slib_height]);
 !endif
 
 !set slib_scriptmove=$slib_scriptmove\
 });
 !if $slib_choice=5
   !set slib_script2=\
-$(slib_jxgbox)_pt1m$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_pt1$slib_number.X()},$slib_height2], {face:'o', name:'', size:2, showInfobox: true,visible:false});\
-$(slib_jxgbox)_pt1p$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_pt1$slib_number.X()},$slib_height1], {face:'o', name:'', size:2, showInfobox: true,visible:false});\
-$(slib_jxgbox)_pt5m$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_pt5$slib_number.X()},$slib_height2], {face:'o', name:'', size:2, showInfobox: true,visible:false});\
-$(slib_jxgbox)_pt5p$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_pt5$slib_number.X()},$slib_height1], {face:'o', name:'', size:2, showInfobox: true,visible:false});\
-$(slib_jxgbox)_pt2m$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_pt2$slib_number.X()},$slib_height4], {face:'o', name:'', size:2, showInfobox: true,visible:false});\
-$(slib_jxgbox)_pt2p$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_pt2$slib_number.X()},$slib_height3], {face:'o', name:'', size:2, showInfobox: true,visible:false});\
-$(slib_jxgbox)_pt3m$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_pt3$slib_number.X()},$slib_height4], {face:'o', name:'', size:2, showInfobox: true,visible:false});\
-$(slib_jxgbox)_pt3p$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_pt3$slib_number.X()},$slib_height3], {face:'o', name:'', size:2, showInfobox: true,visible:false});\
-$(slib_jxgbox)_pt4m$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_pt4$slib_number.X()},$slib_height4], {face:'o', name:'', size:2, showInfobox: true,visible:false});\
-$(slib_jxgbox)_pt4p$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_pt4$slib_number.X()},$slib_height3], {face:'o', name:'', size:2, showInfobox: true,visible:false});\
+$(slib_jxgbox)_pt1m$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep1$slib_number.X()},$slib_height2], {$slib_font,visible:false});\
+$(slib_jxgbox)_pt1p$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep1$slib_number.X()},$slib_height1], {$slib_font,visible:false});\
+$(slib_jxgbox)_pt5m$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep5$slib_number.X()},$slib_height2], {$slib_font,visible:false});\
+$(slib_jxgbox)_pt5p$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep5$slib_number.X()},$slib_height1], {$slib_font,visible:false});\
+$(slib_jxgbox)_pt2m$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep2$slib_number.X()},$slib_height4], {$slib_font,visible:false});\
+$(slib_jxgbox)_pt2p$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep2$slib_number.X()},$slib_height3], {$slib_font,visible:false});\
+$(slib_jxgbox)_pt3m$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep3$slib_number.X()},$slib_height4], {$slib_font,visible:false});\
+$(slib_jxgbox)_pt3p$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep3$slib_number.X()},$slib_height3], {$slib_font,visible:false});\
+$(slib_jxgbox)_pt4m$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep4$slib_number.X()},$slib_height4], {$slib_font,visible:false});\
+$(slib_jxgbox)_pt4p$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep4$slib_number.X()},$slib_height3], {$slib_font,visible:false});\
 
-!set slib_script3=$slib_brd.create('line',[$(slib_jxgbox)_pt1$slib_number,$(slib_jxgbox)_pt2$slib_number],{straightFirst:false, straightLast:false});\
-$slib_brd.create('line',[$(slib_jxgbox)_pt4$slib_number,$(slib_jxgbox)_pt5$slib_number],{straightFirst:false, straightLast:false});\
+!set slib_script3=$slib_brd.create('line',[$(slib_jxgbox)_rep1$slib_number,$(slib_jxgbox)_rep2$slib_number],{straightFirst:false, straightLast:false});\
+$slib_brd.create('line',[$(slib_jxgbox)_rep4$slib_number,$(slib_jxgbox)_rep5$slib_number],{straightFirst:false, straightLast:false});\
 $slib_brd.create('line',[$(slib_jxgbox)_pt1m$slib_number,$(slib_jxgbox)_pt1p$slib_number],{straightFirst:false, straightLast:false});\
 $slib_brd.create('line',[$(slib_jxgbox)_pt5m$slib_number,$(slib_jxgbox)_pt5p$slib_number],{straightFirst:false, straightLast:false});\
 $slib_brd.create('line',[$(slib_jxgbox)_pt2m$slib_number,$(slib_jxgbox)_pt2p$slib_number],{straightFirst:false, straightLast:false});\
@@ -109,12 +115,12 @@ $slib_brd.create('line',[$(slib_jxgbox)_pt2m$slib_number,$(slib_jxgbox)_pt4m$sli
 $slib_brd.create('line',[$(slib_jxgbox)_pt2p$slib_number,$(slib_jxgbox)_pt4p$slib_number],{straightFirst:false, straightLast:false});
 !else
   !set slib_script2=\
-$(slib_jxgbox)_pt1m$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_pt1$slib_number.X()},$slib_height4], {face:'o', name:'', size:2, showInfobox: true,visible:false});\
-$(slib_jxgbox)_pt1p$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_pt1$slib_number.X()},$slib_height3], {face:'o', name:'', size:2, showInfobox: true,visible:false});\
-$(slib_jxgbox)_pt2m$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_pt2$slib_number.X()},$slib_height4], {face:'o', name:'', size:2, showInfobox: true,visible:false});\
-$(slib_jxgbox)_pt2p$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_pt2$slib_number.X()},$slib_height3], {face:'o', name:'', size:2, showInfobox: true,visible:false});\
-$(slib_jxgbox)_pt3m$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_pt3$slib_number.X()},$slib_height4], {face:'o', name:'', size:2, showInfobox: true,visible:false});\
-$(slib_jxgbox)_pt3p$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_pt3$slib_number.X()},$slib_height3], {face:'o', name:'', size:2, showInfobox: true,visible:false});\
+$(slib_jxgbox)_pt1m$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep1$slib_number.X()},$slib_height4], {$slib_font,visible:false});\
+$(slib_jxgbox)_pt1p$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep1$slib_number.X()},$slib_height3], {$slib_font,visible:false});\
+$(slib_jxgbox)_pt2m$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep2$slib_number.X()},$slib_height4], {$slib_font,visible:false});\
+$(slib_jxgbox)_pt2p$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep2$slib_number.X()},$slib_height3], {$slib_font,visible:false});\
+$(slib_jxgbox)_pt3m$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep3$slib_number.X()},$slib_height4], {$slib_font,visible:false});\
+$(slib_jxgbox)_pt3p$slib_number=$slib_brd.create('point',[function(){return $(slib_jxgbox)_rep3$slib_number.X()},$slib_height3], {$slib_font,visible:false});\
 
   !set slib_script3=\
   $slib_brd.create('line',[$(slib_jxgbox)_pt1m$slib_number,$(slib_jxgbox)_pt1p$slib_number],{straightFirst:false, straightLast:false});\
@@ -134,8 +140,8 @@ $slib_script3
 !else
    slib_out=$slib_jxgbox $slib_brd\
 $slib_out\
-$(slib_jxgbox)_var1=$(slib_parm[1])
+$(slib_jxgbox)_var1=[$(slib_parm[1]),$slib_height]
   !for slib_i=2 to $slib_choice
-    slib_out=$slib_out;$(slib_jxgbox)_var$slib_i=$(slib_parm[$slib_i])
+    slib_out=$slib_out;$(slib_jxgbox)_var$slib_i=[$(slib_parm[$slib_i]),$slib_height]
   !next
 !endif
