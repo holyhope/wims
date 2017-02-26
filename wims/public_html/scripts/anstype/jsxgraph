@@ -7,6 +7,12 @@ script=!line 1 to -2 of $(oef_answer_option$i)
 script=!item 2 to -1 of $script
 script1=$script
 liste_variable=!line -1 of $(oef_answer_option$i)
+!set jbox=!item 2 of $(oef_answer_option$i)
+!set your_brd=!item 1 of $(oef_answer_option$i)
+
+script1=!replace internal $jbox by new$jbox in $script1
+script1=!replace internal $your_brd by new$your_brd in $script1
+
 cnt_variable=!itemcnt $liste_variable
 !for j = 1 to $cnt_variable
   !if $(reply[$j;2])=$empty
@@ -18,14 +24,20 @@ cnt_variable=!itemcnt $liste_variable
   !set script=$script\
   $tmp.setProperty({fixed:true})
   !if \ notin $(replygood[$j;])
-    !set script1=!replace internal $(liste_variable[$j]) by [$(replygood[$j;])] in $script1
+    !if $(reply[$j;2])=$empty
+      !set script1=!replace internal new$(liste_variable[$j]) by $(replygood[$j;]) in $script1
+    !else
+      !set script1=!replace internal new$(liste_variable[$j]) by [$(replygood[$j;])] in $script1
+    !endif
+    !set tmp=new$tmp
+    !set script1=$script1\
+$tmp.setProperty({fixed:true});
+    !reset tmp
+    !set script1=$script1\
+$tmp.setProperty({fixed:true})
+    !reset tmp
   !endif
-  !set script1=$script1\
-  $tmp.setProperty({fixed:true})
-  !reset tmp
 !next
-!set jbox=!item 2 of $(oef_answer_option$i)
-!set your_brd=!item 1 of $(oef_answer_option$i)
 
 script1=!replace internal $jbox by new$jbox in $script1
 !if free isin $reply
