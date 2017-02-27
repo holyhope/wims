@@ -1,8 +1,8 @@
 
-Si le nom du fichier  n'est pas présent : 
+Si le nom du fichier n'est pas présent :
 le_mot_deaccentue.mp3
 Si il y a un nom de fichier global, alea=no et
-fichier audio global. 
+fichier audio global.
 
 On en prend alors un certain nombre mais dans l'ordre (pas tous)
 
@@ -25,10 +25,10 @@ text{battage=\alea issametext no ?wims(sort numeric items \battage)}
     \text{mot=\data[1+\v;]}
     \matrix{Rep=\Rep
       \data[2+\v;]}
-    \text{mot2=wims(nospace wims(replace internal / by  in \mot))}
+    \text{mot2=wims(nospace wims(replace internal / by in \mot))}
     \matrix{Mot2 = \Mot2
      \mot2}
-    \text{syllabe=wims(nonempty items wims(replace internal / by ,  in \mot))}
+    \text{syllabe=wims(nonempty items wims(replace internal / by , in \mot))}
     \matrix{Syllabe =\Syllabe
       \syllabe}
     \text{cnt_syl=\cnt_syl, items(\syllabe)}
@@ -45,7 +45,7 @@ text{battage=\alea issametext no ?wims(sort numeric items \battage)}
   \integer{etape=\etape + \cnt_data}
  \text{etape_step=\etape_step,\etape}
 }
-Je n'ai pas tenu compte du N 
+Je n'ai pas tenu compte du N
 \integer{cnt_step=items(\etape_step)-1}
 \text{cnt_qu=rows(\Rep)}
 \text{cnt_syl=wims(nonempty items \cnt_syl)}
@@ -57,29 +57,29 @@ Je n'ai pas tenu compte du N
 \integer{T = \etape_step[1]}
 \while{ \T notsametext }{
    \matrix{STEPS = \STEPS
-wims(makelist r x for x = \etape_step[\N*(\u-1)+1]+1  to \etape_step[\N*\u+1])}
+wims(makelist r x for x = \etape_step[\N*(\u-1)+1]+1 to \etape_step[\N*\u+1])}
    \matrix{CNT =\CNT
-wims(makelist x for x = \etape_step[\N*(\u-1)+1]+1  to \etape_step[\N*\u+1])}
+wims(makelist x for x = \etape_step[\N*(\u-1)+1]+1 to \etape_step[\N*\u+1])}
    \integer{u = \u + 1}
    \text{T = \etape_step[\N*(\u-1)+1]}
 }
 
 matrix{STEPS = \STEPS
-   wims(makelist r x  for x = \etape_step[\cnt_step+1] to \MAX)}
+   wims(makelist r x for x = \etape_step[\cnt_step+1] to \MAX)}
 matrix{CNT = \CNT
- wims(makelist x  for x = \etape_step[\cnt_step+1] to \MAX)}
+ wims(makelist x for x = \etape_step[\cnt_step+1] to \MAX)}
 
 \steps{\STEPS}
 \statement{\nopaste <div class="instruction">\instruction</div>
   \if{\reading notsametext }{\special{help reading,READING}}
   \if{\image notsametext }{\special{help image,IMAGES}}
   \audio\video
-  \if{\cnt_qu=1}{<div class="wimscenter">\Audio[1] 
+  \if{\cnt_qu=1}{<div class="wimscenter">\Audio[1]
    \for{ s = 1 to \cnt_syl[1]}{\embed{reply 1,\s}}
    </div>}
    {<ol>
-     \for{t in  \CNT[\step;]}{ <li> \Audio[\t] 
-        \for{ s = 1 to \cnt_syl[\t]}{\embed{reply \t,\s}} 
+     \for{t in \CNT[\step;]}{ <li> \Audio[\t]
+        \for{ s = 1 to \cnt_syl[\t]}{\embed{reply \t,\s}}
         </li>}
      </ol>
    }

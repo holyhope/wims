@@ -7,17 +7,17 @@
  \text{inst_image=wims(getopt image in \preliminaire_test)}
  \text{inst_title=wims(getopt title in \preliminaire_test)}
  \text{inst_intro=wims(getopt intro in \preliminaire_test)}
- \integer{test_inst=\inst_audio\inst_image\inst_title\inst_intro  notsametext ? 1 : 0}
+ \integer{test_inst=\inst_audio\inst_image\inst_title\inst_intro notsametext ? 1 : 0}
  \text{rab_inst=}
  \text{rab_inst=\inst_title notsametext ?\rab_inst<div class="wimscenter">\inst_title</div>}
  \text{rab_inst=\inst_intro notsametext ?\rab_inst \inst_intro}
  \text{rab_inst=\inst_image notsametext ? \rab_inst <div class="wimscenter"><img src="\imagedir/\inst_image" alt="" /></div>}
  \if{\inst_audio notsametext }{
-     \text{rab_inst1= . isin \inst_audio or \packs= ? 
+     \text{rab_inst1= . isin \inst_audio or \packs= ?
        slib(media/audio \imagedir/\inst_audio,\player_option,player=\player):slib(lang/swac \inst_audio,\packs,player=\player,\player_option)}
      \text{rab_inst=\rab_inst <div class="wimscenter">\rab_inst1[1;1]</div>}
  }
- \text{preliminaire=\test_inst=1  ? \rab_inst:&nbsp;}
+ \text{preliminaire=\test_inst=1 ? \rab_inst:&nbsp;}
 }{\integer{test_inst=2}}
 
  \matrix{QUEST=\test_inst=1 or \test_inst=2 ? wims(line 2 to -1 of \QUEST):\QUEST}
@@ -42,8 +42,8 @@ matrix{QUEST = wims(replace internal _imagedir by \imagedir in \QUEST)}
       }
    }
    {##recherche dans swac -- rajouter ensuite les images
-   \text{ audiocorr=wims(getopt audio in \QUEST[\im;2])}  
-    \if{\audiocorr notsametext }{ 
+   \text{ audiocorr=wims(getopt audio in \QUEST[\im;2])}
+    \if{\audiocorr notsametext }{
       \text{Image=slib(lang/swac \audiocorr,\packs,player=\player,\player_option)}
       \text{Image=\Image[1;1]}
     }{\text{Image= \QUEST[\im;2]}}
@@ -64,15 +64,15 @@ matrix{QUEST = wims(replace internal _imagedir by \imagedir in \QUEST)}
     }
   }
   {##recherche dans swac -- rajouter ensuite les images
-   \text{ audiocorr=wims(getopt audio in \QUEST[\im;1])}  
-    \if{\audiocorr notsametext }{ 
+   \text{ audiocorr=wims(getopt audio in \QUEST[\im;1])}
+    \if{\audiocorr notsametext }{
       \text{Image=slib(lang/swac \audiocorr,\packs,player=\player,\player_option)}
       \text{Image=\Image[1;1]}
     }{\text{Image= \QUEST[\im;1]}}
   }
     \text{gauche = wims(append item \Image to \gauche)}
 }
-\statement{\nopaste <div class="instruction">\instruction</div> \preliminaire 
+\statement{\nopaste <div class="instruction">\instruction</div> \preliminaire
   \if{\reading notsametext }{\special{help reading,READING}}
   \if{\image notsametext }{\special{help image,IMAGES}}
   \audio\video
