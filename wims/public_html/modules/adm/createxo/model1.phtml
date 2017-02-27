@@ -3,6 +3,9 @@
 <p>$name_availablemodels</p>
 
 !for t in $types
+ !if $(type_$t)=$empty
+   !goto end
+ !endif
  !default name_$t=$t
  $table_header
  <caption>$(name_$t)</caption>
@@ -29,7 +32,7 @@
   </tr>
  !next f
  $table_end
-
+:end
 !next t
 
 !read lang/names.phtml.$modu_lang model

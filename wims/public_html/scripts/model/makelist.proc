@@ -10,7 +10,7 @@ src=!sh cd $wims_home/public_html/scripts/model/$lang/src; ls *.oef | sed 's/.oe
 src=!words2items $src
 
 !writefile $listfile
-types=
+!set types=first,datalist,question,select,order,gapfill,classify,game,image
 !for f in $src
  def=!record 0 of model/$lang/src/$f.oef
  type=!getopt type in $def
@@ -45,4 +45,3 @@ types=$types
 !next t
 
 !read $listfile
-
