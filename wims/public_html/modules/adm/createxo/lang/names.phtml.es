@@ -40,9 +40,16 @@ into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,\
 
 !distribute line Ejercicios básicos\
 Ejercicios con una lista de datos\
-Exercises for chemistry\
+Chemistry exercises\
 Games\
-Exercises for language\
+Language exercises\
+Select items\
+Different kinds of questions\
+Fill in the gaps\
+Put in order\
+Classify\
+into name_first,name_datalist,name_chemistry,name_game,name_language,name_image,\
+name_select,name_question,name_gapfill,name_order,name_classify
 into name_first,name_datalist,name_chemistry,name_game,name_language
 
 !set name_save=!nosubst  Aquí está el código fuente de su ejercicio\
