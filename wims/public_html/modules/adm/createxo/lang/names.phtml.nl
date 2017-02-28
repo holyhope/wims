@@ -41,14 +41,13 @@ Beginners kunnen beter
 Oefeningen die werken met een data lijst\
 Scheikunde oefeningen\
 Spelletjes\
-Taalkundige oefeningen\
-Exercises with image\
+Exercises with image or audio\
 Select items\
 Different kinds of questions\
 Fill in the gaps\
 Put in order\
 Classify\
-into name_first,name_datalist,name_chemistry,name_game,name_language,name_image,\
+into name_first,name_datalist,name_chemistry,name_game,name_imaudio,\
 name_select,name_question,name_gapfill,name_order,name_classify
 
 !set name_save=!nosubst hier is de broncode van <span class="wims_warning">$oef_title</span>,\

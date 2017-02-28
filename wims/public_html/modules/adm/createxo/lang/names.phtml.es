@@ -42,15 +42,14 @@ into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,\
 Ejercicios con una lista de datos\
 Chemistry exercises\
 Games\
-Language exercises\
+Exercises with images or audio\
 Select items\
 Different kinds of questions\
 Fill in the gaps\
 Put in order\
 Classify\
-into name_first,name_datalist,name_chemistry,name_game,name_language,name_image,\
+into name_first,name_datalist,name_chemistry,name_game,name_imaudio,\
 name_select,name_question,name_gapfill,name_order,name_classify
-into name_first,name_datalist,name_chemistry,name_game,name_language
 
 !set name_save=!nosubst  Aquí está el código fuente de su ejercicio\
  <span class="wims_warning">$oef_title</span>, en formato OEF (Open Exercice Format).\
