@@ -55,7 +55,7 @@ dd=$(reply$i)
         !endif
       !endif
     !else
-      !set default_$i= !replace internal &nbsp by &nbsp; in $(default_$i)
+      !set default_$i=!replace internal &nbsp by &nbsp; in $(default_$i)
       dd2=!append item $(default_$i) to $dd2
     !endif
   !next d_
@@ -68,14 +68,7 @@ dd=$(reply$i)
 :nocheck
 reply$i=$dd
 m_reply$i=$dd
-
-!!reply_$i=!items2words $dd
-!set dd_cnt=!itemcnt $dd
-
-!if $fill_css_defined!=yes
-  !set reply_$i=<style type="text/css">\
-    .drag_label{\
-      /*display:inline-block;*/\
+!set style=.drag_label{\
       padding:2px;\
       border:1px solid;\
       box-sizing: border-box;\
@@ -83,15 +76,14 @@ m_reply$i=$dd
       background-color:$rightcolor;\
       overflow: auto;\
     }\
-    .fill_container{display: flex;flex-flow: row wrap;font-family:sans-serif;background-color:#ffd080;margin:2px;};\
-  </style>\
-  <div $container_width_r>
-
-  !set fill_css_defined=yes
-!else
-  !set reply_$i=
+    .fill_container{display:flex;flex-flow:row wrap;font-family:sans-serif;background-color:#ffd080;margin:2px;};
+!if $style notin $oef_anstype_css
+   !set oef_anstype_css=!append line $style to $oef_anstype_css
 !endif
 
+!!reply_$i=!items2words $dd
+!set dd_cnt=!itemcnt $dd
+!set reply_$i=<div $container_width_r>
 !if $wims_read_parm=nocompare
   !for a = 1 to $dd_cnt
     reply_$i=$(reply_$i)<div\
