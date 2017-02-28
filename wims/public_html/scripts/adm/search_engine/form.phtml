@@ -39,13 +39,18 @@
         !!-- search type -->
         !default search_and=no
         !formselect search_and list yes,no prompt $name_search_and
-
         !!-- language -->
         !set L_language=!words2items $wims_site_languages
         !formselect search_lang list $L_language
       </li>
     </ul>
-
+        !set Listlevel=K3,E1,E2,E3,E4,E5,E6,H1,H2,H3,H5,H6,U1,U2,U3
+        !set listlevel=!makelist level x for x in $Listlevel
+        !set listlevel=!nospace $listlevel
+        !set listlevel=!lowercase $listlevel
+        <p>
+        !formcheckbox search_level list $listlevel prompt $Listlevel
+        </p>
   !formend
   <span class="text_icon browse">
     !href module=adm/browse $wims_name_browse

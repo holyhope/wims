@@ -3,7 +3,16 @@
 !! sout=!exec translator $srch
 
 Sout=
- !if $search_and=yes
+!if $search_level!=$empty
+  Soutlevel=
+  slcnt=!itemcnt $search_level
+  !for s_ = 1 to $slcnt
+      sout_=!lookup $(search_level[$s_]) in wimshome/public_html/$dictionary
+      sout_=!words2items $sout_
+      Soutlevel=!append item $sout_ to $Soutlevel
+  !next
+!endif
+!if $search_and=yes
    srch1=!replace internal ,$ $ by , in $srch
    srch1=!items2lines $srch1
    scnt=!linecnt $srch1
@@ -19,6 +28,9 @@ Sout=
      !endif
    !next
    sout=$Sout
+   !if $search_level!=$empty
+     sout=!listintersection $Sout and $Soutlevel
+   !endif
  !else
     scnt=!itemcnt $srch
     !for s_ = 1 to $scnt
@@ -27,6 +39,9 @@ Sout=
       Sout=!append item $sout_ to $Sout
     !next
     sout=!listuniq $Sout
+    !if $search_level!=$empty
+      sout=!listintersection $sout and $Soutlevel
+    !endif
  !endif
  sout=!items2words $sout
  sout=!words2lines $sout

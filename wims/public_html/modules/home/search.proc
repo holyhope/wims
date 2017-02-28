@@ -59,7 +59,7 @@ list_batch=20
 !read adm/search_engine/mklist_form.proc $search_lang
 
 !if $wims_user=supervisor
- !default search_level=$class_level
+ !default search_level=level$class_level
 !endif
 
 !if $list=clear
@@ -77,11 +77,12 @@ list_batch=20
 
 search_keywords=!trim $search_keywords
 search_keywords=!translate " to $ $ in $search_keywords
-!if $search_category$search_keywords=$empty
+!if $search_category$search_keywords$search_level=$empty
  !read wimshome/$s2dir/home_search
  readback=yes
 !else
  search_level=!nospace $search_level
+ search_level=!lowercase $search_level
  search_domain=!trim $search_domain
  search_keywords=!trim $search_keywords
 !endif
@@ -101,11 +102,18 @@ search_adresse=search_keywords="$search_keywords"
 !if $search_and!=$empty and $search_and!=no
    search_adresse=$search_adresse&search_and=$search_and
 !endif
+!if $search_level!=$empty
+   search_adresse=$search_adresse&search_level=$search_level
+!endif
 !if $search_category=V
  gotcnt=0
  !exit
 !endif
-
+!if $search_keywords=$empty and $search_level!=$empty
+    srch=$search_level
+    search_and=no
+    !goto search
+!endif
 !if $search_keywords!=$empty
   search_keywords_cnt=!wordcnt $search_keywords
 !!! the keyword may be the address of a module - if it is found, no other search is done
@@ -146,7 +154,7 @@ search_adresse=search_keywords="$search_keywords"
   srch=!replace , by , $ in $srch
   srch=!deaccent $srch
   srch=!lower $srch
-
+:search
 !!do not want to use the misprints and suffix for the moment
   Gotcnt=0
 !!! classes
