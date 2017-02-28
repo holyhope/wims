@@ -10,7 +10,8 @@ src=!sh cd $wims_home/public_html/scripts/model/$lang/src; ls *.oef | sed 's/.oe
 src=!words2items $src
 
 !writefile $listfile
-!set types=first,datalist,question,select,order,gapfill,classify,game,image
+!! allow to order types. The types not written here are automatically added at the end
+!set types=first,datalist,question,select,order,gapfill,classify,game,image,chemistry
 !for f in $src
  def=!record 0 of model/$lang/src/$f.oef
  type=!getopt type in $def
