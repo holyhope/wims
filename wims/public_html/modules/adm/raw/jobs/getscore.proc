@@ -42,16 +42,13 @@
 
 !endif
 
-
 examscore    = !examscore       class=$qclass user=$quser
 score_status = !getscorestatus  class=$qclass
 
 m=!record 0 of wimshome/log/classes/$qclass/sheets/.severity
 scoremax=!word 1 of $m
 
-
-
 option=!listintersect $option and $userdefs
 !if $option=$empty
- option=$userdefs
+  option=$userdefs
 !endif

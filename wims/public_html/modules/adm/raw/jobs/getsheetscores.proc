@@ -1,25 +1,25 @@
 # GetSheetScores
 # Donne les notes de l'ensemble des utilisateurs pour la feuille $qsheet
 
-#Pour commencer, on verifie la classe
+# Pour commencer, on verifie la classe
 !read scripts/check.class
 !if $error!=$empty
- !exit
+  !exit
 !endif
 
-#puis la feuille
+# Puis la feuille
 type=sheets
 !read scripts/check.proc
 !if $error!=$empty
- !exit
+  !exit
 !endif
 
 sheet_properties=!lines2items $qproperties\
 
 sheet_status=!item 1 of $sheet_properties
 !if $sheet_status<1 or $sheet_status>2
- error=Sheet #$qsheet must be active
- !exit
+  error=Sheet #$qsheet must be active
+  !exit
 !endif
 
 nbsheets=!recordcnt wimshome/log/classes/$qclass/sheets/.sheets
@@ -28,24 +28,24 @@ active_index=0
 nb_active=0
 
 !for i=1 to $nbsheets
-	sheet_properties=!record $i of wimshome/log/classes/$qclass/sheets/.sheets
-	status=!line 1 of $sheet_properties
+  sheet_properties=!record $i of wimshome/log/classes/$qclass/sheets/.sheets
+  status=!line 1 of $sheet_properties
 
-	!if $status>=1 and $status <=2
-		!advance nb_active
-	!endif
+  !if $status>=1 and $status<=2
+    !advance nb_active
+  !endif
 
-	!if $qsheet=$i
-		active_index=$nb_active
-	!endif
+  !if $qsheet=$i
+    active_index=$nb_active
+  !endif
 !next i
 
 class_superclass=!defof class_superclass in $classdeffile
 # Un utilisateur est toujours stocké dans la superclasse, pas dans la sous-classe.
 !if $class_superclass != $empty
-	users_dir = wimshome/log/classes/$class_superclass/.users
+  users_dir = wimshome/log/classes/$class_superclass/.users
 !else
-	users_dir = wimshome/log/classes/$qclass/.users
+  users_dir = wimshome/log/classes/$qclass/.users
 !endif
 
 !read adm/class/mkuserlist $qclass
@@ -69,82 +69,81 @@ sheet_max_quality =0
 !writefile wimshome/sessions/$wims_session/data.scores \
 
 !for u=1 to $usercnt
-	l=!record $u of wimshome/log/classes/$qclass/.userlist
-	quser=!item 3 of $l
-	lastname=!item 1 of $l
-	firstname=!item 2 of $l
-	!defread $users_dir/$quser
+  l=!record $u of wimshome/log/classes/$qclass/.userlist
+  quser=!item 3 of $l
+  lastname=!item 1 of $l
+  firstname=!item 2 of $l
+  !defread $users_dir/$quser
 
-	#getscorepercent fournit les donnes globales de la feuille : pourcentage de realisation et qualite
-	sheet_summaries=!getscorepercent user=$quser class=$qclass
-	sheet_summaries=!line $qsheet of $sheet_summaries
+  #getscorepercent fournit les donnes globales de la feuille : pourcentage de realisation et qualite
+  sheet_summaries=!getscorepercent user=$quser class=$qclass
+  sheet_summaries=!line $qsheet of $sheet_summaries
 
-	#user_percent  pourcentage des points cumulés
-	#   (en abrégé "cumul" : valeur sur 100 qui correspond à 100*I0 dans les formules données dans l'aide de wims)
-	user_percent=!word 1 of $sheet_summaries
+  #user_percent  pourcentage des points cumulés
+  #   (en abrégé "cumul" : valeur sur 100 qui correspond à 100*I0 dans les formules données dans l'aide de wims)
+  user_percent=!word 1 of $sheet_summaries
 
-	#user_quality  qualité (valeur sur 10 correspond à 10*Q dans les formules)
-	user_quality=!word 2 of $sheet_summaries
+  #user_quality  qualité (valeur sur 10 correspond à 10*Q dans les formules)
+  user_quality=!word 2 of $sheet_summaries
 
-	#user_best     niveau de réussite (en abrégé "Réussite" :
-	#	valeur sur 100 qui correspond à 100*I1 dans les formules)
-	user_best   =!word 3 of $sheet_summaries
+  #user_best     niveau de réussite (en abrégé "Réussite" :
+  # valeur sur 100 qui correspond à 100*I1 dans les formules)
+  user_best   =!word 3 of $sheet_summaries
 
-	#user_level         niveau d'acquisition (en abrégé "Acquis" :
-	#	valeur sur 100 qui correspond à 100*I2 dans les formules)
-	user_level  =!word 4 of $sheet_summaries
+  #user_level         niveau d'acquisition (en abrégé "Acquis" :
+  # valeur sur 100 qui correspond à 100*I2 dans les formules)
+  user_level  =!word 4 of $sheet_summaries
 
-	sheet_mean_quality = $[$sheet_mean_quality + $user_quality]
-	sheet_mean_percent = $[$sheet_mean_percent + $user_percent]
+  sheet_mean_quality = $[$sheet_mean_quality + $user_quality]
+  sheet_mean_percent = $[$sheet_mean_percent + $user_percent]
 
-	!default user_percent=0
-	!default user_quality=0
-	!default user_best=0
-	!default user_level=0
-	!if $user_percent>$sheet_max_percent
-		sheet_max_percent=$user_percent
-	!endif
-	!if $user_quality>$sheet_max_quality
-		sheet_max_quality=$user_quality
-	!endif
+  !default user_percent=0
+  !default user_quality=0
+  !default user_best=0
+  !default user_level=0
+  !if $user_percent>$sheet_max_percent
+    sheet_max_percent=$user_percent
+  !endif
+  !if $user_quality>$sheet_max_quality
+    sheet_max_quality=$user_quality
+  !endif
 
-	gotdetail=!getscore user=$quser class=$qclass sheet=$qsheet
-	#gotdetail=!line $active_index of $gotdetail
+  gotdetail=!getscore user=$quser class=$qclass sheet=$qsheet
+  #gotdetail=!line $active_index of $gotdetail
 
-	meandetail=!getscoremean user=$quser class=$qclass sheet=$qsheet
-	#meandetail=!line $active_index of $meandetail
+  meandetail=!getscoremean user=$quser class=$qclass sheet=$qsheet
+  #meandetail=!line $active_index of $meandetail
 
-	remain=!getscoreremain user=$quser class=$qclass sheet=$qsheet
-	#remain=!line $active_index of $remain
+  remain=!getscoreremain user=$quser class=$qclass sheet=$qsheet
+  #remain=!line $active_index of $remain
 
-    best_detail  = !getscorebest  user=$quser class=$qclass sheet=$qsheet
-    level_detail = !getscorelevel user=$quser class=$qclass sheet=$qsheet
+  best_detail  = !getscorebest  user=$quser class=$qclass sheet=$qsheet
+  level_detail = !getscorelevel user=$quser class=$qclass sheet=$qsheet
 
-	## correspondance avec les scores affichés dans WIMS :
-	# score -> I0
-	# best  -> I1
-	# level -> I2
-	# mean  -> Q
+  ## correspondance avec les scores affichés dans WIMS :
+  # score -> I0
+  # best  -> I1
+  # level -> I2
+  # mean  -> Q
 
-
-	!for v in gotdetail, meandetail, remain, best_detail, level_detail
-	    $v=!trim $($v)
-		!if $v != $empty
-		    $v=!wordstoitems $($v)
-			$v=[$($v)]
-		!else
-			$v=""
-		!endif
-	!next v
-
-	new_line = :"id":"$quser", "first_name":"$firstname", "last_name":"$lastname", "user_percent":$user_percent, "user_quality":$user_quality, "user_level":$user_level, "user_best":$user_best, "got_detail":$gotdetail, "mean_detail":$meandetail, "remain":$remain, "best_detail":$best_detail, "level_detail":$level_detail
-
-	# Pour des raisons de performance (wims interdit des variables trop gourmandes), on enregistre maintenant les donnees dans un fichier, toutes les 100 lignes
-	data_scores = !append line $new_line to $data_scores
-	!ifval  $u % 100 = 0
-	   !appendfile wimshome/sessions/$wims_session/data.scores $data_scores
-	   data_scores = $empty
+  !for v in gotdetail, meandetail, remain, best_detail, level_detail
+      $v=!trim $($v)
+    !if $v != $empty
+        $v=!wordstoitems $($v)
+      $v=[$($v)]
+    !else
+      $v=""
     !endif
+  !next v
+
+  new_line = :"id":"$quser", "first_name":"$firstname", "last_name":"$lastname", "user_percent":$user_percent, "user_quality":$user_quality, "user_level":$user_level, "user_best":$user_best, "got_detail":$gotdetail, "mean_detail":$meandetail, "remain":$remain, "best_detail":$best_detail, "level_detail":$level_detail
+
+  # Pour des raisons de performance (wims interdit des variables trop gourmandes), on enregistre maintenant les donnees dans un fichier, toutes les 50 lignes
+  data_scores = !append line $new_line to $data_scores
+  !ifval  $u % 50 = 0
+    !appendfile wimshome/sessions/$wims_session/data.scores $data_scores
+    data_scores = $empty
+  !endif
 !next u
 
 !appendfile wimshome/sessions/$wims_session/data.scores $data_scores
