@@ -75,162 +75,176 @@ language=$ggblang
 !! before it was data.indexOf('_') != 2
 <script type="text/javascript">
 /*<![CDATA[*/
-function dontknow()
-{
-    var q='?';
-    q=encodeURIComponent(q);
-    var URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$i='+q ;
-    document.location.href = URL;
+function dontknow(){
+  var q='?';
+  q=encodeURIComponent(q);
+  var URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$i='+q ;
+  document.location.href = URL;
 }
 
 !!ici on ne peut prendre document.getElementById("applet$i")
 !set mygbb=ggbApplet$number
 
+window.onload = function() {
+  preventSubmission('$mygbb');
+}
+
+/* Intercept the event 'keydown' on 'return' to avoid submitting the form. */
+function preventSubmission(elementId){
+  document.getElementById(elementId).addEventListener('keydown',function(e){
+    var evt = e || window.event;
+    //console.log(evt);
+    if(evt.keyCode==13||evt.keyCode==10){
+      evt.preventDefault();
+    }
+  });
+}
+
 function geogebra2wims() {
-    var mygbb=$mygbb;
-    var tot='';
-    var ignore=$igno;
-    var cond='';
-    var test,test2,nbre;
-    var a,b,c,d,e,f,g,h,n,x,y,p,max,r,s,t,i,it,whatisit,thing,listcnt,def,name,prec;
-    var list_of_things = new Array();
-    var debug=0;
-    !!!!!!! WIMS !!!!!!!
+  var mygbb=$mygbb;
+  var tot='';
+  var ignore=$igno;
+  var cond='';
+  var test,test2,nbre;
+  var a,b,c,d,e,f,g,h,n,x,y,p,max,r,s,t,i,it,whatisit,thing,listcnt,def,name,prec;
+  var list_of_things = new Array();
+  var debug=0;
 
-prec=$precisionn;
-ch=new String($mygbb.getXML());
-arr1=new String('<decimals val=\"'+prec+'\"/>');
-for ( i=0 ; i < 18 ; i++){
-   dep1=new String('<decimals val=\"'+i+'\"/>');
-   ch=ch.replace(dep1,arr1);}
-   mygbb.setXML(ch);
+  !!!!!!! WIMS !!!!!!!
+  prec=$precisionn;
+  ch=new String($mygbb.getXML());
+  arr1=new String('<decimals val=\"'+prec+'\"/>');
+  for ( i=0 ; i < 18 ; i++){
+    dep1=new String('<decimals val=\"'+i+'\"/>');
+    ch=ch.replace(dep1,arr1);
+  }
+  mygbb.setXML(ch);
 
-   var data = new Array();
-   var grec = new Array();
+  var data = new Array();
+  var grec = new Array();
 
-!if $list_of_things=$empty
+  !if $list_of_things=$empty
     !! look for all possible object names
     list_of_things=['point','line','ray','circle','segment','function','polynomial','conic','ellipse','hyperbola','parabola','vector','angle','conicpart','numeric','text','polygon','triangle','quadrilateral','pentagon','hexagon','boolean'];
-!endif
-listcnt=list_of_things.length;
+  !endif
+  listcnt=list_of_things.length;
 
-grec=['alpha','beta','gamma','delta','epsilon','zeta','eta','theta',\
-   'iota','kappa','lambda','mu','nu','xi','omicron','pi','rho','sigmaf',\
-   'sigma','tau','upsilon','phi','khi','psi','omega'];
+  grec=['alpha','beta','gamma','delta','epsilon','zeta','eta','theta',\
+    'iota','kappa','lambda','mu','nu','xi','omicron','pi','rho','sigmaf',\
+    'sigma','tau','upsilon','phi','khi','psi','omega'];
 
-var totalobject_count = 0;
-nbre=mygbb.getObjectNumber();
-for ( i=0 ; i < nbre ; i++){
-  thing=mygbb.getObjectName(i);
+  var totalobject_count = 0;
+  nbre=mygbb.getObjectNumber();
+  for ( i=0 ; i < nbre ; i++){
+    thing=mygbb.getObjectName(i);
 
-if (!(thing in ignore)) {
-  whatisit=mygbb.getObjectType(thing);
-!!return the command in english because of the boolean
-  def=mygbb.getCommandString(thing,false);
-  if (def=='') {def=whatisit};
-/*alert('getobjetname='+thing+'||getObjettype='+whatisit+'||command='+def+'||valuestring='+mygbb.getValueString(thing));*/
-!!replace the greek names of the angles
-  test=encodeURIComponent(thing);
-  test=decodeURIComponent(test);
-  if(test.substr(0,$ny_)=="$Ny_"){name=test.charCodeAt($ny_);}else{name=test.charCodeAt(0);}
-  if (name>944){name=name-945;
-    test='$Ny_'+grec[name];}
-for ( p=0 ; p < listcnt ; p++){
-    !! walk trough the selection of objects we are interested in
-    !! defined in Wimsvariable $list_of_things='point','circle','polygon'
+    if (!(thing in ignore)) {
+      whatisit=mygbb.getObjectType(thing);
+      !!return the command in english because of the boolean
+      def=mygbb.getCommandString(thing,false);
+      if (def=='') {def=whatisit};
+      /*alert('getobjetname='+thing+'||getObjettype='+whatisit+'||command='+def+'||valuestring='+mygbb.getValueString(thing));*/
+      !!replace the greek names of the angles
+      test=encodeURIComponent(thing);
+      test=decodeURIComponent(test);
+      if(test.substr(0,$ny_)=="$Ny_"){name=test.charCodeAt($ny_);}else{name=test.charCodeAt(0);}
+      if (name>944){
+        name=name-945;
+        test='$Ny_'+grec[name];
+      }
+      for ( p=0 ; p < listcnt ; p++){
+        !! walk trough the selection of objects we are interested in
+        !! defined in Wimsvariable $list_of_things='point','circle','polygon'
 
-    it=list_of_things[p];
-    if (whatisit==it)
-      {
-        data=mygbb.getValueString(thing);
-        data=encodeURIComponent(data);
-        data=data.replace(/%C2%B/g,'^');
-        data= decodeURIComponent(data);
-        !! back to normal...
-  if ($Ny)
-!! check e.g. no special tags like My_A My_B used to mask a *.ggb objects
-!! or Ny_ used to analyse the *.gbb objects
-     {totalobject_count=totalobject_count + 1;
-      if (it=='point'||it=='vector'){
-        x=mygbb.getXcoord(thing);
-        x=(Math.round(x*Math.pow(10,prec)))/(Math.pow(10,prec));
-        y=mygbb.getYcoord(thing);
-        y=(Math.round(y*Math.pow(10,prec)))/(Math.pow(10,prec));
-        data=thing+'='+it+','+x+','+y;}
-      else if (it=='circle'||it=='line'||it=='polynomial'||it=='conic'||it=='parabola'||it=='ellipse'||it=='hyperbola'||it=='ray')
-          !! c:(x - 5.73)^2 + (y - 1.53)^2 = 16,
-      {
-        t=data.length;
-        c=data.indexOf(':');
-        d=data.indexOf('=');
-        e=data.substring(c+1,d-1);
-        f=data.substring(d+1,t);
-        data=thing+'='+it+','+e+'-(('+f+'))';
+        it=list_of_things[p];
+        if (whatisit==it){
+          data=mygbb.getValueString(thing);
+          data=encodeURIComponent(data);
+          data=data.replace(/%C2%B/g,'^');
+          data= decodeURIComponent(data);
+          !! back to normal...
+          if ($Ny){
+            !! check e.g. no special tags like My_A My_B used to mask a *.ggb objects
+            !! or Ny_ used to analyse the *.gbb objects
+            totalobject_count=totalobject_count + 1;
+            if (it=='point'||it=='vector'){
+              x=mygbb.getXcoord(thing);
+              x=(Math.round(x*Math.pow(10,prec)))/(Math.pow(10,prec));
+              y=mygbb.getYcoord(thing);
+              y=(Math.round(y*Math.pow(10,prec)))/(Math.pow(10,prec));
+              data=thing+'='+it+','+x+','+y;
+            }
+            else if (it=='circle'||it=='line'||it=='polynomial'||it=='conic'||it=='parabola'||it=='ellipse'||it=='hyperbola'||it=='ray')
+            !! c:(x - 5.73)^2 + (y - 1.53)^2 = 16,
+            {
+              t=data.length;
+              c=data.indexOf(':');
+              d=data.indexOf('=');
+              e=data.substring(c+1,d-1);
+              f=data.substring(d+1,t);
+              data=thing+'='+it+','+e+'-(('+f+'))';
+            }
+            else if (it=='angle'){
+              !!  on enleve le 'degre' ('^0')
+              data=encodeURIComponent(data);
+              data=data.replace(/%5E0/g,'');
+              data=decodeURIComponent(data);
+              !!on ecrit les noms grecs en toutes lettres
+              if($Ny){na=data.charCodeAt($ny_);}else{na=data.charCodeAt(0);}
+              data=data.split('=');
+              name=data[0];
+              data=data[1];
+              if(na>944){
+                na=na-945;
+                name='$Ny_'+grec[na];
+              }
+              data=name+'='+it+','+data;
+            }
+            else if (it=='text'||it=='numeric'||it=='segment'||it=='function'||it=='conicpart'||it=='boolean'){
+              data=data.split('=');
+              name=data[0];
+              data=data[1];
+              data=name+'='+it+','+data;
+            }
+            else if (it=='polygon'||it=='triangle'||it=='quadrilateral'||it=='pentagon'||it=='hexagon'){
+              data=data.split('=');
+              name=data[0];
+              data=data[1];
+              data=name+'=polygon,'+data;
+            }
+            !! here we produce the URL string 'tot'
+            tot=tot + data + '&&' ;
+            cond=cond+test+'='+def+'&&';
+          }
         }
-       else if (it=='angle')
-       {
-!!  on enleve le 'degre' ('^0')
-        data=encodeURIComponent(data);
-        data=data.replace(/%5E0/g,'');
-        data=decodeURIComponent(data);
-        !!on ecrit les noms grecs en toutes lettres
-        if($Ny){na=data.charCodeAt($ny_);}else{na=data.charCodeAt(0);}
-	data=data.split('=');
-        name=data[0];
-        data=data[1];
-        if(na>944){na=na-945;
-          name='$Ny_'+grec[na];}
-          data=name+'='+it+','+data;
-	}
-        else if (it=='text'||it=='numeric'||it=='segment'||it=='function'||it=='conicpart'||it=='boolean')
-        {
-        data=data.split('=');
-        name=data[0];
-        data=data[1];
-        data=name+'='+it+','+data;
       }
-        else if (it=='polygon'||it=='triangle'||it=='quadrilateral'||it=='pentagon'||it=='hexagon')
-      {
-        data=data.split('=');
-        name=data[0];
-        data=data[1];
-        data=name+'=polygon,'+data;
-      }
-        !! here we produce the URL string 'tot'
-          tot=tot + data + '&&' ;
-          cond=cond+test+'='+def+'&&';
-     }
     }
-   }
   }
- }
   t=tot.length;
   tot=tot.substr(0,t-2);
   t=cond.length;
   cond=cond.substr(0,t-2);
   tot=tot+';'+cond;
-!! use encoding on math '+' signs
+  !! use encoding on math '+' signs
   tot=tot.replace(/undefined/g, '');
-!!    tot= encodeURIComponent( tot );
-!! replace the strange unicode for ^2
-   tot=tot.replace(/%C2%B/g,'^');
+  !!    tot= encodeURIComponent( tot );
+  !! replace the strange unicode for ^2
+  tot=tot.replace(/%C2%B/g,'^');
 
-    if (totalobject_count == 0)
-    {
-    }
-    else
-    if ( totalobject_count > $maxobjects )
-    {
-  alert('$inp0 '+ $maxobjects +' $inp1');
+  if (totalobject_count == 0){
   }
-    else
-    {
+  else if ( totalobject_count > $maxobjects )
+  {
+    alert('$inp0 '+ $maxobjects +' $inp1');
+  }
+  else
+  {
     if (debug=='1') {alert('You are about to send a reply:'+tot);}
-  document.getElementById('geog').value = tot;
+    document.getElementById('reply$i').value = tot;
   }
 }
 
 /*]]>*/
 </script>
-<input type="hidden" name="reply$i" id="geog" value="" />
+<input type="hidden" name="reply$i" id="reply$i" value="" />
 $out_applet
