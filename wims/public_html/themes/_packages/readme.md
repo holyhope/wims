@@ -1,5 +1,5 @@
 We use `Bower` to automatically download JS packages/plugins,
-And then we use `Grunt` to perform special tasks (concat, minify, ...)
+And then we use `Grunt` to perform special tasks (concat, minify, verify ...)
 
 # Installation
 --------------
