@@ -57,8 +57,9 @@ gotlim2=50
 list_batch=20
 !default search_lang=$lang
 !read adm/search_engine/mklist_form.proc $search_lang
-
-!set Listlevel=K1,K2,K3,E1,E2,E3,E4,E5,E6,H1,H2,H3,H5,H6,U1,U2,U3,U4,U5,R
+!read adm/lang/levelname.phtml.$lang
+!!hack for levels 3 by 3
+!set Listlevel=!replace internal K3 by K1,K2,K3 in $wims_listlevel
 !set levelcnt=!itemcnt $Listlevel
 !set listlevel=!makelist level x for x in $Listlevel
 !set listlevel=!nospace $listlevel
