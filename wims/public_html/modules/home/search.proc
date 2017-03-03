@@ -58,8 +58,16 @@ list_batch=20
 !default search_lang=$lang
 !read adm/search_engine/mklist_form.proc $search_lang
 
+!set Listlevel=K1,K2,K3,E1,E2,E3,E4,E5,E6,H1,H2,H3,H5,H6,U1,U2,U3,U4,U5,R
+!set levelcnt=!itemcnt $Listlevel
+!set listlevel=!makelist level x for x in $Listlevel
+!set listlevel=!nospace $listlevel
+!set listlevel=!lowercase $listlevel
+
 !if $wims_user=supervisor
- !default search_level=level$class_level
+ !set cl=!positionof item $class_level in $Listlevel
+ !default search_level_from=$[max(1,$cl-1)]
+ !default search_level_to=$[$cl+1]
 !endif
 
 !if $list=clear
@@ -74,7 +82,10 @@ list_batch=20
 !if _tool isin $wims_session
  search_category=T
 !endif
-
+!if $search_level_from!=$empty
+  !default search_level_to=-1
+  search_level=$(listlevel[$search_level_from .. $search_level_to])
+!endif
 search_keywords=!trim $search_keywords
 search_keywords=!translate " to $ $ in $search_keywords
 !if $search_category$search_keywords$search_level=$empty

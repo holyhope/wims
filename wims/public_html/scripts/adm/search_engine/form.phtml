@@ -42,18 +42,20 @@
         !formselect search_lang list $L_language
       </li>
     </ul>
-    !set Listlevel=K3,E1,E2,E3,E4,E5,E6,H1,H2,H3,H5,H6,U1,U2,U3
-    !set listlevel=!makelist level x for x in $Listlevel
-    !set listlevel=!nospace $listlevel
-    !set listlevel=!lowercase $listlevel
+!if $jquery_defined=yes
+    !read adm/search_engine/level_form.phtml
+!else
     <div>
       !formcheckbox search_level list $listlevel prompt $Listlevel
     </div>
+!endif
   !formend
   <p class="text_icon browse">
     !href module=adm/browse $wims_name_browse
   </p>
 </fieldset>
+
+
 !if $jquery_defined=yes
   <script type="text/javascript" src="scripts/js/interface/search_engine.js"></script>
 !endif

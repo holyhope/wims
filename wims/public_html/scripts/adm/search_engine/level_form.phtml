@@ -1,0 +1,55 @@
+!!# Si les librairies Jquery sont chargees, on affiche un double curseur.
+!default search_level_from=4
+!default search_level_to=6
+!!<fieldset class="property_fields blockcenter">
+ !! <legend>name_bounded_search$name_bounded_search</legend>
+    <div class="field box">
+      <label>$wims_name_level</label>
+      <input type="hidden" id="search_level_from" name="search_level_from" value="$search_level_from" />
+      <input type="hidden" id="search_level_to" name="search_level_to" value="$search_level_to" />
+      <!-- no more alternating-slider -->
+      <div class="slider" id="slider_level"></div>
+    </div>
+!!</fieldset>
+<script type="text/javascript" src="scripts/js/bower_components/jquery-ui-slider-pips/dist/jquery-ui-slider-pips.min.js"></script>
+<link rel="stylesheet" href="scripts/js/bower_components/jquery-ui-slider-pips/dist/jquery-ui-slider-pips.min.css" />
+<link rel="stylesheet" href="themes/_css/jquery-ui-slider-pips.custom.css" />
+<style type="text/css">
+ .ui-slider-pip>span.ui-slider-label{
+   width:4em;
+ }
+ #slider_level .ui-slider-range { background: $wims_ref_bgcolor; }
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/ jQuery(function(jq){
+var niveaux = new Array($levelcnt);
+var labels = ["Cycle 1",
+              "Cycle 2",
+              "Cycle 3",
+              "Cycle 4",
+              "Lycée",
+              "L",
+              "++"];
+
+jq('#slider_level')
+    .slider({min: 1,
+             max: niveaux.length-1,
+             range: true,
+             values: [ jq( "#search_level_from" ).val(), jq( "#search_level_to" ).val() ],
+             slide: function( event, ui ) {
+        jq( "#search_level_from" ).val(ui.values[0]);
+        jq( "#search_level_to" ).val(ui.values[1]);
+      }
+    })
+    .slider('pips',
+            {rest: "label",
+            labels: niveaux});
+
+jq("#slider_level").after('<div id="label_container"></div>');
+larg=1/labels.length*100;
+//larg=labels.length;
+for (element in labels){
+  jq("#label_container").append('<div style="display:inline-block;width:'+larg+'%">&larr;'+labels[element]+'&rarr;</div>');
+}
+});/*]]>*/
+</script>
