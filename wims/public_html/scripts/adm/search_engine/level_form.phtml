@@ -1,36 +1,39 @@
 !!# Si les librairies Jquery sont chargees, on affiche un double curseur.
-!default search_level_from=4
-!default search_level_to=6
+!default search_level_from=8
+!default search_level_to=11
+!set percents=100
 !!<fieldset class="property_fields blockcenter">
  !! <legend>name_bounded_search$name_bounded_search</legend>
-    <div class="field box">
+<div class="field box">
       <label>$wims_name_level</label>
       <input type="hidden" id="search_level_from" name="search_level_from" value="$search_level_from" />
       <input type="hidden" id="search_level_to" name="search_level_to" value="$search_level_to" />
       <!-- no more alternating-slider -->
-      <div class="slider" id="slider_level"></div>
-    </div>
+      <div class="slider" id="slider_level" style="width:$percent%;margin-right:auto;margin-left:auto"></div>
+</div>
+
 !!</fieldset>
 <script type="text/javascript" src="scripts/js/bower_components/jquery-ui-slider-pips/dist/jquery-ui-slider-pips.min.js"></script>
 <link rel="stylesheet" href="scripts/js/bower_components/jquery-ui-slider-pips/dist/jquery-ui-slider-pips.min.css" />
 <link rel="stylesheet" href="themes/_css/jquery-ui-slider-pips.custom.css" />
 <style type="text/css">
- .ui-slider-pip>span.ui-slider-label{
-   width:4em;
- }
- #slider_level .ui-slider-range { background: $wims_ref_bgcolor; }
+ #slider_level .ui-slider-range { background: $wims_ref_bgcolor; style="$percents%"}
 </style>
+
+!set w_levels=!makelist "x","" for x in $name_wims_levels
+
+!set width_levels=!makelist x,1 for x in $name_width_levels
+!set width_levels=!nonempty items 0,$width_levels
+!set width=!replace internal , by + in $width_levels
+!set width=$[$width]
+!set width_levels=!values x/$width*$percents for x in $width_levels
+
 <script type="text/javascript">
 /*<![CDATA[*/ jQuery(function(jq){
 var niveaux = new Array($levelcnt);
-var labels = ["Cycle 1",
-              "Cycle 2",
-              "Cycle 3",
-              "Cycle 4",
-              "Lycée",
-              "L",
-              "++"];
-
+var labels = [$w_levels];
+/* Be careful that the sum of all width must equal 100. */
+var widths = [$width_levels];
 jq('#slider_level')
     .slider({min: 1,
              max: niveaux.length-1,
@@ -45,11 +48,10 @@ jq('#slider_level')
             {rest: "label",
             labels: niveaux});
 
-jq("#slider_level").after('<div id="label_container"></div>');
-larg=1/labels.length*100;
-//larg=labels.length;
-for (element in labels){
-  jq("#label_container").append('<div style="display:inline-block;width:'+larg+'%">&larr;'+labels[element]+'&rarr;</div>');
+jq("#slider_level").after('<div id="label_container" style="width:$percents%;margin-right:auto;margin-left:auto"></div>');
+auto_larg=1/labels.length*100;
+for (elem_id in labels){
+  jq("#label_container").append('<div style="display:inline-block;width:'+widths[elem_id]+'%">'+labels[elem_id]+'</div>');
 }
 });/*]]>*/
 </script>
