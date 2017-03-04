@@ -14,7 +14,6 @@
       !read adm/search_engine/search_accessright.phtml
     !endif
 
-
     !set wims_ref_class=wims_button_help float_right
     !href module=adm/light&phtml=search_engine.phtml.$lang $name_search_help
 
@@ -42,13 +41,13 @@
         !formselect search_lang list $L_language
       </li>
     </ul>
-!if $jquery_defined=yes
-    !read adm/search_engine/level_form.phtml
-!else
-    <div>
-      !formcheckbox search_level list $listlevel prompt $Listlevel
-    </div>
-!endif
+    !if $jquery_defined=yes
+        !read adm/search_engine/level_form.phtml
+    !else
+      <div class="search_level_list">
+        !formcheckbox search_level list $listlevel prompt $Listlevel
+      </div>
+    !endif
   !formend
   <p class="text_icon browse">
     !href module=adm/browse $wims_name_browse
