@@ -19,21 +19,13 @@
 <style type="text/css">
  #slider_level .ui-slider-range { background: $wims_ref_bgcolor; style="$percents%"}
 </style>
-
-!set w_levels=!makelist "x","" for x in $name_wims_levels
-
-!set width_levels=!makelist x,1 for x in $name_width_levels
-!set width_levels=!nonempty items 0,$width_levels
-!set width=!replace internal , by + in $width_levels
-!set width=$[$width]
-!set width_levels=!values x/$width*$percents for x in $width_levels
-
 <script type="text/javascript">
 /*<![CDATA[*/ jQuery(function(jq){
 var niveaux = new Array($levelcnt);
-var labels = [$w_levels];
-/* Be careful that the sum of all width must equal 100. */
-var widths = [$width_levels];
+!set levelcnt=!itemcnt $levels
+!for i=1 to $levelcnt
+niveaux[$(levels[$i])]='$(name_wims_levels[$i])';
+!next
 jq('#slider_level')
     .slider({min: 1,
              max: niveaux.length-1,
@@ -45,13 +37,7 @@ jq('#slider_level')
       }
     })
     .slider('pips',
-            {rest: "label",
-            labels: niveaux});
-
-jq("#slider_level").after('<div id="label_container" style="width:$percents%;margin-right:auto;margin-left:auto"></div>');
-auto_larg=1/labels.length*100;
-for (elem_id in labels){
-  jq("#label_container").append('<div style="display:inline-block;width:'+widths[elem_id]+'%">'+labels[elem_id]+'</div>');
-}
+           {rest: "label",
+           labels: niveaux});
 });/*]]>*/
 </script>
