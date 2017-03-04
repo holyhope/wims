@@ -24,7 +24,11 @@
 var niveaux = new Array($levelcnt);
 !set levelcnt=!itemcnt $levels
 !for i=1 to $levelcnt
+  !ifval $(levels[$i+1])-$(levels[$i])>1
+niveaux[$(levels[$i])]='$(name_wims_levels[$i])&rarr;';
+  !else
 niveaux[$(levels[$i])]='$(name_wims_levels[$i])';
+  !endif
 !next
 jq('#slider_level')
     .slider({min: 1,
