@@ -82,7 +82,7 @@ $doc_DIR = $doc_DIR . '/' if ($doc_DIR) ;
 
 my $BASE = $doc_DIR . "doc/$SUBDIR/src";
 my $BASE0= $doc_DIR . "doc/$SUBDIR";
-
+my $BASEtmp= $doc_DIR . "doc/$SUBDIR/.src";
 my $LOAD = '\reload{<img src="gifs/doc/etoile.gif" alt="rechargez" style="width:20px;height:20px;" />}';
 my $FLECHE = '&#8594;';
 $linkout = "\\doc{module=$linkout}" . $FLECHE if ($linkout) ;
@@ -189,16 +189,14 @@ my %prefixe = ( fold => 'F_' , link => 'L_' );
 my %hash_secinv;
 for (my $i = 0; $i <= $#SECTIONS; $i++) { $hash_secinv{$SECTIONS[$i]} = $i; }
 
-my (%errmsg); # empeche le re-affichage d'un même warning.
+my (%errmsg); # empeche le re-affichage d'un meme warning.
 $SIG{__WARN__} = sub { my ($x) = @_;
   return if $errmsg{$x};
   $errmsg{$x} = 1;
   print STDERR "### $x";
 };
-
-system("mkdir -p $BASE0") if (!$ENV{'wims_exec_parm'});
-system("mkdir -p $BASE") if (!$ENV{'wims_exec_parm'});
-
+system("mkdir -p $BASE0;mkdir -p $BASE;
+  mkdir -p $BASEtmp; mv $BASE/* $BASEtmp/") if (!$ENV{'wims_exec_parm'});
 $hash{niveau}{'main'} = 0;
 #pour algorithmic
 #TODO recuperer les informations dans le fichier de l'utilisateur
@@ -212,7 +210,7 @@ my %hash_algo = (
 my $algo_noend = 0 ;
 my $voca = %{$hash_algo{titre}} ;
 my @liste_voca = ('FOR', 'IF','WHILE','REPEAT','ELSE','ELSIF','ENDIF','DO',
- 'ENDWHILE', 'REQUIRE','ENSURE','ENDFOR','STATE','UNTIL','THEN', 'RETURN') ;
+ 'ENDWHILE', 'REQUIRE','ENSURE','ENDFOR','STATE','UNTIL','THEN', 'RETURN');
 
 $hash_command{definition}{algorithmicrequire}='<b>Require</b>';
 $hash_command{origin}{algorithmicrequire}='defaut';
@@ -340,7 +338,7 @@ out('index', selection('<div class="index">' . makeindex (\%hash_index, 0, @List
 
 #cree les deux sortes de fichiers demandes par wims .def (fichier de definition general) +
 # nom.hd qui gere les regles de navigation pour chaque bloc
-#attention : dans le cas où il y a un \\embed{toto}, il faut creer le fichier toto.hd ...
+#attention : dans le cas ou il y a un \\embed{toto}, il faut creer le fichier toto.hd ...
 #TODO : \embed{toto} : je suppose ici que le contenu de toto est du wims a ne pas
 #interpreter
 #pour l'instant je m'en suis servi pour stocker des programmes qui interviennent plusieurs fois.
@@ -552,7 +550,7 @@ for my $rubrique (@liste_env_tabular) {
 #on pourrait faire une boucle while ; on pourrait avoir deux fois le meme environnement imbrique ?
 #begin{proof} \begin{proof} \end{proof}\end{proof} Je crois que c'est pour cela que je fais ce truc
 #tordu. En fait split me sert uniquement a trouver le premier <$environ>
-#$cnt sert a numeroter semi-globalement (creation de blocs correspondant a un même environnement dans une meme page
+#$cnt sert a numeroter semi-globalement (creation de blocs correspondant a un meme environnement dans une meme page
 #exemple mainS4S3F_proof1,mainS4S3F_proof2,mainS4S3F_proof3,mainS4S3F_proof4,mainS4S3F_proof5
 
 sub traite_list {my ($TEXT, $ref, $ref_env, $Id, $environ, $option) = @_;
@@ -865,7 +863,7 @@ sub pspicture { '<p>dessin à faire dans wims</p>' ; }
 sub picture { '<p>dessin à faire dans wims</p>' ; }
 
 #decoupe ce qui se trouve a l'interieur de \begin{wims} \end{wims} pour ne pas y toucher.
-# même pour verbatim, lstlisting
+# meme pour verbatim, lstlisting
 sub traite_special { my ( $TEXT, $ref_spec, $ref, $environ ) = @_;
   $TEXT = recup_embed($TEXT, $ref) ;
   $TEXT =~ s/\\begin\{$environ\}/<$environ>/g;
@@ -1023,14 +1021,14 @@ sub Traite_command { my ($TEXT, $command, $ref_command) = @_;
 
 my %outagain;
 sub out { my ($bloc, $text) = @_;
-  warn "Écrase $bloc" if ($outagain{$bloc});
+  warn "Ecrase $bloc" if ($outagain{$bloc});
   $outagain{$bloc} = 1;
   open (OUT, ">$BASE/$bloc") || die "ne peut pas créer $BASE/$bloc";
   print OUT $text ; close OUT;
 }
 
 sub out1 { my ($bloc, $text) = @_;
-  warn "Écrase $bloc" if ($outagain{$bloc});
+  warn "Ecrase $bloc" if ($outagain{$bloc});
   $outagain{$bloc} = 1;
   open (OUT, ">$doc_DIR$bloc") || die "ne peut pas créer $doc_DIR/$bloc";
   print OUT $text ; close OUT;
@@ -1137,7 +1135,7 @@ sub Init { my ($file, $ref_env, $ref_command, $ref, $ref_algo) = @_;
 sub traitement_final { my ($TEXT) = @_;
  #FIXME : je ne peux pas faire ca a cause des exercices de developpement dont l'adresse
  #contienne un ~. De toute facon
- #ca ne devrait pas exister, mais quand même. ou les wims only
+ #ca ne devrait pas exister, mais quand meme. ou les wims only
 #   $TEXT =~ s/~/&nbsp;/g;
    $TEXT =~ s:(<br class="spacer" />\s*<br class="spacer" />):<br class="spacer" />:g;
    $TEXT =~ s:<br class="spacer" />\s*(</?div):$1:g;
@@ -1351,7 +1349,7 @@ sub store_ref { my ($link, $titre, $anchor, $ref_bloc) = @_;
   my $txt = '' ;
   my @list = (split(',', $link)) ;
   for my $l (@list) {
-  dbg("... référence fichier: \"$l\" titre \"$l\"");
+  dbg("... reference fichier: \"$l\" titre \"$l\"");
   my $page = $ref_bloc->{fichier}{$l} ;
   warn "label $link n'existe pas" if !($page) ;
   $txt .= ($#list) ? " \\link\{$page\}\{$l\}\{$anchor\}":

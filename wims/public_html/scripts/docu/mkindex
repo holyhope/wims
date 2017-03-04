@@ -66,6 +66,11 @@ clean_doc ( ) {
   done
 }
 
+clean_src ( ) {
+  rm -f $1/.src/* >/dev/null;
+  rmdir $1/.src >/dev/null;
+}
+
 ## generation des .def
 gen_doc ( ) {
   def=$1
@@ -142,6 +147,8 @@ fi
 cd $lastdir
 ## cleaning file.def where file has been deleted
  clean_doc $def $src
+## cleaning .src if it exists
+ clean_src $def
 ## generated file *.def
   gen_doc $def $src
 ##definition files
