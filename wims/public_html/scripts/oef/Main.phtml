@@ -149,7 +149,8 @@ to $wims_html_header
  !endif
  !read oef/form.phtml
  <div id="oef_actions">
- !if _exam notin $wims_session
+ !!_check is there for examlog
+ !if _exam notin $wims_session and  _check notin $wims_session
     !if $jquery_defined=yes
       !! Displays a Modal dialog box explaining what the "giveup" button will do.
       <script type="text/javascript">
