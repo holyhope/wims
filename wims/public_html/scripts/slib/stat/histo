@@ -4,22 +4,21 @@
 
 slib_author=Adeline, Grelot ; Bernadette, Perrin-Riou; Sophie, Lemaire
 
-slib_example= [10,5,2,3,10,13],[3,4,6,7,12,14,16],xtics [A1,A3,A6,8,10,12,14],ytics 10, color salmon,html\
-[1,5,2,3,10,13],[3,4,6,7,12,14],xtics [a,b,c,d,e,f],ytics 10, color salmon,html\
-[1,5,2,3,10,13],[3,4,6,7,12,14,22],xtics,ytics 15, color blue,html\
-[1,5,2,3,10,13],[3,4,6,7,12,14,22],xtics [a,b,c,d,e,f],ytics 15, color blue,html\
+slib_example= [10,5,2,3,10,13],[3,4,6,7,12,14,16],xtics [A1,A3,A6,8,10,12,14],ytics 10,color salmon,html\
+[1,5,2,3,10,13],[3,4,6,7,12,14],xtics [a,b,c,d,e,f],ytics 10,color salmon,html\
+[1,5,2,3,10,13],[3,4,6,7,12,14,22],xtics,ytics 15,color blue,html\
+[1,5,2,3,10,13],[3,4,6,7,12,14,22],xtics [a,b,c,d,e,f],ytics 15,color blue,html\
 [1,5,2,3,10,13],[3,4,6,7,12,14,22],xtics 5,ytics 10,color blue,html\
-[100,500,2,300,1000,1300],[3,4,6,7,12,14],xtics,ytics 10, baton,color green,html\
-[0.007,0.005,0.002,0.003,0.0020,0.01],[3,4,6,7,12,14],xtics,ytics 10, stem,color blue,html\
-[1,5,2,3,10,13],[3,4,6,7,12,14,22],xtics,ytics 10, step,color red,html\
-[1,5,2,3,10,13],[3,4,6,7,12,14,22],xtics [a,b,c,d,e,f],ytics 10,step, color red,html\
+[100,500,2,300,1000,1300],[3,4,6,7,12,14],xtics,ytics 10,baton,color green,html\
+[0.007,0.005,0.002,0.003,0.0020,0.01],[3,4,6,7,12,14],xtics,ytics 10,stem,color blue,html\
+[1,5,2,3,10,13],[3,4,6,7,12,14,22],xtics,ytics 10,step,color red,html\
+[1,5,2,3,10,13],[3,4,6,7,12,14,22],xtics [a,b,c,d,e,f],ytics 10,step,color red,html\
 [1,5,2,3,10,13],[3,4,6,7,12,14,22],xtics 5,ytics 10,step,color red,html\
-[1,5,2,3,10,13],[3,4,6,7,12,14],xtics [a,b,c,d,e,f],ytics 10, stem,color blue,html\
+[1,5,2,3,10,13],[3,4,6,7,12,14],xtics [a,b,c,d,e,f],ytics 10,stem,color blue,html\
 [1,5,2,3,10,13],[3,4,6,7,12,14],xtics 5,ytics 1,stem,color blue,html\
 [1,5,2,3,10,13],[3,4,6,7,12,14,14],xtics,ytics,stair,color blue,html\
-[1,5,2],[3,4,6],xtics,ytics, stem,color blue,
-
-[1,5,2,3,10,13],[3,4,6,7,12,14],xtics [a,b,c,d,e,f,g],ytics 10, baton,color green,html
+[1,5,2],[3,4,6],xtics 10,ytics,stem,color blue,\
+[1,5,2,3,10,13],[3,4,6,7,12,14],xtics 5,noytics,baton,color green,html
 
 !exit
 
@@ -29,7 +28,7 @@ slib_parm=
 slib_out=
 !reset slib_optx, slib_opty, slib_couleur,slib_baton,slib_pdata, slib_grad,slib_listx,slib_listxx, slib_param, slib_parm slib_option, slib_points
 
-slib_data=!item 1 to 2  of $wims_read_parm
+slib_data=!item 1 to 2 of $wims_read_parm
 slib_parm= !item 3 to -1 of $wims_read_parm
 
 !readproc slib/stat/dataproc $slib_data
@@ -62,7 +61,8 @@ slib_ocnt=!itemcnt $slib_parm
   slib_param=!words2items  $slib_param
   !if xtics isitemof $slib_param
     slib_optx=1
-    slib_param=!replace xtics by $  in $slib_param
+    slib_param=!replace internal xtics by $  in $slib_param
+    slib_param=!replace internal = by $  in $slib_param
     slib_param=!nonempty item $slib_param
     slib_param=!nospace $slib_param
     slib_param=!declosing $slib_param
@@ -70,45 +70,21 @@ slib_ocnt=!itemcnt $slib_parm
     slib_c=!itemcnt $slib_cnt_ticx
 
     !if $slib_c=1
-      slib_arrondi=$[ceil(($slib_x2-$slib_x1)/$slib_cnt_ticx)]
-      slib_cnt_arr=0
-        !if $slib_arrondi<1
-          !for  slib_h=1 to 10
-            !if $[floor($slib_arrondi)] <>0
-            !break
-            !else
-              !advance slib_cnt_arr
-              slib_arrondi=$[$slib_arrondi*10]
-            !endif
-          !next slib_h
-          slib_arrondi=$[$slib_arrondi/10^($slib_cnt_arr)]
-        !else
-          !for  slib_h=1 to 10
-            !if $[floor($slib_arrondi)] = 0
-              !break
-            !else
-              !advance slib_cnt_arr
-              slib_arrondi=$[$slib_arrondi/10]
-            !endif
-          !next slib_h
-          slib_arrondi=$[$slib_arrondi*10^($slib_cnt_arr)]
-        !endif
-
+     slib_arrondi=!exec pari (f(r,n)= l=if(r != 0, floor(log(abs(r))/log(10)),1) ; s =ceil(10^(-l+n-1)*r) ; s*10^(l-n+1) ); \
+   f(($slib_x2-$slib_x1)/$slib_cnt_ticx,1)
       slib_listx=!values $[$slib_arrondi*floor($slib_x1/$slib_arrondi)]\
         +x*$slib_arrondi for x=0 to $[$slib_cnt_ticx+1]
-
       slib_listxx=$slib_listx
     !else
       slib_listx= $slib_param
       slib_listxx=$slib_w
-
-    !endif  slib_c
+    !endif slib_c
   !endif xtics
   !if ytics isitemof $slib_param
     slib_opty=1
-    slib_param=!replace ytics by $  in $slib_param
+    slib_param=!replace ytics by $ in $slib_param
     slib_param=!nonempty item $slib_param
-    slib_param=!words2items  $slib_param
+    slib_param=!words2items $slib_param
     slib_param=!declosing $slib_param
     slib_param=!nonempty item $slib_param
     slib_pcnt=!itemcnt $slib_param
@@ -117,15 +93,15 @@ slib_ocnt=!itemcnt $slib_parm
     !endif
   !endif ytics
   !if color isitemof $slib_param
-    slib_param=!replace color by $  in $slib_param
+    slib_param=!replace color by $ in $slib_param
     slib_param=!nonempty item $slib_param
     couleur=$slib_param
   !endif
 
-  !if  $slib_param iswordof baton stem step stair
+  !if $slib_param iswordof baton stem step stair
     slib_baton=$slib_param
   !endif
-  !if  $slib_param iswordof html url
+  !if $slib_param iswordof html url
     slib_option=$slib_param
   !endif
 !next slib_i
@@ -153,7 +129,7 @@ slib_uu=
   !else
    slib_r=$[($slib_x2-$slib_x1)/(($slib_cntu)*4)]
   !endif
-  !for slib_i = 1 to  $slib_cntu
+  !for slib_i = 1 to $slib_cntu
     slib_j=!item $slib_i of $slib_w
     slib_ww=!append item $[$slib_j+1-$slib_r],$[$slib_j+1+$slib_r] to $slib_ww
     slib_j=!item $slib_i of $slib_u
@@ -166,7 +142,7 @@ slib_uu=
   slib_x1=!item 1 of $slib_w
   slib_x2=!item -1 of $slib_w
   slib_y2=!sort numeric item $slib_u
-  slib_y2=!item -1  of $slib_y2
+  slib_y2=!item -1 of $slib_y2
   slib_cnt=!itemcnt $slib_w
   slib_cnt=$[$slib_cnt+1]
 !else
@@ -175,7 +151,7 @@ slib_uu=
    slib_x1=!item 1 of $slib_w
    slib_x2=!item -1 of $slib_w
    slib_y2=!sort numeric item $slib_u
-   slib_y2=!item -1  of $slib_y2
+   slib_y2=!item -1 of $slib_y2
    slib_cnt=!itemcnt $slib_w
    slib_cnt=$[$slib_cnt]
    !else
@@ -278,7 +254,6 @@ points $couleur
      slib_points=!append item $slib_inf,$slib_f to $slib_points
    !endif
   !next slib_i
-
 !endif
 
 slib_out=$slib_pdata\
@@ -296,4 +271,4 @@ hline 0,0,grey
  !endif
 !endif
 
-!reset  insdraw_size
+!reset insdraw_size
