@@ -16,7 +16,6 @@ Sout=
    srch1=!replace internal ,$ $ by , in $srch
    srch1=!items2lines $srch1
    scnt=!linecnt $srch1
-
    !for s_ = 1 to $scnt
      sout_=!lookup $(srch1[$s_;]) in wimshome/public_html/$dictionary
      sout_=!words2items $sout_
@@ -40,6 +39,7 @@ Sout=
     !next
     sout=!listuniq $Sout
     !if $search_level!=$empty
+      sout=!replace internal ?4 by ?2 in $sout
       sout=!listintersection $sout and $Soutlevel
     !endif
  !endif
