@@ -9,42 +9,41 @@ $title
 !endif
 
 !if $job2=all
- <p>
- $name_scheduled
- </p> <hr style="width:70%" />
- !set job2=first
- !reset auto muauto
+  <p class="wims_msg info">$name_scheduled</p>
+  <hr style="width:70%" />
+  !set job2=first
+  !reset auto muauto
 !endif
 
-$name_canupdate
-!href cmd=reply&job=conf&confcat=6 $name_click
- $name_automatic
-  &nbsp;
+<p>
+  $name_canupdate
   !set wims_ref_class=wims_button_help
   !href cmd=help&help_subject=publication $wims_name_help
+</p>
 
 !form reply
-<input type="hidden" name="muauto" value="check" />
-!reset table_center
-<fieldset class="property_fields blockcenter">
-  <legend>$title</legend>
+  <input type="hidden" name="muauto" value="check" />
+  !reset table_center
+  <fieldset class="property_fields blockcenter">
+    <legend>$title</legend>
     <div class="field box halfwidth">
-     <label for="muzone">$name_zone</label>
-     <input size="40" name="muzone" id="muzone" value="$muzone" />
+      <label for="muzone">$name_zone</label>
+      <input size="40" name="muzone" id="muzone" value="$muzone" placeholder="$muzone_placeholder" />
+      <div class="formHelp">$muzone_help.</div>
     </div>
     <div class="field box halfwidth">
-     <label for="mucat">$name_cat</label>
-     <input size="40" name="mucat" id="mucat" value="$mucat" />
+      <label for="mucat">$name_cat</label>
+      <input size="40" name="mucat" id="mucat" value="$mucat" placeholder="$mucat_placeholder" />
+      <div class="formHelp">$mucat_help.</div>
     </div>
     <div class="field box fullwidth wimscenter">
       <label for="mudelay">$name_change</label>
-      <input size="4" name="mudelay" id="mudelay" value="$mudelay" />
+      <input type="number" size="4" name="mudelay" id="mudelay" value="$mudelay" min="0" />
       $name_ago
+      <div class="formHelp">$mudelay_help.</div>
     </div>
-    <div class="field box fullwidth wimscenter">
-     <input type="submit" value="$wims_name_search" />
-     <label for="">$name_mod</label>
-     <div class="formHelp">
+    <div class="field box fullwidth">
+      <p>$name_mod:</p>
       !let nb=!itemcnt $mu_download_site
       !if $nb>1
         <ol>
@@ -55,10 +54,15 @@ $name_canupdate
       !else
         $(depotname_$(mu_download_site)) ($mu_download_site)
       !endif
-      </div>
+      <p>
+        !href cmd=reply&job=conf&confcat=6 $wims_name_config_module
+        $name_automatic
+      </p>
     </div>
- </fieldset>
-
+    <div class="wimscenter">
+      <input type="submit" value="$wims_name_search" />
+    </div>
+  </fieldset>
 !formend
 
 $name_youneed

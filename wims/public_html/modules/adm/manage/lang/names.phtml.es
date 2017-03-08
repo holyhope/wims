@@ -357,11 +357,18 @@ de este sitio. No está autorizado a acceder a este módulo.
    se le enviará por correo electrónico.<p> Por favor no repita la orden hasta que se haya completado su ejecución.
   !distribute lines  entre los anuncios de módulos\
     módulos de la zona\
+    the general search zone, or <tt>all</tt> for all zones\
+    sample : H1\
     y categoría\
+    the general search category, or <tt>all</tt> for all categories\
+    sample : geometry\
     modificados al menos hace\
     días\
+    Reduce the risk of getting new bugs\
     Download configuration\
-  into name_mod,name_zone,name_cat,name_change,name_ago,wims_name_config_module
+  into name_mod, name_zone, muzone_help, muzone_placeholder,\
+    name_cat, mucat_help, mucat_placeholder, name_change, name_ago,\
+    mudelay_help, wims_name_config_module
 
   !distribute lines Error en la descarga del módulo \
       Error al instalar/actualizar\
