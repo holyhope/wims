@@ -45,7 +45,7 @@ $ by ; in $init_parm
 !set wims_html_header=!append line $oefcss to $wims_html_header
 
 !if $wims_class!= and $class_css=yes
-!set wims_html_header=!append line <link href="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=css.css" rel="stylesheet" type="text/css" />\
+  !set wims_html_header=!append line <link href="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=css.css" rel="stylesheet" type="text/css" />\
 to $wims_html_header
 !endif
 !header1
@@ -148,6 +148,16 @@ to $wims_html_header
  </div>
  !endif
  !read oef/form.phtml
+!if $fieldtot = 0
+  <div id="oef_actions">
+    <div class="oef_exo_renew">
+          !set wims_ref_class=wims_button
+          !set wims_ref_id=oef_renew
+          !href $renewlink $name_exo_renew
+    </div>
+  </div>
+  !goto endmain
+!endif
  <div id="oef_actions">
  !!_check is there for examlog
  !if _exam notin $wims_session and  _check notin $wims_session
@@ -342,6 +352,7 @@ to $wims_html_header
 </div> <!-- id oef_endhook-->
 :end
 </div> <!--oefform-->
+:endmain
 <!--fin oef main.phtml-->
 !if $oef_anstype_css!=$empty
   <style type="text/css">$oef_anstype_css</style>
