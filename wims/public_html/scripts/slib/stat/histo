@@ -71,7 +71,7 @@ slib_ocnt=!itemcnt $slib_parm
 
     !if $slib_c=1
      slib_arrondi=!exec pari (f(r,n)= l=if(r != 0, floor(log(abs(r))/log(10)),1) ; s =ceil(10^(-l+n-1)*r) ; s*10^(l-n+1) ); \
-   f(($slib_x2-$slib_x1)/$slib_cnt_ticx,1)
+   f(($slib_x2-($slib_x1))/$slib_cnt_ticx,1)
       slib_listx=!values $[$slib_arrondi*floor($slib_x1/$slib_arrondi)]\
         +x*$slib_arrondi for x=0 to $[$slib_cnt_ticx+1]
       slib_listxx=$slib_listx
