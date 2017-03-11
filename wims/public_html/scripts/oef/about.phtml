@@ -26,13 +26,17 @@ $table_header
         !else
           $(script_out[$au])
         !endif
-&nbsp;
+ $
       !next
       </td>
     </tr>
   !endif
-
-  $table_tr
+   $table_tr
+      <th>$wims_name_Address</th>
+      <td>$module&$module_init_parm</td>
+   </tr>
+     !if $solution$hint!=$empty
+   $table_tr
     <th>$name_Solution / $name_Hint</th>
     <td>
       !if $solution!=$empty and $hint!=$empty
@@ -47,7 +51,13 @@ $table_header
       !if $solution$hint=$empty
         $name_hint4
       !endif
-    </td>
+    </td></tr>
+    !endif
+    !if $keywords!=$empty
+      $table_tr<th>$wims_name_Keywords</th>
+      <td>$keywords</td></tr>
+    !endif
+    $table_tr
     !if $module_init_parm == $empty
       !set permalien=$wims_ref_name?module=$module
       !set permalien1=$wims_ref_name?module=adm/raw&amp;emod=$module
@@ -61,8 +71,6 @@ $table_header
       !set configlink1=$wims_ref_name?module=adm/raw&amp;job=lightpopup&amp;emod=$module&amp;&parm=$module_init_parm1&option=noabout
       !read ./oef/urlencode.proc
     !endif
-  </tr>
-  $table_tr
     <th>$wims_name_permalink</th>
     <td>
       $wims_name_permalink_desc
@@ -99,18 +107,16 @@ $table_header
         <li>
           !set exolink=$wims_ref_name?module=$module&amp;cmd=new&amp;exo=$thisexo
           $wims_name_display <strong>$wims_name_this_exercice</strong> $wims_name_on_your_site : <textarea  style="vertical-align:middle" rows="3" cols="50" readonly="readonly" >&lt;iframe src="$exolink&amp;embededwindow=true" width="$embedabble_width" height="$embedabble_height"&gt;&lt;/iframe&gt;</textarea>
-        </li>
-        <li>
+        </li><li>
           !if $module_init_parm!=$empty
             !set exolink=$wims_ref_name?module=$module&amp;cmd=new&amp;$module_init_parm
           !else
             !set exolink=$wims_ref_name?module=$module&amp;cmd=new
           !endif
-          $wims_name_display <strong>$wims_name_this_config</strong> $wims_name_on_your_site : <textarea  style="vertical-align:middle" rows="3" cols="50" readonly="readonly">&lt;iframe src="$configlink&amp;embededwindow=true" width="$embedabble_width" height="$embedabble_height"&gt;&lt;/iframe&gt;</textarea>
-        </li>
-        <li>
+          $wims_name_display <strong>$wims_name_this_config</strong> $wims_name_on_your_site : <textarea style="vertical-align:middle" rows="3" cols="50" readonly="readonly">&lt;iframe src="$configlink&amp;embededwindow=true" width="$embedabble_width" height="$embedabble_height"&gt;&lt;/iframe&gt;</textarea>
+        </li><li>
           $wims_name_display <strong>$wims_name_this_config</strong> $wims_name_on_your_site ("light" version) :
-          <textarea  style="vertical-align:middle" rows="3" cols="50" readonly="readonly">&lt;iframe src="$configlink1" width="$embedabble_width" height="$embedabble_height"&gt;&lt;/iframe&gt;</textarea>
+          <textarea style="vertical-align:middle" rows="3" cols="50" readonly="readonly">&lt;iframe src="$configlink1" width="$embedabble_width" height="$embedabble_height"&gt;&lt;/iframe&gt;</textarea>
         </li>
       </ul>
     </td>
