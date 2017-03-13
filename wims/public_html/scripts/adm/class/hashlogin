@@ -23,16 +23,8 @@
   !endif
 !endif
 
-
 !set login=!text select $char_alnum in $login
 !set login=!char 1 to $[$login_max -$limit] of $login
-!set tmp=!charcnt $login
-!if $tmp<$login_min
-  !set tmp=!makelist 0 for x=1 to $login_min-$tmp
-  !set tmp=!items2words $tmp
-  !set login=!nospace $login$tmp
-  !reset tmp
-!endif
 !!set cl=!replace internal / by , in $cl
 !set cl=$(cl[1])
 !if $cl=$empty
