@@ -1,6 +1,6 @@
  !set cc=$wims_read_parm
  <ul class="wims_nopuce">
- !for ff in tit,type,syntax, mean,alias,sample
+ !for ff in tit,type,syntax,alias,mean,sample
    !set text=!lookup $ff in cmd/$cc.phtml
    !if $text!=$empty
  <li>
@@ -11,24 +11,30 @@
 $ by $(lst_$(ff)end) <br/>$lstyle2 in $text
    !endif
    !replace internal '' by $emphend in $text
-   $(lst_$(ff)end)
-  </li>
+   !if $ff=mean and $cc iswordof word column char item line record
+      !set numlist_type=$cc
+      !if $numlist_type=record
+        !set numlist_str=``fname''
+      !else
+        !set numlist_str=``string''
+      !endif
+      !if $numlist_type=char
+        !set numlist_type=character
+      !endif
+      !set text=!record 0 of cmd/numlist
+      !set text=!replace internal '' by $emphend in $text
+      !replace internal `` by $emph in $text
+    !endif
+    !if $ff=mean and $cc iswordof randfile record recordcnt
+      !read cmd/datafile.phtml
+    !endif
+    $(lst_$(ff)end)
+    </li>
   !endif
  !next
   </ul>
   !if $cc iswordof if
     !read help/if.phtml
-  !endif
-  !if $cc iswordof randfile record recordcnt
-    <div>
-    !read cmd/datafile.phtml
-   </div>
-  !endif
-  !if $cc iswordof word column char item line record
-      <div>
-    !set numlist_type=$cc
-    !read cmd/numlist
-      </div>
   !endif
   !set text=!lookup numlist in cmd/$cc.phtml
   !if $text!=$empty
