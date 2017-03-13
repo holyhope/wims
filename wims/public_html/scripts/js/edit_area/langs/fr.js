@@ -70,4 +70,5 @@ syntax_wimsdata: "WIMS data",
 syntax_gp: "Pari/GP",
 syntax_octave: "Octave",
 syntax_flydraw: "Flydraw",
+syntax_wimsdoc: "Doc",
 };

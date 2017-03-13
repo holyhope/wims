@@ -108,6 +108,11 @@ my $EDIT_AERA_begin = "editAreaLoader.load_syntax['wims'] = {
     'QUOTEMARKS' : {1: ' \" '}
 	,'KEYWORD_CASE_SENSITIVE' : true
 	,\'KEYWORDS\' : {" ;
+my $EDIT_AERA_DOC_begin = "editAreaLoader.load_syntax['wimsdoc'] = {
+    'QUOTEMARKS' : {1: ' \" '}
+	,'KEYWORD_CASE_SENSITIVE' : true
+	,\'KEYWORDS\' : {" ;
+
 my $EDIT_AERA_OEF_end = "}
 	,'OPERATORS' : [
 		'*', '+', '-', '/', '^', ':=', '<', '=', '>','..'
@@ -151,6 +156,41 @@ my $EDIT_AERA_OEF_end = "}
 		}
 	}
 };" ;
+my $EDIT_AERA_DOC_end = "}
+	,'OPERATORS' : [
+		'*', '+', '-', '/', '^', ':=', '<', '=', '>','..'
+	]
+	,'DELIMITERS' : [
+		'(', ')', '[', ']','{','}','??','??'
+	]
+	,'REGEXPS' :
+	{
+		'docvariables' : { 'search': '()(\\\\\\\\\\\\w+)()',
+			'class' : 'docvariables',
+			'modifiers' : 'g', 'execute' : 'after' },
+		'record' : { 'search': '(\\n)(:)()',
+			'class' : 'record',
+			'modifiers' : 'g', 'execute' : 'after' },
+		'question' : { 'search': '(\\\\?\\\\?)([^\\\\?]+)(\\\\?\\\\?)',
+			'class' : 'question',
+			'modifiers' : 'g', 'execute' : 'before' }
+	}
+	,'STYLES' : {
+		'COMMENTS': 'color: #0000CD;'
+		,'QUOTESMARKS': 'color: #6381F8;'
+		,'KEYWORDS' : {
+			'text' : 'color: #FF9933;'
+			,'iff' : 'color: #FF00FF;'
+			,'slib' : 'color: #60CA33;'
+			}
+		,'OPERATORS' : 'color: #FF00FF;'
+		,'DELIMITERS' : 'color: #60CA00;'
+		,'REGEXPS': {
+			'docvariables' : 'color: #FF3A6E;'
+			,'question' : 'color:#985717;'
+		}
+	}
+};" ;
 my $EDIT_AERA_end = "}
 	,'OPERATORS' :[
 		'*', '+', '-', '/', '^', ':=', '<', '=', '>','//','\$'
@@ -190,6 +230,7 @@ my $debut_oef=1;
 my $debut_wims=1;
 my $EDIT_AERA_OEF=$EDIT_AERA_OEF_begin ;
 my $EDIT_AERA=$EDIT_AERA_begin ;
+my $EDIT_AERA_DOC=$EDIT_AERA_DOC_begin ;
 
 for my $lang (@Lang) {
    print "oefdoc.pl $lang\n" ;  system(`mkdir -p $DOSSIER/$lang`) ;
@@ -201,12 +242,14 @@ for my $lang (@Lang) {
 
 };
 $EDIT_AERA_OEF .=$EDIT_AERA_OEF_end ;
+$EDIT_AERA_DOC .=$EDIT_AERA_OEF_end ;
 if ($debut_wims==1) {$EDIT_AERA .= "\n" ; $debut_wims=0 } else {$EDIT_AERA .= "\n," };
 $EDIT_AERA .= " \'wimscommand' : \n[ \' " . join ("\', \'", wimscommand($DOSSIER_wims)) . "']";
 
 $EDIT_AERA .=$EDIT_AERA_end ;
 out( "$DOSSIER_edit_area/wimsoef.js",  $EDIT_AERA_OEF) ;
 out( "$DOSSIER_edit_area/wims.js",  $EDIT_AERA) ;
+out( "$DOSSIER_edit_area/wimsdoc.js",  $EDIT_AERA_DOC) ;
 
 sub anstype { my ($lang)=@_ ;
  my %HASH ;
