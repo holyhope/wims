@@ -41,8 +41,46 @@ totweight=0
 !writefile wimshome/$wims_sesdir/examdata.$exam $sdure $sprime
 registered=!record 0 of wimshome/$wims_sesdir/examreg.$exam
 now=$wims_nowseconds
+
 !if $registered>0
- timeleft=$[60*$sdure-($now-$registered)]
+!! le temps restant affiché ne peut pas aller au dela de la limitation fixée par la limitation de feuille.
+ !set expir_user=!record 0 of wimshome/log/classes/$wims_class/.E$exam
+ !set cle=!word 1 of $expir_user
+ !! process for technical variable definition (replace expir_user by value decide by the technical variable)
+ !if \ isin $cle
+   !set idtechvar=!line 1 of $expir_user
+   !set idtechvar=!char 2 to -1 of $idtechvar
+   !readproc adm/class/userdef ,$wims_class,$wims_user
+   !set val=!defof user_techvar_$(idtechvar) in $userdef
+   !default val=EMPTY
+   !reset expir_user
+   !set expir_user=!defof techvar_$val in wimshome/log/classes/$wims_class/.E$exam
+   !default expir_user=none
+ !endif
+ !! end process technical variable
+ !if $expir_user!=none
+  expir_user=!words2items $expir_user
+  nb=!itemcnt $expir_user
+  fin=$empty
+  c=<
+  !for k=1 to $nb
+      !if $c isin $(expir_user[$k])
+	fin=!char 2 to -1 of $(expir_user[$k])
+        fin=!text select 0123456789.: in $fin
+      !endif
+  !next k
+  !if $fin!=$empty
+     date=!char 1 to 8 of $fin
+     time=!char 10 to 14 of $fin
+     dt=!sh date -d"$date $time" +%s
+     left=$[$dt-$now]
+     sdure2=$[min(60*$sdure,$left)]
+  !else
+     sdure2=60*$sdure
+  !endif
+ !endif
+!! fin des modifications qui découle de la limitation fixée par la feuille
+ timeleft=$[$sdure2-($now-$registered)]
 !endif
 !if $timeleft<0
  timeleft=0
