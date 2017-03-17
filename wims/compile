@@ -42,7 +42,8 @@ for a in $(seq $#) ; do opt=$1;
     fi;
     cd tmp
     wget --no-check-certificate http://github.com/mathjax/MathJax/zipball/$vmathjax-latest
-    unzip $vmathjax-latest
+    echo "unzipping $vmathjax-latest"
+    unzip -q $vmathjax-latest && echo "unzipped successfully"
     rm -f $vmathjax-latest
     cd $dir
     mv -f tmp/mathjax-MathJax-* public_html/scripts/js/mathjax
@@ -58,9 +59,11 @@ for a in $(seq $#) ; do opt=$1;
     vjmol=jmol-$vjmol012
     cd tmp
     wget https://downloads.sourceforge.net/project/jmol/Jmol/Version%20$vjmol0.$vjmol1/Jmol%20$vjmol012/$vJmol-binary.zip
-    unzip $vJmol-binary.zip
+    echo "unzipping $vJmol-binary.zip"
+    unzip -q $vJmol-binary.zip && echo "unzipped successfully"
     cd $vjmol;
-    unzip jsmol.zip
+    echo "unzipping jsmol.zip"
+    unzip -q jsmol.zip && echo "unzipped successfully"
     rm -f jsmol.zip
     cd $dir
     if [ -d "public_html/java/jmol/j2s" ] ; then
@@ -85,7 +88,8 @@ for a in $(seq $#) ; do opt=$1;
     ggb_folder=public_html/scripts/js/geogebra
     cd tmp
     wget http://wims.unice.fr/download/others/$vGeogebra.zip
-    unzip $vGeogebra.zip
+    echo "unzipping $vGeogebra.zip"
+    unzip -q $vGeogebra.zip && echo "unzipped successfully"
     rm -f $vGeogebra.zip
     cd $dir
     if [ -d "$ggb_folder/geogebraweb" ] ; then
