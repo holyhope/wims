@@ -234,10 +234,10 @@ function sendanswer(){
     <input type="button" id="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
     <input type="button" id="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
     !if $wims_user=supervisor
-	<input type="button" id="schaersvoorde_extra_button" onclick="document.getElementById('JSMathView').value = '$(answer$n)';doMathSrc(1);" value="$wims_firstname $wims_lastname" /> 
+	!set answer_n=!lines2items $(answer$n)
+	<input type="button" id="schaersvoorde_extra_button" onclick="document.getElementById('JSMathView').value = '$answer_n';doMathSrc(1);" value="$wims_firstname $wims_lastname" /> 
     !endif
 </div>
-
 <script type="text/javascript">
  "use strict";
  var num_button_tabs = 8;var JSMathView = document.getElementById("JSMathView");var show_it = document.getElementById("show_it");var clear_it   = document.getElementById("clear_it");var math_out   = document.getElementById("math_out");var math_font_size = 1.1;
