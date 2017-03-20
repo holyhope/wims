@@ -14,7 +14,7 @@
 !set name_flist=Lijst van files
 !set name_files_binfile=Binaire bestanden
 !set name_del=Verwijder een module
-!set name_size=Grootte
+!set name_size=Grootte (bytes)
 !set name_publish=!nosubst Publiceer $i_title<br/><span class="tt">$mod</span>
 !set name_publication=Publication
 !set name_validation_message=Vraag de sitemanager de installatie hiervan te controleren.
@@ -45,7 +45,8 @@ into name_files_src,name_files_cpp, name_files_other,name_files_lang,name_files_
 !set name_nosuccessfile=Het bestand is niet geupload naar de module.\
   Kontroleer of de bestandsnaam geen vreemde lettertekens bevat of \
   een van de volgende karakters
-!set name_successdeletefile=is verwijderd uit de directory
+!set name_successdeletefile=is verwijderd uit de module
+!set name_failuredeletefile=has NOT been deleted from the module
 !set name_changefile=Hernoemen
 !set name_changenamefile=Nieuwe  naam van het bestand
 !set name_warning_changenamefile=Let op, veranderen van een bestandsnaam kan\

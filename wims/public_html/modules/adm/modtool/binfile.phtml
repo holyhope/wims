@@ -1,13 +1,21 @@
-<div class="wimscenter">--- $title ---</div>
+<h2 class="wims_subtitle">--- $title ---</h2>
 !if $successdelete=yes
   <div class="wims_msg success">
-  $wims_deposit $name_successdeletefile $bin_dir.
+  '<tt>$fname</tt>' $name_successdeletefile.
   </div>
   !reset successdelete
 !endif
+
+!if $successdelete=no
+  <div class="wims_msg alert">
+  '<tt>$fname</tt>' $name_failuredeletefile. ($check notitemof $dir)
+  </div>
+  !reset successdelete
+!endif
+
 !if $success=yes
   <div class="wims_msg success">
-  $name_successfile ($bin_dir/$wims_deposit)
+  $name_successfile (<tt>$bin_dir/$wims_deposit</tt>)
   </div>
 !else
   !if $wims_deposit!=noname.file and $bin_job=deposit and $bin_dir!=$empty

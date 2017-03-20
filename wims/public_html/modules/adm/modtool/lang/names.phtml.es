@@ -14,7 +14,7 @@
 !set name_flist=Lista de ficheros
 !set name_files_binfile=Ficheros binarios
 !set name_del=Borrar un módulo
-!set name_size=Tamaño
+!set name_size=Tamaño (bytes)
 !set name_publish=!nosubst Publicar $i_title<br /><span class="tt">$mod</span>
 !set name_publication=Publication
 !set name_validation_message=Demander au gestionnaire du site de vérifier l'installation.
@@ -45,7 +45,8 @@ into name_files_src,name_files_cpp, name_files_other,name_files_lang,name_files_
 !set name_nosuccessfile=The file has not been uploaded in the module.\
   Check that its name does not contain a stressed letter or \
   one of the following characters
-!set name_successdeletefile=has been deleted from the directory
+!set name_successdeletefile=has been deleted from the module
+!set name_failuredeletefile=has NOT been deleted from the module
 !set name_changefile=Rename
 !set name_changenamefile=New name of the file
 !set name_warning_changenamefile=Be cautious, changing the file name can break worksheets \
