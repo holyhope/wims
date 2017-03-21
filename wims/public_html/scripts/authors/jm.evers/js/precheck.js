@@ -279,7 +279,8 @@ function speciallog(t){
 function check_log_NaN(t){
     t=t.replace(/log\(/g,'@(');if(t.indexOf('@')==-1){return 1;}
     if(t.indexOf('--')!=-1 || t.indexOf('++')!=-1 ){setAlarm(r18);return 0;}
-    dingen=['@','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+    /* 3/2017 added ^ to dingen ; eval return 0 for eval(4^6) */
+    dingen=['^','@','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
     begin=t.indexOf('@');var exp;var variable;var trouble=0;var sa;
     while(begin != -1){
 	t1=t.indexOf('(');
@@ -295,7 +296,7 @@ function check_log_NaN(t){
 		}
 	    }
 	    begin=begin+2;exp=t.substring(begin,end);sa=0;variable=0;
-	    while(sa<27){v=dingen[sa];w=exp.indexOf(v);if(w!=-1){sa=27;variable=1;}sa++;}
+	    while(sa<28){v=dingen[sa];w=exp.indexOf(v);if(w!=-1){sa=28;variable=1;}sa++;}
 	    if(variable==0){test=eval(exp);if(test<=0){setAlarm(r16);return 0;}}
 	    t=t.replace('@(','log(');begin=t.indexOf('@');
 	}else{return 1;}
