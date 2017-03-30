@@ -1,11 +1,11 @@
 !set precision=!getopt precision in $(replyoption$i)
 !default precision=5
 
- ra=$[$(rlist[2])-$(rlist[4])]
- rb=$[$(rlist[3])-$(rlist[1])]
- rc=$[$(rlist[2])*($(rlist[3]))-($(rlist[1]))*($(rlist[4]))]
- rm=$[max(abs($ra),abs($rb))]
- !if $wims_read_parm=nocompare
+ra=$[$(rlist[2])-$(rlist[4])]
+rb=$[$(rlist[3])-$(rlist[1])]
+rc=$[$(rlist[2])*($(rlist[3]))-($(rlist[1]))*($(rlist[4]))]
+rm=$[max(abs($ra),abs($rb))]
+!if $wims_read_parm=nocompare
   !if NaN isin $ra$rb$rc or $rm<$precision
    reply$i=
    test=NaN
@@ -14,10 +14,10 @@
   m_reply$i =$rlist
   !goto drawing
 !endif
- ga=$[$(glist[2])-$(glist[4])]
- gb=$[$(glist[3])-$(glist[1])]
- gc=$[$(glist[2])*($(glist[3]))-($(glist[1]))*($(glist[4]))]
- gm=$[max(abs($ga),abs($gb))]
+ga=$[$(glist[2])-$(glist[4])]
+gb=$[$(glist[3])-$(glist[1])]
+gc=$[$(glist[2])*($(glist[3]))-($(glist[1]))*($(glist[4]))]
+gm=$[max(abs($ga),abs($gb))]
  !if NaN isin $ga$gb$gc or $gm<$precision
   Test=bad $i
   !exit
@@ -27,7 +27,6 @@
   test=NaN
   !exit
  !endif
-
  t1=$[($ga*($rb)-($gb)*($ra))/$gm]
  !if abs($ga) > abs($gb)
   t2=$[$ga*($rc)-($gc)*($ra)]
@@ -55,7 +54,7 @@
   direction=0
 !endif
 
-##coordonnées des points cliqués
+##coordonnees des points cliques
 ## test sur la direction
 m_reply$i =$rlist;$direction
 
