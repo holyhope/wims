@@ -15,23 +15,41 @@ replyGood$i=!line 1 of $good
 !set align_option=!tolower $align_option
 !bound align_option within left,right,center default center
 
+# padding of each label in px
+!set label_padding=1
+# border width of each label in px
+!set label_border_width=1
+# margin of each label in px
+!set label_margin=1
+
+
+
 # sizej represent the number of objects per line
-# $sizeh+2 represent an object width + its margin in px
+# $sizeh+... represent an object width + its padding+margin+border in px
 !if $sizei=$sizej
 !! case of 1 line.
   !set sizerep=!itemcnt $(reply$i)
   !set sizegood=!itemcnt $(replyGood$i)
-  !set container_width_g = $[($sizeh+2) * $sizegood]
-  !set container_width_r = $[($sizeh+2) * $sizerep]
+  !set container_width_g = $[($sizeh+2*$label_padding+2*$label_border_width+2*$label_margin) * $sizegood]
+  !set container_width_r = $[($sizeh+2*$label_padding+2*$label_border_width+2*$label_margin) * $sizerep]
 !else
-  !set container_width_g = $[($sizeh+2) * $sizej]
+  !set container_width_g = $[($sizeh+2*$label_padding+2*$label_border_width+2*$label_margin) * $sizej]
   !set container_width_r = $container_width_g
 !endif
 
 !set container_width_g = class="fill_container" style="width:$(container_width_g)px"
 !set container_width_r = class="fill_container" style="width:$(container_width_r)px"
 
-tmp=class="drag_label" style="text-align:$align_option;width:$(sizeh)px;height:$(sizev)px;"
+!set label_width=$[$(sizeh) + 2*$label_padding + 2*$label_border_width]
+!set label_height=$[$(sizev) + 2*$label_padding + 2*$label_border_width]
+
+!if $(sizeh)<30 or $(sizev)<30
+  !set label_overflow = overflow:hidden;
+!else
+  !reset label_overflow
+!endif
+
+tmp=class="drag_label" style="$(label_overflow)text-align:$align_option;width:$(label_width)px;height:$(label_height)px;"
   replyGood$i=!replace internal , by </div><div $tmp> in <div $container_width_g><div $tmp>$(replyGood$i)</div></div>
 !reset tmp
 
@@ -68,9 +86,10 @@ dd=$(reply$i)
 :nocheck
 reply$i=$dd
 m_reply$i=$dd
+
 !set style=.drag_label{\
-      padding:2px;\
-      border:1px solid;\
+      padding:$(label_padding)px;\
+      border:$(label_border_width)px solid;\
       box-sizing: border-box;\
       margin:1px;\
       background-color:$rightcolor;\
@@ -87,7 +106,7 @@ m_reply$i=$dd
 !if $wims_read_parm=nocompare
   !for a = 1 to $dd_cnt
     reply_$i=$(reply_$i)<div\
-      class="drag_label" style="text-align:$align_option;width:$(sizeh)px;height:$(sizev)px;">\
+      class="drag_label" style="$(label_overflow)text-align:$align_option;width:$(label_width)px;height:$(label_height)px;">\
       $(dd[$a])\
       </div>
   !next
@@ -149,13 +168,13 @@ ddo=!sort items $dd
   !endif split
 !next n
 
-  !for a = 1 to $dd_cnt
-    reply_$i=$(reply_$i)<div\
-      class="drag_label $(gr[$a])" style="text-align:$align_option;width:$(sizeh)px;height:$(sizev)px;">\
-      $(dd[$a])\
-      </div>
-  !next
-  reply_$i=$(reply_$i)</div>
+!for a = 1 to $dd_cnt
+  reply_$i=$(reply_$i)<div\
+    class="drag_label $(gr[$a])" style="$(label_overflow)text-align:$align_option;width:$(label_width)px;height:$(label_height)px;">\
+    $(dd[$a])\
+    </div>
+!next
+reply_$i=$(reply_$i)</div>
 
 !if $diag=yes
   diareply$i=good
