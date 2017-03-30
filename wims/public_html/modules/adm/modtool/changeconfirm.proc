@@ -49,10 +49,21 @@ moddir=modules/devel/$auth_login/$mod
  !reset mkdef
 !endif
 test=!sh cd $moddir; ls
+
 !sh cd $moddir\
   mkdir -p .deleted\
   cp $fname .deleted\
   mv $fname $fnewname\
   $mkdef
-
-wims_module_log=delete $mod/$fname
+!if .oef$ $ isin $(fname)$ $
+  im=!replace internal src by images in $fname
+  im=!replace internal .oef by in $im
+  testim=yes
+  im=!replace internal _src by images in _$fname
+  im=!replace internal .oef by in $im
+  fname_=!replace internal / by , in $fnewname
+  imnew=!replace internal .oef by in images/$(fname_[2])
+  !sh cd $moddir\
+  if [ -d $im ]; then mv $im $imnew; fi;
+!endif
+wims_module_log=move $mod/$fname

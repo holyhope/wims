@@ -37,6 +37,17 @@ test=!sh cd $moddir; ls
   mkdir -p .deleted\
   mv $fname .deleted\
   $mkdef
+!if .oef$ $ isin $(fname)$ $
+  im=!replace internal src by images in $fname
+  im=!replace internal .oef by in $im
+  testim=yes
+!endif
+!if $testim=yes
+  im=!replace internal src by images in $fname
+  im=!replace internal .oef by in $im
+  !sh cd $moddir\
+  if [ -d $im ]; then mkdir -p .deleted/$im; mv $im/* .deleted/$im; fi;
+!endif
 
 wims_module_log=delete $mod/$fname
 
