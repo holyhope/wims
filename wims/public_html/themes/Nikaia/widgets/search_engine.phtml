@@ -1,53 +1,52 @@
 !! --------- fichier copié depuis scripts/adm/search_engine. ---------
-!! --------- a mettre ailleurs  ---------
+!! --------- a mettre ailleurs ? ---------
 
 !read adm/search_engine/completion.phtml
 
 !set wims_ref_anchor=#searchform
 
-<div class="search_box wims_widget_box medium_size" id="searchform">
-    !set wims_form_method=post
-    !form new
+<div class="search_box wims_widget_box medium_size float_left" id="searchform">
+  !set wims_form_method=post
+  !form new
     <input type="hidden" name="module" value="home"/>
 
-  !if $wims_accessright!=$empty
-    !read adm/search_engine/search_accessright.phtml
-  !endif
+    !if $wims_accessright!=$empty
+      !read adm/search_engine/search_accessright.phtml
+    !endif
 
     <div class="title_box">
-        <h2 class="wims_title">$name_search_all</h2>
-        <div class="aide_recherche">
-         !set wims_ref_class=wims_button_help
-         !href module=adm/light&phtml=search_engine.phtml.$lang $wims_name_help
-        </div>
-        <br class="clearall"/>
+      <h2 class="wims_title">$name_search_all</h2>
+      <div class="aide_recherche">
+       !set wims_ref_class=wims_button_help
+       !href module=adm/light&phtml=search_engine.phtml.$lang $wims_name_help
+      </div>
+      <br class="clearall"/>
     </div>
 
     <ul class="box_content wimscenter">
-        <li class="inline">
-            <input type="search"
-                   size="16"
-                   name="search_keywords"
-                   value="$search_keywords"
-                   class="wims_home_form multicomplete"
-                   placeholder="$name_keywords_enter"
-                   autosave="search_keywords"
-                   results="5"/><button class="wims_button" type="submit">$N_Search</button>
-        </li>
-        <li class="inline">
-          !formselect search_category list $slist prompt $plist
-          !default search_lang=$lang
-          !set L_language=!words2items $wims_site_languages
-          !formselect search_lang list $L_language
-        </li>
+      <li class="inline">
+        <input type="search"
+               size="16"
+               name="search_keywords"
+               value="$search_keywords"
+               class="wims_home_form multicomplete"
+               placeholder="$name_keywords_enter"
+               autosave="search_keywords"
+               results="5"/><button class="wims_button" type="submit">$N_Search</button>
+      </li>
+      <li class="inline">
+        !formselect search_category list $slist prompt $plist
+        !default search_lang=$lang
+        !set L_language=!words2items $wims_site_languages
+        !formselect search_lang list $L_language
+      </li>
     </ul>
-!formend
+  !formend
 
-<script type="text/javascript" src="scripts/js/interface/search_engine.js"></script>
+  <script type="text/javascript" src="scripts/js/interface/search_engine.js"></script>
 
-
-!set srchl=$search_keywords
-!reset search_category, search_keywords
+  !set srchl=$search_keywords
+  !reset search_category, search_keywords
 
 </div>
 
