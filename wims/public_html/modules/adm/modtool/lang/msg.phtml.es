@@ -64,4 +64,8 @@
  !exit
 !endif
 
+!if file_too_large iswordof $error
+  The module cannot be archived, it is too large.
+  !exit
+!endif
 !msg $error

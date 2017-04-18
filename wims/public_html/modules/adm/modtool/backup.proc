@@ -14,3 +14,9 @@ tar -czf $wims_home/$wims_sesdir/getfile/$fname --exclude .svn --exclude .delete
 if [ -f  $wims_home/$wims_sesdir/getfile/$fname ]; then\
  echo $fname\
 fi
+!if $wims_exec_error!=$empty
+!!! is the test correct ? using langage
+  !if File too large isin $wims_exec_error
+    error=file_too_large
+  !endif
+!endif
