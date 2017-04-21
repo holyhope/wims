@@ -23,10 +23,7 @@ author=!nonempty items $author
    dossier=type
    !if $example=0 or $example=
       !if $debut=1
-         !reset mtype
-         !reset N
-         !reset M
-         !reset source
+         !reset mtype N M source
           compute=no
       !else
           !for a in title,author,email,file,source
@@ -150,14 +147,14 @@ $modele
      $mod
    !next
 
-   modele=!replace internal IMAGES by $image_tag in  $modele
-   modele=!replace internal VIDEO by $video_tag in  $modele
-   modele=!replace internal READING by $reading_tag in  $modele
-   modele=!replace internal _image_dir by \imagedir in  $modele
+   modele=!replace internal IMAGES by $image_tag in $modele
+   modele=!replace internal VIDEO by $video_tag in $modele
+   modele=!replace internal READING by $reading_tag in $modele
+   modele=!replace internal _image_dir by \imagedir in $modele
 
    !for a in title,email,author
      b=!trim $($a)
-     modele=!replace internal \$a{} by \$a{$b} in  $modele
+     modele=!replace internal \$a{} by \$a{$b} in $modele
    !next
   !setdef quick_title=$title in wimshome/$sesdir/var.stat
   !setdef quick_source=$source in wimshome/$sesdir/var.stat
@@ -169,7 +166,7 @@ $modele
         good_answer_text,bad_answer_text,incomplete_answer_text
      b=!trim $($a)
      !setdef quick_$a=$b in wimshome/$sesdir/var.stat
-     modele=!replace internal \text{$a=} by \text{$a=$b} in  $modele
+     modele=!replace internal \text{$a=} by \text{$a=$b} in $modele
    !next
    !for a in style_question,style_reponse,style_oef,style_css
      b=!replace internal $\
@@ -178,7 +175,7 @@ $ by 	 in $($a)
      !setdef quick_$a=$b in wimshome/$sesdir/var.stat
      modele=!replace internal _$a by $b in $modele
    !next
-   modele=!replace internal \text{player_option=} by \text{player_option=$player_option autostart="false" loop="false"} in $modele
+   modele=!replace internal \text{player_option=} by \text{player_option=$player_option} in $modele
    modele=!replace internal \text{instruction=asis()} by \text{instruction=asis($instruction)} in $modele
    modele=!replace internal \text{instruction2=asis()} by \text{instruction2=asis($instruction2)} in $modele
    modele=!replace internal \text{file=randitem()} by \text{file=randitem($($file))} in $modele
@@ -187,7 +184,7 @@ $ by 	 in $($a)
      !if $raw=1
        help=!replace internal RAW(reading) by \special{expandlines \reading} in  $help
      !else
-       help=!replace internal RAW(reading) by \reading in  $help
+       help=!replace internal RAW(reading) by \reading in $help
      !endif
    !endif
    modele = $modele $help
