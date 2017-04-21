@@ -35,7 +35,7 @@ Detalle de la puntuación actual\
 Contenido del examen\
 Actualmente, este examen está cerrado a su conexión.\
 Solo puede realizar una vez este examen.\
-por lo tanto no puede mejorar su puntuación.\
+Por lo tanto no puede mejorar su puntuación.\
 Es su último intento disponible. ¡Preste atención!\
 la cuenta atrás comenzará, y se incrementará en 1 el número de intentos.\
 la cuenta atrás comenzará.\
