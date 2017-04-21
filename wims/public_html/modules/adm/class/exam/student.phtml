@@ -13,164 +13,164 @@ $classname\
 $title
 
 !if $wims_user=supervisor
- <div class="wimscenter">($name_presentation)</div>
+  <div class="wimscenter">($name_presentation)</div>
 !endif
 
 !if $desc!=$empty
-    <h2>$name_instructions:</h2>
-    <div class="exam_instructions" id="exam_desc">$desc</div>
+  <h2>$name_instructions:</h2>
+  <div class="exam_instructions" id="exam_desc">$desc</div>
 !endif
 
 !if $error!=$empty
- <div class="wims_msg alert">
- !read lang/msg.phtml.$moduclass_lang
- </div>
- !href module=home $wims_name_back2
- <br />
- !exit
+  <div class="wims_msg alert">
+  !read lang/msg.phtml.$moduclass_lang
+  </div>
+  !href module=home $wims_name_back2
+  !exit
 !endif
 
 !if $registered<0 or ($registered>0 and $timeleft<=0)
- !changeto score.phtml
+  !changeto score.phtml
 !endif
 
 !if $exocnt=0
- $name_empty
+  $name_empty
 !else
- <h2>$name_content</h2>
- !set activeexo=0
+  <h2>$name_content</h2>
+  !set activeexo=0
 
-
- <ol class="wims_exam">
-   !for i in $exolist
-   <li class="exo_item">
+  <ol class="wims_exam">
+  !for i in $exolist
+    <li class="exo_item">
 !! -------------------------- debut de la ligne correspondant a un exercice de l'examen
 
- !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
- !distribute lines $ex into we,li,ti,de,op
- !set de=!trim $de
-
- !if $t_=yes and ($allowtype=simulation or $tryremain>0 or \
+    !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
+    !distribute lines $ex into we,li,ti,de,op
+    !set de=!trim $de
+    !if $t_=yes and ($allowtype=simulation or $tryremain>0 or \
    ($tryremain=0 and $registered!=$empty))
-   !if $(replied$i)>0
-    <span class="exo_name">$ti </span> - <span class="exo_done">$name_done</span>
-    &nbsp;<span class="weight">($name_weight: $we)</span>
-   !else
-    !if $de!=$empty
-     !set dt=!examdep $exam $de
-    !else
-     !set dt=yes
-    !endif
-    !if $dt=yes
-     !advance activeexo
+      !if $(replied$i)>0
+        <span class="exo_name">$ti </span> - <span class="exo_done">$name_done</span>
+        &nbsp;<span class="weight">($name_weight: $we)</span>
+      !else
+        !if $de!=$empty
+          !set dt=!examdep $exam $de
+        !else
+          !set dt=yes
+        !endif
+        !if $dt=yes
+          !advance activeexo
      <span class="exo_link">
-      !href target=wims_exam cmd=new&worksheet=$exam.$i $ti
+          !href target=wims_exam cmd=new&worksheet=$exam.$i $ti
      </span>&nbsp;
      <span class="weight">($name_weight: $we)</span>
-     !if autogen iswordof $op and $wims_exam_remain!=$empty
-      !set ss=$(wims_session)t$(exam)t$i
-      !set test=!defof w_cmd in wimshome/sessions/$ss/var
-      !if $test=$empty
-       !set test=$wims_ref_name?wims_window=new&+session=$(wims_session)_exam&+cmd=new&+worksheet=$exam.$i
+          !if autogen iswordof $op and $wims_exam_remain!=$empty
+            !set ss=$(wims_session)t$(exam)t$i
+            !set test=!defof w_cmd in wimshome/sessions/$ss/var
+            !if $test=$empty
+              !set test=$wims_ref_name?wims_window=new&+session=$(wims_session)_exam&+cmd=new&+worksheet=$exam.$i
        <img src="$test" style="height:1px; width:1px" />
-      !endif
-     !endif
-    !else
-     <span class="wims_emph">$ti</span>
-     <span>
-     !href cmd=reply&job=student $name_depend
+            !endif
+          !endif
+        !else
+         <span class="wims_emph">$ti</span>
+         <span>
+        !href cmd=reply&job=student $name_depend
 .
-     </span>
+        </span>
+        !endif
+      !endif
+    !else
+      <span>$ti.</span>&nbsp;<span class="weight">($name_weight: $we)</span>
     !endif
-   !endif
-  !else
-   <span>$ti.</span>&nbsp;<span class="weight">($name_weight: $we)</span>
-  !endif
 !! -------fin d'affichage de la ligne correspondant a un exercice
-   </li>
+     </li>
   !next i
- </ol>
- <br class="spacer clearall" />
+  </ol>
+  <br class="spacer clearall" />
+!! variables
+!!$stries: try number
+!! $tryremain,
+!! registered : if non empty, the exam session has begun
+!! exhausted : if yes, no more available sessions
 
-<div class="exam_instructions" id="exam_status">
- !if $t_=no
-  <p class="examclosed">$name_examclosed</p>
-  !set wims_menu_items=!append line refresh,1,cmd=reply&job=student to $wims_menu_items
- !else
-  <p class="tries">
-  !if $stries=1
-   $name_exam1
+  <div class="exam_instructions" id="exam_status">
+!! closed exam
+  !if $t_=no
+    <p class="examclosed">$name_examclosed</p>
+    !set wims_menu_items=!append line refresh,1,cmd=reply&job=student to $wims_menu_items
   !else
-   $name_exam2
-  !endif
-  $name_bestscore
-  </p>
+ !! open exam or in simulation
+    <p class="tries">
+    !if $stries=1
+      $name_exam1
+    !else
+      $name_exam2
+    !endif
+    $name_bestscore
+    </p>
+    !if $tryremain<0 or ($tryremain=0 and ($registered=$empty or $allowtype=simulation))
+     <p>
+      !if $trcut=0
+        $name_exam3
+      !else
+        $name_exam4
+      !endif
+      $name_exam5
+      !set exhausted=yes
+      </p>
+    !endif
 
-  !if $tryremain<0 or ($tryremain=0 and ($registered=$empty or $allowtype=simulation))
-   <p>
-   !if $trcut=0
-    $name_exam3
-   !else
-    $name_exam4
-   !endif
-   $name_exam5
-   !set exhausted=yes
-   </p>
-  !endif
+    !if $tryremain>0
+      <p class="tryremain">$name_exam6</p>
+    !endif
 
-  !if $tryremain>0
-    <p class="tryremain">$name_exam6</p>
-  !endif
+    !if $wims_exam_remain!=$empty
+      !set wims_hr_r=$[max(0,$wims_exam_remain)]
+      !set wims_hr_rm=$[floor($wims_hr_r/60)]
+      !set wims_hr_rs=!char 2,3 of $[$wims_hr_r%60+100]
+      <p id="exam_clock">$wims_name_examremain $wims_hr_rm:$wims_hr_rs.</p>
+    !endif
 
-  !if $wims_exam_remain!=$empty
-    !set wims_hr_r=$[max(0,$wims_exam_remain)]
-    !set wims_hr_rm=$[floor($wims_hr_r/60)]
-    !set wims_hr_rs=!char 2,3 of $[$wims_hr_r%60+100]
-    <p id="exam_clock">$wims_name_examremain $wims_hr_rm:$wims_hr_rs.</p>
-  !endif
-
-  !if $registered=$empty and $exhausted!=yes
-   <p>
-   $name_exam9
-   !if $allowtype!=simulation
-    $name_exam7
-   !else
-    $name_exam8
-   !endif
-   </p>
-  !else
-   !if $allowtype!=simulation and $tryremain=0 and $exhausted!=yes
-    <p class="lasttry">$name_lasttry</p>
-   !endif
-  !endif
-
-  !if $exhausted!=yes
-   !set wims_menu_items=!append line refresh,1,cmd=reply&job=student   \
+    !if $registered=$empty and $exhausted!=yes
+      <p>$name_exam9
+      !if $allowtype!=simulation
+        $name_exam7
+      !else
+        $name_exam8
+      !endif
+      </p>
+    !else
+      !if $allowtype!=simulation and $tryremain=0 and $exhausted!=yes
+        <p class="lasttry">$name_lasttry</p>
+      !endif
+    !endif
+    !if $exhausted!=yes
+      !set wims_menu_items=!append line refresh,1,cmd=reply&job=student   \
 scoreexam,1,cmd=reply&job=score \
 to $wims_menu_items
-   !if $activeexo<1
-!set wims_menu_items=!append line endexam,1,cmd=reply&job=scorereg\
+      !if $activeexo<1
+        !set wims_menu_items=!append line endexam,1,cmd=reply&job=scorereg\
 to $wims_menu_items
-   !endif
-  !endif
- !endif
-!endif
-</div>
+      !endif
+    !endif exhausted!=yes
+  !endif t_=no
+  </div>
+!endif exocnt=0
 
 !if $t_=yes
- !if $allowtype=simulation
-  <p class="wims_msg info simulation">$name_simulation</p>
- !endif
+  !if $allowtype=simulation
+    <p class="wims_msg info simulation">$name_simulation</p>
+  !endif
 !endif
 
 !if $wims_user=supervisor
- !set wims_menu_items=!append line itemsep,0,\
+  !set wims_menu_items=!append line itemsep,0,\
 backteacher,1,cmd=resume\
- to $wims_menu_items
+to $wims_menu_items
 !endif
 
 <!-- adm/class/exam/student.phtml END -->
 !tail
 
 !reset job
-
