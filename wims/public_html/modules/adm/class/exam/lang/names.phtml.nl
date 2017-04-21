@@ -63,7 +63,8 @@ into name_pending,name_begin1,name_begin2,name_simulation2
 !set name_timeleft=!nosubst De beschikbare tijd is verlopen! Je hebt de toegestane $sdure \
  minuten verbruikt. You must logout now.
 !set name_realscore=!nosubst De echte score voor deze proefwerk-sessie is $lastscore.
-!set name_bestscore=!nosubst De score voor dit proefwerk is $lastscore. (En de beste score telt !)
+!set name_bestscore=!nosubst De score voor dit proefwerk is $[$lastscore*$scoremax/10]/$scoremax.
+!set name_bestscore2=En de beste score telt !
 
 
 !! ---------------------------
@@ -98,7 +99,7 @@ Of geef hier algemene titel aan
 er nu mee stopt, wordt je cijfer bevroren en ben je dus een volle proefwerk poging kwijt. \
 Bij een eventuele volgende poging om dit proefwerk te maken, moet je wel weer alle  \
 random (!) sommen opnieuw doen... <br />Weet je zeker dat je er mee wilt stoppen?
-
+!set name_warning_nonfinished1=$name_warning_nonfinished
 !! better to shorten this sentence to e.g. "copy an active exam"
 !set wims_name_cpexam=Kopieer actief proefwerk.
 

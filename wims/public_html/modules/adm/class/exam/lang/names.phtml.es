@@ -67,7 +67,8 @@ into name_pending,name_begin1,name_begin2,name_simulation2
 !set name_timeleft=!nosubst ¡Se acabó el tiempo! Ya ha usado los $sdure minutos\
  permitidos para este examen. You must logout now.
 !set name_realscore=!nosubst Su puntuación real para esta hoja de examen es $lastscore
-!set name_bestscore =!nosubst Su mejor puntuación para este examen es $lastscore (la mejor puntuación es la que se tomará en cuenta).
+!set name_bestscore =!nosubst Su mejor puntuación para este examen es $[$lastscore*$scoremax/10]/$scoremax..
+!set name_bestscore2=La mejor puntuación es la que se tomará en cuenta.
 
 
 !! ---------------------------
@@ -99,7 +100,7 @@ into name_info,name_content,name_warning
   ahora congelará la puntuación y consumirá una oportunidad de hacer\
   el examen, y tendrá que empezar desde el principio la próxima vez.<br />\
   ¿Seguro que quiere terminarlos?
-
+!set name_warning_nonfinished1=$name_warning_nonfinished
 !set wims_name_cpexam=Copy an active exam.
 
 !set name_cpexam1=You are about to copy the content of an other active exam into this one. You will be able to modify the contents of this exam until you will activate it

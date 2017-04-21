@@ -105,23 +105,21 @@ $title
     !if $stries=1
       $name_exam1
     !else
-      $name_exam2
+      $name_exam2 $name_bestscore2
     !endif
-    $name_bestscore
-    </p>
     !if $tryremain<0 or ($tryremain=0 and ($registered=$empty or $allowtype=simulation))
-     <p>
       !if $trcut=0
         $name_exam3
       !else
         $name_exam4
       !endif
-      $name_exam5
+      !if $stry>1
+        $name_exam5
+      !endif
       !set exhausted=yes
-      </p>
     !endif
-
-    !if $tryremain>0
+    </p>
+    !if $tryremain>0 and $stries>1
       <p class="tryremain">$name_exam6</p>
     !endif
 
@@ -134,16 +132,19 @@ $title
 
     !if $registered=$empty and $exhausted!=yes
       <p>$name_exam9
-      !if $allowtype!=simulation
+      !if $allowtype!=simulation and $stries>1
         $name_exam7
-      !else
+      !else only one session or simulation
         $name_exam8
       !endif
       </p>
     !else
-      !if $allowtype!=simulation and $tryremain=0 and $exhausted!=yes
+      !if $allowtype!=simulation and $tryremain=0 and $exhausted!=yes and $tries>1
         <p class="lasttry">$name_lasttry</p>
       !endif
+    !endif
+    !if $tryremain < $stries
+     <p class="exam_score">$name_bestscore</p>
     !endif
     !if $exhausted!=yes
       !set wims_menu_items=!append line refresh,1,cmd=reply&job=student   \

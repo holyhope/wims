@@ -28,7 +28,6 @@ $wims_institutionname
  $name_empty
 !else
  $table_header
-
  <caption>$name_scoreexam</caption>
   <thead>
    $table_tr
@@ -87,6 +86,9 @@ $wims_institutionname
   !endif
  !else
   $name_bestscore
+  !if $stries!=1
+    $name_bestscore2
+  !endif
  !endif
  !set wims_menu_items=!append line backexam,1,cmd=reply&job=student\
 to $wims_menu_items
@@ -101,14 +103,10 @@ to $wims_menu_items
   !set wims_menu_items=!append line itemsep,0,\
 backteacher,1,cmd=resume\
 to $wims_menu_items
-
 !endif
-
 
 :end
 <!-- adm/class/exam/score.phtml END -->
 !tail
 
 !reset job
-
-
