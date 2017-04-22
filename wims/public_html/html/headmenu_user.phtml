@@ -1,5 +1,6 @@
 <!-- BEGIN of html/headmenu_* -->
 !read name.phtml.$lang
+!read themes/_lang/name.phtml.$lang
 !read themes/$wims_theme/lang/name.phtml.$lang
 !default wims_name_bgcolor=$wims_ref_bgcolor
 !if $wims_hm$wims_home_items$wims_link_close!=$empty
@@ -26,30 +27,33 @@
 !!! deconnexion link
 
 !if _ notin $wims_session
- !if $class_cas_auth!=$empty
-  !if $wims_user=supervisor
-     !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=supervisor&class_auth=$class_cas_auth to $wims_link_close
+  !if $class_cas_auth!=$empty
+    !if $wims_user=supervisor
+      !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=supervisor&class_auth=$class_cas_auth to $wims_link_close
+    !else
+      !if $wims_class!=$empty
+        !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=participant&class_auth=$class_cas_auth to $wims_link_close
+      !else
+        !set wims_link_close=!append line visitor,1,cmd=close&class_auth=$wims_cas_auth to $wims_link_close
+      !endif
+    !endif
   !else
-   !if $wims_class!=$empty
-     !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=participant&class_auth=$class_cas_auth to $wims_link_close
-   !else
-    !set wims_link_close=!append line visitor,1,cmd=close&class_auth=$wims_cas_auth to $wims_link_close
-   !endif
-  !endif
- !else
-  !if $wims_user=supervisor
-    !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=supervisor to $wims_link_close
-  !else
-     !if $wims_user=anonymous
-       !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=example to $wims_link_close
-     !else
-!! FIXME this never happens as _ is not in $wims_session !
-       !if _exam notin $wims_session
-         !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=participant to $wims_link_close
-       !endif
+    !if $wims_user=supervisor
+      !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=supervisor to $wims_link_close
+    !else
+     !set registered=!record 0 of wimshome/$wims_sesdir/examreg.1
+     !if $registered!=$empty
+!! during an exam.
+        !set wims_link_close=!append line endexam,1,module=adm/class/exam&cmd=reply&job=scorereg to $wims_link_close
+      !else
+        !if $wims_user=anonymous
+          !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=example to $wims_link_close
+        !else
+          !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=participant to $wims_link_close
+        !endif
+      !endif
     !endif
   !endif
- !endif
 !endif
 
 !if _check isin $wims_session
