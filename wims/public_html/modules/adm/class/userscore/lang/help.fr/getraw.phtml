@@ -1,0 +1,78 @@
+!if $wims_user!=supervisor
+<p>
+Le tableau présente l'ensemble des données enregistrées par le serveur lorsque
+vous travaillez sur un exercice dans une feuille d'exercices ou dans un examen
+(la consultation d'un document wims ou du cahier de texte n'est pas enregistrée
+par le serveur).
+Lorsque vous vous connectez à la classe un numéro de session vous est attribué.
+A chaque fois que vous cliquez pour obtenir l'énoncé d'une série d'exercices
+ou que vous obtenez une note sur une série d'exercices, une ligne contenant les données
+associées à cette requête est enregistrée :
+date de la requête, numéro de la session, numéro de la feuille et de l'exercice concerné,
+type de requêtes et numéro d'IP de votre connexion.
+</p><p>
+La mention <span class="wims_code_words">noscore</span> apparaît lorsque la note obtenue sur un exercice n'est pas
+comptabilisée dans le calcul de la note finale d'une feuille d'exercices
+(soit que l'enregistrement des notes était fermé au moment où vous avez travaillé,
+soit que vous avez vous-même suspendu l'enregistrement des notes).
+</p><p>
+Attention, la numérotation des feuilles apparaissant dans la colonne <span class="wims_code_words">sheet</span>
+correspond à l'ordre dans lequel les feuilles ont été créées par l'enseignant ;
+cet ordre peut être différent de l'ordre dans lequel l'enseignant a choisi
+de vous présenter les feuilles d'exercices.
+</p><p>
+Il est à noter que lorsque vous commencez à travailler sur un exercice
+dans la classe, il faut entrer les réponses à cet exercice avant d'en commencer un autre
+(travailler sur le même exercice ou sur d'autres exercices entre temps
+en étant logué dans la classe wims à partir d'une autre fenêtre du navigateur
+risque d'occasionner le changement de l'énoncé du premier exercice ou le
+non enregistrement du travail fait sur le premier exercice).
+</p>
+!goto common
+!else
+<p>
+Le tableau présente l'ensemble des données enregistrées par le serveur
+sur le travail fait sur un exercice dans une feuille d'exercices ou dans un examen
+(la consultation d'un document wims ou du cahier de texte n'est pas enregistrée par le serveur).
+Lorsqu'un participant se connecte à la classe, un numéro de session lui est attribué.
+A chaque fois qu'il clique pour obtenir l'énoncé d'une série d'exercices ou qu'il obtient
+une note sur une série d'exercices, une ligne contenant les données associées à cette requête
+est enregistrée : date de la requête, numéro de la session, numéro de la feuille et de l'exercice concerné, type de requêtes et numéro d'IP de votre connexion.
+</p><p>
+La mention <span class="wims_code_words">noscore</span> apparaît lorsque la note obtenue sur un exercice n'est
+pas comptabilisée dans le calcul de la note finale d'une feuille d'exercices
+(soit que l'enregistrement des notes était fermé au moment où il a travaillé,
+soit qu'il a suspendu l'enregistrement de ces notes).
+</p><p>
+La numérotation des feuilles apparaissant dans la colonne <span class="wims_code_words">sheet</span>
+correspond à l'ordre dans lequel les feuilles ont été créées dans la classe.
+</p><p>
+Il est à noter que si un participant commence un exercice, il doit le terminer
+avant d'en commencer un autre ; s'il travaille sur le même exercice ou
+sur d'autres exercices entre temps en étant logué dans la classe
+à partir d'une autre fenêtre du navigateur, la note obtenue sur le premier exercice
+commencé risque de ne pas être enregistrée ou bien l'énoncé de son premier exercice
+risque de changer au moment où il entrera les réponses.
+</p><p>
+La provenance des exercices constituant un examen est indiquée dans la colonne
+la plus à droite sous la forme <span class="wims_code_words">(numéro de la feuille).(numéro de l'exercice)</span>.
+</p>
+!endif
+:common
+<p>
+Les différents types de requêtes sont :
+</p>
+<ul><li>
+<span class="wims_code_words">new</span> : demande d'un énoncé
+</li><li>
+<span class="wims_code_words">renew</span> ou <span class="wims_code_words">resume</span> :
+  demande d'un nouvel énoncé du même exercice de la feuille.
+</li><li><span class="wims_code_words">rafale</span> : enchainement rapide de plusieurs demandes d'énoncés d'exercices.
+Une pénalité sur les notes est alors appliquée automatiquement par le serveur
+pour éviter cette pratique.
+</li></ul>
+<p>
+Les données enregistrées sur des examens apparaissent à la fin du tableau
+(lignes commençant par <span class="wims_code_words">E</span>).
+Pour un examen, la colonne <span class="wims_code_words">sheet</span> correspond au numéro de l'examen.
+</p>
