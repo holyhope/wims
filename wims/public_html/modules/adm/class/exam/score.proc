@@ -43,10 +43,10 @@ registered=!record 0 of wimshome/$wims_sesdir/examreg.$exam
 now=$wims_nowseconds
 
 !if $registered>0
-!! le temps restant affiché ne peut pas aller au dela de la limitation fixée par la limitation de feuille.
+!! le temps restant affiche ne peut pas aller au dela de la limitation fixee par la limitation de feuille.
  !set expir_user=!record 0 of wimshome/log/classes/$wims_class/.E$exam
  !set cle=!word 1 of $expir_user
- !! process for technical variable definition (replace expir_user by value decide by the technical variable)
+ !! process for technical variable definition (replace expir_user by value given by the technical variable)
  !if \ isin $cle
    !set idtechvar=!line 1 of $expir_user
    !set idtechvar=!char 2 to -1 of $idtechvar
@@ -65,7 +65,7 @@ now=$wims_nowseconds
   c=<
   !for k=1 to $nb
       !if $c isin $(expir_user[$k])
-	fin=!char 2 to -1 of $(expir_user[$k])
+        fin=!char 2 to -1 of $(expir_user[$k])
         fin=!text select 0123456789.: in $fin
       !endif
   !next k
@@ -79,7 +79,7 @@ now=$wims_nowseconds
      sdure2=60*$sdure
   !endif
  !endif
-!! fin des modifications qui découle de la limitation fixée par la feuille
+!! fin des modifications qui decoule de la limitation fixee par la feuille
  timeleft=$[$sdure2-($now-$registered)]
 !endif
 !if $timeleft<0
