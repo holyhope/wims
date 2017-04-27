@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/local/bin/perl
 
 # From the distribution files
 # domain : structured list of all (sub)domains (words containing underscores)

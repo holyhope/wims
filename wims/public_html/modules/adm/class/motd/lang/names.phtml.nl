@@ -45,6 +45,6 @@ alle studenten de klas.
 !set name_erase=Wissen
 !set name_change=Wijzigen
 !set name_all=Allemaal
-!set name_allconnected=All connected participant
+!set name_allconnected=Alle aanwezige leerlingen
 !set name_expert0=Er zijn meerdere methodes aanwezig om studenten te selecteren.
 !set name_checked=De geselecteerde studenten staan in de onderstaande tabel

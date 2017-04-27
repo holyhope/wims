@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/local/bin/perl
 
 ## validator file validator_uri
  my $file = shift(@ARGV);

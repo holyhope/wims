@@ -94,7 +94,7 @@ into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
 Herstel van studenten accounts (en alle geregistreerde studenten activiteit) gaat niet door : er is niet genoeg ruimte meer over.\
 De klaseinddatum is veranderd na de herstelprocedure, omdat de upload datum \
  Deelnemer accounts zijn in gebruik in deze groep klassen (herstel gaat nioet door)\
- herstel is noet toegestaan ivm gedeelde bronnen\
+ herstel is niet toegestaan ivm gedeelde bronnen\
  Backup en/of herstel is niet noodzakelijk op deze plek van het instituut\
  into name_restore1,name_restore2,name_restore3,name_restore4,name_forbiddenrestore,name_restore5
 
@@ -119,10 +119,10 @@ De klaseinddatum is veranderd na de herstelprocedure, omdat de upload datum \
 
 !if $job=clean
  !set title=Opschonen van een klas
- !set name_lines=Studenten activeiten
+ !set name_lines=Studenten activiteiten
  !set name_empty=Deze klas is leeg!<br />\
- Er staat dus ook niets in dat geschoond kan worden.
- !set name_no_erase=Kan niet worden geschoond omdat er materiaal wordt gedeeld met een andere klas.
+ Er staat dus ook niets in dat opgeschoond kan worden.
+ !set name_no_erase=Kan niet worden opgeschoond omdat er materiaal wordt gedeeld met een andere klas.
 
  !distribute lines Opschonen\
    Dit verwijdert ook de activiteiten registratie\
@@ -185,7 +185,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,name_exampleclass,\
  name_import_resource,name_youcan,name_fromtheclass,name_click_ok
 
- !set name_nonewres=!nosubst Er is geen enkel (nieuw) materiaal in de klas\
+ !set name_nonewres=!nosubst Er is geen (nieuw) materiaal in de klas\
  <span class="wims_emph">$nei_description</span> dat gedeeld kan worden.
 
  !set name_newres=!nosubst De klas <span class="wims_emph">\
@@ -231,7 +231,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   !set name_warning=Uw klas heeft een aciteve cijfer \
   registratie en de gedeelde bronnen zijn niet leeg.\
   Als u nu stopt met lenen kan hier later niet meer op worden teruggekomen.\
-  <br />U wilt definitef stoppen met delen ?
+  <br />Definitef stoppen met delen ?
 
  !set name_stop=stoppen.
  !endif
@@ -527,8 +527,8 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
    Verbindingslink\
    Tekstkleur\
    Kleuren voor presentatie van activiteiten\
-Addresses of the connection links to the class:\
-   Configuration OEF par défault\
+   Adressen van gekoppelde klassen:\
+   Default configuratie voor OEF type oefeningen\
   into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
    name_theme_icon,name_level,name_security,name_password,name_supass,name_exolog,name_ent,\
    name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,\

@@ -91,22 +91,22 @@ deelgebieden van deze zone.
 !exit
 
 :addcsvclass
-<h2>Ajout de classes par importation d'un fichier.</h2>
+<h2>Het toevoegen van klassen door een bestand te importeren.</h2>
 
 <p>
-Pour envoyer des données de votre tableur à la classe, sauvez les données
-dans un fichier au format texte (txt, csv, ou tsv), puis envoyez le fichier
-au serveur.
+Om klassen te importeren via een spreadsheet, bewaar de klasse data in een spreadsheet text formaat (txt, csv, or tsv), 
+en stuur dit bestand naar de server.
 </p>
 $table_header
-<caption>Champs de données valables</caption>
-$table_hdtr<th scope="col">Nom</th><th scope="col">Signification</th>
-$table_tr<td class="tt wims_code_variable">cname</td><td>nom de la classe</td></tr>
-$table_tr<td class="tt wims_code_variable">login</td><td>identifiant de l'enseignant controlant la classe (qui doit exister dans la classe avec les autorisations d'enseignant). Ecrire supervisor pour que la classe soit gérée par l'administrateur du portail.</td></tr>
-$table_tr<td class="tt wims_code_variable">regpass</td><td>mot de passe d'inscription de la classe.</td></tr>
-$table_tr<td class="tt wims_code_variable">secure</td><td>accès sécurisé de la classe (IP ou all).</td></tr>
-$table_tr<td class="tt wims_code_variable">limit</td><td>nombre maximum d'élèves.</td></tr>
+<caption>geldige data</caption>
+$table_hdtr<th scope="col">naam</th><th scope="col">betekenis</th></tr>
+$table_tr<td class="tt wims_code_variable">cname</td><td>naam van de klas</td></tr>
+$table_tr<td class="tt wims_code_variable">login</td><td>login naam van de docent.</td></tr>
+$table_tr<td class="tt wims_code_variable">regpass</td><td>klasse wachtwoord (voor aanmeling leerlingen)</td></tr>
+$table_tr<td class="tt wims_code_variable">secure</td><td>een IP adress of woord "all".</td></tr>
+$table_tr<td class="tt wims_code_variable">limit</td><td>maximaal aantal leerlingen.</td></tr>
 
-les colonnes regpass,secure,limit ne sont pas obligatoires. Elles seront fixées avec des valeurs par défauts si elles ne sont pas présentes.
+De kolommen "regpass", "secure", "limit" zijn niet verplicht.
+Indien afwezig worden de standaard instellingen van het instituut gebruikt
 $table_end
 !exit

@@ -70,9 +70,9 @@ Sluit dit venster.
 !exit
 !endif
 !if too_big=$error
-  The number of columns of the spreadsheet is too big (greater than $TOO_BIG).
-  If you need the details of the exercices, you can do it sheet by sheet or
-  exam by exam. The file to download does not give you all the informations you asked.
+ Het aantal kolommen van de spreadsheet is te groot (groter dan $TOO_BIG).
+ Als details van de oefeningen nodig zijn ,kan dit werkblad voor werkblad of proefwerk voor proefwerk worden bekeken.
+ Het te downloaden bestand geeft deze informatie niet. 
  !exit
 !endif
 !msg $error

@@ -46,7 +46,7 @@ into name_files_src,name_files_cpp, name_files_other,name_files_lang,name_files_
   Kontroleer of de bestandsnaam geen vreemde lettertekens bevat of \
   een van de volgende karakters
 !set name_successdeletefile=is verwijderd uit de module
-!set name_failuredeletefile=has NOT been deleted from the module
+!set name_failuredeletefile=is NIKET verwijderd uit de module
 !set name_changefile=Hernoemen
 !set name_changenamefile=Nieuwe  naam van het bestand
 !set name_warning_changenamefile=Let op, veranderen van een bestandsnaam kan\

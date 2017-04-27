@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/local/bin/perl
 use strict "vars";
 use strict "subs";
 use search ('hashdomain', 'treate_dict', 'sortuniq', 'out', 'canonify', 'reverse_dic', 'treate_language');

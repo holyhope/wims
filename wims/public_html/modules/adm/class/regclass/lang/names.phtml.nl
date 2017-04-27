@@ -93,6 +93,9 @@ into name_free,name_protected,name_disallowed,name_cloning,name_clickclone
 Voer het wachtwoord voor deze handeling in.
 !set name_subclass=Sub klas van
 
-!distribute lines Location (town, country)\
- En remplissant ce champ, vous acceptez que nous indiquions que WIMS est utilisé dans votre ville (sans aucune autre mention)\
-into name_location,name_location_help
+!distribute lines Locatie (stad, land)\
+Door het invullen gaat u ermee akkoord dat we aangegeven dat WIMS wordt gebruikt in uw stad (met geen andere referentie)\
+ into name_location,name_location_help
+
+
+

@@ -11,38 +11,32 @@
  !goto general
 !endif
 :student
-Een proefwerk / examen bestasat uit WIMS oefeningen en is in tijd ,ruimte/ip-adres en aantal bepaald door een docent.
+Een proefwerk / examen bestaat uit WIMS oefeningen en is in tijd, ruimte, ip-adres en aantal bepaald door een docent.
 <p>
 In tegenstelling met werkbladen,
 <ul><li>
-il n'est pas possible de renouveler un exercice de l'examen,
-ni de désactiver l'enregistrement des notes.
+Het is niet mogelijk een opdracht/opgave uit een proefwerk te vernieuwen of het behalen van cijfers op te schorten
 </li><li>
-lorsqu'on clique sur un exercice, l'énoncé apparaît dans une autre
-fenêtre du navigateur. Un lien <span class="tt wims_code_words">Retour à la liste des exercices</span>
-permet de
-passer à un autre exercice.
+Een opdracht/opgave uit een proefwerk wordt getoond in een nieuw browser venster.
 </li><li>
-Il n'est pas nécessaire d'avoir répondu à un exercice
-pour passer à l'exercice suivant de l'examen, l'énoncé obtenu est conservé.
+Een opdracht/opgave hoeft niet onmiddelijk te worden ingeleverd.
+Er kan gerust een andere worden opgevraagd.
+De inhoud van eenmaal opgevraagde opdrachten/opgaven veranderd echter niet.
 </li></ul>
 </p><p>
-L'enseignant peut donner la possibilité de recommencer plusieurs fois la totalité de
-l'examen. La note d'examen retenue par WIMS est alors le maximum des notes
-obtenues lors de tous les essais. La durée d'un examen correspond à la durée
-maximale d'un essai.
+De docent kan bepalen hoevaak een proefwerk mag worden overgedaan.
+De score voor een proefwerk is het hoogste cijfer van alle pogingen.
+De tijdsduur voor een proefwerk is de maximale tijd dat aan het proefwerk mag worden gewerkt.
 </p><p>
-Indépendamment de la durée maximale d'un essai, l'enseignant peut fixer la période
-pendant laquelle l'enregistrement des notes sera ouverte.
+Een docent kan bepalen wanneer en vanwaar en door wie een proefwerk mag worden gemaakt.
 </p><p>
-Pour que les réponses sur un exercice soient prises en compte,
-il faut qu'elles soient envoyées avant que le temps fixé pour faire
-l'examen ne soit écoulé.
+Antwoorden op een opdracht moeten binnen de tijdslimiet worden opgestuurd naar de server.
+Ingeleverde antwoorden buiten deze limiet worden niet meer meegeteld.
+
 </p>
 !if $tryremain>0 and $stries >1
 <p>
-Exemple.
-Supposons qu'il soit écrit :
+Bijvoorbeeld :
 </p>
 !set h_min=$[rint(9*60+$stries*($sdure) - $sdure/2)]
 !set h_fin= $[floor($h_min/60)] h $[$h_min%60] min

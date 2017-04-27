@@ -345,7 +345,7 @@ Bewaar als een nieuwe oefening\
 Stuur een plaatje\
 Vervang de bestaande\
 Verwijder de oefening\
-into wims_name_testexo,wims_name_backconfia2qcm,wims_name_backcreateqcm,wims_name_exomodify,\
+  into wims_name_testexo,wims_name_backconfia2qcm,wims_name_backcreateqcm,wims_name_exomodify,\
 wims_name_putmodtool,wims_name_putclass,wims_name_newversion,\
 wims_name_downloadbinary,wims_name_replace,wims_name_exoerase
 
@@ -362,7 +362,7 @@ Oefeningen van deze klas\
 Werkblad oefeningen\
 Volgende oefening\
 Vorige oefening\
-into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,wims_name_myvote,\
+  into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,wims_name_myvote,\
 wims_name_add_exo,wims_name_classexo,wims_name_sheet_exos,wims_name_next,wims_name_prev
 
 !distribute items niet doorgaan,ongedaan maken,klaar,gefeliciteerd,klaar \
@@ -400,7 +400,7 @@ Nog niet klaar voor gebruik, Actief, Verlopen, Verlopen&amp;Onzichtbaar\
 niet lezen en niet schrijven,alleen lezen,lezen en schrijven\
 Nummer\
 Aantal oefeningen\
-into wims_name_doc,wims_name_Docs,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
+ into wims_name_doc,wims_name_Docs,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
 wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert,wims_name_shstatus,\
 wims_name_Docstatus,wims_name_number,wims_name_cnt_exo
 
@@ -463,7 +463,7 @@ Verander de moeilijkheidsgraad\
 Handmatig ingevoerde cijfers\
 Spreadsheet data\
 Activiteiten\
-Ajouter des classes (csv)\
+Klassen toevoegen (csv)\
 into wims_name_class_stat,wims_name_activity,wims_name_formula,wims_name_grades,\
 wims_name_csv,wims_name_activity1
 
@@ -482,7 +482,7 @@ Volgende\
 Vorige\
 Filters\
 Technische variabele toevoegen\
-into wims_name_part_list,wims_name_teacherlist,wims_name_scores,wims_name_partexamclose,wims_name_workdetail,\
+ into wims_name_part_list,wims_name_teacherlist,wims_name_scores,wims_name_partexamclose,wims_name_workdetail,\
 wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_livret,\
  wims_name_next_participant,wims_name_prev_participant,wims_name_filter,\
  wims_name_livret1,wims_name_add_techvar
