@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl
+#!/usr/bin/perl
 ##script to generate some index files from tags of index.tags.xml for
 ## shtooka packages
 use locale;
