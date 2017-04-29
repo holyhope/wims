@@ -22,4 +22,4 @@
 	Tercer ciclo
 
 !set name_wims_levels=Kinder garten, Primaria,ESO,Bachiller,University
-!set levels=0,1,7,11,13
+!set search_levels=0,1,7,11,13

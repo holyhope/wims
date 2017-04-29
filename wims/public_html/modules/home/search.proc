@@ -1,4 +1,3 @@
-
 Processing search request.
 !nocache
 !if $wims_referer!=$empty and $wims_user=$empty and $wims_new_session=yes
@@ -59,7 +58,7 @@ list_batch=20
 !read adm/search_engine/mklist_form.proc $search_lang
 !read adm/lang/levelname.phtml.$lang
 !set Listlevel=$wims_listlevel
-!set levelcnt=!itemcnt $Listlevel
+!set search_levelcnt=!itemcnt $Listlevel
 !set listlevel=!makelist level x for x in $Listlevel
 !set listlevel=!nospace $listlevel
 !set listlevel=!lowercase $listlevel
@@ -69,7 +68,7 @@ list_batch=20
  !default search_level_from=$[max(1,$cl-1)]
  !default search_level_to=$[$cl+1]
 !endif
-!if $search_level_from=1 and $search_level_to=$levelcnt
+!if $search_level_from=1 and $search_level_to=$search_levelcnt
   !reset search_level_from search_level_to
 !endif
 
@@ -85,20 +84,22 @@ list_batch=20
 !if _tool isin $wims_session
  search_category=T
 !endif
-!if $search_level_from!=$empty
-  !default search_level_to=-1
-  search_level=$(listlevel[$search_level_from .. $search_level_to])
-!endif
+
 search_keywords=!trim $search_keywords
 search_keywords=!translate " to $ $ in $search_keywords
 !if $search_category$search_keywords$search_level=$empty
- !read wimshome/$s2dir/home_search
- readback=yes
+!! read the preceding option in the user search
+  !read wimshome/$s2dir/home_search
+  readback=yes
 !else
- search_level=!nospace $search_level
- search_level=!lowercase $search_level
- search_domain=!trim $search_domain
- search_keywords=!trim $search_keywords
+  !if $search_level_from!=$empty
+    !default search_level_to=-1
+    search_level=$(listlevel[$search_level_from .. $search_level_to])
+  !endif
+  search_level=!nospace $search_level
+  search_level=!lowercase $search_level
+  search_domain=!trim $search_domain
+  search_keywords=!trim $search_keywords
 !endif
 search_category=!replace exercise by X in $search_category
 search_category=!replace tool by T in $search_category
@@ -210,7 +211,9 @@ search_category=$search_category\
 search_domain=$search_domain\
 search_keywords=$search_keywords\
 package=$search_package\
-search_lang=$search_lang
+search_lang=$search_lang\
+search_level_from=$search_level_from\
+search_level_to=$search_level_to
 
 !if $search_category isin LPS
  !changeto search.$search_category

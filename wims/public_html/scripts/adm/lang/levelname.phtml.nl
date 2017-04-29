@@ -22,4 +22,4 @@
 	Doctoraal studie
 
 !set name_wims_levels=Kinder garten, Lagere school, Middelbare school,Universiteit
-!set levels=0,1,7,13
+!set search_levels=0,1,7,13

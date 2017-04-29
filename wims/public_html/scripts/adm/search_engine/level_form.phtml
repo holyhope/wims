@@ -1,7 +1,6 @@
 !!# Si les librairies Jquery sont chargees, on affiche un double curseur.
 !default search_level_from=1
-!default search_level_to=$levelcnt
-
+!default search_level_to=$search_levelcnt
 !!<fieldset class="property_fields blockcenter">
  !! <legend>name_bounded_search$name_bounded_search</legend>
 <div class="field box">
@@ -22,13 +21,13 @@
 </style>
 <script type="text/javascript">
 /*<![CDATA[*/ jQuery(function(jq){
-var niveaux = new Array($levelcnt);
-!set niveaucnt=!itemcnt $levels
+var niveaux = new Array($search_levelcnt);
+!set niveaucnt=!itemcnt $search_levels
 !for i=1 to $niveaucnt
-  !ifval $(levels[$i+1])-$(levels[$i])>1
-niveaux[$(levels[$i])]='$(name_wims_levels[$i])&rarr;';
+  !ifval $(search_levels[$i+1])-$(search_levels[$i])>1
+niveaux[$(search_levels[$i])]='$(name_wims_levels[$i])&rarr;';
   !else
-niveaux[$(levels[$i])]='$(name_wims_levels[$i])';
+niveaux[$(search_levels[$i])]='$(name_wims_levels[$i])';
   !endif
 !next
 jq('#slider_level')
