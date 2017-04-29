@@ -4,124 +4,123 @@
   !goto $wims_read_parm
 !endif
 
-!distribute items subclasses,participants,exercises,documents,teachers,worksheets\
+!distribute items subclasses,participants,exercicis,documents,professors,fulls d'exercicis\
 into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers,\
 name_sheets
 
-!distribute item messages of the day,exercise,worksheet,exam,document,\
-	participant,teaching sequences,skills assessment report,skills,votes,\
-	agenda,teacher account,forum,message board\
+!distribute item missatge del dia,exercici,fulls d'exercicis,exàmens,documents,\
+	participants,seqüències pedagògiques,competències bàsiques,competència(es),qüestionaris,\
+	agenda,compte de professor,fòrum,missatges del fòrum\
 	into name_motd,name_exo,name_sheet,name_exam,name_doc,\
 	name_user,name_seq,name_livret,name_competence,name_vote,\
 	name_cdt,name_sup,name_forum,name_forum_mesg
 
-!distribute item messages of the day,\
-	exercises,worksheets,exams,documents,participants\
+!distribute item missatges del dia,\
+	exercicis,fulls d'exercicis,exàmens,documents,participants\
 	into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
 
 !if $job=grestrict
- !set name_allowedsites=Allowed IP numbers
- !set name_excepted=Except
+ !set name_allowedsites=IP permeses
+ !set name_excepted=Excepcions
 !endif
 !if $job=connectlink
-  !set title=Connexion links
+  !set title=Enllaços de Connexió
 !endif
 !if $job=arch
  !set title=Còpia de seguretat i Restauració
- !set name_title_save=Sauvegarde de la classe
- !set name_title_restore=Restauration de ressources à partir d'une sauvegarde
- !set name_intro1=Sélectionner le fichier de sauvegarde à restaurer
- !set name_intro=You can download a backup copy of your class, in the following format
- !set name_tosend=To upload backup archives into your class, please give the backup file name
- !set name_namefile=please enter the name of backup file
- !set name_help=You will be prompted for the selection of resources to restore to your class.
+ !set name_title_save=Còpia de seguretat de la classe
+ !set name_title_restore=Restauració dels recursos a partir d'una còpia de seguretat
+ !set name_intro1=Seleccioneu el fitxer de còpia de seguretat per restaurar
+ !set name_intro=Feu clic al format de còpia de seguretat seleccionat
+ !set name_tosend=Seleccioneu el fitxer de còpia de seguretat per restaurar
+ !set name_namefile=si us plau dóna el nom del fitxer de còpia de seguretat&nbsp;
+ !set name_help=A continuació, podràs seleccionar els recursos de la classe per restaurar.
+ !set name_deposit=!nosubst La teva còpia de seguretat <span class="tt wims_fname">$wims_deposit</span> conté els següents\
+ recursos. Si us plau indica els que vols restaurar a la teva classe.
+ !set name_no_restore=No es pot restaurar perquè comparteixes els recursos d'una altra\
+        classe. La restauració només es pot fer per la classe mestra de compartir.
 
- !set name_deposit=!nosubst Your backup file <span class="tt wims_fname">$wims_deposit</span> contains the following resources.
-Please check those you want to restore to your class.
-
- !set name_no_restore=Cannot be restored because you are sharing resources of\
-	another class. Restoration can only be done on the class originating the sharing.
-
- !distribute lines Nothing is selected for restoration.\
-   Restore everything except class configuration and supervisor account.\
-   <span class="wims_warning">Danger!</span> <span class="small">See notes below.</span>\
-   Class configuration setup.\
-    Supervisor account (including your password)\
-   participant accounts\
-   Existing accounts\
+ !distribute lines No s'ha seleccionat cap recurs per restaurar.\
+   Restaurar tot, excepte la configuració de la classe i el compte de professor.\
+   <span class="wims_warning">Danger!</span> <span class="small">Mira més avall.</span>\
+   Configuració de la classe.\
+   Compte de professor (inclosa la contrasenya)\
+   comptes d'alumnes\
+   Comptes existents\
    documents\
-   Existing documents\
-   exercises\
-   Existing exercises\
-   worksheets\
-   Implies restoration of class exercises\
-   Existing worksheets\
-   exam sheets\
-   Implies restoration of worksheets and exercises\
-   Existing exams\
-   forum messages\
-   Existing messages\
-   Participant activity register and server-computed scores. Implies restoration participant accounts.\
-   Teacher-defined grades\
-   Existing grades\
-   an agenda for the class\
-   an existing agenda\
-   A skills assessment report\
-   an existing assessment report\
-   teaching sequences\
-   implies restoring worksheets, exercises, exams and documents\
-   Existing sequences\
-   Restoration method\
-   Replacement\
-   replace existing corresponding teaching materials by restored ones.\
-   Merge\
-   merges participant accounts and class exercises; exercises with the same name will be replaced by restored data, while the others will remain; <span class="wims_warning"> other teaching materials will be replaced</span>\
-   Restore the selected teaching materials\
-   Existing message of the day\
+   Documents existents\
+   exercicis\
+   Exercicis existents\
+   fulls d'exercicis\
+   Implica la restauració dels exercicis\
+   Fulls existents\
+   fulls d'examen\
+   Implica la restauració de fulls d'exercicis i dels exercicis\
+   Exàmens existents\
+   missatges del fòrum\
+   Missatges existents\
+   Registre d'activitats dels alumnes i puntuació automàtica. Implica la restauració de comptes d'usuari.\
+   Notes posades pel professor\
+   Notes existents\
+   una agenda per a la classe\
+   una agenda existents\
+   Competències bàsiques\
+   competències existents\
+   Seqüències pedagògiques\
+   Implica la restauració dels fulls d'exercicis, exercicis, exàmens i documents\
+   Seqüències pedagògiques existents\
+   Mètode de restauració\
+   Reemplaçament\
+   reemplaça els recursos existents pels recursos restaurats\
+   Fusió\
+   fusiona els comptes dels participants; combina els exercicis de la classe substituint els exercicis del mateix nom; <span class="wims_warning"> substituir els altres recursos existents</span>\
+   Restaurar els recursos seleccionats\
+   Missatge del dia existent\
  into name_noselect,name_all,name_danger,name_config,name_teacher,name_user,name_user1,name_doc,\
    name_doc1,name_exo,name_exo1,name_sheet,name_sheet0,name_sheet1,name_exam,name_exam0,name_exam1,name_forum,\
    name_forum1,name_activity,name_manual,name_manual1,name_cdt,name_cdt1,name_livret,name_livret1,name_seq,\
    name_seq0,name_seq1,name_method,name_replace,name_replace1,name_merge,name_merge1,\
    name_selectrestore,name_motd1
 
-!!set name_cnil_warning=Nous vous rappelons que conformément aux déclarations faites à la CNIL, \
-  vous ne devez pas garder de données relatives à vos élèves plus d'un an. Vous devrez alors détruire\
-  toutes les sauvegardes contenant les données des élèves.\
-  Faites une sauvegarde sélective si vous désirez garder les ressources que vous\
-  avez créées (feuilles, examens, documents) ou utilisez la possibilité de duplication.
+!!set name_cnil_warning=Recordem que d'acord a les declaracions fetes a la CNIL, \
+   no s'han de desar dades sobre els estudiants més d'un any. S'haurà de destruir\
+   totes les còpies de seguretat que contenen dades dels alumnes.\
+   Fes una còpia de seguretat selectiva si vols desar els recursos que \
+   has creat (fulls, exàmens, documents), o utilitzar la possibilitat de duplicació.
 
-!distribute lines Backup teaching materials restored to the class\
-   Restoration of participant accounts (as well as activity register) is refused because there is not enough space left.\
-   Class expiration date has been modified after restoration, because the uploaded date is\
-   Participant accounts already in use in your group of classes (restauration refused)\
-   restore is not allowed because of ressources sharable\
-   Save/Restoration is not needed at this level of the structure\
+!distribute lines Recursos de còpia de seguretat restaurats a la classe&nbsp;\
+    La restauració dels comptes dels participants (i els registres d'activitat) s'ha refusat perquè no hi ha prou espai disponible.\
+    La data de caducitat de la classe s'ha canviat després de la restauració perquè la data restaurada és\
+    Compte(s) d'alumne(s) sense restaurar perquè l'identificador ja està en ús en el grup/portal\
+    La restauració és impossible perquè la teva classe ha autoritzat la compartició de recursos\
+    La còpia de seguretat i la restauració no són útils en aquest nivell de la estructura\
  into name_restore1,name_restore2,name_restore3,name_restore4,name_forbiddenrestore,name_restore5
 
- !distribute items unrecognizable, too early, too late into ebad,eearly,elate
+ !distribute items irreconeixible, massa aviat, massa tard into ebad, eearly, elate
 
- !distribute lines Sorry, we have failed to archive your class.\
-   Here is the backup file of your class\
-  Click on it to save it on your computer.\
-  You can also make a selective backup. For that, check the data you wish to save\
-  then click on \
-  selective backup\
-  to modify the backup file and save it on your computer.\
+ !distribute lines Ho sentim, no hem pogut arxivar la teva classe. Error intern.\
+   Feu clic a l'arxiu de còpia de seguretat de la classe\
+   per a desar-la al teu ordinador. \
+   També pots fer una còpia de seguretat selectiva. Per això, trieu les dades que voleu desar\
+   a continuació, feu clic al botó \
+   Còpia de seguretat selectiva\
+   per modificar el fitxer de còpia de seguretat i guardar-lo en el teu ordinador.\
  into name_download1,name_download2,name_download3,name_download4,\
    name_selective1,name_selective2,name_selective3
 
- !set name_download5=This backup file may be too big to be sent back to the server (which limits\
- the size of file it accepts). In order to reduce the backup size, you can\
- make a selective backup
+ !set name_download5=Aquest fitxer de còpia de seguretat té una mida que pot superar el límit permès\
+   per enviar al servidor. Per reduir la mida del fitxer, pots\
+   seleccionar les dades a desar
 
  !goto commun
 !endif
 
 !if $job=clean
  !set title=Manteniment de la classe
- !set name_lines=participant activity lines
- !set name_empty=Your class is empty!<p> There is no teaching materials in your class that can be cleaned up.
- !set name_no_erase=Cannot be cleaned because you are sharing those of another class.
+ !set name_lines=línies dels registres d'activitat dels alumnes.
+ !set name_empty=La teva classe està buida&nbsp;!<br />\
+  No hi ha recursos a la classe que es puguin esborrar.
+ !set name_no_erase=No es poden netejar, ja que estan compartint els d'una altra classe.
 
  !distribute lines Clean up everything cleanable\
    Will also erase activity register\

@@ -1,0 +1,45 @@
+!set lang_exists=yes
+
+!distribute items dia(s),setmana(s),mes,any(s),Peticions,Sessions,Llocs de Visita, \
+  Nombre,total,mitjana<br />diària,mitjana<br />setmanal,mitjana<br />mensual,mitjana<br />anual,\
+  mitjana<br />per lloc,mitjana<br />setmanal,Tipus de gràfic,diària,l'inici\
+into name_day,name_week,name_month,name_year,name_Requests,name_Sessions,name_Visitors,\
+   name_cnt,name_total,name_avgday,name_avgweek,name_avgmonth,name_avgyear,\
+   name_avgsite,name_avghebdo,name_plot,name_byday
+
+!set name_requests=!lowercase $name_Requests
+!set name_sessions=!lowercase $name_Sessions
+!set name_visitors=!lowercase $name_Visitors
+
+!distribute lines Tria un període per a les estadístiques: des de\
+  Mostra els detalls pel mòdul\
+  Mostrar estadístiques\
+  Detalls pel mòdul\
+  Nombre de visites\
+  de\
+  a\
+  Instal·lat el\
+  Subtotal\
+into name_choose,name_details,name_showstat,wims_name_statdetail,name_number_visits,name_from,\
+  name_to,name_installed,name_subtotal
+!!!set title=Estadístiques d'ús
+!set name_sum=!nosubst somme sur $laps jours
+
+!set name_prompt=consultes<br />totals,consultes<br />per lloc,llocs<br />totals
+!set name_explanations=<ul>\
+<li>El nombre de consultes compta només les consultes de pàgines.\
+  Les consultes als mòduls en desenvolupament no es compten.\
+</li><li>El nombre de llocs visitats es compten diàriament.\
+</li><li>El nombre de visitants se situa entre el nombre de llocs i el nombre de sessions.\
+</li></ul>
+
+!set name_warning=L'estadística d'ús no està activa en aquest lloc. No hi ha estadístiques\
+  disponibles. Ho sento.
+
+!set name_numberclass=!nosubst Hi ha $classcnt portals i classes individuals en aquest servidor, amb\
+  $usercnt comptes d'usuari en total.
+
+
+!set format1=%d%m
+!set format2=%d%m
+!set format3=%m%y

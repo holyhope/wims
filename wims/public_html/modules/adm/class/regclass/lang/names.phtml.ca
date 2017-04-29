@@ -1,14 +1,13 @@
 !set lang_exists=yes
 
-!set name_passsup=contrasenya de professor
-!set name_password_check=Password security check
+!set name_password_check=Comprovació de contrasenyes
 !set name_listclass=classe,classe,grup de classes,classe,portal del centre
 
 !default Cltype=$cltype
 !if $Cltype iswordof 2 4
    !if $Cltype=2
     !set name_classe=$(name_listclass[$Cltype+1])
-    !set name_sup=de l'administrador
+    !set name_sup=del professor-administrador
    !else
     !set name_classe=$(name_listclass[$Cltype+1])
     !set name_sup=de l'administrador
@@ -43,11 +42,11 @@
 !if $regpolicy=file
   !set noright=No teniu els drets per fer-ho.)
  !else
-  !set noright=(Només el gestor del lloc pot fer-ho.
+  !set noright=Només el gestor del lloc pot fer-ho.
  !endif
 
 !set name_regpolicy=!nosubst L'operació de crear $name_classesss només tindrà èxit si es proporciona\
-   una adreça de correu electrònic vàlida i està disponible en aquest moment.
+   una adreça de correu electrònic vàlida i accessible en aquest moment.
 
 !set name_help1=Aquesta contrasenya us permetrà accedir a la vostra $name_classe en tant\
   que responsable. Heu de ser l'únic que la coneix.
@@ -66,7 +65,7 @@
    Opcional\
    Aquest codi s'utilitza només una vegada. No el podeu utilitzar per connectar-vos a la vostra $name_classe&nbsp;!\
    Codi de la vostra $name_classe\
-   Autenticació externa CAS\
+   Adreça d'autenticació CAS\
   into name_help_date,name_help_limit,name_secure,name_optional,name_warning_code,name_code,name_cas
 
 !set name_host=!nosubst Noms dels llocs des dels quals realitzareu operacions sensibles a la vostra $name_classe. \
@@ -76,28 +75,32 @@
 !set name_cas_help=Ompliu aquest camp només si voleu utilitzar l'autenticació externa de tipus CAS\
 (rebuda pel vostre ENT per exemple).
 
-!set name_cpexempleintro=!nosubst Vous allez créer une copie de la classe <span class="tt wims_code_words">$source_title</span>
-!set name_choosemode=Vous devez choisir le mode de copie de cette classe
-!distribute item Intégrale,Partielle into name_btcpexemplemeth0,name_btcpexemplemeth1
+!set name_cpexempleintro=!nosubst Es crearà una còpia de la classe\
+  <span class="tt wims_code_words">$source_title</span>
+!set name_choosemode=Heu de triar el tipus de còpia que voleu fer d'aquesta classe
+!distribute item Completa,Parcial into name_btcpexemplemeth0,name_btcpexemplemeth1
 
-!set name_cpexemplemeth0=Toutes les ressources seront copiées. Les ressources pourront être désactivées puis supprimées ou adaptées en fonction des dépendances.
-!set name_cpexemplemeth1=Les examens ne seront pas copiés. Les ressources seront désactivées automatiquement. Vous pourrez alors décider de celles que vous souhaitez supprimer, adapter ou garder.
-!set name_cpexemplecomment=Dans tous les cas, les dates d'expiration seront adaptées à la date de fermeture de la classe créée.
-!set name_research1=Il y a beaucoup de classes virtuelles sur ce site. Tapez une partie d'un mot se trouvant dans son titre ou dans le nom de l'enseignant pour trouver celle que vous cherchez.
-!set name_research2=Il y a encore trop de classes correspondant à votre mot de recherche. Veuillez donner un mot plus précis.
-!set name_searchclass=Rechercher une classe
-!set name_nofound=Aucune classe ne correspond à votre recherche.
+!set name_cpexemplemeth0=Es copiaran tots els recursos. Els recursos poden ser llavors desactivats \
+  i eliminats o adaptats d'acord amb les dependències.
+!set name_cpexemplemeth1=No es copiaran els exàmens. Els recursos seran desactivats automàticament.\
+ Podreu decidir, llavors, quins voleu eliminar, adaptar o mantenir.
+!set name_cpexemplecomment=En tots els casos, les dates de caducitat s'ajustaran\
+ a la data de tancament de la classe creada.
+!set name_research1=Hi ha moltes classes virtuals en aquest lloc. \
+ Introduïu una part del títol o del nom del professor per trobar el que voleu.
+!set name_research2=Encara hi ha massa classes corresponents al terme de cerca. \
+  Escriu una paraula més precisa.
+!set name_searchclass=Trobar una classe
+!set name_nofound=No hi ha cap classe corresponent a aquesta cerca.
 
-!distribute items Libre, Protégé, Non autorisé, Duplication, \
-Cliquez sur la classe à dupliquer\
+!distribute items Lliure, Protegida, No autoritzada, Duplicació, \
+Feu clic a la classe a duplicar\
 into name_free,name_protected,name_disallowed,name_cloning,name_clickclone
 
-!set name_getcloningpwd=!nosubst Vous allez créer une copie de la classe <span class="tt wims_code_words">$source_title</span>. \
-Pour cela vous devez saisir le mot de passe de duplication que l'administrateur de la classe vous a communiqué.
+!set name_getcloningpwd=!nosubst Es crearà una còpia de la classe <span class="tt wims_code_words">$source_title</span>. \
+Per a això s'ha d'introduir la contrasenya d'administrador de duplicació de la classe que l'administrador de la classe us ha donat.
+!set name_subclass=Subclasse de
 
-!set name_subclass=Sous-classe de
-
-!distribute lines Location (town, country)\
- En remplissant ce champ, vous acceptez que nous indiquions que WIMS est utilisé dans votre ville (sans aucune autre mention)\
+!distribute lines Ubicació (ciutat, país)\
+ Omplint aquest camp, s'accepta que nosaltres indiquem que WIMS s'utilitza a la teva ciutat (sense cap altra referència)\
 into name_location,name_location_help
-
