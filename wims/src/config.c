@@ -425,8 +425,7 @@ void main_configure(void)
     }
     setenv("PATH",PATH,1);
     p=getvar("httpd_SERVER_SOFTWARE");
-    if(p && (p2=strstr(p,"Apache"))!=NULL && strcmp(p2,"Apache/1.3")>=0
-       && strstr(aliased_getfile,"yes")!=NULL)
+    if(p && (strstr(p,"Apache"))!=NULL && strstr(aliased_getfile,"yes")!=NULL)
       good_httpd=1;
     accessfile(buf,"r","../tmp/log/myip");
     *find_word_end(buf)=0;
