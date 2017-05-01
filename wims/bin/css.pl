@@ -27,6 +27,8 @@ sub treate_file { my ($file)=@_;
   $text =~ s/\{ \}(.)/\{ \}\n$1/g ;
   $text =~ s,\/\*,\n,g ;
   $text =~ s!\*\/\n!,!g ;
+  $text =~ s/{ }//g;
+  $text =~ s/\.//g;
   $text ;
 }
 sub out { my ($bloc, $text) = @_;
