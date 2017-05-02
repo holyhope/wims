@@ -5,70 +5,156 @@
 
 !read adm/title.phtml 1\
 \
-Nivell de severitat dels fulls de treball
+Regla de càlcul dels fulls de treball
 
 !if $wims_user=supervisor
 <p>
-El servidor calcula dues mitjanes per al treball de cada participant en
-cada full&nbsp;: un percentatge de punts obtinguts respecte al nombre de
-punts demanats, i la qualitat dels punts obtinguts en els exercicis
-del full. Sigui x el percentatge i y la qualitat, tots dos reduïts
-proporcionalment a valors entre 0 i 1. Aquestes són Les fórmules per
-calcular les puntuacions, d'acord amb el nivell de severitat establert pel professor.
+El servidor calcula per a cada exercici tres indicadors del
+ treball de cada alumne (l'indicador d'acumulació (\(i_0)),
+ l'indicador d'èxit (\(i_1)) i l'indicador d'atquisició
+ \((i_2))) i una nota de qualitat \(q).
+Pour expliquer le calcul des différents indicateurs, supposons que le nombre
+de points requis sur un exercice est \(10n\) où \(n\) est un entier et que
+l'élève a fait cet exercice \(p\) fois avec les scores \(x_1, x_2, x_3, ..., x_p\)
+(nombres entre 0 et 10).
 </p>
-$table_header
-$table_hdtr<th>Nivell</th><th>Fórmula</th><th>Explicació</th></tr>
-$table_tr<td>0</td><td>$scoremax max(x,y)
- </td><td>Molt indulgent&nbsp;: màxim entre percentatge i qualitat.</td></tr>
-$table_tr<td>1</td><td>$scoremax x
- </td><td>la qualitat no és tinguda en compte. Teniu la màxima puntuació
- quan s'obtenen tots els punts requerits.</td></tr>
-$table_tr<td>2</td><td>$scoremax x y<sup>0.3</sup>
- </td><td>La qualitat té poc efecte en la nota.</td></tr>
-$table_tr<td>3</td><td>$scoremax x y<sup>0.5</sup>
- </td><td>Té molt efecte la qualitat.</td></tr>
-$table_tr<td>4</td><td>$scoremax x y
- </td><td>Per a una nota de $scoremax, han de tenir tots els punts
-  demanats (100%), sense cometre errors (qualitat = 10).</td></tr>
-$table_tr<td>5</td><td>$scoremax x<sup>2</sup> y
- </td><td>Feina inacabada és excessivament castigada</td></tr>
-$table_tr<td>6</td><td>$scoremax x<sup>2</sup> y<sup>2</sup>
- </td><td>Qualsevol error és castigat.</td></tr>
-$table_end
+<ul><li>
+L'indicateur de cumul \((i_0)) est la somme des scores plafonnée à \(10 n\)
+que l'on divise par \(10n\) : \(i_0=min(x_1+...+x_p, 10*n)/(10*n)).
+Il est affiché dans les résultats de l'élève comme un pourcentage.
+</li><li>
+Notons \(y_1\geq y_2\geq ... \geq y_p\) les scores ordonnés par ordre
+décroissant.
 
-Remarque : En niveau 0 et 1, si la note de qualité est
-inférieure à 1 pour un exercice, le pourcentage de réussite (points obtenus)
-est mis à 0% pour cet exercice lors du calcul de x ; si la note de qualité est comprise entre 1 et 2,
-le pourcentage de réussite pour cet exercice est divisé par 2 lors du calcul de x.
+L'indicateur de réussite (\(i_1)) est la moyenne des \(n\) meilleurs scores,
+divisé par 10 :
+ \(i_1 = (y_1+...+y_n)/(n*10)) si le nombre \(p\) de scores obtenus est supérieur
+  à \(n\) et
+ \(i_1 = (y_1+...+y_p)/(n*10)) si
+le nombre \(p\) de scores obtenus est inférieur à \(n).
+Il est affiché ensuite comme un pourcentage.
+</li><li>
+L'indicateur d'acquisition (\(i_2)) est le plus petit des \(n\) meilleurs scores
+divisé par 10 :
+\(i_2 = 0) si le nombre \(p\) de scores obtenus est inférieur à \(n\)
+et \(i_2= y_n/10\) si \(p\geq n\).
+</li></ul>
+<p>
+Par exemple, si \(n=2\) et si les scores sont 7, 5 et 3 alors \(i_0 = 0.75\) (75%),
+\(i_1=0.6\) (60%) et \(i_2=0.5) (50%).
+</p><p>
+La note de qualité est la moyenne pondérée et incrémentale des
+scores (c'est-à-dire que le poids des derniers scores obtenus est plus important que
+celui des premiers). Cet indicateur est corrigé en sanctionnant les essais sans
+réponse de la manière suivante :
+si le nombre d'essais non terminés \(s_n\), est strictement supérieur à \(5+2*s_t\),
+où \(s_t\) est le nombre d'essais terminés (avec une note),
+la note de qualité est multipliée par \(\frac{2 s_t}{s_n-4} < 1\).
+</p><p>
+Pour chaque feuille, le serveur calcule ensuite
+</p>
+<ul><li>
+la moyenne pondérée (\(I_0, I_1, I_2)) sur tous
+les exercices de la feuille des \(i_0, i_1, i_2) correspondants
+avec comme coefficients de pondération le produit du poids de l'exercice et du nombre
+de points requis ;
+</li><li>
+ la moyenne pondérée \(Q\) des \(q\) avec comme coefficients
+de pondération le produit du poids de l'exercice et de l'indicateur de cumul
+de l'élève \(i_0\) pour cet exercice (ainsi, cela tient compte de la qualité
+de ce qui a été fait).
+</li>
+</ul>
+<p>
+Si la note de qualité est inférieure à 1 pour un exercice,
+l'indicateur \(i) utilisé pour le calcul de chacun des indicateurs \(I)
+est mis à 0 pour cet exercice ;
+si la note de qualité est comprise entre 1 et 2,
+l'indicateur  \(i) utilisé pour le calcul de chacun des indicateurs \(I)
+ est divisé par 2.
+</p><p>
+Les valeurs de \(Q, I_0, I_1, I_2\) sont données sur chaque feuille
+dans la page de suivi individuel des étudiants.
+</p><p>
+Le serveur calcule alors la note de la feuille suivant une règle de
+calcul que vous définissez (vous pouvez choisir la règle et l'indicateur \(I\)
+utilisé parmi \(I_0, I_1, I_2)).
+
+Voici les formules possibles :
+</p>
+
+!reset table_center
+$table_header
+$table_hdtr<th>Règle</th><th>Formule</th><th>$wims_name_Explanations</th></tr>
+$table_tr<td>0</td><td> \($scoremax * $(list[1;]) \)
+ </td><td>maximum entre l'indicateur choisi et qualité.</td></tr>
+$table_tr<td>1</td><td> \($scoremax *$(list[2;]) \)
+ </td><td>La qualité n'est pas prise en compte. Vous avez la note maximale
+ lorsque l'indicateur choisi est maximal.</td></tr>
+$table_tr<td>2</td><td>\($scoremax*$(list[3;])\)
+ </td><td>La qualité n'a que peu d'effet sur la note.</td></tr>
+$table_tr<td>3</td><td>\($scoremax*$(list[4;])\)
+ </td><td>Plus d'effet de la qualité.</td></tr>
+$table_tr<td>4</td><td>\($scoremax*$(list[5;])\)
+ </td><td>Pour avoir une note de $scoremax, il faut avoir tous les points
+  demandés (100%) sans faire de faute (qualité=10).</td></tr>
+$table_tr<td>5</td><td>$\($scoremax*$(list[6;])\)
+ </td><td></td></tr>
+$table_end
 
 !else
 Pour cette feuille, votre enseignant a choisi le mode de calcul suivant
-de la note.
-Pour chacun des indicateurs suivants, on calcule la moyenne pour votre travail pour :
+de la note. Le nombre de points requis est \(10n\).
+Pour chacun des exercices, on calcule
 <ul>
 <li>
 !if $help_sw=0
-  le quotient I des points cumulés par le nombre de points demandés 10*n
+  \(i\) : la somme des scores plafonnée à \(10n\)
+que l'on divise par \(10n\) (indicateur de cumul)
 !endif
 !if $help_sw=1
-la moyenne I des n meilleures notes,
+ la moyenne \(i\) des \(n\) meilleurs scores divisé par 10 (niveau de réussite) :
+ si vos scores sont  \(y_1\geq y_2\geq ... \geq y_p \) ordonnés par ordre
+décroissant :
+ \(i  = (y_1+...+y_n)/(10n)\) si le nombre \(p\) de scores obtenus est supérieur à \(n\)
+ et
+ \(i = (y_1+...+y_p)/(10n)) si le nombre \(p\) de scores obtenus est inférieur à \(n\).
 !endif
 !if $help_sw=2
- le minimum I des n meilleures notes
+ le minimum \(i\) des \(n\) meilleures notes divisé par 10 (niveau d'acquisition) :
+ si vos scores sont  \(y_1\geq y_2\geq ... \geq y_p \) ordonnés par ordre
+décroissant :
+  \(i  = 0\) tant que le nombre \(p\) de scores obtenus est inférieur à \(n) et
+ et ensuite
+ \(i = y_n/10).
 !endif
 </li>
+!if $help_level>0
 <li>
-la qualité Q des points obtenus sur les exercices.
+la qualité \(q\) des points obtenus sur les exercices qui est
+une moyenne pondérée, les derniers scores ayant un poids plus important que
+les premiers. Attention, si vous renouvelez l'exercice sans le terminer un nombre trop
+important de fois par rapport au nombre de fois où vous avez terminé l'exercice,
+la note de qualité diminuera.
 </li>
+!endif
 </ul>
-
+La note de la feuille est calculée à partir des moyennes pondérées
+\(I) et \(Q) des \(i) et de \(q) de chaque exercice.
+!if $help_level>0
 Si la note de qualité est inférieure à 1 pour un exercice,
-I est mis à 0 pour cet exercice  ;
+l'indicateur \(i\) est mis à 0 pour cet exercice ;
 si la note de qualité est comprise entre 1 et 2,
-I est divisé par 2 lors du calcul de la note de la feuille.
+l'indicateur \(i\) est divisé par 2.
 
+!else
+ Cependant, si vous avez eu trop d'échecs ou si vous avez
+ essayé trop de fois l'exercice sans le terminer, cette note peut diminuer.
+ Demandez à votre enseignant.
+!endif
 </p><p>
-Ces moyennes sont ramenées entre 0 et 1 et
- la note de la feuille est calculée comme
-\($scoremax * $(list[$help_level+1;]) \)
+
+ La note de la feuille est calculée comme
+<span class="bold">$scoremax $(list[$help_level+1;])</span>.
+</p>
 !endif

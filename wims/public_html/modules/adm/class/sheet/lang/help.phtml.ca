@@ -2,48 +2,290 @@
  !goto $wims_read_parm
 !endif
 
+:general
+<h2 id="general">Introducció</h2>
+
+<p>
+Un full permet proposar una llista d'exercicis WIMS als alumnes 
+L'activitat de l'alumne es pot registrar i controlar.
+</p>
+
+Per constituir els fulls de la teva classe, pots
+<ul><li>
+importer des feuilles trouvées grâce au moteur de recherche (cliquez sur
+le titre de la feuille puis sur le lien
+<span class="tt wims_code_words">$wims_name_import</span>)
+et la modifier ensuite éventuellement.
+</li><li>
+créer une nouvelle feuille à partir du lien
+<span class="tt wims_code_words">$wims_name_add_sheet</span>
+puis constituer le contenu de la feuille en insérant un par un
+les exercices trouvés à partir du moteur de recherche ou parmi les exercices
+de sa classe (le lien <span class="tt wims_code_words">$wims_name_add_sheet</span>
+est visible lorsqu'on va travailler sur l'exercice choisi)
+ou insérer un fichier source d'une liste d'exercices trouvé par exemple
+dans un document wims.
+</li></ul>
+Les feuilles sont  numérotées dans l'ordre de leur création/insertion dans la classe.
+Il est possible de réorganiser la présentation  des feuilles pour les élèves en utilisant
+le lien <span class="tt wims_code_words">$wims_name_reorder</span>.
+
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
+:statut
+<h2 id="statut">Statut d'une feuille</h2>
+Une feuille  peut avoir quatre statuts :
+<span class="wims_emph">
+!replace internal , by ,$ $ in $(wims_name_shstatus).
+</span>
+<p>
+<span class="wims_emph">$(wims_name_shstatus[1]) :</span>
+c'est le statut initial d'une feuille. Dans ce statut, la feuille n'est pas
+visible des élèves.
+</p><p>
+<span class="wims_emph">$(wims_name_shstatus[2]) :</span>
+lorsqu'on clique sur
+<span class="tt wims_code_words">$(wims_name_actionlist[1])</span>,
+la feuille devient visible par les élèves (ils pourront travailler
+sur les exercices  si aucun paramètre dans le champ
+<span class="tt wims_code_words">$(name_shinfo[6])</span>
+ne l'empêche), son contenu
+n'est plus modifiable excepté les titres et les textes d'explication de la feuille et
+des exercices, le champ
+<span class="tt wims_code_words">$(name_shinfo[6])</span> ainsi que
+les champs
+<span class="tt wims_code_words">$wims_name_feedbackexo</span> des exercices.
+</p><p>
+Du statut
+<span class="tt wims_code_words">$(wims_name_shstatus[2])</span>,
+la feuille  peut passer au statut
+<span class="tt wims_code_words">$(wims_name_shstatus[3])</span>
+ en cliquant sur le bouton
+ <span class="tt wims_code_words">$(wims_name_actionlist[2])</span>.
+On ne peut pas revenir au statut
+<span class="tt wims_code_words">$(wims_name_shstatus[1])</span>.
+</p><p>
+<span class="wims_emph">$(wims_name_shstatus[3]) :</span>
+l'élève peut travailler sur la feuille mais son travail n'est pas comptabilisé.
+</p><p>
+Une fois la feuille périmée, on peut la rendre invisible aux élèves en cliquant sur
+<span class="tt wims_code_words">$(wims_name_actionlist[4])</span>,
+mais on peut aussi la remettre dans le statut
+<span class="tt wims_code_words">$(wims_name_shstatus[2])</span>.
+ </p>
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
 :dependancies
-!read adm/title.phtml 1\
-$(name_shtab[6])
+<h2 id="dependancies">$(name_shtab[6])</h2>
+<p>
+Si l'on met une dépendance des scores sur un exercice, un participant doit
+d'abord acquérir suffisamment de points dans d'autres exercices de la feuille. </p>
+Le champ <span class="tt wims_code_words">$(name_shtab[6])</span>
+d'un exercice permet de préciser les points que doit acquérir un participant
+sur d'autres exercices de la feuille avant de pouvoir travailler sur celui-ci.
+Par exemple, mettre <span class="tt wims_code_words">1:50,2:30,3+4+5:60</span>
+sur l'exercice 6 signifie que le participant doit avoir un succès de 50% sur
+l'exercice 1, 30% sur l'exercice 2, et une moyenne de succès de 60% sur
+ les exercices 3, 4, 5 pour pouvoir faire l'exercice 6.
+</p>
 
-Un participant doit d'abord acquérir des points dans d'autres exercices de la feuille, avant de pouvoir travailler sur celui-ci.
-Par exemple, <span class="tt wims_code_words">1:50,2:30,3+4+5:60</span> signifie que le participant doit avoir un succès de 50% sur l'exercice 1,
- 30% sur l'exercice 2, et une moyenne de succès de 60% sur les exercices 3, 4, 5.
-
-<br class="spacer" />
 !if $wims_read_parm!=$empty
  !exit
 !endif
 
 :allowtype
-!read adm/title.phtml 1\
-Indicació sobre el registre de notes.
- En el mode selectiu, podeu imposar una
- restricció de temps per a la gravació de notes mitjançant l'addició de
- paraules
- <span class="tt wims_code_words">
-&gt;aaaammjj.hh:mm</span>
- (début) i/o
- <span class="tt wims_code_words">
-&lt;aaaammjj.hh:mm</span>
- (final). Les dates i hores han de ser en el temps actual del SERVIDOR
- i aquestes paraules han d'estar separades unes de les altres per espais.
+<h2 id="allowtype">Indication sur l'enregistrement des notes.</h2>
 
-!! for translation copy the part of the lang/help.phtml.fr corresponding to the record :variable
-!read lang/help.phtml.fr variable
+Vous pouvez imposer une restriction, par exemple dans le temps, pour
+l'enregistrement des notes. Plusieurs options sont disponibles :
+<ul>
+ <li><span class="tt wims_code_words">$(name_allowtype[1])</span> :
+les notes seront enregistrées.</li>
+ <li><span class="tt wims_code_words">$(name_allowtype[2])</span> :
+aucune note ne sera enregistrée.</li>
+ <li><span class="tt wims_code_words">$(name_allowtype[3])</span> :
+un champ de saisie,
+<span class="tt wims_code_words">$(name_shinfo[6])</span>,
+apparaît et vous pouvez indiquer une plage horaire ainsi que les
+adresses IP à partir desquelles les notes seront enregistrées.
+Cette restriction s'écrit à l'aide de trois expressions (qui peuvent
+ ne pas toutes être présentes) : <br/>
+ <ul>
+  <li><span class="tt wims_code_words">&gt;aaaammjj.hh:mm</span>
+permet d'indiquer une heure de début ;</li>
+  <li><span class="tt wims_code_words">&lt;aaaammjj.hh:mm</span>
+permet d'indiquer une heure de fin ;</li>
+  <li><span class="tt wims_code_words">192.168. </span> qui permet
+d'indiquer une plage d'IP ;</li>
+ </ul>
+Les dates et heures doivent être en temps local du SERVEUR et ces
+trois expressions doivent être séparées les unes des autres par des espaces.
+ <p>
+Exemple :
+<span class="tt wims_code_words">&lt;20131007.10:30 &gt;20131001.10:00 127.0.</span>
+permet l'enregistrement des notes entre 2 dates et seulement pour les numéros IP commençant
+par <span class="tt wims_code_words">127.0</span>.
+</p>
+</li>
 
-!exit
+<li><span class="tt wims_code_words">$(name_allowtype[4])</span> :
+cette option peut être choisie afin d'individualiser les restrictions
+d'accès à l'aide d'une <span class="tt wims_code_words">variable
+technique</span> (cette variable technique est définie pour chaque
+participant soit manuellement en utilisant le module de gestion des
+variables techniques soit à l'aide d'un
+<span class="tt wims_code_words">$wims_name_Vote</span>).
+Lors du choix de cette option, un menu permet de choisir la variable
+ technique qui sert de différenciation et un tableau permet
+d'effectuer un réglage du filtre (en utilisant le même format que
+précédemment) pour chaque valeur possible de la variable.
+Ne rien préciser comme filtre  pour une valeur de la variable technique signifie
+ne pas ouvrir l'enregistrement des notes pour les participants qui ont cette valeur.
+<p>
+Dans le cas d'une variable technique définie à l'aide du modèle
+<span class="tt wims_code_words">Accès individualisé</span>
+d'un <span class="tt wims_code_words">$wims_name_Vote</span>
+spécifique à la création de réservation de créneau horaire,
+le tableau est déjà pré-rempli avec les données proposées lors de la
+ création du questionnaire. Ces données peuvent être modifiées,
+mais les modifications ne sont pas répercutées sur le questionnaire.
+</p>
+<p>Exemple : Supposons que le tableau décrivant les filtres pour la variable technique
+<span class="tt wims_code_variable">groupe</span> prenant les valeurs 1, 2 et 3 soit :
+!readproc slib/text/matrixhtml [$name_value,$name_filtre\
+$name_EMPTY, 129.50.10. &#62;20160915.12&#58;00\
+1,&#62;20160915.15&#58;00 &#60;20160925.12&#58;00\
+2,\
+3,127.0.],wimscenter wimsborder wimstable,TH=[1;]
+$slib_out
+Dans la limite de la date de péremption de la feuille,
+<ul><li>
+pour les élèves pour lesquels
+<span class="tt wims_code_variable">groupe</span> n'a pas de valeur,
+l'enregistrement des notes est ouvert à partir du
+15/09/2016 12h et uniquement sur les postes dont l'IP commence par
+129.50.10.
+</li><li>
+pour les élèves pour lesquels <span class="tt wims_code_variable">groupe=1</span>,
+l'enregistrement des notes est ouvert entre le 15/09/2016 15h et le 25/09/2016 12h.
+</li><li>
+pour les élèves pour
+lesquels <span class="tt wims_code_variable">groupe=2</span>, l'enregistrement des notes n'est pas ouvert.
+</li><li>
+pour les élèves pour lesquels
+<span class="tt wims_code_variable">groupe=3</span>,
+l'enregistrement des notes est ouvert uniquement à partir des postes
+dont l'IP commence par 127.0.
+</li></ul>
+<p/>
+</li>
+</ul>
+!if $tv_listtechvar!=$empty
+ Les variables techniques actuellement disponibles dans votre classe sont :
+ !read adm/vfilter/listvar.phtml
+!else
+ Il n'y a actuellement aucune variable technique définie dans votre
+classe. Si vous voulez utiliser cette option, il faudra d'abord
+définir une variable technique.
+!endif
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
+:variable
+<p>
+Afin d'individualiser les restrictions d'accès, il est possible de mettre
+une variable (dans l'exemple ci-dessous, mettre
+<span class="tt wims_code_words">\timelimit</span>).
+Cette variable doit alors être définie pour chaque participant selon
+les règles précédentes soit manuellement dans les propriétés du
+compte d'un participant (variable technique).
+</p><p>
+Exemple : mettre
+<span class="tt wims_code_words">timelimit=&lt;20131007.10:30 &gt;20131001.10:00</span>
+dans le champ <span class="tt wims_code_words">variable technique</span>
+des propriétés du compte d'un élève.
+pour les participants pour lesquels cette variable est vide,
+l'enregistrement des notes est fermé.
+</p><p>
+Il est possible d'ajouter cette variable par liaison tableur.
+Si la restriction est un choix du participant (inscription selon
+certaines dates par exemple), il est possible de créer et utiliser
+un questionnaire en mode guidé (voir l'aide correspondante).
+</p>
+!if $wims_read_parm!=$empty
+ !exit
+!endif
 
 :feedback
-!read adm/title.phtml 1\
-$(name_shtab[10])
+<h2 id="feedback">$(name_shtab[10])</h2>
 
-!read lang/help.phtml.fr feedback
+On peut indiquer dans ce champ un lien sur un document de WIMS
+ou un exercice de WIMS. Le lien sur cette ressource apparaîtra lorsque le score est
+strictement inférieur à une note fixée (sur 10).
+Le second item est la note limite (sur 10), le premier item est l'adresse
+sous la forme suivante (forme abrégée):
+<ul><li>
+Exercice d'un module public ou document public :
+<span class="tt wims_address">module=xxx</span>
+(comme dans <span class="wims_button disabled">$wims_name_about</span>).
+</li><li>
+Exercice de la classe :
+<span class="tt wims_address">module=classes/fr&exo=_nom_fichier_</span>
+où <span class="tt">_nom_fichier_</span> est le nom du fichier de l'exercice
+(sans l'extension <span class="tt">.oef</span>).
+</li><li>
+Document de la classe  :
+<span class="tt wims_address">module=adm/doc&doc=c1&+block=_nom_bloc</span>
+</li></ul>
 
-!exit
+Les paramètres supplémentaires peuvent être ajoutés (voir
+<span class="wims_button disabled">$wims_name_about</span>)
+
+Par exemple, dans l'exemple ci-dessous, si la note est inférieure à
+5, l'élève sera dirigé sur le document <span class="tt">c2</span>
+de la classe , et plus précisément
+sur la page correspondant au bloc
+<span class="tt">aaa</span> de ce document.
+
+<pre>module=adm/doc&doc=c2&+block=aaa,5</pre>
+
+Dans l'exemple ci-dessous, il y aura un
+lien vers un exercice du module <span class="tt wims_fname">H6/set/oefset.fr</span>
+dont le source a pour nom <span class="tt">traduction1</span>
+(la note que l'étudiant aura sur cet exercice ne sera pas enregistrée dans
+la classe).
+
+<pre>module=H6/set/oefset.fr&cmd=new&exo=traduction1,10</pre>
+
+En mettant deux nombres (dont le deuxième est strictement positif), le bouton
+apparaît lorsque le score est compris entre le second nombre
+et le premier nombre : par exemple, si vous mettez
+<pre>module=H6/set/oefset.fr&cmd=new&exo=traduction1,11,10</pre>
+le bouton apparaît lorsque le score est de 10 et c'est le mot
+$wims_name_feedbackplus qui apparaît. Si le deuxième nombre est 0, le comportement est le même que s'il
+n'existait pas.
+
+Vous pouvez aussi insérer un lien d'aide dans la feuille en
+sélectionnant d'abord une ressource WIMS et en suivant le lien
+<span  class="wims_button disabled">$wims_name_addh</span>
+dans le menu de gauche.
+
+!!if $wims_read_parm!=$empty
+ !exit
+!!endif
 
 :series
-!! for translation copy the part of the lang/help.phtml.fr corresponding to the record :series
-!read lang/help.phtml.fr series
-
-!exit
+<p>
+En général, les exercices d'une série sont tirés aléatoirement
+et au moins un exercice de chaque type est proposé si le nombre
+demandé le permet.
+</p><p>
+Vous avez demandé dans le paramétrage expert que l'ordre ne soit
+pas aléatoire,
+vous pouvez ici changer l'ordre des exercices d'une série.
+</p>

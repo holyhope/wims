@@ -9,20 +9,20 @@
   Mode fitxer\
   models preparats\
   Enviar el fitxer\
-  Codi del vostre exercici\
-  Tornar a la pàgina anterior\
-  Continuar amb el contingut de l'exercici\
+  Codi de l'exercici\
+  Tornar al menú\
+  Continuar per crear el contingut de l'exercici\
   Modificar un exercici existent de la classe\
-  Tornar a l'etapa precedent.\
+  Tornar a la creació d'exercicis\
   Enviar el codi\
   Netejar\
   Demo\
   Adaptar\
-  Provar el teu exercici\
+  Provar l'exercici\
   Corregir l'error\
   Tornar a\
   L'exercici serà com segueix.\
-  Aquests són els models d'exercici disponibles. Trieu-ne un.\
+  Els diferents models d'exercicis estan classificats per temes. Per a cada model, el botó <span class="wims_button disabled">Demo</span> permet veure un exemple d'exercici dissenyat amb aquest model i el botó <span class="wims_button disabled">Adaptar</span> permet utilitzar aquest model amb un nou enunciat de l'exercici. Clica a les pestanyes per accedir als diferents tipus d'exercicis i selecciona'n un.\
   Mòdul que conté temporalment l'exercici.\
 into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,\
   name_model,name_sendfile,name_source,name_menuback,name_continue,name_modify,\
@@ -33,21 +33,20 @@ into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,\
 !set name_raw=!lowercase $wims_name_rawmode
 !set name_file=!lowercase $wims_name_filemode
 
-!set name_modefile1=Esteu al mode fitxer per crear un exercici. En aquest mode,\
-  podeu enviar al servidor el codi OEF d'un fitxer local. Per la creació del \
-  primer exercici, és preferible el
-!set name_modefile2= Per editar en línia, també podeu utilitzar el
+!set name_modefile1=Estàs al mode fitxer per crear un exercici. En aquest mode,\
+  pots enviar al servidor el codi OEF d'un fitxer local. Per la creació del primer exercici, és preferible el
+!set name_modefile2= Per editar en línia, també pots utilitzar el
 
 !distribute line Exercicis bàsics\
 Exercicis amb una llista de dades\
-Exercicis de química\
+Exercicis específics per a la química\
 Jocs\
-Exercises with image or audio
-Select items\
-Different kinds of questions\
-Fill in the gaps\
-Put in order\
-Classify\
+Exercicis amb imatge o so\
+Triar\
+Diferents tipus de qüestions\
+Omplir els forats\
+Posar en ordre\
+Classificar \
 into name_first,name_datalist,name_chemistry,name_game,name_imaudio,\
 name_select,name_question,name_gapfill,name_order,name_classify
 
@@ -57,29 +56,29 @@ name_select,name_question,name_gapfill,name_order,name_classify
 
 !distribute lines Nombre de paràmetres\
   Nombre de respostes\
-  També pots enviar un fitxer amb una imatge per a l'exercici.\
-  O modificar el fitxer de codi de\
-   posar aquest exercici a la vostra classe\
+  Enviar un fitxer (imatge, pdf, ...) a l'exercici.\
+  Modificar el fitxer de codi\
+  Posar aquest exercici a la teva classe\
   per substituir l'antic\
   per fer-ne un de nou\
-  tornar a enviar\
-  posar-lo al mòdul de desenvolupament\
-  desar el codi\
-  de l'exercici!\
+  Tornar a presentar\
+  Posar-lo al mòdul de desenvolupament\
+  Desar el codi\
+  d'aquest exercici al teu ordinador!\
 into name_parameter_cnt,name_answer_cnt,name_deposit,name_modify,name_putinclass,\
 name_replace,name_new,name_sendagain,name_developer,name_savesource,name_download
 
-!set name_success=El software ha reconegut satisfactòriament el teu exercici, amb les següents informacions. (Sisplau comprova que tot sigui correcte.)
+!set name_success=El software ha reconegut satisfactòriament el teu exercici
 
 !if $level=1
-!distribute lines Poseu un títol a l'exercici que voleu crear\
+!distribute lines Posa un títol a l'exercici que vols crear\
   Format de l'enunciat del problema\
-  Aquest exercici demanarà\
-  respostes d'estil lliure i\
-  respostes d'opció múltiple\
-  Les respostes numèriques no calculades (com <span class="tt">3*5-sin(pi/3)</span>) seran\
-  acceptades, refusades\
-  condicions seran utilitzades per avaluar les respostes d'estil lliure.\
+  L'exercici demanarà\
+  resposta/es lliure/s i\
+  resposta/es d'opció múltiple\
+  Una resposta numèrica no calculada (com <span class="tt">3*5-sin(pi/3)</span>) serà\
+  acceptada, refusada\
+  condicions seran utilitzades per avaluar les respostes lliures.\
 into name_givetitle,name_giveformat,name_exo,name_answer1,name_answer2,\
 name_nonnumeric,name_prompt,name_condition
 !endif
@@ -101,13 +100,27 @@ nombre,numeric\
 nombre amb rang,range\
 nombre amb unitat,units\
 funció numérica,function\
-vector,vector\
+vector,vector,2,3,4\
 paraules d'una llista,wlist
+chset,chset\
+clickfill,clickfill\
+dragfill,dragfill\
+compose,compose\
+coord,coord\
+correspond,correspond\
+keyboard,keyboard\
+matrix,matrix\
+numexp,numexp\
+reorder,reorder\
+fset,fset\
+aset,aset\
+sigunits,sigunits\
+time,time
 
 !distribute lines Sisplau entra ara el contingut del teu exercici  \
-  Pots definir ací els paràmetres aleatòris\
+  Pots definir ací els paràmetres aleatoris\
   L'enunciat de l'exercici \
-  Les respostes d'estil lliure\
+  Les respostes lliures\
   Solució correcta\
   Precisió exigida a les respostes numèriques\
   Les funcions (numèriques) seran comparades a l'interval\
@@ -117,8 +130,8 @@ paraules d'una llista,wlist
   Opcions múltiples\
   Opcions correctes\
   Opcions errònies\
-  Pots donar una indicació i/o una solució\
-  Indicació\
+  Pots donar una pista i/o una solució\
+  Pista\
   Solució\
 into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision,name_function,\
  name_condition_numeric,name_name_condition,name_definition,name_multiple,name_goodchoice,name_badchoice,\
@@ -127,55 +140,58 @@ into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision
 !endif
 
 !if $level=4
-  !set name_update1=!nosubst L'exercici <span class="tt">$existing.oef</span> s'ha actualitzat al mòdul
+  !set name_update1=!nosubst L'exercici <span class="tt">$existing.oef</span> s'ha actualitzat al mòdul amb èxit
   !set name_update2=!nosubst Ha fallat l'actualització de l'exercici <span class="tt">$existing</span> al mòdul
   !set name_update3=L'exercici s'ha instal·lat amb èxit.
-  !set name_update4=Hem trobat un exercici idèntic a la vostra classe. Així doncs, aquest segon enregistrament s'ignora.
-  !set name_update5= Aquest exercici serà accessible únicament als participants de la vostra \
+  !set name_update4=Hem trobat un exercici idèntic a la teva classe. Així doncs, aquest segon s'ignora.
+  !set name_update5= Aquest exercici serà accessible únicament als alumnes de la teva \
      classe, i només si el poses en un full de treball.
-
-  !distribute lines  Ara podeu\
+  !distribute lines  Ara pots\
     consultar els exercicis de la classe.\
-    i eventualment posar-los als vostres fulls de treball\
+    i eventualment posar-los als teus fulls de treball\
  into name_youcan, name_consult,name_sheet
 !endif
 
 !if $level=7
- name_warning_empty=Si us plau, trieu el nom del fitxer font.
- name_choice_module=Seleccioneu un mòdul
- name_choice_filename=Nom de l'arxiu font de l'exercici (utilitzar només símbols alfanumèrics)
- name_register_dev=Deseu el fitxer de codi de l'exercici en el compte Modtool
+ name_warning_empty=Si us plau, tria el nom del fitxer de codi.
+ name_choice_module=Tria un mòdul
+ name_choice_filename=Nom de l'arxiu de codi de l'exercici (utilitzar només símbols alfanumèrics)
+ name_register_dev=Desa el fitxer de codi de l'exercici en el compte de Modtool
 !endif
 
-!distribute lines Esteu al mode expert de creació d'exercicis.\
+!distribute lines Estàs al mode expert de creació d'exercicis.\
   aquest exercici basat en un model estàndard\
-  Entreu el codi sencer\
-  per enregistrar un fitxer de codi existent, copieu el fitxer a la finestra.\
-  Aquest és el codi d'un exercici existent a la vostra classe.\
-  Podeu modificar-lo a la finestra d'aquí baix.\
-  Aquest és el codi d'un exercici públic que voleu importar. Podeu modificar-lo a la finestra d'aquí baix, abans de posar-lo a la classe.\
-  Podeu provar alguns programes externs amb el\
+  Entra el codi sencer\
+  per enregistrar un fitxer de codi existent, copia el fitxer a la finestra.\
+  Aquest és el codi d'un exercici existent a la teva classe.\
+  Pots modificar-lo a la finestra d'aquí baix.\
+  Aquest és el codi d'un exercici públic que vols importar. Pots modificar-lo a la finestra d'aquí baix, abans de posar-lo a la classe.\
+  Pots provar alguns programes externs amb el\
   provador de script\
  into name_brut,name_try,name_allsource,name_copy,name_source2,name_modify_window,name_public,name_test_extern,name_testerscript
 
 !exit
 :delete
-L'exercici <em>$deltitle</em> ha estat retirat de la llista d'exercicis de la vostra
+L'exercici <em>$deltitle</em> ha estat retirat de la llista d'exercicis de la teva
 classe.
-Si heu fet alguna maniobra incorrecta i voleu reparar el vostre
-error, aquí teniu el codi d'aquest exercici que podeu desar com a mesura d'urgència,
+
+Si has fet alguna maniobra incorrecta i vols reparar el teu
+error, aquí tens el codi d'aquest exercici que pots desar com a mesura d'urgència,
 i més endavant copiar-lo  per reinstal·lar l'exercici a
 
 !exit
 :model
-<b>Nota</b>. Aquests models s'han preparat per permetre a la gent construir ràpidament els seus exercicis.
-Tenen, doncs, una estructura simple i estàndard, i no ofereixen totes les possibilitats
-de la sintaxi OEF. Però sempre podeu posar els exercicis en mode expert per tal d'afegir més
-funcionalitats o modificar-lo al vostre gust.
+<b>Nota</b>. Aquests models s'han preparat per permetre a la gent que té pressa
+construir ràpidament els seus exercicis. Tenen, doncs, una estructura simple 
+i estàndard, i no ofereixen totes les possibilitats
+de la sintaxi OEF. Però sempre pots posar els exercicis en mode expert 
+per tal d'afegir més funcionalitats o modificar-lo al teu gust.
 !exit
 
 :register
-L'exercici s'ha enregistrat satisfactòriament al servidor. Volem agrair-te efusivament la teva contribució, en nom de tots els que en trauran profit.
+L'exercici s'ha enregistrat satisfactòriament al servidor. Volem 
+agrair-te efusivament la teva contribució, en nom de tots els que 
+en trauran profit.
 <p>
 L'administrador d'aquest lloc verificarà l'exercici, i decidirà
 si posar-lo a la categoria apropriada o no.

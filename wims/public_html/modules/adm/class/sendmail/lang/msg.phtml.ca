@@ -1,0 +1,33 @@
+!set wims_module_log=error: $error
+
+!if error=nosupervisoremail
+  No has indicat cap adreça electrònica. Per tant, no és possible enviar el correu electrònic.
+ !exit
+!endif
+
+!if empty_msg=$error
+ El teu missatge està buit!
+ !exit
+!endif
+
+!if empty_user=$error
+ No s'ha seleccionat cap alumne. Revisa els filtres.
+ !exit
+!endif
+
+!if empty_mailuser=$error
+ Cap dels alumnes seleccionats té adreça de correu electrònic.
+ !exit
+!endif
+
+!if noclass=$error
+ No estàs identificat a una classe. No juguis amb la barra d'adreces del navegador!
+ !exit
+!endif
+
+!if notsupervisor=$error
+ No ets el professor d'aquesta classe. No juguis amb la barra d'adreces del navegador!
+ !exit
+!endif
+
+!msg $error

@@ -3,59 +3,60 @@
 <span class="wims_warning">$wims_name_Error</span>.
 
 !if not_supervisor=$error
- Ho sento, però l'operació de preparació / modificació d'un full de
+ Ho sento, però l'operació de preparació/modificació d'un full de
  treball està reservada als professors registrats d'una classe.
  !exit
 !endif
 
 !if not_superclass=$error
  Operació prohibida perquè sou part d'un grup de classes. Només
- pot fer això el gestor del grup.
+ ho pot fer el gestor del grup.
  !exit
 !endif
 
 !if no_login iswordof $error
  Les dades enviades han de tenir necessàriament una columna corresponent
- als noms d'usuari dels participants.
+ al nom d'usuari dels alumnes.
  !exit
 !endif
 
 !if bad_filename iswordof $error
  El vostre fitxer no sembla ser un fitxer de full de càlcul en format text.
  :csvformat
- Si us plau,
- deseu les vostres dades en un format de text (separats per coma o tab,
+ Si us plau, deseu les vostres dades en un format de text (separats per coma o tab,
  amb extensions .csv, .tsv o .txt) abans d'enviar-lo a la classe.
  !exit
 !endif
 
 !if binary_upload iswordof $error
- Les vostres dades de full de càlcul estan en format binari&nbsp;! Això no és reconegut, ho sento.
- <p>
+ Les vostres dades de full de càlcul estan en format binari&nbsp;! Això no és 
+ reconegut, ho sento.
+
  !goto csvformat
 !endif
 
 !if no_manual iswordof $error
  Si us plau primer
  !href module=adm/class/grades creeu una columna de notes manuals
- abans d'enviar dades a la mateixa.
+ abans d'enviar les dades a la mateixa.
  !exit
 !endif
 
 !if not_secure iswordof $error
  La descàrrega de dades de fulls de càlcul només està disponible per
- les connexions des d'un lloc segur. Si us plau, reviseu la configuració de la vostra classe.
+ les connexions des d'un lloc segur. Si us plau, reviseu la configuració de la 
+ classe.
  !exit
 !endif
 
 !if bad_user=$error
- Error de crida : el participant <span class="tt wims_login">$checkuser</span> no existeix.
+ Error de crida : l'alumne <span class="tt wims_login">$checkuser</span> no existeix.
  !exit
 !endif
 
 !if $error iswordof login_missing login_empty
-!! login_missing: not find in the ldap for example : should be more precise ??
-   Some login have not been found.
+!! login_missing: no trobat al ldap per exemple
+   Alguns noms d'usuari no s'han trobat.
  !exit
 !endif
 
@@ -69,11 +70,11 @@
  !exit
 !endif
 !if too_big=$error
-  The number of columns of the spreadsheet is too big (greater than $TOO_BIG).
-  If you need the details of the exercices, you can do it sheet by sheet or
-  exam by exam. The file to download does not give you all the informations you asked.
+  El nombre de columnes del full de càlcul és massa gran 
+  (superior a $TOO_BIG). Si necessites detalls dels exercicis, 
+   ho pots fer full per full o examen per examen. 
+   L'arxiu de descàrrega proposat és sens dubte incomplet.
  !exit
 !endif
 
 !msg $error
-

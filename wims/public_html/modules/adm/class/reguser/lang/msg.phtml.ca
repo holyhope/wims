@@ -3,30 +3,30 @@
 $institution
 
 !if bad_classtype=$error
- El registre de participants no està permès en aquest àmbit.
+ El registre d'alumnes no està permès en aquesta zona.
  !exit
 !endif
 
 !if no_class=$error
- La classe que heu triat sembla no existir-hi&nbsp;! 
+ La classe que has triat sembla que no existeix&nbsp;! 
  Si això no és un error de programari, llavors la classe ha caducat o estàs jugant amb
  el lloc (en aquest cas, sàpigues que es registren totes les activitats).
  !exit
 !endif
 
 !if complete=$error
- La classe que heu triat està completa. No hi ha més lloc
+ La classe que has triat està completa. No hi ha més lloc
  disponible. Ho sento.
  !exit
 !endif
 
 !if no_real=$error
- No heu donat els vostres cognom i nom.
+ No has donat els teus cognom i nom.
  !exit
 !endif
 
 !if login_size=$error
- El vostre nom d'usuari és massa
+ El teu nom d'usuari és massa
  !if $n<4
   curt.
  !else
@@ -37,7 +37,7 @@ $institution
 !endif
 
 !if pass_size=$error
- La vostra contrasenya és massa
+ La teva contrasenya és massa
  !if $n<4
   curta.
  !else
@@ -48,9 +48,9 @@ $institution
 !endif
 
 !if bad_classpass=$error
- La vostra contrasenya per la classe
- $classname
- no és correcta. Així que no teniu el dret a registrar-vos a
+
+ La teva contrasenya per la classe $classname
+ no és correcta. Així que no tens el dret a registrar-te a
  aquesta classe. Ho sento.
  !exit
 !endif
@@ -59,33 +59,19 @@ $institution
  El nom d'usuari <span class="tt wims_login">$login</span>
  ja està en ús a la classe
  $classname.
- <p>
- Si us plau, comproveu que no estigueu ja registrat&nbsp;; en cas contrari, trieu un altre nom d'usuari.
- </p>
+ Si us plau, comprova que no estiguis ja registrat&nbsp;; en cas contrari, tria un altre nom d'usuari.
  !exit
 !endif
 
 !if login_empty=$error
- L'identificador no s'ha pogut crear perquè les dades estan buides. Comproveu els paràmetres
+ L'identificador no s'ha pogut crear perquè les dades estan buides. Comprova els paràmetres
   d'autenticació o l'identificador extern. 
  !exit
 !endif
 
 !if pass_error=$error
- La contrasenya que heu tornat a escriure no coincideix amb la primera. El teu
+ La contrasenya que has tornat a escriure no coincideix amb la primera. El teu
  registre no és tingut en compte, podeu intentar-ho de nou.
- !exit
-!endif
-
-!if insert_fail=$error
- El programari no ha pogut afegir el vostre registre a la base de
- dades. Hi ha un error intern.
- <p>
- Si us plau, informeu del problema a
- !mailurl $wims_site_manager gestor d'aquest lloc\
-user registration failure
-. Gràcies!
- </p>
  !exit
 !endif
 
@@ -103,7 +89,7 @@ site user limit
 !endif
 
 !if internal_total=$error
- Error intern de programari&nbsp;: error de la determinació del nombre d'usuaris
+ Error intern de programari&nbsp;: error de càlcul del nombre d'usuaris
  registrats.
  !exit
 !endif
@@ -112,7 +98,6 @@ site user limit
  Si no accepteu les condicions generals d'ús, no us podeu registrar.
  !exit
 !endif
-
 
 !msg $error
 

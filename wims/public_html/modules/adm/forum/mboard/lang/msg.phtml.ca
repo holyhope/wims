@@ -4,106 +4,106 @@
 !set errorhead=<b>$wims_name_Error</b>.
 
 !if prohibited = $error
-  $errorhead Votre message contient des mots non permis. Par exemple, vous ne 
-  pouvez pas mettre du javascript dans le message. Attention, cette erreur 
-  est enregistrée par le serveur.
+  $errorhead El teu missatge conté paraules no permeses. Per exemple,
+   no es pot posar javascript en el missatge. Recorda que aquest error
+   s'emmagatzema en el servidor.
   !exit
 !endif
 
 !if forum_not_exist = $error
- $errorhead Vous avez demandé un forum qui n'existe pas. Désolé.
+ $errorhead Has sol·licitat un fòrum que no existeix. Ho sento.
  !set fatal=yes
  !exit
 !endif
 
 !if no_read_right = $error
- $errorhead Vous n'avez pas le droit d'accéder à ce forum. Désolé.
+ $errorhead No tens dret a accedir a aquest fòrum. Ho sento.
  !set fatal=yes
  !exit
 !endif
 
 !if no_subject = $error
- $errorhead Veuillez ajouter un sujet à votre message.
+ $errorhead Si us plau, afegir un assumpte al missatge.
  !exit
 !endif
 
 !if translation_fail = $error
- $errorhead Le logiciel a rencontré une erreur interne et n'a pas pu 
- interpréter votre message. Désolé.
+ $errorhead El programari ha trobat un error intern i no ha pogut
+  interpretar el teu missatge. Ho sento.
  !if $wims_exec_error!=$empty
   <p>
-  Type d'erreur&nbsp;: <span class="tt">$wims_exec_error</span>
+  Tipus d'error&nbsp;: <span class="tt">$wims_exec_error</span>
  !endif
  !exit
 !endif
 
 !if open_tag = $error
  <b>$wims_name_warning</b>.
- Votre message semble se terminer à l'intérieur d'un tag html ouvert.
- Veuillez vérifier votre message soigneusement. <p>
- Le message sera lu comme fichier html. Ainsi, si vous 
- écrivez des inégalités, veuillez ajouter un espace après le signe
- `&lt;' ou enfermer les inégalités comme formules mathématiques
- (par des paires \( et \) ).
+ El teu missatge sembla acabar dins d'una etiqueta HTML oberta.
+ Si us plau, comprova el missatge amb cura. <p>
+ El missatge serà llegir com un fitxer en format html. Així que si vols
+  escriure desigualtats, has d'afegir un espai després del signe
+ `&lt;' o bloquejar les desigualtats com a fórmules matemàtiques
+ (per parelles \( i \) ).
  !exit
 !endif
 
 !if bad_message = $error
- $errorhead Le message que vous voulez lire n'existe pas dans ce forum.
- Veuillez vérifier votre demande.
+ $errorhead El missatge que vols llegir no existeix en aquest fòrum.
+  Si us plau, comprova la teva sol·licitud.
  !exit
 !endif
 
 !if erased_message = $error
- $errorhead Le message que vous voulez lire a été effacé.
+ $errorhead El missatge que vols llegir s'ha esborrat.
  !exit
 !endif
 
 !if $error=no_send_right
- $errorhead Vous n'avez pas le droit d'envoyer des message à ce forum.
- Désolé.
+ $errorhead No tens el dret d'enviar missatges a aquest fòrum.
+ Ho sento.
  <p>
- !href cmd=reply&job=list&mlist=.newlist Liste de messages.
+ !href cmd=reply&job=list&mlist=.newlist Llista de missatges.
  !exit
 !endif
 
 !if $error=email_required
- $errorhead Veuillez donner votre adresse électronique si vous voulez
- poster votre message à ce forum.
+ $errorhead Si us plau, proporciona la teva adreça de correu electrònic si vols
+  publicar missatges en aquest fòrum.
  <br />
- <b>$wims_name_warning</b>. Le serveur va vérifier cette adresse&nbsp;! Donc veuillez
- ne pas donner une fausse adresse.
+ <b>$wims_name_warning</b>. El servidor comprovarà aquesta adreça&nbsp;! així que si us plau
+  no donis una adreça falsa.
  !set job=compose
  !exit
 !endif
 
 !if $error=bad_email
- $errorhead Vous n'avez pas donné une adresse électronique valide. Veuillez
- la corriger.
+ $errorhead No has proporcionat una adreça de correu electrònic vàlida. si us plau
+  corregeix-la.
  !set job=compose
  !exit
 !endif
 
 !if $error=bad_sendcode
- $errorhead Votre message n'est pas accepté car le code secret que vous
- avez tapé n'est pas bon.
+ $errorhead El teu missatge no s'ha acceptat perquè el codi secret que
+  has escrit no és bo.
  <p>
- Veuillez vérifier l'adresse électronique que vous avez donnée ci-dessous, 
- cliquez de nouveau sur le bouton `envoyer' et attendez qu'un NOUVEAU
- code secret arrive par email.
+ Si us plau, comprova l'adreça de correu electrònic proporcionada a continuació,
+  torna a clicar al botó `enviar 'i espera que un NOU
+  codi secret t'arribi per correu electrònic.
  !set job=compose
  !exit
 !endif
 
 !if $error=not_owner
- $errorhead Seul le gérant du forum a le droit de le configurer.
+ $errorhead Només l'administrador del fòrum té el dret a configurar-lo.
  <p>
  !set job=list
  !exit
 !endif
 
 !if auth_failure = $error
- $errorhead Echec d'authentification. <p>
+ $errorhead Ha fallat l'autenticació. <p>
  !set fatal=yes
  !exit
 !endif

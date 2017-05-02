@@ -122,32 +122,34 @@ name_sheets
   No hi ha recursos a la classe que es puguin esborrar.
  !set name_no_erase=No es poden netejar, ja que estan compartint els d'una altra classe.
 
- !distribute lines Clean up everything cleanable\
-   Will also erase activity register\
-   Will also erase exam sheets\
-   Backup the class\
-   Actual teaching materials in your class\
+ !distribute lines Netejar tot el que es pugui\
+   Esborrar també els registres d'activitat\
+   Esborrar també els exàmens\
+   Fer còpia de seguretat de la classe\
+   Els recursos actuals de la classe\
  into name_cleanall,name_erase1,name_warning_exam,name_saveclass,name_ressource
-  !set name_warning_clean=Resources erased by this page cannot be recovered!
+  !set name_warning_clean=Els recursos esborrats per aquesta pàgina no poden ser recuperats!
+   
  !goto commun
 !endif
 
 !if $job=neighbor
  !set title=Classes veïnes
- !set name_noclass=You cannot define class neighbors because there is no other class on this site.
- !set name_toomany=There are too many virtual classes on this site. Please type a keyword\
-  to search for the class you want to enter.
- !set name_toomany2= There are too many classes corresponding to your search. Please\
-  type a more precise keyword.
+ !set name_noclass=No es pot definir classes veïnes perquè no hi ha cap altra classe\
+ en aquest lloc.
+ !set name_toomany=Hi ha massa classes virtuals en aquest lloc. Si us plau, introdueixi una paraula clau\
+  per buscar la classe que vols entrar.
+ !set name_toomany2= Hi ha massa classes corresponents a la teva recerca. Si us plau,\
+   escriu una paraula clau més precisa.
 
- !distribute lines Search for a class\
-  No class is found for your search. Try again.\
-  Show example classes of the server\
-  Neighboring relations between virtual classes allow teaching materials exchange and/or inter-class travel.\
- Click on the name of a class to change your neighboring properties with it.\
- Classes in the same language as yours\
-  Classes in other languages\
-  Examples\
+ !distribute lines Trobar una classe\
+  No s'ha trobat cap classe per a la teva cerca. Intenteu-ho de nou.\
+  Mostrar les classes obertes del servidor\
+  Les relacions de veïnatge entre classes virtuals permeten l'intercanvi de recursos i/o el desplaçament entre classes.\ 
+  Feu clic al nom d'una classe per a canviar les relacions de veïnatge amb ella.\
+  Classes amb la mateixa llengua que la teva\
+  Classes en altres llengües\
+  Exemples\
 into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   name_samelanguage,name_otherlanguage,name_example
 
@@ -156,40 +158,39 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    per tu\
    per l'altra\
    Activar compartir mutuament.\
-   Vostè comparteix els seus recursos.\
-   Compartir els seus recursos.\
-   Permetre compartir mutuament. \
-   El dret a compartir els seus recursos.\
-   Vostè pot compartir els recursos.\
-   Stop Compartir\
+   Tu comparteixes els recursos.\
+   Compartir els recursos.\
+   Permetre compartir mutuament.\
+   El dret a compartir els teus recursos.\
+   Tu permets compartir els recursos.\
+   Aturar Compartir\
    Compartir\
    importar-los tots\
    Recursos d'ensenyament\
-   Import other teaching materials\
-   Classes allowed to share your teaching materials\
-   Resource allowed\
-   active\
-   List of other classes\
-   Resource sharing info\
-   Show example classes of this server\
-   import teaching materials\
-   You can\
-   of the class\
-   Click here to accept\
+   Importar altres recursos\
+   Classes poden compartir els teus recursos\
+   Recursos permesos\
+   actiu\
+   Llista de totes les classes\
+   Informació compartir recursos\
+   Mostrar les classes obertes del servidor\
+   importar trecursos\
+   Pots\
+   de la classe\
+   Clica aquí per acceptar\
  into name_declaration,name_sharing,name_byyou,name_other,name_actif,name_share1,name_share2,\
  name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching,\
  name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,name_exampleclass,\
  name_import_resource,name_youcan,name_fromtheclass,name_click_ok
 
- !set name_nonewres=!nosubst Il n'y a aucun (nouveau) type de ressources dans la classe \
-  <span class="wims_emph">$nei_description</span> qu'elle vous autorise à partager.
+ !set name_nonewres=!nosubst No hi ha cap (nou) tipus de recurs a la classe \
+  <span class="wims_emph">$nei_description</span> que estiguis autoritzat a compartir.
 
  !set name_newres=!nosubst La classe <span class="wims_emph">\
-  $nei_description</span> vous <b>autorise</b> à partager ses
+  $nei_description</span> t' <b>autoritza</b> a compartir el seus
 
- !set name_chooseres=!nosubst Choisissez les ressources que vous <b>autorisez</b> la classe \
- <span class="wims_emph">$nei_description</span> à partager&nbsp; \
- (<i>sélectionnez puis cliquez sur <span class="wims_button disabled">$wims_name_tosave</span></i>)
+ !set name_chooseres=!nosubst Tria els recursos que <b>autoritzes</b> la classe \
+ <span class="wims_emph">$nei_description</span> a compartir&nbsp; (<i>selecciona i clica a <span class="wims_button disabled">$wims_name_tosave</span></i>)
 
  !set name_warning_authorized=!nosubst The class <span class="wims_emph">$nei_description</span>\
   allows you to share some teaching material. You should not allow it to share the same type of teaching material\
@@ -330,19 +331,21 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 !endif
 
 !if $job=oefdefault
- !set title=Escenari per defecte dels mòduls OEF
-  !distribute lines One series will have\
-   Level of severity\
-   Time limit\
-   seconds\
-   Number of items shown in multiple choices\
-   Give solution (if available) ?\
-   never,if the score is not maximal,always\
-   Always contain good reply\
-   Penalty for bad replies in multiple choices.\
-   Show good reply.\
-   Allow hint (if available).\
-  into name_series,name_severity,name_chrono,name_secondes,name_qcm,\
+ !set title=Configuració per defecte dels mòduls OEF
+ 
+ 
+  !distribute lines Una sèrie tindrà\
+   Nivell de severitat\
+   Límit de temps\
+   segons\
+   Número de items es mostren en opcions múltiples\
+   Donar solució (si hi és)?\
+   mai,si la nota no és màxima,sempre\
+   Sempre aparegui la resposta correcta\
+   Penalitzar errades en opcions múltiples.\
+   Mostrar la resposta correcta.\
+   Permetre pista (si n'hi ha).\
+  into name_series,name_severity,name_chrono,name_secondes,name_qcmanswer,\
     name_solution,name_prompt,name_prompt1,name_prompt2,name_prompt3,name_prompt4
 
    !set name_warning=!getdef name_remarkintro3 in oef/$lang/names
