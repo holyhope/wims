@@ -1,0 +1,67 @@
+type=imaudio
+textarea="data"
+
+:Choisir parmi des étiquettes le mot entendu (enregistrements à fournir).
+
+Un audio est proposé et le texte doit être choisi par des étiquettes. Les audio sont
+pris parmi la base d'audio de mots enregistrés de WIMS. Si l'exercice est dans une classe,
+avec une adapatation, il peut être utilisé avec des audios mis dans la classe.
+<p>
+Pour construire un exercice avec ce modèle, il suffit de taper la liste de
+mots ainsi que le nom de l'enregistrement (à charger dans l'exercice).
+</p><p>
+Pour plus de possibilités, utiliser Quicktool.
+</p><p>
+Auteur du modèle : Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+</p>
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Enlevez l'en-tête ci-dessus si vous détruisez les balises pour le modèle !
+(Ce sont les lignes qui commencent par un ':'.)
+Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
+
+:%%%%%%%% Paramètres d'exemples à redéfinir %%%%%%%%%%%%%%%%%
+
+
+:\title{Écouter et reconnaître II}
+:\author{Bernadette, Perrin-Riou}
+:\email{bpr@math.u-psud.fr}
+:\credits{}
+:Consigne
+\text{instruction=Clique sur le mot entendu. Attention, l'exercice
+ne fonctionnera que quand vous aurez chargé les audio dans l'exercice.}
+
+:Liste d'audio et de mots
+\text{data = nom_audio1,doctor
+nom_audio2,teacher
+nom_audio3,journalist}
+
+:Nombre de perturbateurs.
+\integer{cntpertub=3}
+:La taille verticale des cases en pixels.
+\integer{sizev=200}
+
+:La taille horizontale des cases à gauche en pixels.
+\integer{sizel=20}
+
+:%%%%%%%%%%%%% Maintenant l'énoncé en code html. %%%%%%%%%%%%%%%%%%%%
+
+\text{cnt=rows(\data)}
+\text{N=shuffle(\cnt)}
+\text{mot=row(\N[1],\data)}
+\text{mot=wims(embraced randitem \mot)}
+\text{perturb=\N[2..\cntpertub+1]}
+\matrix{data=\data}
+\text{perturb=\data[\perturb;2]}
+\text{size=\sizev[]x\sizel[]}
+
+\statement{
+\instruction
+<div class="wimscenter">
+\audio{\imagedir/\mot[1]}
+</div>
+<div class="wimscenter">
+\embed{r1,\size}
+</div>
+}
+\answer{}{\mot[2];\perturb}{type=clickfill}
