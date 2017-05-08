@@ -247,19 +247,20 @@ to recognizable chars in input
 
 30/09/2015: FOR TESTING: added a span element 'font-size=1em' around the math and set default tex-size=100% in mathml.c
 
-30/04/2016: in MathJaX V2.6 the issue with the inputfield in mathml seems to be resolved. 
+30/04/2016: in MathJaX V2.6 the issue with the inputfield in mathml seems to be resolved.
 Switching back from "textarea" to "inputfield"
 Note+todo: latest html5 options for "input" are not yet implemented.
 
-27/10/2016 : revert to textarea , because of some bug in Safari. 
+27/10/2016 : revert to textarea , because of some bug in Safari.
 	     Mathjax can not cure this browser error:
 	     https://github.com/mathjax/MathJax/issues/1644
 	     the textarea will ignore an "enter" (keycode 13)  and will be in everyday usage similar to an input-field
 	     revert to inputfield when Safari (and possibly other Webkit browsers) have better support
 	     (but this willnot happen in the near future, I'm afraid...)
 	     At the same time "exec.c" is modified: it will activate Mathjax for all non-real-gecko-browsers.
-	     
+
 22/2/2017 ; fix for the pari [version > 2.9.0] printtex output "\*"
 	    pari: printtex(35*x^6 - 8*x + 3) --> 35\*x^6  - 8\*x  + 3
 	    "\\*"      {yylval=wims_mathml_copy_string("&nbsp;"); return MI;}
-23/2/2015 pari printtex " \*" --> &InvisibleTimes;
+23/2/2017 pari printtex " \*" --> &InvisibleTimes;
+08/05/2017 add ; in code as &#x
