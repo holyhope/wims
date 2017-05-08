@@ -55,11 +55,13 @@ sub treate2 { my ($file)=@_;
    next if (/there is no attribute "type"/);
    next if (/document type does not allow element "style" here/);
    next if (/document type does not allow element "div" here\s*END/); ## last in the result come from the debug
+   next if (/document type does not allow element "link" here/);
    $text .= $_;
   }
   close IN;
   $text =~ s/line \d+://g;
   $text =~ s/END//g;
+  $text =~ s/\n{2,}/\n/g;
   out($file, $text);
 }
 
