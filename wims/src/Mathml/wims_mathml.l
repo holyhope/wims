@@ -984,7 +984,7 @@ int wims_mathml_displaymode = 0;
 "\\itexnum"       {BEGIN(PLAINTEXT); return ITEXNUM;}
 
 "\\char32" {yylval = wims_mathml_copy_string("&#x2423;"); return MI;}
-"\\char44" {yylval = wims_mathml_copy_string("&#44"); return MI;}
+"\\char44" {yylval = wims_mathml_copy_string("&#44;"); return MI;}
 "\\exclam" {yylval = wims_mathml_copy_string("&#x0021;"); return MI;}
 "\\octothorpe" {yylval = wims_mathml_copy_string("&#x0023;"); return MI;}
 "\\mathdollar" {yylval = wims_mathml_copy_string("&#x0024;"); return MI;}
