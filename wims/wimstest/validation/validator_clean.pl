@@ -34,7 +34,7 @@ sub treate { my ($file)=@_;
    next if (/no attribute \"data/); #html5
    next if (/aria-label/);  #html5
    next if (/nav/);  #html5
-   next if (/no attribute \"autocompletion/);
+   next if (/no attribute "autocompletion/);
    next if (/validating: test.html/);
    $text .= $_;
   }
