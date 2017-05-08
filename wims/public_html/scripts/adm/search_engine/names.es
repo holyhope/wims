@@ -1,3 +1,4 @@
+!!---------------------------- Définition du vocabulaire pour le formulaire html du moteur de recherche
 
 C_A =Actividades WIMS
 C_X =Ejercicios interactivos
@@ -8,23 +9,30 @@ C_S =Hojas de ejercicios
 C_D =Lecciones y referencias
 C_P =Herramientas rápidas
 C_F =Mensajes de los foros
-C_C =Open classes
-C_M = Data Modules
+C_C =Clases abiertas
+C_M =Módulos de datos
 
-!!change if necessary
-!for c in A,X,T,R,O,S,D,P,F,C
-  !default CC_$c=$(C_$c)
-!next
+CC_A =Actividades WIMS
+CC_X =Módulos de ejercicios
+CC_T =Calculadoras en línea
+CC_R =Matemáticas recreativas
+CC_S =Hojas de ejercicios
+CC_D =Lecciones y referencias
+CC_O =Ejercicios clasificados (OEF)
+CC_P =Herramientas rápidas
+CC_C =Clases abiertas
+CC_M =Módulos de datos
 
 N_browse=visita guiada
 N_browsesite =explorar este sitio
 N_browse2 =Explorar este sitio
 N_Search =Buscar
 N_search =buscar
+N_clear=Reinicializar
 
-name_search_engine=Search Engine
-name_search_help=Tips for searching
-name_search_all=Searching for a resource
-name_search_class=Searching for a class
-name_search_and=all word groups,one of the word groups
-name_keywords_enter=Enter keywords
+name_search_engine=Buscador
+name_search_help=Ayuda
+name_search_all=Buscar un recurso
+name_search_class=Buscar una clase
+name_search_and=todas las palabras,al menos una de las palabras
+name_keywords_enter=Palabras clave

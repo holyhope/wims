@@ -7,9 +7,9 @@
 !! **** Default Names ***
 !distribute items Buscar,\
 Al trabajo,Volver al trabajo,\
-Página inicial de WIMS,Introducción/Configuración,Ayuda,Acerca de,About WIMS,\
+Página inicial de WIMS,Introducción/Configuración,Ayuda,Acerca de,Acerca de WIMS,\
 Introducción,Cerrar,\
-Cerrar esta ventana,Atrás,Start of page,\
+Cerrar esta ventana,Atrás,Inicio de la página,\
 Administrador del sitio,Autor de la página,Autores de la página,\
 Traducido por,Salir,\
 Ayuda de WIMS,Referencias,\
@@ -20,14 +20,14 @@ Imprimir,\
 Importar a su clase,\
 Versión imprimible,\
 Otro nuevo,\
-(Ir en la) zona prueba,\
-Actualizar esta página,\
+Ir,\
+Actualizar,\
 Guardar,\
-si,\
-no,\
-Cargar a distancia,\
+Sí,\
+No,\
+Descargar,\
 Enviar,\
-Start,\
+Comenzar,\
 Detalles,\
 Mostrar,\
 Corregir,\
@@ -36,34 +36,34 @@ Corregir,\
 o,\
 Explicaciones,\
 Ejercicio,\
-Hoja,Hoja,\
+Hoja,Hojas,\
 Cuenta,\
 Entrar,\
 Notas,\
-Notas,\
-Examen,Examens,\
-Recorrer el sitio,\
+Mis notas,\
+Examen,Exámenes,\
+Explorar el sitio,\
 Volver al menú,\
 Fecha de expiración,\
 Error,\
-Série suivante,Série précédente,\
-Example,\
-Encuesta,Encuesta,\
-Conditions générales d'utilisation,\
-Besoin d'aide ?,\
+Exercicio siguiente,Ejercicio anterior,\
+Ejemplo,\
+Cuestionario,Cuestionarios,\
+Condiciones generales de uso,\
+Necesita ayuda?,\
 Bravo!,\
-Déconnexion CAS,\
-Credits,\
+Desconnexión CAS,\
+Créditos,\
 Lo nuevo,\
-Give the answer,\
-Gestion des participants,\
+Responda,\
+Gestión de los participantes,\
 Vuelta al módulo,\
-Legend,\
-Dupliquer la feuille,\
-Dupliquer l'examen,\
-Manage technical variables,\
-Old technical variables,\
-Global results,\
+Leyenda,\
+Duplicar la hoja,\
+Duplicar el examen,\
+Gestionar variables técnicas,\
+Variables técnicas antiguas,\
+Resultados globales,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,wims_name_aboutw,\
@@ -85,15 +85,14 @@ Global results,\
 	wims_name_cas_logout,wims_name_credits,wims_name_mod_new,wims_name_answer,wims_name_usermanage,\
 	wims_name_moduback,wims_name_legend,wims_name_duplicatesheet,wims_name_duplicateexam,wims_name_techvar,wims_name_oldvar,\
     wims_name_Evaluation
-
 !! **** Menuprof Names ***
-!distribute items Classes, Search,\
-Creation, Samples,\
-Exercices, Helps,\
-FAQ, Help docs,\
-Informations,\
+!distribute items Classes, Buscar,\
+Creación, AbiertasSamples,\
+Exercicios, Ayudas,\
+FAQ, Documentos de ayuda,\
+Informaciones,\
 Otros métodos,\
-Site,\
+Sitio,\
    into wims_name_Classes, wims_name_Searching,\
 	wims_name_Creation, wims_name_Samples,\
 	wims_name_Exercices, wims_name_Aid,\
@@ -103,12 +102,12 @@ Site,\
 
 !! **** Permalink Names ***
 !distribute items este módulo, este ejercicio,\
-Indicar, en su sitio,\
-Encubrir estas opciones, \
-Permaenlace, Lector exportable,\
+Mostrar, en su sitio,\
+Ocultar estas opciones, \
+Enlace permanente, Lector incrustable,\
 copiar y pegar, el vínculo, el código, o, en un correo electrónico,\
 para, solamente,\
-el config actual,\
+la configuración actual,\
 	into wims_name_this_module, wims_name_this_exercice,\
 	wims_name_display,wims_name_on_your_site,\
 	wims_name_mask_this,\
@@ -117,11 +116,11 @@ el config actual,\
 	wims_name_for,wims_name_only,\
 	wims_name_this_config
 
-!set wims_name_Share = Share
-!set wims_name_to_embed_it = to embed it
-!set wims_name_permalink_desc = Copy one of these links to share this easily (through mail, bookmark, ...).
-!set wims_name_hide=Hide
-!set wims_name_showall=Show
+!set wims_name_Share = Compartir
+!set wims_name_to_embed_it = para incrustarlo
+!set wims_name_permalink_desc = Copia uno de estos enlaces para compartirlo fácilmente (a traves de mail, Preferidos, ...).
+!set wims_name_hide=Ocultar
+!set wims_name_showall=Mostrar
 
 !! the following sentences can be changed according to language if needed
 !set wims_name_display1=!nosubst $wims_name_display $wims_name_this_module $wims_name_on_your_site
@@ -131,40 +130,40 @@ el config actual,\
 
 !! **** Module About Names ***
 !distribute items Nombre,\
-À propos des icones,\
+Sobre los iconos,\
 Información sobre este módulo,\
 Información sobre este ejercicio,\
-dirección,\
-Vínculo para marca-página,\
+Dirección,\
+Vínculo para Preferidos,\
 Descripción,\
 Versión,\
 Versión WIMS requerida,\
 Lengua,\
 Autor,\
-Maintainer,\
+Mantenedor,\
 Traductor,\
 General,\
-Esto es un módulo de,\
-Servidor Interactivo Multifunciones en la Red,\
+Este es un módulo de,\
+WWW Interactive Multipurpose Server,\
 Derechos de autor,\
 Palabras clave,\
 Correo electrónico del traductor,\
 Correo electrónico del autor,\
-Correo electrónico Maintainer,\
+Correo electrónico del mantenedor,\
 Dominio,\
 Tipo,\
 Nivel(x),\
 Mecanismo de puntuación,\
 ejercicio/recreación,\
 Programas informáticos de apoyo necesarios,\
-Server Time,\
-Data module,\
-Developped on WIMS,\
-Publication center,\
-Download center,\
-Syntax,\
-Meaning,\
-Indexation,\
+Tiempo del servidor,\
+Módulo de datos,\
+Desarrollado en WIMS,\
+Centro de publicación,\
+Centro de descarga,\
+Sintaxis,\
+Significado,\
+Indexación,\
 Cambiar las preferencias,\
 	into wims_name_name,\
 	wims_name_iconabout,\
@@ -192,28 +191,28 @@ Cambiar las preferencias,\
     wims_name_pref
 
 !! Titles of menus
-!distribute items Vie de la classe,Configuration,\
-   Outils de la classe,Liens externes,\
-   Navigation,My infos\
+!distribute items Vida de la classe,Configuración,\
+   Utilidades de la classe,Enlaces externos,\
+   Navigación,Mis informaciones\
 into wims_name_classactivity,wims_name_configuration,\
   wims_name_classtools,wims_name_otherclasses,\
    wims_name_navigation,wims_name_myinfo
 
 !! **** Class Relative Names ***
 !if $wims_class!=$empty
- !distribute items Página principal de la clase,Insertar en una hoja de trabajo,Insérer comme aide dans une feuille,\
+ !distribute items Página principal de la clase,Insertar en una hoja de trabajo,Insertar como una ayuda en una hoja,\
 Escribir al profesor, Salir,\
-El registro de notas es cerrado.,\
+El registro de notas está cerrado.,\
 Ha suspendido el registro de notas.,\
-Activar el registro, suspender el registro,\
+Activar el registro, Suspender el registro,\
 Usted es el profesor de la clase,\
 Registrar los detalles de este ejercicio,\
 Página de gestión de la hoja de trabajo,\
 Añadir una secuencia,\
-Vu,\
-Details of tested exercises,\
-Insérer tous les exercices dans une feuille de travail,\
-Participant's view,\
+Visto,\
+Detalles de los ejercicios analizados,\
+Insertar todos los ejercicios en una hoja de trabajo,\
+Vista de los participants,\
 into wims_name_class_home,wims_name_add,wims_name_addh,\
    wims_name_wsup,wims_name_visitor,\
    wims_name_scoreclose,\
@@ -229,48 +228,48 @@ into wims_name_class_home,wims_name_add,wims_name_addh,\
 
  !!!set wims_name_score=!nosubst Ha conseguido $[$wims_homeref_got] de \
 	$[$wims_homeref_req] puntos en este trabajo, calidad $[$wims_homeref_mean]/10.
-!set wims_name_thsheet=Número,título,puntos requeridos,peso,puntos obtenidos,%,Calidad,severidad,nota,\
-  Best scores,Number of tries,Last result, Acquired
- !set wims_name_you=usted es <b>$wims_firstname $wims_lastname</b>, perteneciendo a
+!set wims_name_thsheet=Número,Título,Puntos requeridos,Peso,Puntos obtenidos,%,Calidad,Severidad,Nota,\
+  Mejores notas,Número de intentos,Último resultado,Adquirido
+ !set wims_name_you=usted es <b>$wims_firstname $wims_lastname</b>, perteneciente a
  !if _exam isin $session
   !distribute items Otros ejercicios del examen,\
-	Tiempo que permanece para este examen&nbsp;:,\
-    This exam will automaticaly be closed at:,\
+	Tiempo que dispone para este examen&nbsp;:,\
+    Este examen se cerrará automáticamente a:,\
 	cuando se cargue esta página\
 	into wims_name_back,wims_name_examremain,wims_name_exam_ending,wims_name_whenloaded
  !endif
  !if _check isin $session
-  !let wims_page_name=Page
+  !let wims_page_name=Página
  !endif
  !default wims_name_sequence=Secuencia
  !set wims_name_sequences=secuencias
 
- !set wims_name_exceeded=Su clase superó el espacio disco autorizado en el servidor.\
-  La gestión de la clase no está ya disponible. ¡Afligido!<p>Les sugerimos interrogar al administrador del sitio\
-  para aumentar el espacio disco autorizado para las clases virtuales.
+ !set wims_name_exceeded=Su clase superó el espacio de disco autorizado en el servidor.\
+  La gestión de la clase no está ya disponible. ¡Lo siento!<p>Les sugerimos pidan al administrador del sitio\
+ aumentar el espacio de disco autorizado para las clases virtuales.
 
- !set wims_name_reaching_limit=Su clase alcanza el límite de espacio disco autorizado.\
-  Una vez este límite pasado, se bloqueará la gestión de la clase!
+ !set wims_name_reaching_limit=Su clase alcanza el límite de espacio de disco autorizado.\
+  Una vez superado este límite, se bloqueará la gestión de la clase!
 
- !set wims_name_chseries=!nosubst Enregistrer les modifications sur la série d'exercices $(special_parm4[2]) feuille $(special_parm4[1])
+ !set wims_name_chseries=!nosubst Guardar los cambios en la serie de ejercicios $(special_parm4[2]) hoja $(special_parm4[1])
 !endif
 
 !!!if adm/class isin $module or adm/manage isin $module
- !distribute line Zona de los Profesores \
-Zona de los estudiantes\
-Clases de ejemplo\
+ !distribute line Zona de Profesores \
+Zona de estudiantes\
+Clases abiertas\
 Autentificación del profesor\
 Autentificación de los participantes\
 Autentificación\
-Forget password\
+Contraseña olvidada\
 Enseñanza primaria\
 Enseñanza secundaria\
 Universidad\
 Lista de clases \
-Lista de clases y pórticos \
+Lista de clases y portales \
 Clase individual\
 Agrupación de clases \
-Pórtico de establecimiento \
+Portal de centro \
 Participantes borrados\
 	into wims_name_n_supervisor,wims_name_n_participant,wims_name_n_example,\
 	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_connexion,\
@@ -293,7 +292,7 @@ RSS Módulos actualizados \
 
 !if adm/modtool isin $module or adm/createxo isin $module or $wims_user!=$empty or $module!=
   !distribute line Probar el módulo \
-Gestor de documento \
+Gestor del documento \
 Contenido del módulo \
 Otros archivos \
 Propiedades \
@@ -301,15 +300,15 @@ Guardar\
 Diferencias \
 Publicar \
 Nuevo Módulo \
-Lista de los módulos \
+Lista de módulos \
 Depósito de archivos \
 Restauración \
 Propiedades de la cuenta \
 Probador de programas \
 Documentación OEF \
 Biblioteca de programas \
-Tipos de respuestas posibles \
-Doc técnica \
+Tipos de respuestas\
+Documentación técnica \
 Volver a la lista de archivos \
 Cambiar el archivo \
 Cambiar\
@@ -320,7 +319,7 @@ Para utilizar esta actividad, debe activar java en su navigador.\
 Fecha\
 Añadir\
 Suprimir\
-Source\
+Código fuente\
 Salir\
  into wims_name_test,wims_name_docgestion,wims_name_modcontent,wims_name_otherfiles,\
 wims_name_properties,wims_name_modsave,wims_name_checkdiff,wims_name_publish,wims_name_createnew,\
@@ -339,13 +338,13 @@ into wims_name_backcreatexo,wims_name_modellist,wims_name_model
 !distribute line Probar el ejercicio \
 Volver a confia2qcm\
 Volver a createqcm\
-Modificar el programa fuente \
+Modificar el código fuente \
 Poner en el módulo de desarrollo \
 Poner este ejercicio en la clase \
 Guardar como nuevo ejercicio \
 Enviar un archivo de imagen \
 Reemplazar el anterior\
-eliminar este ejercicio\
+Eliminar este ejercicio\
 into wims_name_testexo,wims_name_backconfia2qcm,wims_name_backcreateqcm,wims_name_exomodify,\
 wims_name_putmodtool,wims_name_putclass,wims_name_newversion,\
 wims_name_downloadbinary,wims_name_replace,wims_name_exoerase
@@ -357,16 +356,16 @@ Nueva hoja \
 Nuevo examen \
 Nueva clase \
 Nuevo cuestionario \
-cuestionario\
+Mis cuestionarios\
 Nuevo ejercicio \
 Ejercicios de la clase \
-Exercices de la feuille&nbsp\
-Next exercise\
-Previous exercise\
+Ejercicios de la hoja&nbsp\
+Siguiente ejercicio\
+Anterior ejercicio\
 into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,wims_name_myvote,\
 wims_name_add_exo,wims_name_classexo,wims_name_sheet_exos,wims_name_next,wims_name_prev
 
-!distribute items untry,undone,done,congratulations,hecho \
+!distribute items sin intentar,sin hacer,hecho,felicidades,intentado \
   into wims_name_exo_untry,wims_name_exo_undone,wims_name_exo_done,wims_name_exo_congratulation,wims_name_exo_tried
 
 !!! for documents...
@@ -378,7 +377,7 @@ wims_name_add_exo,wims_name_classexo,wims_name_sheet_exos,wims_name_next,wims_na
 	Depósito de archivos,\
 	Volver a la lista de archivos,\
 	Página de entrada del documento\
-	Transfert,\
+	Transferir,\
 	into wims_name_doch_wims,wims_name_doch_class,wims_name_doch_docs,wims_name_doch_up,\
 	wims_name_doch_prev,wims_name_doch_next,wims_name_doch_hist,wims_name_doch_reload,\
 	wims_name_doch_interactive,wims_name_doch_printable,\
@@ -388,19 +387,19 @@ wims_name_add_exo,wims_name_classexo,wims_name_sheet_exos,wims_name_next,wims_na
 !! for sequence et document
 
 !distribute line Documento\
-Documento\
-ocultado, visible \
+Documentos\
+oculto, visible \
 Título \
 Reorganización por secuencias \
 Insertar en la clase \
 Crear un nuevo documento \
 Documento de prueba\
-Estatuto\
+Estado\
 Insertar\
 En preparación,Activo,Expirado,Expirado+Oculto\
-ni leer ni escribir en,leer pero no escribir en,leer y escribir en\
+ni leer ni escribir,leer pero no escribir,leer y escribir\
 Número\
-Numero de ejercicios\
+Número de ejercicios\
 into wims_name_doc,wims_name_Docs,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
 wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert,wims_name_shstatus,\
 wims_name_Docstatus,wims_name_number,wims_name_cnt_exo
@@ -410,7 +409,7 @@ Añadir un archivo \
 Añadir deberes \
 Configurar \
 Abandonar \
-Cuaderno de textos\
+Agenda\
   into wims_name_adddate,wims_name_addfile,wims_name_addtodo,wims_name_config,wims_name_giveup,\
   wims_name_cdt
 
@@ -419,22 +418,22 @@ Cuaderno de textos\
 !set wims_name_namestudent=Alumno
 !set wims_name_nameteacher=Profesor
 !set wims_name_teacher=Cuentas de profesores
-!set wims_name_addteacher=Nueva cuenta de profesor
-!set wims_name_addparticipant=New participant account
+!set wims_name_addteacher=Añadir profesor
+!set wims_name_addparticipant=Añadir alumno
 !set wims_name_modteacher=Propiedades del profesor
 !set wims_name_delteacher=Borrar a un profesor
 !set wims_name_student=Cuentas de alumnos
 !set wims_name_addstudent=Nuevo alumno
 !set wims_name_modstudent=Propiedades del alumno
 !set wims_name_delstudent=Borrar a un alumno
-!set wims_name_delstudent1=Borrar del alumno
-!set wims_name_group= Pórtico
-!set wims_name_portal= Pórtico
+!set wims_name_delstudent1=Borrar el alumno
+!set wims_name_group= Portal
+!set wims_name_portal= Portal
 !set wims_name_level=Nivel
 !set wims_name_class=Clase
 !set wims_name_program=Programa
 !set wims_name_course=Curso
-!set wims_name_icourse=Curso de interclase
+!set wims_name_icourse=Curso interclase
 !set wims_name_backstruct=Hacer una copia de seguridad de la estructura
 
 !if config isin $module or $module=home or $module=adm/class/userscore
@@ -453,9 +452,9 @@ Añadir un curso interclase \
 Añadir una clase \
 Añadir un programa \
 Añadir un nivel \
-login de gestión \
+Gestionar login \
 Cambiar de zona \
-Ajouter des classes (csv)\
+Añadir clases (csv)\
 into wims_name_addcourse,wims_name_addicourse,wims_name_addclass,wims_name_addprog,wims_name_addlevel,\
 wims_name_login,wims_name_chzone,wims_name_addcsvclass
 
@@ -470,20 +469,20 @@ wims_name_csv,wims_name_activity1
 
 !if adm/class isin $module or reguser isin $module or $wims_class!=$empty
 !distribute line Lista de los participantes\
-List of teachers\
-Resultados del participante \
+Lista de profesores\
+Resultados del alumno \
 Cerrar esta sesión de examen\
 Detalles de su trabajo\
-Eliminar el participante \
-Datos brutos\
+Eliminar el alumno \
+Datos detallados\
 Cambiar su contraseña\
 Datos tratados\
 Cuaderno de competencias \
-Next\
-Previous\
-Filters\
-Part. skills assessment\
-Add technical variable\
+Siguiente\
+Anterior\
+Filtros\
+Informe de evaluación\
+Añadir variable técnica\
 into wims_name_part_list,wims_name_teacherlist,wims_name_scores,wims_name_partexamclose,wims_name_workdetail,\
 wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_livret,\
  wims_name_next_participant,wims_name_prev_participant,wims_name_filter,\
@@ -505,20 +504,20 @@ Createxo\
 Quicktool\
 Latex2wims\
 Imageclick\
-Other tools\
+Otras utilidades\
    into wims_name_modtool,wims_name_createxo,wims_name_quicktool,wims_name_latex2wims,\
    wims_name_coordclick,wims_name_othertools
 
 !distribute line activar el editor HTML \
 desactivar el editor HTML \
-cuidado, las modificaciones hechadas no se salvarán si cambian esta opción en curso de redacción\
+cuidado, las modificaciones hechas no se salvarán si cambian esta opción en curso de redacción\
 into wims_name_active, wims_name_desactive,wims_name_speck_warning
 
 !distribute items Apellido,Nombre,Contraseña,Correo electrónico,Identificador de usuario,Repita la contraseña,Comentario \
 into wims_name_lastname, wims_name_firstname,wims_name_Password,wims_name_email,\
 wims_name_Login,wims_name_repeat_pass,wims_name_comment
 
-!distribute line Trombinoscopio\
+!distribute line Orla\
 Envío de correos electrónicos\
 into wims_name_photoboard,wims_name_sendmail
 
@@ -526,12 +525,12 @@ into wims_name_photoboard,wims_name_sendmail
 into wims_name_nameteacher,wims_name_Supervisor,wims_name_namestudent
 
 !if $module isitemof home,adm/class/sheet,adm/class/exam
- !set wims_name_actionlist=Activar,expirar,desactivar,Ocultar,Mostrar,$wims_name_erase
+ !set wims_name_actionlist=Activar,Expirar,Desactivar,Ocultar,Mostrar,$wims_name_erase
 !endif
 
 !if $module=adm/class/usermanage
-    !set wims_name_regmanage=Gestion des accès
+    !set wims_name_regmanage=Gestion de acceso
 !endif
-!set wims_name_cloneclass =Dupliquer une classe existante
-!set SU_partconnected     =This participant is currently connected
+!set wims_name_cloneclass =Duplicar una clase existente
+!set SU_partconnected     =Este alumno está conectado
 !set wims_name_SE_config = Config./Mantenim.

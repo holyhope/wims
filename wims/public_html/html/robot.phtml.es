@@ -1,14 +1,14 @@
 Status: 450 WIMS User Error
-Server: WIMS $wims_version (Servidor Interactivo Multipropósito)
+Server: WIMS $wims_version (WWW interactive multipurpose server)
 Content-type: text/html; charset=iso-8859-1
 
 <HTML>
 <HEAD>
    <meta http-equiv="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-   <meta name="GENERATOR" CONTENT="wims [es]">
+   <meta name="GENERATOR" CONTENT="wims [en]">
    <meta name="description" content="$wims_site_description">
    <meta name="keywords" content="$wims_site_keywords">
-   <TITLE>Servidor interactivo multipropósito WIMS</TITLE>
+   <TITLE>WWW interactive multipurpose server</TITLE>
 </HEAD>
 <BODY>
 <table align=left border=0 cellpadding=20>
