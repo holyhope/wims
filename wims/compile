@@ -51,28 +51,34 @@ for a in $(seq $#) ; do opt=$1;
  if [ "$opt" = "--jmol" ] ; then
   echo "load jmol"
     vjmol0=14
-    vjmol1=4
-    vjmol2=4
-    datejmol=_2016.04.22
+    vjmol1=15
+    vjmol2=3
     vjmol012=$vjmol0.$vjmol1.$vjmol2
     vJmol=Jmol-$vjmol012
     vjmol=jmol-$vjmol012
     cd tmp
-    wget http://downloads.sourceforge.net/project/jmol/Jmol/Version%20$vjmol0.$vjmol1/Version%20$vjmol012/$vJmol$datejmol-binary.zip
-    unzip $vJmol$datejmol-binary.zip
-    cd $vjmol$datejmol;
+    wget https://downloads.sourceforge.net/project/jmol/Jmol/Version%20$vjmol0.$vjmol1/Jmol%20$vjmol012/$vJmol-binary.zip
+    unzip $vJmol-binary.zip
+    cd $vjmol;
     unzip jsmol.zip
     rm -f jsmol.zip
     cd $dir
     if [ -d "public_html/java/jmol/j2s" ] ; then
       mv public_html/java/jmol/j2s public_html/java/jmol/j2s_tmp
     fi
-    mv -f tmp/$vjmol$datejmol/jsmol/j2s public_html/java/jmol/j2s
-    cp -f tmp/$vjmol$datejmol/jsmol/JSmol.min.js public_html/java/jmol/
-    cp -f tmp/$vjmol$datejmol/jsmol/js/Jmol2.js public_html/java/jmol/
-    rm -rf tmp/$vjmol$datejmol
-    rm -rf tmp/$vJmol$datejmol-binary.zip
+    if [ -d "public_html/java/jmol/idioma" ] ; then
+      mv public_html/java/jmol/idioma public_html/java/jmol/idioma_tmp
+    fi
+    mv -f tmp/$vjmol/jsmol/idioma public_html/java/jmol/idioma
+    mv -f tmp/$vjmol/jsmol/j2s public_html/java/jmol/j2s
+    cp -f tmp/$vjmol/jsmol/JSmol.min.js public_html/java/jmol/
+    cp -f tmp/$vjmol/jsmol/JSmol.min.nojq.js public_html/java/jmol/
+    cp -f tmp/$vjmol/jsmol/js/Jmol2.js public_html/java/jmol/
+    rm -rf tmp/$vjmol
+    rm -rf tmp/$vJmol-binary.zip
     rm -rf public_html/java/jmol/j2s_tmp
+    rm -rf public_html/java/jmol/idioma_tmp
+    exit
  fi
  if [ "$opt" = "--geogebra" ] ; then
   echo "load geogebra"

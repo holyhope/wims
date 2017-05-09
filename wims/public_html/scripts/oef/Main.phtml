@@ -1,23 +1,25 @@
 !nocache
+!! Pendant la creation via Createxo, c'est le module adm/createxo qui appelle ce fichier.
+
 !if $oef_test=yes
- !set renewlink=cmd=next&retest=again
- !!$header_js
- !goto tester
+  !set renewlink=cmd=next&retest=again
+  !!$header_js
+  !goto tester
 !else
-!if $exocnt=1
-   !set exoo=!item 1 of $exolist
-   !if $module_init_parm=$empty
-    !set module_init_parm=exo=$exoo
-   !else
-     !if &exo notin &$module_init_parm
-       !set module_init_parm=exo=$exoo&$module_init_parm
-     !endif
-   !endif
-!endif
- !set init_parm=!translate + to $ $ in $module_init_parm
- !set init_parm=!replace internal $\
+  !if $exocnt=1
+    !set exoo=!item 1 of $exolist
+    !if $module_init_parm=$empty
+      !set module_init_parm=exo=$exoo
+    !else
+      !if &exo notin &$module_init_parm
+        !set module_init_parm=exo=$exoo&$module_init_parm
+      !endif
+    !endif
+  !endif
+  !set init_parm=!translate + to $ $ in $module_init_parm
+  !set init_parm=!replace internal $\
 $ by ; in $init_parm
- !set renewlink=cmd=renew&worksheet=$worksheet&$init_parm
+  !set renewlink=cmd=renew&worksheet=$worksheet&$init_parm
 !endif
 
 !if $(title_$lang)!=$empty
@@ -165,17 +167,17 @@ to $wims_html_header
       !! Displays a Modal dialog box explaining what the "giveup" button will do.
       <script type="text/javascript">
       /*<![CDATA[*/
-        $$(function(){
-          $$("#exo_giveup").dialog({
+        jQuery(function(jq){
+          jq("#exo_giveup").dialog({
               autoOpen: false,
               modal: true,
               buttons: {
                 "$wims_name_yes": function() {window.location = '?session=$session&$renewlink';},
-                "$wims_name_no": function() {$$(this).dialog("close");}
+                "$wims_name_no": function() {jq(this).dialog("close");}
               }
             });
-          $$("#exo_giveup_opener").on("click", function() {
-            $$("#exo_giveup").dialog("open");
+          jq("#exo_giveup_opener").on("click", function() {
+            jq("#exo_giveup").dialog("open");
           });
         });
       /*]]>*/
@@ -253,25 +255,25 @@ to $wims_html_header
     !set wims_ref_class=wims_button wims_secondary_button
     !set wims_ref_id=oef_serie_renew
     !if $jquery_defined=yes
-    !! Displays a Modal dialog box explaining what the "giveup" button will do.
-    <script type="text/javascript">
-    /*<![CDATA[*/
-      $$(function(){
-        $$("#exo_giveup").dialog({
-            autoOpen: false,
-            modal: true,
-            buttons: {
-              "$wims_name_yes": function() {window.location = '?session=$session&$renewlink';},
-              "$wims_name_no": function() {$$(this).dialog("close");}
-            }
+      !! Displays a Modal dialog box explaining what the "giveup" button will do.
+      <script type="text/javascript">
+      /*<![CDATA[*/
+        Jquery(function(jq){
+          jq("#exo_giveup").dialog({
+              autoOpen: false,
+              modal: true,
+              buttons: {
+                "$wims_name_yes": function() {window.location = '?session=$session&$renewlink';},
+                "$wims_name_no": function() {jq(this).dialog("close");}
+              }
+            });
+          jq("#exo_giveup_opener").on("click", function() {
+            jq("#exo_giveup").dialog("open");
           });
-        $$("#exo_giveup_opener").on("click", function() {
-          $$("#exo_giveup").dialog("open");
         });
-      });
-    /*]]>*/
-    </script>
-    <button class="wims_button wims_secondary_button" type="button" data-toggle="exo_giveup" id="exo_giveup_opener">$wims_name_giveup</button>
+      /*]]>*/
+      </script>
+      <button class="wims_button wims_secondary_button" type="button" data-toggle="exo_giveup" id="exo_giveup_opener">$wims_name_giveup</button>
     !endif jquery
     <div class="dropdown-pane wims_msg info small" id="exo_giveup" title="$wims_name_giveup" data-dropdown>
     <p>$name_serie_giveup</p>

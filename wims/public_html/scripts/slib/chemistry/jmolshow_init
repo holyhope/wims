@@ -12,8 +12,13 @@ slib_example=java/jmol
 !distribute items $wims_read_parm into $slib_appletdir
 !default slib_appletdir=java/jmol
 
-!set slib_out=\
-<script type="text/javascript" src="$slib_appletdir/JSmol.min.js"></script>\
+!if $jquery_defined=yes
+  !set slib_out=<script type="text/javascript" src="$appletdir/JSmol.min.nojq.js"></script>
+!else
+  !set slib_out=<script type="text/javascript" src="$appletdir/JSmol.min.js"></script>
+!endif
+
+!set slib_out=$slib_out\
 <script type="text/javascript" src="$slib_appletdir/Jmol2.js"></script>\
 <script type="text/javascript">\
 /*<![CDATA[*/\

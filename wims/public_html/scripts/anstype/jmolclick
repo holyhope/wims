@@ -63,8 +63,13 @@ score=$[round($score)/10]
 !endif
 
 :applet
+!if $jquery_defined=yes
+  reply_$i=<script type="text/javascript" src="$appletdir/JSmol.min.nojq.js"></script>
+!else
+  reply_$i=<script type="text/javascript" src="$appletdir/JSmol.min.js"></script>
+!endif
 
-reply_$i=<script type="text/javascript" src="$appletdir/JSmol.min.js"></script>\
+reply_$i=$(reply_$i)\
 <script type="text/javascript" src="$appletdir/Jmol2.js"></script>\
 <script type="text/javascript">\
 /*<![CDATA[*/\
