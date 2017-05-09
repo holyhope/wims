@@ -433,7 +433,6 @@ sub phtml {my ($dir,$lang,$f,@file)=@_ ;
 sub tableau { my ($file, $lang) = @_ ;
 ### mettre $file à la place ensuite
   my $file1="$helpdir/$lang/$file";
-  print $file1 . "\n";
   my $cities=$file ;
   if ($file =~ /if/){ $cities .= 'f' } ;
   my @list_keyword;
