@@ -42,20 +42,26 @@ $name{'syntax'}{'it'}="Sintassi";
 $name{'slib'}{'it'}='SLIB';
 $name{'anstype'}{'it'}='Tipi di risposte' ;
 
+$name{'explanation'}{'es'}="Explicació" ;
+$name{'example'}{'es'}="Exemple" ;
+$name{'special'}{'es'}="Mètodes especials<br>(enunciat)";
+$name{'syntax'}{'es'}="Sintaxi";
+$name{'slib'}{'es'}='SLIB';
+$name{'anstype'}{'es'}='Tipus de Respostes' ;
+
 $name{'explanation'}{'ca'}="Explicació" ;
 $name{'example'}{'ca'}="Exemple" ;
 $name{'special'}{'ca'}="Mètodes especials<br>(enunciat)";
 $name{'syntax'}{'ca'}="Sintaxi";
 $name{'slib'}{'ca'}='SLIB';
 $name{'anstype'}{'ca'}='Tipus de Respostes' ;
-
 my $DOSSIER="public_html/scripts/js/editor/scripts_1/bd_js";
 my $DOSSIER_edit_area="public_html/scripts/js/edit_area/reg_syntax";
 my $DOSSIER_wims="public_html/modules/help/wimsdoc.en/cmd/";
 my $slibdir="public_html/scripts/slib/";
 my $helpdir="public_html/scripts/help";
 
-my @Lang=('en','fr','cn','nl','it','ca') ;
+my @Lang=('en','fr','cn','nl','it','ca', 'es') ;
 
 system(`mkdir -p $DOSSIER`) ;
 my @table=('if', 'oefparm0', 'oefparm1', 'oefparm2', 'oefparm3', 'oefparm4', 'oefparm5','oefcommand') ;
@@ -427,6 +433,7 @@ sub phtml {my ($dir,$lang,$f,@file)=@_ ;
 sub tableau { my ($file, $lang) = @_ ;
 ### mettre $file à la place ensuite
   my $file1="$helpdir/$lang/$file";
+  print $file1 . "\n";
   my $cities=$file ;
   if ($file =~ /if/){ $cities .= 'f' } ;
   my @list_keyword;
