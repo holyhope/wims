@@ -62,12 +62,14 @@ sub treate2 { my ($file)=@_;
   $text =~ s/line \d+://g;
   $text =~ s/END//g;
   $text =~ s/\n{2,}/\n/g;
+  if ($text =~ /error|info/) {  } else { $text='' };
   out($file, $text);
 }
 
 sub out { my ($bloc, $text) = @_;
   open  (OUT, ">$bloc") || warn "peut pas créer $bloc";
   print OUT $text; close OUT;
+  system (`rm $bloc`) if(!$text);
 }
 
 sub GetFilesList
