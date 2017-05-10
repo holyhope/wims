@@ -57,7 +57,7 @@ sub treate2 { my ($file)=@_;
    next if (/document type does not allow element "div" here\s*END/); ## last in the result come from the debug
    next if (/document type does not allow element "link" here/);
    $text .= $_;
-  }
+  };
   close IN;
   $text =~ s/line \d+://g;
   $text =~ s/END//g;
