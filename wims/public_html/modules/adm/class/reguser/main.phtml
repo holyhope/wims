@@ -8,6 +8,10 @@
 WIMS $httpd_HTTP_HOST\
 $name_title
 
+!! login and password must contain 4-16 alphanumeric characters
+!set password_pattern=[a-zA-Z0-9]{4,16}
+!set login_pattern=[a-zA-Z0-9]{4,16}
+
 !if $cltype iswordof 2 4 and $classcnt>0
  <p class="wimscenter">
  ($name_reserved)
@@ -154,7 +158,7 @@ $institution
    <legend>$name_title</legend>
    <div class="field box">
     <label for="classpass">$wims_name_Password</label>
-    <input type="password" name="classpass" id="classpass" required="required" placeholder="$wims_name_Password"/>
+    <input type="password" name="classpass" id="classpass" required="required" class="noicon" placeholder="$wims_name_Password" />
    </div>
    <div class="wimscenter wimsform">
     <input type="submit" value="$wims_name_send" />
@@ -315,11 +319,11 @@ $name_inscription4:
    <legend>$name_title</legend>
    <div class="field box halfwidth">
     <label for="lastn">$wims_name_lastname</label>
-    <input size="20" name="lastn" id="lastn" value="$lastn" />
+    <input size="20" name="lastn" id="lastn" value="$lastn" required="required" />
    </div>
    <div class="field box halfwidth">
     <label for="firstn">$wims_name_firstname</label>
-    <input size="20" name="firstn" id="firstn" value="$firstn" />
+    <input size="20" name="firstn" id="firstn" value="$firstn" required="required" />
    </div>
  !if $wims_user=supervisor
    !reset login
@@ -327,7 +331,7 @@ $name_inscription4:
  !if ($auth_user=$empty or $auth_method notitemof $auth_method_list) or $wims_user=supervisor
    <div class="field box">
     <label for="login">$wims_name_Login</label>
-    <input size="16" name="login" id="login" value="$login" />
+    <input size="16" name="login" id="login" value="$login" required="required" pattern="$login_pattern" />
     !if $auth_method notitemof $auth_method_list or $wims_user!=supervisor
        <div class="formHelp">$name_warning_login</div>
     !endif
@@ -343,7 +347,7 @@ $name_inscription4:
    !if $auth_method notitemof $auth_method_list
     <div class="field box">
       <label for="pass">$wims_name_Password</label>
-      <input type="password" size="16" name="pass" id="pass" required="required"/>
+      <input type="password" size="16" name="pass" id="pass" required="required" pattern="$password_pattern"/>
       <div class="formHelp">$name_passwd_warning</div>
      </div>
    !endif

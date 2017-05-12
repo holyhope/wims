@@ -1,5 +1,8 @@
 !! Create a new virgin class (in a structure or not)
 
+!! password must contain 4-16 alphanumeric characters
+!set password_pattern=[a-zA-Z0-9]{4,16}
+
 !if $step=$empty or $step=pre
   <div class="wims_content">
     <p>$name_choose</p>
@@ -73,7 +76,7 @@
         !default email=$email
         &#58; <a href="mailto:$email">$email</a>
       !else
-        <input size="$emaillim2" name="email" value="$email" id="email" maxlength="$emaillim2" required="required" />
+        <input size="$emaillim2" name="email" value="$email" id="email" maxlength="$emaillim2" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required="required" />
         <div class="formHelp">$name_atmost $emaillim2 $name_characters</div>
       !endif
       !if $regpolicy=email
@@ -84,7 +87,7 @@
     !if $Cltype!=1
       <div class="field box">
          <label for="passsup">$wims_name_Password ($name_sup)</label>
-         <input size="16" type="password" name="passsup" id="passsup" maxlength="16" required="required"/>
+         <input size="16" type="password" name="passsup" id="passsup" maxlength="16" pattern="$password_pattern" required="required"/>
          <div class="formHelp">$name_warningpass. $name_help1</div>
       </div>
     !endif
@@ -120,7 +123,7 @@
 
       <div class="field box halfwidth">
         <label for="password">$wims_name_Password ($name_classesss)</label>
-        <input size="16" type="password" name="password" id="password" maxlength="16"/>
+        <input size="16" type="password" name="password" id="password" maxlength="16" pattern="$password_pattern"/>
         <div class="formHelp">
           $name_warningpass.
           !if $Cltype<2
