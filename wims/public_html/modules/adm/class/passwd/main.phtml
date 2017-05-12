@@ -13,95 +13,121 @@ $wims_institutionname
 $classname\
 $module_title
 
+!set password_pattern=pattern="[a-zA-Z0-9]{4,16}"
+
 !set wims_menu_items=!append line SE_config,1,module=adm/class/config to $wims_menu_items
 
 !if $error!=$empty
- <div class="wims_msg alert">
- !read lang/msg.phtml.$moduclass_lang
- </div>
- !set wims_ref_class=wims_button
-<p class="wimscenter">
- !href module=home $wims_name_back2
-</p>
- !goto end
+  <div class="wims_msg
+    !if success iswordof $error
+      success
+    !else
+      alert
+    !endif
+    ">
+    !read lang/msg.phtml.$moduclass_lang
+  </div>
+  !set wims_ref_class=wims_button
+  <p class="wimscenter">
+    !href module=home $wims_name_back2
+  </p>
+  !goto end
 !endif
 
 !form reply
 
-!if $wims_user=supervisor
- !default job=user
- !if $job=none
-   !set ch_$job=checked
-   <fieldset class="property_fields halfwidth blockcenter">
-    <legend>$wims_name_Password</legend>
-    <div class="field box">
-    $name_passwdtype
-    <br />
-     <input type="radio" name="job" $ch_user value="user" id="job" />
-     <label for="job2">$name_userpasswd</label>
-   !if $part!=$empty and $job=part
-     <br />
-     <input type="radio" name="job" $ch_part value="part" id="job2" />
-     <label for="job2">$name_partpasswd</label>
-     <div class="formHelp"><span class="tt">$part</span> ($name_warning1)</div>
-   !endif
-     <br />
-     <input type="radio" name="job" $ch_class value="class" id="job3" />
-     <label for="job3">$name_classpasswd</label>
-     <div class="formHelp">$name_warning1.</div>
-   </div>
- !else
-    <fieldset class="property_fields halfwidth blockcenter">
-     <legend>
-      !if $class_type>0 and $job=class
-       $(name_$(job)passwdt)
-      !else
-       $(name_$(job)passwdt)
-       !if $job=part
-        <span class="tt">$part</span>
-       !endif
-      !endif
-      </legend>
-      <input type="hidden" name="job" value="$job" />
- !endif
-!else
-  <input type="hidden" name="job" value="user" />
-  <fieldset class="property_fields halfwidth blockcenter">
+!if $class_type>0
+  !! for groups and portal, the class password is used for teachers registration
+  !set name_classpasswd = $name_classpasswdt
+  !set name_classpasswd_hlp = $name_classpasswdt_hlp
 !endif
- !if $job=user or $job=none
+
+<fieldset class="property_fields halfwidth blockcenter">
+  !if $wims_user=supervisor
+    !default job=user
+    !if $job=none
+      !set ch_$job=checked
+      <legend>$wims_name_Password</legend>
+      <div class="field box">
+        $name_passwdtype
+        <div>
+          <input type="radio" name="job" $ch_user value="user" id="job1" />
+          <label for="job1">$name_userpasswd</label>
+          <div class="formHelp">$name_userpasswd_hlp</div>
+        </div>
+        <div>
+          <input type="radio" name="job" $ch_class value="class" id="job2" />
+          <label for="job2">$name_classpasswd</label>
+          <div class="formHelp">$name_classpasswd_hlp</div>
+        </div>
+      </div>
+    !else
+      <legend>
+        $(name_$(job)passwd)
+        !if $job=part
+          <span class="tt">$part</span>
+        !endif
+      </legend>
+      <p class="formHelp">$(name_$(job)passwd_hlp)</p>
+      <input type="hidden" name="job" value="$job" />
+    !endif
+  !else
+    <input type="hidden" name="job" value="user" />
+  !endif
+
+  !if $job=user or $job=none
+    <div class="field box">
+      <label for="old">$name_actualpasswd</label>
+      <input type="password" size="16" name="old" id="old"
+      !if $job=user
+        required="required" $password_pattern
+      !endif
+      />
+      !if $job=none and $wims_user=supervisor
+        <div class="formHelp">$name_actualpasswd_hlp.</div>
+      !endif
+    </div>
+  !endif
+
   <div class="field box">
-   <label for="old">$name_actualpasswd</label>
-   <input type="password" size="16" name="old" id="old" />
+    <label for="pw1">$name_newpasswd</label>
+    <input type="password" size="16" name="pw1" id="pw1"
+    !if $job=user
+      required="required" $password_pattern
+    !endif
+    />
+    <div class="formHelp">
+      $name_alphanumer
+      !if $job isitemof none,class and $wims_user=supervisor
+        <br/>($name_emptypasswd).
+      !endif
+    </div>
   </div>
- !endif
-   <div class="field box">
-     <label for="pw1">$name_newpasswd</label>
-     <input type="password" size="16" name="pw1" id="pw1" required="required"/>
-   </div>
-   <div class="field box">
-     <label for="pw2">$name_newpasswd2</label>
-     <input type="password" size="16" name="pw2" id="pw2" required="required"/>
-   </div>
-   <div class="wimscenter wimsform">
+  <div class="field box">
+    <label for="pw2">$name_newpasswd2</label>
+    <input type="password" size="16" name="pw2" id="pw2"
+    !if $job=user
+      required="required" $password_pattern
+    !endif
+    />
+  </div>
+  <div class="wimscenter wimsform">
     <input type="submit" value="$wims_name_tosave" />
     !set wims_ref_class=wims_button wims_secondary_button
     !href module=home $wims_name_giveup
-   </div>
-  </fieldset>
+  </div>
+</fieldset>
 
-<p class="small">$name_jetable
-!set wims_ref_class=wims_button_help
-!href target=wims_mhelp cmd=help $wims_name_help
-</p>
+!if $job notwordof class
+  <p class="small wimscenter">
+    $name_jetable
+    !set wims_ref_class=wims_button_help
+    !href target=wims_mhelp cmd=help $wims_name_help
+  </p>
+!endif
 
 !formend
-<p>
-$name_alphanumer
-!if $wims_user=supervisor
- ($name_emptypasswd).
-!endif
-</p>
-!endif
+
 :end
 !tail
 
