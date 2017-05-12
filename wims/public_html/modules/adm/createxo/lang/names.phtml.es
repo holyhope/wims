@@ -4,16 +4,16 @@
   !goto $wims_read_parm
 !endif
 
-!distribute lines Método guiado\
-  Método bruto\
-  Método fichero\
+!distribute lines Modo guiado\
+  Modo experto\
+  Modo fichero\
   modelos preparados\
   Enviar el fichero\
-  Fichero fuente de su ejercicio\
+  Código de su ejercicio\
   Volver al menú inicial\
   Continuar al contenido del ejercicio\
   Modificar un ejercicio existente de la clase\
-   Volver a la etapa precedente\
+  Volver a la etapa precedente\
   Enviar el código fuente\
   Vaciar\
   Demostración\
@@ -22,8 +22,8 @@
   Corregir el error\
   Volver a\
   La realización de su ejercicio será como sigue.\
-  Ahí tienes los modelos de ejercicios disponibles. Elija uno.\
- Módulo que contiene temporalmente su ejercicio\
+  Aquí tiene los modelos de ejercicios disponibles. Elija uno.\
+  Módulo que contiene temporalmente su ejercicio\
 into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,\
   name_model,name_sendfile,name_source,name_menuback,name_continue,name_modify,\
   name_prevstep,name_sendsource,name_clean,name_demo,wims_name_adapt,name_testexo,\
@@ -33,28 +33,26 @@ into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,\
 !set name_raw=!lowercase $wims_name_rawmode
 !set name_file=!lowercase $wims_name_filemode
 
-!set name_modefile1=Está en modo fichero para la creación de ejercicios.\
-  Bajo este modo puede enviar un fichero fuente OEF local al servidor.\
- Para crear un ejercicio desde cero preferirá el
+!set name_modefile1=Está en modo fichero para la creación de ejercicios. Bajo este modo\
+   puede enviar un fichero fuente OEF local al servidor. Para crear un ejercicio desde cero preferirá el
  !set name_modefile2=Para corregir en línea, pueden también utilizar el
 
 !distribute line Ejercicios básicos\
 Ejercicios con una lista de datos\
-Chemistry exercises\
-Games\
-Exercises with images or audio\
-Select items\
-Different kinds of questions\
-Fill in the gaps\
-Put in order\
-Classify\
+Ejercicios de química\
+Juegos\
+Ejercicios con imagenes o audio\
+Escoger ítems\
+Diferentes tipos de cuestiones\
+Llenar agujeros\
+Ordenar\
+Clasificar\
 into name_first,name_datalist,name_chemistry,name_game,name_imaudio,\
 name_select,name_question,name_gapfill,name_order,name_classify
 
-!set name_save=!nosubst  Aquí está el código fuente de su ejercicio\
- <span class="wims_warning">$oef_title</span>, en formato OEF (Open Exercice Format).\
- Para guardarlo, corte el texto situado entre las dos líneas horizontales, y \
- péguelo en un archivo.
+!set name_save=!nosubst  Aquí está el código fuente de su ejercicio <span class="wims_warning">$oef_title</span>,\
+ en formato OEF (Open Exercice Format). Para guardarlo, corte el texto situado entre las dos líneas \
+ horizontales, y péguelo en un archivo.
 
 !distribute lines Número de parámetros\
   Número de respuestas\
@@ -104,14 +102,28 @@ número con unidad,units\
 función numérica,function\
 vector,vector\
 palabras en una lista,wlist
+chset,chset\
+clickfill,clickfill\
+dragfill,dragfill\
+compose,compose\
+coord,coord\
+correspond,correspond\
+keyboard,keyboard\
+matrix,matrix\
+numexp,numexp\
+reorder,reorder\
+fset,fset\
+aset,aset\
+sigunits,sigunits\
+time,time
 
 !distribute lines Ahora, por favor, introduce el contenido de tu ejercicio \
  Puedes definir los parámetros aleatorios aquí\
  La explicación del ejercicio \
  Respuestas libres\
  Solución correcta\
- Precisión requerida para respuestas numericas\
- Las funciones (numericas) serán comparadas en el intervalo\
+ Precisión requerida para respuestas numéricas\
+ Las funciones (numéricas) serán comparadas en el intervalo\
  Condiciones para el análisis de respuestas (numéricas)\
  Nombre de la condición\
  Definición de la condición\
@@ -128,34 +140,34 @@ into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision
 !endif
 
 !if $level=4
-  !set name_update1=!nosubst L'exercice <span class="tt">$existing.oef</span> a été mis à jour avec succès dans le module
-  !set name_update2=Echec de mise a jour de l'exercice <span class="tt">$existing</span> dans le module
+  !set name_update1=!nosubst El ejercicio <span class="tt">$existing.oef</span> se ha actualizado con éxito
+  !set name_update2=Ha fallado la actualización del ejercicio <span class="tt">$existing</span> en el módulo
   !set name_update3=Su ejercicio se ha instalado con éxito.
-   !set name_update4= Hemos encontrado un ejercicio idéntico en su clase. Se ignoran los registros   dobles.\
+   !set name_update4= Hemos encontrado un ejercicio idéntico en su clase. Se ignoran los registros dobles.\
   !set name_update5=Este ejercicio será accesible únicamente a los participantes de su clase, \
     y solamente si lo pone en una hoja de trabajo.
   !distribute lines Ahora puede\
-    Consultar los ejercicios de clase\
+    Consultar los ejercicios de la clase\
     y eventualmente añadirlos a las hojas de trabajo\
  into name_youcan, name_consult,name_sheet
 !endif
 
 !if $level=7
- name_warning_empty=Veuillez choisir le nom du fichier source.
- name_choice_module=Sélectionner un module
- name_choice_filename=Nom du fichier source de l'exercice (n'utiliser que des symboles alphanumériques)
- name_register_dev=Save the exercise source file in the modtool account
+ name_warning_empty=Por favor, escoja el nombre del fichero de código.
+ name_choice_module=Seleccionar un módulo
+ name_choice_filename=Nombre del fichero de código del ejercicio (utilizar solo caracteres alfanuméricos)
+ name_register_dev=Guardar el fichero de código del ejercicio en la cuenta de Modtool
 !endif
 
-!distribute lines Están en método bruto de creación de ejercicios. \
-  Puesto que este ejercicio se basa en un modelo normal, intentelo \
-  Entre la fuente en totalidad \
-  para registrar un fichero fuente que existe, copian el fichero en la ventana.\
- Ahí tienes la fuente de un ejercicio existente de su clase. \
+!distribute lines Está en modo experto de creación de ejercicios. \
+  Puesto que este ejercicio se basa en un modelo estándar, inténtelo \
+  Entre el código entero \
+  para registrar un fichero de código existente, copie el fichero en la ventana.\
+ Ahí tiene el código de un ejercicio existente de su clase. \
   Pueden modificarlo en la ventana siguiente. \
-  Ahí tienes la fuente de un ejercicio público que quieren importar. Pueden modificarlo en la ventana siguiente antes de ponerlo en la clase. \
+  Ahí tiene el código de un ejercicio público que quiere importar. Pueden modificarlo en la ventana siguiente antes de ponerlo en la clase. \
 Pueden probar algunos programas externos con el \
-probador de escritura \
+probador de script \
  into name_brut,name_try,name_allsource,name_copy,name_source2,name_modify_window,name_public,name_test_extern,name_testerscript
 
 !exit
@@ -172,7 +184,7 @@ y copiarlo posteriormente en
 <b>Note</b>. Estos modelos tienen por objeto permitir a los más apremiados construir
 rápidamente sus ejercicios. Tienen pues a menudo una estructura simplificada
 y estandarizada, y no ofrecen la plena potencia de la sintaxis OEF.
-Pero pueden siempre poner los ejercicios en método bruto para añadir más
+Pero pueden siempre poner los ejercicios en modo experto para añadir más
 funcionalidades o modificarlos según su gusto.
 !exit
 
@@ -182,6 +194,7 @@ sinceramente su contribución, en nombre de todos aquellos que se
 beneficiarán de él.
 <p>
 El administrador de este sitio verificará su ejercicio, y decidirá si ponerlo
-o no en una categoría apropiada. Esto podría tardar algún tiempo.
-</p>
+o no en una categoría apropiada. 
+Esto podría tardar algún tiempo.
+/p>
 !exit

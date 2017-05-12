@@ -18,15 +18,24 @@
 </li><li>
 !href module=$module&cmd=new&search_category=R Matemáticas recreativas
 &#x003A puzzles y juegos.
-</li><li>
-!href module=adm/class/classes Clases virtuales
- donde los estudiantes trabajan y consiguen puntuaciones.
-</li><li>
-!href module=adm/doc  Misc. de documentos interactivos
+</li>
+<li>
+!href module=adm/class/classes Clases abiertas o crear su propia clase.
+</li>
+</div>
+
+!if $wims_theme_version=0
+<li>
+!href module=adm/doc Documentos de ayuda
+ i
+!href module=help/teacher/faq FAQ
 .</li>
+!endif
 </ul>
 
 !!exit
+!if $wims_theme_version=0
 También puede
 !href module=adm/browse&$browse_parm realizar una visita guiada
  a este sitio.
+!endif

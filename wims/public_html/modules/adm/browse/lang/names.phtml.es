@@ -15,8 +15,8 @@
 !if $job=subject
   !set title=Búsqueda por tema
   !set name_domain=Por favor, seleccione una de las siguientes áreas.
-  !set job_desc=Cada módulo educativo tiene asociadas unas palabras clava. \
-   Encontrareis debajo todas estas palabras clave, organizadas en árbol. \
+  !set job_desc=Cada módulo educativo tiene asociadas unas palabras clave. \
+   Encontrará debajo todas estas palabras clave, organizadas en árbol. \
 <br class="spacer"/>\
 Sin embargo, las cifras no tienen en cuenta las subramas. \
 Cada punto indica el número de módulos a los que se asigna la palabra clave correspondiente.

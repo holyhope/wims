@@ -24,8 +24,8 @@ CC_C =Clases abiertas
 CC_M =Módulos de datos
 
 N_browse=visita guiada
-N_browsesite =explorar este sitio
-N_browse2 =Explorar este sitio
+N_browsesite =explorar el sitio
+N_browse2 =Explorar el sitio
 N_Search =Buscar
 N_search =buscar
 N_clear=Reinicializar

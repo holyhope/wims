@@ -7,7 +7,7 @@
 !! **** Default Names ***
 !distribute items Buscar,\
 Al trabajo,Volver al trabajo,\
-Página inicial de WIMS,Introducción/Configuración,Ayuda,Acerca de,Acerca de WIMS,\
+Inicio WIMS,Introducción/Configuración,Ayuda,Acerca de,Acerca de WIMS,\
 Introducción,Cerrar,\
 Cerrar esta ventana,Atrás,Inicio de la página,\
 Administrador del sitio,Autor de la página,Autores de la página,\
@@ -54,7 +54,7 @@ Necesita ayuda?,\
 Bravo!,\
 Desconnexión CAS,\
 Créditos,\
-Lo nuevo,\
+Novedades,\
 Responda,\
 Gestión de los participantes,\
 Vuelta al módulo,\
