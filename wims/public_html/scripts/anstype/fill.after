@@ -147,14 +147,16 @@ dynapi.onLoad(function() {
 !endif
 		f_xrel[i]=xx;f_yrel[i]=yy;
 		f_lyr[i]=new DynLayer();
+		f_lyr[i].setCssClass("wims_droppable");
 		f_toleft(f_lyr[i],i);
-		f_lyr[i].setBgColor($leftcolor);
+		//f_lyr[i].setBgColor($leftcolor);
 		f_lyr[i].addEventListener(mev);
 		dynapi.document.addChild(f_lyr[i]);
 		if(f_minor[i]==0) f_lyr[i].setHTML($crleft+'?'+$crright);
 	}
 	for(i=0;i<$objcnt2;i++) {
 		f_lbis[i]=new DynLayer();
+		f_lbis[i].setCssClass("wims_grabbable");
 		f_toright(f_lbis[i],i);
 		DragEvent.enableDragEvents(f_lbis[i]);
 		f_lbis[i].addEventListener(mev2);

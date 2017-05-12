@@ -161,6 +161,9 @@ protoElement.setClass = function(c,noInlineStyle){
 		this._noStyle=noInlineStyle;
 	}
 };
+protoElement.setCssClass = function(classes){
+	this._cssClass = 'class="'+classes+'"';
+};
 
 protoElement.setVisible = function(b) { //! Overwritten by NS4
 	//if (b!=this.visible) {
