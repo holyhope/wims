@@ -3,7 +3,7 @@
 	DynDocument Class
 
 	The DynAPI Distribution is distributed under the terms of the GNU LGPL license.
-	
+
 	requires: dynapi.api.DynElement
 */
 
@@ -23,41 +23,41 @@ function DynDocument(frame) {
 	this.onResizeNS4 = "reload"; // or "redraw"
 	this._created = false;
 };
-var p = dynapi.setPrototype('DynDocument','DynElement');
-p._remove = function() {
+var protoDocument = dynapi.setPrototype('DynDocument','DynElement');
+protoDocument._remove = function() {
 	this.elm=null;
 	this.doc=null;
 	this.frame=null;
 };
-p.getBgColor = function() {
+protoDocument.getBgColor = function() {
 	return this.bgColor;
 };
-p.getX = p.getY = p.getPageX = p.getPageY = dynapi.functions.Zero;
-p.getWidth = function() {
+protoDocument.getX = protoDocument.getY = protoDocument.getPageX = protoDocument.getPageY = dynapi.functions.Zero;
+protoDocument.getWidth = function() {
 	if (!this.w) this.findDimensions();
 	return this.w;
 };
-p.getHeight = function() {
+protoDocument.getHeight = function() {
 	if (!this.h) this.findDimensions();
 	return this.h;
 };
-p.findDimensions = function() {
+protoDocument.findDimensions = function() {
 	this.w=(dynapi.ua.ns||dynapi.ua.opera)? this.frame.innerWidth : this.elm.clientWidth;
 	this.h=(dynapi.ua.ns||dynapi.ua.opera)? this.frame.innerHeight : this.elm.clientHeight;
 };
-p.setBgColor = function(color) {
+protoDocument.setBgColor = function(color) {
 	if (color == null) color='';
 	if (dynapi.ua.ns4 && color == '') color = '#ffffff';
 	this.bgColor = color;
 	this.doc.bgColor = color;
 };
-p.setFgColor = function(color) {
+protoDocument.setFgColor = function(color) {
 	if (color == null) color='';
 	if (dynapi.ua.ns4 && color == '') color='#ffffff';
 	this.fgColor = color;
 	this.doc.fgColor = color;
 };
-p.insertChild = function(c,pos,usebp) { // Blueprint Enabled
+protoDocument.insertChild = function(c,pos,usebp) { // Blueprint Enabled
 	if (c && !c.isInline && c.parent == this) {
 		if(pos) c.setPosition(pos);
 		DynElement._flagPreCreate(c);
@@ -68,7 +68,7 @@ p.insertChild = function(c,pos,usebp) { // Blueprint Enabled
 		}
 	}
 };
-p.insertAllChildren = function(usebp,bpSrc) { // Blueprint Enabled
+protoDocument.insertAllChildren = function(usebp,bpSrc) { // Blueprint Enabled
 	var i,c,str =[''];
 	var ch=this.children;
 	for(i=0;i<ch.length;i++) {
@@ -92,7 +92,7 @@ p.insertAllChildren = function(usebp,bpSrc) { // Blueprint Enabled
 	}
 };
 
-p._create = function() {
+protoDocument._create = function() {
 	var ua=dynapi.ua;
 	this._created = true;
 	if (ua.ns4) {
@@ -126,7 +126,7 @@ p._create = function() {
 			i++;
 		}
 	}
-	
+
 	var c,ch=this.children;
 	for(i=0;i<ch.length;i++){
 		c=ch[i];
@@ -134,22 +134,22 @@ p._create = function() {
 		else if(c.isInline) c._createInline(divs);
 		else c._create();
 	};
-	this._updateAnchors();	
+	this._updateAnchors();
 
 	if(ua.ie && this._textSelectable==false) this.doc.onselectstart = dynapi.functions.Deny;
-	
+
 	if (this.captureMouseEvents) this.captureMouseEvents();
 	if (this.captureKeyEvents) this.captureKeyEvents();
 	this.invokeEvent('load');
 };
-p.destroyAllChildren = function() {
+protoDocument.destroyAllChildren = function() {
 	for (var i=0;i<this.children.length;i++) {
 		this.children[i]._destroy();
 		delete this.children[i];
 	}
 	this.children = [];
 };
-p._destroy = function() {
+protoDocument._destroy = function() {
 	this.destroyAllChildren();
 	delete DynObject.all;
 	this.elm = null;
@@ -157,7 +157,7 @@ p._destroy = function() {
 	this.frame = null;
 };
 
-p._handleResize = function() {
+protoDocument._handleResize = function() {
 	var w = this.w;
 	var h = this.h;
 	this.findDimensions();
@@ -183,8 +183,8 @@ p._handleResize = function() {
 		}
 	}
 };
-p.getCursor = function() {return (this._cursor=='pointer')? 'hand':this._cursor};
-p.setCursor = function(c) {
+protoDocument.getCursor = function() {return (this._cursor=='pointer')? 'hand':this._cursor};
+protoDocument.setCursor = function(c) {
 	if (!c) c = 'default';
 	else c=(c+'').toLowerCase();
 	if (!dynapi.ua.ie && c=='hand') c='pointer';
@@ -193,15 +193,15 @@ p.setCursor = function(c) {
 		if (this.css) this.css.cursor = c;
 	}
 };
-p.setTextSelectable = function(b){
-	this._textSelectable = b;	
+protoDocument.setTextSelectable = function(b){
+	this._textSelectable = b;
 	if(!dynapi.ua.ie) this.captureMouseEvents();
 	else{
 		if (this.doc) this.doc.onselectstart = b? dynapi.functions.Allow : dynapi.functions.Deny;
 	}
 	if (!b) this.setCursor('default');
 };
-p.showScrollBars = function(b){
+protoDocument.showScrollBars = function(b){
 	if(b==this._showScroll) return;
 	else this._showScroll=b;
 	if(dynapi.ua.ie){
@@ -218,8 +218,8 @@ p.showScrollBars = function(b){
 	}
 };
 
-p._hBuffer = [];
-p.addHTML = function(html){
+protoDocument._hBuffer = [];
+protoDocument.addHTML = function(html){
 	var elm,ua = dynapi.ua;
 	var hbuf=this._hBuffer;
 	var cnt=(this._hblc)? this._hblc++:(this._hblc=1);
@@ -242,20 +242,21 @@ p.addHTML = function(html){
 		else {
 			if(ua.ie){
 				pelm.insertAdjacentHTML("beforeEnd",html);
-				elm = pelm.children[pelm.children.length-1];				
+				elm = pelm.children[pelm.children.length-1];
 			}
 			else{
 				var r = pelm.ownerDocument.createRange();
 				r.setStartBefore(pelm);
 				var ptxt = r.createContextualFragment(html);
 				pelm.appendChild(ptxt);
-				elm = pelm.lastChild;				
+				elm = pelm.lastChild;
 			}
 		}
 	}
 };
 
 function main() {
+	//console.log("[dynapi3x] dyndocument main");
 	if (dynapi.document==null) {
 		dynapi.document = new DynDocument(dynapi.frame);
 		if (dynapi.loaded) dynapi.document._create();

@@ -8,38 +8,38 @@
 */
 
 DataSource = function(url,method,ioelement){
-	
+
 	this.EventObject=EventObject;
 	this.EventObject();
-	
+
 	this.clsid=dynapi.functions.getGUID();
 	DataSource.all[this.clsid]=this;
-	
-	this.src=null;	
+
+	this.src=null;
 	this.dataobjects={};
-	
+
 	this._resetProperties();
 
 	this.setSource(url,method,ioelement);
 };
 
 /* Prototype */
-var p = dynapi.setPrototype('DataSource','EventObject');
+var dataproto = dynapi.setPrototype('DataSource','EventObject');
 
 // Private Methods
-p._boundObject = function(o,f){
+dataproto._boundObject = function(o,f){
 	if(!f || !o) return;
 	if(!o._clsid) o._clsid=DataSource.increment();
 	this.dataobjects[o._clsid]=f;
 	o.__iDataSource=this;
 	DataSource.allDataObjects[o._clsid]=o;
 };
-p._fieldManager = function(mode,fld,value){
+dataproto._fieldManager = function(mode,fld,value){
 	var i,rt,con,fldname;
 	// set or get field values from local recordset or bound object
 	if(mode=='GET' && !this._modRec && this.record) return this.record[fld];
 	else {
-		if(mode=='SET' && this.record) this.record[fld]=value;	
+		if(mode=='SET' && this.record) this.record[fld]=value;
 		for(i in this.dataobjects){
 			if (!fld||fld==this.dataobjects[i]){
 				fldname=this.dataobjects[i];
@@ -53,10 +53,10 @@ p._fieldManager = function(mode,fld,value){
 
 				}
 			}
-		}	
+		}
 	}
 };
-p._resetProperties=function(){
+dataproto._resetProperties=function(){
 	this.record=null;
 	this.recordSet=[];
 	this.rowCount=0;			// total records
@@ -68,7 +68,7 @@ p._resetProperties=function(){
 	this.pageRIE=-1;			// ending index for a page
 	this.isConnected=false;
 };
-p._send = function(act,data,params){
+dataproto._send = function(act,data,params){
 	var r,fn,cargo={id:this.clsid,action:act,data:data};;
 	params =(params)? params:{};
 	if(!this.src||!this.isConnected) {
@@ -96,7 +96,7 @@ p._send = function(act,data,params){
 	}
 	else {
 		// HTTP GET & POST - Async
-		fn=DataSource.fnGETPOSTResponse;		
+		fn=DataSource.fnGETPOSTResponse;
 		data=(data)? data:{};
 		data.dataAction = act;
 		if(act!='fetchpage') data.dataRowIndex=this.rowIndex;
@@ -110,7 +110,7 @@ p._send = function(act,data,params){
 		else this._ticket=this.ioelement.post(this.src,data,fn,cargo);
 	}
 };
-p._unboundObject = function(o){
+dataproto._unboundObject = function(o){
 	if(!o._clsid) return;
 	delete this.dataobjects[o._clsid];
 	delete DataSource.allDataObjects[o._clsid];
@@ -119,12 +119,12 @@ p._unboundObject = function(o){
 
 // Public Methods -------------------------------
 
-p.addRecord = function(){
+dataproto.addRecord = function(){
 	this._modRec=true;
 	this._oldRowIndex=this.rowIndex;
 	this._send('addrow');
 };
-p.cancelAction = function(norefresh){
+dataproto.cancelAction = function(norefresh){
 	if (this._cancelAct=='waiting') this._cancelAct=true; // cancel submit()
 	else {
 		// cancel either editRecord() or addRecord() operation
@@ -135,7 +135,7 @@ p.cancelAction = function(norefresh){
 		if(!norefresh) this.refresh();
 	}
 };
-p.connect = function(fn,useWebService,useSync,uid,pwd){ // connects to the data source using the SODA web service
+dataproto.connect = function(fn,useWebService,useSync,uid,pwd){ // connects to the data source using the SODA web service
 	this.ws_uid=uid; this.ws_pwd=pwd;
 	this.wsSync=useSync;
 	this._resetProperties();
@@ -145,7 +145,7 @@ p.connect = function(fn,useWebService,useSync,uid,pwd){ // connects to the data 
 		fn(this,true);
 	}else if(IOElement.SODA){
 		this._callback=fn;
-		if(typeof(useWebService)=='string') {			
+		if(typeof(useWebService)=='string') {
 			// use an existing web service
 			var s,et;
 			this.webservice=this.ioelement[useWebService];
@@ -159,7 +159,7 @@ p.connect = function(fn,useWebService,useSync,uid,pwd){ // connects to the data 
 			this._callback(this,s,et);
 		}else{
 			// create a new web service
-			var me=this;		
+			var me=this;
 			var cbFn=function(ws,s,et){
 				if(s==true) {
 					me.webservice=ws;
@@ -172,23 +172,23 @@ p.connect = function(fn,useWebService,useSync,uid,pwd){ // connects to the data 
 		}
 	}
 };
-p.deleteRecord=function(){
+dataproto.deleteRecord=function(){
 	this._send('deleterow');
 };
-p.editRecord = function(){
+dataproto.editRecord = function(){
 	if(this._modRec) return;
 	this._modRec=true;
 	this._oldRowIndex=this.rowIndex;
 };
-p.getField = function(fld){return this._fieldManager('GET',fld)};
-p.getAbsolutePage = function() {return this.pageNumber};
-p.getRecordPosition = function(){return this.rowIndex};
-p.getPageCount = function() {return this.pageCount};
-p.getPageSize = function() {return this.pageSize};
-p.getPageStart = function(){return this.pageRIS};
-p.getPageEnd = function(){return this.pageRIE};
-p.getRecordCount = function(){return this.rowCount};
-p.getRecord = function(n){
+dataproto.getField = function(fld){return this._fieldManager('GET',fld)};
+dataproto.getAbsolutePage = function() {return this.pageNumber};
+dataproto.getRecordPosition = function(){return this.rowIndex};
+dataproto.getPageCount = function() {return this.pageCount};
+dataproto.getPageSize = function() {return this.pageSize};
+dataproto.getPageStart = function(){return this.pageRIS};
+dataproto.getPageEnd = function(){return this.pageRIE};
+dataproto.getRecordCount = function(){return this.rowCount};
+dataproto.getRecord = function(n){
 	var i, data={};
 	if(!this._modRec || (n!=null && n!=this.rowIndex)) data=(n==null)?this.record:this.recordSet[n];
 	else {
@@ -200,14 +200,14 @@ p.getRecord = function(n){
 	}
 	return data;
 };
-p.isEditMode = function(){return this._modRec};
-p.moveFirst = function(){
+dataproto.isEditMode = function(){return this._modRec};
+dataproto.moveFirst = function(){
 	if(this._modRec) this.cancelAction(true);
 	if(this.pageSize<=1) this._send('movefirst');
 	else{
 		var r,cp=this.pageNumber; //current page
 		var fetch=(cp!=1 || !this.recordSet.length);
-		this.rowIndex=0;		
+		this.rowIndex=0;
 		this.pageNumber=1;
 		if (fetch) this._send('fetchpage',null,{pageType:'firstpage'});
 		else {
@@ -216,7 +216,7 @@ p.moveFirst = function(){
 		}
 	}
 };
-p.moveLast = function(){
+dataproto.moveLast = function(){
 	if(this._modRec) this.cancelAction(true);
 	if(this.pageSize<=1) this._send('movelast');
 	else{
@@ -234,7 +234,7 @@ p.moveLast = function(){
 		}
 	}
 };
-p.moveNext = function(){
+dataproto.moveNext = function(){
 	if(this._modRec) this.cancelAction(true);
 	this._modRec=false;
 	if(this.pageSize<=1) this._send('movenext');
@@ -255,7 +255,7 @@ p.moveNext = function(){
 		}
 	}
 };
-p.movePrev = function(){
+dataproto.movePrev = function(){
 	if(this._modRec) this.cancelAction(true);
 	if(this.pageSize<=1) this._send('moveprev');
 	else{
@@ -275,11 +275,11 @@ p.movePrev = function(){
 		}
 	}
 };
-p.retry = function() {
+dataproto.retry = function() {
 	if(this._ticket) this.ioelement.retry(this._ticket);
 	else if(!this.isConnected) this.ioelement.retry();
 };
-p.refresh = function(fld){
+dataproto.refresh = function(fld){
 	var record=this.record;
 	if(!fld||!record) this.setRecordPosition(this.rowIndex);
 	else if(record){ 
@@ -287,7 +287,7 @@ p.refresh = function(fld){
 		this._fieldManager('SET',fld,record[fld]);
 	}
 };
-p.setAbsolutePage = function(n) {
+dataproto.setAbsolutePage = function(n) {
 	var cp=this.pageNumber;
 	var np=parseInt(n);	
 	if(np>0 && np!=cp) {
@@ -296,16 +296,16 @@ p.setAbsolutePage = function(n) {
 		this._send('fetchpage');
 	}
 };
-p.setField = function(fld,value){
+dataproto.setField = function(fld,value){
 	this._fieldManager('SET',fld,value);
 };
-p.setPageSize = function(n) {
+dataproto.setPageSize = function(n) {
 	this.pageSize=parseInt(n);
 	if(this.pageSize<1) this.pageSize=1;
 	this.pageNumber=0; // this will force moveFirst() to reload page
 	this.moveFirst();
 };
-p.setRecord = function(data){
+dataproto.setRecord = function(data){
 	var vl,con,i,fld;
 	if(!data) return;
 	this.recordSet[this.rowIndex] = this.record = data;
@@ -319,7 +319,7 @@ p.setRecord = function(data){
 	};
 	this.invokeEvent('recordchange');
 };
-p.setRecordPosition = function(n) {
+dataproto.setRecordPosition = function(n) {
 	this.rowIndex=parseInt(n);
 	if(this._modRec) this.cancelAction(true);
 	if(this.pageSize<=1) this._send('moveto');
@@ -340,14 +340,14 @@ p.setRecordPosition = function(n) {
 		}
 	}
 };
-p.setSource = function(url,method,ioelement){
+dataproto.setSource = function(url,method,ioelement){
 	this.src=url; 
 	if(method) method=(method+'').toLowerCase();
 	if(method || !this.method) this.method=(method=='post'||method=='get')? method:'post';
 	if(ioelement) this.ioelement=ioelement;
 	else if(!this.ioelement) this.ioelement=IOElement.getSharedIO();		
 };
-p.submit = function(){
+dataproto.submit = function(){
 	if (!this._modRec) this.invokeEvent('alert',null,'DataSource: Submit action canceled');
 	else {
 		var data = this.getRecord();
@@ -455,7 +455,7 @@ DataSource.IsFormElm=function(o){
 };
 DataSource.createBoundObject = function(o,getfn,setfn){
 	if (typeof(o)=='object'){
-		if(!getfn && !setfn && this.IsFormElm(o)){	// check if form element			
+		if(!getfn && !setfn && this.IsFormElm(o)){	// check if form element
 			var tp=(o.type+'').toLowerCase();
 			if(tp=='image') {
 				getfn=this._getFORMImage;
@@ -468,7 +468,7 @@ DataSource.createBoundObject = function(o,getfn,setfn){
 				setfn=this._setFORMCheckBox;
 			}else if(tp=='radio') {
 				getfn=this._getFORMRadio;
-				setfn=this._setFORMRadio;			
+				setfn=this._setFORMRadio;
 			}else if (tp=='text'||tp=='textarea'||tp=='hidden'||tp=='button'||tp=='submit'){
 				getfn=this._getFORMInput;
 				setfn=this._setFORMInput;
@@ -492,7 +492,7 @@ DataSource.boundFormElements = function(frm,ds){
 		elm=frm.elements[i];
 		elmName=elm.name;
 		elmType=elm.type;
-		if(!il[elmName]){			
+		if(!il[elmName]){
 			fld=(elm.fieldname)? elm.fieldname:elmName;
 			if(frm[elmName].length && (elmType=='radio'||elmType=='checkbox')) {
 				il[elmName]=true;
@@ -505,9 +505,9 @@ DataSource.boundFormElements = function(frm,ds){
 	}
 };
 
-// CallBack Functions 
+// CallBack Functions
 DataSource.fnProcessResponse = function(cargo,data){
-	var ds=DataSource.all[cargo.id];	
+	var ds=DataSource.all[cargo.id];
 	if(!ds) return;
 	ds._ticket=null;
 	if(cargo.action=='submitrow'){
@@ -543,7 +543,7 @@ DataSource.fnProcessResponse = function(cargo,data){
 		ds.setRecord(ds.recordSet[ds.rowIndex]);
 		ds.invokeEvent('response');
 	}else {
-		// after a deleterow reload the current page 
+		// after a deleterow reload the current page
 		if(cargo.action=='deleterow' && ds.pageSize>1) ds._send('fetchpage');
 		else{
 			ds.rowCount = ds.pageCount = data.dataRowCount;
@@ -559,9 +559,9 @@ DataSource.fnGETPOSTResponse = function(e,s){
 	var o=e.getSource();
 	if(!s){
 		cargo=o.getCargo(true);
-		ds=DataSource.all[cargo.id];	
+		ds=DataSource.all[cargo.id];
 		ds.invokeEvent('alert',null,'DataSource: Server Timeout');
-		return; 		
+		return;
 	}
 	cargo=o.getCargo();
 	data = o.getVariable('record');
@@ -574,7 +574,7 @@ DataSource.fnSODAResponse = function(e){
 	var r=o.getResponse();
 	if (r.error) {
 		cargo=o.getCargo(true);
-		ds=DataSource.all[cargo.id];	
+		ds=DataSource.all[cargo.id];
 		ds.invokeEvent('alert',null,'DataSource: Server Timeout - '+r.error.text);
 		return;
 	}

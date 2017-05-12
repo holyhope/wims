@@ -5,8 +5,6 @@
 	The DynAPI Distribution is distributed under the terms of the GNU LGPL license.
 */
 
-
-
 var jsCLevel='high';
 var jsCExclude='';
 var jsCLastFile = '';
@@ -25,25 +23,25 @@ function compress(check) {
 	var f=document.frmcompress;
 	var source=f.txtsource.value;
 	var target=f.txttarget.value;
-	
+
 	jsFileIndex = -1;
 	jsCCheck = check;
 	jsCLevel = (jsCCheck)? 'low':f.cbolevel.value;
-	jsCDebug = f.chkdebug.checked;	
-	jsCNS4 = f.chkns4.checked;	
+	jsCDebug = f.chkdebug.checked;
+	jsCNS4 = f.chkns4.checked;
 
 	jsCLastUnCompressedSize = 0;
 	jsCLastCompressedSize = 0;
 
 	// build exclude list
 	jsCExclude='';
-	if(f.chkcvs.checked) jsCExclude='CVS';	
+	if(f.chkcvs.checked) jsCExclude='CVS';
 	for(var i=0;i<f.chk.length;i++){
-		if(!f.chk[i].checked){			
+		if(!f.chk[i].checked){
 			jsCExclude+=((jsCExclude)? ',':'')+f.chk[i].value;
 		}
 	}
-	
+
 	// check for valid source and target path
 	if(!CheckFolder(source)) {
 		alert('Invalid Source Path "'+source+'"');
@@ -52,9 +50,9 @@ function compress(check) {
 		alert('Invalid Destination Path "'+target+'"');
 		return;
 	}
-	
+
 	// store javascript files in an array and copy non-javascript files into target
-	BuildFileSturcure(source,target,jsCExclude);	
+	BuildFileSturcure(source,target,jsCExclude);
 
 	document.images['bar'].style.width='0%';
 	document.images['bar'].style.visibility='visible';
@@ -73,10 +71,10 @@ function CompressNextFile(state,strText){
 	var totalFiles;
 
 	if(state=='status'){
-	
+
 		// Display status from Crunch() functions
-		f.txtstatus.value='Compiling ['+jsCLastFileName+'] - '+strText;	
-		
+		f.txtstatus.value='Compiling ['+jsCLastFileName+'] - '+strText;
+
 	}
 	else{
 		if (jsCCheck && state=="complete"){
@@ -84,17 +82,17 @@ function CompressNextFile(state,strText){
 			// a much better error checking system is needed here
 			var t='',l,exclude='{},;';
 			var ar = strText.split('\n');
-			for(var i=0;i<ar.length;i++){				
+			for(var i=0;i<ar.length;i++){
 				l=strTrim(ar[i]);
 				if (l && l.length){
 					ok=false;
 					ch=l.substr(l.length-1,1);
-					if(ar[i]!='}' && exclude.indexOf(ch)>=0) ok=true					
+					if(ar[i]!='}' && exclude.indexOf(ch)>=0) ok=true
 					if(!ok){
 						l=l.replace(/</g,'&lt;');
 						l=l.replace(/>/g,'&gt;');
 						t+=' Line: '+(i+1)+':   '+l+'<br>'
-						+' File: '+jsCLastFile+'<br><br>';					
+						+' File: '+jsCLastFile+'<br><br>';
 					}
 				}
 			}
@@ -114,19 +112,19 @@ function CompressNextFile(state,strText){
 			f.txtsizestatus.value=' Last size in bytes: Before = '+jsCLastUnCompressedSize+' / After = '+jsCLastCompressedSize+' / '
 			+' Diff = '+(jsCLastUnCompressedSize-jsCLastCompressedSize);
 		}
-		
+
 		// Move to next file
 		jsFileIndex+=1;
 		totalFiles=GetTotalFiles();
-		if(jsFileIndex<=totalFiles){	
-		
+		if(jsFileIndex<=totalFiles){
+
 			// get target and source file
 			srcFile=GetSRCFile(jsFileIndex);
 			tarFile=jsCLastFile=GetTARFile(jsFileIndex);
 
 			// update status
 			p=((jsFileIndex+1)/(totalFiles+1))*100;
-			a=jsCLastFile.split('\\');		
+			a=jsCLastFile.split('\\');
 			jsCLastFileName=a[a.length-1];
 			f.txtstatus.value='Compiling ['+jsCLastFileName+']....';
 			document.images['bar'].style.width=p+"%";
@@ -135,7 +133,7 @@ function CompressNextFile(state,strText){
 			content=OpenFile(srcFile)+'';
 			jsCLastUnCompressedSize+=content.length;
 			if(content.indexOf('\n')<0) content=content.split("\r"); // MAC
-			else content=content.split("\n"); // PC, UNIX			
+			else content=content.split("\n"); // PC, UNIX
 			content=content.join('<$Link/>');
 			if(!jsCDebug){
 				// Remove Debug conditional code blocks
@@ -143,17 +141,17 @@ function CompressNextFile(state,strText){
 				content=content.replace(/dynapi\.debug\.print\(/g,'dPrint\(');
 			}
 			if(!jsCNS4) {
-				// Remove NS4 conditinal code blocks   
+				// Remove NS4 conditinal code blocks
 				content = RemoveCondition('NS4',content);
 			}
 			content=content.replace(/\<\$Link\/\>/g,'\n');
-			
-			// Compress the file content 
-			Crunch(content,jsCLevel,CompressNextFile);		
+
+			// Compress the file content
+			Crunch(content,jsCLevel,CompressNextFile);
 
 		}
 		else {
-		
+
 			// finished compressing js files
 			f.txtstatus.value="Ready";
 			document.images['bar'].style.visibility='hidden';
@@ -167,16 +165,16 @@ function jsCheckFileState(f,pth){
 	var a,copy=2, compress=1;
 
 	f=f+'';	a=f.split(".");
-	
+
 	// check if file is a part of the debug library
 	ignore=(!jsCDebug && f.indexOf('debug')==0)
-	
+
 	// check if file is a part of the NS4 library
 	ignore=(ignore || (!jsCNS4 && f.indexOf('ns4')==0))
 
 	if(!ignore){
 		// if .js file the compress otherwise copy the file
-		if(a[a.length-1]=="js") state=compress; 
+		if(a[a.length-1]=="js") state=compress;
 		else state=copy;
 	}
 
@@ -208,7 +206,7 @@ function showScreen(b){
 	dv=document.all['dvscreenrow'];
 	if(b) dv.style.display='block';
 	else dv.style.display='none';
-	
+
 }
 
 function showHideAbout() {
@@ -224,5 +222,4 @@ function strTrim(s,dir){
 	if(dir=='<'||dir=='<>') s=s.replace(/^(\s+)/g,'');
 	if(dir=='>'||dir=='<>') s=s.replace(/(\s+)$/g,'');
 	return s;
-	
 };

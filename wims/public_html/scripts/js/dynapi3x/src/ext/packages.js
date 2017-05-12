@@ -6,15 +6,15 @@
 */
 
 var l = dynapi.library;
-var p = dynapi.library.path;
+var path = dynapi.library.path;
 l._pakLoaded=true;
 
-l.addPackage('dynapi',p);
+l.addPackage('dynapi',path);
 l.add('dynapi.library','ext/library.js');
 l.add('dynapi.debug','ext/debug.js','dynapi.functions.Image');
 
 // Functions
-l.addPackage('dynapi.functions',p+'ext/');
+l.addPackage('dynapi.functions',path+'ext/');
 l.add('dynapi.functions.Color','functions.color.js');
 l.add('dynapi.functions.Math','functions.math.js');
 l.add('dynapi.functions.Date','functions.date.js');
@@ -24,7 +24,7 @@ l.add('dynapi.functions.String','functions.string.js');
 l.add('dynapi.functions.System','functions.system.js');
 
 // API - Core Events & DynDocument
-l.addPackage('dynapi.api',p+'api/');
+l.addPackage('dynapi.api',path+'api/');
 l.add(['dynapi.api.DynEvent','dynapi.api.EventObject','dynapi.api.DynElement'],'event.js');
 l.add('dynapi.api.DynDocument','dyndocument.js','DynEvent');
 	// DynLayer
@@ -38,13 +38,13 @@ if (dynapi.ua.ns4) l.add('dynapi.api.MouseEvent','mouse_ns4.js','DynLayer');
 else if(dynapi.ua.ie) l.add('dynapi.api.MouseEvent','mouse_ie.js','DynLayer');
 else l.add('dynapi.api.MouseEvent','mouse_dom.js','DynLayer');
 	// Extensions
-l.addPackage('dynapi.api.ext',p+'api/ext/');
+l.addPackage('dynapi.api.ext',path+'api/ext/');
 l.add('dynapi.api.ext.DragEvent','dragevent.js','DynDocument');
 l.add(['dynapi.api.ext.DynKeyEvent','dynapi.api.ext.TabManager'],'dynkeyevent.js','DynLayer');
 l.add('dynapi.api.ext.DynLayerInline','dynlayer.inline.js','DynLayer');
 
 // FX
-l.addPackage('dynapi.fx',p+'fx/');
+l.addPackage('dynapi.fx',path+'fx/');
 l.add('dynapi.fx.Thread','thread.js','DynLayer');
 l.add('dynapi.fx.PathAnimation','pathanim.js','Thread');
 l.add('dynapi.fx.SlideAnimation','slideanim.js','Thread');
@@ -61,7 +61,7 @@ l.add('dynapi.fx.Swiper','swiper.js','DynLayer');
 l.add('dynapi.fx.TextAnimation','textanim.js','DynLayer');
 
 // GUI
-l.addPackage('dynapi.gui',p+'gui/');
+l.addPackage('dynapi.gui',path+'gui/');
 l.add('dynapi.gui.Graphics','graphics.js','DynLayer');
 l.add('dynapi.gui.LoadPanel','loadpanel.js','DynLayer');
 l.add('dynapi.gui.GroupManager','groupmanager.js','DynLayer');
@@ -78,7 +78,7 @@ l.add('dynapi.gui.HTMLHyperLink','htmlhyperlink.js','HTMLComponent');
 l.add('dynapi.gui.HTMLRollover','htmlrollover.js',['HTMLHyperLink','Image']);
 
 // Util
-l.addPackage('dynapi.util',p+'util/');
+l.addPackage('dynapi.util',path+'util/');
 l.add('dynapi.util.Cookie','cookie.js');
 l.add('dynapi.util.IOElement','ioelement.js','DynLayer');
 l.add('dynapi.util.IOElementSoda','ioelement.soda.js',['Math','IOElement']);
@@ -90,7 +90,6 @@ l.add('dynapi.util.StringBuffer','stringbuffer.js','DynObject');
 // Load buffered includes ---------
 if(l._buffer){
 	var i,ar=l._buffer;
-	for(i=0;i<ar.length;i++) l.include(true,ar[i]); // pass agruments true and bufferedAgruments 
+	for(i=0;i<ar.length;i++) l.include(true,ar[i]); // pass agruments true and bufferedAgruments
 	l._buffer=null;
 }
-

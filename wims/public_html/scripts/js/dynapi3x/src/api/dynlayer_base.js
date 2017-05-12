@@ -3,7 +3,7 @@
 	DynLayer Base/Common Class
 
 	The DynAPI Distribution is distributed under the terms of the GNU LGPL license.
-	
+
 	requires: dynapi.api.DynDocument
 */
 
@@ -33,7 +33,7 @@ function DynLayer(html,x,y,w,h,color,image) {
 		this._saveAnchor = false;
 		this._textSelectable = true;
 	}
-	
+
 	this.x = x;
 	this.y = y;
 	this.w = w;
@@ -43,17 +43,17 @@ function DynLayer(html,x,y,w,h,color,image) {
 	this.html = (html!=null)? html+'':null; // convert html to string
 	this.elm = null;
 	this.doc = null;
-	this.css = null; 
+	this.css = null;
 };
-var p = dynapi.setPrototype('DynLayer','DynElement');
-p._destroy = function() {
+var protoElement = dynapi.setPrototype('DynLayer','DynElement');
+protoElement._destroy = function() {
 	this._destroyAllChildren();
 	this.removeAllEventListeners();
 	if (this.elm) this._remove();
 	DynObject.all[this.id] = null;
 	this.children = null;
 	this.frame = null;
-	
+
 	this.bgImage = null;
 	this.bgColor = null;
 	this.html = null;
@@ -67,14 +67,14 @@ p._destroy = function() {
 	this._dyndoc = null;
 	this.parent = null;
 };
-p._destroyAllChildren = function() {
+protoElement._destroyAllChildren = function() {
 	for (var i=0;i<this.children.length;i++) {
 		this.children[i]._destroy();
 		delete this.children[i];
 	}
 	this.children = [];
 };
-p._remove = function() {	//! Overwritten by NS4
+protoElement._remove = function() {	//! Overwritten by NS4
 	var p=this.parent;
 	if (this.elm) {
 		//this.elm.style.visibility = "hidden";
@@ -103,11 +103,11 @@ p._remove = function() {	//! Overwritten by NS4
 	this.doc = null;
 	this.css = null;*/
 };
-p._createInserted = function(divs){
+protoElement._createInserted = function(divs){
 	DynLayer._assignElement(this,null,divs); //! NS4 will ignore divs
 	DynElement._flagCreate(this);
 };
-p.getOuterHTML=function() {	//! Overwritten by NS4
+protoElement.getOuterHTML=function() {	//! Overwritten by NS4
 	if(this._noStyle) return '<div '+this._cssClass+' id="'+this.id+'">'+this.getInnerHTML()+'</div>';
 	else {
 		var s,clip='',bgimage=' background-image:none;';
@@ -118,7 +118,7 @@ p.getOuterHTML=function() {	//! Overwritten by NS4
 		return [
 			'\n<div '+this._cssClass+' id="'+this.id+'" style="',
 			' left:',(this.x!=null? this.x : 0),'px;',
-			' top:',(this.y!=null? this.y : 0),'px;',		
+			' top:',(this.y!=null? this.y : 0),'px;',
 			((this.w!=null)? ' width:'+this.w+'px;':''),
 			((this.h!=null)? ' height:'+this.h+'px;':''),
 			((this.z)? ' z-index:'+this.z+';':''),
@@ -132,43 +132,43 @@ p.getOuterHTML=function() {	//! Overwritten by NS4
 			';">',
 			this.getInnerHTML(),
 			'</div>'
-		].join('');	
+		].join('');
 	}
 };
-p.getInnerHTML=function() {	//! Overwritten by NS4
+protoElement.getInnerHTML=function() {	//! Overwritten by NS4
 	var s = '';
 	var i,ch=this.children;
 	if (this.html!=null) s+=this.html;
-	if (this._blkBoardElm) s=('<div id="'+this.id+'_blkboard">'+s+'</div>');	
-	if(ch.length<50) for (i=0;i<ch.length;i++) s+=ch[i].getOuterHTML(); 
+	if (this._blkBoardElm) s=('<div id="'+this.id+'_blkboard">'+s+'</div>');
+	if(ch.length<50) for (i=0;i<ch.length;i++) s+=ch[i].getOuterHTML();
 	else if(ch.length){
 		var ar=['']; // speed improvement for layers with nested children
 		for (i=0;i<ch.length;i++) ar[i]=ch[i].getOuterHTML();
-		s=s+ar.join('');	
+		s=s+ar.join('');
 	}
 	return s;
 };
 
-p.getPageX = function() {return (this.isChild)? this.parent.getPageX()+(this.x||0) : this.x||0}; //! Overwritten by NS4
-p.getPageY = function() {return (this.isChild)? this.parent.getPageY()+(this.y||0) : this.y||0}; //! Overwritten by NS4
+protoElement.getPageX = function() {return (this.isChild)? this.parent.getPageX()+(this.x||0) : this.x||0}; //! Overwritten by NS4
+protoElement.getPageY = function() {return (this.isChild)? this.parent.getPageY()+(this.y||0) : this.y||0}; //! Overwritten by NS4
 
-p._cssClass = '';
-p.setClass = function(c,noInlineStyle){
+protoElement._cssClass = '';
+protoElement.setClass = function(c,noInlineStyle){
 	this._className=c;
-	if(this.css) this.css.className=cn;
+	if(this.css) this.css.className=c;
 	else {
 		this._cssClass=(c)? 'class="'+c+'"':'';
 		this._noStyle=noInlineStyle;
 	}
 };
 
-p.setVisible = function(b) { //! Overwritten by NS4
+protoElement.setVisible = function(b) { //! Overwritten by NS4
 	//if (b!=this.visible) {
 		this.visible = b;
 		if (this.css) this.css.visibility = b? "inherit" : "hidden";
 	//}
 };
-p.setSize = function(w,h) { //! Overwritten by NS4
+protoElement.setSize = function(w,h) { //! Overwritten by NS4
 	if (this._useMinSize||this._useMaxSize){
 		if (this._minW && w<this._minW) w=this._minW;
 		if (this._minH && h<this._minH) h=this._minH;
@@ -192,68 +192,73 @@ p.setSize = function(w,h) { //! Overwritten by NS4
 	if(this._hasResizeEvents) this.invokeEvent('resize');
 	return (cw||ch);
 };
-p.setMaximumSize = function(w,h){
+protoElement.setMaximumSize = function(w,h){
 	this._maxW=w; this._maxH=h;
 	this._useMaxSize=(w!=h!=null);
 	w=(this.w>w)?w:this.w;
 	h=(this.h>h)? h:this.h;
 	this.setSize(this.w,this.h);
 };
-p.setMinimumSize = function(w,h){
+protoElement.setMinimumSize = function(w,h){
 	this._minW=w; this._minH=h;
 	this._useMinSize=(w!=h!=null);
 	this.setSize(this.w,this.h);
 };
 
-p._position  = 'absolute';
-p._cssPosition = ' position:absolute';
-p.setPosition = function(p){
+protoElement._position  = 'absolute';
+protoElement._cssPosition = ' position:absolute';
+protoElement.setPosition = function(p){
 	if(p!='relative' && p!='fixed' && p!='absolute') p='absolute';
 	this._position=p;
 	if (this.css) this.css.position=p;
 	else this._cssPosition = ' position:'+p;
 };
 
-p._overflow='hidden';
-p._cssOverflow =' overflow:hidden;';
-p.getOverflow = function(){return this._overflow};
-p.setOverflow = function(s){
+protoElement._overflow='hidden';
+protoElement._cssOverflow =' overflow:hidden;';
+protoElement.getOverflow = function(){return this._overflow};
+protoElement.setOverflow = function(s){
 	if(!s) s='default';
 	this._overflow=s;
 	if(this.css) this.css.overflow=s;
 	else this._cssOverflow=' overflow:'+s+';';
 };
 
-p.getAnchor = function(){
+protoElement.getAnchor = function(){
 	if(!this.parent) return this._saveAnchors;
 	else if (this.parent._childAnchors) {
 		return this.parent._childAnchors[this.id];
 	}
 };
-p.setAnchor = function(anchor) {
+protoElement.setAnchor = function(anchor) {
+	//console.log("[dynapi3x] dynlayer_base.js // setAnchor(" + anchor + ")");
+
 	if (anchor == null) {
 		delete this._saveAnchor;
-		if (this.parent && this.parent._childAnchors && this.parent._childAnchors[this.id]) delete this.parent._childAnchors[this.id];
+		if (this.parent && this.parent._childAnchors && this.parent._childAnchors[this.id]){
+			//console.log("[dynapi3x] dynlayer_base.js // setAnchor -- deleting _childAnchors["+this.id+"]");
+			delete this.parent._childAnchors[this.id];
+		}
 		this._hasAnchor = false;
 	}
 	else if (this.parent) {
 		if (!this.parent._childAnchors) this.parent._childAnchors = {};
-		var a = this.parent._childAnchors;
-		a[this.id] = anchor;
+		var parent_anchors = this.parent._childAnchors;
+		parent_anchors[this.id] = anchor;
 		this.parent._updateAnchor(this.id);
 		this._hasAnchor = this.parent._hasChildAnchors = true;
 	}
 	else this._saveAnchor = anchor;
 };
-p.setX=function(x) {this.setLocation(x,null)};
-p.setY=function(y) {this.setLocation(null,y)};
-p.getX=function() {return this.x||0};
-p.getY=function() {return this.y||0};
-p.setPageX = function(x) {this.setPageLocation(x,null)};
-p.setPageY = function(y) {this.setPageLocation(null,y)};
-p.getVisible=function() {return this.visible};
-p.getZIndex=function() {return this.z};
-p.setZIndex=function(z) {
+protoElement.setX=function(x) {this.setLocation(x,null)};
+protoElement.setY=function(y) {this.setLocation(null,y)};
+protoElement.getX=function() {return this.x||0};
+protoElement.getY=function() {return this.y||0};
+protoElement.setPageX = function(x) {this.setPageLocation(x,null)};
+protoElement.setPageY = function(y) {this.setPageLocation(null,y)};
+protoElement.getVisible=function() {return this.visible};
+protoElement.getZIndex=function() {return this.z};
+protoElement.setZIndex=function(z) {
 	if (typeof(z)=="object") {
 		if (z.above) this.z = z.above.z + 1;
 		else if (z.below) this.z = z.below.z - 1;
@@ -267,23 +272,23 @@ p.setZIndex=function(z) {
 	else this.z = z;
 	if (this.css) this.css.zIndex = this.z;
 };
-p.getHTML = function() {return this.html};
-p.setWidth=function(w) {this.setSize(w,null)};
-p.setHeight=function(h) {this.setSize(null,h)};
-p.getWidth=function() {return this.w||0};
-p.getHeight=function() {return this.h||0};
-p.getBgImage=function() {return this.bgImage};
-p.getBgColor=function() {return this.bgColor};
-p.setBgColor=function(c) {	//! Overwritten by NS4
+protoElement.getHTML = function() {return this.html};
+protoElement.setWidth=function(w) {this.setSize(w,null)};
+protoElement.setHeight=function(h) {this.setSize(null,h)};
+protoElement.getWidth=function() {return this.w||0};
+protoElement.getHeight=function() {return this.h||0};
+protoElement.getBgImage=function() {return this.bgImage};
+protoElement.getBgColor=function() {return this.bgColor};
+protoElement.setBgColor=function(c) {	//! Overwritten by NS4
 	if (c==null) c = 'transparent';
 	this.bgColor = c;
 	if (this.css) this.css.backgroundColor = c;
 };
-p.setBgImage=function(path) {	//! Overwritten by NS4
+protoElement.setBgImage=function(path) {	//! Overwritten by NS4
 	this.bgImage=path;
 	if (this.css) this.css.backgroundImage='url('+path+')';
 };
-p.setClip=function(clip) {	//! Overwritten by NS4
+protoElement.setClip=function(clip) {	//! Overwritten by NS4
 	var cc=this.getClip();
 	for (var i=0;i<clip.length;i++) if (clip[i]==null) clip[i]=cc[i];
 	this.clip=clip;
@@ -291,7 +296,7 @@ p.setClip=function(clip) {	//! Overwritten by NS4
 	var c=this.css.clip;
 	this.css.clip="rect("+clip[0]+"px "+clip[1]+"px "+clip[2]+"px "+clip[3]+"px)";
 };
-p.getClip=function() {	//! Overwritten by NS4
+protoElement.getClip=function() {	//! Overwritten by NS4
 	if (this.css==null || !this.css.clip) return [0,0,0,0];
 	var c = this.css.clip;
 	if (c) {
@@ -304,19 +309,19 @@ p.getClip=function() {	//! Overwritten by NS4
 	}
 };
 /*
-p.getElmWidth = function(){	
+protoElement.getElmWidth = function(){
 	var w = parseInt(this.css.width);
 	if(isNaN(w)) w=this.getContentWidth();
 	return w;
 };
-p.getElmHeight = function(){
+protoElement.getElmHeight = function(){
 	var h = parseInt(this.css.height);
 	alert(this.css.height)
-	if(isNaN(h)) h=this.getContentWidth();	
+	if(isNaN(h)) h=this.getContentWidth();
 	return h;
 };
 */
-p.slideTo = function(endx,endy,inc,speed) {
+protoElement.slideTo = function(endx,endy,inc,speed) {
 	if (!this._slideActive) {
 		var x = this.x||0;
 		var y = this.y||0;
@@ -332,11 +337,11 @@ p.slideTo = function(endx,endy,inc,speed) {
 		this._slide(dx,dy,endx,endy,num,this.x,this.y,1,(speed||20));
 	}
 };
-p.slideStop = function() {
+protoElement.slideStop = function() {
 	this._slideActive = false;
 	//this.invokeEvent('pathcancel');
 };
-p._slide = function(dx,dy,endx,endy,num,x,y,i,speed) {
+protoElement._slide = function(dx,dy,endx,endy,num,x,y,i,speed) {
 	if (!this._slideActive) this.slideStop();
 	else if (i++ < num) {
 		this.invokeEvent('pathrun');

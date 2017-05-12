@@ -7,22 +7,24 @@
 
 function DynObject() {
 	this.id = "DynObject"+DynObject._c++;
+	//console.log("[dynapi3x] DynObject -- append " + this.id + " #####");
 	DynObject.all[this.id] = this;
 };
-var p = DynObject.prototype;
-p.getClassName = function() {return this._className};
-p.getClass = function() {return dynapi.frame[this._className]};
-p.isClass = function(n) {return DynObject.isClass(this._className,n)};
-p.addMethod = function(n,fn) {this[n] = fn};
-p.removeMethod = function(n) {this[n] = null};
-p.setID = function(id,isInline,noImports) {
+var dynproto = DynObject.prototype;
+dynproto.getClassName = function() {return this._className};
+dynproto.getClass = function() {return dynapi.frame[this._className]};
+dynproto.isClass = function(n) {return DynObject.isClass(this._className,n)};
+dynproto.addMethod = function(n,fn) {this[n] = fn};
+dynproto.removeMethod = function(n) {this[n] = null};
+dynproto.setID = function(id,isInline,noImports) {
 	if (this.id) delete DynObject.all[this.id];
 	this.id = id;
 	this.isInline=isInline;
 	this._noInlineValues=noImports;
 	DynObject.all[this.id] = this;
 };
-p.toString = function() {return "DynObject.all."+this.id};
+
+dynproto.toString = function() {return "DynObject.all."+this.id};
 DynObject.all = [];
 DynObject._c = 0;
 DynObject.isClass = function(cn,n) {
@@ -38,9 +40,9 @@ DynObject.isClass = function(cn,n) {
 function _UserAgent() {
 	var b = navigator.appName;
 	var v = this.version = navigator.appVersion;
-	var ua = navigator.userAgent.toLowerCase();	
+	var ua = navigator.userAgent.toLowerCase();
 	this.v = parseInt(v);
-	this.safari = ua.indexOf("safari")>-1;	// always check for safari & opera 
+	this.safari = ua.indexOf("safari")>-1;	// always check for safari & opera
 	this.opera = ua.indexOf("opera")>-1;	// before ns or ie
 	this.ns = !this.opera && !this.safari && (b=="Netscape");
 	this.ie = !this.opera && (b=="Microsoft Internet Explorer");
@@ -72,7 +74,7 @@ function _UserAgent() {
 	this.other = (!this.win32 && !this.mac);
 	this.supported = (this.def||this.ns4||this.ns6||this.opera)? true:false;
 	this.broadband=false;
-	this._bws=new Date; // bandwidth timer start 
+	this._bws=new Date; // bandwidth timer start
 };
 
 function DynAPIObject() {
@@ -98,6 +100,7 @@ function DynAPIObject() {
 	this.library.setPath = function(p) {o.library.path = p};
 
 	f.onload = function() {
+		//dynapi.debug.print('f.onLoad');
 		o.loaded = true;
 		if (!o.ua.supported) return alert('Unsupported Browser. Exiting.');
 		if (o.library._create) o.library._create();  // calls dynapi._onLoad() after loading necessary files
@@ -113,19 +116,28 @@ function DynAPIObject() {
 };
 p = DynAPIObject.prototype = new DynObject;
 
-p.onLoad = function(f) {
+dynproto.onLoad = function(f) {
 	if (typeof(f)=="function") {
-		if (!this.loaded) this._loadfn[this._loadfn.length] = f;
-		else f();
+		if (!this.loaded)
+		{
+			//dynapi.debug.print('dynproto.onLoad : this.loaded=false');
+			this._loadfn[this._loadfn.length] = f;
+		}
+		else
+		{
+			//dynapi.debug.print('dynproto.onLoad : this.loaded=true');
+			f();
+		}
 	}
 };
-p._onLoad = function(f) {
+dynproto._onLoad = function(f) {
 	for (var i=0;i<this._loadfn.length;i++) this._loadfn[i]();
+	//dynapi.debug.print('dynproto._onLoad');
 };
-p.onUnload = function(f) {
+dynproto.onUnload = function(f) {
 	if (typeof(f)=="function") this._unloadfn[this._unloadfn.length] = f;
 };
-p.setPrototype = function(sC,sP) {
+dynproto.setPrototype = function(sC,sP) {
 	var c = this.frame[sC];
 	var p = this.frame[sP];
 	if ((!c || !p) && this.ua.ns4 && this.library && this.library.elm) {
@@ -143,7 +155,7 @@ p.setPrototype = function(sC,sP) {
 var dynapi = new DynAPIObject();
 
 dynapi.ximages={'__xCnTer__':0}; // eXtensible Images
-p._imageGetHTML=function(){
+dynproto._imageGetHTML=function(){
 	t= '<img src="'+this.src+'"'
 	+((this.width)? ' width="'+this.width+'"':'')
 	+((this.height)? ' height="'+this.height+'"':'')
@@ -158,9 +170,9 @@ dynapi.functions = {
         else for (var i=0; i<array.length; i++) {
 			if (array[i]==which) {
 				if(array.splice) array.splice(i,1);
-				else {	
+				else {
 					for(var x=i; x<array.length-1; x++) array[x]=array[x+1];
-         			array.length -= 1; 
+         			array.length -= 1;
          		}
 				break;
 			}
@@ -265,27 +277,27 @@ function DynAPILibrary() {
 p = dynapi.setPrototype('DynAPILibrary','DynObject');
 
 // can return a path specific to a package, eg. dynapi.library.getPath('dynapi.api') returns '/src/dynapi/api/'
-p.getPath = function(pkg) {
+dynproto.getPath = function(pkg) {
 	if (!pkg) pkg = 'dynapi';
 	if (this.packages[pkg]) return this.packages[pkg]._path;
 	return null;
 };
 
 // set dynapi path
-p.setPath = function(p) {
+dynproto.setPath = function(p) {
 	this.path = p;
 
 	// to-do: rearrange so add()'s can be done before setPath
 	//        full paths will then be determined when queued
 	//        need an extra argument on addPackage to specify whether the path is relative to this.path or not
 	// OR:    add functionality so that these package definitions can be loaded/included on the fly
-	
+
 	// load ext/packages.js
 	document.write('<script type="text/javascript" language="JavaScript" src="'+p+'ext/packages.js"><\/script>');
 };
 
 // adds package(s) to the library
-p.addPackage = function(pkg, path) {
+dynproto.addPackage = function(pkg, path) {
 	var ps;
 	if (pkg.indexOf('.')) ps = pkg.split('.');
 	else ps = [pkg];
@@ -302,7 +314,7 @@ p.addPackage = function(pkg, path) {
 };
 
 // add object(s) to the library
-p.add = function(name, src, dep, relSource) {
+dynproto.add = function(name, src, dep, relSource) {
 	var objects = typeof(name)=="string"? [name] : name;
 	dep = (!dep)? [] : typeof(dep)=="string"? [dep] : dep;
 
@@ -336,18 +348,18 @@ p.add = function(name, src, dep, relSource) {
 	return s;
 };
 // adds a dependency, whenever object "n" is loaded it will load object "d" beforehand
-p.addBefore = function(n, d) {
+dynproto.addBefore = function(n, d) {
 	var s = this.objects[n];
 	if (s && this.objects[d]) s.dep[s.dep.length] = d;
 };
 // adds a reverse dependency, whenever object "n" is loaded it will load object "r" afterword
-p.addAfter = function(n, r) {
+dynproto.addAfter = function(n, r) {
 	var s = this.objects[n];
 	if (s && this.objects[r]) s.rdep[s.rdep.length] = r;
 };
 
 // returns a list of js source filenames to load
-p._queue = function(n, list, force) {
+dynproto._queue = function(n, list, force) {
 	var na=[], names=[],o;
 	if (list==null) list = [];
 	if (typeof(n)=="string") na = [n];
@@ -382,7 +394,7 @@ p._queue = function(n, list, force) {
 };
 
 // determines whether to queue the script this object is in
-p._queueObject = function(n, f) {
+dynproto._queueObject = function(n, f) {
 	if (n.indexOf('.')) {
 		var pkg = n.substring(0,n.lastIndexOf('.'));
 		if (this.packages[pkg]) n = n.substring(n.lastIndexOf('.')+1);
@@ -403,11 +415,11 @@ p._queueObject = function(n, f) {
 };
 
 // writes the <script> tag for the object
-p.include = function() { 
+dynproto.include = function() {
 	var a = arguments;
 	if (a[0]==true) a=a[1]; // arguments used ONLY by packages.js
 	// buffer includes until packages(.js) are loaded
-	if (!this._pakLoaded) { 
+	if (!this._pakLoaded) {
 		if(!this._buffer) this._buffer=[];
 		this._buffer[this._buffer.length]=a;
 		return;
@@ -423,7 +435,7 @@ p.include = function() {
 		}
 	}
 };
-p.load = p.reload = p.loadScript = p.reloadScript = function(n) {
+dynproto.load = dynproto.reload = dynproto.loadScript = dynproto.reloadScript = function(n) {
 	dynapi.debug.print('Warning: dynapi.library load extensions not included');
 };
 dynapi.library = new DynAPILibrary();

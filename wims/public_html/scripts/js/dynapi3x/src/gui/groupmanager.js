@@ -2,11 +2,10 @@
 function GroupManager(){
 	this.EventObject=EventObject
 	this.EventObject();
-	
+
 	this.x = this.y = null;
 	this.w = this.h = null;
 	this._objects={};
-	
 };
 GroupManager._NewSetLocation = function(x,y){
 	var byX=x-this.x;
@@ -53,7 +52,7 @@ p.add = function(dlyr,unlockX,unlockY){
 	dlyr._grpUY = unlockY;
 	dlyr._OldDynGMSetLocation = dlyr.setLocation;
 	dlyr.setLocation = GroupManager._NewSetLocation;
-	if (this.x==dlyr.x) this.w+=dlyr.w;	
+	if (this.x==dlyr.x) this.w+=dlyr.w;
 	this._objects[dlyr.id]=dlyr;
 	this._setSize(dlyr);
 	return dlyr;

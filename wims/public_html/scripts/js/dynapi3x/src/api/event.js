@@ -14,14 +14,14 @@ function DynEvent(type,src) {
 	this.bubbleChild = null;
 	this.defaultValue = true;
 };
-var p = DynEvent.prototype; 
-p.getType = function() {return this.type};
-p.getSource = function() {return this.src};
-p.getOrigin=function() {return this.origin};
-p.stopPropagation = function() {this.propagate = false};
-p.preventBubble = function() {this.bubble = false};
-p.preventDefault = function() {this.defaultValue = false};
-p.getBubbleChild = function() {return this.bubbleChild};
+var protoEvent = DynEvent.prototype;
+protoEvent.getType = function() {return this.type};
+protoEvent.getSource = function() {return this.src};
+protoEvent.getOrigin=function() {return this.origin};
+protoEvent.stopPropagation = function() {this.propagate = false};
+protoEvent.preventBubble = function() {this.bubble = false};
+protoEvent.preventDefault = function() {this.defaultValue = false};
+protoEvent.getBubbleChild = function() {return this.bubbleChild};
 
 function EventObject() {
 	this.DynObject = DynObject;
@@ -30,11 +30,11 @@ function EventObject() {
 };
 EventObject._SubClass={};
 
-p = dynapi.setPrototype('EventObject','DynObject');
-p.addEventListener = function(el) {
+protoEvent = dynapi.setPrototype('EventObject','DynObject');
+protoEvent.addEventListener = function(el) {
 	if (el) {
 		for (var i=0;i<this._listeners.length;i++) if (this._listeners[i]==el) return;
-		this._listeners[this._listeners.length] = el;		
+		this._listeners[this._listeners.length] = el;
 		// Use onCreate() and onPrecreate() function for create events
 		this._hasContentEvents=(el['oncontentchange'])? true:this._hasContentEvents;
 		this._hasLocationEvents=(el['onlocationchange'])? true:this._hasLocationEvents;
@@ -47,31 +47,31 @@ p.addEventListener = function(el) {
 			this._hasMouseEvents = this._hasMouseEvents||(el.onmousedown || el.onmouseup || el.onmouseover || el.onmouseout || el.onclick || el.ondblclick);
 			if (this._created && !this._hasMouseEvents) this.captureMouseEvents();
 		}
-		if (this.captureKeyEvents) 
+		if (this.captureKeyEvents)
 			if (this._created && !this._hasKeyEvents && (el.onkeydown || el.onkeyup || el.onkeypress)) this.captureKeyEvents();
 	}
 };
-p.removeEventListener = function(el) {
+protoEvent.removeEventListener = function(el) {
 	if (el) {
 		DynAPI.functions.removeFromArray(this._listeners, el, false);
 		if (!this._listeners.length && this.releaseMouseEvents && this.getClassName()!='DynDocument') this.releaseMouseEvents();
 		if (!this._listeners.length && this.releaseKeyEvents && this.getClassName()!='DynDocument') this.releaseKeyEvents();
 	}
 };
-p.removeAllEventListeners = function() {
+protoEvent.removeAllEventListeners = function() {
 	this._listeners = [];
 };
-p.invokeEvent = function(type,e,args) {
+protoEvent.invokeEvent = function(type,e,args) {
 	if (!e) e = new DynEvent(type,this);
 	e.src = this;
 	e.type = type;
-	
+
 	// Check for subclassing
 	var clsFn=EventObject._SubClass[this+'_'+type];
 	if(clsFn) {
 		if (clsFn(e,args)==false) return;
 	};
-	
+
 	if (this._listeners.length) for (var i=0;i<this._listeners.length;i++) {
 		if (this._listeners[i]["on"+type]) this._listeners[i]["on"+type](e,args);
 		if (!e.propagate) break;
@@ -107,12 +107,12 @@ function DynElement() {
 DynElement._flagCreate = function(c){ // much faster than using DynElemnt._flagEvent
 	var ch=c.children;
 	c._created = true;
-	if (c._hasCreateFn) c._flagCreateEvent('create');		
+	if (c._hasCreateFn) c._flagCreateEvent('create');
 	for (var i=0; i<ch.length; i++) this._flagCreate(ch[i]);
 };
 DynElement._flagPreCreate = function(c){
 	var ch=c.children;
-	if (c._hasPCreateFn) c._flagCreateEvent('precreate');		
+	if (c._hasPCreateFn) c._flagCreateEvent('precreate');
 	for (var i=0; i<ch.length; i++) this._flagPreCreate(ch[i]);
 };
 DynElement._flagEvent = function(c,type) {
@@ -120,8 +120,9 @@ DynElement._flagEvent = function(c,type) {
 	c.invokeEvent(type);
 	for (var i=0; i<ch.length; i++) this._flagEvent(ch[i],type);
 };
-p = dynapi.setPrototype('DynElement','EventObject');
-p.addChild = function(c,alias,inlineID) {
+
+protoEvent = dynapi.setPrototype('DynElement','EventObject');
+protoEvent.addChild = function(c,alias,inlineID) {
 	if (!c) return dynapi.debug.print("Error: no object sent to [DynLayer].addChild()");
 	if (c.isChild) c.removeFromParent();
 	c.isChild = true;
@@ -140,7 +141,7 @@ p.addChild = function(c,alias,inlineID) {
 	this.children[this.children.length] = c;
 	return c;
 };
-p.removeChild = function(c) {
+protoEvent.removeChild = function(c) {
 	var l = this.children.length;
 	for (var i=0;i<l && this.children[i]!=c;i++);
 	if (i!=l) {
@@ -154,11 +155,11 @@ p.removeChild = function(c) {
 		this.children.length--;
 	}
 };
-p.deleteChild = function(c) {
+protoEvent.deleteChild = function(c) {
 	c.removeFromParent();
 	c._delete();
 };
-p.deleteAllChildren = function() {
+protoEvent.deleteAllChildren = function() {
 	var l = this.children.length;
 	for(var i=0;i<l;i++) {
 		this.children[i].deleteFromParent();
@@ -166,16 +167,16 @@ p.deleteAllChildren = function() {
 	}
 	this.children = [];
 };
-p.deleteFromParent = function () {
+protoEvent.deleteFromParent = function () {
 	if (this.parent) this.parent.deleteChild(this);
 };
-p.removeFromParent = function () {
+protoEvent.removeFromParent = function () {
 	if (this.parent) this.parent.removeChild(this);
 };
-p._create = p._createInLine = p._createInserted = p._remove = p._delete = p._destroy = dynapi.functions.Null;
+protoEvent._create = protoEvent._createInLine = protoEvent._createInserted = protoEvent._remove = protoEvent._delete = protoEvent._destroy = dynapi.functions.Null;
 
-p.getChildren = function() {return this.children};
-p.getAllChildren = function() {
+protoEvent.getChildren = function() {return this.children};
+protoEvent.getAllChildren = function() {
 	var ret = [];
 	var temp;
 	var l = this.children.length;
@@ -186,7 +187,7 @@ p.getAllChildren = function() {
 	}
 	return ret;
 };
-p.getParents = function(l) {
+protoEvent.getParents = function(l) {
 	if (l==null) l = [];
 	if (this.parent) {
 		l[l.length] = this.parent;
@@ -194,7 +195,7 @@ p.getParents = function(l) {
 	}
 	return l;
 };
-p.isParentOf = function(c) {
+protoEvent.isParentOf = function(c) {
 	if (c) {
 		var p = c.getParents();
 		for (var i=0;i<p.length;i++) {
@@ -203,12 +204,12 @@ p.isParentOf = function(c) {
 	}
 	return false;
 };
-p.isChildOf = function(p) {
+protoEvent.isChildOf = function(p) {
 	if (!p) return false;
 	return p.isParentOf(this);
 };
 // New onPreCreate() and onCreate() callback functions
-p.onCreate = function(fn){
+protoEvent.onCreate = function(fn){
 	if(!fn) return;
 	if(!this._cfn){this._fn=0;this._cfn=[];}
 	var s='create'+this._fn++;
@@ -216,7 +217,7 @@ p.onCreate = function(fn){
 	this._hasCreateFn=true;
 	this[s]=fn;
 };
-p.onPreCreate = function(fn){
+protoEvent.onPreCreate = function(fn){
 	if(!fn) return;
 	if(!this._cfn){this._fn=0;this._cfn=[];}
 	var s='precreate'+this._fn++;
@@ -224,23 +225,23 @@ p.onPreCreate = function(fn){
 	this._hasPCreateFn=true;
 	this[s]=fn;
 };
-p._flagCreateEvent = function(t){
-	for(var i in this._cfn){ 
+protoEvent._flagCreateEvent = function(t){
+	for(var i in this._cfn){
 		if(this._cfn[i]==t) this[i]();
 	};
 };
 
-p.updateAnchor = function() {
+protoEvent.updateAnchor = function() {
 	this.parent._updateAnchor(this.id);
 };
-p._updateAnchor = function(id) {
+protoEvent._updateAnchor = function(id) {
 	if (!id) return;
 	var dlyr = DynObject.all[id];
 	var a = this._childAnchors[id];
 	var tw = this.w;
 	var th = this.h;
 	if (a==null || (tw==null && th==null)) return;
-	
+
 	// anchoring/docking
 	var fn=dynapi.functions;
 	var padX=0,padY=0;
@@ -258,9 +259,9 @@ p._updateAnchor = function(id) {
 	}
 	if(a.rightA) {
 		anc=(a.bottomA==a.rightA && anc)? anc:fn.getAnchorLocation(a.rightA,this);
-		if(anc) tw=tw-(this.w-anc.x);				
+		if(anc) tw=tw-(this.w-anc.x);
 	}
-	
+
 	var aleft=(tw>0 && a.left && typeof(a.left)=='string')? tw*(parseInt(a.left)/100):a.left;
 	var aright=(tw>0 && a.right && typeof(a.right)=='string')? tw*(parseInt(a.right)/100):a.right;
 	var atop=(th>0 && a.top && typeof(a.top)=='string')? th*(parseInt(a.top)/100):a.top;
@@ -285,7 +286,7 @@ p._updateAnchor = function(id) {
 		if (aleft!=null) w = (tw - aright) - aleft;
 		else x = (tw - dlyrWidth) - aright;
 		if(tw<=0 && x<0) x=null; // ns4 needs x>=0
-	}	
+	}
 	if (a.stretchV!=null) {
 		if(typeof(a.stretchV)!='string') h=a.stretchV;
 		else {
@@ -293,7 +294,7 @@ p._updateAnchor = function(id) {
 			else h = th*(parseInt(a.stretchV)/100);
 		}
 		dlyrHeight=h;
-	}	
+	}
 	if (a.centerV!=null) {
 		y = Math.ceil(th/2 - dlyrHeight/2 + a.centerV);
 	}else if (abottom!=null) {
@@ -304,19 +305,27 @@ p._updateAnchor = function(id) {
 	if(padX) {x=(x)? x:0;x+=padX}
 	if(padY) {y=(y)? y:0;y+=padY}
 
-	var tmp=dlyr._hasAnchor;	
+	var tmp=dlyr._hasAnchor;
 	dlyr._hasAnchor=false; // ignore anchor updates of this layer
 	if(x!=null||y!=null) dlyr.setLocation(x,y);
 	if(w!=null||h!=null) dlyr.setSize(w,h);
 	dlyr._hasAnchor = tmp; // useful for preventing stack overflow
 };
-p._updateAnchors = function() {
+protoEvent._updateAnchors = function() {
 	var tw = this.w;
 	var th = this.h;
 	if (tw==null && th==null) return;
-	for (id in this._childAnchors) this._updateAnchor(id);
-};
+	//console.log("[dynapi3x] _updateAnchor | THIS is a "+ this.getClassName());
+	// 'this' doit etre un sous-type de DynObject a priori
 
+	var anchors_ids = Object.keys(this._childAnchors);
+	for (i = 0; i < anchors_ids.length; i++) {
+		id = anchors_ids[i];
+		console.log("DEBUG_ID = "+ id);
+		this._updateAnchor(id);
+	}
+
+};
 
 // Bandwidth timer stop
 var ua=dynapi.ua; ua._bwe=new Date;

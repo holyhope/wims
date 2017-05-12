@@ -10,7 +10,7 @@
 function TextAnimation(x,y,text,animBy,dlyr){
 	this.EventObject = EventObject;
 	this.EventObject();
-	
+
 	this._chars=[];
 	this._lyrPool=[];
 	this._text=text;
@@ -21,7 +21,7 @@ function TextAnimation(x,y,text,animBy,dlyr){
 	this.setLocation(x,y);
 	this.animateBy(animBy);
 	this.visible=true;
-	
+
 	var me=this; // use delegate "me"
 	var fn=function(){
 		me._created=true;
@@ -102,7 +102,7 @@ p._split = function(){
 			t=t.replace(/\s/g,' &nbsp; ')
 			ar=t.split(' ');
 		}
-		else {	
+		else {
 			ar=t.split('');
 		}
 		for(i=0;i<ar.length;i++){
@@ -114,7 +114,7 @@ p._split = function(){
 	}
 	if(lyr) lyr.addEventListener(TextAnimation._tiggerEvents);
 };
-p.animateBy=function(s,delay){	// all, letter, word  
+p.animateBy=function(s,delay){	// all, letter, word
 	this._animBy=s||this._animBy||'letter';
 	this.setDelay(delay);
 	this._split();
@@ -218,7 +218,7 @@ p._startBounce = function(i,h){
 	}
 	else if(i==(c.length-1)) {
 		this._exec(l+'.invokeEvent("pathfinish")',1);
-	}	
+	}
 };
 // Fade In
 p.fadeIn = function(inc,ms){
@@ -246,7 +246,7 @@ p.flyFrom = function(x,y,inc,ms){
 		,i);
 		l.setLocation(x,y);
 	}
-	this._inUse++;	
+	this._inUse++;
 };
 p.zoomText = function(from,to,inc,ms){
 	var i,l,c;
@@ -283,9 +283,8 @@ p._startZoom= function(i){
 	if(from!=to) l._zTmr=window.setTimeout(this+'._startZoom('+i+')',l._zMs);
 	else if(i==(this._chars.length-1)) {
 		this._exec(l+'.invokeEvent("pathfinish")',1);
-	}	
+	}
 };
-
 
 // to-do:
 p.wave = function(){};
