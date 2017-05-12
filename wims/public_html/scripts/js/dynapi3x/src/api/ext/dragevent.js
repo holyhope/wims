@@ -12,12 +12,12 @@ function DragEvent(type,src) {
 	this.DynEvent()
 	this.isDragging = false;
 }
-var p = dynapi.setPrototype('DragEvent','MouseEvent');
-p.getX=function() {return this.x};
-p.getY=function() {return this.y};
-p.getPageX=function() {return this.pageX};
-p.getPageY=function() {return this.pageY};
-p.cancelDrag=function() {this.isDragging=false};
+var protoDrag = dynapi.setPrototype('DragEvent','MouseEvent');
+protoDrag.getX=function() {return this.x};
+protoDrag.getY=function() {return this.y};
+protoDrag.getPageX=function() {return this.pageX};
+protoDrag.getPageY=function() {return this.pageY};
+protoDrag.cancelDrag=function() {this.isDragging=false};
 
 //DragEvent.dragPlay=0;
 
@@ -33,12 +33,12 @@ DragEvent.lyrListener = {
 DragEvent.startDrag = function(e,dlyr) {
 	var origdlyr = dlyr;
 	if (!dlyr) dlyr = e.getSource();
-	
+
 	if (dynapi.ua.dom) {
 		dlyr.elm.ondragstart = function() { return false; }
 		dlyr.elm.onselectstart = function() { return false; }
 	}
-	
+
 	// Initialize dragEvent object
 	var de=DragEvent.dragevent;
 	//de.bubble = true;
@@ -57,7 +57,7 @@ DragEvent.startDrag = function(e,dlyr) {
 	e.preventBubble();
 
 	//dlyr._dyndoc.addEventListener(DragEvent.docListener);
-	
+
 	dlyr.invokeEvent("dragstart",de);
 }
 
@@ -66,14 +66,12 @@ DragEvent.docListener = {
 		//var x = e.getPageX();
 		//var y = e.getPageY();
 		//dynapi.debug.status('drag move '+e.x+' '+e.y);
-		
+
 		var de = DragEvent.dragevent;
 		if (de && de.isDragging) {
-			
-			
 			var lyr = de.src;
 			if (!lyr) return;
-		
+
 			// DS: what is this?
 			// Detect if we should start the drag
 			/*if(DragEvent.dragPlay==0 || (Math.abs(de.pageX-e.getPageX())-DragEvent.dragPlay>0) || (Math.abs(de.pageY-e.getPageY())-DragEvent.dragPlay>0)) {
@@ -87,22 +85,22 @@ DragEvent.docListener = {
 				lyr.invokeEvent("mouseup");
 				return;
 			}*/
-		
+
 			// Properties
 			de.type="dragmove";
 			de.pageX=e.getPageX();
 			de.pageY=e.getPageY();
-		
+
 			/*if (DragEvent.stopAtDocumentEdge) {
 				if (de.pageX<0) de.pageX = 0;
 				if (de.pageY<0) de.pageY = 0;
 				if (de.pageX>DynAPI.document.w) de.pageX = DynAPI.document.w;
 				if (de.pageY>DynAPI.document.h) de.pageY = DynAPI.document.h;
 			}*/
-			
+
 			var x=de.pageX-de.parentPageX-de.x;
 			var y=de.pageY-de.parentPageY-de.y;
-		
+
 			// Respect boundary, if any
 			if (lyr._dragBoundary) {
 				var dB = lyr._dragBoundary;
@@ -131,11 +129,11 @@ DragEvent.docListener = {
 			// Move dragged layer
 			lyr.setLocation(x,y);
 			lyr.invokeEvent("dragmove",de);
-			
+
 			if (lyr._dragStealth==false && lyr.parent.DragOver) {
 				lyr.parent.DragOver(lyr);
 			}
-			
+
 			e.preventDefault();
 			e.preventBubble();
 		}
@@ -147,7 +145,7 @@ DragEvent.docListener = {
 		if (!de) return;
 		var lyr=de.src;
 		if (!lyr) return;
-	
+
 		if (!de.isDragging) {
 	    	de.type="dragend";
     		de.src=null;
@@ -155,20 +153,20 @@ DragEvent.docListener = {
 			return;
 		}
 		if (dynapi.ua.ie) lyr.doc.body.onselectstart = null;
-	
+
 		// Avoid click for the dragged layer ( with MouseEvent addition )
 		if (dynapi.ua.def) dynapi.wasDragging=true;
-		if (lyr.parent.DragDrop) lyr.parent.DragDrop(lyr); 
+		if (lyr.parent.DragDrop) lyr.parent.DragDrop(lyr);
 		// Properties for the event
 		de.type="dragend";
 		de.isDragging=false;
 		lyr.invokeEvent("dragend",de);
-	
+
 		// Clean drag stuff
 		de.src=null;
 		//e.preventDefault();
 		e.preventBubble();
-		
+
 		//lyr._dyndoc.removeEventListener(DragEvent.docListener);
 	}
 };
@@ -206,53 +204,53 @@ DynLayer.setDragMode = function(b,boundry){
 	if(boundry)DragEvent.setDragBoundary(this,boundry);
 	if (b) DragEvent.enableDragEvents(this);
 	else DragEvent.disableDragEvents(this);
-	return true;	
+	return true;
 };
 DynLayer.prototype.setDragOverStealthMode = function(b){
 	this._dragStealth=(b)? true:false;
 };
 // Enable ondrop event
-DynElement.prototype.DragDrop=function(s){ 
+DynElement.prototype.DragDrop=function(s){
 	if (!this.children.length>0) return false;
 	var ch,chX,sX,sY;
-	for (var i in this.children) { 
-		ch=this.children[i]; 
-		if(ch._hasDragEvents){
-			chX=ch.getPageX();
-			chY=ch.getPageY(); 
-			sX=s.getPageX();
-			sY=s.getPageY(); 
-			if (chX<sX && chX+ch.w>sX+s.w && chY<sY && chY+ch.h>sY+s.h) { 
-				if (ch.DragDrop(s)) return true; 
-				ch.invokeEvent("drop"); 
-				return true; 
-			}
-		}
-	}
-	return false; 
-};
-
-// Enable ondragover event
-DynElement.prototype.DragOver=function(s){ 
-	if (!this.children.length>0) return false;
-	var ch,chX,sX,sY;
-	for (var i in this.children) { 
+	for (var i in this.children) {
 		ch=this.children[i];
 		if(ch._hasDragEvents){
 			chX=ch.getPageX();
-			chY=ch.getPageY(); 
+			chY=ch.getPageY();
 			sX=s.getPageX();
-			sY=s.getPageY(); 
-			if (chX<sX && chX+ch.w>sX+s.w && chY<sY && chY+ch.h>sY+s.h) { 
-				if (ch.DragDrop(s)) return true; 
-				ch._isDragOver=true;
-				ch.invokeEvent("dragover"); 			
-				return true; 
-			}else if (ch._isDragOver) {
-				ch._isDragOver=false;
-				ch.invokeEvent("dragout"); 			
+			sY=s.getPageY();
+			if (chX<sX && chX+ch.w>sX+s.w && chY<sY && chY+ch.h>sY+s.h) {
+				if (ch.DragDrop(s)) return true;
+				ch.invokeEvent("drop");
+				return true;
 			}
 		}
 	}
-	return false; 
+	return false;
+};
+
+// Enable ondragover event
+DynElement.prototype.DragOver=function(s){
+	if (!this.children.length>0) return false;
+	var ch,chX,sX,sY;
+	for (var i in this.children) {
+		ch=this.children[i];
+		if(ch._hasDragEvents){
+			chX=ch.getPageX();
+			chY=ch.getPageY();
+			sX=s.getPageX();
+			sY=s.getPageY();
+			if (chX<sX && chX+ch.w>sX+s.w && chY<sY && chY+ch.h>sY+s.h) {
+				if (ch.DragDrop(s)) return true;
+				ch._isDragOver=true;
+				ch.invokeEvent("dragover");
+				return true;
+			}else if (ch._isDragOver) {
+				ch._isDragOver=false;
+				ch.invokeEvent("dragout");
+			}
+		}
+	}
+	return false;
 };

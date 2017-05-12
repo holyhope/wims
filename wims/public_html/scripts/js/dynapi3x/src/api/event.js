@@ -321,7 +321,6 @@ protoEvent._updateAnchors = function() {
 	var anchors_ids = Object.keys(this._childAnchors);
 	for (i = 0; i < anchors_ids.length; i++) {
 		id = anchors_ids[i];
-		console.log("DEBUG_ID = "+ id);
 		this._updateAnchor(id);
 	}
 
