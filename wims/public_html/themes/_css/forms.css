@@ -22,6 +22,9 @@ input[type="radio"],input[type="checkbox"]{
 
 /* this is generaly a fieldset class */
 .property_fields{
+    /* Sadly, Safari don't handle flex on fieldsets yet (you have to add a div inside)...
+    display:flex;
+    flex-flow: row wrap;*/
     position: relative;
     margin-top:1em;
     margin-bottom:1em;
@@ -30,6 +33,10 @@ input[type="radio"],input[type="checkbox"]{
     /*Background-image is here to lighten background color */
     background-image: linear-gradient(to bottom,  rgba(255,255,255,0.7) 0%,rgba(255, 255, 255, 0.9) 48%,rgba(255,255,255,0.4) 100%); /* W3C */
 }
+/* If property_fields is flex, wimscenter must take the full width
+.property_fields .wimscenter{
+    width:100%;
+}*/
 
 /*.property_fields .field {
 	margin: auto;
@@ -136,6 +143,32 @@ li.wims_formradio{
   font-weight:normal;
 }
 
+/** Styles for required inputs */
+input:required:not(.noicon){
+    padding-right: 1em;
+    background-position: right;
+    background-repeat: no-repeat;
+}
+/* invalid required inputs */
+input:invalid, textarea:invalid, .required_invalid_legend {
+    background-image: url("../../../gifs/svg/exclamation_mark_red.svg");
+    background-size: 1em;
+    box-shadow: 0 0 1px rgba(200, 0, 0, .85);
+}
+/* invalid required inputs, with focus  */
+input:focus:invalid, textarea:focus:invalid, .required_invalid_focus_legend {
+    background-image: url("../../../gifs/svg/thumb_down_red.svg");
+}
+/* valid required inputs */
+input:required:focus:valid, textarea:required:focus:valid, .required_valid_legend {
+    background-image: url("../../../gifs/svg/yes_check_green.svg");
+    background-size: .9em;
+    box-shadow: 0 0 1px rgba(0, 200, 0, .85);
+}
+/* noicon css class disable the required icon */
+input.noicon:required{
+    background-image:none;
+}
 
 
 /* Small screens */
