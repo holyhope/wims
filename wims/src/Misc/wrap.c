@@ -20,6 +20,9 @@
 #include <unistd.h>
 #include <string.h>
 
+void inline IGNORE() {}  /* Ignore GCC Unused Result */
+void IGNORE();  /* see http://stackoverflow.com/a/16245669/490291 */
+
 int main(int argc,char *argv[])
 {
     char *args[1024];
@@ -30,11 +33,11 @@ int main(int argc,char *argv[])
     args[i]=NULL;
     uid1=geteuid(); uid2=getuid(); gid1=getegid(); gid2=getgid();
     if(strchr(args[0],'/')) {
-      setreuid(uid1,uid2); setregid(gid1,gid2);
+      IGNORE(setreuid(uid1,uid2)); IGNORE(setregid(gid1,gid2));
       execv(args[0],args);
     }
     else {
-      setreuid(uid1,uid1); setregid(gid1,gid1);
+      IGNORE(setreuid(uid1,uid1)); IGNORE(setregid(gid1,gid1));
       execvp(args[0],args);
     }
     return 127;
