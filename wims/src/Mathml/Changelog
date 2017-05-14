@@ -264,3 +264,29 @@ Note+todo: latest html5 options for "input" are not yet implemented.
 	    "\\*"      {yylval=wims_mathml_copy_string("&nbsp;"); return MI;}
 23/2/2017 pari printtex " \*" --> &InvisibleTimes;
 08/05/2017 add ; in code as &#x
+15/05/2017 
+added "_" as non-latex code for array environment.
+	    latex usage:
+\begin{array}{c|c:c|c -._.-.}
+1 & 2 & 3 & 4 \\
+1 & 2 & 3 & 4 \\
+1 & 2 & 3 & 4 \\
+1 & 2 & 3 & 4 \\
+1 & 2 & 3 & 4 \\
+1 & 2 & 3 & 4 \\
+\end{array}	    
+	    
+meaning:
+ solid vertical lines between columns 1,2
+ dashed 	vertical line between 2,3
+ solid vertical lines between columns 3,4
+	
+ solid horizontal line between row 1,2
+ no horizontal line between row 2,3
+ dashed horizontal line between row 3,4
+ no horizontal line between row 4,5
+ solid horizontal line between row 5,6    
+
+NOTE: the problem is the in mathml all attributes must be known before the actual table can be filled...so all layout information must be derived from the {c|c:c|c -._.-.}
+<mtable rowspacing="0.5ex" columnalign="center center center center" columnlines="solid dashed solid" rowlines="solid none dashed none solid none">
+To solve this in itex2mml/wims_mathml one must store the mathml strings into ca 6 variables...and print these when the \end{array is found..

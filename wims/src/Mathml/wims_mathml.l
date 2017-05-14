@@ -1603,7 +1603,7 @@ int wims_mathml_displaymode = 0;
 
 <COLOPTS>{
 "\}"  {wims_mathml_env_start = 0; BEGIN(MATH); return END;}
-[0-99rlc|.:\-\ ]{0,99} {
+[0-99rlc|.:_\-\ ]{0,99} {
     wims_mathml_env_start=0;
     int p;
     // yyleng is length of last matched token eg "{ c |ccc|c }
@@ -1619,28 +1619,21 @@ int wims_mathml_displaymode = 0;
     strncat(C," columnalign=\"",14);
     strncat(M," columnlines=\"",14);
     strncat(H," rowlines=\"",11);
-    int found = 0;
+    /* {c|c|c|c---}*/
     for( p = 0; p < yyleng ; p++){
 	if( strlen(C) < (len - 8) && strlen(M) < (len - 8)){
 	/* in case of trouble...array M[len] or C[len] will be too small */
-	    found = 0;
 	    switch( yytext[p] ){
 	        case 'c' : strncat(C," center ",8);break;
 		case 'r' : strncat(C," right ",7);break;
 	        case 'l' : strncat(C," left ",6); break;
-		case '|' : found = 1;strncat(M," solid ",7);break;
-	        case ':' : found = 1;strncat(M," dashed ",8);break;
-	        case '-' : found = 1;strncat(H," solid ",7);break;
-	        case '.' : found = 1;strncat(H," none ",6);break;
-		default  : found = 1;break;
-	    }
-	    if( found == 0 ){
-		if( yytext[p+1] != ':' && yytext[p+1] != '|' &&
-		    yytext[p-1] != ':' && yytext[p-1] != '|' ){
-			strncat(M," none ",6);
-			strncat(H," none ",6);
-			/* we must use "none" : otherwise all columns will be "solid" */
-		}
+		case '|' : strncat(M," solid ",7);break;
+	        case ':' : strncat(M," dashed ",8);break;
+	        case '-' : strncat(H," solid ",7);break;
+	        case '_' : strncat(H," dashed ",8);break;
+	        case '.' : strncat(H," none ",6);break;
+	        case ' ' : break;
+		default  : strncat(M," none ",6);strncat(H," none ",6);break;
 	    }
 	}
     }
