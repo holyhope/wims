@@ -5,24 +5,25 @@ numeric,Nombre,la comparison se fait numériquement avec une précision fixée\
 function,Fonction numérique,la comparaison se fait numériquement\
 equation,Equation numérique,la comparaison se fait numériquement\
 exp|algexp litexp formal,Expression mathématique,comparaison formelle\
-text|case nocase,Texte,des mots ou des phrases\
-multiple|checkbox click menu radio mark flashcard multipleclick,réponse à choix multiples\
+text|case nocase atext,Texte,des mots ou des phrases\
+multiple|checkbox click menu radio mark flashcard multipleclick,Réponse à choix multiples\
 
 !set typelist2=!trim\
-atext,Texte approximatif, la comparaison tolère les différences du type singulier/pluriel ...\
 chembrut,Formule brute d'une molécule,en chimie\
 chemdraw,Dessiner une molécule,avec une applet Java\
 chemclick,Sélectionner des atomes ou des liaisons d'une molécule,avec une applet Java\
 chemeq,Equation chimique,avec analyse d'équilibre\
 chset,Ensemble de caractères,\
 clickfill|clickfill dragfill,Objets à glisser-déposer, qui peuvent être du texte, des images\
-clicktile,Mettre en couleur des pavés, nécessite java\
-complex,Nombre complexe,la comparison se fait numériquement avec une précision fixée\
+clicktile,Mettre en couleur des pavés\
+clock, Mettre à l'heure une horloge\
 compose,Composer,en utilisant des composantes fournies\
+complex,Nombre complexe,la comparison se fait numériquement avec une précision fixée\
 coord,Clic sur une image, dans une zone prédéfinie\
 correspond,Correspondance,entre deux listes d'objets\
 crossword,Mots croisés\
 chessgame,Déplacement de pièces sur un échiquier\
+draw, Dessin utilisant canvasdraw, permettant des tracés (points, droites ...)\
 geogebra,Géométrie dynamique,utilisation de l'applet GeoGebra\
 javacurve,Dessin utilisant Java, permettant des tracés avec des formes prédéfinies ou libres\
 jmolclick,Clic sur des atomes en 3D, nécessite l'applet Jmol\
@@ -40,48 +41,28 @@ symtext,Texte,outil avancé d'identification de textes\
 units,Nombre avec unité, pour la physique\
 vector,Vecteur,comparaison numérique des composantes\
 wlist,Liste de mots,\
+time,Mémoire
 
 
 !set namelist=Types de base,Types spécifiques ou avancés
 !set symtextlist=text atext raw compose
 
-<h2>Respuestas de los usuarios a un ejercicio</h2>
+<h2 id="freestyle">Respuestas a un ejercicio</h2>
+<p>Un exercice OEF peut accepter les réponses des utilisateurs de manière très variée.
+Outre le choix multiple ou la réponse libre,
+ on trouve de nombreuses autres possibilités.
+La réponse donnée par l'utilisateur est analysée selon la nature du type.
+D'autre part, il est possible d'afficher des
+!href cmd=help&special_parm=feedback commentaires ciblés
+ quand la réponse tombe sous une certaine condition
+ (pour avertir d'une erreur typique par exemple).
+Actuellement, jusqu'à $answerlim réponses simultanées peuvent être demandées dans
+ un exercice sous l'implémentation actuelle.
+<p>La syntaxe est la suivante (les 3 derniers champs sont optionnels) :</p>
+<code>\answer{Texte}{\reponse}{type=...}{option=...}{weight=...}</code>
 
-Hay dos maneras básicas en las que un ejercicio OEF acepta respuestas
-del usuario: opciones múltiples y respuestas libres.
-La respuesta que dé el usuario será analizada según su tipo.
-También es posible añadir
-!href cmd=help&special_parm=feedback comentarios de retroalimentación
- cuando la respuesta cumpla determinada condición (por ejemplo
-para advertir de un error típico).
-
-<h3>Opciones múltiples</h3> <p>
-Una opción múltiple se define dando una lista de opciones correctas
-(una o varias) y otra lista con todas las opciones (las opciones correctas
-se añaden de forma automática).
-</p><p>
-Se pueden pedir hasta $choicelim opciones múltiples simultáneas en un
-ejercicio, con la implementación actual. El número de opciones correctas
-y erróneas en una opción múltiple no tiene límite (excepto la limitación de
-la longitud del texto que impone WIMS).
-</p><p>
-Ver la
-!href cmd=help&special_parm=oef help ayuda sobre el formato OEF
- acerca de la sintaxis para definir una opción múltiple.
-</p>
-
-<h3 id="freestyle">Respuestas de estilo libre</h3>
-Una respuesta de estilo libre es la que la tiene que escribir el usuario.
-Se pueden pedir hasta $answerlim respuestas libres simultáneamente en el
-mismo ejercicio con la implementación actual. <p>
-La sintaxis es la siguiente:
-<pre>\answer{Texto}{\respuesta}{type=...}{option=...}{weight=...}</pre>
-<br/>
-(Los 3 últimos campos son opcionales).
-<p>
-Cada respuesta libre puede tomar independientemente uno de los siguientes
-tipos:
-</p>
+<h3>Le paramètre <span class="tt wims_code_words">type</span></h3>
+<p>Chaque réponse peut prendre indépendamment l'un des types suivants.</p>
 !for k=1 to 2
  <h4>$(namelist[$k])</h4>
  !set n=!linecnt $(typelist$k)
@@ -109,7 +90,7 @@ tipos:
     </p>
    !endif
   !else
-  <li>
+   <li>
    !href cmd=help&special_parm=reply,$name#_$name $title
    (<span class="tt wims_code_words">$name1</span>) $desc.
   !endif
@@ -121,21 +102,24 @@ tipos:
 !read help/$lang/embedans.phtml
 
 <h3 id="weight">Le paramètre optionnel <span class="tt wims_code_words">weight</span></h3>
+
 Il permet d'imposer un poids aux questions posées.
-<br/>
+<p>
 Exemple :
+</p>
 <pre>\answer{}{1}{type=numeric}{weight=8}
 \answer{}{1}{type=numeric}{weight=2}
 </pre>
-
+<p>
 Le niveau de sévérité sera aussi pris en compte lors du
 calcul fait et le pourcentage sera pris sur un pourcentage fixé
 par le niveau de sévérité.
-
+</p><p>
 Il est possible de mettre des variables dans <span class="tt wims_code_words">weight</span>
 dans la mesure où elles sont définies avant le <span class="tt wims_code_variable">\statement</span>.
-<br/>
+</p><p>
 Exemple :
+</p>
 <pre>
 \text{w = \t = 1 ? 1 : 2}
 \answer{}{1}{type=numeric}{weight=\w}
