@@ -1,0 +1,63 @@
+<b>Sélectionner une ou plusieurs cellules dans un tableau</b> (nom : <span class="tt wims_code_words">multipleclick</span>)
+<br />
+
+Le type <span class="tt wims_code_words">multipleclick</span> analyse la ou les
+cellules sélectionnées par l'élève et les compare aux bonnes réponses
+proposées par l'enseignant.
+<br />
+La syntaxe générale de ce type de réponse est :
+<pre>
+\answer{Commentaire}{numero_des_bons_choix;liste_de_choix}{type=multipleclick}
+</pre>
+Les choix sont mis dans un tableau si cela est indiqué dans le deuxième item de
+<span class="tt wims_code_words">\embed{}</span> :
+<pre>
+\statement{
+\embed{r1,X x Y
+2 x 3
+[a,b;1,2,3]}
+}
+\answer{}{1,2;a,b,c,d,e,f}{type=multipleclick}
+</pre>
+<ul><li>la première ligne contient la dimension du tableau ;</li>
+<li>la deuxième ligne est le nombre de colonnes et de lignes : dans l'exemple ci-dessus,
+les objets seront disposés dans un tableau ayant 2 colonnes et 3 lignes ;
+</li><li>
+Il est possible de rajouter sur la troisième ligne la liste des en-têtes des
+lignes et des colonnes du tableau sous la forme [nom_des_colonnes;nom_des_lignes].
+Si la réponse proposée est bonne, les en-têtes seront vertes sinon rouges.
+</li><li>
+La classe css du tableau est <span class="tt wims_code_words">ans_multipleclikn</span>
+(avec n le numéro de la question) et peut être configurée pour l'exercice
+dans le champ <span class="tt wims_code_words">\css{ }</span>, par exemple,
+<pre>
+\css{&#60;style type="text/css">
+.ans_multipleclick1 {margin-left:auto;margin-right:auto;
+border: medium solid #393b40;
+border-collapse: separate;
+text-align:center;}
+td, th {
+border: thin solid #393b40;
+background-color: #e6ebff;}
+&#60;/style>}
+\matrix{tableau=1,2,3,4,5,6,7,8
+205,252,327,349,412,423,441,472
+3700,1240,435,150,43,18,7,2
+54,110,198,420,780,1640,3160,5960
+310,396,425,480,612,704,830,946
+3540,3260,3120,2890,2710,2570,2280,2090
+509,925,1348,1678,2087,2506,2898,3323}
+\text{tableau_en_ligne=semaine,\tableau[1;],Lucas,\tableau[2;],Louis,\tableau[3;],Mathilde,\tableau[4;],Toto,\tableau[5;],Christine,\tableau[6;],Léa,\tableau[7;]}
+\text{numero_des_bons_choix=10,11,12,13,14,15,16,17,18}
+\statement{
+ \embed{r1,600x400
+9 x 7
+[a,b,c,d,e,f,g,h,i;1,2,3,4,5,6,7]}
+}
+\answer{Commentaire}{\numero_des_bons_choix;\tableau_en_ligne}{type=multipleclick}
+</pre>
+Les options possibles proposent plusieurs notations :
+<ul>
+!read help/anstype.fr/spliteqweight.phtml
+</ul>
+</li></ul>

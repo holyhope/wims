@@ -1,0 +1,35 @@
+
+<b>Sélectionner des cartes</b> (nom : <span class="tt wims_code_words">flashcard</span>)
+<br />
+
+Le type <span class="tt wims_code_words">flashcard</span> analyse
+la ou les cartes retournées par l'élève et compare aux bonnes réponses.
+La note est 0 dès que sa réponse ne s'accorde pas exactement à la réponse attendue.
+<br />
+La syntaxe générale de ce type de réponse est :
+<pre>
+\answer{Commentaire}{1,4;juste1,faux1,très faux,juste2,faux2,faux3}{type=flashcard}
+\answer{question 2}{1,4;juste1,faux1,très faux,juste2,faux2,faux3}{type=flashcard}{option=shuffle}
+\answer{question 3}{1,4,7;juste1,faux1,très faux,juste2,faux2,faux3,juste3}{type=flashcard}{option=shuffle show}
+</pre>
+L'élève peut sélectionner une ou plusieurs réponses. Les options possibles sont :
+<ul><li><span class="tt wims_code_words">shuffle</span> :
+Ordre des réponses aléatoires ;
+</li><li><span class="tt wims_code_words">sort</span> :
+Réponses dans l'ordre alphabétique ;
+</li><li> <span class="tt wims_code_words">show</span> :
+Les cartes sont retournées par défaut et l'élève doit mettre les bons choix face cachée.
+Le nombre de clics sur chaque carte est renvoyé dans la deuxième ligne de la variable
+<span class="tt wims_code_words">\reply</span>n.
+</li></ul>
+Il est impératif d'insérer le type de réponse <span class="tt wims_code_words">flashcard</span>
+dans la commande <span class="tt wims_code_words">\embed</span> du statement.
+On peut préciser sur la deuxième et troisième ligne le style css des cartes
+(style associé à la balise div).
+Par exemple,
+<pre>
+\embed{r1,4
+style="display:inline-block;min-width:30px;min-height:30px;padding-top:10px;padding-bottom:5px;background-color:red;"
+style="display:inline-block;min-width:30px;min-height:30px;padding-top:10px;padding-bottom:5px;background-color:blue;"
+}
+</pre>

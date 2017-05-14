@@ -1,0 +1,37 @@
+<b>Mémoire</b>
+(nom : <span class="tt wims_code_words">time</span>)
+<br/>
+
+Le type de réponse <span class="tt wims_code_words">time</span> demande
+simplement de regarder l'exercice pendant un certain temps. Il s'agit donc
+d'un préliminaire à une question faisant appel à ce qui a été vu lors de cette
+première étape.
+
+Les paramètres d'entrée sont trois nombres représentant des temps en millisecondes:
+le minimum de temps de lecture, le maximum de temps de lecture, le maximum
+de temps de lecture toléré. Si le temps est inférieur au minimum ou supérieur
+au maximum toléré, le score sera de 0. Dans le cas où le temps est compris entre
+le temps minimum et le temps maximum, le score est de 10, sinon la réponse
+est considérée comme partiellement bonne.
+
+<pre>
+\answer{}{1000,2000,15000}{type=time}
+</pre>
+
+<pre>
+\text{word=randitem(jouet,jouer,joue)}
+\steps{r1
+r2}
+\statement{
+\if{\step=1}{ Regardez le mot suivant : \word \embed{r1} }
+\if{\step>=2}{ Ecrire le mot que vous avez lu :
+\embed{r2} }
+}
+\answer{}{1000,2000,15000}{type=time}
+\answer{}{\word}{type=text}
+</pre>
+
+<p>
+Pour limiter le temps de réponse d'un exercice, mieux vaut utiliser le chronomètre
+lors de la fabrication de la feuille.
+</p>
