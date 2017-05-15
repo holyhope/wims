@@ -19,9 +19,6 @@
 #include "common.h"
 #define ch_root "bin/ch..root"
 
-void inline IGNORE() {}  /* Ignore GCC Unused Result */
-void IGNORE();  /* see http://stackoverflow.com/a/16245669/490291 */
-
 int mypid;
 int must_chroot=0;
 char inputfname[256], outputfname[256];
@@ -200,8 +197,7 @@ int execredirected(char *cmdf, char *inf, char *outf, char *errf, char *args)
       }
       else {
           i=0;
-          IGNORE(setreuid(getuid(),getuid()));
-	  IGNORE(setregid(getgid(),getgid()));
+          setreuid(getuid(),getuid());setregid(getgid(),getgid());
       }
       arg[i++]=cmdf;
       for(p=abuf; *p && i<1000; i++, p=find_word_start(p2))
@@ -385,7 +381,7 @@ void prepare1(void)
 
 void prepabout(char *cmd, char *outf, char *errf)
 {
-    IGNORE(write(pipe_in[1],cmd,strlen(cmd)));
+    (void)write(pipe_in[1],cmd,strlen(cmd));
     execredirected(nameofcmd,NULL,outf,errf,cmdparm);
 }
 
