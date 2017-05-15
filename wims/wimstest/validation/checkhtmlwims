@@ -61,12 +61,12 @@ check ( ) {
   mkdir -p $outputdir
   rm -f $outputdir/html.log $outputdir/scorelog $outputdir/pari.log $outputdir/maxima.log $outputdir/gap.log $outputdir/octave.log $output/mathml.log $output/htmlintro.log
 
-  author=`grep author $moddir/$mod/INDEX | sed -e "s/author=//g"`
-  email=`grep email $moddir/$mod/INDEX | sed -e "s/address=//g"`
+  author=`grep "author" $moddir/$mod/INDEX | sed -e "s/author=//g"`
+  email=`grep "\baddress" $moddir/$mod/INDEX | sed -e "s/address=//g"`
   category=`grep category $moddir/$mod/INDEX | sed -e "s/category=//g"`
   message=`wget "http://127.0.0.1/wims/wims.cgi?module=$mod" -nv -O  test.html ; $validator test.html  2>&1; `
   if [ "$message" ] ; then
-    echo "$author\t$email\tmodule=$mod\tintro\n$message END\n" > $outputdir/htmlintro.log ;
+    echo -e "$author\t$email\tmodule=$mod\tintro\n$message END\n" > $outputdir/htmlintro.log ;
   fi
   if [ "$category" = "document" ] ; then
     lblock=`ls $moddir/$mod/doc/1/*.def` ;
@@ -76,31 +76,31 @@ check ( ) {
       message=`wget "http://127.0.0.1/wims/wims.cgi?module=$mod&doc=1&block=$block&job=read" -nv -O  test.html ; $validator test.html  2>&1; `
      # session=`grep -e "$forsession\s*[[:alnum:]]" test.html | sed -e "s/The server is under debug mode. Your session: //g" | sed -e "s|. <br />||g" sed -e "s| ||g"` ;
       if [ "$message" ] ; then
-       echo "$author\t$email\tmodule=$mod block=$block\n$message END\n" >> $outputdir/html.log ;
+       echo -e "$author\t$email\tmodule=$mod block=$block\n$message END\n" >> $outputdir/html.log ;
       fi ;
       mathml=`grep "$searchmathml" test.html` ;
       if [ "$mathml" ] ; then
-       echo "$author\t$email\tmodule=$mod block=$block\t$mathml\n" >> $outputdir/mathml.log
+       echo -e "$author\t$email\tmodule=$mod block=$block\t$mathml\n" >> $outputdir/mathml.log
       fi
       mathml=`grep "$searchmathml2" test.html` ;
       if [ "$mathml" ] ; then
-       echo "$author\t$email\tmodule=$mod block=$block\t$mathml\n" >> $outputdir/mathml.log
+       echo -e "$author\t$email\tmodule=$mod block=$block\t$mathml\n" >> $outputdir/mathml.log
       fi
       pari=`grep -A4 'ERROR from pari' test.html`
       if [ "$pari" ] ; then
-       echo "$author\t$email\tmodule=$mod&block=$block\t$pari\n" >> $outputdir/pari.log ;
+       echo -e "$author\t$email\tmodule=$mod&block=$block\t$pari\n" >> $outputdir/pari.log ;
       fi ;
       maxima=`grep -A4 'ERROR from maxima' test.html`
       if [ "$maxima" ] ; then
-       echo "$author\t$email\tmodule=$mod&block=$block\t$maxima\n" >> $outputdir/maxima.log ;
+       echo -e "$author\t$email\tmodule=$mod&block=$block\t$maxima\n" >> $outputdir/maxima.log ;
       fi ;
       octave=`grep -A4 'ERROR from octave' test.html`
       if [ "$octave" ] ; then
-       echo "$author\t$email\tmodule=$mod&block=$block\t$octave\n" >> $outputdir/octave.log ;
+       echo -e "$author\t$email\tmodule=$mod&block=$block\t$octave\n" >> $outputdir/octave.log ;
       fi ;
       gap=`grep -A4 'ERROR from gap' test.html`
       if [ "$gap" ] ; then
-       echo "$author\t$email\tmodule=$mod&block=$block\t$gap\n" >> $outputdir/gap.log ;
+       echo -e "$author\t$email\tmodule=$mod&block=$block\t$gap\n" >> $outputdir/gap.log ;
       fi ;
      if [ "$session" ] ; then
       # rm -rf $wimsdir/tmp/sessions/$session
@@ -119,32 +119,32 @@ check ( ) {
      session=`grep -e "$forsession\s*[[:alnum:]]" test.html | sed -e "s/The server is under debug mode. Your session: //g" | sed -e "s|. <br />||g" | sed -e "s| ||g"` ;
 
      if [ "$message" ] ; then
-       echo "$author\t$email\tmodule=$mod&exo=$exo\n$message END\n" >> $outputdir/html.log ;
+       echo -e "$author\t$email\tmodule=$mod&exo=$exo\n$message END\n" >> $outputdir/html.log ;
      fi ;
      ## inutile d'utiliser tidy
      mathml=`grep "$searchmathml" test.html` ;
       if [ "$mathml" ] ; then
-       echo "$author\t$email\tmodule=$mod&exo=$exo\t$mathml\n" >> $outputdir/mathml.log
+       echo -e "$author\t$email\tmodule=$mod&exo=$exo\t$mathml\n" >> $outputdir/mathml.log
       fi
      mathml=`grep "$searchmathml2" test.html` ;
       if [ "$mathml" ] ; then
-       echo "$author\t$email\tmodule=$mod&exo=$exo\t$mathml\n" >> $outputdir/mathml.log
+       echo -e "$author\t$email\tmodule=$mod&exo=$exo\t$mathml\n" >> $outputdir/mathml.log
       fi
      pari=`grep -A4 'ERROR from pari' test.html`
      if [ "$pari" ] ; then
-       echo "$author\t$email\tmodule=$mod&exo=$exo\t$pari\n" >> $outputdir/pari.log ;
+       echo -e "$author\t$email\tmodule=$mod&exo=$exo\t$pari\n" >> $outputdir/pari.log ;
      fi ;
      maxima=`grep -A4 'ERROR from maxima' test.html`
      if [ "$maxima" ] ; then
-       echo "$author\t$email\tmodule=$mod&exo=$exo\t$maxima"  >> $outputdir/maxima.log ;
+       echo -e "$author\t$email\tmodule=$mod&exo=$exo\t$maxima"  >> $outputdir/maxima.log ;
      fi ;
      octave=`grep -A4 'ERROR from octave' test.html`
      if [ "$octave" ] ; then
-       echo "$author\t$email\tmodule=$mod&exo=$exo\t$octave"  >> $outputdir/octave.log ;
+       echo -e "$author\t$email\tmodule=$mod&exo=$exo\t$octave"  >> $outputdir/octave.log ;
      fi ;
      gap=`grep -A4 'ERROR from gap' test.html`
      if [ "$gap" ] ; then
-       echo "$author\t$email\tmodule=$mod&exo=$exo\t$gap"  >> $outputdir/gap.log ;
+       echo -e "$author\t$email\tmodule=$mod&exo=$exo\t$gap"  >> $outputdir/gap.log ;
      fi ;
      if [ "$session" ] ; then
       # rm -rf $wimsdir/tmp/sessions/$session
@@ -157,7 +157,7 @@ check ( ) {
  fi
 }
 if [ $2 ] ; then
-   check $clean "$2"
+   check $clean "$2" one
 else
   for z in $zone; do
     for c in `ls "$moddir/$z"` ; do
