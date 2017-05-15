@@ -54,6 +54,7 @@ to $wims_html_header
 
 !default wims_exotitleform=0
 
+!if _exam notin $wims_session
 <h1 class="oeftitle">
 !if $wims_exo!=$empty
  !if $wims_exotitleform>0
@@ -77,7 +78,7 @@ to $wims_html_header
  $title
 !endif
 </h1>
-
+!endif
 !if $module_checkdata!=yes
  !read oef/$modu_lang/nodata.phtml
  !goto end
