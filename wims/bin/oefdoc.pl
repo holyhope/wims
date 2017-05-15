@@ -9,49 +9,49 @@ use strict;
 my %name ;
 $name{'explanation'}{'fr'}="Explication" ;
 $name{'example'}{'fr'}="Exemple" ;
-$name{'special'}{'fr'}="Méthodes spéciales<br>(énoncé)";
+$name{'special'}{'fr'}="Méthodes spéciales<br/(énoncé)";
 $name{'syntax'}{'fr'}="Syntaxe";
 $name{'slib'}{'fr'}='SLIB';
 $name{'anstype'}{'fr'}='Types de réponses' ;
 
 $name{'explanation'}{'en'}="Explanation" ;
 $name{'example'}{'en'}="Example" ;
-$name{'special'}{'en'}="Special method<br>(statement)";
+$name{'special'}{'en'}="Special method<br/>(statement)";
 $name{'syntax'}{'en'}="Syntax";
 $name{'slib'}{'en'}='SLIB';
 $name{'anstype'}{'en'}='Answer types' ;
 
 $name{'explanation'}{'cn'}="Explanation" ;
 $name{'example'}{'cn'}="Example" ;
-$name{'special'}{'cn'}="Special method<br>(statement)";
+$name{'special'}{'cn'}="Special method<br/>(statement)";
 $name{'syntax'}{'cn'}="Syntax";
 $name{'slib'}{'cn'}='SLIB';
 $name{'anstype'}{'cn'}='Answer types' ;
 
 $name{'explanation'}{'nl'}="Explanation" ;
 $name{'example'}{'nl'}="Example" ;
-$name{'special'}{'nl'}="Special method<br>(statement)";
+$name{'special'}{'nl'}="Special method<br/>(statement)";
 $name{'syntax'}{'nl'}="Syntax";
 $name{'slib'}{'nl'}='SLIB';
 $name{'anstype'}{'nl'}='Answer types' ;
 
 $name{'explanation'}{'it'}="Spiegazione" ;
 $name{'example'}{'it'}="Esempio" ;
-$name{'special'}{'it'}="Metodi speciali<br>(enunciato)";
+$name{'special'}{'it'}="Metodi speciali<br/>(enunciato)";
 $name{'syntax'}{'it'}="Sintassi";
 $name{'slib'}{'it'}='SLIB';
 $name{'anstype'}{'it'}='Tipi di risposte' ;
 
 $name{'explanation'}{'es'}="Explicació" ;
 $name{'example'}{'es'}="Exemple" ;
-$name{'special'}{'es'}="Mètodes especials<br>(enunciat)";
+$name{'special'}{'es'}="Mètodes especials<br/>(enunciat)";
 $name{'syntax'}{'es'}="Sintaxi";
 $name{'slib'}{'es'}='SLIB';
 $name{'anstype'}{'es'}='Tipus de Respostes' ;
 
 $name{'explanation'}{'ca'}="Explicació" ;
 $name{'example'}{'ca'}="Exemple" ;
-$name{'special'}{'ca'}="Mètodes especials<br>(enunciat)";
+$name{'special'}{'ca'}="Mètodes especials<br/>(enunciat)";
 $name{'syntax'}{'ca'}="Sintaxi";
 $name{'slib'}{'ca'}='SLIB';
 $name{'anstype'}{'ca'}='Tipus de Respostes' ;
@@ -445,9 +445,11 @@ sub tableau { my ($file, $lang) = @_ ;
   while (<IN>) { my $line=$_;
    chomp $line ;
    next if !($line) ;
+   next if ($line=~ /^(!!)/);
+   if ($line =~ /!changeto/){ die "$file1 should be translated"};
    if ($line =~ s /^://) {
      $cnt ++ ;
-     if ($cnt == 1 ) { $Text = "var $cities" . "name= '$line';\n ";  }
+     if ($cnt == 1 ) { $Text = "var $cities" . "name= '" . cleanup3($line) . "';\n ";  }
      next if $cnt < 3 ;
      $line =~ s/:// ;
      if($text) { $text .= end_js("") ;}
@@ -563,7 +565,7 @@ $TEXT =~ s/<(tt)>/\\text$1\{/g;
 $TEXT =~ s/<(em|i)>/\\textit\{/g;
 $TEXT =~ s/<b>/\\textbf\{/g;
 $TEXT =~ s'</(b|tt|em|i)>'}'g;
-$TEXT =~ s/<br>/\\par /g;
+$TEXT =~ s/<br\s*\/?>/\\par /g;
 $TEXT =~ s/<p>/\\par /g;
 $TEXT =~ s/<\/p>/\\par /g;
 $TEXT =~ s/<ul>/\\begin{itemize}\n /g;
