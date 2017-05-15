@@ -31,7 +31,7 @@ what is available.
 :Number of "mandatory" wrong answers.
 For example if this number is 2, the first two wrong answers in the list will
 always be presented in the generated exercise.
-<p> If doubtful, put 0.
+<p> If doubtful, put 0.</p>
 \integer{minfalse=0}
 
 :Text that explains what should be done.
@@ -53,7 +53,7 @@ Third correct answer.
 Fourth correct answer.
 }
 
-:The  wrong answers -write one per line.
+:The wrong answers -write one per line.
 You can write several here (one per line) for random pickup.
 Avoid very long sentences! No semi-colons are allowed in the sentence.
 $embraced_randitem
@@ -75,22 +75,22 @@ for when only part of the correct answers have been selected, enter the word 'sp
 
 \text{option=}
 
-:Feedback Général
-Ce texte s'affichera après la réponse de l'apprenant, qu'elle soit juste ou fausse.
+:General feedback
+This text will be displayed after the learner response, whether it's right or wrong.
 \text{feedback_general=}
 
-:Feedback en cas de bonne réponse
-Ce texte s'affichera après la réponse de l'apprenant, en cas de bonne reponse ou de reponse partielle.
-\text{feedback_bon=}
+:Feedback for a good answer
+This text will be displayed after the learner response, only if it's right.
+\text{feedback_good=}
 
-:Feedback en cas de mauvaise réponse
-Ce texte s'affichera après la réponse de l'apprenant, s'il a coché au moins une mauvaise réponse.
-\text{feedback_mauvais=}
+:Feedback for a bad answer
+This text will be displayed after the learner response, only if it's wrong.
+\text{feedback_bad=}
 
-:Mise en aléatoire par des accolades emboitables
+:Embraced random items
 $embraced_randitem
-\text{accolade=item(1,1 oui,
-2 non)}
+\text{accolade=item(1,1 yes,
+2 no)}
 
 
 :%%%%%%%%%%%%%% Nothing to modify until statement %%%%%%%%%%%%%%%%
@@ -100,11 +100,11 @@ $embraced_randitem
 \if{\feedback_general != \empty}{
   \text{feedback_general=<p class="feedback">\feedback_general</p>}
 }
-\if{\feedback_bon != \empty}{
-  \text{feedback_bon=<p class="feedback good_answer">\feedback_bon</p>}
+\if{\feedback_good != \empty}{
+  \text{feedback_good=<p class="feedback good_answer">\feedback_good</p>}
 }
-\if{\feedback_mauvais != \empty}{
-  \text{feedback_mauvais=<p class="feedback bad_answer">\feedback_mauvais</p>}
+\if{\feedback_bad != \empty}{
+  \text{feedback_bad=<p class="feedback bad_answer">\feedback_bad</p>}
 }
 
 \text{datatrue=wims(nonempty rows \datatrue)}
@@ -140,7 +140,7 @@ $embraced_randitem
 \text{list=item(1..\tot,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z)}
 \text{anstype=checkbox iswordof \option?checkbox:radio}
 
-:%%%%%%%%%%%%% Now the statement in html. %%%%%%%%%%%%%%%%%%%%
+:%%%%%%%%%%%%% Now the statement in HTML. %%%%%%%%%%%%%%%%%%%%
 
 ::You don't need to modify this in general.
 
@@ -150,10 +150,10 @@ $embraced_randitem
   {<p class="oefreply">\embed{reply 1,\i, \list[\i] : \pick[\i;]}</p>}
 }
 
-:%%%%%%%%%%%%% Rien à modifier ci-après. %%%%%%%%%%%%%%%%%5
+:%%%%%%%%%%%%% Nothing to modify after. %%%%%%%%%%%%%%%%%5
 
 \answer{The reply}{\ans;\list}{type=\anstype}{option=\option}
 
 \feedback{1=1}{\feedback_general}
-\feedback{\reply1 isitemof \list[\ans]}{\feedback_bon}
-\feedback{\reply1 notitemof \list[\ans]}{\feedback_mauvais}
+\feedback{\reply1 isitemof \list[\ans]}{\feedback_good}
+\feedback{\reply1 notitemof \list[\ans]}{\feedback_bad}
