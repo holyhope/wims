@@ -54,31 +54,33 @@ to $wims_html_header
 
 !default wims_exotitleform=0
 
-!if _exam notin $wims_session
 <h1 class="oeftitle">
-!if $wims_exo!=$empty
- !if $wims_exotitleform>0
-  !if $wims_exotitleform=1
-   $wims_name_sheet $wims_sheet - $wims_name_Exercise $wims_exo
-  !else
-   $wims_sheettitle
-   <br/>
-   !if $wims_exotitleform=2
-    $wims_name_Exercise $wims_exo
+!if _exam notin $wims_session
+ !if $wims_exo!=$empty
+  !if $wims_exotitleform>0
+   !if $wims_exotitleform=1
+    $wims_name_sheet $wims_sheet - $wims_name_Exercise $wims_exo
    !else
-    $(wims_exotitle[$wims_exo])
+    $wims_sheettitle
+    <br/>
+    !if $wims_exotitleform=2
+     $wims_name_Exercise $wims_exo
+    !else
+     $(wims_exotitle[$wims_exo])
+    !endif
+   !endif
+  !else
+   !if $wims_exotitleform=0
+    $title
    !endif
   !endif
  !else
-  !if $wims_exotitleform=0
-   $title
-  !endif
+  $title
  !endif
-!else
- $title
+!else _exam isin $wims_session
+ $worksheet
 !endif
 </h1>
-!endif
 !if $module_checkdata!=yes
  !read oef/$modu_lang/nodata.phtml
  !goto end
