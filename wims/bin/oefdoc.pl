@@ -42,12 +42,12 @@ $name{'syntax'}{'it'}="Sintassi";
 $name{'slib'}{'it'}='SLIB';
 $name{'anstype'}{'it'}='Tipi di risposte' ;
 
-$name{'explanation'}{'es'}="Explicació" ;
-$name{'example'}{'es'}="Exemple" ;
-$name{'special'}{'es'}="Mètodes especials<br/>(enunciat)";
-$name{'syntax'}{'es'}="Sintaxi";
+$name{'explanation'}{'es'}="Explicación" ;
+$name{'example'}{'es'}="Ejemplo" ;
+$name{'special'}{'es'}="Métodos especiales<br/>(enunciado)";
+$name{'syntax'}{'es'}="Sintaxis";
 $name{'slib'}{'es'}='SLIB';
-$name{'anstype'}{'es'}='Tipus de Respostes' ;
+$name{'anstype'}{'es'}='Tipos de Respuestas' ;
 
 $name{'explanation'}{'ca'}="Explicació" ;
 $name{'example'}{'ca'}="Exemple" ;
