@@ -89,10 +89,12 @@ into name_files_src,name_files_cpp, name_files_other,name_files_lang,name_files_
 !set name_levellist=E: escuela primaria; H: escuela secundaria; U: universidad; <br />G: estudio doctoral; R: investigación
 
 !set name_accountchange=Cambiar las propiedades de su cuenta de desarrollo
-!set name_empty=deje el campo <span class="wims_label"> contraseña</span> vacío si quieren conservar el antiguo
+!set name_empty=deje el campo <span class="wims_label">contraseña</span> vacío si quieren conservar el antiguo
 !set name_change=Se cambió la contraseña de su cuenta.
 
 !set name_translation_language=Other languages
+!set name_images=Common images
+!set name_help_images=if you need images in an OEF exercise.
 
 !distribute lines Test options\
   Formula\

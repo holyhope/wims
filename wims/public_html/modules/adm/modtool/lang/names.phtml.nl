@@ -84,6 +84,8 @@ problemen veroorzaken in werkbladen in een klas.
 !set name_empty=laat het wachtwoord veld leeg ,als u het niet wilt veranderen
 !set name_change=Uw wachtwoord is veranderd.
 !set name_translation_language=Andere talen
+!set name_images=Common images
+!set name_help_images=if you need images in an OEF exercise.
 
 !distribute lines Test options\
   Formule\

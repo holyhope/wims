@@ -57,15 +57,35 @@
       <label for="i_description">$wims_name_Description</label>
       <input type="text" name="i_description" id="i_description" value="$i_description" required="required" />
     </div>
+   !set list_category=oef,document,exercise,tool,recreation,deductio
+!if $modreq=.new
     <div class="field box">
       <strong>$wims_name_Type</strong>
       !set wims_ref_class=wims_button_help float_right
       !href cmd=help&special_parm=type $wims_name_help
       !set wims_formselect_switch=multiple
       !set wims_ref_class=wims_formradio
-      !formcheckbox i_category list oef,document,exercise,tool,recreation,deductio\
-       prompt $name_type
+      !formcheckbox i_category list $list_category prompt $name_type
     </div>
+    <div class="field box" id="i_common_images">
+      <strong>$name_images</strong>
+      !set wims_ref_class=wims_button_help float_right
+      !href cmd=help&special_parm=common_images $wims_name_help
+      !set wims_formselect_switch=multiple
+      !set wims_ref_class=wims_formradio
+      !formradio i_common_images list yes,no prompt $wims_name_yes, $wims_name_no
+      <div class="formHelp">$name_help_images</div>
+    </div>
+!else
+   <div class="field box">
+      <strong>$wims_name_Type</strong>
+      !set wims_ref_class=wims_button_help float_right
+      !href cmd=help&special_parm=type $wims_name_help
+      !set p_=!positionof item $(i_category[1]) in $list_category
+      $(name_type[$p_])
+    </div>
+
+!endif
     <div class="field box">
       <label for="i_domain">$wims_name_Domain</label>
       !set wims_ref_class=wims_button_help float_right
@@ -206,8 +226,21 @@
   <div class="wimscenter wimsform">
    <input type="submit" name="inddef" value="$wims_name_tosave" />
  $
-   <input type="submit" value="$wims_name_giveup" class="wims_giveup"/>
+   <input type="submit" value="$wims_name_giveup" class="wims_secondary_button"/>
  </div>
 
 !formend
-
+!if $modreq=.new
+<script>
+  $$( document ).ready(function() {
+    $$("#i_common_images").toggle($$('#i_category_1').is(':checked'));
+    $$('#i_category_1').click(function(){
+        if ($$(this).is(':checked')) {
+            $$("#i_common_images").slideDown();
+        } else {
+            $$("#i_common_images").slideUp();
+        }
+    });
+  });
+</script>
+!endif

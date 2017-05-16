@@ -196,6 +196,11 @@ header=\
    fi\
   fi\
   echo "$ind" >$dest/INDEX
+  !if $i_common_images=yes
+    !sh sed -i.bak 's/common_images=no/common_images=yes/g' $dest/var.proc\
+    sed -i.bak 's/class_importation=yes/class_importation=no/g' $dest/var.proc\
+    rm $dest/var.proc.bak
+ !endif
  !read scripts/getindex $mod
  wims_module_log=$mod/INDEX
 !endif
