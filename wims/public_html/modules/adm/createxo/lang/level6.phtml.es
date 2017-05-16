@@ -24,10 +24,10 @@
  a través del parámetro interno <span class="tt wims_code_variable">\imagedir</span>.
 
 !set name_how_to_hide_help = <h2>Ocultar el nombre de la imagen</h2>\
-    If you pick a random picture, the file name can be an help to the student.\
-    You can hide this file name with this code:\
+    Si elige una imagen aleatoria, el nombre del archivo puede ser una ayuda para el estudiante. \
+     Puede ocultar este nombre de archivo con este código: \
     <pre>\img{\imagedir/picture.jpg alt="$name_img_accessibility_alt"}</pre>\
-    If the student takes a look at the generated page, he will only see\
+    Si el estudiante echa un vistazo a la página generada, sólo verá \
     <pre>&lt;img src="a_random_unrelated_file_name" alt="$name_img_accessibility_alt" /&gt;</pre>\
     <p>La ventaja de este segundo método es que los estudiantes no verán el nombre del fichero.</p>\
     <p>A causa de su coste en consumo de recursos, no utilice este método más que cuando sea necesario.\

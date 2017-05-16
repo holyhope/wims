@@ -14,7 +14,7 @@ into name_changeList, name_javascript_required, name_instruction_list, name_how_
         <li> Para obtener más información sobre el editor wims, en el menú horizontal, seleccione el botón Ayuda.\
         (Es el último botón a la derecha) </li></ul>
 
-!distribute lines Ordenes\
+!distribute lines Instrucciones\
 Tipos de variables\
 Funciones aleatorias\
 Datos y listas\
