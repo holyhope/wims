@@ -2,7 +2,7 @@
  !goto proc
 !endif
 
-slib_author=Yves, Noël; Bernadette
+slib_author=Yves, Noël; Bernadette, Perrin-Riou
 slib_comment=
 !!exemple à changer ensuite mais sert de test.
 slib_example=java/jmol
@@ -11,7 +11,10 @@ slib_example=java/jmol
 :proc
 !distribute items $wims_read_parm into $slib_appletdir
 !default slib_appletdir=java/jmol
-
+!if $slib_jmol_exists=yes
+  !reset slib_out
+  !exit
+!endif
 !if $jquery_defined=yes
   !set slib_out=<script type="text/javascript" src="$slib_appletdir/JSmol.min.nojq.js"></script>
 !else
@@ -27,3 +30,5 @@ jmol_isReady = function(applet) {\
 };\
 /*]]>*/\
 </script>
+
+!set slib_jmol_exists=yes
