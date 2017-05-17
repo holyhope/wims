@@ -68,8 +68,8 @@
       !set wims_ref_class=wims_formradio
       !formcheckbox i_category list $list_category prompt $name_type
     </div>
-
-    <div class="field box" id="i_common_images">
+    !if $jquery_defined=yes
+     <div class="field box" id="i_common_images">
       <strong>$name_images</strong>
       !set wims_ref_class=wims_button_help float_right
       !href cmd=help&special_parm=common_images $wims_name_help
@@ -78,6 +78,7 @@
       !formradio i_common_images list yes,no prompt $wims_name_yes, $wims_name_no
       <div class="formHelp">$name_help_images</div>
     </div>
+    !endif
 !else
    <div class="field box">
       <strong>$wims_name_Type</strong>
@@ -86,7 +87,6 @@
       !set p_=!positionof item $(i_category[1]) in $list_category
       $(name_type[$p_])
     </div>
-
 !endif
 
     <div class="field box">
