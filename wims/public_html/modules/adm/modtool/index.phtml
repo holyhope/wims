@@ -57,6 +57,7 @@
       <label for="i_description">$wims_name_Description</label>
       <input type="text" name="i_description" id="i_description" value="$i_description" required="required" />
     </div>
+
 !set list_category=oef,document,exercise,tool,recreation,deductio
 !if $modreq=.new
     <div class="field box">
@@ -67,6 +68,7 @@
       !set wims_ref_class=wims_formradio
       !formcheckbox i_category list $list_category prompt $name_type
     </div>
+
     <div class="field box" id="i_common_images">
       <strong>$name_images</strong>
       !set wims_ref_class=wims_button_help float_right
@@ -86,6 +88,7 @@
     </div>
 
 !endif
+
     <div class="field box">
       <label for="i_domain">$wims_name_Domain</label>
       !set wims_ref_class=wims_button_help float_right
@@ -93,10 +96,11 @@
       <input type="text" name="i_domain" id="i_domain" class="multicomplete" value="$i_domain" />
       <script type="text/javascript">
         /*<![CDATA[*/
+           // Tags in domain.json are only in english.
            var tags =
            !record 0 of wimshome/public_html/bases/sys/domain/domain.json
-            ;
-            set_multicomplete(tags);
+           ;
+           set_multicomplete(tags);
         /*]]>*/
       </script>
     </div>
@@ -230,7 +234,8 @@
  </div>
 
 !formend
-!if $modreq=.new
+
+!if $modreq=.new and $jquery_defined=yes
   <script type="text/javascript">
 /*<![CDATA[*/
   $$( document ).ready(function() {
@@ -246,3 +251,4 @@
 /*]]>*/
   </script>
 !endif
+
