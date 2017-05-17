@@ -1505,7 +1505,7 @@ int wims_mathml_displaymode = 0;
 "\\\\ \\\\"          {wims_mathml_rowposn=2; yylval="\\\\ \\: \\\\";return ROWSEP;}
 "\\\\"          {wims_mathml_rowposn=2;return ROWSEP;}
 "\\tabularnewline"       {wims_mathml_rowposn=2; return ROWSEP;}
-"\\hline"          {wims_mathml_rowposn=2; return ROWSEP;}
+"\\hline"          {yylval=wims_mathml_copy_string(" ");; return MOP; }
 "\\cr"          {wims_mathml_rowposn=2; return ROWSEP;}
 "\\ "         {return THICKSPACE;}
 "\\lbrack"             {yylval=wims_mathml_copy_string("["); return OTHERDELIM;}

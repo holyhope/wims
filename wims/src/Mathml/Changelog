@@ -289,4 +289,16 @@ meaning:
 
 NOTE: the problem is the in mathml all attributes must be known before the actual table can be filled...so all layout information must be derived from the {c|c:c|c -._.-.}
 <mtable rowspacing="0.5ex" columnalign="center center center center" columnlines="solid dashed solid" rowlines="solid none dashed none solid none">
-To solve this in itex2mml/wims_mathml one must store the mathml strings into ca 6 variables...and print these when the \end{array is found..
+To solve this in itex2mml/wims_mathml one must store the mathml strings into ca 6 variables...and print these when the \end{array is found...
+
+17/05/2017  a fix for \hline incompatibility between real latex and wims_mathml
+    
+	    \hline is now ignored (just an empty string...\hline never had a real meaning (ROWSEP) in wims_mathml) 
+	    an array now can use both "\hline" and the "non-latex" syntax for horizontal lines (-._)
+	    the \hline will give the correct separation line in math-image-mode.
+	    \cr \tabularnewline are unchanged...giving 'ROWSEP' 
+note:
+find ~/public_html/modules/[EHU]* -type f -name "*def" -exec grep -H "\\hline" "{}" ";"
+will find only one hit: U1/algebra/docsyslin.fr/doc/1/exgauss.def
+	    
+
