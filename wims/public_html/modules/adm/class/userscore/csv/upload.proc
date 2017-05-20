@@ -56,7 +56,8 @@ remark=
 !endif
 
 prop=no
-!if noauto iswordof $remark or manual isin $types
+!if noauto iswordof $remark
+!!or manual isin $types prop are changed now.
  remark=$remark noprop
 !else
 !! pourquoi cette condition ???
@@ -144,7 +145,15 @@ processed=yes
   !if $wims_superclass!=$empty and $wims_superclass!=$wims_class
    participate=!defof user_participate in wimshome/$userdir/$l
    !if $wims_class notitemof $participate
-    exist=
+    !if $wims_typename=course
+      tmp=!defof class_parent in wimshome/log/classes/$wims_class/.def
+      !if $(tmp)!=$empty and $tmp notitemof $participate
+          exist=
+      !endif
+      !reset tmp
+    !else
+       exist=
+    !endif
    !endif
   !endif
   !if $exist=yes
