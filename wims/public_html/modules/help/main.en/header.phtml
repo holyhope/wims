@@ -1,20 +1,12 @@
 !set lan=en
 !read tabletheme
-!!<HTML><HEAD>
-!!$wims_html_header
-!!</head>
-!if $wims_window=new
- !!!set w_resize=onload="self.resizeTo(550,550);self.moveTo(30,50);"
- !set wims_html_onload=!append word self.resizeTo(550,550);self.moveTo(30,50); to $wims_html_onload
-!endif
-
 !header1
 
 <div id="wimsmhelp">
 
-<div class=wimsmenu>
+<div class="wimsmenu">
 !robottrap
-<center>
+
 $table_header
  $table_tr<th>
 !if _ isin $wims_subsession
@@ -22,10 +14,13 @@ $table_header
 !else
  !href session=$wims_session.1 WIMS home
 !endif
+</th>
 !if $style=print
+ <th>
  &nbsp;
  !href module=$module&chapter=0 Interactive version
  !set chapter=-1
+  </th>
  !goto tabend
 !endif
 !if $chapter>0
@@ -38,19 +33,21 @@ $table_header
 </th>
 !if $chapter>1
  <th>
- !href module=$module&chapter=$[$chapter-1] Preceding chapter
+ !href module=$module&chapter=$[$chapter-1] Chapitre précédent
+ </th>
 !endif
 !if $chapter<$chaptercnt
  <th>
  !href module=$module&chapter=$[$chapter+1] Next chapter
+ </th>
 !endif
-
 :tabend
-</table></center>
+</tr>
+</table>
 </div><!--wimsmenu-->
 <div id="wimsbodybox">
 <div id="wimspagebox">
-<div class=wimsbody>
+<div class="wimsbody">
 
 !if $chapter>0
  !set l=!line 1 of $(chapter$chapter)
@@ -64,7 +61,8 @@ $table_header
  !endif
 !endif
 
-<p><h1 class="wims_title">WIMS help<br><font size="+1"><b>
-$l</b></font>
-</h1> <p>
+<h1 class="wims_title">Aides de WIMS<br/>
+<span class="wims_emph">
+$l</span>
+</h1>
 

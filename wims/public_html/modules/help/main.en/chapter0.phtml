@@ -1,25 +1,26 @@
 
-<ol type=I>
+<ol class="spacer" style="list-style-type:upper-roman;">
 !for i=1 to $chaptercnt
  !set n=!linecnt $(chapter$i)
  !set a=!line 1 of $(chapter$i)
- <li><p><font size="+1">
+ <li>
  !href module=$module&chapter=$i $a
- </font>
+
  !if robot notin $session and $n >=2
-  <ol>
+  <ol class="spacer">
   !for j=2 to $n
    !set l=!line $j of $(chapter$i)
    !set t=!item 1 of $l
    !set s=!item 2 to -1 of $l
    <li>
    !href module=$module&chapter=$i&open=$open,$(i)_$t#$t $s
+   </li>
   !next j
   </ol>
  !endif
+ </li>
 !next i
-<li><p><font size="+1">
+<li>
  !href module=help/wimsdoc.en Technical documentation for developers
- </font>
+ </li>
 </ol>
-
