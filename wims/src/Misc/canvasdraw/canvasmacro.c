@@ -34,10 +34,10 @@ var canvas_userdraw = create_canvas%d(999,xsize,ysize);\
 var context_userdraw = canvas_userdraw.getContext(\"2d\");\
 var click_cnt = 0;\
 if(wims_status != \"done\"){\
- canvas_div.addEventListener(\"mousedown\",user_draw,false);\
- canvas_div.addEventListener(\"mousemove\",user_drag,false);\
- canvas_div.addEventListener(\"touchstart\",user_draw,false);\
- canvas_div.addEventListener(\"touchmove\",user_drag,false);\
+ canvas_div.addEventListener('mousedown',user_draw,false);\
+ canvas_div.addEventListener('mousemove',user_drag,false);\
+ canvas_div.addEventListener('touchstart'  , function(e) { e.preventDefault(); user_draw(e.changedTouches[0]);},false);\
+ canvas_div.addEventListener( 'touchmove'  , function(e) { e.preventDefault(); user_drag(e.changedTouches[0]);},false);\
 };\
 clear_draw_area%d = function(type,name){\
  if(confirm(\"delete \"+multilabel[name]+\" ? \")){\
