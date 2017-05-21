@@ -32,7 +32,7 @@
      </li>
     </ul>
     <div class="wimscenter">
-    <input type="submit"  />
+    <input type="submit" />
     </div>
   !formend
 </fieldset>
@@ -70,7 +70,7 @@
 
 !set table_header=!replace internal <> by in $table_header
 !set table_end=!replace internal </> by in $table_end
-!if oef notin $category
+!if oef notin $category and deductio notin $category
  $table_header
  $table_hdtr
   <th scope="col">$wims_name_name</th><th scope="col">$wims_name_action</th><th scope="col">$wims_name_Explanations</th>
@@ -161,9 +161,11 @@ $
           </tr>
         !next f
     $table_end
+    !if oef isin $category
     <span class="text_icon help">
       $(name_help_addfile_$tfile) $name_help_addfile
     </span>
+    !endif
   </div>
   !endif
  !next tfile
