@@ -1,5 +1,7 @@
 #! /bin/sh
 
+LL="env LC_COLLATE=POSIX LANG=POSIX LC_CTYPE=fr_FR.UTF-8"
+LL="env LC_ALL=C LC_CTYPE=C LANG=C"
 thisdir=`pwd`
 lastdir=$thisdir
 if [ -z "$wims_home" ]; then wims_home=$w_wims_home; fi
@@ -22,7 +24,7 @@ deff=`cd def; ls *.def 2>/dev/null`
 for i in $deff
 do
  dd=`echo $i | sed 's!\.def!.ded!g'`
- if [ ! -f src/$dd ]; then 
+ if [ ! -f src/$dd ]; then
   echo Removing def/$i.
   rm -f def/$i >/dev/null;
  fi
@@ -44,7 +46,7 @@ if [ -d cpp ]; then
  pref=`ls *.cpp 2>/dev/null`
  for i in $pref
  do
-  list=`grep . $i | head -1 | grep target \
+  list=`$LL grep . $i | head -1 | grep target \
 	| tr ',:;./?*#~$\\ ' '                  ' \
 	| awk -F'=' '{print $2}'`
   test=`grep -E '^[[:blank:]]*#[[:blank:]]*include' $i \
@@ -79,7 +81,7 @@ export oef2wims_mdef
 for i in $srcf
 do
  dd=`echo $i | sed 's!\.ded!.def!g'`
- if [ ! -f def/$dd ] || [ src/$i -nt def/$dd ]; then 
+ if [ ! -f def/$dd ] || [ src/$i -nt def/$dd ]; then
   # echo $dd
   rm -f def/$dd 2>/dev/null
   $wims_home/bin/oef2wims src/$i def/$dd
@@ -93,7 +95,7 @@ if [ -z "$list" ]; then exit; fi
 titlist=
 for i in $list
 do
- tit=`awk -F= 'NF>=2 {print $2; exit}' def/$i.def | tr ',\11' '; '`
+ tit=`awk -F= 'NF>=2 {print $2; exit}' def/$i.def | $LL tr ',\11' '; '`
  echo "$i:$tit" >>Extitles
  titlist="$titlist$tit
 "
@@ -105,9 +107,9 @@ fi
 
 echo "$titlist" >tmp1
 echo "$list" >tmp2
-llist=`paste tmp1 tmp2 | sort -t '	' -f -k 1,1`
-list=`echo "$llist" | awk -F'\11' 'length()>2 {print $2}' | tr '\n' ','`
-titlist=`echo "$llist" | awk -F'\11' 'length()>2 {print $1}' | tr '\n' ','`
+llist=`$LL paste tmp1 tmp2 | $LL sort -t '	' -f -k 1,1`
+list=`echo "$llist" | awk -F'\11' 'length()>2 {print $2}' |$LL tr '\n' ','`
+titlist=`echo "$llist" | awk -F'\11' 'length()>2 {print $1}' | $LL tr '\n' ','`
 
 cat >Exindex <<@
 !set exolist  =!char 1 to -2 of $list

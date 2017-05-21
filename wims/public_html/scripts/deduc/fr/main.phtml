@@ -33,7 +33,7 @@
 !if $status=waiting
  !if $error!=$empty
   !read deduc/$module_language/msg.phtml
-  <p>$penaltymsg</p>
+  <div class="wims_msg alert">$penaltymsg</div>
   <hr style="width:50%" />
  !endif
  !if nostatus notwordof $m_options and $methstep!=3
@@ -43,22 +43,19 @@
  !read deduc/$module_language/form$methstep.phtml
  <p>
  !if $hint!=$empty and $givehint>0
- !set wims_ref_class=wims_button_help
-  !href cmd=hint Indication
-
+   !set wims_ref_class=wims_button_help
+   !href cmd=hint Indication
  !endif
  !if $help!=$empty
- !set wims_ref_class=wims_button
-  !href cmd=help Aide de l'exercice
-
+   !set wims_ref_class=wims_button
+   !href cmd=help Aide de l'exercice
  !endif
  !set wims_ref_class=wims_button
  !href exo_Renew
-
 </p>
 !else
  !if $error!=$empty
-  <div class="wims_alertmsg">
+  <div class="wims_msg alert">
   !read deduc/$module_language/msg.phtml
   </div>
  !endif

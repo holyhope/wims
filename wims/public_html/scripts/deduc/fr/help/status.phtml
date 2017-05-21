@@ -3,11 +3,11 @@
 !set equivcnt=!linecnt $m_equivalence
 !set casecnt=!linecnt $allcases
 
-<p><center><h4>Etat actuel de l'exercice</h4></center> <p>
+<h4>Etat actuel de l'exercice</h4>
 
 !if $tolerance<=0
  Vous devez résoudre cet exercice en $m_minsteps étapes pour avoir un score
- maximal. 
+ maximal.
 !else
  Cet exercice peut se résoudre en $m_minsteps étapes, mais dans son niveau
  actuel vous pouvez faire jusqu'à $[$m_minsteps+$tolerance] étapes et encore
@@ -18,42 +18,45 @@
 !else
  Vous avez terminé au bout de $[$currstep-1] étapes.
 !endif
-<p>
 
 !if $casecnt>1
+  <div>
  !if $casecnt>2
-  Vous avez encore $[$casecnt-1] cas à traiter. Cas actuel&nbsp;: <p>
-  \($caseid).
+  Vous avez encore $[$casecnt-1] cas à traiter. Cas actuel&nbsp;:
+  <p>\($caseid).</p>
  !else
   Ceci est votre dernier cas à traiter&nbsp;: \($caseid).
  !endif
- <p>
+ </div>
 !endif
 
 !if $goalcnt>0
- Reste à prouver&nbsp;: <ol>
+ Reste à prouver&nbsp;:
+ <ol>
  !for i=1 to $goalcnt
   !set l=!line $i of $m_goal
-  <li>\($l).
+  <li>\($l).</li>
  !next i
- </ol> <p>
+ </ol>
 !else
  !if $equivcnt>0
-  Objets à transformer&nbsp;: <ol>
+  Objets à transformer&nbsp;:
+  <ol>
   !for i=1 to $equivcnt
    !set l=!line $i of $m_equivalence
-   <li>\($l).
+   <li>\($l).</li>
   !next i
-  </ol> <p>
+  </ol>
  !endif
 !endif
 
 !if $contextcnt>0
- Hypothèses utilisables&nbsp;: <ol>
+ Hypothèses utilisables&nbsp;:
+ <ol>
  !for i=1 to $contextcnt
   !set l=!line $i of $m_context
-  <li>\($l).
+  <li>\($l).</li>
  !next i
- </ol> <p>
+ </ol>
 !endif
 

@@ -5,7 +5,7 @@
 !set Askresult=0
 !set Askcontext=0
 !if $exocnt<1
- Désolé, aucun exercice n'est disponible sous ce module pour l'instant. 
+ Désolé, aucun exercice n'est disponible sous ce module pour l'instant.
  Revenez plus tard!
  !exit
 !endif
@@ -20,31 +20,33 @@
 
 !form new
 <input type="hidden" name="module" value="$module" />
-<table class="wimscenter wimsnoborder"><tr>
+<table class="wimscenter wimsborder"><tr>
 !set special_parm=!trim $special_parm
 !if $special_parm2=select and $special_parm!=$empty
  <td>Exercices contenant<br/>
- <em><span style="color:blue">$special_parm</span></em>&nbsp;:</td><td>
+ <em><span style="color:blue">$special_parm</span></em>&nbsp;:</td>
 !else
- <td>Choisissez les exercices&nbsp;:</td><td>
+ <td>Choisissez les exercices&nbsp;:</td>
 !endif
+<td>
 !read deduc/select.phtml
-</tr><tr><td>Niveau de sévérité<td>
+</td>
+</tr><tr><th>Niveau de sévérité</th><td>
 !set qcmlevel=3
 !formselect qcmlevel from 1 to 9
-</td></tr><tr><td>Demander les conditions <br/>
-d'application des méthodes
-</td><td>
-!formselect Askcontext list -1,0,1 prompt Jamais, D'après les exercices, Toujours
-</td></tr><tr><td>Demander le résultat <br/>
-des méthodes
-</td><td>
-!formselect Askresult list -1,0,1 prompt Jamais, D'après les exercices, Toujours
+</td></tr><tr><th>
+Demander les conditions d'application des méthodes
+</th><td>
+!formselect Askcontext list -1,0,1 prompt jamais, selon les exercices, toujours
+</td></tr><tr><th>
+Demander le résultat des méthodes
+</th><td>
+!formselect Askresult list -1,0,1 prompt jamais, selon les exercices, toujours
 !read introhook.phtml
 </td></tr></table>
-<p class="wimscenter wimsform">
+<div class="wimscenter wimsform">
 <input type="submit" value="$wims_name_work" />
-</p>
+</div>
 
 !formend
 
