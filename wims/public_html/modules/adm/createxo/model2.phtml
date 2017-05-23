@@ -73,8 +73,8 @@ $table_end
         !set val=!char 6..-2 of $val
       !endif
     !endif
-
-    <a class="wims_button smaller" href="#textarea$i" onclick="document.forms['replyform'].reply$i.value=''">$name_clean</a>
+!!! leave the space in value, if not, it does not clean the textarea
+    <a class="wims_button smaller" href="#textarea$i" onclick="document.getElementById('reply$i').value=' '">$name_clean</a>
     !if $(help$i)!=$empty
       !set wims_ref_class=wims_button_help
       !href target=wims_mhelp cmd=help&module=$module&special_parm=model,$i $wims_name_help
@@ -90,8 +90,7 @@ nowrap
 !endif
 <div class="wimscenter">
   <input type="submit" value="$name_sendsource" />
-  &nbsp;
-  &nbsp;
+ $ $
   !set wims_ref_class=wims_button wims_secondary_button
   !href cmd=reply&level=1 $wims_name_giveup
 </div>
