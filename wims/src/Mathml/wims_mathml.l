@@ -93,13 +93,6 @@ int wims_mathml_displaymode = 0;
 "\\$"           {yylval=wims_mathml_copy_string("$"); return MI;}
 "\\%"           {yylval=wims_mathml_copy_string("%"); return MI;}
 
-"\\\"{"[a-zA-Z]{1}\ {0,5}"}" { char *s1 = wims_mathml_copy_string(yytext);if( strlen(s1) > 4 ){ char *s2 = strndup(s1+3,1); yylval = wims_mathml_copy3("&", s2, "uml;"); wims_mathml_free_string(s1); wims_mathml_free_string(s2);}else{yylval = wims_mathml_copy_string(yytext);} return ACCENTS;}
-"\\^{"[a-zA-Z]{1}\ {0,5}"}" { char *s1 = wims_mathml_copy_string(yytext);if( strlen(s1) > 4 ){  char *s2 = strndup(s1+3,1); yylval = wims_mathml_copy3("&", s2, "circ;");wims_mathml_free_string(s1);wims_mathml_free_string(s2);}else{yylval = wims_mathml_copy_string(s1);} return ACCENTS;}
-"\\\'{"[a-zA-Z]{1}\ {0,5}"}" { char *s1 = wims_mathml_copy_string(yytext);if( strlen(s1) > 4 ){  char *s2 = strndup(s1+3,1); yylval = wims_mathml_copy3("&", s2, "acute;");wims_mathml_free_string(s1); wims_mathml_free_string(s2);}else{yylval = wims_mathml_copy_string(yytext);}return ACCENTS;}
-"\\`{"[a-zA-Z]{1}\ {0,5}"}" { char *s1 = wims_mathml_copy_string(yytext);if( strlen(s1) > 4 ){ char *s2 = strndup(s1+3,1); yylval = wims_mathml_copy3("&", s2, "grave;");wims_mathml_free_string(s1); wims_mathml_free_string(s2);}else{yylval = wims_mathml_copy_string(yytext);}return ACCENTS;}
-"\\~{"[a-zA-Z]{1}\ {0,5}"}" { char *s1 = wims_mathml_copy_string(yytext);if( strlen(s1) > 4 ){ char *s2 = strndup(s1+3,1); yylval = wims_mathml_copy3("&", s2, "tilde;");wims_mathml_free_string(s1); wims_mathml_free_string(s2);}else{yylval = wims_mathml_copy_string(yytext);}return ACCENTS;}
-"\\c{"[cC]{1}\ {0,5}"}" { char *s1 = wims_mathml_copy_string(yytext);if( strlen(s1) > 4 ){  char *s2 = strndup(s1+3,1); yylval = wims_mathml_copy3("&", s2, "cedil;");wims_mathml_free_string(s1); wims_mathml_free_string(s2);}else{yylval = wims_mathml_copy_string(yytext);}return ACCENTS;}
-
 [a-zA-Z]+       {yylval=wims_mathml_copy_string(yytext); return MI;}
 
 [0-9]{1,3}(,[0-9]{3,3})*(\.[0-9]+)? |
