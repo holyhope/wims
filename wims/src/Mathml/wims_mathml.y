@@ -722,8 +722,7 @@ closedTerm: array
 | mathenv
 | substack
 | pmod
-| unrecognized
-| accents;
+| unrecognized;
 
 left: LEFT LEFTDELIM {
   wims_mathml_rowposn = 2;
@@ -865,11 +864,6 @@ bigdelim: BIG LEFTDELIM {
   wims_mathml_free_string($2);
 };
 
-accents: ACCENTS {
-  $$ = wims_mathml_copy3("<mtext>", $1, "</mtext>");
-  wims_mathml_free_string($1);
-
-}
 unrecognized: UNKNOWNCHAR {
   $$ = wims_mathml_copy_string("<merror><mtext>Unknown character</mtext></merror>");
 };
