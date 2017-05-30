@@ -29,3 +29,4 @@ name_search_class=Zoek naar een klas
 name_search_help=Zoek tips
 name_search_and=op alle termen,op &eacute;&eacute;n v/d termen
 name_keywords_enter=Voer zoekterm in
+name_search_leveltrans=Intégrer les compétences transversales (Lang)

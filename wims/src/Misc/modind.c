@@ -596,10 +596,11 @@ void onemodule(const char *name, int serial, int lind)
     p1=find_word_start(p2)) {
       p2=find_word_end(p1);
       if(p2!=NULL) *p2++=0; else p2=p1+strlen(p1);
-      if(!isalpha(*p1) ||
+      if(strncmp(p1, "Lang" , p2-p1) &&
+       (!isalpha(*p1) ||
        (!isdigit(*(p1+1)) && *(p1+1)!=0) ||
-       (*(p1+1)!=0 && *(p1+2)!=0))
-      continue;
+       (*(p1+1)!=0 && *(p1+2)!=0)))
+         continue;
       *p1=tolower(*p1);
       ovlstrcpy(lbuf+strlen("level"),p1);
       appenditem(lbuf,lind,serial,2,module_language);
