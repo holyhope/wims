@@ -1637,6 +1637,9 @@ int wims_mathml_displaymode = 0;
 	    }
 	}
     }
+     /* 31/5/2017 bug in MathJax :  rowlines="" will show rowlines */
+    if( strlen(M) < 16 ){  strncat(M," none ",6); }
+    if( strlen(H) < 16 ){  strncat(H," none ",6); }
     strncat(C,"\" ",2);
     strncat(M,"\" ",2);
     strncat(H,"\" ",2);
