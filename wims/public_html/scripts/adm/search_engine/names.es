@@ -36,4 +36,4 @@ name_search_all=Buscar un recurso
 name_search_class=Buscar una clase
 name_search_and=todas las palabras,al menos una de las palabras
 name_keywords_enter=Palabras clave
-name_search_leveltrans=Include transversal skills (Lang)
+name_search_leveltrans=Incluir competencias transversales (Lang)
