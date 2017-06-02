@@ -59,7 +59,6 @@
     </div>
 
 !set list_category=oef,document,exercise,tool,recreation,deductio
-!if $modreq=.new
     <div class="field box">
       <strong>$wims_name_Type</strong>
       !set wims_ref_class=wims_button_help float_right
@@ -68,6 +67,7 @@
       !set wims_ref_class=wims_formradio
       !formcheckbox i_category list $list_category prompt $name_type
     </div>
+!if $modreq=.new
     !if $jquery_defined=yes
      <div class="field box" id="i_common_images">
       <strong>$name_images</strong>
@@ -79,15 +79,16 @@
       <div class="formHelp">$name_help_images</div>
     </div>
     !endif
-!else
-   <div class="field box">
-      <strong>$wims_name_Type</strong>
-      !set wims_ref_class=wims_button_help float_right
-      !href cmd=help&special_parm=type $wims_name_help
-      !set p_=!positionof item $(i_category[1]) in $list_category
-      $(name_type[$p_])
-    </div>
 !endif
+!!!else
+!!   <div class="field box">
+!!      <strong>$wims_name_Type</strong>
+!!      !set wims_ref_class=wims_button_help float_right
+!!      !href cmd=help&special_parm=type $wims_name_help
+!!      !set p_=!positionof item $(i_category[1]) in $list_category
+!!      $(name_type[$p_])
+!!    </div>
+!!!endif
 
     <div class="field box">
       <label for="i_domain">$wims_name_Domain</label>
