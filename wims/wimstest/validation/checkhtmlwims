@@ -66,7 +66,7 @@ check ( ) {
   category=`grep category $moddir/$mod/INDEX | sed -e "s/category=//g"`
   message=`wget "http://127.0.0.1/wims/wims.cgi?module=$mod" -nv -O  test.html ; $validator test.html  2>&1; `
   if [ "$message" ] ; then
-    echo -e "$author\t$email\tmodule=$mod\tintro\n$message END\n" > $outputdir/htmlintro.log ;
+    echo -e "$author\t$email\tmodule=$mod\tintro\n$message END\n" > $outputdir/html.log ;
   fi
   if [ "$category" = "document" ] ; then
     lblock=`ls $moddir/$mod/doc/1/*.def` ;
