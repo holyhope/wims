@@ -36,7 +36,7 @@
  !if $s_keywords!=$empty and $Gotcnt<1
  <div class="wims_msg info">
   $RE_nomatch.
-  !if $(rel_$s_category)!=$empty
+  !if $(rel_$s_category)!=$empty and _tool notin $session
    <div class="RE_try">
      $RE_try
      !for i in $(rel_$s_category)
@@ -50,7 +50,7 @@
    </div>
   !endif $(rel_$s_category)
  </div>
- !endif $s_keywords!=$empty
+ !endif $s_keywords!=$empty and _tool notin $session
 
  !if $s_category isin ADXOTR and $gotcnt1<1 and $gotcnt>0 and $Gotcnt<1
   <p class="RE_pop">
