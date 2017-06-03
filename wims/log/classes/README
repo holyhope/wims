@@ -93,7 +93,9 @@ class_typename: portal, level, program, course, class
 classe dans un etablissement : $class_typename=class and $class_type=3
 cours dans un etablissement : $class_typename=course
 class dans un groupement: $class_typename=class and $class_type=1
-
+zone test : /0// isin $wims_class//
+programme ou  classe individuelle ou sous-classe d'un groupement : 
+   $class_typename=program or $class_type=0 or ($class_type=1 and $class_typename!=course and /0// notin $wims_class//)
 progamme + classe dans un établissement : $class_type=3 and class_typename!=level
 cours ou classe individuelle ou classe groupement (score):
    $class_typename=course or class_type=0 or ($class_typename=class and $class_type=1)

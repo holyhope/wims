@@ -101,6 +101,49 @@ SU_log               = pour enseignant
 SU_exp1              = valable jusqu'au
 SU_exp2              =
 SU_nosheet           = Votre classe n'a pas encore de ressources.
+!!! In a class zone in an institutional structure:
+!if $class_typename=class and $class_type=3
+SU_nosheet = Cette zone est destinée à l'inscription des participants qui auront accès\
+ à un même ensemble de cours.\
+ <ul><li>Vous pouvez compléter cette zone en écrivant un message\
+ du jour visible par les participants lorsqu'ils entreront dans cette classe avant de\
+ travailler dans un des cours proposés (voir la rubrique "Vie de la classe").\
+</li><li>\
+ Les liens de la rubrique "Outils de la classe" permettent d'ajouter des ressources.\
+</li><li>\
+ Une aide adaptée sera proposée lorsque vous cliquerez sur un des liens.\
+</li></ul>  
+!endif
+!!! In a test zone:
+!if /0// isin $wims_class//
+SU_nosheet = Cette zone est destinée à la préparation de ressources.\
+ Pour rendre une ressource de la zone test accessible aux participants,\
+ il faudra d'abord l'importer dans la zone programme.\
+<div>\
+Astuce : utilisez cette zone pour restaurer les ressources de la zone programme d'une\
+ année sur l'autre.</div>
+!endif
+
+!!! In an individual class or a program zone: 
+!if $class_typename=program or $class_type=0 or\
+   ($class_type=1 and $class_typename!=course and /0// notin $wims_class//)
+
+SU_nosheet = Pour démarrer rapidement :\
+<ul><li>\
+Utilisez le moteur de recherche pour sélectionner puis importer des feuilles d'exercices\
+ ou des documents préparés par d'autres enseignants.\
+</li><li>\
+Utilisez la rubrique "Outils de la classe" si vous voulez concevoir\
+vos propres feuilles d'exercices ou documents.\
+</li><li>\
+ Une feuille d'exercices peut contenir des exercices trouvés grâce au moteur de recherche\
+ ou vos propres exercices (voir rubrique "Création de ressources" puis Createxo pour les créer)\
+</li><li>\
+ Une aide adaptée vous sera proposée lorsque vous cliquerez sur un des liens.\
+</li><li>\
+ Pour plus de détails, cliquez sur le bouton d'aide ou consultez la rubrique "Documentation".\
+</li></ul>
+!endif
 SU_shlist            = Ressources existantes
 wims_name_SU_Gateway = Gestion de structure
 SU_Bprogram          = Retour au programme
