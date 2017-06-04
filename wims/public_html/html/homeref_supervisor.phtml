@@ -164,7 +164,9 @@
 $wims_menu_items to $1_
 !endif
 !if $wims_user=supervisor and $cmd!=intro and $cmd!=help and $module!=home and \
-	../adm/ notin ../$module and ($module_category!=document or $job=exosource)
+	../adm/ notin ../$module and ($module_category!=document or $job=exosource)\
+	and $module_category!=help
+!!last condition is for the uniq module help/main.$lang
   !if $job=exosource
     !set tmp=back2
     !if $block!=$empty
