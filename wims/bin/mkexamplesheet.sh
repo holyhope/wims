@@ -19,6 +19,7 @@ if [ -z "$whome" ]; then
  exit
 fi;
 target="$whome/public_html/bases/sheet";
+mkdir -p $target;
 cd $whome/log/classes/;
 clist=`ls -d [0-9]*`;
 for cls in $clist; do
@@ -60,8 +61,8 @@ $desc" >$tmptarget/$namesh.def;
       keyword=`awk -v no="$num" 'BEGIN{cpt=0;l=0;} {a=substr($0,1,1); if(a==":")cpt++; if(cpt==no){l++;if(l==6){print($0);exit;}} }' .sheets`;
       domain1=`awk -v no="$num" 'BEGIN{cpt=0;l=0;} {a=substr($0,1,1); if(a==":")cpt++; if(cpt==no){l++;if(l==5){print($0);exit;}} }' .sheets`;
       ## if keyword is empty, take the level (only for H)
-      if [ ! -n "$keyword" ]; then 
-       if [ -n "$slevel" ]; then 
+      if [ ! -n "$keyword" ]; then
+       if [ -n "$slevel" ]; then
         keyword=`echo "$slevel"`;
        else
         keyword=`echo "level$level"`;
