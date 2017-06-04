@@ -7,6 +7,11 @@
 //  Mise à Jour  : 20.11.2006
 //  Objet        : Vilain BUG avec le retour chariot sous IE (*)
 //-------------------------------------------------------------
+//  Mise à Jour  : 04.06.2017
+//  Objet        : le texte selectionne etait oublie lorsque text_ contient des accolades (*)
+//                le curseur est positionne entre les deux accolades si il n'y a pas de texte
+//                selectionne
+//-------------------------------------------------------------
 //-(*)------------------
 function Get_NbrCR(txt_){
   var NbrCR = 0;
@@ -87,9 +92,21 @@ function Cursor_AddTexte(where_, txt_){
       //-- Recup. texte selectionne
       var szSelect = Chaine.substring( PosDeb, PosFin);
       //-- Insertion du texte
-      Obj.value = szAvant + txt_ + szApres;
+      if (txt_.indexOf("{") == -1) {
+        Obj.value = szAvant + szSelect + txt_ + szApres;
       //-- Replace le curseur
-      Obj.setSelectionRange(  szAvant.length + txt_.length, szAvant.length + txt_.length );
+        Obj.setSelectionRange( szAvant.length + txt_.length, szAvant.length + txt_.length);
+      } else {
+         Obj.value = szAvant + txt_.substring(0, txt_.length-1) + szSelect + txt_.substring(txt_.length-1,txt_.length) + szApres;
+      //-- Replace le curseur
+         if( szSelect.length > 0) {
+           Obj.setSelectionRange( szAvant.length + szSelect.length + txt_.length+1, szAvant.length + szSelect.length + txt_.length+1);
+         }
+         else
+         { // curseur entre les deux accolades
+           Obj.setSelectionRange( szAvant.length + txt_.length-2, szAvant.length + szSelect.length + txt_.length-2 );
+         }
+       }
       //-- Replace le Focus
       Obj.focus();
     }
