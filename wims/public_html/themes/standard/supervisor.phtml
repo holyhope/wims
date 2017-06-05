@@ -64,7 +64,16 @@
 !endif
 
 !set wims_ref_class=wims_button_help
-!href target=wims_help module=help/main&chapter=3&open=3_sheet#sheet $wims_name_whelp
+!if $class_type=2
+  !set wims_helper=chapter=3&open=3_group#group
+!else
+  !if $class_type=4
+    !set wims_helper=chapter=3&open=3_institution#institution
+  !else
+    !set wims_helper=chapter=3&open=3_sheet#sheet
+  !endif
+!endif
+!href target=wims_help module=help/main&$wims_helper $wims_name_whelp
 
 !if $wims_numpartconnected>0
  <p class="wims_connected">$SU_numpartconnected.</p>
