@@ -23,7 +23,7 @@ echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN\" \"http
 
 echo "
 <input type='text' size='10' value='' id='search'  onkeydown='javascripts:if(event.keyCode == 13){look();}'/><input type='button' onclick='javascript:look();' value='search' />
-<h3 style="text-align:center">Implemented canvasdraw commands ($datum)</h3>
+<h2 style="text-align:center">Implemented canvasdraw commands ($datum)</h2>
 <table style='color:blue;font-size:0.8em;'><tr>
 " > $phtml
 
