@@ -74,10 +74,11 @@ Je kunt nu\
 Dit wachtwoord is nodig voor het starten van de inschrijving\
 kunt je dit wachtwoord bij je docent aanvragen.\
 Hallo\
+The login must contain between 4 and 16 characters (digits or letters, no special character, no space).\
  into name_remainig, name_year,name_statut,name_title,name_reserved,name_warning1,name_inscription,\
 name_warning_protected,name_clickname,name_warning_login,name_passwd_warning,name_passwd_exact,name_emptyemail,\
 name_transfer1,name_otheractivities,name_write_adm,name_optional,name_accounttype,name_bookmark,name_youcan,\
-name_writepasswd,name_obtainpasswd,name_hello
+name_writepasswd,name_obtainpasswd,name_hello,name_warning_login2
 
 !set name_remark1=Bij alle open klassen kan men zich aanmelden zonder beperkingen.\
 Bij besloten klassen is echter een wachtwoord vereist om deze aanmeldings procedure te starten. Dit wachtwoord kan worden verkregen bij de docent van de desbetreffende klas of school.

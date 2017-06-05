@@ -70,10 +70,11 @@ into name_portal,name_Portal,name_asateacher,name_asaparticipant,\
   Introduzca la contraseña para poder inscribirse\
   le proporcionará esta contraseña.\
   ¡Bienvenido/a\
+  The login must contain between 4 and 16 characters (digits or letters, no special character, no space).\
 into name_remainig, name_year,name_statut,name_title,name_reserved,name_warning1,name_inscription,\
 name_warning_protected,name_clickname,name_warning_login,name_passwd_warning,name_passwd_exact,name_emptyemail,\
 name_transfer1,name_otheractivities,name_write_adm,name_optional,name_accounttype,name_bookmark,name_youcan,\
-name_writepasswd,name_obtainpasswd,name_hello
+name_writepasswd,name_obtainpasswd,name_hello,name_warning_login2
 
 !set name_remark1=Puede inscribirse libremente en las clases abiertas. Por contra\
   una clase protegida necesita una contraseña que debe ser proporcionada por el profesor de la clase.
