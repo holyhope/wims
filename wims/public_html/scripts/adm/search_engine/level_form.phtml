@@ -1,4 +1,10 @@
 !!# Si les librairies Jquery sont chargees, on affiche un double curseur.
+!if $search_level_to$search_level_from=$empty and $wims_class!=$empty
+   !set Listlevel=$wims_listlevel
+   !set cl=!positionof item $wims_class_level in $Listlevel
+   !set search_level_from=$[max(1,$cl-1)]
+   !set search_level_to=$[$cl+1]
+!endif
 !default search_level_from=1
 !default search_level_to=$search_levelcnt
 !!<fieldset class="property_fields blockcenter">
