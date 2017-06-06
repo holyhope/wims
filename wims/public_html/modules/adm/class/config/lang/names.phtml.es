@@ -437,7 +437,7 @@ su clase. Este registro le permite comprobar si hay actividades sospechosas.
     Opciones\
     Cuenta Modtool \
     Bloqueo de conexión\
-    Mejor notas (número/anonimato)\
+    Mejor notas, número, anonimato\
     Límite del número de participantes\
     Fecha de expiración\
     Grabación de los ejercicios\

@@ -3,10 +3,11 @@
 <fieldset class="property_fields blockcenter">
   <legend>$wims_class</legend>
   <div class="field box">
-     <label>$name_name_institution</label>
 !if $supertype notin 24 or $classdepth=1
+     <label for="up_institution">$name_name_institution</label>
      <input size="50" name="up_institution" id="up_institution" value="$class_institution" />
 !else
+    <strong>$name_name_institution</strong>
      $class_institution
 !endif
   </div>
@@ -15,13 +16,13 @@
     <input size="50" name="up_description" id="up_description" value="$class_description" />
   </div>
   <div class="field box halfwidth">
-    <label>$wims_name_nameteacher</label>
+    <label for="up_supervisor">$wims_name_nameteacher</label>
   !set wims_ref_class=wims_button_help float_right
   !href cmd=help&special_parm=config&special_parm2=supervisor $wims_name_help
      <input size="40" name="up_supervisor" id="up_supervisor" value="$class_supervisor" />
   </div>
   <div class="field box halfwidth">
-    <label>$wims_name_email</label>
+    <label for="up_email">$wims_name_email</label>
   !set wims_ref_class=wims_button_help float_right
   !href cmd=help&special_parm=config&special_parm2=email $wims_name_help
      <input size="40" name="up_email" id="up_email" value="$class_email" />
@@ -53,7 +54,7 @@
     <div class="formHelp">yyyymmdd</div>
   </div>
   <div class="field box halfwidth">
-    <label>$name_secure</label>
+    <label for="up_secure">$name_secure</label>
   !set wims_ref_class=wims_button_help float_right
   !href cmd=help&special_parm=config&special_parm2=secure $wims_name_help
      <input size="50" name="up_secure" id="up_secure" value="$class_secure" />
@@ -121,14 +122,15 @@
       <input size="40" name="up_option" id="up_option" value="$class_option" />
   </div>
   <div class="field box">
-    <label>$name_bestscore</label>
+    <strong>$(name_bestscore[1]):</strong>
 !set wims_ref_class=wims_button_help float_right
 !href cmd=help&special_parm=config&special_parm2=topscores $wims_name_help
 !default class_topscores=0
 !default class_anonymtopscores=yes
 !set up_anonymtopscores=$class_anonymtopscores
+ <label for="up_topscores">$(name_bestscore[2])</label>
    <input size="3" name="up_topscores" id="up_topscores" value="$class_topscores" />
-/
+/ <label for="up_anonymtopscores">$(name_bestscore[3])</label>
 !formselect up_anonymtopscores list no,yes prompt $wims_name_no,$wims_name_yes
   </div>
   <div class="field box">
@@ -192,7 +194,7 @@
 
 !if $wims_supertype!=4 or $class_typename!=class
   <div class="field box">
-    <label for="modtoolchg">$name_devaccount</label>
+    <strong>$name_devaccount</strong>
   !set wims_ref_class=wims_button_help float_right
   !href cmd=help&special_parm=config&special_parm2=modtoolchg $wims_name_help
   !set modtoolchg=1
@@ -203,7 +205,7 @@
 
 !! Lock does not work
 !! <div class="field box">
-!!      <label>$name_lock_level</label>
+!!      <label for="up_lock">$name_lock_level</label>
 !!  !set wims_ref_class=wims_button_help float_right
 !!   !href cmd=help&special_parm=config&special_parm2=lock $wims_name_help
 !!  !set up_lock=$class_lock
