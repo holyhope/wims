@@ -100,7 +100,7 @@
   !reset tt
   !if $test_exist!=$empty
     <p>$RE_found2</p>
-    !if $jquery_defined=yes
+    !if $jquery_defined=yes and $s_category isitemof A,T
       <script type="text/javascript">
         /*<![CDATA[*/
         jQuery(function($$) {
@@ -111,44 +111,47 @@
     !endif
   !endif
 
- <div id="searchresult">
- !if $s_category=A
-   <ul>
-   !for cat in X,D,T,R,M,S,C
-    !if $(gotcnt$cat)>0
-      <li>
-       <a href="#content_$cat">
-         $(CC_$cat) ($(gotcnt$cat))</a>
-       </li>
+  <div id="searchresult">
+    !if $s_category isitemof A,T
+      !if $s_category=A
+        !set list_tabs = X,D,T,R,M,S,C,P
+        !set list_divs = X,D,T,R,M
+      !endif
+      !if $s_category=T
+        !set list_tabs = T,P
+        !set list_divs = T
+      !endif
+      !set gotcntP = $gotcnt1
+      <ul>
+        !for cat in $list_tabs
+          !if $(gotcnt$cat)>0
+            <li>
+              <a href="#content_$cat">
+              $(CC_$cat) ($(gotcnt$cat))</a>
+            </li>
+          !endif
+        !next
+      </ul>
+      !for cat in $list_divs
+        !if $(gotcnt$cat) >0
+          <div id="content_$cat">
+            <p class="wims_emph">$(CC_$cat)</p>
+            !read result.A $cat
+          </div> <!-- end C_$cat -->
+        !endif
+      !next
+  !else
+    !! tt is used in lang/names.$lang
+    !if $s_category notin CS
+      !set tt=<p class="wims_emph">$(CC_$s_category)</p>
     !endif
-   !next
-   !if $gotcnt1 >0
-     <li >
-      <a href="#content_P">
-      $(CC_P) ($gotcnt1)</a>
-      </li>
-   !endif
-   </ul>
-   !for cat in X,D,T,R,M
-     !if $(gotcnt$cat) >0
-       <div id="content_$cat">
-         <p class="wims_emph">$(CC_$cat)</p>
-         !read result.A $cat
-       </div> <!-- end C_$cat -->
-     !endif
-   !next
-
- !else
-!! tt is used in lang/names.$lang
-  !if $s_category notin CS
-   !set tt=<p class="wims_emph">$(CC_$s_category)</p>
+    <p class="wims_emph">$(CC_$s_category)</p>
+    !read result.A $s_category
   !endif
-   <p class="wims_emph">$(CC_$s_category)</p>
-       !read result.A $s_category
- !endif
- !if $Gotcnt=0
-  !read result.A
- !endif
+
+  !if $Gotcnt=0
+    !read result.A
+  !endif
 
  !if $gotcntS > 0
   <div id="content_S">
