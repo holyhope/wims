@@ -210,7 +210,7 @@ de desarrollo bajo la dirección
  !set name_warning_keywords2=Only official keywords will be proposed using autocompletion\
  in the search engine. Have you checked that all keywords\
  you are proposing have no equivalent in the "official" list ? Remember that\
- all words in the title or description are also taken into account by the search engine.
+ all words in the title or description are also taken into$ account by the search engine.
  !set name_warning_suggestion=You could help us by sending new propositions for domains and keywords to
 !endif
 
