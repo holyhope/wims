@@ -1,147 +1,29 @@
 !read tabletheme
-!set var_lst=$table_tr<td>$emph
-!set emphend0=$emphend</td><td>
-!set emphend1=</td></tr>
-!set emphend2=$emphend</td></tr>
 !reset table_center
-$table_header
-<caption>Variables for general purposes by wims server</caption>
- $var_lst wims_exec_error$emphend0 is used to store error messages
-  of the external program called by
-  $(ref1)cmdlist_exec_&+cmd_choose=all$(ref2)cmdlist_exec_">!exec</a>.
-  For this reason,
-  this variable will be overwritten each time a $emph!exec$emphend
-  command is executed.
- $emphend1$var_lst wims_module_log$emphend0 is used for individual
-  module's log files: if this variable is non-empty, wims.cgi will put its
-  content into the module's log file, at the end of the process of the
-  user request.
- $emphend1$var_lst wims_version$emphend0 has a value preset to the
-  current version of the wims server.
- $emphend1$var_lst wims_version_date$emphend0 has a value preset to the
-  last compile date of the server program.
- $emphend1$var_lst wims_site_manager$emphend0 contains the electronic address of the
-  site manager, as defined in the configuration file
-  $emph wims.conf$emphend of the site. Modules should not modify this
-  variable.
- $emphend1$var_lst wims_print_precision$emphend0 defines the printing precision when a
-  result of evaluation (via <span class="tt">!eval</span> or <span class="tt">$[...]</span>) is converted to
-  a character string. Default value: $emph$wims_print_precision$emphend
-  (may be modified in wims.conf).
- $emphend1$var_lst wims_warn_$emphend0... is ...
- $emphend1$var_lst wims_compare_precision$emphend0 is used to define error tolerance
-  when wims compares two numerical values. Formula: <span class="tt">!ifval a=b</span> will
-  return TRUE if <p class="wimscenter">
-  abs(a-b)*$$wims_compare_precision&lt;abs(a+b)+1/$$wims_compare_precision. </p>
-  Default value: $emph$wims_compare_precision$emphend (may be modified in wims.conf).
- $emphend1$var_lst wims_texsize$emphend0 can be used to modify TeX sizes for the
-  module. Default value is 0 (no change). Maybe 1,2,... (increase TeX size) or
-  -1,-2... (decrease TeX size).
- $emphend1$var_lst wims_homeref_parm$emphend0 is reserved for future use in the command
-  <span class="tt">!homeref</span>.
- $emphend1$var_lst wims_homeref_bgcolor$emphend0 is...
- $emphend1$var_lst wims_rawmath_functions$emphend0 is used to tell rawmath routine that
-  the words contained in the variable value should be treated as function names.
-  These words can be separated either by white space or by comma.
- $emphend1$var_lst wims_rawmath_variables$emphend0 is used to tell rawmath routine that
-  the words contained in the variable value should be treated as math variable
-  names. These words can be separated either by white space or by comma.
- $emphend1$var_lst wims_ref_name$emphend0  gives the addess of the wims serveur (for this server, $wims_ref_name)
- $emphend1$var_lst httpd_HTTP_HOST$emphend0 gives the name of the wims serveur (for this server, $httpd_HTTP_HOST)
- $emphend1$var_lst wims_ref_target$emphend0 defines the target of the command
-  <span class="tt">!href, !homeref, !form</span>. Its value is <b>not</b> automatically
-  reset to empty after the commands. (Defaults to empty string, meaning that
-  the target is the current document.)
- $emphend1$var_lst wims_ref_id$emphend0 defines the id in the command
-  <span class="tt">!href</span> (&lt;a ... id=" "&gt;) and
-  in the commands <span class="tt">!formradio</span>,
-  <span class="tt">!formcheckbox</span>. Its value is automatically
-  reset to empty after the commands. (Defaults to empty string)
- $emphend1$var_lst wims_ref_class$emphend0 defines the css class in the command
-  <span class="tt">!href</span> (&lt;a ... class=" "&gt;). Its value is automatically
-  reset to empty after the command. (Defaults to empty string)
-  $emphend1$var_lst wims_ref_title$emphend0 defines the title in the command
-  <span class="tt">!href</span> (&lt;a ... title=" "&gt;). Its value is automatically
-  reset to empty after the command. (Defaults to empty string)
- $emphend1$var_lst wims_html_mode$emphend0 can be used before a command
- as <span class="tt">!formradio</span>, <span class="tt">!formcheckbox</span>. It forces
- the results of the formradio to be inside the html mode. The value must be
- <span class="tt">span</span>, <span class="tt">li</span>,
- <span class="tt">div</span>. It could be <span class="tt">td</span>.
- $emphend1$var_lst wims_html_header$emphend0 is the standardised html header for all
-  its modules' html outputs. Its value is defined in the file
-  html/header.phtml. It is highly recommended that modules use this variable
-  to define their html headers.
- $emphend1$var_lst wims_expire$emphend0 is used to define expiration dates of the
-  pages sent to clients. Don't touch it if you don't know what this means.
- $emphend1$var_lst module_init_parm$emphend0 is...
- $emphend1
-$table_end
-
-
 !set resetyes=<br/>This variable is reset to empty after a dynamic insertion.
-$table_header
-<caption>Variables reserved for dynamic insertions</caption>
- $var_lst ins_align$emphend0 defines the manner in which the inline picture
-  is aligned with respect to the line. Possible values: bottom, middle or top.
-  Default is empty (which means bottom).
- $emphend1$var_lst ins_attr$emphend0 is used to define miscallaneous attributes of a
-  dynamic insertion. Examples:
-  <pre>  ins_attr = align=middle</pre>
-  (aligns the middle of the image with the baseline for the current
-  textline), or
-  <pre>  ins_attr = ismap</pre>
-  (coordinates of the click will be passed back to the server; if the link
-  of the element is the wims server, the coordinates will be registered
-  under the variable $emph no_name$emphend.)
-  $resetyes
- $emphend1$var_lst ins_border$emphend0 is used to define border width of the html
-  element $emph IMG $emphend
-  resulted from the dynamic insertion. Its value should be a positive
-  number.
-  $resetyes
- $emphend1$var_lst ins_density$emphend0 is used to define the density of the dynamic
-  insertions. Default value: $emph 100x100 $emphend.
-  <br/>
-  <span class="wims_warning">Avoid using this variable!</span> We are planning to
-  suppress it. Will be replaced by a server-managed variable.
- $emphend1$var_lst ins_format$emphend0 can be used to determine the format of the
-  graphics file of the dynamic insertion: its value should be either $emph
-  gif$emphend or $emph jpg$emphend. The default value of this variable is
-  $emph gif$emphend (which can be changed by modifying the file $emph
-  wims.conf$emphend; but such change is not recommended). <br/>
-  Some types of dynamic insertions may not be affected by this variable.
- $emphend1$var_lst ins_quality$emphend0 is used to define quality of the graphics
-  convertion used in dynamic insertions. Its value should be between 0 and
-  100. Affects only dynamic insertions whose graphics format is jpg.
- $emphend1$var_lst ins_tag$emphend0 is used for dynamic insertions within a form.
-  In this case define<br/>
-  <span class="tt">ins_tag=form </span>$emph name$emphend<br/>
-  where $emph name$emphend is the name of the html element $emph IMG $emphend
-  within the form (optional).
-  $resetyes
- $emphend1$var_lst insdraw_size$emphend0 is the size in pixels for the dynamic insertion.
-$emphend1$var_lst ins_filename$emphend0 is the name of the graphics file of the dynamic insertion
-  (generated by wims). It must be taken just after the command !insdraw
- $emphend1$var_lst ins_url$emphend0 is the url of the graphics file of the dynamic insertion.
- It must be taken just after the command !insdraw
- $emphend1$var_lst insplot_data$emphend0 is ...$emphend1
- $var_lst insplot_font$emphend0 is ...$emphend1
- $var_lst insplot_set $emphend0 is ...$emphend1
- $var_lst insplot_split$emphend0 is ...$emphend1
- $var_lst insplot_transparent$emphend0 is used to define transparent color
-  for insertions. Default is empty (no transparency). Usual value: 255,255,255
-  (white is transparent).$emphend1
-$table_end
 
+!for theme in general, dynamic, software
 $table_header
-<caption>Variables reserved for software</caption>
-$var_lst wims_backslash_insmath is ...$emphend2
-$var_lst pari_precision (dans oef ??)$emphend2
-$var_lst print_precision$emphend2
-$var_lst maxima_precision$emphend2
-$var_lst wims_multiexec$emphend2
+<caption>
+!record 0 of varspecial/$theme
+</caption>
+!set n=!recordcnt varspecial/$theme
+!for j=1 to $n
+  !set dat=!record $j of varspecial/$theme
+  $table_tr<td>
+  $emph
+  !line 1 of $dat
+  $emphend
+  </td><td>
+  !set text=!line 3 to -1 of $dat
+  !set text=!replace internal `` by $emph in $text
+  !set text=!replace internal '' by $emphend in $text
+  $text
+  </td></tr>
+!next
 $table_end
+!next
+
 !! module_about
 !! module_about_bgcolor
 !! ins_anim_loop

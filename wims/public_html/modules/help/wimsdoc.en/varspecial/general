@@ -1,0 +1,127 @@
+Variables for general purposes by wims server
+
+:wims_exec_error
+
+is used to store error messages of the external program called by
+  $(ref1)cmdlist_exec_&+cmd_choose=all$(ref2)cmdlist_exec_">!exec</a>.
+  For this reason, this variable will be overwritten each time a $emph!exec'' command is executed.
+
+:wims_module_log
+
+is used for individual module's log files: if this variable is non-empty, wims.cgi will put its
+  content into the module's log file, at the end of the process of the user request.
+
+:wims_version
+
+has a value preset to the current version of the wims server.
+
+:wims_version_date
+
+has a value preset to the last compile date of the server program.
+
+:wims_site_manager
+
+contains the electronic address of the site manager, as defined in the configuration file
+  ``wims.conf'' of the site. Modules should not modify this
+  variable.
+
+:wims_print_precision
+
+defines the printing precision when a result of evaluation (via <span class="tt">!eval</span> or <span class="tt">$[...]</span>) is converted to
+  a character string. Default value: $emph$wims_print_precision'' (may be modified in wims.conf).
+
+:wims_warn_
+
+... is ...
+
+:wims_compare_precision
+
+is used to define error tolerance when wims compares two numerical values.
+ Formula: <span class="tt">!ifval a=b</span> will
+  return TRUE if <p class="wimscenter">
+  abs(a-b)*$$wims_compare_precision&lt;abs(a+b)+1/$$wims_compare_precision. </p>
+  Default value: $emph$wims_compare_precision'' (may be modified in wims.conf).
+
+:wims_texsize
+
+can be used to modify TeX sizes for the  module. Default value is 0 (no change). Maybe 1,2,... (increase TeX size) or
+  -1,-2... (decrease TeX size).
+
+:wims_homeref_parm
+
+is reserved for future use in the command <span class="tt">!homeref</span>.
+
+:wims_homeref_bgcolor
+
+is...
+
+:wims_rawmath_functions
+
+is used to tell rawmath routine that the words contained in the variable value should be
+ treated as function names.
+ These words can be separated either by white space or by comma.
+
+:wims_rawmath_variables
+
+is used to tell rawmath routine that
+  the words contained in the variable value should be treated as math variable
+  names. These words can be separated either by white space or by comma.
+
+:wims_ref_name
+
+gives the addess of the wims serveur (for this server, $wims_ref_name)
+
+:httpd_HTTP_HOST
+
+gives the name of the wims serveur (for this server, $httpd_HTTP_HOST)
+
+:wims_ref_target
+
+defines the target of the command
+  <span class="tt">!href, !homeref, !form</span>. Its value is <b>not</b> automatically
+  reset to empty after the commands. (Defaults to empty string, meaning that
+  the target is the current document.)
+
+:wims_ref_id
+
+defines the id in the command
+  <span class="tt">!href</span> (&lt;a ... id=" "&gt;) and
+  in the commands <span class="tt">!formradio</span>,
+  <span class="tt">!formcheckbox</span>. Its value is automatically
+  reset to empty after the commands. (Defaults to empty string)
+
+:wims_ref_class
+
+defines the css class in the command
+  <span class="tt">!href</span> (&lt;a ... class=" "&gt;). Its value is automatically
+  reset to empty after the command. (Defaults to empty string)
+
+:wims_ref_title
+
+defines the title in the command
+  <span class="tt">!href</span> (&lt;a ... title=" "&gt;). Its value is automatically
+  reset to empty after the command. (Defaults to empty string)
+
+:wims_html_mode
+
+can be used before a command
+ as <span class="tt">!formradio</span>, <span class="tt">!formcheckbox</span>. It forces
+ the results of the formradio to be inside the html mode. The value must be
+ <span class="tt">span</span>, <span class="tt">li</span>,
+ <span class="tt">div</span>. It could be <span class="tt">td</span>.
+
+:wims_html_header
+
+is the standardised html header for all
+  its modules' html outputs. Its value is defined in the file
+  html/header.phtml. It is highly recommended that modules use this variable
+  to define their html headers.
+
+:wims_expire
+
+is used to define expiration dates of the pages sent to clients.
+ Don't touch it if you don't know what this means.
+
+:module_init_parm
+
+is...
