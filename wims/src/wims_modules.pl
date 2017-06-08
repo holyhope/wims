@@ -16,7 +16,7 @@ my $list='';
 my %data;
 my $today = strftime "%Y%m%d", localtime;
 
-open(IN, "wget -O - '$addr/index.txt' |");
+open(IN, "curl -s '$addr/index.txt' |");
 
 while (<IN>){
    my $l = $_;
@@ -40,7 +40,7 @@ sub wget { my ($mod, $vers) = @_ ;
    system(`mkdir -p $directory/$adr[0] ;
      mkdir -p $directory/$adr[0]/$adr[1] ;
      cd  $directory/$adr[0]/$adr[1];
-     wget -O $mod.tgz '$addr/$vers/$mod.tgz';
+     curl -L -O -s -S '$addr/$vers/$mod.tgz';
      tar xzf $mod.tgz ; rm  $mod.tgz`) ;
    }
 

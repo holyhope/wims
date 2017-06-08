@@ -41,7 +41,8 @@ for a in $(seq $#) ; do opt=$1;
      mv public_html/scripts/js/mathjax public_html/scripts/js/mathjax_tmp
     fi;
     cd tmp
-    wget --no-check-certificate http://github.com/mathjax/MathJax/zipball/$vmathjax-latest
+    echo "downloading $vmathjax-latest"
+    curl -L -O -s -S https://github.com/mathjax/MathJax/zipball/$vmathjax-latest && echo "downloaded successfully"
     echo "unzipping $vmathjax-latest"
     unzip -q $vmathjax-latest && echo "unzipped successfully"
     rm -f $vmathjax-latest
@@ -58,7 +59,8 @@ for a in $(seq $#) ; do opt=$1;
     vJmol=Jmol-$vjmol012
     vjmol=jmol-$vjmol012
     cd tmp
-    wget https://downloads.sourceforge.net/project/jmol/Jmol/Version%20$vjmol0.$vjmol1/Jmol%20$vjmol012/$vJmol-binary.zip
+    echo "downloading $vJmol-binary.zip"
+    curl -L -O -s -S https://downloads.sourceforge.net/project/jmol/Jmol/Version%20$vjmol0.$vjmol1/Jmol%20$vjmol012/$vJmol-binary.zip && echo "downloaded successfully"
     echo "unzipping $vJmol-binary.zip"
     unzip -q $vJmol-binary.zip && echo "unzipped successfully"
     cd $vjmol;
@@ -87,7 +89,8 @@ for a in $(seq $#) ; do opt=$1;
     vGeogebra=GeoGebraWeb-WIMS-5.0.332.0
     ggb_folder=public_html/scripts/js/geogebra
     cd tmp
-    wget http://wims.unice.fr/download/others/$vGeogebra.zip
+    echo "downloading $vGeogebra.zip"
+    curl -L -O -s -S http://wims.unice.fr/download/others/$vGeogebra.zip && echo "downloaded successfully"
     echo "unzipping $vGeogebra.zip"
     unzip -q $vGeogebra.zip && echo "unzipped successfully"
     rm -f $vGeogebra.zip
