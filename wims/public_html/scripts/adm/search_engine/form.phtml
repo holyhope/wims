@@ -17,47 +17,81 @@
     !set wims_ref_class=wims_button_help float_right
     !href module=adm/light&phtml=search_engine.phtml.$lang $name_search_help
 
-    <ul class="inline">
-      <li>
-        <input size="25"
-               type="search"
-               name="search_keywords"
-               value="$search_keywords"
-               class="wims_home_form multicomplete"
-               placeholder="$name_keywords_enter"
-               results="5"
-               autosave="search_keywords"
-                /><button class="wims_button icon-search" type="submit">$N_Search</button>
-      </li>
-      <li>
-        !!-- categories -->
-        !formselect search_category list $slist prompt $plist
+    <div class="field search_field">
+      <input size="25"
+             type="search"
+             name="search_keywords"
+             value="$search_keywords"
+             class="wims_home_form multicomplete"
+             placeholder="$name_keywords_enter"
+             results="5"
+             autosave="search_keywords"
+             /><button class="wims_button icon_button"
+                       type="submit"><span class="Searching">$N_Search</span></button>
+      <span class="text_icon browse" style="margin-left:2em;display:inline-block;">
+        !href module=adm/browse $wims_name_browse
+      </span>
+    </div>
 
-        !!-- search type -->
-        !default search_and=no
-        !formselect search_and list yes,no prompt $name_search_and
-        !!-- language -->
-        !set L_language=!words2items $wims_site_languages
-        !formselect search_lang list $L_language
-      </li>
-    </ul>
     !if $jquery_defined=yes
-        !read adm/search_engine/level_form.phtml
-    !else
-      <div class="search_level_list">
-        !formcheckbox search_level list $listlevel prompt $Listlevel
-      </div>
+      !if $wims_class==$empty
+        !set display_filters=active:false,
+      !endif
+
+      <script>
+        $$(function(){
+          $$("#affined_search").accordion({
+            collapsible: true,$display_filters
+            heightStyle: "content"
+          });
+        } );
+      </script>
     !endif
-!!finally Lang will be add to the searchlevel automatically for the moment
-    !!<strong>$name_search_leveltrans</strong>
-    !!<div>
-    !!!default search_leveltrans=1
-    !!!formradio search_leveltrans list 1,0 prompt $wims_name_yes, $wims_name_no
-    !!</div>
+
+    <fieldset id="affined_search">
+      <legend>$name_search_filters</legend>
+      <div>
+        <div class="field box halfwidth float_left">
+          !!-- categories -->
+          <label for="search_category">$name_search_category</label>
+          !formselect search_category list $slist prompt $plist
+        </div>
+        <div class="field box halfwidth float_left">
+          !!-- search type -->
+          <label for="search_and">$name_search_method</label>
+          !default search_and=no
+          !formselect search_and list yes,no prompt $name_search_and
+        </div>
+        <div class="field box fullwidth">
+          !!-- language -->
+          <label for="search_lang">$wims_name_Language</label>
+          !set L_language=!words2items $wims_site_languages
+          !for site_lang in $L_language
+            !set lang_prompt=!append item $(Lang_name_$site_lang) ($site_lang) to $lang_prompt
+          !next
+          !formselect search_lang list $L_language prompt $lang_prompt
+        </div>
+
+        <div class="field box fullwidth">
+          <strong>$wims_name_level</strong>
+          !if $jquery_defined=yes
+            !read adm/search_engine/level_form.phtml
+          !else
+            <div class="search_level_list">
+              !formcheckbox search_level list $listlevel prompt $Listlevel
+            </div>
+          !endif
+        </div>
+        <div class="field box fullwidth">
+            !!finally Lang will be add to the searchlevel automatically for the moment
+            <strong>$name_search_leveltrans</strong>
+            !default search_leveltrans=1
+            !formradio search_leveltrans list 1,0 prompt $wims_name_yes, $wims_name_no
+            <div class="formHelp">$name_search_leveltrans_help</div>
+        </div>
+      </div>
+    </fieldset>
     !formend
-  <p class="text_icon browse">
-    !href module=adm/browse $wims_name_browse
-  </p>
 </fieldset>
 
 !if $jquery_defined=yes
