@@ -401,6 +401,18 @@ $comment
  !read adm/class/update.exo
 !endif
 
+# move down an item
+!if $job=movedown and $movedown>=1 and $movedown<$exocnt
+ x_=!record $movedown   of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+ y_=!record $movedown+1 of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+ !distribute items 0,$movedown into update_field,exo
+ update_content=$y_
+ !read adm/class/update.exo
+ !distribute items 0,$[$movedown+1] into update_field,exo
+ update_content=$x_
+ !read adm/class/update.exo
+!endif
+
 # modify an item
 !if $job=modify and $modif>0 and $modif<=$exocnt
  !if $activetest=0
