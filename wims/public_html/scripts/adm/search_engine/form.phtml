@@ -36,14 +36,26 @@
 
     !if $jquery_defined=yes
       !if $wims_class==$empty
-        !set display_filters=active:false,
+        !set default_filters_state=false
+      !else
+        !set default_filters_state=0
       !endif
 
       <script>
-        $$(function(){
+        jQuery(function($$){
+          // Get in sessionStorage if affined_search was previously uncollapsed
+          var affined_search_state = sessionStorage.getItem("affined_search_state");
+          affined_search_state = affined_search_state === null ? $default_filters_state : affined_search_state;
+          affined_search_state = Number(affined_search_state);
+          // Display all affined search fields in a collapsible way
           $$("#affined_search").accordion({
-            collapsible: true,$display_filters
-            heightStyle: "content"
+            collapsible: true,
+            active: affined_search_state,
+            heightStyle: "content",
+            activate : function( event, ui ) {
+                affined_search_state = $$("#affined_search").accordion("option", "active");
+                sessionStorage.setItem("affined_search_state", affined_search_state);
+            }
           });
         } );
       </script>
