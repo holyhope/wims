@@ -99,8 +99,20 @@ sheetcnt=!recordcnt wimshome/log/classes/$qclass/sheets/.sheets
 	!writefile wimshome/log/classes/$qclass/sheets/.severity 10
 !endif
 
-# On definit le poids et la severité de cette feuille dans .severity (par defaut, 1 et 1)
-!appendfile wimshome/log/classes/$qclass/sheets/.severity 1 1
-
+# On definit le poids et la severité de cette feuille dans le fichier .severity (par defaut : 1 2 1)
+!set DF_SEVERITY=!defof DF_SEVERITY in wimshome/public_html/bases/sys/define.conf
+# Explication sur la sévérité :
+# $WEIGHT $FORMULA $INDICATOR
+!distribute words $DF_SEVERITY into default_weight,default_severity,default_indicator
+# $WEIGHT is the sheet weight in class score
+!bound sh_weight between 0 and 100000 default $default_weight
+# $FORMULA is one of the 7 availables formulas (see adm/class/sheetformula for details) [max(I,Q), I, I*Q^0.3, I*Q^0.5, I*Q, I^2*Q, (I*Q)^2]
+!bound sh_formula between integer 0 and 6 default $default_severity
+# $INDICATOR is a severity Indicator (I0,I1,I2) (I in the previous formula)
+# I0 : relatif au nombre de points cumulés,
+# I1 : relatif à la moyenne meilleures notes obtenues
+# I2 : relatif au minimum des n meilleures notes précédentes (niveau d'acquisition)
+!bound sh_indicator between integer 0 and 2 default $default_indicator
+!appendfile wimshome/log/classes/$qclass/sheets/.severity $sh_weight $sh_formula $sh_indicator
 
 wims_sheet=$n

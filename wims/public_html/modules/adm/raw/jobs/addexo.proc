@@ -4,8 +4,8 @@
 !read scripts/check.exoclass
 
 !readdef $classdeffile
-  
-!if $class_type>0
+
+!if $class_type>1
   # on n'ajoute un exercice que dans une classe independante
   error=class $qclass is a superclass
   !exit
@@ -14,7 +14,7 @@
 # Si l'option "force_rewrite" n'a pas ete choisie, impossible d'ecraser un exercice existant
 action=added
 !if $exo_exists=yes
-  !if force_rewrite != $option
+  !if force_rewrite notitemof $option
      error=$qexo already exists !
      !exit
   !else
@@ -26,22 +26,26 @@ action=added
 # On cree le dossiers src/ (s'il n'existe pas) pour pouvoir y placer notre exercice :
 !sh mkdir $wims_class_dir/src
 
-
 # On place alors notre fichier d'exercice dans la classe :
 !writefile wimshome/log/classes/$qclass/src/$qexo.oef $data1
 
-# puis on supprime les index
-!sh rm $wims_class_dir/Exindex
-!sh rm $wims_class_dir/Extitles
+# L'option "no_build" permet d'importer un grand nombre
+# d'exercices, sans etre ralenti par la compilation
+# (attention a bien la lancer ensuite !)
+!if no_build notitemof $option
+  # puis on supprime les index
+  !sh rm $wims_class_dir/Exindex
+  !sh rm $wims_class_dir/Extitles
 
-# et on les reconstruit : (au passage, on compile notre nouvel exercice)
-compilation = !sh cd $wims_class_dir;. $wims_home/public_html/scripts/oef/mkindex
-compilation = !lines2items $compilation
+  # et on les reconstruit : (au passage, on compile notre nouvel exercice)
+  compilation = !sh cd $wims_class_dir;. $wims_home/public_html/scripts/oef/mkindex
+  compilation = !lines2items $compilation
 
-result_compil=!item 2 of $compilation
-!if ERROR isin $result_compil
-  error = COMPILATION $result_compil\
-  data1=$data1
-  #On supprime alors l'exercice defectueux
-  !sh rm $wims_class_dir/src/$qexo.oef
+  result_compil=!item 2 of $compilation
+  !if ERROR isin $result_compil
+    error = COMPILATION $result_compil\
+    data1=$data1
+    #On supprime alors l'exercice defectueux
+    !sh rm $wims_class_dir/src/$qexo.oef
+  !endif
 !endif

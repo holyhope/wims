@@ -1,0 +1,25 @@
+# BuildExos :
+# Permet de compiler (src->def) tous les exos de la classe qui ne le sont pas, et de remttre à jour les indexs.
+
+!read scripts/check.class
+
+!readdef $classdeffile
+
+!if $class_type>1
+  # on n'ajoute un exercice que dans une classe independante
+  error=class $qclass is a superclass
+  !exit
+!endif
+
+# Supprime les index existants
+!sh rm $wims_class_dir/Exindex
+!sh rm $wims_class_dir/Extitles
+
+# puis on les reconstruit : (au passage, cela compile les nouveaux exercices)
+compilation = !sh cd $wims_class_dir;. $wims_home/public_html/scripts/oef/mkindex
+compilation = !lines2items $compilation
+
+result_compil=!item 2 of $compilation
+!if ERROR isin $result_compil
+  error = COMPILATION $result_compil
+!endif

@@ -1,0 +1,33 @@
+# GetSession
+# Ouvre une session WIMS et renvoit l'ID
+#
+# Sample usage :
+# /wims.cgi?module=adm/raw&job=getsession&format=json&data1=adm/createxo
+
+!if $ident_type=$empty and $format != $empty
+  !set ident_type=$format
+!endif
+
+dir_session=sessions/$wims_session
+allowed_modules = adm/createxo
+
+q_module = !word 1 of $data1
+!bound q_module within $allowed_modules
+
+!set log = !sh cp $wims_home/$dir_session/var $wims_home/$dir_session/var.def
+!!log = !sh mv $wims_home/$dir_session/var $wims_home/$dir_session/var.def
+
+!if $q_module != $empty
+  !setdef w_module=$q_module in wimshome/$dir_session/var.def
+  !set w_module=$q_module
+  !set wims_module=$q_module
+  !set module=$q_module
+!endif
+
+
+!set r_=!record 0 of wimshome/$dir_session/var
+
+
+
+!!sh mv wimshome/$dir_session/var
+!set log2 = !sh cp $wims_home/$dir_session/var.def $wims_home/$dir_session/var

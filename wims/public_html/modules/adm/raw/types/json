@@ -1,7 +1,6 @@
-!shortout ,"job":"$job",\
-
+!shortout ,"job":"$job"\
+,
 !goto $job
-
 
 :recuser
 :search
@@ -20,7 +19,7 @@
   !if $[$deleted_users + $corrected_users]=0
     message=job done. Nothing to repair. Congratulations !
   !else
-    message=Some users modified. You're class is now fixed !
+    message=Some users modified. Your class is now fixed !
   !endif
 !endif
 
@@ -71,19 +70,20 @@
 !goto footer
 
 :checkclass
- !shortout "message":"Class $qclass exists"\
+ !shortout "qclass": "$qclass",\
+ "message":"Class exists"\
 
 !goto footer
 
 :checksheet
- !shortout "query_class":"$qclass",\
-"message":"sheet $qsheet exists"\
+ !shortout "query_class":"$qclass"\
+,"message":"sheet $qsheet exists"\
 
 !goto footer
 
 :checkexam
- !shortout "query_class":"$qclass",\
-"message":"exam $qexam exists"\
+ !shortout "query_class":"$qclass"\
+,"message":"exam $qexam exists"\
 
 !goto footer
 
@@ -111,13 +111,13 @@ titles=!replace internal "  by \" in $titles
 titles=!replace internal ,  by "," in $titles
 list=!replace internal  ,  by "," in $list
 
-!shortout "query_class":"$qclass",\
-"nbsheet":"$cnt",\
-"sheetlist":["$list"],\
-"sheettitlelist":["$titles"],\
-"separator":"$separator",\
-"hidden_sheets":"$nb_hidden",\
-"not_hidden_sheets":"$nohidden"\
+!shortout "query_class":"$qclass"\
+,"nbsheet":"$cnt"\
+,"sheetlist":["$list"]\
+,"sheettitlelist":["$titles"]\
+,"separator":"$separator"\
+,"hidden_sheets":"$nb_hidden"\
+,"not_hidden_sheets":"$nohidden"\
 
 !goto footer
 
@@ -125,10 +125,10 @@ list=!replace internal  ,  by "," in $list
 titles=!replace internal "  by \" in $titles
 titles=!replace internal  ,  by "," in $titles
 list=!replace internal  ,  by "," in $list
- !shortout "query_class":"$qclass",\
-"nbexam":"$cnt",\
-"examlist":["$list"],\
-"examtitlelist":["$titles"]\
+ !shortout "query_class":"$qclass"\
+,"nbexam":"$cnt"\
+,"examlist":["$list"]\
+,"examtitlelist":["$titles"]\
 
 !goto footer
 
@@ -171,15 +171,15 @@ sheet_properties = !replace internal " by $\"$ in $sheet_properties
 sheet_title = !replace internal " by $\"$ in $sheet_title
 sheet_description = !replace internal " by $\"$ in $sheet_description
 
- !shortout "query_class":"$qclass",\
-"query_sheet":"$qsheet",\
-"exo_cnt":"$exocnt",\
-"sheet_properties":"$sheet_properties",\
-"sheet_status":"$sheet_status",\
-"sheet_expiration":"$sheet_expiration",\
-"sheet_title":"$sheet_title",\
-"sheet_description":"$sheet_description",\
-"exolist":[$exolist]\
+ !shortout "query_class":"$qclass"\
+,"query_sheet":"$qsheet"\
+,"exo_cnt":"$exocnt"\
+,"sheet_properties":"$sheet_properties"\
+,"sheet_status":"$sheet_status"\
+,"sheet_expiration":"$sheet_expiration"\
+,"sheet_title":"$sheet_title"\
+,"sheet_description":"$sheet_description"\
+,"exolist":[$exolist]\
 
 !goto footer
 
@@ -202,20 +202,20 @@ exam_properties = !replace internal " by $\"$ in $exam_properties
 exam_title = !replace internal " by $\"$ in $exam_title
 exam_description = !replace internal " by $\"$ in $exam_description
 
- !shortout "query_class":"$qclass",\
-"queryexam":"$qexam",\
-"exam_properties":"$exam_properties",\
-"exocnt":"$exocnt",\
-"exolist":"$exolist",\
-"exotitlelist":"$exotitlelist",\
-"exam_opening":"$exam_opening",\
-"exam_status":"$exam_status",\
-"exam_expiration":"$exam_expiration",\
-"exam_duration":"$exam_duration",\
-"exam_attempts":"$exam_attempts",\
-"exam_title":"$exam_title",\
-"exam_description":"$exam_description",\
-"exam_cut_hours":"$exam_cut_hours"\
+ !shortout "query_class":"$qclass"\
+,"query_exam":"$qexam"\
+,"exam_properties":"$exam_properties"\
+,"exocnt":"$exocnt"\
+,"exolist":"$exolist"\
+,"exotitlelist":"$exotitlelist"\
+,"exam_opening":"$exam_opening"\
+,"exam_status":"$exam_status"\
+,"exam_expiration":"$exam_expiration"\
+,"exam_duration":"$exam_duration"\
+,"exam_attempts":"$exam_attempts"\
+,"exam_title":"$exam_title"\
+,"exam_description":"$exam_description"\
+,"exam_cut_hours":"$exam_cut_hours"\
 
 
 !goto footer
@@ -228,6 +228,11 @@ exam_description = !replace internal " by $\"$ in $exam_description
 
 !goto footer
 
+:buildexos
+ !shortout "message":"Compilation done",\
+"compilation_result":"$compilation"\
+
+!goto footer
 
 :testexo
  !shortout "message":"exercice $qexo successfully compiled",\
@@ -304,8 +309,8 @@ cd=!replace internal / by _ in $cd
 
 :getclass
 !shortout "query_class":"$qclass",\
-  "rclass":"$rclass",\
-
+  "rclass":"$rclass"\
+,
 list_cnt=!itemcnt $option
 i=0
 
@@ -325,8 +330,8 @@ i=0
  !advance i
 
  !if $i<$list_cnt
-  !shortout ,\
-
+  !shortout \
+,
  !endif
 
 
@@ -335,15 +340,14 @@ i=0
 !goto footer
 
 
-
 :getclassmodif
 !shortout "modifs":"$modif"
 !goto footer
 
 :getuser
-!shortout "query_class":"$qclass",\
-"queryuser":"$quser",\
-
+!shortout "query_class":"$qclass"\
+,"queryuser":"$quser"\
+,
 list_cnt=!itemcnt $option
 i=0
 
@@ -353,10 +357,9 @@ i=0
  !advance i
 
  !if $i<$list_cnt
-  !shortout ,\
-
+  !shortout \
+,
  !endif
-
 
 !next d
 !goto footer
@@ -435,19 +438,19 @@ $ by },{ in $data_scores
 sheet_mean_percent =!replace internal NaN by "NaN" in $sheet_mean_percent
 sheet_mean_quality =!replace internal NaN by "NaN" in $sheet_mean_quality
 
-!shortout "query_sheet":$qsheet,\
-"query_class":"$qclass",\
-"active_index":$active_index,\
-"requires":$requires,\
-"score_status":"$score_status",\
-"class_scoremax":$scoremax,\
-"weights":$weights,\
-"sheet_mean_quality":$sheet_mean_quality,\
-"sheet_mean_percent":$sheet_mean_percent,\
-"sheet_max_quality":$sheet_max_quality,\
-"sheet_max_percent":$sheet_max_percent,\
-"user_cnt":$usercnt,\
-"data_scores":
+!shortout "query_sheet":$qsheet\
+,"query_class":"$qclass"\
+,"active_index":$active_index\
+,"requires":$requires\
+,"score_status":"$score_status"\
+,"class_scoremax":$scoremax\
+,"weights":$weights\
+,"sheet_mean_quality":$sheet_mean_quality\
+,"sheet_mean_percent":$sheet_mean_percent\
+,"sheet_max_quality":$sheet_max_quality\
+,"sheet_max_percent":$sheet_max_percent\
+,"user_cnt":$usercnt\
+,"data_scores":
 
 
 
@@ -467,7 +470,6 @@ sheet_mean_quality =!replace internal NaN by "NaN" in $sheet_mean_quality
 	!shortout ""\
 
 !endif
-
 
 !goto footer
 
@@ -499,9 +501,7 @@ sheetqualitydetail=[$sheetqualitydetail]
 !goto footer
 
 
-
 :getscore
-
 
 json_lists = examscore, weights, requires, summary, gotdetail, meandetail, remain, best_detail, level_detail
 double_lists = examscore
@@ -527,19 +527,19 @@ $ by ],[ in $($v)
   !shortout "query_sheet":"$qsheet",
 !endif
 
-!shortout "query_class":"$qclass",\
-"query_user":"$quser",\
-"score_max":"$scoremax",\
-"exam_scores":$examscore,\
-"weights":$weights,\
-"require_points":$requires,\
-"sheet_summaries":$summary,\
-"got_points":$gotdetail,\
-"remain":$remain,\
-"best_detail":$best_detail,\
-"level_detail":$level_detail,\
-"score_status":"$score_status",\
-"score_qualities":$meandetail\
+!shortout "query_class":"$qclass"\
+,"query_user":"$quser"\
+,"score_max":"$scoremax"\
+,"exam_scores":$examscore\
+,"weights":$weights\
+,"require_points":$requires\
+,"sheet_summaries":$summary\
+,"got_points":$gotdetail\
+,"remain":$remain\
+,"best_detail":$best_detail\
+,"level_detail":$level_detail\
+,"score_status":"$score_status"\
+,"score_qualities":$meandetail\
 
 !if $qsheet != $empty
     !shortout ,"query_sheet":"$qsheet"\
@@ -549,12 +549,12 @@ $ by ],[ in $($v)
 
 :getlog
 
-!shortout "query_class":"$qclass",\
-"query_user":"$quser",\
-"query_sheet":"$qsheet",\
-"query_exam":"$qexam",\
-"log_size":"$export_size",\
-"user_log":
+!shortout "query_class":"$qclass"\
+,"query_user":"$quser"\
+,"query_sheet":"$qsheet"\
+,"query_exam":"$qexam"\
+,"log_size":"$export_size"\
+,"user_log":
 
 !if $export_size > 0
    !shortout [
@@ -579,10 +579,10 @@ $ by ],[ in $($v)
 
 :getsession
 
-!shortout "session_id":"$wims_session",\
-"query_module":"$q_module",\
-"log":["$log","$log2"],\
-"r_":"$r_"
+!shortout "session_id":"$wims_session"\
+,"query_module":"$q_module"\
+,"log":["$log","$log2"]\
+,"r_":"$r_"
 
 !goto footer
 
@@ -603,24 +603,24 @@ $ by ],[ in $($v)
 !goto footer
 
 :getexo
-!shortout "query_class":"$qclass",\
-"querysheet":"$qsheet",\
-"queryexo":"$qexo",\
-"exo_module":"$exo_module",\
-"exo_params":"$exo_params",\
-"exo_points":"$exo_points",\
-"exo_weight":"$exo_weight",\
-"exo_title":"$exo_title",\
-"exo_description":"$exo_description"\
+!shortout "query_class":"$qclass"\
+,"querysheet":"$qsheet"\
+,"queryexo":"$qexo"\
+,"exo_module":"$exo_module"\
+,"exo_params":"$exo_params"\
+,"exo_points":"$exo_points"\
+,"exo_weight":"$exo_weight"\
+,"exo_title":"$exo_title"\
+,"exo_description":"$exo_description"\
 
 !goto footer
 
 
 :authuser
- !shortout "wims_session":"$num_session",\
-"home_url":"$wims_ref_name?session=$num_session.1",\
-"user":"$quser",\
-"class_id":"$wims_class"\
+ !shortout "wims_session":"$num_session"\
+,"home_url":"$wims_ref_name?session=$num_session.1"\
+,"user":"$quser"\
+,"class_id":"$wims_class"\
 
 !goto footer
 
@@ -768,30 +768,30 @@ title=!item $pos of $name_wims_listlevel
 
 :getmodule
 
-!shortout "index_url" : "$wims_ref_name?module=$option",\
-"module_metadatas" : "$module_metadatas",\
-"module_id" : "$option",\
-"title" : "$title",\
-"description" : "$description",\
-"language" : "$language",\
-"category" : "$category",\
-"domain" : "$domain",\
-"level" : "$level",\
-"keywords" : "$keywords",\
-"require" : "$require",\
-"scoring" : "$scoring",\
-"copyright" : "$copyright",\
-"author" : "$author",\
-"author_address" : "$address",\
-"version" : "$version",\
-"required_wims_version" : "$required_wims_version",\
-"vardef" : "$vardef",\
-"translator" : "$translator",\
-"translator_address" : "$translator_address",\
-"data" : "$data",\
-"maintainer" : "$maintainer",\
-"maintainer_address" : "$maintainer_address",\
-"translation_language" : "$translation_language"\
+!shortout "index_url" : "$wims_ref_name?module=$option"\
+,"module_metadatas" : "$module_metadatas"\
+,"module_id" : "$option"\
+,"title" : "$title"\
+,"description" : "$description"\
+,"language" : "$language"\
+,"category" : "$category"\
+,"domain" : "$domain"\
+,"level" : "$level"\
+,"keywords" : "$keywords"\
+,"require" : "$require"\
+,"scoring" : "$scoring"\
+,"copyright" : "$copyright"\
+,"author" : "$author"\
+,"author_address" : "$address"\
+,"version" : "$version"\
+,"required_wims_version" : "$required_wims_version"\
+,"vardef" : "$vardef"\
+,"translator" : "$translator"\
+,"translator_address" : "$translator_address"\
+,"data" : "$data"\
+,"maintainer" : "$maintainer"\
+,"maintainer_address" : "$maintainer_address"\
+,"translation_language" : "$translation_language"\
 
 !goto footer
 
