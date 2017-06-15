@@ -8,9 +8,8 @@ themelist=$empty
   themelist=!append item $i to $themelist
  !endif
 !next i
-iconlist=!sh cd gifs/themes/;ls | sort
-!!not very clean
-iconlist=!replace internal mkindex by in $iconlist
+iconlist=!sh cd gifs/themes/;find . -depth 1 -type d | sort
+iconlist=!replace internal ./ by in $iconlist
 iconlist=!words2items $iconlist
 !for icon_theme in $iconlist
   !set icon_title=!defof title in wimshome/public_html/gifs/themes/$icon_theme/INDEX
