@@ -5,7 +5,7 @@ $classname\
 $wims_name_config
 
 $name_param_change
-&nbsp;
+$ $
 !set wims_ref_class=wims_button_help
  !href target=wims_mhelp cmd=help $wims_name_help
 
@@ -29,8 +29,14 @@ $name_param_change
     !default livret_scorecolor=$wims_scorecolor
     <table class="wimscenter wimsborder">
      <tr>
-      <td style="background-color: $(livret_scorecolor[1])">$name_nowork</td>
-      <td><input type="color" value="$(livret_scorecolor[1])" name="cf_scorecolor1" size="8" /></td>
+      <th>$name_activity</td>
+      <th>$name_colorchoice</th>
+      <th>$name_legend</th>
+     </tr>
+     <tr>
+      <td style="background-color: $(livret_scorecolor[1])">
+      <label for="cf_scorecolor1">$name_nowork</label></td>
+      <td><input type="color" value="$(livret_scorecolor[1])" id="cf_scorecolor1" name="cf_scorecolor1" size="8" /></td>
       <td>$name_nowork</td>
      </tr>
      !readproc proc/legend.proc
@@ -38,8 +44,9 @@ $name_param_change
      !let cpt2=0
      !for k=2 to 11
        <tr>
-        <td style="background-color: $(livret_scorecolor[$k]);text-align:center">$[($k-1)*10]%</td>
-        <td><input type="color" value="$(livret_scorecolor[$k])" name="cf_scorecolor$k" size="8" /></td>
+        <td style="background-color: $(livret_scorecolor[$k])">
+        <label for="cf_scorecolor$k">$[($k-1)*10]%</label></td>
+        <td><input type="color" value="$(livret_scorecolor[$k])" id="cf_scorecolor$k" name="cf_scorecolor$k" size="8" /></td>
         !if $cpt<$(numcom[$cpt2])
           !increase cpt
         !else
@@ -47,8 +54,8 @@ $name_param_change
           !increase cpt2
           <td rowspan="$(numcom[$cpt2])">
             <input type="text" value="$(livret_legende$k)" name="cf_legende$cpt2" size="25" />
-            </td>
-	!endif
+          </td>
+	    !endif
        </tr>
      !next k
     </table>
@@ -75,21 +82,25 @@ $name_param_change
     <label for="cf_minac">$name_configtext3</label>
     <input type="text" name="cf_minac" id="cf_minac" value="$livret_minac" size="5" />
   </div>
-  <div class="field box">
-   <label for="">$name_score_modify</label>
-   <br />
+  !if $asheets!=$empty
+   <div class="field box">
+   <strong>$name_score_modify</strong>
+   <ul class="wims_nopuce">
    !for i in $asheets
-    <input type="checkbox" name="cf_nonactivesheet" value="$i"
+    <li>
+     <input type="checkbox" id="cf_nas$i" name="cf_nonactivesheet" value="$i"
     !if $i isitemof $cf_nonactivesheet
      checked="checked"
     !endif
     />
     !let t=!record $i of  wimshome/log/classes/$wims_class/sheets/.sheets
-    $i :
+    <label for="cf_nas$i">$i :
     !line 3 of $t
-    <br />
+    </label>
+    </li>
    !next i
    </div>
+  !endif
   <div class="wimscenter wimsform">
    <input type="submit" name="cf_set" value="$wims_name_tosave" />
  $
