@@ -152,20 +152,19 @@ to $wims_html_header
       !endif
  $
    !endif
- </div>
+  </div> <!-- id oef__helphint-->
  !endif
  !read oef/form.phtml
-!if $fieldtot = 0
-  <div id="oef_actions">
+ <div id="oef_actions">
+ !if $fieldtot = 0
     <div class="oef_exo_renew">
-          !set wims_ref_class=wims_button
-          !set wims_ref_id=oef_renew
-          !href $renewlink $name_exo_renew
+      !set wims_ref_class=wims_button
+      !set wims_ref_id=oef_renew
+      !href $renewlink $name_exo_renew
     </div>
   </div>
   !goto endmain
 !endif
- <div id="oef_actions">
  !!_check is there for examlog
  !if _exam notin $wims_session and  _check notin $wims_session
     !if $jquery_defined=yes
@@ -354,12 +353,12 @@ to $wims_html_header
  !endif
  </p>
 !endif
+:endmain
  <div id="oef_endhook">
 !read ./endhook.phtml
 </div> <!-- id oef_endhook-->
 :end
 </div> <!--oefform-->
-:endmain
 <!--fin oef main.phtml-->
 !if $oef_anstype_css!=$empty
   <style type="text/css">$oef_anstype_css</style>
