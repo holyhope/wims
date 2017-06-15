@@ -38,14 +38,16 @@ $name_addseq
   !distribute lines $sh into s_,t_,ti,d_,o_
   $table_tr
   <td>
+  <label for="doc_$i">
   !href module=$s_&$t_ $ti
+  </label>
   </td><td>
   !item $[$o_ +1] of $wims_name_status
    !set wims_ref_class=wims_button_help
    !href module=adm/class/adddoc&job=prop&doc=$i $wims_name_change
   </td><td>
    !set doc_$i=!positionof item doc $i in $(data[3;])
-  <input name="doc_$i" size="5" value="$(doc_$i)" />
+  <input name="doc_$i" size="5" value="$(doc_$i)" id="doc_$i" />
   </td></tr>
  !next i
  !for i=1 to $sheetcnt
