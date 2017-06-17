@@ -76,39 +76,44 @@ WIMS modtool
 !record 7 of $my_dir
 !!@#sélectionnez le type d'exercice que vous désirez créer, puis cliquez sur!!#@
 
-
+<fieldset><legend>
+!record 57 of $my_dir
+</legend>
    $table_header
     $table_hdtr<td colspan="3" align="center"><input type="submit" $balise_obl value="$wims_name_tosave" /></td></tr>
     $table_tr<th>$wims_name_Type</th><th>$wims_name_Description</th><th>$name_Example</th>
    !set u = !linecnt $name
    !for i = 1 to $u
-     $table_tr<td width="12%">
+     $table_tr<td>
      !set cnt=!itemcnt $(name[$i;])
      !for a =1 to $cnt
-        <br />
         !set wims_ref_class=wims_formradio
+        !set wims_ref_id=type_exo_$(i)_$a
         !formradio type_exo list $(name[$i;$a]) prompt $(wims_name_quick_$(name[$i;$a]))
      !next a
-     </td><td width="25%">$(explication[$i;])</td>
-     <td>
+     </td><td>$(explication[$i;])</td>
+     <td style="text-align:left">
+     <ul class="wims_nopuce">
      !for j = 1 to $(nb_example[$i])
+     <li>
      !set ex_data = !getdef file in $example_dir/$(name_example[$i])/$j
      !set ex_title = !getdef title in $example_dir/$(name_example[$i])/$j
      !set ex_data=!nospace $ex_data
      !set ex_source = !getdef source in $example_dir/$(name_example[$i])/$j
 
 !href target=wims_help module=$module_test&exo=$ex_source&cmd=new <i>$ex_title</i>
- &nbsp;
+ $
 !href cmd=reply&example=$j&TYPE=$(name_example[$i]) $wims_name_source
-&nbsp;
+ $
 !href target=wims_mhelp cmd=help&special_parm=example&special_parm2=$(name_example[$i])/$ex_data $name_data
-&nbsp;
-<br /><hr />
-     !next  j
+ $
+    </li>
+     !next j
+    </ul>
      </td></tr>
    !next i
-!!   </table>
 $table_end
+</fieldset>
 !endif
 !if $type_exo!=$empty
 
@@ -230,10 +235,8 @@ $table_end
       !endif
       !if $type_exo iswordof QCM GAP
        <div class="field box">
-         <label for="answer_given">
 !record 15 of $my_dir
 !!@#       Réponses données !!#@
-         </label>
         !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=answer_given $wims_name_help
 !set wims_ref_class=wims_formradio
@@ -242,7 +245,7 @@ $table_end
       !endif
       !if $type_exo iswordof GAP
         <div class="field box">
-          <label for="try">$name_trialcnt</label>
+          $name_trialcnt
 !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=try $wims_name_help
 !set wims_ref_class=wims_formradio
@@ -255,17 +258,16 @@ $table_end
        !endif
        !default set format=checkbox
        <div class="field box">
-         <label for="format">$name_format</label>
+         $name_format
 !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=format_radio $wims_name_help
 !set wims_ref_class=wims_formradio
         !formradio format list radio,checkbox
         </div>
-        <div class="field box">
-          <label for="percent">
+        <fieldset><legend>
 !record 16 of $my_dir
 !!@#        Pourcentage de réussite nécessaire pour pouvoir continuer!!#@
-         </label>
+        </legend>
 !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=percent $wims_name_help
           <div class="formHelp">
@@ -274,7 +276,7 @@ $table_end
          </div>
 !set wims_ref_class=wims_formradio
         !formradio  percent list 0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1 prompt 0%,10%,20%,30%,40%,50%,60%,70%,80%,90%,100%
-        </div>
+        </fieldset>
       !endif
       !if $type_exo iswordof SELECTWORD
         <div class="field box">

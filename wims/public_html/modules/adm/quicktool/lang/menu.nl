@@ -54,4 +54,4 @@
 :mits er meerdere stappen in de oefening aanwezig zijn
 :formaat markeer en formaat menu
 :Name of the data files
-
+:Type of exercise
