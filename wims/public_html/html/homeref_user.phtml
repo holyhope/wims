@@ -36,7 +36,9 @@
 !! !endif
 !!   !let wims_menu_items=!append line $tmp_ to $wims_menu_items
 !!!endif
-!if ($wims_sheet>0 or P isin $wims_sheet) and $cmd=reply and $module_score!=$empty
+!!fieldtot is the number of answer fields in a oef exercise,
+!! for module it is not defined the condition is just that the exercise is finished.
+!if ($wims_sheet>0 or P isin $wims_sheet) and (($cmd=reply and $module_score!=$empty) or $fieldtot=0)
  !if $wims_exo>1
   !let wims_menu_items=!append line previousseries,1,module=home&directworksheet=$wims_sheet.$[$wims_exo-1] to $wims_menu_items
  !endif
