@@ -97,7 +97,7 @@ problemen veroorzaken in werkbladen in een klas.
 into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name_useropts3,\
   name_useropts4
 
-!if $job=modname
+!if $job iswordof modname restore
   !set name_moddevcnt=!nosubst U heeft $totalcnt modules in bewerking.
   !set name_limited=!nosubst lijst beperkt tot $maxlist items
 
@@ -122,7 +122,7 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
   kan leiden tot een dubbele aanwezigheid bij latere publikatie. Wees dus voorzichtig met het manipuleren van reeds bestaande en gepubliceerde WIMS modules !\
   <p>Wil U deze module uitproberen, plaats deze dan in de <span class="tt wims_fname">test</span> zone.
 !set name_warning3=Wanneer U reeds deze module heeft gepubliceerd, zorg dan het adres van deze module\
-  exact overeenkomt met het adres van de reeds gepubliceerde versie.<span class="small">Anders worden er dus twee "dezelfde" modules gepubliceerd.</span>
+  exact overeenkomt met het adres van de reeds gepubliceerde versie.<span class="small">Anders worden er dus twee "dezelfde" modules gepubliceerd.</span></p>
 !endif
 
 !if $job=auth
@@ -219,8 +219,7 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
 
 !set name_illegal=De getuurde archieven bevatten niet-toegestane bestands types! Ik kan geen hersteloperatie uitvoeren.\
  <p>Is dit soms een oude backupfile. Probeer bestand voor bestand te kopieren.
-!set name_warning2=Alleen backups van Modtool of gedownload van het "publicatie centrum"\
-   <a href="$downloadsite">$downloadsite</a> worden geaccepteerd.\
+!set name_warning2=Alleen backups van Modtool worden geaccepteerd.\
    De backup files mogen nooit handmatig worden gewijzigd.
 !set name_warning_diff=!nosubst Deze backup module overschrijft nu -zonder pardon- de bestaande module met het zelfde module-adres !\
    U kunt nog wel de verschillen checken met de bestaande module

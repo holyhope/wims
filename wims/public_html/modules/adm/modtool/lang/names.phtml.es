@@ -106,7 +106,7 @@ into name_files_src,name_files_cpp, name_files_other,name_files_lang,name_files_
 into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name_useropts3,\
   name_useropts4
 
-!if $job=modname
+!if $job iswordof modname restore
   !set name_moddevcnt=!nosubst Tienen $totalcnt módulos en desarrollo.
   !set name_limited=!nosubst lista limitada a $maxlist módulos
 
@@ -238,8 +238,7 @@ into name_diff1,name_diff2,name_diff3
 
 !set name_illegal= ¡Su protección contiene ficheros de tipos ilegales! Restauración imposible.\
  <p> ¿Es una protección de una antigua versión? Ahora deben copiar los ficheros uno a uno</p>
-!set name_warning2=Solas las protecciones desde Modtool o los ficheros cargados a distancia \
-   desde el centro de publicación <a href="$downloadsite">$downloadsite</a>\
+!set name_warning2=Solas las protecciones desde Modtool\
    se aceptan. Ninguna modificación manual del fichero de archivos se autoriza.
 !set name_warning_diff=!nosubst Este módulo va a sustituir completamente al módulo existente a la misma dirección,  \
   sin posibilidad de vuelta. Pero pueden
