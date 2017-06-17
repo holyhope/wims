@@ -37,7 +37,7 @@ into name_files_src,name_files_cpp, name_files_other,name_files_lang,name_files_
 !set name_file=Aanwezige binaire bestanden
 !set name_file1=Aanwezige
 !set name_nofile=Geen binaire bestanden aanwezig in deze module.
-!set name_depos=Stuur een binair bestand op
+!set name_depos=Stuur een binair, bestand op
 !set name_in_module=in de module
 !set name_replace=een vervangend bestand&nbsp;
 !set name_addfile=Voeg een nieuw bestand toe&nbsp;

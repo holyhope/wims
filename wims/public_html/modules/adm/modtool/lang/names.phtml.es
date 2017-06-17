@@ -37,7 +37,7 @@ into name_files_src,name_files_cpp, name_files_other,name_files_lang,name_files_
 !set name_file=Ficheros binarios existentes
 !set name_file1=Fichero
 !set name_nofile= Ningún fichero depositado en el módulo.
-!set name_depos=Depositar un fichero
+!set name_depos=Depositar un fichero,in the following directory
 !set name_in_module=en el módulo
 !set name_replace=un fichero para sustituirlo&nbsp;
 !set name_addfile=Añadir otro fichero&nbsp;

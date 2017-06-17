@@ -37,11 +37,12 @@
 <fieldset class="property_fields halfwidth blockcenter">
    <legend>$wims_name_addfile</legend>
    <div class="field box">
-     <label>$name_depos</label>
+     <label for="wims_deposit">$(name_depos[1])</label>
    !set wims_ref_class=wims_button_help float_right
     !href cmd=help&special_parm=binfile&special_parm2=$doctest1 $wims_name_help
+    <label for="bin_dir">$(name_depos[2])</label>
     !formselect bin_dir list $dir
- / <input type="file" name="wims_deposit" size="30" />
+ / <input type="file" id="wims_deposit" name="wims_deposit" size="30" />
   </div>
   <div class="wimscenter wimsform">
     <input type="submit" value="$wims_name_send" />
@@ -66,17 +67,16 @@
 !if $bcnt>0
  $table_header
  <caption>$name_file</caption>
- $table_hdtr<th>$wims_name_name</th><th>&nbsp;</th><th>&nbsp;&nbsp;$name_size&nbsp;&nbsp;</th></tr>
+ $table_hdtr<th>$wims_name_name</th><th>$wims_name_action</th><th>$name_size</th></tr>
  !for i=1 to $bcnt
   !set l=!line $i of $bfiles
   !distribute items $l into n_,s_
   $table_tr
   <td class="wims_fname">$n_</td><td>
-  &nbsp;
-  <a class="wims_button" target="wims_external" href="$devdir/$mod/$n_">$wims_name_Show</a>&nbsp;
+  <a class="wims_button" target="wims_external" href="$devdir/$mod/$n_">$wims_name_Show</a>
   !set wims_ref_class=wims_button wims_warning
   !href cmd=reply&bin_job=erase&fname=$n_ $wims_name_erase
-  &nbsp;</td>
+  </td>
   <td>$s_</td>
   </tr>
  !next i
