@@ -413,6 +413,32 @@ $comment
  !read adm/class/update.exo
 !endif
 
+# move an item to a specific position
+!if $job=moveto and $movefrom!=$moveto \
+                and $moveto>=1 and $moveto<=$exocnt \
+                and $movefrom>=1 and $movefrom<=$exocnt
+ moveditem_=!record $movefrom of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+ # Are we moving up or down?
+ !if $movefrom<$moveto
+  step=1
+ !else
+  step=-1
+ !endif
+ # First we need to make way for the item by shifting all the others by one position
+ i=$movefrom
+ !whileval $i!=$moveto
+  shifteditem_=!record $[$i+$step] of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+  !distribute items 0,$i into update_field,exo
+  update_content=$shifteditem_
+  !read adm/class/update.exo
+  i=$[$i+$step]
+ !endwhile
+ # Finally we can put the item into position
+ !distribute items 0,$moveto into update_field,exo
+ update_content=$moveditem_
+ !read adm/class/update.exo
+!endif
+
 # modify an item
 !if $job=modify and $modif>0 and $modif<=$exocnt
  !if $activetest=0

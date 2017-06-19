@@ -55,12 +55,12 @@ $table_header
      !href cmd=reply&job=delete&delete=$i#list $(seriesaction[2])
      !if $i>1
       $
-      !set wims_ref_class=wims_button
+      !set wims_ref_class=wims_button wims_button_move
       !href cmd=reply&job=moveup&moveup=$i#td_exo_$[$i-1] $(seriesaction[3])
      !endif
      !if $i<$exocnt
       $
-      !set wims_ref_class=wims_button
+      !set wims_ref_class=wims_button wims_button_move
       !href cmd=reply&job=movedown&movedown=$i#td_exo_$[$i-1] $(seriesaction[4])
      !endif
     !endif
@@ -69,3 +69,26 @@ $table_header
   </tr>
  !next i
 $table_end
+
+<script type="text/javascript">
+/*<![CDATA[*/
+jQuery(function(jq){
+  jq('tbody').sortable({
+    start: function( event, ui ) {
+      jq(this).attr('row-source-index', ui.item.index());
+    },
+    update: function( event, ui ) {
+      movefromindex= jq(this).attr('row-source-index');
+      jq(this).removeAttr('row-source-index');
+      movetoindex=ui.item.index();
+      updateUrl = "$wims_ref_name?session=$session&cmd=reply&job=moveto&movefrom=" + movefromindex + "&moveto=" + movetoindex;
+      jq.ajax({
+        url: updateUrl
+      });
+    }
+  });
+  jq('.wims_button_move').hide();
+  // TODO add text to explain drag and drop
+});
+/*]]>*/
+</script>
