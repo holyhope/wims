@@ -48,6 +48,9 @@ input[type="radio"]+label, input[type="checkbox"]+label{
     padding:.5em;
     margin-top:.5em;
 }
+.property_fields>fieldset{
+    margin-bottom:.5em;
+}
 
 .field.box{
     padding: .4em; /*.4em seems max for Chrome 2-columns layout */
@@ -143,11 +146,17 @@ li.wims_formradio{
   font-weight:normal;
 }
 
-/** Styles for required inputs */
-input:required:not(.noicon), textarea:required:not(.noicon){
-    padding-right: 1em;
-    background-position: right 3px;
+/** Styles for HTML 5 inputs (required or typed, like type="number")*/
+input, textarea{
     background-repeat: no-repeat;
+    /* 92% lets some browsers dysplay control buttons like for the type="number" input */
+    background-position-x: 92%;
+    background-position-y: 3px;
+}
+input:required:not(.noicon), textarea:required:not(.noicon){
+    /* The padding is more precise than the 92%, but we apply it only for required inputs */
+    padding-right: 1em;
+    background-position-x: right;
 }
 /* invalid required inputs */
 input:invalid, textarea:invalid, .required_invalid_legend {
@@ -155,18 +164,22 @@ input:invalid, textarea:invalid, .required_invalid_legend {
     background-size: 1em;
     box-shadow: 0 0 1px rgba(200, 0, 0, .85);
 }
-/* invalid required inputs, with focus  */
+/* invalid inputs, with focus  */
 input:focus:invalid, textarea:focus:invalid, .required_invalid_focus_legend {
     background-image: url("../../../gifs/svg/thumb_down_red.svg");
 }
-/* valid required inputs */
+/* valid required inputs (dont show the green check on all valid, only required ones) */
 input:required:focus:valid, textarea:required:focus:valid, .required_valid_legend {
     background-image: url("../../../gifs/svg/yes_check_green.svg");
     background-size: .9em;
     box-shadow: 0 0 1px rgba(0, 200, 0, .85);
 }
 /* noicon css class disable the required icon */
-input.noicon:required, input.noicon:required:focus{
+input.noicon,
+input.noicon:required,
+input.noicon:required:focus,
+textarea.noicon:required,
+textarea.noicon:required:focus{
     background-image:none;
 }
 
