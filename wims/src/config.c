@@ -317,6 +317,7 @@ void determine_ref_name(void)
 {
     char *s1, *s2, *p, *pl;
     char buf[MAX_LINELEN+1];
+    int len;
 
     hostname[0]=0;
     s1=getvar("httpd_HTTP_HOST");s2=getvar("httpd_SCRIPT_NAME");
@@ -363,6 +364,13 @@ void determine_ref_name(void)
       if(p!=NULL) *(p+1)=0;
     }
     else mystrncpy(ref_name,cgi_name,sizeof(ref_name)-1);
+
+    // XSS PROTECTION (remove unwanted chars to avoid a possible XSS hack)
+    // Search for a first occurence of Forbidden chars
+    len = strcspn(ref_name, "<>'\"\\");
+    // Give only the ref_name before forbidden chars
+    mystrncpy(ref_name,ref_name,len+1);
+
     setvar("wims_ref_name",ref_name);
 }
 
